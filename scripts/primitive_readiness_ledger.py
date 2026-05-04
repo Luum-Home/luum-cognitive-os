@@ -91,6 +91,11 @@ class ScriptRow:
     supported_harnesses: list[str] = field(default_factory=list)
     wrapper_for: str | None = None
     override_rationale: str | None = None
+    protected_install_surface: bool = False
+    install_surface: str | None = None
+    install_surface_rationale: str | None = None
+    consumer_accessibility: str = "so-local-only"
+    consumer_access_next_action: str = ""
     skill_consumers: int = 0
     total_consumers: int = 0
     consumer_families: dict[str, int] = field(default_factory=dict)
@@ -201,6 +206,7 @@ def references(text: str, target: str) -> bool:
         return True
     return False
 
+
 def build_usage(root: Path, targets: list[Path]) -> dict[str, list[Consumer]]:
     consumers = [(path, relpath(root, path), read_text(path)) for path in consumer_files(root)]
     usage: dict[str, list[Consumer]] = {}
@@ -246,6 +252,16 @@ def load_overrides(root: Path, path: str | None) -> dict[str, dict[str, Any]]:
             raise ValueError(f"invalid override role for {item['path']}: {role}")
         overrides[str(item["path"])] = item
     return overrides
+
+
+def load_protected_install_surfaces(root: Path, path: str | None) -> dict[str, dict[str, Any]]:
+    if not path:
+        return {}
+    manifest = root / path
+    if not manifest.exists():
+        return {}
+    data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
+    return {str(item["path"]): item for item in data.get("scripts", []) if "path" in item}
 
 
 def wrapper_target(root: Path, path: Path) -> str | None:
@@ -301,7 +317,37 @@ def classify_role(rel: str, lifecycle: dict[str, Any] | None, override: dict[str
     return "maintainer-tool", "default", "low"
 
 
+
+def consumer_accessibility_for(row: ScriptRow) -> tuple[str, str]:
+    if row.protected_install_surface:
+        return (
+            "install-profile-managed",
+            "prove generated consumer profile/harness projection before claiming project availability",
+        )
+    if row.lifecycle_id:
+        if row.distribution in {"core", "team"}:
+            return (
+                "lifecycle-declared-consumer-candidate",
+                "prove installation/projection into a consumer project for each supported harness",
+            )
+        return (
+            "lifecycle-declared-maintainer",
+            "keep maintainer-only unless an explicit package/profile projects it to consumers",
+        )
+    if row.skill_consumers > 0:
+        return (
+            "skill-referenced-not-projectable",
+            "add lifecycle/package/projection metadata before assuming consumer access",
+        )
+    return (
+        "so-local-only",
+        "do not rely on this from consumer projects unless exported through install/projection",
+    )
+
+
 def next_action_for(row: ScriptRow) -> str:
+    if row.protected_install_surface:
+        return "profile-managed install/projection surface: review generated profiles and harness settings before demotion or archive"
     if row.role == "agentic-primitive":
         if not row.lifecycle_id:
             return "add lifecycle metadata or explicit package boundary before claiming shared-agent support"
@@ -319,11 +365,12 @@ def next_action_for(row: ScriptRow) -> str:
     return "classify before use"
 
 
-def build_ledger(root: Path, overrides_path: str | None = None) -> list[ScriptRow]:
+def build_ledger(root: Path, overrides_path: str | None = None, protected_install_surfaces_path: str | None = "manifests/primitive-readiness-protected-install-surfaces.yaml") -> list[ScriptRow]:
     targets = script_files(root)
     usage = build_usage(root, targets)
     lifecycle_rows = load_lifecycle(root)
     overrides = load_overrides(root, overrides_path)
+    protected_install_surfaces = load_protected_install_surfaces(root, protected_install_surfaces_path)
     rows: list[ScriptRow] = []
     for target in targets:
         rel = relpath(root, target)
@@ -331,6 +378,7 @@ def build_ledger(root: Path, overrides_path: str | None = None) -> list[ScriptRo
         override = overrides.get(rel)
         consumers = usage.get(rel, [])
         wrapper = wrapper_target(root, target)
+        protected = protected_install_surfaces.get(rel)
         role, source, confidence = classify_role(rel, lifecycle, override, consumers, wrapper)
         if role not in ROLES:
             role = "maintainer-tool"
@@ -342,6 +390,8 @@ def build_ledger(root: Path, overrides_path: str | None = None) -> list[ScriptRo
             evidence.append("lifecycle")
         if override and override.get("rationale"):
             evidence.append("override_rationale")
+        if protected:
+            evidence.append(f"protected_install_surface:{protected.get('surface', 'unknown')}")
         if wrapper:
             evidence.append(f"wrapper_for:{wrapper}")
         for family in ("skill", "test", "hook", "workflow", "doc", "rule", "config", "script"):
@@ -358,12 +408,16 @@ def build_ledger(root: Path, overrides_path: str | None = None) -> list[ScriptRo
             supported_harnesses=list(lifecycle.get("supported_harnesses", [])) if lifecycle else [],
             wrapper_for=wrapper,
             override_rationale=str(override.get("rationale")) if override and override.get("rationale") else None,
+            protected_install_surface=bool(protected),
+            install_surface=str(protected.get("surface")) if protected and protected.get("surface") else None,
+            install_surface_rationale=str(protected.get("rationale")) if protected and protected.get("rationale") else None,
             skill_consumers=counts.get("skill", 0),
             total_consumers=len(consumers),
             consumer_families=counts,
             consumers=consumers,
             evidence=evidence,
         )
+        row.consumer_accessibility, row.consumer_access_next_action = consumer_accessibility_for(row)
         row.next_action = next_action_for(row)
         rows.append(row)
     return rows
@@ -372,11 +426,13 @@ def build_ledger(root: Path, overrides_path: str | None = None) -> list[ScriptRo
 def summarize(rows: list[ScriptRow]) -> dict[str, Any]:
     by_role: dict[str, int] = {role: 0 for role in sorted(ROLES)}
     by_confidence: dict[str, int] = {}
+    by_consumer_access: dict[str, int] = {}
     without_consumers = 0
     without_lifecycle = 0
     for row in rows:
         by_role[row.role] = by_role.get(row.role, 0) + 1
         by_confidence[row.confidence] = by_confidence.get(row.confidence, 0) + 1
+        by_consumer_access[row.consumer_accessibility] = by_consumer_access.get(row.consumer_accessibility, 0) + 1
         if row.total_consumers == 0:
             without_consumers += 1
         if row.role == "agentic-primitive" and not row.lifecycle_id:
@@ -385,6 +441,7 @@ def summarize(rows: list[ScriptRow]) -> dict[str, Any]:
         "total_scripts": len(rows),
         "roles": {key: value for key, value in by_role.items() if value},
         "confidence": dict(sorted(by_confidence.items())),
+        "consumer_accessibility": dict(sorted(by_consumer_access.items())),
         "without_consumers": without_consumers,
         "agentic_primitives_without_lifecycle": without_lifecycle,
         "low_confidence_rows": sum(1 for row in rows if row.confidence == "low"),
@@ -419,14 +476,14 @@ def write_markdown(rows: list[ScriptRow], path: Path) -> None:
         f"Low confidence rows: {summary['low_confidence_rows']}",
         f"Agentic primitives without lifecycle metadata: {summary['agentic_primitives_without_lifecycle']}",
         "",
-        "| Script | Role | Source | Confidence | Lifecycle | Harnesses | Consumers | Next action |",
-        "|---|---|---|---|---|---|---:|---|",
+        "| Script | Role | Source | Confidence | Consumer Access | Lifecycle | Harnesses | Consumers | Next action |",
+        "|---|---|---|---|---|---|---|---:|---|",
     ]
     for row in rows:
         lifecycle = row.lifecycle_state or ""
         harnesses = ", ".join(row.supported_harnesses)
         lines.append(
-            f"| `{row.path}` | {row.role} | {row.role_source} | {row.confidence} | {lifecycle} | {harnesses} | {row.total_consumers} | {row.next_action} |"
+            f"| `{row.path}` | {row.role} | {row.role_source} | {row.confidence} | {row.consumer_accessibility} | {lifecycle} | {harnesses} | {row.total_consumers} | {row.next_action} |"
         )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -438,7 +495,11 @@ def lifecycle_backlog(rows: list[ScriptRow]) -> list[dict[str, Any]]:
     for row in rows:
         if row.role != "agentic-primitive" or row.lifecycle_id:
             continue
-        if row.skill_consumers > 0:
+        if row.protected_install_surface:
+            priority = "protected"
+            reason = f"profile-managed install/projection surface ({row.install_surface}) lacks lifecycle metadata"
+            recommended_distribution = "core" if row.install_surface in {"bootstrap", "settings-projection", "profile-application"} else "maintainer"
+        elif row.skill_consumers > 0:
             priority = "high"
             reason = "skill-facing agentic primitive lacks lifecycle metadata"
             recommended_distribution = "team"
@@ -464,9 +525,11 @@ def lifecycle_backlog(rows: list[ScriptRow]) -> list[dict[str, Any]]:
             "recommended_lifecycle_state": "candidate",
             "recommended_maturity": "advisory",
             "recommended_distribution": recommended_distribution,
+            "install_surface": row.install_surface,
+            "protected_install_surface": row.protected_install_surface,
             "next_action": "create ADR-126 lifecycle row or downgrade role before claiming shared/harness-portable support",
         })
-    priority_order = {"high": 0, "medium": 1, "low": 2}
+    priority_order = {"protected": 0, "high": 1, "medium": 2, "low": 3}
     backlog.sort(key=lambda item: (priority_order.get(str(item["priority"]), 9), -int(item["skill_consumers"]), -int(item["total_consumers"]), str(item["path"])))
     return backlog
 
@@ -479,6 +542,7 @@ def write_lifecycle_backlog_json(rows: list[ScriptRow], path: Path) -> None:
         "purpose": "agentic primitives missing ADR-126 lifecycle metadata",
         "summary": {
             "total": len(backlog),
+            "protected": sum(1 for item in backlog if item["priority"] == "protected"),
             "high": sum(1 for item in backlog if item["priority"] == "high"),
             "medium": sum(1 for item in backlog if item["priority"] == "medium"),
         },
@@ -495,20 +559,22 @@ def write_lifecycle_backlog_markdown(rows: list[ScriptRow], path: Path) -> None:
         "",
         f"Total agentic-primitives without lifecycle metadata: {len(backlog)}",
         "",
-        "| Script | Priority | Reason | Skill Consumers | Total Consumers | Recommended Distribution | Next action |",
-        "|---|---|---|---:|---:|---|---|",
+        "| Script | Priority | Reason | Install Surface | Skill Consumers | Total Consumers | Recommended Distribution | Next action |",
+        "|---|---|---|---|---:|---:|---|---|",
     ]
     for item in backlog:
         lines.append(
-            f"| `{item['path']}` | {item['priority']} | {item['reason']} | {item['skill_consumers']} | {item['total_consumers']} | {item['recommended_distribution']} | {item['next_action']} |"
+            f"| `{item['path']}` | {item['priority']} | {item['reason']} | {item.get('install_surface') or ''} | {item['skill_consumers']} | {item['total_consumers']} | {item['recommended_distribution']} | {item['next_action']} |"
         )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build primitive readiness ledger for scripts")
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--overrides", default="manifests/primitive-readiness-script-overrides.yaml")
+    parser.add_argument("--protected-install-surfaces", default="manifests/primitive-readiness-protected-install-surfaces.yaml")
     parser.add_argument("--json-out", default="docs/reports/primitive-readiness-ledger-scripts-latest.json")
     parser.add_argument("--md-out", default="docs/reports/primitive-readiness-ledger-scripts-latest.md")
     parser.add_argument("--lifecycle-backlog-json-out", default="docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json")
@@ -521,7 +587,7 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     root = Path(args.project_dir).resolve()
-    rows = build_ledger(root, args.overrides)
+    rows = build_ledger(root, args.overrides, args.protected_install_surfaces)
     json_path = root / args.json_out
     md_path = root / args.md_out
     write_json(rows, json_path)

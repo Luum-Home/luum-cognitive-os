@@ -29,5 +29,8 @@ def test_repository_script_ledger_classifies_every_script() -> None:
     ignored_suffixes = {".pyc"}
     script_count = sum(1 for path in scripts if path.suffix not in ignored_suffixes)
     assert payload["summary"]["total_scripts"] == script_count
+    assert "consumer_accessibility" in payload["summary"]
     assert all(row["role"] in payload["allowed_roles"] for row in payload["scripts"])
+    assert all(row["consumer_accessibility"] for row in payload["scripts"])
+    assert all(row["consumer_access_next_action"] for row in payload["scripts"])
     assert not any(row["role"] == "unknown" for row in payload["scripts"])
