@@ -43,6 +43,7 @@ READINESS_FILES = {
     "skills": "docs/reports/primitive-readiness-ledger-skills-latest.json",
     "rules": "docs/reports/primitive-readiness-ledger-rules-latest.json",
 }
+DEFAULT_PROJECTION_HARNESSES = ("claude", "codex")
 
 
 @dataclass(frozen=True)
@@ -261,7 +262,49 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
     return adapters
 
 
-def collect_consumer_projection(root: Path, harnesses: tuple[str, ...] = ("claude", "codex")) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
+def load_harness_projection(root: Path) -> tuple[AdapterStatus, dict[str, Any]]:
+    path = root / "manifests" / "harness-projection.yaml"
+    if not path.exists():
+        return AdapterStatus("failed", "manifests/harness-projection.yaml", error="missing harness projection manifest"), {"harnesses": []}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    harnesses = data.get("harnesses", [])
+    summary = {
+        "total": len(harnesses),
+        "implemented": sum(1 for item in harnesses if item.get("status") == "implemented"),
+        "planned": sum(1 for item in harnesses if item.get("status") == "planned"),
+        "unsupported": sum(1 for item in harnesses if item.get("status") == "unsupported"),
+    }
+    return AdapterStatus("ok", "manifests/harness-projection.yaml", summary=summary), data
+
+
+def implemented_harness_ids(manifest: dict[str, Any]) -> tuple[str, ...]:
+    ids = [
+        str(item["id"])
+        for item in manifest.get("harnesses", [])
+        if item.get("status") == "implemented" and item.get("id")
+    ]
+    return tuple(ids or DEFAULT_PROJECTION_HARNESSES)
+
+
+def harness_projection_summary(manifest: dict[str, Any], projection_status: AdapterStatus) -> dict[str, Any]:
+    rows = {}
+    for item in manifest.get("harnesses", []):
+        status = item.get("status", "planned")
+        proof_status = "ok" if status == "implemented" and projection_status.status == "ok" else "unverified"
+        rows[item["id"]] = {
+            "display_name": item.get("display_name", item["id"]),
+            "status": status,
+            "projection_mode": item.get("projection_mode", "unknown"),
+            "proof_status": proof_status,
+            "projected_surfaces": item.get("projected_surfaces", []),
+            "settings_paths": item.get("settings_paths", []),
+            "limitations": item.get("limitations", []),
+            "next_action": item.get("next_action", ""),
+        }
+    return rows
+
+
+def collect_consumer_projection(root: Path, harnesses: tuple[str, ...] = DEFAULT_PROJECTION_HARNESSES) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
     projected: dict[str, dict[str, Any]] = {}
     errors: list[str] = []
     counts: dict[str, int] = {}
@@ -540,11 +583,12 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
 
 def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bool) -> dict[str, Any]:
     refresh_statuses = refresh_adapters(root, include_slow) if refresh else {}
-    projection_status, projected = collect_consumer_projection(root)
+    harness_status, harness_manifest = load_harness_projection(root)
+    projection_status, projected = collect_consumer_projection(root, implemented_harness_ids(harness_manifest))
     readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
-    adapters = {**refresh_statuses, "consumer_projection": projection_status, **readiness_adapters, **existing_adapters}
+    adapters = {**refresh_statuses, "harness_projection": harness_status, "consumer_projection": projection_status, **readiness_adapters, **existing_adapters}
     summary = score(capabilities, findings)
     phase = phase_for(root)
     gate_data = gate(summary, findings, phase, fail_on_warn)
@@ -560,6 +604,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "capabilities": [asdict(cap) for cap in capabilities],
         "findings": [asdict(finding) for finding in findings],
         "consumer_projection": scrub_project_paths(projected, root),
+        "harness_projection": harness_projection_summary(harness_manifest, projection_status),
         "persistence": {
             "local_history": ".cognitive-os/metrics/acc-pipeline-history.jsonl",
             "engram": {
