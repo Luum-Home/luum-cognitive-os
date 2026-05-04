@@ -1,9 +1,9 @@
 schema_version: 1
-generated_at: '2026-05-03T05:17:28+00:00'
+generated_at: '2026-05-04T15:14:59+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
-  sha256: f1c765882bba09ede31f50bbebc649e9c628715363bd33a160f9f66afeac05d3
+  sha256: a014cdfa51bd907ed8b8633bd2434a2e6ef9a9c6d525b2fe5831cd4b16c05c0c
 - path: skills/add-hook/SKILL.md
   sha256: 71eec12460bf6d87ca4a8617a5ab11842947975fa5ea9a52c5b997c96e098e21
 - path: skills/add-mcp/SKILL.md
@@ -93,7 +93,7 @@ skills:
 - path: skills/deepeval-integration/SKILL.md
   sha256: bf56ad052a63db994eac6f071e8cbacf7a3dd222ff5344cf7933e4128f6f03b5
 - path: skills/deps-update/SKILL.md
-  sha256: 3d489bb4f10c66384df23ad427ee6baf689a4492e9b53e6db0a1ff49925ef0c8
+  sha256: 14878d6807b1e3dde846bb168f3e06ed2c2b38a5415b36ce303819eedf38ad9b
 - path: skills/detect-patterns/SKILL.md
   sha256: b0f2467cda94557ec20e509e24283877c305fd0ee52217494a2985a7963914eb
 - path: skills/detect-stack/SKILL.md
@@ -312,6 +312,8 @@ skills:
   sha256: f7f0b4b06824c1131f34fc5293ea10eb02782afe8c41e42e2da4092af3079e37
 - path: skills/verification-before-completion/SKILL.md
   sha256: 9bcee4132501983d296dbab45d8f90e8c09381969e72211630993bf91b48813f
+- path: skills/vuln-remediation-flow/SKILL.md
+  sha256: 9e7e00409698f26e78d57c956bd0ac59e785da1cd8dfd46994773d0bcdbdebed
 - path: skills/vulnerability-scan/SKILL.md
   sha256: 91093aad91095a1576fe9d42b4efd61fb5ab813d0654b249de47a61c756773d5
 - path: skills/web-crawler/SKILL.md
