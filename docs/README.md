@@ -11,6 +11,11 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Primitive Readiness Continuity Plan](architecture/primitive-readiness-continuity-plan.md) — living cycle contract for mapping docs, scripts, hooks, skills, rules, memory, and harness adapters into governed agentic primitives.
+- [Primitive Readiness Review — 2026-05-04](reports/primitive-readiness-review-2026-05-04.md) — first continuity-cycle review of lifecycle manifest, family coverage, automation-loop scripts, and low-scoring script triage.
+- [Primitive Readiness Ledger Manual Test](manual-tests/primitive-readiness-ledger.md) — manual proof path for regenerating and inspecting the script readiness ledger.
+- [ADR-146: Primitive Readiness Ledger](adrs/ADR-146-primitive-readiness-ledger.md) — accepted contract for the machine-readable script role ledger and future ratchet gates.
+- [Primitive Readiness Ledger Family Extension Plan](architecture/primitive-readiness-ledger-family-extension.md) — staged plan for extending readiness ledgers from scripts to hooks, skills, and rules.
 - [Agent Capability Coverage](agent-capability-coverage.md) — strategic report defining ACC as semantic system coverage for agentic primitives.
 - [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.
 - [ADR-116 Direct-Main Policy](architecture/direct-main-policy.md) — local agent-block/operator-warn policy plus remote protection invariant for `main`/`master`.
