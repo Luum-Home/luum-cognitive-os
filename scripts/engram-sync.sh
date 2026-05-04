@@ -67,9 +67,15 @@ if [ "$MODE" = "--cloud" ]; then
     echo "ENGRAM_PROJECT_SCOPE or project auto-detection is required for cloud sync" >&2
     exit 2
   fi
-  ENGRAM_SYNC_MODE="engram-cloud" engram sync --cloud --project "$SCOPE"
-  write_sync_audit "engram-cloud-sync-completed" "pass"
-  exit 0
+  export ENGRAM_SYNC_MODE="engram-cloud"
+  if engram sync --cloud --project "$SCOPE"; then
+    write_sync_audit "engram-cloud-sync-completed" "pass"
+    exit 0
+  else
+    status=$?
+    write_sync_audit "engram-cloud-sync-failed" "exit-$status"
+    exit "$status"
+  fi
 fi
 
 if [ ! -f "$DB_PATH" ]; then
