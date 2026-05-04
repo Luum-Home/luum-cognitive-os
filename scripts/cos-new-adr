@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Create contract-compliant ADR drafts through atomic reservation.
+set -euo pipefail
+
+ROOT="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+exec python3 "$ROOT/scripts/cos_new_adr.py" --project-dir "$ROOT" "$@"
