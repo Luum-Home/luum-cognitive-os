@@ -1,0 +1,4 @@
+# Optional heavy lane: LiteLLM gateway compatibility.
+litellm>=1.0
+# Redis client speaks the Valkey wire protocol; Valkey is the server.
+redis>=5.0.0
