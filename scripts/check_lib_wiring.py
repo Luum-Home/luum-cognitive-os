@@ -42,6 +42,7 @@ def _is_imported(bare: str, root: Path) -> bool:
         re.compile(rf"from\s+lib\.{re.escape(bare)}\s+import"),
         re.compile(rf"import\s+lib\.{re.escape(bare)}"),
         re.compile(rf"importlib\.import_module\(\s*[\"']lib\.{re.escape(bare)}[\"']\s*\)"),
+        re.compile(rf"\bpython3?\s+-m\s+{re.escape(bare)}\b"),
     ]
     # Search dirs that are allowed to import from lib/
     # Includes both .py and .sh files (hooks embed Python via heredocs)
