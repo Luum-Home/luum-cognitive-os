@@ -245,11 +245,11 @@ def _engram_save(title: str, content: str, type_: str = "manual",
         pass  # safe_engram not available — fall back to direct CLI call
 
     # --- Direct CLI fallback (safe_engram unavailable) ------------------
-    cmd = ["engram", "save", "--title", title, "--content", content, "--type", type_]
+    cmd = ["engram", "save", title, content, "--type", type_]
     if project:
         cmd.extend(["--project", project])
     if topic_key:
-        cmd.extend(["--topic-key", topic_key])
+        cmd.extend(["--topic", topic_key])
     try:
         result = subprocess.run(
             cmd, capture_output=True, text=True, timeout=10
