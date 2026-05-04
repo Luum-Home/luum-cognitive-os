@@ -426,7 +426,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 26,
+        "doc": 28,
         "test": 2
       },
       "consumers": [
@@ -484,6 +484,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -520,6 +524,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/ai-agent-harness-landscape-review.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/kimi-code-cli-structural-projection.md"
         },
         {
@@ -552,7 +560,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:26",
+        "doc_consumers:28",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -569,7 +577,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 29,
+      "total_consumers": 31,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -2907,7 +2915,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 28,
-        "doc": 407,
+        "doc": 408,
         "hook": 68,
         "rule": 42,
         "script": 192,
@@ -3074,6 +3082,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3614,6 +3626,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md"
         },
         {
           "family": "doc",
@@ -4270,10 +4286,6 @@
         {
           "family": "doc",
           "path": "docs/hooks.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/ide-compatibility.md"
         },
         {
           "family": "doc",
@@ -7339,7 +7351,7 @@
         "skill_consumers:55",
         "test_consumers:312",
         "hook_consumers:68",
-        "doc_consumers:407",
+        "doc_consumers:408",
         "rule_consumers:42",
         "config_consumers:28",
         "script_consumers:192"
@@ -7358,7 +7370,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1104,
+      "total_consumers": 1105,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -18134,7 +18146,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 4
+        "doc": 3
       },
       "consumers": [
         {
@@ -18156,16 +18168,12 @@
         {
           "family": "doc",
           "path": "docs/getting-started.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/ide-compatibility.md"
         }
       ],
       "distribution": null,
       "evidence": [
         "override_rationale",
-        "doc_consumers:4",
+        "doc_consumers:3",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -18180,7 +18188,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
