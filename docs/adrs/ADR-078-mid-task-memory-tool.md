@@ -50,9 +50,9 @@ re-implementing the scanner logic inline.
   dependency on Hermes internals.
 - Context fencing helpers `sanitize_context` and `build_memory_context_block`
   ported verbatim.
-- One concrete provider: `EngramMemoryProvider` (~90 LOC), wrapping
-  `engram search --json` CLI. Falls back to empty results when the binary is
-  absent (CI-safe).
+- One concrete provider: `EngramMemoryProvider` (~90 LOC), wrapping the
+  structured Engram HTTP search path. Falls back to empty results when the
+  daemon is absent (CI-safe).
 
 **`skills/memory-scan/SKILL.md`** — exposes `lib.memory_scanner.MemoryScanner`
 as an agent-callable skill. Agents invoke `/memory-scan <text>` or
@@ -70,8 +70,10 @@ when Engram is unavailable.
 - `initialize_all` drops the automatic `hermes_home` injection (Hermes injects
   the profile-scoped `~/.hermes` path; Cognitive OS uses Engram paths instead).
   Method signature is preserved for API compatibility.
-- `EngramMemoryProvider` uses `engram search --json` rather than Hermes's
-  built-in memory file. The query/prefetch/tool-call surface is equivalent.
+- `EngramMemoryProvider` uses Engram's structured HTTP search rather than
+  Hermes's built-in memory file. The query/prefetch/tool-call surface is
+  equivalent. The provider does **not** rely on undocumented `engram --json`
+  CLI flags.
 
 ---
 
@@ -93,9 +95,9 @@ when Engram is unavailable.
   `/memory-scan` skill or instantiate `MemoryManager`. There is no automatic
   recall injection per agent turn (that would require rewriting the agent prompt
   assembly pipeline, which is out of scope for reconstruction phase).
-- `EngramMemoryProvider.query()` uses the `engram search --json` CLI flag.
-  If the CLI does not support `--json`, results will be empty (graceful
-  degradation). Operators using an older `engram` version should upgrade.
+- `EngramMemoryProvider.query()` requires the local Engram daemon for
+  structured results. If the daemon is not running, results are empty
+  (graceful degradation).
 
 ### Migration
 
