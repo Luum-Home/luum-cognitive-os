@@ -14,6 +14,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import tempfile
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -149,7 +150,10 @@ def risk_for(row: dict[str, Any], family: str) -> str:
     return "low"
 
 
-def status_for(row: dict[str, Any], family: str) -> str:
+def status_for(row: dict[str, Any], family: str, projected: dict[str, dict[str, Any]] | None = None) -> str:
+    projected = projected or {}
+    if row.get("path") in projected:
+        return "aligned"
     access = row.get("consumer_accessibility", "so-local-only")
     role = row.get("role", "")
     if family == "scripts" and role == "agentic-primitive" and not row.get("lifecycle_id"):
@@ -165,9 +169,12 @@ def status_for(row: dict[str, Any], family: str) -> str:
     return "unverified"
 
 
-def capability_from_readiness(row: dict[str, Any], family: str) -> Capability:
+def capability_from_readiness(row: dict[str, Any], family: str, projected: dict[str, dict[str, Any]] | None = None) -> Capability:
+    projected = projected or {}
     kind = "script" if family == "scripts" else family[:-1]
-    status = status_for(row, family)
+    projection = projected.get(row.get("path", ""))
+    status = status_for(row, family, projected)
+    effective_access = "projected-consumer-surface" if projection else row.get("consumer_accessibility", "so-local-only")
     represented = []
     if row.get("role") not in {"archive"}:
         represented.append({
@@ -175,7 +182,7 @@ def capability_from_readiness(row: dict[str, Any], family: str) -> Capability:
             "id": row.get("path", ""),
             "source": row.get("path", ""),
             "role": row.get("role"),
-            "consumer_accessibility": row.get("consumer_accessibility", "so-local-only"),
+            "consumer_accessibility": effective_access,
         })
     evidence = list(row.get("evidence", []))
     if row.get("role_source"):
@@ -184,6 +191,8 @@ def capability_from_readiness(row: dict[str, Any], family: str) -> Capability:
         evidence.append(f"lifecycle_state:{row['lifecycle_state']}")
     if row.get("consumer_accessibility"):
         evidence.append(f"consumer_accessibility:{row['consumer_accessibility']}")
+    if projection:
+        evidence.append(f"projected_harnesses:{','.join(projection['harnesses'])}")
     return Capability(
         id=f"{kind}:{row.get('path', '')}",
         kind=kind,
@@ -197,14 +206,14 @@ def capability_from_readiness(row: dict[str, Any], family: str) -> Capability:
         represented_by=represented,
         mapping_status=status,
         confidence={"aligned": 0.9, "partial": 0.68, "missing": 0.82, "stale": 0.8, "overexposed": 0.76, "unverified": 0.45}[status],
-        consumer_accessibility=row.get("consumer_accessibility", "so-local-only"),
+        consumer_accessibility=effective_access,
         lifecycle_status=lifecycle_status(row),
         evidence=evidence[:12],
         weight=DEFAULT_WEIGHTS[kind],
     )
 
 
-def load_readiness_capabilities(root: Path) -> tuple[dict[str, AdapterStatus], list[Capability], list[Finding]]:
+def load_readiness_capabilities(root: Path, projected: dict[str, dict[str, Any]] | None = None) -> tuple[dict[str, AdapterStatus], list[Capability], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     capabilities: list[Capability] = []
     findings: list[Finding] = []
@@ -222,7 +231,7 @@ def load_readiness_capabilities(root: Path) -> tuple[dict[str, AdapterStatus], l
             continue
         adapters[name] = AdapterStatus("ok", rel, summary=data.get("summary", {}))
         for row in rows:
-            cap = capability_from_readiness(row, family)
+            cap = capability_from_readiness(row, family, projected)
             capabilities.append(cap)
             if cap.mapping_status == "missing":
                 findings.append(Finding(cap.id, "high", "missing", "Agentic primitive lacks lifecycle metadata", cap.evidence, "add lifecycle metadata or downgrade role"))
@@ -250,6 +259,53 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         status, _data = run_json_command(root, name, command, timeout=180 if name == "primitive_coverage" else 90)
         adapters[name] = status
     return adapters
+
+
+def collect_consumer_projection(root: Path, harnesses: tuple[str, ...] = ("claude", "codex")) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
+    projected: dict[str, dict[str, Any]] = {}
+    errors: list[str] = []
+    counts: dict[str, int] = {}
+    for harness in harnesses:
+        with tempfile.TemporaryDirectory(prefix=f"cos-acc-projection-{harness}-") as temp:
+            temp_root = Path(temp)
+            result = subprocess.run(
+                ["python3", str(root / "scripts" / "cos_init.py"), "--default", "--harness", harness],
+                cwd=temp_root,
+                text=True,
+                capture_output=True,
+                check=False,
+                timeout=60,
+            )
+            if result.returncode != 0:
+                errors.append(f"{harness}:{(result.stderr or result.stdout)[-500:]}")
+                continue
+            harness_count = 0
+            for path in (temp_root / ".cognitive-os" / "hooks" / "cos").glob("*.sh"):
+                source = f"hooks/{path.name}"
+                projected.setdefault(source, {"harnesses": [], "paths": []})
+                projected[source]["harnesses"].append(harness)
+                projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                harness_count += 1
+            for path in (temp_root / ".cognitive-os" / "skills" / "cos").glob("*/SKILL.md"):
+                source = f"skills/{path.parent.name}/SKILL.md"
+                projected.setdefault(source, {"harnesses": [], "paths": []})
+                projected[source]["harnesses"].append(harness)
+                projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                harness_count += 1
+            for path in (temp_root / ".cognitive-os" / "rules" / "cos").glob("*.md"):
+                source = f"rules/{path.name}"
+                projected.setdefault(source, {"harnesses": [], "paths": []})
+                projected[source]["harnesses"].append(harness)
+                projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                harness_count += 1
+            counts[harness] = harness_count
+    for info in projected.values():
+        info["harnesses"] = sorted(set(info["harnesses"]))
+        info["paths"] = sorted(set(info["paths"]))
+    if errors and not projected:
+        return AdapterStatus("failed", "consumer_projection", summary={"harnesses": list(harnesses)}, error="; ".join(errors)), {}
+    status = "unverified" if errors else "ok"
+    return AdapterStatus(status, "consumer_projection", summary={"projected_primitives": len(projected), "by_harness": counts}, error="; ".join(errors) if errors else None), projected
 
 
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
@@ -484,10 +540,11 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
 
 def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bool) -> dict[str, Any]:
     refresh_statuses = refresh_adapters(root, include_slow) if refresh else {}
-    readiness_adapters, capabilities, findings = load_readiness_capabilities(root)
+    projection_status, projected = collect_consumer_projection(root)
+    readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
-    adapters = {**refresh_statuses, **readiness_adapters, **existing_adapters}
+    adapters = {**refresh_statuses, "consumer_projection": projection_status, **readiness_adapters, **existing_adapters}
     summary = score(capabilities, findings)
     phase = phase_for(root)
     gate_data = gate(summary, findings, phase, fail_on_warn)
@@ -502,6 +559,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "adapters": {key: asdict(value) for key, value in sorted(adapters.items())},
         "capabilities": [asdict(cap) for cap in capabilities],
         "findings": [asdict(finding) for finding in findings],
+        "consumer_projection": scrub_project_paths(projected, root),
         "persistence": {
             "local_history": ".cognitive-os/metrics/acc-pipeline-history.jsonl",
             "engram": {

@@ -1,5 +1,18 @@
 {
   "adapters": {
+    "consumer_projection": {
+      "command": null,
+      "error": null,
+      "source": "consumer_projection",
+      "status": "ok",
+      "summary": {
+        "by_harness": {
+          "claude": 58,
+          "codex": 58
+        },
+        "projected_primitives": 58
+      }
+    },
     "cos_coverage": {
       "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
       "error": null,
@@ -9,7 +22,7 @@
         "aspirational": 38,
         "coverage_pct": 54.3,
         "dormant": 160,
-        "generated_at": "2026-05-04T19:32:31Z",
+        "generated_at": "2026-05-04T19:54:06Z",
         "mapped": 268,
         "metadata": 56,
         "on_demand": 287,
@@ -36,7 +49,7 @@
       "source": "docs_execution",
       "status": "ok",
       "summary": {
-        "items": 2434,
+        "items": 2454,
         "json": "<repo-root>/docs/reports/docs-execution-latest.json",
         "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
@@ -103,6 +116,9 @@
             "done_weak_proof": 7,
             "planned": 3,
             "proposed": 2
+          },
+          "docs/acc/latest-compact.md": {
+            "proposed": 10
           },
           "docs/acc/latest.md": {
             "proposed": 1
@@ -612,8 +628,7 @@
           "docs/adrs/ADR-117-stash-mutation-reversibility.md": {
             "done_weak_proof": 1,
             "planned": 1,
-            "proposed": 1,
-            "stale": 1
+            "proposed": 1
           },
           "docs/adrs/ADR-118-multi-ide-swarm-testbed.md": {
             "done_weak_proof": 3,
@@ -735,7 +750,12 @@
           },
           "docs/adrs/ADR-147-agent-capability-coverage-pipeline.md": {
             "done_weak_proof": 1,
+            "done_with_proof": 5,
             "planned": 2
+          },
+          "docs/adrs/ADR-148-adr-authoring-primitive.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 2
           },
           "docs/adrs/README.md": {
             "planned": 1
@@ -775,9 +795,8 @@
           },
           "docs/architecture/LESSONS-LEARNED.md": {
             "done_weak_proof": 2,
-            "done_with_proof": 1,
-            "planned": 20,
-            "stale": 1
+            "done_with_proof": 2,
+            "planned": 20
           },
           "docs/architecture/POST-MORTEM-2026-04.md": {
             "done_weak_proof": 12,
@@ -1191,8 +1210,7 @@
           "docs/business/master-plan-checklist.md": {
             "done_weak_proof": 65,
             "done_with_proof": 69,
-            "planned": 9,
-            "stale": 1
+            "planned": 10
           },
           "docs/business/master-plan-execution-requirements.md": {
             "planned": 1,
@@ -1562,13 +1580,12 @@
             "planned": 1
           }
         },
-        "items": 2434,
+        "items": 2454,
         "statuses": {
-          "done_weak_proof": 1013,
-          "done_with_proof": 184,
-          "planned": 968,
-          "proposed": 266,
-          "stale": 3
+          "done_weak_proof": 1017,
+          "done_with_proof": 192,
+          "planned": 969,
+          "proposed": 276
         }
       }
     },
@@ -1704,13 +1721,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=209 test-mentioned-files=102; actionable_gaps=0",
+            "evidence": "mcp-mentioned-files=210 test-mentioned-files=103; actionable_gaps=0",
             "family": "mcp_tools",
             "next_action": "separate installed/optional/reference-only integrations before promotion",
             "partial_signal": 107,
-            "proven_signal": 102,
+            "proven_signal": 103,
             "severity": "low",
-            "total": 209
+            "total": 210
           },
           {
             "aspirational_signal": 0,
@@ -1734,23 +1751,23 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "test_py=764 audit-contract-quality=41; actionable_gaps=0",
+            "evidence": "test_py=765 audit-contract-quality=41; actionable_gaps=0",
             "family": "tests_quality_gates",
             "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
-            "partial_signal": 723,
+            "partial_signal": 724,
             "proven_signal": 41,
             "severity": "low",
-            "total": 764
+            "total": 765
           },
           {
-            "aspirational_signal": 3,
-            "evidence": "docs_hard_gaps=3 unmapped_claims=0 done_with_proof=184 mapped_claims=397",
+            "aspirational_signal": 0,
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=192 mapped_claims=397",
             "family": "docs_adrs",
-            "next_action": "fix stale/unproved docs claims",
-            "partial_signal": 2247,
-            "proven_signal": 581,
-            "severity": "high",
-            "total": 2831
+            "next_action": "no hard docs gaps; improve weak proof opportunistically",
+            "partial_signal": 2262,
+            "proven_signal": 589,
+            "severity": "low",
+            "total": 2851
           }
         ],
         "hook_latency": {
@@ -1760,7 +1777,7 @@
           "p95_ms": 1622
         },
         "overall_risk": "high",
-        "timestamp": "2026-05-04T19:33:19.850689+00:00"
+        "timestamp": "2026-05-04T19:54:51.818391+00:00"
       }
     },
     "readiness:hooks": {
@@ -1823,25 +1840,25 @@
       "summary": {
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
-          "high": 135,
+          "high": 137,
           "medium": 177
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 49,
-          "lifecycle-declared-maintainer": 36,
+          "lifecycle-declared-maintainer": 38,
           "skill-referenced-not-projectable": 2,
           "so-local-only": 206
         },
         "low_confidence_rows": 0,
         "roles": {
-          "agentic-primitive": 104,
+          "agentic-primitive": 106,
           "driver-specific": 10,
           "lab": 13,
           "maintainer-tool": 174,
           "migration-only": 11
         },
-        "total_scripts": 312,
+        "total_scripts": 314,
         "without_consumers": 4
       }
     },
@@ -1878,13 +1895,13 @@
       "summary": {
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
-          "high": 135,
+          "high": 137,
           "medium": 177
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 49,
-          "lifecycle-declared-maintainer": 36,
+          "lifecycle-declared-maintainer": 38,
           "skill-referenced-not-projectable": 2,
           "so-local-only": 206
         },
@@ -1894,13 +1911,13 @@
         "low_confidence_rows": 0,
         "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-scripts-latest.md",
         "roles": {
-          "agentic-primitive": 104,
+          "agentic-primitive": 106,
           "driver-specific": 10,
           "lab": 13,
           "maintainer-tool": 174,
           "migration-only": 11
         },
-        "total_scripts": 312,
+        "total_scripts": 314,
         "without_consumers": 4
       }
     }
@@ -2059,7 +2076,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -2169,7 +2186,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1",
         "script_consumers:1",
         "role_source:usage:repo",
@@ -2206,7 +2223,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "script_consumers:1",
         "role_source:heuristic:path",
         "consumer_accessibility:so-local-only"
@@ -2419,7 +2436,7 @@
         "skill_consumers:1",
         "test_consumers:20",
         "hook_consumers:7",
-        "doc_consumers:64",
+        "doc_consumers:65",
         "rule_consumers:4",
         "config_consumers:3",
         "script_consumers:8",
@@ -2497,7 +2514,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "rule_consumers:2",
         "config_consumers:2",
         "script_consumers:2",
@@ -3015,7 +3032,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1",
         "script_consumers:1",
         "role_source:lifecycle",
@@ -3408,12 +3425,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:304",
+        "test_consumers:306",
         "hook_consumers:67",
-        "doc_consumers:383",
+        "doc_consumers:385",
         "rule_consumers:42",
         "config_consumers:23",
-        "script_consumers:186",
+        "script_consumers:187",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -3573,7 +3590,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-update.sh",
         "test_consumers:6",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "rule_consumers:2",
         "config_consumers:3",
         "script_consumers:1",
@@ -3874,7 +3891,7 @@
         "skill_consumers:2",
         "test_consumers:4",
         "hook_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "rule_consumers:2",
         "config_consumers:2",
         "script_consumers:3",
@@ -3915,7 +3932,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -3956,7 +3973,7 @@
         "protected_install_surface:skill-installation",
         "wrapper_for:scripts/cos-status.sh",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -5347,6 +5364,45 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-merge-queue.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_new_adr.py",
+        "doc_consumers:1",
+        "config_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:advisory",
+        "consumer_accessibility:lifecycle-declared-maintainer"
+      ],
+      "id": "script:scripts/cos-new-adr",
+      "kind": "script",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "id": "scripts/cos-new-adr",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-new-adr"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-new-adr"
       },
       "weight": 3
     },
@@ -7651,9 +7707,9 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:3",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:install-profile-managed"
@@ -7716,6 +7772,46 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_manifest_tier_claim_audit.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:advisory",
+        "consumer_accessibility:lifecycle-declared-maintainer"
+      ],
+      "id": "script:scripts/cos_new_adr.py",
+      "kind": "script",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "id": "scripts/cos_new_adr.py",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos_new_adr.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_new_adr.py"
       },
       "weight": 3
     },
@@ -14398,7 +14494,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -14511,7 +14607,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
@@ -14521,7 +14617,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/agent-checkpoint.sh",
       "kind": "hook",
@@ -14529,7 +14626,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/agent-checkpoint.sh",
           "kind": "hook",
           "role": "lab",
@@ -15013,7 +15110,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:3",
@@ -15024,7 +15121,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/auto-checkpoint.sh",
       "kind": "hook",
@@ -15032,7 +15130,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/auto-checkpoint.sh",
           "kind": "hook",
           "role": "lab",
@@ -15055,7 +15153,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:2",
@@ -15067,7 +15165,8 @@
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/auto-refine.sh",
       "kind": "hook",
@@ -15075,7 +15174,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/auto-refine.sh",
           "kind": "hook",
           "role": "lab",
@@ -15224,7 +15323,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
@@ -15236,7 +15335,8 @@
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/auto-verify.sh",
       "kind": "hook",
@@ -15244,7 +15344,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/auto-verify.sh",
           "kind": "hook",
           "role": "lab",
@@ -15302,7 +15402,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -15314,7 +15414,8 @@
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/blast-radius.sh",
       "kind": "hook",
@@ -15322,7 +15423,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/blast-radius.sh",
           "kind": "hook",
           "role": "lab",
@@ -15356,7 +15457,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:projected-consumer-surface"
+        "consumer_accessibility:projected-consumer-surface",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/claim-validator.sh",
       "kind": "hook",
@@ -15387,7 +15489,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:4",
@@ -15398,7 +15500,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/clarification-gate.sh",
       "kind": "hook",
@@ -15406,7 +15509,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/clarification-gate.sh",
           "kind": "hook",
           "role": "memory-lifecycle",
@@ -15428,8 +15531,8 @@
       "weight": 3
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "rule_consumers:1",
         "script_consumers:2",
@@ -15437,15 +15540,16 @@
         "doc_consumers:9",
         "config_consumers:3",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/clarification-interceptor.sh",
       "kind": "hook",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/clarification-interceptor.sh",
           "kind": "hook",
           "role": "memory-lifecycle",
@@ -15615,7 +15719,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:5",
@@ -15626,7 +15730,8 @@
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/completion-gate.sh",
       "kind": "hook",
@@ -15634,7 +15739,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/completion-gate.sh",
           "kind": "hook",
           "role": "lab",
@@ -15815,7 +15920,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
@@ -15826,7 +15931,8 @@
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/confidentiality-enforcer.sh",
       "kind": "hook",
@@ -15834,7 +15940,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/confidentiality-enforcer.sh",
           "kind": "hook",
           "role": "lab",
@@ -15899,7 +16005,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
@@ -15911,7 +16017,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/content-policy.sh",
       "kind": "hook",
@@ -15919,7 +16026,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/content-policy.sh",
           "kind": "hook",
           "role": "lab",
@@ -15945,7 +16052,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:4",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
@@ -16165,7 +16272,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -16177,7 +16284,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/crash-recovery.sh",
       "kind": "hook",
@@ -16185,7 +16293,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/crash-recovery.sh",
           "kind": "hook",
           "role": "lab",
@@ -16417,7 +16525,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
@@ -16427,7 +16535,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/doc-sync-detector.sh",
       "kind": "hook",
@@ -16435,7 +16544,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/doc-sync-detector.sh",
           "kind": "hook",
           "role": "lab",
@@ -16498,7 +16607,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -16510,7 +16619,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/dod-gate.sh",
       "kind": "hook",
@@ -16518,7 +16628,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/dod-gate.sh",
           "kind": "hook",
           "role": "lab",
@@ -17001,7 +17111,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
@@ -17013,7 +17123,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/error-learning.sh",
       "kind": "hook",
@@ -17021,7 +17132,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/error-learning.sh",
           "kind": "hook",
           "role": "lab",
@@ -17044,7 +17155,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "rule_consumers:3",
@@ -17054,7 +17165,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/error-pattern-detector.sh",
       "kind": "hook",
@@ -17062,7 +17174,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/error-pattern-detector.sh",
           "kind": "hook",
           "role": "lab",
@@ -17085,7 +17197,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
@@ -17096,7 +17208,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/error-pipeline.sh",
       "kind": "hook",
@@ -17104,7 +17217,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/error-pipeline.sh",
           "kind": "hook",
           "role": "lab",
@@ -17324,7 +17437,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:3",
@@ -17333,7 +17446,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/host-tool-doctor.sh",
       "kind": "hook",
@@ -17341,7 +17455,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/host-tool-doctor.sh",
           "kind": "hook",
           "role": "lab",
@@ -17479,7 +17593,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -17489,7 +17603,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/inject-phase-context.sh",
       "kind": "hook",
@@ -17497,7 +17612,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/inject-phase-context.sh",
           "kind": "hook",
           "role": "lab",
@@ -17598,7 +17713,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "rule_consumers:1",
@@ -17608,7 +17723,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/large-file-advisor.sh",
       "kind": "hook",
@@ -17616,7 +17732,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/large-file-advisor.sh",
           "kind": "hook",
           "role": "lab",
@@ -17719,7 +17835,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:4",
@@ -17728,7 +17844,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/memory-prefetch.sh",
       "kind": "hook",
@@ -17736,7 +17853,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/memory-prefetch.sh",
           "kind": "hook",
           "role": "lab",
@@ -18516,7 +18633,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:1",
@@ -18527,7 +18644,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/pre-compaction-flush.sh",
       "kind": "hook",
@@ -18535,7 +18653,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/pre-compaction-flush.sh",
           "kind": "hook",
           "role": "lab",
@@ -19002,7 +19120,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -19014,7 +19132,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/rate-limiter.sh",
       "kind": "hook",
@@ -19022,7 +19141,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/rate-limiter.sh",
           "kind": "hook",
           "role": "lab",
@@ -19313,7 +19432,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "rule_consumers:2",
@@ -19323,7 +19442,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/result-truncator.sh",
       "kind": "hook",
@@ -19331,7 +19451,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/result-truncator.sh",
           "kind": "hook",
           "role": "lab",
@@ -19516,7 +19636,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -19528,7 +19648,8 @@
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/scope-proportionality.sh",
       "kind": "hook",
@@ -19536,7 +19657,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/scope-proportionality.sh",
           "kind": "hook",
           "role": "lab",
@@ -19571,7 +19692,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:projected-consumer-surface"
+        "consumer_accessibility:projected-consumer-surface",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/secret-detector.sh",
       "kind": "hook",
@@ -19763,7 +19885,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -19775,7 +19897,8 @@
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/session-cleanup.sh",
       "kind": "hook",
@@ -19783,7 +19906,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/session-cleanup.sh",
           "kind": "hook",
           "role": "lab",
@@ -19847,7 +19970,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:5",
@@ -19856,7 +19979,8 @@
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/session-heartbeat.sh",
       "kind": "hook",
@@ -19864,7 +19988,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/session-heartbeat.sh",
           "kind": "hook",
           "role": "lab",
@@ -19922,7 +20046,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:2",
@@ -19934,7 +20058,8 @@
         "config_consumers:13",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/session-init.sh",
       "kind": "hook",
@@ -19942,7 +20067,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/session-init.sh",
           "kind": "hook",
           "role": "memory-lifecycle",
@@ -20001,7 +20126,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -20012,7 +20137,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/session-learning.sh",
       "kind": "hook",
@@ -20020,7 +20146,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/session-learning.sh",
           "kind": "hook",
           "role": "lab",
@@ -20084,7 +20210,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -20094,7 +20220,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/session-sanity.sh",
       "kind": "hook",
@@ -20102,7 +20229,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/session-sanity.sh",
           "kind": "hook",
           "role": "lab",
@@ -20361,7 +20488,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:5",
@@ -20370,7 +20497,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/session-wrapup-trigger.sh",
       "kind": "hook",
@@ -20378,7 +20506,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/session-wrapup-trigger.sh",
           "kind": "hook",
           "role": "lab",
@@ -21037,25 +21165,26 @@
       "weight": 3
     },
     {
-      "confidence": 0.68,
-      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:15",
+        "doc_consumers:14",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:demoted",
-        "consumer_accessibility:lifecycle-declared-consumer-candidate"
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/task-completed.sh",
       "kind": "hook",
       "lifecycle_status": "dormant",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/task-completed.sh",
           "kind": "hook",
           "role": "memory-lifecycle",
@@ -21078,7 +21207,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:5",
@@ -21087,7 +21216,8 @@
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/task-created.sh",
       "kind": "hook",
@@ -21095,7 +21225,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/task-created.sh",
           "kind": "hook",
           "role": "lab",
@@ -21188,7 +21318,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "script_consumers:5",
@@ -21197,7 +21327,8 @@
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/teammate-idle.sh",
       "kind": "hook",
@@ -21205,7 +21336,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/teammate-idle.sh",
           "kind": "hook",
           "role": "lab",
@@ -21382,7 +21513,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "hook_consumers:2",
@@ -21393,7 +21524,8 @@
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/trust-score-validator.sh",
       "kind": "hook",
@@ -21401,7 +21533,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/trust-score-validator.sh",
           "kind": "hook",
           "role": "lab",
@@ -21460,7 +21592,7 @@
     },
     {
       "confidence": 0.9,
-      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
@@ -21472,7 +21604,8 @@
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
-        "consumer_accessibility:lifecycle-declared-maintainer"
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "projected_harnesses:claude,codex"
       ],
       "id": "hook:hooks/user-prompt-capture.sh",
       "kind": "hook",
@@ -21480,7 +21613,7 @@
       "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "hooks/user-prompt-capture.sh",
           "kind": "hook",
           "role": "lab",
@@ -22110,7 +22243,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "evidence": [
         "skill_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable"
@@ -22642,7 +22775,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable"
@@ -22673,24 +22806,25 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "repo-skill-not-projectable",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:1",
         "script_consumers:7",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:16",
         "config_consumers:2",
         "role_source:usage:script-hook",
-        "consumer_accessibility:repo-skill-not-projectable"
+        "consumer_accessibility:repo-skill-not-projectable",
+        "projected_harnesses:claude,codex"
       ],
       "id": "skill:skills/cos-status/SKILL.md",
       "kind": "skill",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "repo-skill-not-projectable",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "skills/cos-status/SKILL.md",
           "kind": "skill",
           "role": "compatibility-wrapper",
@@ -23983,8 +24117,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "repo-skill-not-projectable",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:3",
@@ -23992,15 +24126,16 @@
         "test_consumers:3",
         "doc_consumers:15",
         "role_source:default",
-        "consumer_accessibility:repo-skill-not-projectable"
+        "consumer_accessibility:repo-skill-not-projectable",
+        "projected_harnesses:claude,codex"
       ],
       "id": "skill:skills/resource-governor/SKILL.md",
       "kind": "skill",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "repo-skill-not-projectable",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "skills/resource-governor/SKILL.md",
           "kind": "skill",
           "role": "project-extension",
@@ -24343,8 +24478,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "repo-skill-not-projectable",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:2",
         "hook_consumers:1",
@@ -24352,15 +24487,16 @@
         "test_consumers:10",
         "doc_consumers:16",
         "role_source:usage:script-hook",
-        "consumer_accessibility:repo-skill-not-projectable"
+        "consumer_accessibility:repo-skill-not-projectable",
+        "projected_harnesses:claude,codex"
       ],
       "id": "skill:skills/session-backlog/SKILL.md",
       "kind": "skill",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "repo-skill-not-projectable",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "skills/session-backlog/SKILL.md",
           "kind": "skill",
           "role": "compatibility-wrapper",
@@ -24878,8 +25014,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:5",
         "hook_consumers:4",
@@ -24889,15 +25025,16 @@
         "doc_consumers:67",
         "config_consumers:4",
         "role_source:heuristic:path",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/RULES-COMPACT.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/RULES-COMPACT.md",
           "kind": "rule",
           "role": "lab",
@@ -24917,8 +25054,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:3",
         "hook_consumers:2",
@@ -24928,15 +25065,16 @@
         "doc_consumers:28",
         "config_consumers:1",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/acceptance-criteria.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/acceptance-criteria.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -24956,8 +25094,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:4",
@@ -24966,15 +25104,16 @@
         "doc_consumers:23",
         "config_consumers:10",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/adaptive-bypass.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/adaptive-bypass.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -25289,8 +25428,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:3",
         "rule_consumers:10",
@@ -25299,15 +25438,16 @@
         "doc_consumers:27",
         "config_consumers:1",
         "role_source:heuristic:path",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/agent-quality.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/agent-quality.md",
           "kind": "rule",
           "role": "lab",
@@ -25882,8 +26022,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:9",
@@ -25892,15 +26032,16 @@
         "doc_consumers:32",
         "config_consumers:1",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/closed-loop-prompts.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/closed-loop-prompts.md",
           "kind": "rule",
           "role": "hook-enforced",
@@ -26066,8 +26207,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:3",
         "hook_consumers:3",
@@ -26077,15 +26218,16 @@
         "doc_consumers:36",
         "config_consumers:10",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/content-policy.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/content-policy.md",
           "kind": "rule",
           "role": "hook-enforced",
@@ -26295,8 +26437,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:2",
         "rule_consumers:4",
@@ -26305,15 +26447,16 @@
         "doc_consumers:19",
         "config_consumers:1",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/credential-management.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/credential-management.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -26447,8 +26590,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:1",
         "hook_consumers:1",
@@ -26458,15 +26601,16 @@
         "doc_consumers:22",
         "config_consumers:1",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/definition-of-done.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/definition-of-done.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -26530,9 +26674,9 @@
         "skill_consumers:7",
         "hook_consumers:5",
         "rule_consumers:2",
-        "script_consumers:24",
+        "script_consumers:25",
         "test_consumers:28",
-        "doc_consumers:49",
+        "doc_consumers:50",
         "config_consumers:4",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
@@ -26706,8 +26850,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:3",
         "hook_consumers:12",
@@ -26717,15 +26861,16 @@
         "doc_consumers:59",
         "config_consumers:9",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/error-learning.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/error-learning.md",
           "kind": "rule",
           "role": "hook-enforced",
@@ -27490,8 +27635,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:4",
@@ -27499,15 +27644,16 @@
         "test_consumers:6",
         "doc_consumers:21",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/phase-aware-agents.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/phase-aware-agents.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -28080,8 +28226,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:1",
         "hook_consumers:2",
@@ -28090,15 +28236,16 @@
         "test_consumers:5",
         "doc_consumers:11",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/responsiveness.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/responsiveness.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -28819,8 +28966,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:2",
@@ -28829,15 +28976,16 @@
         "doc_consumers:19",
         "config_consumers:1",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/token-economy.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/token-economy.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -28894,8 +29042,8 @@
       "weight": 2
     },
     {
-      "confidence": 0.45,
-      "consumer_accessibility": "so-local-only",
+      "confidence": 0.9,
+      "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "skill_consumers:6",
         "hook_consumers:3",
@@ -28905,15 +29053,16 @@
         "doc_consumers:61",
         "config_consumers:10",
         "role_source:heuristic:text",
-        "consumer_accessibility:so-local-only"
+        "consumer_accessibility:so-local-only",
+        "projected_harnesses:claude,codex"
       ],
       "id": "rule:rules/trust-score.md",
       "kind": "rule",
       "lifecycle_status": "aspirational",
-      "mapping_status": "unverified",
+      "mapping_status": "aligned",
       "represented_by": [
         {
-          "consumer_accessibility": "so-local-only",
+          "consumer_accessibility": "projected-consumer-surface",
           "id": "rules/trust-score.md",
           "kind": "rule",
           "role": "driver-specific",
@@ -29008,6 +29157,530 @@
       "weight": 2
     }
   ],
+  "consumer_projection": {
+    "hooks/agent-checkpoint.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/agent-checkpoint.sh"
+      ]
+    },
+    "hooks/auto-checkpoint.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/auto-checkpoint.sh"
+      ]
+    },
+    "hooks/auto-refine.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/auto-refine.sh"
+      ]
+    },
+    "hooks/auto-verify.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/auto-verify.sh"
+      ]
+    },
+    "hooks/blast-radius.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/blast-radius.sh"
+      ]
+    },
+    "hooks/claim-validator.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/claim-validator.sh"
+      ]
+    },
+    "hooks/clarification-gate.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/clarification-gate.sh"
+      ]
+    },
+    "hooks/clarification-interceptor.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/clarification-interceptor.sh"
+      ]
+    },
+    "hooks/completion-gate.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/completion-gate.sh"
+      ]
+    },
+    "hooks/confidentiality-enforcer.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/confidentiality-enforcer.sh"
+      ]
+    },
+    "hooks/content-policy.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/content-policy.sh"
+      ]
+    },
+    "hooks/crash-recovery.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/crash-recovery.sh"
+      ]
+    },
+    "hooks/doc-sync-detector.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/doc-sync-detector.sh"
+      ]
+    },
+    "hooks/dod-gate.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/dod-gate.sh"
+      ]
+    },
+    "hooks/error-learning.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/error-learning.sh"
+      ]
+    },
+    "hooks/error-pattern-detector.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/error-pattern-detector.sh"
+      ]
+    },
+    "hooks/error-pipeline.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/error-pipeline.sh"
+      ]
+    },
+    "hooks/host-tool-doctor.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/host-tool-doctor.sh"
+      ]
+    },
+    "hooks/inject-phase-context.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/inject-phase-context.sh"
+      ]
+    },
+    "hooks/large-file-advisor.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/large-file-advisor.sh"
+      ]
+    },
+    "hooks/memory-prefetch.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/memory-prefetch.sh"
+      ]
+    },
+    "hooks/pre-compaction-flush.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/pre-compaction-flush.sh"
+      ]
+    },
+    "hooks/rate-limiter.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/rate-limiter.sh"
+      ]
+    },
+    "hooks/result-truncator.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/result-truncator.sh"
+      ]
+    },
+    "hooks/scope-proportionality.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/scope-proportionality.sh"
+      ]
+    },
+    "hooks/secret-detector.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/secret-detector.sh"
+      ]
+    },
+    "hooks/session-cleanup.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/session-cleanup.sh"
+      ]
+    },
+    "hooks/session-heartbeat.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/session-heartbeat.sh"
+      ]
+    },
+    "hooks/session-init.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/session-init.sh"
+      ]
+    },
+    "hooks/session-learning.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/session-learning.sh"
+      ]
+    },
+    "hooks/session-sanity.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/session-sanity.sh"
+      ]
+    },
+    "hooks/session-wrapup-trigger.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/session-wrapup-trigger.sh"
+      ]
+    },
+    "hooks/task-completed.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/task-completed.sh"
+      ]
+    },
+    "hooks/task-created.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/task-created.sh"
+      ]
+    },
+    "hooks/teammate-idle.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/teammate-idle.sh"
+      ]
+    },
+    "hooks/trust-score-validator.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/trust-score-validator.sh"
+      ]
+    },
+    "hooks/user-prompt-capture.sh": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/user-prompt-capture.sh"
+      ]
+    },
+    "rules/RULES-COMPACT.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/RULES-COMPACT.md"
+      ]
+    },
+    "rules/acceptance-criteria.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/acceptance-criteria.md"
+      ]
+    },
+    "rules/adaptive-bypass.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/adaptive-bypass.md"
+      ]
+    },
+    "rules/agent-quality.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/agent-quality.md"
+      ]
+    },
+    "rules/closed-loop-prompts.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/closed-loop-prompts.md"
+      ]
+    },
+    "rules/content-policy.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/content-policy.md"
+      ]
+    },
+    "rules/credential-management.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/credential-management.md"
+      ]
+    },
+    "rules/definition-of-done.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/definition-of-done.md"
+      ]
+    },
+    "rules/error-learning.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/error-learning.md"
+      ]
+    },
+    "rules/phase-aware-agents.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/phase-aware-agents.md"
+      ]
+    },
+    "rules/responsiveness.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/responsiveness.md"
+      ]
+    },
+    "rules/token-economy.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/token-economy.md"
+      ]
+    },
+    "rules/trust-score.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/rules/cos/trust-score.md"
+      ]
+    },
+    "skills/auto-refine/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/auto-refine/SKILL.md"
+      ]
+    },
+    "skills/compose-prompt/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/compose-prompt/SKILL.md"
+      ]
+    },
+    "skills/cos-status/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/cos-status/SKILL.md"
+      ]
+    },
+    "skills/exhaustive-prompt/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/exhaustive-prompt/SKILL.md"
+      ]
+    },
+    "skills/plan-feature/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/plan-feature/SKILL.md"
+      ]
+    },
+    "skills/resource-governor/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/resource-governor/SKILL.md"
+      ]
+    },
+    "skills/session-backlog/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/session-backlog/SKILL.md"
+      ]
+    },
+    "skills/verification-before-completion/SKILL.md": {
+      "harnesses": [
+        "claude",
+        "codex"
+      ],
+      "paths": [
+        ".cognitive-os/skills/cos/verification-before-completion/SKILL.md"
+      ]
+    }
+  },
   "findings": [
     {
       "capability_id": "script:scripts/apply-efficiency-profile.sh",
@@ -29018,7 +29691,7 @@
         "skill_consumers:1",
         "test_consumers:20",
         "hook_consumers:7",
-        "doc_consumers:64",
+        "doc_consumers:65",
         "rule_consumers:4",
         "config_consumers:3",
         "script_consumers:8",
@@ -29037,7 +29710,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "rule_consumers:2",
         "config_consumers:2",
         "script_consumers:2",
@@ -29056,7 +29729,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:1",
         "script_consumers:1",
         "role_source:lifecycle",
@@ -29074,12 +29747,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:304",
+        "test_consumers:306",
         "hook_consumers:67",
-        "doc_consumers:383",
+        "doc_consumers:385",
         "rule_consumers:42",
         "config_consumers:23",
-        "script_consumers:186",
+        "script_consumers:187",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -29096,7 +29769,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-update.sh",
         "test_consumers:6",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "rule_consumers:2",
         "config_consumers:3",
         "script_consumers:1",
@@ -29118,7 +29791,7 @@
         "skill_consumers:2",
         "test_consumers:4",
         "hook_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "rule_consumers:2",
         "config_consumers:2",
         "script_consumers:3",
@@ -29136,7 +29809,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -29154,7 +29827,7 @@
         "protected_install_surface:skill-installation",
         "wrapper_for:scripts/cos-status.sh",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -29369,9 +30042,9 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:5",
+        "doc_consumers:7",
         "config_consumers:3",
-        "script_consumers:2",
+        "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:install-profile-managed"
@@ -30285,23 +30958,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "hook:hooks/task-completed.sh",
-      "evidence": [
-        "lifecycle",
-        "script_consumers:3",
-        "test_consumers:3",
-        "doc_consumers:15",
-        "config_consumers:7",
-        "role_source:lifecycle",
-        "lifecycle_state:demoted",
-        "consumer_accessibility:lifecycle-declared-consumer-candidate"
-      ],
-      "message": "Candidate/projectable surface needs consumer projection proof",
-      "next_action": "add harness projection proof before promotion",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "skill:skills/__contracts__/SKILL.md",
       "evidence": [
         "skill_consumers:1",
@@ -30434,7 +31090,7 @@
       "capability_id": "skill:skills/apply-improvements/SKILL.md",
       "evidence": [
         "skill_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable"
@@ -30651,24 +31307,8 @@
       "capability_id": "skill:skills/coordination-status/SKILL.md",
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1",
-        "role_source:usage:script-hook",
-        "consumer_accessibility:repo-skill-not-projectable"
-      ],
-      "message": "Represented locally but not proven projectable",
-      "next_action": "add package/profile projection metadata",
-      "severity": "medium",
-      "status": "unverified"
-    },
-    {
-      "capability_id": "skill:skills/cos-status/SKILL.md",
-      "evidence": [
-        "hook_consumers:1",
-        "script_consumers:7",
-        "test_consumers:6",
-        "doc_consumers:16",
-        "config_consumers:2",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable"
       ],
@@ -31195,22 +31835,6 @@
       "status": "unverified"
     },
     {
-      "capability_id": "skill:skills/resource-governor/SKILL.md",
-      "evidence": [
-        "hook_consumers:1",
-        "rule_consumers:3",
-        "script_consumers:2",
-        "test_consumers:3",
-        "doc_consumers:15",
-        "role_source:default",
-        "consumer_accessibility:repo-skill-not-projectable"
-      ],
-      "message": "Represented locally but not proven projectable",
-      "next_action": "add package/profile projection metadata",
-      "severity": "medium",
-      "status": "unverified"
-    },
-    {
       "capability_id": "skill:skills/reverse-engineer/SKILL.md",
       "evidence": [
         "script_consumers:1",
@@ -31337,22 +31961,6 @@
         "test_consumers:1",
         "doc_consumers:6",
         "role_source:default",
-        "consumer_accessibility:repo-skill-not-projectable"
-      ],
-      "message": "Represented locally but not proven projectable",
-      "next_action": "add package/profile projection metadata",
-      "severity": "medium",
-      "status": "unverified"
-    },
-    {
-      "capability_id": "skill:skills/session-backlog/SKILL.md",
-      "evidence": [
-        "skill_consumers:2",
-        "hook_consumers:1",
-        "script_consumers:2",
-        "test_consumers:10",
-        "doc_consumers:16",
-        "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable"
       ],
       "message": "Represented locally but not proven projectable",
@@ -31548,40 +32156,6 @@
       "next_action": "add package/profile projection metadata",
       "severity": "medium",
       "status": "unverified"
-    },
-    {
-      "capability_id": "doc_claim:docs/adrs/ADR-117-stash-mutation-reversibility.md:150",
-      "evidence": [
-        "terms:cluster,contracts,created,lane,lives,must,test,tests",
-        "missing_path:tests/contracts/test_stash_mutation_reversibility.py"
-      ],
-      "message": "The test lives at `tests/contracts/test_stash_mutation_reversibility.py` (to be created with R2). It MUST be wired into the `cluster` test lane.",
-      "next_action": "update stale path or demote completion claim",
-      "severity": "high",
-      "status": "stale"
-    },
-    {
-      "capability_id": "doc_claim:docs/architecture/LESSONS-LEARNED.md:168",
-      "evidence": [
-        "path:docs/incidents/2026-05-02-false-done-compounding.md",
-        "terms:adr-117,incidents,reference,reports,revert-investigation-2026-05-02",
-        "missing_path:docs/reports/revert-investigation-2026-05-02.md"
-      ],
-      "message": "**Reference:** `docs/incidents/2026-05-02-false-done-compounding.md` | `docs/reports/revert-investigation-2026-05-02.md` | ADR-117",
-      "next_action": "update stale path or demote completion claim",
-      "severity": "high",
-      "status": "stale"
-    },
-    {
-      "capability_id": "doc_claim:docs/business/master-plan-checklist.md:159",
-      "evidence": [
-        "terms:around,core,github,product,real,redesign,workflows",
-        "missing_path:.github/workflows/ci.yml"
-      ],
-      "message": "Redesign `.github/workflows/ci.yml` around the real product core.",
-      "next_action": "update stale path or demote completion claim",
-      "severity": "high",
-      "status": "stale"
     }
   ],
   "gate": {
@@ -31594,12 +32168,12 @@
       "minimum_effective_acc": 0.4
     },
     "warnings": [
-      "coverage_debt:157",
-      "acc_below_threshold:0.2441<0.5",
-      "acc_effective_below_threshold:0.2933<0.4"
+      "coverage_debt:153",
+      "acc_below_threshold:0.2663<0.5",
+      "acc_effective_below_threshold:0.3178<0.4"
     ]
   },
-  "generated_at": "2026-05-04T19:33:19Z",
+  "generated_at": "2026-05-04T19:54:52Z",
   "mapping_statuses": [
     "aligned",
     "missing",
@@ -31622,23 +32196,23 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.2441,
-    "acc_effective": 0.2933,
-    "aligned_weight": 483,
+    "acc": 0.2663,
+    "acc_effective": 0.3178,
+    "aligned_weight": 527,
     "mapping_weight_by_status": {
-      "aligned": 483,
+      "aligned": 527,
       "missing": 0,
       "overexposed": 0,
-      "partial": 207,
-      "stale": 6,
-      "unverified": 1283
+      "partial": 204,
+      "stale": 0,
+      "unverified": 1248
     },
     "missing_weight": 0,
     "overexposed_weight": 0,
-    "partial_weight": 207,
-    "stale_weight": 6,
+    "partial_weight": 204,
+    "stale_weight": 0,
     "total_weight": 1979,
-    "unverified_weight": 1283
+    "unverified_weight": 1248
   },
   "weights": {
     "doc_claim": 2,
