@@ -1,0 +1,298 @@
+generated_on: '2026-05-04'
+scope: top-level hooks/*.sh absent from .claude/settings.json after ADR-144 projection
+contract: Every unregistered top-level hook must appear here with status, rationale,
+  and next_action.
+entries:
+- path: hooks/adr-detector.sh
+  status: future
+  rationale: ADR-reference prompt detection is planned for UserPromptSubmit; no default
+    ROI/latency proof yet.
+  next_action: Keep unregistered until trigger precision and latency are proven.
+- path: hooks/agent-bus-monitor.sh
+  status: conditional_opt_in
+  rationale: Requires AGENT_BUS_ENABLED=true and Valkey/executor mode; default sessions
+    use lighter file/runtime state.
+  next_action: Wire only in executor/Valkey profile.
+- path: hooks/agent-output-verifier.sh
+  status: candidate_promote
+  rationale: Useful PostToolUse Agent claim verifier, but overlaps completion-gate/post-agent-verify
+    and needs false-positive proof.
+  next_action: Evaluate alongside completion-gate before default projection.
+- path: hooks/agent-quota-advisor.sh
+  status: conditional_opt_in
+  rationale: ADR-056 L1 quota advisory only matters when quota-aware dispatch is enabled.
+  next_action: Wire in quota-aware profile only.
+- path: hooks/agent-quota-redirect.sh
+  status: conditional_opt_in
+  rationale: ADR-056 L2 blocks native Agent launches under quota pressure.
+  next_action: Keep opt-in because it changes execution routing.
+- path: hooks/agent-qwen-bridge.sh
+  status: conditional_opt_in
+  rationale: ADR-056 L3 transparent Qwen bridge is per-skill opt-in.
+  next_action: Wire only after per-skill routing proof.
+- path: hooks/agnix-lint.sh
+  status: deprecated
+  rationale: Superseded by architecture/compliance validation paths; agnix is not
+    a default dependency.
+  next_action: Archive after confirming no package still references it.
+- path: hooks/aguara-scan.sh
+  status: conditional_opt_in
+  rationale: Requires Aguara scanner availability and explicit security profile.
+  next_action: Wire only when AGUARA_ENABLED/security extension is active.
+- path: hooks/architecture-compliance.sh
+  status: future
+  rationale: Project architecture checker for Agent output; not yet calibrated for
+    default false positives.
+  next_action: Promote after tests prove low-noise findings.
+- path: hooks/background-agent-reminder.sh
+  status: future
+  rationale: UserPromptSubmit reminder for pending background agents; not yet proven
+    against native/session backlog flows.
+  next_action: Revisit with background-agent UX work.
+- path: hooks/clarification-interceptor.sh
+  status: deprecated
+  rationale: Split-and-resume clarification behavior moved into clarification-gate/orchestrator
+    flow.
+  next_action: Archive after reference audit.
+- path: hooks/code-review-on-commit.sh
+  status: git_or_manual
+  rationale: Designed as a Git pre-commit hook, not a Claude hook.
+  next_action: Keep out of Claude settings; install via git hook if adopted.
+- path: hooks/cognitive-os-health.sh
+  status: manual_trigger
+  rationale: Full OS health report is an operator/status command, not a per-session
+    default.
+  next_action: Expose via /cos-status or doctor, not SessionStart.
+- path: hooks/completeness-check-llm.sh
+  status: deprecated
+  rationale: LLM variant superseded by registered rule-based completeness-check for
+    default hot path.
+  next_action: Archive after ADR-022 migration cleanup.
+- path: hooks/concurrent-write-guard-codex-proxy.sh
+  status: projected_elsewhere
+  rationale: Codex-only UserPromptSubmit proxy; intentionally absent from Claude settings
+    and present in .codex/hooks.json.
+  next_action: Keep Codex projection; do not add to Claude settings.
+- path: hooks/confidence-gate-llm.sh
+  status: deprecated
+  rationale: LLM variant superseded by registered rule-based confidence gate.
+  next_action: Archive after ADR-022 migration cleanup.
+- path: hooks/context-diet.sh
+  status: future
+  rationale: Task-aware context selection advisory overlaps compact rules/stage-2
+    expansion.
+  next_action: Promote only after measurable token savings and precision proof.
+- path: hooks/context-watchdog.sh
+  status: demoted
+  rationale: Canonical registry marks default_projection=false; global PostToolUse
+    context warnings add hot-path overhead.
+  next_action: Keep opt-in/full-profile until lower-noise implementation exists.
+- path: hooks/contextual-rule-loader.sh
+  status: future
+  rationale: Dynamic full-rule injection needs prompt/event support and bounded context
+    guarantees.
+  next_action: Implement as stage-2 loader before projection.
+- path: hooks/conversation-capture.sh
+  status: future
+  rationale: Transcript capture has privacy/storage implications and overlaps Engram/session
+    summaries.
+  next_action: Keep unregistered pending privacy and retention contract.
+- path: hooks/cos-executor-heartbeat.sh
+  status: deprecated
+  rationale: Compatibility alias for cos-executor-daemon-launcher; registering both
+    duplicates daemon checks.
+  next_action: Archive alias after compatibility window.
+- path: hooks/dry-run-preview.sh
+  status: future
+  rationale: DRY_RUN agent preview is useful but not a default session guard.
+  next_action: Wire only in dry-run/sandbox workflows.
+- path: hooks/ecosystem-check.sh
+  status: future
+  rationale: Weekly ecosystem reevaluation is broad and better suited to scheduled/manual
+    audits.
+  next_action: Keep out of SessionStart default.
+- path: hooks/engram-auto-import.sh
+  status: future
+  rationale: Automatic memory import can mutate context/session state at startup.
+  next_action: Wait for Engram import conflict policy.
+- path: hooks/engram-auto-sync.sh
+  status: future
+  rationale: Automatic memory export/commit at Stop has git/privacy side effects.
+  next_action: Wait for Engram sync policy and explicit opt-in.
+- path: hooks/epic-task-detector.sh
+  status: future
+  rationale: Heuristic large-task detector overlaps blast-radius/adaptive-bypass and
+    needs precision proof.
+  next_action: Evaluate as advisory before default.
+- path: hooks/global-verify.sh
+  status: manual_trigger
+  rationale: Targeted verification runner is intentionally invoked by explicit verification
+    flows, not every Agent completion.
+  next_action: Keep manual/conditional; avoid test runs inside hooks.
+- path: hooks/guardrails-validator.sh
+  status: conditional_opt_in
+  rationale: Requires guardrails integration and GUARDRAILS_ENABLED.
+  next_action: Wire only in guardrails/security extension.
+- path: hooks/idle-service-cleanup.sh
+  status: manual_trigger
+  rationale: Service cleanup is cron/operator maintenance, not a Claude event hook.
+  next_action: Keep manual or scheduled automation.
+- path: hooks/infra-intent-detector.sh
+  status: internal_helper
+  rationale: Infrastructure intent is consumed by agent-prelaunch; standalone registration
+    would duplicate prompt scanning.
+  next_action: Keep as helper unless prelaunch stops calling it.
+- path: hooks/jupyter-sandbox.sh
+  status: conditional_opt_in
+  rationale: Only applies when JUPYTER_SANDBOX=true and Jupyter execution is available.
+  next_action: Wire in Jupyter profile only.
+- path: hooks/memu-sync.sh
+  status: future
+  rationale: MemU sync is optional memory backend work and overlaps Engram lifecycle.
+  next_action: Keep unregistered pending memory backend decision.
+- path: hooks/metrics-calibrator-trigger.sh
+  status: future
+  rationale: Metrics calibration is periodic maintainer work, not a default hook.
+  next_action: Use scheduled/manual calibration.
+- path: hooks/metrics-rotation.sh
+  status: manual_trigger
+  rationale: Metrics rotation should run via cron/operator maintenance to avoid startup
+    I/O.
+  next_action: Keep scheduled/manual.
+- path: hooks/mlflow-sync.sh
+  status: conditional_opt_in
+  rationale: Requires MLflow package/service and observability profile.
+  next_action: Wire only when MLflow is enabled.
+- path: hooks/notify.sh
+  status: manual_trigger
+  rationale: Generic notification wrapper is called by other flows; standalone registration
+    would be noisy.
+  next_action: Keep as callable helper.
+- path: hooks/orchestrator-mode-detect.sh
+  status: internal_helper
+  rationale: Mode detection is sourced/used by other hooks and docs; standalone SessionStart
+    output is redundant.
+  next_action: Keep helper/manual.
+- path: hooks/package-sync.sh
+  status: manual_trigger
+  rationale: Package dependency sync mutates repo/package state and belongs in CI/developer
+    command.
+  next_action: Keep manual or post-merge automation.
+- path: hooks/paperclip-sync.sh
+  status: conditional_opt_in
+  rationale: Requires Paperclip service and governance-dashboard profile.
+  next_action: Wire only when Paperclip is enabled.
+- path: hooks/parry-scan.sh
+  status: conditional_opt_in
+  rationale: Requires Parry scanner installation/security profile.
+  next_action: Wire only in security extension.
+- path: hooks/pattern-check.sh
+  status: future
+  rationale: Critical-pattern scanning belongs to explicit pattern audit until latency/noise
+    are proven.
+  next_action: Keep manual via detection skill.
+- path: hooks/pre-cleanup-snapshot.sh
+  status: manual_trigger
+  rationale: Cleanup snapshots are admin/refactor workflow actions, not global Agent
+    preflight.
+  next_action: Invoke from cleanup skills only.
+- path: hooks/pre-commit-gate.sh
+  status: git_or_manual
+  rationale: Git pre-commit gate is installed through git hooks, not Claude settings.
+  next_action: Keep out of Claude settings.
+- path: hooks/rate-limit-protection.sh
+  status: deprecated
+  rationale: Backward-compat shim for token-budget-monitor.
+  next_action: Archive after external caller compatibility window.
+- path: hooks/reaper-heartbeat.sh
+  status: deprecated
+  rationale: Compatibility alias for reaper-daemon-launcher; registering both duplicates
+    scheduling.
+  next_action: Archive alias after compatibility window.
+- path: hooks/recap-sync.sh
+  status: future
+  rationale: Native /recap integration should stay opt-in until provider behavior
+    is stable.
+  next_action: Revisit with recap provider adapter work.
+- path: hooks/registration-check.sh
+  status: manual_trigger
+  rationale: Registration checks are CI/manual audits; running before Agent would
+    be noisy.
+  next_action: Keep manual; this classification test covers default drift.
+- path: hooks/release-guard.sh
+  status: candidate_promote
+  rationale: Manual release blocking is valuable but currently not in canonical projection.
+  next_action: Decide whether to register PreToolUse Bash or move fully into cos release/pre-commit
+    policy.
+- path: hooks/resource-check.sh
+  status: candidate_promote
+  rationale: Budget/resource preflight could protect Agent launches but may overlap
+    token-budget-monitor/rate-limiter.
+  next_action: Evaluate as replacement/merge candidate before projection.
+- path: hooks/semgrep-scan.sh
+  status: conditional_opt_in
+  rationale: Requires Semgrep and security scan workflow; default hook would add heavy
+    scans.
+  next_action: Wire only in semgrep/security profile.
+- path: hooks/session-hygiene.sh
+  status: future
+  rationale: Stop hygiene can mutate/clean state and needs scoped policy after session
+    cleanup/reaper work.
+  next_action: Keep out of default Stop until cleanup policy is unified.
+- path: hooks/session-knowledge-extractor.sh
+  status: future
+  rationale: Knowledge extraction overlaps Engram/passive capture and has privacy/context
+    risks.
+  next_action: Revisit after memory lifecycle consolidation.
+- path: hooks/session-state-save.sh
+  status: future
+  rationale: Session state checkpoint overlaps current session lifecycle/backlog files.
+  next_action: Consolidate with session lifecycle before projection.
+- path: hooks/singularity-check.sh
+  status: conditional_opt_in
+  rationale: Explicitly disabled unless SINGULARITY_CHECK=true.
+  next_action: Keep opt-in.
+- path: hooks/sync-to-repo.sh
+  status: manual_trigger
+  rationale: Syncing .cognitive-os to another repo has git side effects and requires
+    COGNITIVE_OS_REPO_PATH.
+  next_action: Keep manual/explicit environment opt-in.
+- path: hooks/task-bridge-notify.sh
+  status: future
+  rationale: Task bridge additionalContext overlaps task-panel-sync/work-queue and
+    needs native UI contract.
+  next_action: Pick one task-state projection path before registering.
+- path: hooks/task-completed.sh
+  status: demoted
+  rationale: Lifecycle manifest marks TaskCompleted default_projection=false.
+  next_action: Keep opt-in task systems only.
+- path: hooks/task-panel-sync.sh
+  status: future
+  rationale: Task panel sync overlaps task-bridge-notify and work-queue-sync.
+  next_action: Consolidate task UI projection before registering.
+- path: hooks/task-recorder.sh
+  status: future
+  rationale: Task history recording at Stop needs session/task lifecycle consolidation.
+  next_action: Revisit with task lifecycle ledger work.
+- path: hooks/tool-discovery-trigger.sh
+  status: future
+  rationale: Tool discovery is periodic maintainer research, not a startup default.
+  next_action: Run scheduled/manual discovery.
+- path: hooks/tool-loop-detector.sh
+  status: candidate_promote
+  rationale: Loop detection is potentially useful but needs integration with current
+    tool sequence/ACI capture.
+  next_action: Evaluate merging with tool-sequence-capture before projection.
+- path: hooks/usage-health-check.sh
+  status: future
+  rationale: Daily health check overlaps host-tool-doctor/cos-status and can be scheduled.
+  next_action: Keep scheduled/manual until status surfaces consolidate.
+- path: hooks/valkey-ensure.sh
+  status: conditional_opt_in
+  rationale: Only needed when ORCHESTRATOR_MODE=executor and Valkey is required.
+  next_action: Wire in executor profile only.
+- path: hooks/worktree-submodule-fix.sh
+  status: manual_trigger
+  rationale: Worktree submodule repair mutates git metadata and should be explicit
+    after worktree operations.
+  next_action: Keep manual/admin-triggered.
