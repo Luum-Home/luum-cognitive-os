@@ -14,7 +14,8 @@ tags: [infrastructure, docker, deployment, portability, cloud-flows, cross-os]
 
 ## Status
 
-**Accepted** as the containerised deployment shape for COS cloud worker surfaces. Local harness installation (pip, direct clone) is unchanged.
+**Accepted — Implemented** as the containerised deployment shape for COS cloud
+worker surfaces. Local harness installation (pip, direct clone) is unchanged.
 
 ## Context
 
@@ -143,5 +144,27 @@ Windows-native Docker (without WSL2) is not a supported target. The invariant is
 
 ```bash
 python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/audit/test_adr_140_cos_worker_compose.py -q
+bash scripts/cos-cloud-worker-bootstrap.sh config
+bash scripts/cos-cloud-worker-bootstrap.sh self-test
 ```
 
+The `self-test` command requires Docker. It builds/runs the `cos-worker`
+service, executes a harmless hook smoke through `hooks/git-commit-scope-guard.sh`,
+and writes `.cognitive-os/runtime/agent-audit-trail.jsonl` in the bind-mounted
+workspace.
+
+## Implementation Evidence
+
+- Implemented in `docker/cos-worker/docker-compose.yml`: the `cos-worker`
+  service, account-agnostic provider key environment names, workspace bind
+  mount, and optional `cos-engram-proxy` profile.
+- Implemented in `docker/cos-worker/Dockerfile`: `python:3.11-slim` worker image
+  with Bash/Git and no shell-profile dependency.
+- Implemented in `docker/cos-worker/entrypoint.sh`: self-test boot path that
+  runs a hook smoke and writes `agent-audit-trail.jsonl`.
+- Implemented in `scripts/cos-cloud-worker-bootstrap.sh`: thin wrapper around
+  Docker Compose for `config`, `self-test`, `up`, and `down`.
+- Reflected in `docs/architecture/bootstrap-portability.md`: the Compose worker
+  is the container-surface portability proof for ADR-140.
+- Validated by `tests/audit/test_adr_140_cos_worker_compose.py`.
