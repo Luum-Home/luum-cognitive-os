@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-03T05:17:28+00:00'
+generated_at: '2026-05-04T15:14:59+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/aci-observation-capture.sh
@@ -13,6 +13,18 @@ primitives:
   - .claude/settings.json
   - hooks/aci-observation-capture.sh
   sha256: 23d26a5190f6eb6d2eed3465b51f77407d05f7c4c27e7d401cb45196840afff8
+- id: hooks/adaptive-bypass.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/adaptive-bypass.sh
+  sha256: dd9a7c27264d34f0cbfc8fd3a417fa3fa906829e6cb5ec338e997ef83434dd9c
 - id: hooks/adr-section-validator.sh
   kind: hook
   owner_adr: ADR-126
@@ -79,6 +91,18 @@ primitives:
   - .claude/settings.json
   - hooks/aspirational-audit-weekly.sh
   sha256: a619862add820583b5a9aec3d074e35a6c531e6c8a3cbf0075d9733f1e49f162
+- id: hooks/assumption-tracker.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/assumption-tracker.sh
+  sha256: c3d30a40cdbea4983f529acd61e5935fb3542ac88d17d32c87190408b4555c70
 - id: hooks/audit-id-enricher.sh
   kind: hook
   owner_adr: ADR-126
@@ -134,6 +158,18 @@ primitives:
   - .claude/settings.json
   - hooks/auto-rollback-trigger.sh
   sha256: 735d880f9c5406af0647565f068caceee7431718ebcc6eff665b5702b38d06c0
+- id: hooks/auto-skill-generator.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/auto-skill-generator.sh
+  sha256: b1b5fe84c004d49eb1b19cff9bd25e36e27808beaaf37fb27b7ab596116b213b
 - id: hooks/auto-verify.sh
   kind: hook
   owner_adr: ADR-126
@@ -233,6 +269,18 @@ primitives:
   - .claude/settings.json
   - hooks/confidentiality-enforcer.sh
   sha256: 47ad177aa33d366cd8dd77a5ee3bb49ff057b16ba799dd63c6a89ac99ac4df14
+- id: hooks/consequence-evaluator.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/consequence-evaluator.sh
+  sha256: 431a4431ae6f43fd20afdd0ea1c413273599ec6b37c4a14947df056a98c3b90d
 - id: hooks/content-policy.sh
   kind: hook
   owner_adr: ADR-126
@@ -749,6 +797,18 @@ primitives:
   - .claude/settings.json
   - hooks/project-docs-convention.sh
   sha256: 76179e5e2e254dca2ec12ca265f37adcb55aed59a898b3447c959830ccd4c8ae
+- id: hooks/prompt-quality-llm.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/prompt-quality-llm.sh
+  sha256: 0e40930e1176c7fb69535b8d2d3fbfa53aabd61520517d972070821a70388512
 - id: hooks/query-tailored-context-inject.sh
   kind: hook
   owner_adr: ADR-126
@@ -826,6 +886,19 @@ primitives:
   - .claude/settings.json
   - hooks/reinvention-check.sh
   sha256: 8f47f4a39cc254dfb758c8c39c31c4622a0f37f6c319650ca763ee579e5c417c
+- id: hooks/release-guard.sh
+  kind: hook
+  owner_adr: ADR-041
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - cognitive-os.yaml
+  - hooks/release-guard.sh
+  sha256: 8b5d609d392892ba29f731ff74dcc8187a13f1423ca38729a6352ff69b190f2c
 - id: hooks/result-truncator.sh
   kind: hook
   owner_adr: ADR-126
@@ -859,6 +932,18 @@ primitives:
   - .claude/settings.json
   - hooks/rule-frontmatter-validator.sh
   sha256: 11f028099d224f3b25602e2cc61874045d24b9b1faf29ddc0bb0f80352b1c275
+- id: hooks/scope-creep-detector.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/scope-creep-detector.sh
+  sha256: fffff1d0131b040832f127b7425f57da6cb587dc6981298ba19e66d381a94e9e
 - id: hooks/scope-marker-portability-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -870,6 +955,18 @@ primitives:
   - .claude/settings.json
   - hooks/scope-marker-portability-gate.sh
   sha256: db936130703e0299115e1e7df0a604d026a54cdf35c46135865463406af96f71
+- id: hooks/scope-proportionality.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/scope-proportionality.sh
+  sha256: 19b2a10c29a9faf5a032fdd98afc84617c141a9521f2a4ac3617c376b3a20a42
 - id: hooks/secret-detector.sh
   kind: hook
   owner_adr: ADR-126
@@ -1101,6 +1198,19 @@ primitives:
   - .claude/settings.json
   - hooks/skill-invocation-logger.sh
   sha256: 683eb1088fa84abccd0f327c90f8394c61393c07851283d84a6f6bd7d0843251
+- id: hooks/skill-router-bash-gate.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - cognitive-os.yaml
+  - hooks/skill-router-bash-gate.sh
+  sha256: f6c35540681746316238a4fc1868e85bbc7317e1c59c18a7cf456e9639ce256c
 - id: hooks/skill-synthesis-scanner.sh
   kind: hook
   owner_adr: ADR-126
@@ -1221,6 +1331,18 @@ primitives:
   - .claude/settings.json
   - hooks/teammate-idle.sh
   sha256: ee9fdd01c65dc2e87b92e9cae85c6f124fe2cb1f4fbf5d236e77fd0adce87eed
+- id: hooks/token-budget-monitor.sh
+  kind: hook
+  owner_adr: ADR-144
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: lab
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - cognitive-os.yaml
+  - hooks/token-budget-monitor.sh
+  sha256: a5b1df1ad5952861b46fbe69d00b115468589c333a2d8d440b901ccfb8c96105
 - id: hooks/tool-sequence-capture.sh
   kind: hook
   owner_adr: ADR-126
@@ -1337,6 +1459,19 @@ primitives:
   - git-hooks/pre-push
   - docs/adrs/ADR-131-local-ci-migration.md
   sha256: 22ba5c90b38652f1307919ec2b93d664b4787bc96b36067dfac7b3cfd13c3d63
+- id: scripts/cos-closure-discipline-audit
+  kind: script
+  owner_adr: ADR-143
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-closure-discipline-audit
+  - scripts/cos_closure_discipline_audit.py
+  - scripts/cos-ci-local.sh
+  - docs/adrs/ADR-143-closure-discipline-gate.md
+  sha256: c1125b42e7b48f9db04f1850a7a76113a89fe876a64b6c4af6a7020b9df677fd
 - id: scripts/cos-cross-instance-drill
   kind: script
   owner_adr: ADR-136
@@ -1437,6 +1572,20 @@ primitives:
   - lib/cross_instance_learning.py
   - manifests/federation-triggers.yaml
   sha256: d7fcec9d8752be217e27b07f6b80081cad7f6d823fa1f5930a477971430017f0
+- id: scripts/cos-flow-register.sh
+  kind: script
+  owner_adr: ADR-138
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-flow-register.sh
+  - scripts/cos_flow_register.py
+  - manifests/flow-contract-schema.yaml
+  - skills/vuln-remediation-flow/flow_contract.yaml
+  - docs/adrs/ADR-138-flow-contract-schema.md
+  sha256: 3b815aef25f4e40e088a1e23a7a7242e5d865d85d36f38b6b0e55383777289fa
 - id: scripts/cos-import-consumer-evidence
   kind: script
   owner_adr: ADR-136
