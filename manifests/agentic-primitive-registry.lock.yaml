@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-04T15:31:53+00:00'
+generated_at: '2026-05-04T15:42:42+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/aci-observation-capture.sh
@@ -1740,11 +1740,11 @@ primitives:
 - id: scripts/cos_primitive_harvester
   kind: script
   owner_adr: ADR-120
-  lifecycle_state: sandbox
-  maturity: observe
-  distribution: lab
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
   runtime_projection: false
   projection_targets:
   - scripts/cos_primitive_harvester.py
   - docs/architecture/primitive-harvester.md
-  sha256: abd4f4a40788b95bb0b5631e5960bbcf0ce510a32906ac49e2d45824bd851348
+  sha256: b125a5263017d98653589db8fc0153668bb3f7164479b3f479a187f588c9b51a
