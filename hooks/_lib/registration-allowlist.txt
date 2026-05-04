@@ -197,3 +197,7 @@ validation-lock-cleanup.sh
 lethal-trifecta-gate.sh
 aci-observation-capture.sh
 plan-claim-validator.sh
+
+# ADR-144 classification manifest: Codex-only proxy is intentionally absent
+# from .claude/settings.json and projected through .codex/hooks.json.
+concurrent-write-guard-codex-proxy.sh
