@@ -174,3 +174,14 @@ in the audit trail.
 - Related: ADR-128 (data-layer integrity), ADR-117 (stash mutation
   reversibility — same family of "no silent destructive ops").
 - Companion log: `.cognitive-os/metrics/worktree-removals.jsonl`.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

@@ -49,6 +49,9 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/reports/next-session-plan-dormant-to-real.md",        # session artifact
     "docs/architecture/primitive-coverage-spike-plan-2026-04.md",  # historical architecture spike report
     "docs/architecture/startup-circuit-breaker-plan.md",  # ADR-101 design companion
+    "docs/architecture/boring-reliability-control-plane.md",  # control-plane architecture, not an active plan
+    "docs/architecture/dx-cloud-flow-bootstrap-plan.md",  # architecture bootstrap plan linked from docs index
+    "docs/architecture/expansion-hardening-plan.md",  # expansion-hardening architecture plan linked from ADR work
     "docs/architecture/plans/",  # runtime contract plan docs are linked from product entrypoints
     "docs/reports/pending-plans-audit-2026-04-30.md",  # audit report, not active plan
     # docs/archive/plans/ contains files other than token-optimization-masterplan.md
