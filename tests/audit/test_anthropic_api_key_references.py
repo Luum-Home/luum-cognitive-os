@@ -45,9 +45,9 @@ class AllowedReference:
 
 ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     # Explicit CI direct API: GitHub Actions have no local logged-in Claude Code account.
-    AllowedReference(".github/workflows/claude-interactive.yml", "ci_explicit", "Claude Code action secret"),
-    AllowedReference(".github/workflows/claude-issue-triage.yml", "ci_explicit", "Claude Code action secret"),
-    AllowedReference(".github/workflows/claude-pr-review.yml", "ci_explicit", "Claude Code action secret"),
+    AllowedReference(".github/workflows/claude-interactive.yml.disabled", "ci_explicit", "Claude Code action secret"),
+    AllowedReference(".github/workflows/claude-issue-triage.yml.disabled", "ci_explicit", "Claude Code action secret"),
+    AllowedReference(".github/workflows/claude-pr-review.yml.disabled", "ci_explicit", "Claude Code action secret"),
     AllowedReference("docs/automation.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
     AllowedReference("workflows/README.md", "ci_explicit_docs", "Documents CI-only Claude action secret"),
 

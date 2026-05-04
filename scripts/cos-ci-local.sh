@@ -282,6 +282,20 @@ check_self_improvement_discipline_gate() {
   fi
 }
 
+
+check_closure_discipline_audit() {
+  command -v python3 >/dev/null 2>&1 || {
+    _skip "closure discipline audit" "python3 not installed"
+    return 0
+  }
+  if [ -x "$REPO_ROOT/scripts/cos-closure-discipline-audit" ]; then
+    "$REPO_ROOT/scripts/cos-closure-discipline-audit" --fail-on-findings --json >/dev/null
+  else
+    _skip "closure discipline audit" "scripts/cos-closure-discipline-audit not found"
+    return 0
+  fi
+}
+
 check_adr_tier_claim_audit() {
   command -v python3 >/dev/null 2>&1 || {
     _skip "ADR tier claim audit" "python3 not installed"
@@ -418,6 +432,7 @@ run_quick() {
   _step "lab-first promotion gate"            check_lab_first_gate
   _step "self-improvement discipline gate"    check_self_improvement_discipline_gate
   _step "ADR tier claim audit"                check_adr_tier_claim_audit
+  _step "closure discipline audit"            check_closure_discipline_audit
   _step ".gitignore sanity"                   check_gitignore_sanity
 }
 
