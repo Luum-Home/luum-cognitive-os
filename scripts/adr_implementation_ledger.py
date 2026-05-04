@@ -41,6 +41,7 @@ class AdrRecord:
     reason: str
     evidence: list[str] = field(default_factory=list)
     open_questions: list[str] = field(default_factory=list)
+    missing_required_paths: list[str] = field(default_factory=list)
     closure_class: str = ""
     closure_reason: str = ""
 
@@ -95,6 +96,15 @@ def extract_status(text: str) -> str:
             if raw:
                 return raw[:160]
     return ""
+
+
+def extract_frontmatter(text: str) -> dict[str, Any]:
+    """Return YAML frontmatter when present."""
+    match = re.match(r"\A---\s*\n([\s\S]*?)\n---\s*(?:\n|\Z)", text)
+    if not match:
+        return {}
+    payload = yaml.safe_load(match.group(1)) or {}
+    return payload if isinstance(payload, dict) else {}
 
 
 def load_closure_metadata(project_dir: Path, metadata_path: Path | None = None) -> dict[str, dict[str, str]]:
@@ -163,6 +173,70 @@ def extract_open_questions(text: str) -> list[str]:
     return list(dict.fromkeys(questions))[:10]
 
 
+PATH_PREFIXES = ("docs/", "hooks/", "scripts/", "skills/", "rules/", "lib/", "tests/", "manifests/", "docker/", "requirements/")
+
+
+def normalized_repo_path(token: str) -> str | None:
+    """Return a safe repository-relative path from a prose token."""
+    candidate = token.strip().split()[0].strip("'\".,:;)")
+    if candidate.startswith("./"):
+        candidate = candidate[2:]
+    if candidate.startswith(PATH_PREFIXES) and ".." not in Path(candidate).parts:
+        return candidate
+    return None
+
+
+def extract_declared_implementation_paths(text: str) -> list[str]:
+    """Extract implementation_files from frontmatter as falsifiable path claims."""
+    raw = extract_frontmatter(text).get("implementation_files", [])
+    if not isinstance(raw, list):
+        return []
+    paths: list[str] = []
+    for value in raw:
+        if not isinstance(value, str):
+            continue
+        path = normalized_repo_path(value)
+        if path:
+            paths.append(path)
+    return list(dict.fromkeys(paths))
+
+
+def extract_section(text: str, heading: str) -> str:
+    section = re.search(rf"^##\s+{re.escape(heading)}\s*$([\s\S]*?)(?:^##\s+|\Z)", text, re.MULTILINE | re.IGNORECASE)
+    return section.group(1) if section else ""
+
+
+def extract_acceptance_required_paths(text: str) -> list[str]:
+    """Extract repo paths named by Acceptance Criteria.
+
+    Backticked repo paths in acceptance criteria are treated as required. This
+    keeps the ledger from marking accepted ADRs implemented while their named
+    helper/script/doc is absent.
+    """
+    section = extract_section(text, "Acceptance Criteria")
+    if not section:
+        return []
+    paths: list[str] = []
+    for line in section.splitlines():
+        if "optional" in line.lower():
+            continue
+        for token in re.findall(r"`([^`]+)`", line):
+            path = normalized_repo_path(token)
+            if path:
+                paths.append(path)
+    return list(dict.fromkeys(paths))
+
+
+def missing_required_paths_for_adr(text: str, project_dir: Path) -> list[str]:
+    required_paths = extract_declared_implementation_paths(text)
+    required_paths.extend(extract_acceptance_required_paths(text))
+    missing: list[str] = []
+    for path in dict.fromkeys(required_paths):
+        if not (project_dir / path).exists():
+            missing.append(path)
+    return missing
+
+
 def extract_explicit_evidence(text: str, project_dir: Path) -> list[str]:
     evidence: list[str] = []
     for line in text.splitlines():
@@ -179,10 +253,23 @@ def git_evidence_for_adr(project_dir: Path, adr_id: str) -> list[str]:
     return [f"commit: {line}" for line in run_git(project_dir, ["log", "--all", "--grep", adr_id, "--oneline", "--", "."])[:5]]
 
 
-def implementation_state(decision_state: str, status: str, text: str, evidence: list[str], open_questions: list[str]) -> tuple[str, str]:
+def implementation_state(
+    decision_state: str,
+    status: str,
+    text: str,
+    evidence: list[str],
+    open_questions: list[str],
+    missing_required_paths: list[str],
+) -> tuple[str, str]:
     status_text = f"{status}\n{text}"
     if decision_state in {"superseded", "reserved"}:
         return decision_state, f"ADR decision state is {decision_state}"
+    if missing_required_paths:
+        sample = ", ".join(missing_required_paths[:3])
+        suffix = "" if len(missing_required_paths) <= 3 else f", +{len(missing_required_paths) - 3} more"
+        if evidence:
+            return "partial", f"Required implementation paths are missing: {sample}{suffix}"
+        return "pending", f"Required implementation paths are missing: {sample}{suffix}"
     if BLOCKED_TERMS.search(status_text) and open_questions:
         return "blocked", "Open questions or dependency language indicate blocked work"
     if PARTIAL_TERMS.search(status_text) and open_questions:
@@ -231,6 +318,7 @@ def apply_closure_metadata(record: AdrRecord, metadata: dict[str, dict[str, str]
         reason,
         list(dict.fromkeys(evidence))[:15],
         record.open_questions,
+        record.missing_required_paths,
         closure_class,
         closure_reason,
     )
@@ -248,11 +336,22 @@ def scan_adrs(project_dir: Path) -> list[AdrRecord]:
         status = extract_status(text)
         decision_state = decision_state_from_status(status)
         open_questions = extract_open_questions(text)
+        missing_required_paths = missing_required_paths_for_adr(text, project_dir)
         evidence = extract_explicit_evidence(text, project_dir)
         evidence.extend(git_evidence_for_adr(project_dir, adr_id))
         evidence = list(dict.fromkeys(evidence))[:15]
-        impl_state, reason = implementation_state(decision_state, status, text, evidence, open_questions)
-        record = AdrRecord(adr_id, extract_heading(text), path.relative_to(project_dir).as_posix(), decision_state, impl_state, reason, evidence, open_questions)
+        impl_state, reason = implementation_state(decision_state, status, text, evidence, open_questions, missing_required_paths)
+        record = AdrRecord(
+            adr_id,
+            extract_heading(text),
+            path.relative_to(project_dir).as_posix(),
+            decision_state,
+            impl_state,
+            reason,
+            evidence,
+            open_questions,
+            missing_required_paths,
+        )
         records.append(apply_closure_metadata(record, closure_metadata))
     return records
 
@@ -267,6 +366,7 @@ def record_to_dict(record: AdrRecord) -> dict[str, Any]:
         "reason": record.reason,
         "evidence": record.evidence,
         "open_questions": record.open_questions,
+        "missing_required_paths": record.missing_required_paths,
         "closure_class": record.closure_class,
         "closure_reason": record.closure_reason,
     }
@@ -300,16 +400,17 @@ def render_markdown(project_dir: Path, session_id: str, now: datetime, records: 
         "",
         "## ADRs Needing Attention",
         "",
-        "| ADR | Implementation | Reason | Open questions | Evidence |",
-        "|-----|----------------|--------|----------------|----------|",
+        "| ADR | Implementation | Reason | Missing required paths | Open questions | Evidence |",
+        "|-----|----------------|--------|------------------------|----------------|----------|",
     ]
     attention = [record for record in records if record.implementation_state in ATTENTION_STATES]
     if not attention:
-        lines.append("| none | implemented/superseded only | - | - | - |")
+        lines.append("| none | implemented/superseded only | - | - | - | - |")
     for record in attention[:100]:
+        missing = "; ".join(record.missing_required_paths[:3]) if record.missing_required_paths else "-"
         questions = "; ".join(record.open_questions[:2]) if record.open_questions else "-"
         evidence = "; ".join(record.evidence[:2]) if record.evidence else "-"
-        lines.append(f"| {md_escape(record.adr_id + ' — ' + record.title)} | {md_escape(record.implementation_state)} | {md_escape(record.reason)} | {md_escape(questions)} | {md_escape(evidence)} |")
+        lines.append(f"| {md_escape(record.adr_id + ' — ' + record.title)} | {md_escape(record.implementation_state)} | {md_escape(record.reason)} | {md_escape(missing)} | {md_escape(questions)} | {md_escape(evidence)} |")
     if len(attention) > 100:
         lines.append(f"_and {len(attention) - 100} more ADRs not shown_")
     lines.append("")
