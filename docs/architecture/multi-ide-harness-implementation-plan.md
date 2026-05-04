@@ -115,3 +115,7 @@ Deliverables:
 2. A harness marked `planned` never contributes implemented projection proof in ACC.
 3. Account-dependent runtime tests are optional/manual and cannot block local CI by default.
 4. Every promotion updates `manifests/harness-projection.yaml`, this plan, ADRs/manual tests, and ACC reports.
+
+## Proof-level boundary
+
+See [Harness Proof Levels](harness-proof-levels.md). `implemented` does not mean universal runtime support. For structural harnesses it means project-local files/configs are generated from official docs and shape-tested; account-backed runtime smoke remains optional.
