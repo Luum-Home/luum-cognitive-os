@@ -5,8 +5,9 @@ FOR (use case)
 --------------
 Use this module when **internal, trusted code** needs to search, fetch, or save
 observations programmatically and wants machine-parseable results (``dict | None``
-or ``list[dict]``).  All CLI commands include ``--json`` so callers can parse
-structured output without string-matching.  If you need search or structured
+or ``list[dict]``).  Structured reads use the Engram HTTP API exposed by the
+local daemon.  Saves use the current positional Engram CLI shape and synthesize
+a minimal dict from the CLI confirmation.  If you need search or structured
 persistence from a hook or library, this is the right module.
 
 CONSUMERS (as of 2026-04-17)
@@ -24,8 +25,8 @@ CONTRACT
 - ``search_observations()`` returns ``list[dict]`` (empty on any failure).
 - ``get_observation()`` returns ``dict | None`` (None on any failure).
 - ``save_observation()`` returns ``dict | None`` (None on any failure).
-- All CLI commands include ``--json``; output is parsed as JSON, not returned as
-  a raw string.  Callers receive structured data, not human-readable text.
+- No caller relies on undocumented ``engram --json`` flags.  Engram v1.15.4
+  treats unsupported flags as positional query/title text.
 - Binary-missing (``FileNotFoundError``) is silently swallowed — callers see empty
   results, not an error, enabling graceful degradation when engram is not installed.
 
@@ -47,8 +48,8 @@ ADR references: ``docs/architecture/adrs/026-r2-r3-design-review.md`` (R3 findin
 
 from __future__ import annotations
 
-import json
 import os
+import re
 import subprocess
 from typing import Any
 
@@ -106,40 +107,14 @@ def search_observations(
         project:      Optional project scope for the search.
         timeout:      Subprocess timeout in seconds.
     """
-    cmd = [_ENGRAM_BIN, "search", "--json", "--limit", str(limit), query]
-    if type_filter:
-        cmd.extend(["--type", type_filter])
-    if project:
-        cmd.extend(["--project", project])
-
     try:
-        proc = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
+        return engram_http_client.search_observations(
+            query,
+            limit=limit,
+            type_filter=type_filter,
+            project=project,
             timeout=timeout,
-        )
-        if proc.returncode != 0:
-            return []
-
-        output = proc.stdout.strip()
-        if not output:
-            return []
-
-        data = json.loads(output)
-        if isinstance(data, list):
-            return data[:limit]
-        if isinstance(data, dict) and "results" in data:
-            return data["results"][:limit]
-        return []
-
-    except FileNotFoundError:
-        # engram binary not installed — silent no-op
-        return []
-    except subprocess.TimeoutExpired:
-        return []
-    except (json.JSONDecodeError, ValueError):
-        return []
+        )[:limit]
     except Exception:
         return []
 
@@ -149,31 +124,8 @@ def get_observation(observation_id: int | str, *, timeout: int = 5) -> dict[str,
 
     Returns the observation dict or ``None`` if not found / unavailable.
     """
-    cmd = [_ENGRAM_BIN, "get", "--json", str(observation_id)]
-
     try:
-        proc = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=timeout,
-        )
-        if proc.returncode != 0:
-            return None
-
-        output = proc.stdout.strip()
-        if not output:
-            return None
-
-        data = json.loads(output)
-        return data if isinstance(data, dict) else None
-
-    except FileNotFoundError:
-        return None
-    except subprocess.TimeoutExpired:
-        return None
-    except (json.JSONDecodeError, ValueError):
-        return None
+        return engram_http_client.get_observation(observation_id, timeout=timeout)
     except Exception:
         return None
 
@@ -208,15 +160,9 @@ def save_observation(
                 timeout=timeout,
             )
 
-    cmd = [
-        _ENGRAM_BIN, "save",
-        "--json",
-        "--title", title,
-        "--content", content,
-        "--type", type_,
-    ]
+    cmd = [_ENGRAM_BIN, "save", title, content, "--type", type_]
     if topic_key:
-        cmd.extend(["--topic-key", topic_key])
+        cmd.extend(["--topic", topic_key])
     if project:
         cmd.extend(["--project", project])
 
@@ -234,14 +180,19 @@ def save_observation(
         if not output:
             return None
 
-        data = json.loads(output)
-        return data if isinstance(data, dict) else None
+        match = re.search(r"Memory saved:\s+#(?P<id>\d+)", output)
+        return {
+            "id": int(match.group("id")) if match else None,
+            "title": title,
+            "content": content,
+            "type": type_,
+            "topic_key": topic_key,
+            "project": project,
+        }
 
     except FileNotFoundError:
         return None
     except subprocess.TimeoutExpired:
-        return None
-    except (json.JSONDecodeError, ValueError):
         return None
     except Exception:
         return None
