@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Copy old audit rows into compressed archive files without truncating source evidence.
+set -euo pipefail
+
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+AUDIT_FILE="${COGNITIVE_OS_AUDIT_TRAIL:-$PROJECT_DIR/.cognitive-os/runtime/agent-audit-trail.jsonl}"
+ARCHIVE_DIR="$PROJECT_DIR/.cognitive-os/audit-archive"
+RETENTION_DAYS=90
+DRY_RUN=0
+JSON_OUT=0
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/cos-audit-archive [--audit-file PATH] [--archive-dir DIR] [--retention-days N] [--dry-run] [--json]
+
+Copies audit rows older than the retention window to a gzip archive. The source
+agent-audit-trail.jsonl is never truncated or deleted by this helper.
+EOF
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --audit-file) AUDIT_FILE="${2:-}"; shift 2 ;;
+    --archive-dir) ARCHIVE_DIR="${2:-}"; shift 2 ;;
+    --retention-days) RETENTION_DAYS="${2:-}"; shift 2 ;;
+    --dry-run) DRY_RUN=1; shift ;;
+    --json) JSON_OUT=1; shift ;;
+    --help|-h) usage; exit 0 ;;
+    *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
+  esac
+done
+
+python3 - "$AUDIT_FILE" "$ARCHIVE_DIR" "$RETENTION_DAYS" "$DRY_RUN" "$JSON_OUT" <<'PY'
+from __future__ import annotations
+
+import gzip
+import json
+import sys
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+audit_file = Path(sys.argv[1])
+archive_dir = Path(sys.argv[2])
+retention_days = int(sys.argv[3])
+dry_run = sys.argv[4] == "1"
+json_out = sys.argv[5] == "1"
+
+cutoff = datetime.now(timezone.utc) - timedelta(days=retention_days)
+
+def parse_ts(value: object) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+rows: list[str] = []
+if audit_file.exists():
+    for line in audit_file.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        timestamp = parse_ts(payload.get("timestamp"))
+        if timestamp and timestamp < cutoff:
+            rows.append(line)
+
+archive_path = archive_dir / f"{audit_file.stem}-older-than-{retention_days}d.jsonl.gz"
+if rows and not dry_run:
+    archive_dir.mkdir(parents=True, exist_ok=True)
+    with gzip.open(archive_path, "wt", encoding="utf-8") as handle:
+        for row in rows:
+            handle.write(row + "\n")
+
+report = {
+    "status": "pass",
+    "audit_file": str(audit_file),
+    "archive_path": str(archive_path),
+    "retention_days": retention_days,
+    "eligible_rows": len(rows),
+    "dry_run": dry_run,
+    "source_preserved": True,
+}
+if json_out:
+    print(json.dumps(report, sort_keys=True))
+else:
+    print(f"eligible_rows={len(rows)} archive={archive_path} dry_run={dry_run} source_preserved=true")
+PY

@@ -1,7 +1,7 @@
 ---
 adr: 141
 title: Engram Cloud as Cross-Instance Replication Transport
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
@@ -15,7 +15,7 @@ tags: [memory, engram, cloud, replication, air-gap, cloud-flows, sync]
 
 ## Status
 
-**Accepted** as the replication strategy for Engram observations across COS instances. Local SQLite remains authoritative. Cloud is replication-only.
+**Accepted — Implemented** as the replication strategy for Engram observations across COS instances. Local SQLite remains authoritative. Cloud is replication-only.
 
 This ADR is **not** an adoption decision for Engram — Engram is already integrated (binary, `lib/engram_client.py`, `lib/engram_http_client.py`, `mcp-server/cos_mcp.py`, `packages/engram-sync/`). This ADR wires the upstream `engram cloud` feature (shipped April 2026) into the COS runtime without replacing any existing path.
 
@@ -196,6 +196,13 @@ air_gapped_compatible: true|false  # can the flow operate in local-only mode?
 ## Verification
 
 ```bash
-python3 -m pytest tests/audit/test_adr_contracts.py -q
+python3 -m pytest tests/audit/test_adr_139_141_142_cloud_surfaces.py tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py -q
 ```
 
+## Implementation Evidence
+
+- Implemented in `scripts/cos-engram-cloud-enroll`: project-scoped wrapper around `engram cloud config/enroll/upgrade`, with dry-run/JSON modes and audit-trail rows.
+- Implemented in `scripts/engram-sync.sh`: explicit `--cloud` mode invokes `engram sync --cloud --project "$SCOPE"` and never calls `--cloud --all`.
+- Implemented in `packages/engram-sync/hooks/engram-auto-sync.sh`: `ENGRAM_CLOUD_AUTOSYNC=1` adds cloud sync after the existing git-jsonl export path.
+- Implemented in `docker/cos-worker/docker-compose.yml`: local `engram-cloud` profile with Postgres/pgvector database and `cos-engram-cloud` service running `engram cloud serve`.
+- Validated by `tests/audit/test_adr_139_141_142_cloud_surfaces.py`, `tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py`, and optional testcontainers lane `tests/integration/test_engram_cloud_docker.py`.
