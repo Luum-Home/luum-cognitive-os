@@ -3605,6 +3605,38 @@ primitives:
     boring_reliability_artifact: docs/adrs/ADR-133-expansion-without-monsterization.md
     rationale: Enforces profile-purity discipline for expansion without growing
       core/team by assertion.
+- id: scripts/cos-closure-discipline-audit
+  kind: script
+  owner_adr: ADR-143
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-closure-discipline-audit
+  - scripts/cos_closure_discipline_audit.py
+  - scripts/cos-ci-local.sh
+  - docs/adrs/ADR-143-closure-discipline-gate.md
+  runtime_projection: false
+  behavior_evidence: closure-discipline audit blocks stale validation infrastructure after fast agent batches
+  evidence_commands:
+  - scripts/cos-closure-discipline-audit --fail-on-findings --json
+  - python3 -m pytest tests/unit/test_closure_discipline_audit.py -q
+  exit_behavior: mixed
+  metrics_file: none
+  docs_claim_level: blocking
+  rollback_or_repair_command: Fix stale validation references, hook-count snapshots, capsule fallback, or primitive lifecycle findings before claiming closure.
+  sunset_criteria: Archive only if closure discipline moves into a stronger typed validation transaction compiler with equivalent coverage.
+  repair_message: Closure claims require the validation nervous system to match repository reality, not only feature-local tests.
+  false_positive_tests:
+  - tests/unit/test_closure_discipline_audit.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/adrs/ADR-143-closure-discipline-gate.md
+    rationale: Converts known broad-validation drift classes into a quick local-CI gate.
 - id: scripts/cos-demotion-loop-audit
   kind: script
   owner_adr: ADR-126
@@ -3693,7 +3725,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
-  governance_class: meta-governance
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - shell
@@ -3809,7 +3841,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: maintainer
-  governance_class: meta-governance
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - shell
