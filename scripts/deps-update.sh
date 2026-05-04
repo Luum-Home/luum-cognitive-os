@@ -58,6 +58,8 @@ PLUGINS_NEED_UPGRADE=0
 PLUGINS_TOTAL=0
 DOCKER_CHANGED=0
 DOCKER_CHECKED=0
+DOCKER_UNVERIFIED=0
+DOCKER_PINNED=0
 INCONSISTENT=false
 
 _dry_echo() {
@@ -519,31 +521,54 @@ else
             fi
           fi
         else
-          # Audit mode: check if a newer manifest exists without pulling the full image
-          REMOTE_DIGEST=$(docker manifest inspect "$image" 2>/dev/null \
-            | python3 -c "
-import json,sys
-try:
-  d = json.load(sys.stdin)
-  # grab the config digest as a fingerprint
-  print(d.get('config',{}).get('digest','unknown'))
-except Exception:
-  print('parse-error')
-" 2>/dev/null || echo "unavailable")
-
+          # Audit mode: classify image freshness without pretending every
+          # registry/API response is an actionable update. Digest-pinned refs are
+          # exact references: they do not have a "newer" remote by definition.
+          # Operators may still choose to review and advance pins manually.
           LOCAL_DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' "$image" 2>/dev/null || echo "not-pulled")
 
           echo "  $image"
           echo "    local : $LOCAL_DIGEST"
-          echo "    remote: $REMOTE_DIGEST"
 
-          # Heuristic: if remote digest is obtainable and differs from local, flag
-          if [ "$REMOTE_DIGEST" != "unavailable" ] && [ "$REMOTE_DIGEST" != "parse-error" ]; then
-            if ! echo "$LOCAL_DIGEST" | grep -qF "$REMOTE_DIGEST" 2>/dev/null; then
-              _yellow "    WARNING: remote config digest differs — consider manual review"
-              echo ""
-              DOCKER_CHANGED=$((DOCKER_CHANGED + 1))
-            fi
+          if echo "$image" | grep -q '@sha256:'; then
+            PINNED_DIGEST="sha256:${image##*@sha256:}"
+            echo "    remote: pinned-ref $PINNED_DIGEST"
+            echo "    status: pinned digest reference — no floating-tag update check"
+            echo ""
+            DOCKER_PINNED=$((DOCKER_PINNED + 1))
+            continue
+          fi
+
+          REMOTE_DIGEST=""
+          if docker buildx version >/dev/null 2>&1; then
+            REMOTE_DIGEST=$(docker buildx imagetools inspect "$image" 2>/dev/null \
+              | awk '/^Digest:[[:space:]]+sha256:/ {print $2; exit}' || true)
+          fi
+          if [ -z "$REMOTE_DIGEST" ]; then
+            REMOTE_DIGEST=$(docker manifest inspect "$image" 2>/dev/null \
+              | python3 -c "
+import json, sys
+try:
+  d = json.load(sys.stdin)
+  print(d.get('config', {}).get('digest', 'unknown'))
+except Exception:
+  print('parse-error')
+" 2>/dev/null || echo "unavailable")
+          fi
+
+          echo "    remote: ${REMOTE_DIGEST:-unavailable}"
+
+          if [ -z "$REMOTE_DIGEST" ] || [ "$REMOTE_DIGEST" = "unavailable" ] || [ "$REMOTE_DIGEST" = "parse-error" ] || [ "$REMOTE_DIGEST" = "unknown" ]; then
+            _yellow "    REVIEW: remote digest unavailable — registry/manual verification needed"
+            echo ""
+            DOCKER_UNVERIFIED=$((DOCKER_UNVERIFIED + 1))
+          elif ! echo "$LOCAL_DIGEST" | grep -qF "$REMOTE_DIGEST" 2>/dev/null; then
+            _yellow "    REVIEW: floating tag digest differs — pin reviewed digest manually"
+            echo ""
+            DOCKER_CHANGED=$((DOCKER_CHANGED + 1))
+          else
+            echo "    status: floating tag local digest matches remote"
+            echo ""
           fi
         fi
       done <<< "$IMAGES"
@@ -585,7 +610,7 @@ echo "  Plugins:  $PLUGINS_NEED_UPGRADE of $PLUGINS_TOTAL need upgrade (manual v
 
 # docker line
 if [ "$MODE" = "audit" ]; then
-  echo "  Docker:   $DOCKER_CHANGED image(s) may have newer digest (manual review)"
+  echo "  Docker:   $DOCKER_CHANGED floating tag update candidate(s), $DOCKER_UNVERIFIED unverified, $DOCKER_PINNED pinned exact reference(s)"
 else
   echo "  Docker:   $DOCKER_CHANGED image(s) had digest change (manual review — compose not modified)"
 fi
