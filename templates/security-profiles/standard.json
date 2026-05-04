@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 65,
+  "_hook_count": 66,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -152,6 +152,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/scope-marker-portability-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-bash-gate.sh\""
           },
           {
             "type": "command",

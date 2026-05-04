@@ -81,5 +81,5 @@ script_name="${feature_name}.sh"   # if feature_name has underscores
 
 - ADR-066 §4 — polyglot naming conventions per language
 - `rules/python-naming.md` — sister rule for Python (snake_case)
-- `.github/workflows/go-quality.yml` — sister enforcement for Go (gofmt)
+- `.github/workflows/go-quality.yml.disabled` — preserved sister enforcement reference for Go (gofmt) after ADR-131 moved CI enforcement local-first
 - `tests/audit/test_bash_naming.py` — enforcement test

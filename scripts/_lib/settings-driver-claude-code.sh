@@ -189,6 +189,7 @@ cc_driver_emit() {
     "hooks/orchestrator-claim-gate.sh"          "false" \
     "hooks/pre-commit-content-hash-dedupe.sh"  "false" \
     "hooks/scope-marker-portability-gate.sh"    "false" \
+    "hooks/skill-router-bash-gate.sh"           "false" \
   )
 
   local pre_read
@@ -226,6 +227,9 @@ cc_driver_emit() {
     "hooks/pre-agent-snapshot.sh"           "false" \
     "hooks/agent-prelaunch.sh"              "false" \
     "hooks/error-pattern-detector.sh"       "false" \
+    "hooks/prompt-quality-llm.sh"           "false" \
+    "hooks/token-budget-monitor.sh"         "false" \
+    "hooks/adaptive-bypass.sh"              "false" \
     "hooks/predev-completeness-check.sh"    "false" \
     "hooks/completeness-check.sh"           "false" \
     "hooks/reinvention-check.sh"            "false" \
@@ -267,6 +271,7 @@ cc_driver_emit() {
     "hooks/hook-header-validator.sh"        "false" \
     "hooks/adr-section-validator.sh"        "false" \
     "hooks/confidentiality-enforcer.sh"     "false" \
+    "hooks/scope-creep-detector.sh"         "false" \
     "hooks/surface-fix-detector.sh"         "false" \
     "hooks/doc-sync-detector.sh"            "true"  \
     "hooks/edit-lock-drain-parked.sh"       "false" \
@@ -290,6 +295,8 @@ cc_driver_emit() {
     "hooks/completion-gate.sh"       "false" \
     "hooks/agent-checkpoint.sh"      "false" \
     "hooks/post-agent-verify.sh"     "false" \
+    "hooks/assumption-tracker.sh"    "false" \
+    "hooks/scope-proportionality.sh" "false" \
     "hooks/trust-score-validator.sh" "false" \
     "hooks/confidence-gate.sh"       "false" \
     "hooks/audit-id-enricher.sh"     "false" \
@@ -297,6 +304,8 @@ cc_driver_emit() {
     "hooks/native-agent-heartbeat.sh" "false" \
     "hooks/work-queue-sync.sh"        "false" \
     "hooks/skill-feedback-tracker.sh" "false" \
+    "hooks/consequence-evaluator.sh"  "false" \
+    "hooks/auto-skill-generator.sh"   "false" \
     "hooks/auto-repair-dispatcher.sh" "true"  \
     "hooks/dequeue-notify.sh"         "true"  \
     "hooks/state-heartbeat.sh"        "true"  \
