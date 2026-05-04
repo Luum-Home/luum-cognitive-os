@@ -2,37 +2,37 @@
 
 > Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
 
-Generated: 2026-05-04T19:43:39Z
+Generated: 2026-05-04T19:54:52Z
 Gate: pass (reconstruction)
-ACC: 0.2441
-ACC effective: 0.2933
-Capabilities: 725
-Findings: 160
+ACC: 0.2663
+ACC effective: 0.3178
+Capabilities: 727
+Findings: 153
 
 ## Warnings
 
-- coverage_debt:157
-- acc_below_threshold:0.2441<0.5
-- acc_effective_below_threshold:0.2933<0.4
+- coverage_debt:153
+- acc_below_threshold:0.2663<0.5
+- acc_effective_below_threshold:0.3178<0.4
 
 ## Mapping Weights
 
-- aligned: 483
+- aligned: 527
 - missing: 0
 - overexposed: 0
-- partial: 207
-- stale: 6
-- unverified: 1283
+- partial: 204
+- stale: 0
+- unverified: 1248
 
 ## Consumer Accessibility
 
 - install-profile-managed: 19
-- lifecycle-declared-consumer-candidate: 50
-- lifecycle-declared-maintainer: 150
-- projected-consumer-surface: 11
-- repo-skill-not-projectable: 86
+- lifecycle-declared-consumer-candidate: 49
+- lifecycle-declared-maintainer: 119
+- projected-consumer-surface: 62
+- repo-skill-not-projectable: 83
 - skill-referenced-not-projectable: 2
-- so-local-only: 407
+- so-local-only: 393
 
 ## Top Findings
 

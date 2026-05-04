@@ -19,7 +19,7 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/agent-dashboard/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/agent-stress-test/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/analyze-improvements/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/apply-improvements/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/apply-improvements/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/audit-integrity/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/branch-worktree-closure/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 4 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/bump-version/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
@@ -34,8 +34,8 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/compat-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/component-classifier/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/component-reality-check/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/coordination-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/cos-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 32 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/coordination-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/cos-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 33 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/cost-predictor/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/decision-triage/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/deps-update/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 15 | add lifecycle/package/projection metadata or keep SO-local |

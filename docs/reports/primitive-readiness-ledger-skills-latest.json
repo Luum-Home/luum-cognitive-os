@@ -737,13 +737,17 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 1
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -765,7 +769,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -776,7 +780,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -1824,7 +1828,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "test": 1
       },
       "consumers": [
@@ -1835,6 +1839,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -1860,7 +1868,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -1871,7 +1879,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -1882,7 +1890,7 @@
         "doc": 16,
         "hook": 1,
         "script": 7,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -2011,6 +2019,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_acc_pipeline.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
         }
       ],
@@ -2018,7 +2030,7 @@
       "evidence": [
         "hook_consumers:1",
         "script_consumers:7",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:16",
         "config_consumers:2"
       ],
@@ -2030,7 +2042,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 32
+      "total_consumers": 33
     },
     {
       "confidence": "high",

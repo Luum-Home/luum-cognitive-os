@@ -51,7 +51,7 @@ Consumer accessibility: so-local-only:112
 | `rules/decomposition.md` | doctrine | heuristic:text | medium | so-local-only |  | 25 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/definition-of-done.md` | driver-specific | heuristic:text | medium | so-local-only |  | 43 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/doc-sync.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 52 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/dry-run.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 119 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/dry-run.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 121 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/dynamic-tool-creation.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/e2b-integration.md` | lab | heuristic:path | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/engram-api-safety.md` | lab | heuristic:path | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
