@@ -141,3 +141,7 @@ The `primitive_duplication` adapter is advisory during reconstruction. It comple
 - rule/skill overlap → merge, deprecate, or document boundaries.
 
 The adapter must not auto-refactor. Duplicates can be intentional when isolation, portability, or harness-specific behavior is more important than abstraction.
+
+## Proof-level boundary
+
+See [Harness Proof Levels](harness-proof-levels.md). `implemented` does not mean universal runtime support. For structural harnesses it means project-local files/configs are generated from official docs and shape-tested; account-backed runtime smoke remains optional.
