@@ -163,3 +163,21 @@ def test_demoted_primitive_remains_indexed_but_not_default_visible(tmp_path: Pat
     assert summary["counts_by_tier"]["team"] == 2
     assert summary["active_counts_by_tier"]["team"] == 1
     assert summary["default_visible_counts_by_tier"]["team"] == 1
+
+
+def test_candidate_primitive_remains_indexed_but_not_active_or_default_visible(tmp_path: Path) -> None:
+    manifest = write_manifest(
+        tmp_path / "manifests" / "primitive-lifecycle.yaml",
+        [
+            primitive("scripts/candidate-team", "team", "candidate"),
+            primitive("scripts/advisory-team", "team", "advisory"),
+        ],
+    )
+
+    report = active_index.build_index(manifest, project_root=tmp_path)
+    summary = report["summary"]
+
+    assert [item["id"] for item in report["primitives"]] == ["scripts/candidate-team", "scripts/advisory-team"]
+    assert summary["counts_by_tier"]["team"] == 2
+    assert summary["active_counts_by_tier"]["team"] == 1
+    assert summary["default_visible_counts_by_tier"]["team"] == 1

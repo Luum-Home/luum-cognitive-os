@@ -105,6 +105,14 @@ python3 scripts/primitive_coverage.py --project-dir . --adapter cognitive-os --f
 
 The readiness ledger is the canonical machine-readable script role surface. Usage and coverage reports remain supporting evidence.
 
+The ledger must also answer whether a script is reachable from a downstream project that implements the SO. A repository-local document or skill reference is not enough: consumer agents in VS Code/Copilot, Cursor, Windsurf, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and shell/CI only get a script when an install/profile/projection path exports it. The `consumer_accessibility` field separates:
+
+- `install-profile-managed`: bootstrap/profile/settings/update surfaces that can affect generated consumer projects and require profile projection proof;
+- `lifecycle-declared-consumer-candidate`: core/team lifecycle rows that still need package/install proof per harness;
+- `lifecycle-declared-maintainer`: lifecycle rows kept for SO maintainers;
+- `skill-referenced-not-projectable`: skill-used scripts that are not yet package/project-visible;
+- `so-local-only`: scripts that must not be assumed available outside this repository.
+
 First review priority for scripts:
 
 1. `scripts/active_primitive_index.py` and `scripts/primitive_gap_snapshot.py` remain canonical readiness entrypoints.
@@ -112,6 +120,11 @@ First review priority for scripts:
 3. `scripts/docs_execution_audit.py` signs docs-claim reality.
 4. `scripts/cos_primitive_harvester.py`, `scripts/cos_self_improvement_loop.py`, `scripts/cos_doctrine_proposer.py`, and `scripts/self_improvement_discipline_gate.py` form the propose-only self-evolution loop.
 5. `scripts/_lib/settings-driver-*.sh`, `scripts/harness_parity_audit.py`, and provider adapters define portability proof; they must not be bypassed by direct Claude-only assumptions.
+
+
+### Profile-managed install surfaces
+
+Some scripts in the lifecycle backlog install or project primitives automatically according to profile/harness. They are protected through `manifests/primitive-readiness-protected-install-surfaces.yaml`. Before candidate lifecycle metadata exists they appear in the lifecycle backlog with `priority: protected`; after this slice they have candidate rows in `manifests/primitive-lifecycle.yaml` and should be promoted only after profile projection proof. Do not demote, archive, or downgrade these rows without checking profile projection, generated harness settings, install/update/upgrade paths, and any optional-tool installation flows they control.
 
 ### Hooks
 
@@ -179,17 +192,37 @@ bash scripts/cos-doctor-memory-lifecycle.sh --harness claude
 
 Future harnesses must add equivalent proof before they can claim this lifecycle.
 
+
+## Coordination preflight
+
+Before a session edits primitive readiness ledgers, lifecycle metadata, profile projection manifests, or generated readiness reports, the agent should acquire an expiring task claim so concurrent IDE sessions can see ownership before starting overlapping work:
+
+```bash
+python3 scripts/claim_task.py acquire <task_id> \
+  --session-id "$COGNITIVE_OS_SESSION_ID" \
+  --agent-id <agent-or-harness> \
+  --scope primitive-readiness \
+  --expected-file manifests/primitive-lifecycle.yaml \
+  --expected-file scripts/primitive_readiness_ledger.py \
+  --ttl-seconds 7200
+```
+
+This is a coordination primitive, not a file lock. It prevents duplicate logical work when all agents follow the SO contract. Same-file mutation safety still belongs to edit/file-lock primitives such as `edit-coop` and `concurrent-write-guard`.
+
+Relevant implementation: `scripts/claim_task.py` and `lib/task_claim_ledger.py`; broader contract: `docs/architecture/concurrency-safety-core-consumer-contract.md` and ADR-118.
+
 ## Repeatable cycle checklist
 
-1. Refresh active primitive index.
-2. Refresh primitive gap snapshot.
-3. Refresh primitive coverage report.
-4. Refresh primitive usage map for scripts, then hooks/skills/rules when touched.
-5. Run docs execution audit and fix hard gaps before adding new claims.
-6. Review lifecycle manifest changes for distribution, supported harnesses, evidence commands, and rollback paths.
-7. Update this document if a new family, harness, or automation loop becomes canonical.
-8. Link new artifacts from `docs/README.md` and `docs/business/master-plan-checklist.md`.
-9. Record session summary with accomplished work, next steps, and relevant files.
+1. Acquire or check a task claim for the current primitive-readiness scope when concurrent agents/IDEs may be active.
+2. Refresh active primitive index.
+3. Refresh primitive gap snapshot.
+4. Refresh primitive coverage report.
+5. Refresh primitive usage map for scripts, then hooks/skills/rules when touched.
+6. Run docs execution audit and fix hard gaps before adding new claims.
+7. Review lifecycle manifest changes for distribution, supported harnesses, evidence commands, and rollback paths.
+8. Update this document if a new family, harness, or automation loop becomes canonical.
+9. Link new artifacts from `docs/README.md` and `docs/business/master-plan-checklist.md`.
+10. Record session summary with accomplished work, next steps, and relevant files.
 
 Acceptance criteria for a cycle:
 
@@ -211,7 +244,7 @@ Until then, use narrower language: `maintainer tool`, `Claude-supported primitiv
 ## Immediate next backlog
 
 1. Use `scripts/primitive_readiness_ledger.py` as the machine-readable script role ledger; low-confidence script rows are now closed through explicit overrides.
-2. Work the generated lifecycle backlog for agentic-primitives without ADR-126 metadata, then add touched-script ratchet gates.
+2. Continue with the generated lifecycle backlog for the remaining agentic-primitives without ADR-126 metadata, then add touched-script ratchet gates.
 3. Expand harness capability profiles beyond Claude/Codex without claiming full parity.
 4. Reconcile stale docs rows with ADR closure policy.
 5. Promote only repeated automation loops that already have tests and operator value.
