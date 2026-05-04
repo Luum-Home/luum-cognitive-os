@@ -8,6 +8,8 @@
 # Schema (one line per invocation):
 #   {"timestamp":"...","session_id":"...","task_id":"...","tool":"Bash|Edit|...","args_hash":"<sha256[:8]>","success":true|false}
 #   Bash adds: command_hash, command_family, command_preview (redacted, <=180 chars)
+#   Loop warnings are emitted from the same stream; the old standalone
+#   tool-loop-detector hook is intentionally not projected.
 #
 # PERFORMANCE CONTRACT:
 #   <30ms overhead per call. Pure shell. NO python3 per invocation.
@@ -133,6 +135,34 @@ TARGET="$METRICS_DIR/tool-sequences.jsonl"
 
 # Ensure parent exists (safe-jsonl.sh may not have created the file-specific dir)
 [ -d "$METRICS_DIR" ] || mkdir -p "$METRICS_DIR" 2>/dev/null
+
+_signature_from_jsonl() {
+  jq -r '"\(.tool // "unknown")|\(.args_hash // "00000000")"' 2>/dev/null || true
+}
+
+CURRENT_SIGNATURE="${TOOL_NAME}|${ARGS_HASH}"
+if [ -f "$TARGET" ]; then
+  LAST_2=$(tail -n 2 "$TARGET" 2>/dev/null | _signature_from_jsonl)
+  if [ "$(printf '%s\n%s\n' "$LAST_2" "$CURRENT_SIGNATURE" | grep -cF "$CURRENT_SIGNATURE" || true)" -ge 3 ]; then
+    echo "TOOL LOOP DETECTED: generic_repeat" >&2
+    echo "Tool "${TOOL_NAME}" called 3+ times in a row with the same arguments." >&2
+    echo "Consider: changing approach, reading a different file, or asking the user." >&2
+  fi
+
+  LAST_3=$(tail -n 3 "$TARGET" 2>/dev/null | _signature_from_jsonl)
+  if [ "$(printf '%s\n' "$LAST_3" | wc -l | tr -d ' ')" -ge 3 ]; then
+    SIG_A=$(printf '%s\n' "$LAST_3" | sed -n '1p')
+    SIG_B=$(printf '%s\n' "$LAST_3" | sed -n '2p')
+    SIG_C=$(printf '%s\n' "$LAST_3" | sed -n '3p')
+    if [ "$SIG_A" = "$SIG_C" ] && [ "$SIG_B" = "$CURRENT_SIGNATURE" ] && [ "$SIG_A" != "$SIG_B" ]; then
+      TOOL_A=${SIG_A%%|*}
+      TOOL_B=${SIG_B%%|*}
+      echo "TOOL LOOP DETECTED: ping_pong" >&2
+      echo "Tools "${TOOL_A}" and "${TOOL_B}" are alternating back and forth." >&2
+      echo "Consider: consolidating your approach, or trying a different strategy." >&2
+    fi
+  fi
+fi
 
 # Single atomic >> append (safe for lines < PIPE_BUF on macOS/Linux)
 echo "$JSON_LINE" >> "$TARGET"
