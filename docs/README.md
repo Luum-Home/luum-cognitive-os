@@ -59,6 +59,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Headless Self-Improvement Proposer](architecture/headless-self-improvement-proposer.md) — propose-only audit→fix loop that needs no dashboard and keeps human approval plus growth-discipline gates mandatory.
 - [Headless Runtime Proof Strategy](architecture/headless-runtime-proof-strategy.md) — analysis of how to prove ADR-091/137/140 without putting heavy cloud/runtime checks into normal test lanes.
 - [Headless Runtime Proof Drills](manual-tests/headless-runtime-proof-drills.md) — manual proof ladder for Docker worker, Engram Cloud sync, future headless task execution, crash/resume, VM, Kubernetes, and provider overlays.
+- [COS Service Runtime Boundary](architecture/cos-service-runtime-boundary.md) — explicit boundary between today's IDE-embedded runtime, Docker worker surface, Engram Cloud service, and the future `cosd`/scheduler control plane.
 - [Self-Evolving Doctrine Proposals](architecture/self-evolving-doctrine-proposals.md) — control-plane evidence can generate proposed doctrine amendments without mutating runtime rules.
 - [Cross-Instance Learning Runway](architecture/cross-instance-learning-runway.md) — portable evidence, registry locks, Engram bundles, and Shape-B federation triggers.
 - [Cross-Instance Consumer E2E Drill — 2026-05-03](reports/cross-instance-consumer-e2e-2026-05-03.md) — fresh consumer install, provenance export/import, drills, and claim-audit honesty check.
