@@ -2746,11 +2746,11 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 16,
+        "doc": 17,
         "hook": 2,
         "rule": 2,
-        "script": 1,
-        "test": 1
+        "script": 4,
+        "test": 2
       },
       "consumers": [
         {
@@ -2807,6 +2807,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/gdpr-erasure-procedure.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/archive/plans/dead-weight-audit.md"
         },
         {
@@ -2839,20 +2843,36 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-audit-archive"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-engram-cloud-enroll"
+        },
+        {
+          "family": "script",
+          "path": "scripts/engram-sync.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/validate_tier_filter.py"
         },
         {
           "family": "test",
           "path": "tests/audit/test_adr_140_cos_worker_compose.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:2",
         "rule_consumers:2",
-        "script_consumers:1",
-        "test_consumers:1",
-        "doc_consumers:16",
+        "script_consumers:4",
+        "test_consumers:2",
+        "doc_consumers:17",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -2863,7 +2883,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 23
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -7507,12 +7527,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 50,
+        "doc": 52,
         "hook": 5,
         "rule": 2,
-        "script": 25,
+        "script": 27,
         "skill": 7,
-        "test": 28
+        "test": 30
       },
       "consumers": [
         {
@@ -7573,6 +7593,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
         },
         {
@@ -7622,6 +7646,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/ux6-idempotent-update.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/gdpr-erasure-procedure.md"
         },
         {
           "family": "doc",
@@ -7777,7 +7805,15 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-audit-archive"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-bootstrap.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-engram-cloud-enroll"
         },
         {
           "family": "script",
@@ -7953,6 +7989,10 @@
         },
         {
           "family": "test",
+          "path": "tests/integration/test_engram_cloud_docker.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_fresh_install_canary.py"
         },
         {
@@ -7970,6 +8010,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_batch_runner.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_engram_cloud_enroll_and_audit_archive.py"
         },
         {
           "family": "test",
@@ -8005,9 +8049,9 @@
         "skill_consumers:7",
         "hook_consumers:5",
         "rule_consumers:2",
-        "script_consumers:25",
-        "test_consumers:28",
-        "doc_consumers:50",
+        "script_consumers:27",
+        "test_consumers:30",
+        "doc_consumers:52",
         "config_consumers:4"
       ],
       "family": "rules",
@@ -8018,7 +8062,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 121
+      "total_consumers": 127
     },
     {
       "confidence": "medium",

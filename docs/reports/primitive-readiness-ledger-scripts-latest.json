@@ -426,7 +426,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 7,
+        "doc": 11,
         "test": 2
       },
       "consumers": [
@@ -448,6 +448,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -456,11 +460,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
           "path": "docs/manual-tests/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-duplication-audit.md"
         },
         {
           "family": "test",
@@ -476,7 +492,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:11",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -493,7 +509,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 10,
+      "total_consumers": 14,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -2711,11 +2727,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 5,
         "script": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/bootstrap-portability.md"
@@ -2723,6 +2743,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "doc",
@@ -2745,7 +2769,7 @@
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -2760,7 +2784,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 8,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -2827,7 +2851,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 24,
-        "doc": 386,
+        "doc": 388,
         "hook": 67,
         "rule": 42,
         "script": 189,
@@ -3501,6 +3525,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/README.md"
         },
         {
@@ -3850,6 +3878,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "doc",
@@ -7131,7 +7163,7 @@
         "skill_consumers:55",
         "test_consumers:309",
         "hook_consumers:67",
-        "doc_consumers:386",
+        "doc_consumers:388",
         "rule_consumers:42",
         "config_consumers:24",
         "script_consumers:189"
@@ -7150,7 +7182,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1072,
+      "total_consumers": 1074,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -14447,7 +14479,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 4,
+        "doc": 6,
         "skill": 1,
         "test": 2
       },
@@ -14467,6 +14499,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-120-conversation-to-primitive-harvester.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "doc",
@@ -14495,7 +14535,7 @@
         "wrapper_for:scripts/cos_work_inventory.py",
         "skill_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -14512,7 +14552,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 9,
+      "total_consumers": 11,
       "wrapper_for": "scripts/cos_work_inventory.py"
     },
     {
@@ -16219,14 +16259,22 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 3,
         "script": 1,
         "test": 3
       },
       "consumers": [
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "script",
@@ -16248,7 +16296,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -16263,7 +16311,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -18469,7 +18517,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 1,
+        "doc": 3,
         "rule": 1,
         "script": 2
       },
@@ -18480,7 +18528,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/cross-platform-ci.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "rule",
@@ -18498,7 +18554,7 @@
       "distribution": null,
       "evidence": [
         "override_rationale",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:1",
         "script_consumers:2"
@@ -18515,7 +18571,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -19377,6 +19433,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
+        "doc": 2,
         "hook": 1,
         "test": 1
       },
@@ -19388,6 +19445,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "hook",
@@ -19402,6 +19467,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
+        "doc_consumers:2",
         "config_consumers:2"
       ],
       "install_surface": null,
@@ -19416,7 +19482,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -19527,6 +19593,62 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 10,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 4,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-capability-coverage-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-duplication-audit.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/acc_pipeline.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_duplication_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:4",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/primitive_duplication_audit.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -19678,7 +19800,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 4,
         "script": 1,
         "test": 2
       },
@@ -19686,6 +19808,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-143-closure-discipline-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-duplication-audit.md"
         },
         {
           "family": "doc",
@@ -19707,7 +19837,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -19722,7 +19852,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -24147,24 +24277,24 @@
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
       "high": 137,
-      "medium": 179
+      "medium": 180
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 49,
       "lifecycle-declared-maintainer": 38,
       "skill-referenced-not-projectable": 2,
-      "so-local-only": 208
+      "so-local-only": 209
     },
     "low_confidence_rows": 0,
     "roles": {
       "agentic-primitive": 106,
       "driver-specific": 10,
       "lab": 13,
-      "maintainer-tool": 176,
+      "maintainer-tool": 177,
       "migration-only": 11
     },
-    "total_scripts": 316,
+    "total_scripts": 317,
     "without_consumers": 4
   },
   "target_family": "scripts"
