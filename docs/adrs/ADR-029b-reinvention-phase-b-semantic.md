@@ -245,7 +245,7 @@ deferred per §5.
 1. `pyproject.toml` gains an OPTIONAL `[project.optional-dependencies] semantic`
    extra: `sentence-transformers>=3.0`, `numpy>=1.26`. Deliberately NOT included
    in the `dev` extra — PyTorch (~200 MB) would bloat every CI run.
-   Install explicitly with `pip install '.[semantic]'`.
+   Install explicitly with `uv pip install -r requirements/dependency-lanes/semantic.txt` (ADR-145 supersedes the former `.[semantic]` extra).
 
 2. `hooks/reinvention-check.sh` now recognises `REINVENTION_PHASE_B=2` as the
    embeddings path. The inline Python tries `EmbeddingsIndex` first, catches

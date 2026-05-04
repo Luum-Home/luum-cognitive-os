@@ -71,6 +71,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Hook Registration Classification — 2026-05-04](reports/hook-registration-classification-2026-05-04.md) — classifies the remaining unregistered hook surface into future, conditional, manual, deprecated, demoted, and promotion-candidate buckets.
 - [Python Major Dependency Review — 2026-05-04](reports/python-major-deps-review-2026-05-04.md) — resolver-backed decisions for the 11 held Python major bumps after `/deps-update`.
 - [Python Major Follow-up — 2026-05-04](reports/python-major-followup-2026-05-04.md) — second-pass resolver evidence for wrapt, setuptools, and the remaining blocked major clusters.
+- [ADR-145: Dependency Lane Split](adrs/ADR-145-dependency-lane-split.md) — separates heavy optional dependency stacks from the core maintainer lock so upstream optional constraints do not block core dependency hygiene.
+- [Python Major Lane Resolution — 2026-05-04](reports/python-major-lane-resolution-2026-05-04.md) — records which formerly retained majors are applied, removed from core, or moved to optional dependency lanes after ADR-145.
 - [Docker Image Review — 2026-05-04](reports/docker-image-review-2026-05-04.md) — removes the broken AutoMaker GHCR image from reference compose and keeps pinned Python images unchanged.
 - [Hook-Enforced Rule Projection Manual Test](manual-tests/hook-enforced-rule-projection.md) — manual proof path for the EXCLUDED_RULES context diet, Claude/Codex projection, and dependency-upgrade bypass gate.
 - [Session Handoff — 2026-05-04](SESSION-HANDOFF-2026-05-04.md) — evidence-based ADR implementation reality matrix and step-by-step execution order after ADR-143/144 closure.
