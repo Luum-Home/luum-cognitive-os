@@ -166,7 +166,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Closure Discipline Manual Test](manual-tests/closure-discipline.md) \u2014 manual proof path for closing validation-system drift before claiming a multi-file maintainer batch is done.",
       "kind": "bullet",
-      "line": 77,
+      "line": 79,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -179,7 +179,7 @@
       "inferred_status": "planned",
       "item": "[Hook Registration Classification \u2014 2026-05-04](reports/hook-registration-classification-2026-05-04.md) \u2014 classifies the remaining unregistered hook surface into future, conditional, manual, deprecated, demoted, and promotion-candidate buckets.",
       "kind": "bullet",
-      "line": 80,
+      "line": 82,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -192,7 +192,7 @@
       "inferred_status": "planned",
       "item": "[Python Major Follow-up \u2014 2026-05-04](reports/python-major-followup-2026-05-04.md) \u2014 second-pass resolver evidence for wrapt, setuptools, and the remaining blocked major clusters.",
       "kind": "bullet",
-      "line": 82,
+      "line": 84,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -205,7 +205,7 @@
       "inferred_status": "proposed",
       "item": "[Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) \u2014 licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.",
       "kind": "bullet",
-      "line": 95,
+      "line": 97,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -218,7 +218,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) \u2014 accepted decision separating validation isolation from the global hook killswitch.",
       "kind": "bullet",
-      "line": 111,
+      "line": 113,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -231,7 +231,7 @@
       "inferred_status": "proposed",
       "item": "[Design Philosophy](design-philosophy.md) \u2014 biological-system framing for the OS",
       "kind": "bullet",
-      "line": 116,
+      "line": 118,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -244,7 +244,7 @@
       "inferred_status": "planned",
       "item": "[Cross-Tool Task Recovery Research \u2014 2026-05](architecture/cross-tool-task-recovery-research-2026-05.md) \u2014 investigation of solved/pending task recovery across Codex, Claude Code, Engram, local ledgers, transcripts, and git.",
       "kind": "bullet",
-      "line": 126,
+      "line": 128,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -257,7 +257,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) \u2014 accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface",
       "kind": "bullet",
-      "line": 129,
+      "line": 131,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -270,7 +270,7 @@
       "inferred_status": "planned",
       "item": "[Harness Driver Parity](architecture/harness-driver-parity.md) \u2014 how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities",
       "kind": "bullet",
-      "line": 140,
+      "line": 142,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -283,7 +283,7 @@
       "inferred_status": "planned",
       "item": "[Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) \u2014 validation snapshot and remaining work before merging the master-plan portability branch",
       "kind": "bullet",
-      "line": 159,
+      "line": 161,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -296,7 +296,7 @@
       "inferred_status": "planned",
       "item": "[Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) \u2014 current full-suite evidence, passing proof paths, and remaining failure families",
       "kind": "bullet",
-      "line": 160,
+      "line": 162,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -309,7 +309,7 @@
       "inferred_status": "planned",
       "item": "`experimental`: squads, organization specs, future control-plane designs, and high-variance systems that should not dominate the README.",
       "kind": "bullet",
-      "line": 169,
+      "line": 171,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -322,7 +322,7 @@
       "inferred_status": "planned",
       "item": "The following model describes the long-range architecture. Treat it as future architecture unless a layer has a linked proof path, test, or operator workflow.",
       "kind": "prose",
-      "line": 175,
+      "line": 177,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -335,7 +335,7 @@
       "inferred_status": "done_weak_proof",
       "item": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
       "kind": "prose",
-      "line": 450,
+      "line": 452,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -348,7 +348,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Extending from dev-time to production-capable (partially done):",
       "kind": "prose",
-      "line": 622,
+      "line": 624,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -1186,20 +1186,7 @@
       "inferred_status": "proposed",
       "item": "lifecycle-declared-consumer-candidate: 49",
       "kind": "bullet",
-      "line": 30,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:apply-efficiency-profile,before,candidate,consumer,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/apply-efficiency-profile.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 39,
+      "line": 28,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1212,7 +1199,7 @@
       "inferred_status": "proposed",
       "item": "`script:scripts/aspirational_audit.py` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
       "kind": "bullet",
-      "line": 40,
+      "line": 37,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1225,7 +1212,7 @@
       "inferred_status": "proposed",
       "item": "`script:scripts/check_mcp_servers.py` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
       "kind": "bullet",
-      "line": 41,
+      "line": 38,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1238,33 +1225,7 @@
       "inferred_status": "proposed",
       "item": "`script:scripts/cos` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
       "kind": "bullet",
-      "line": 42,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-bootstrap,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-bootstrap.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 43,
-      "next_action": "keep as proposal until accepted/implemented",
-      "path": "docs/acc/latest-compact.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:before,candidate,consumer,cos-config-audit,harness,medium,needs,partial"
-      ],
-      "inferred_status": "proposed",
-      "item": "`script:scripts/cos-config-audit.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
-      "kind": "bullet",
-      "line": 44,
+      "line": 39,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1277,7 +1238,7 @@
       "inferred_status": "proposed",
       "item": "`script:scripts/cos-coordination-status.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
       "kind": "bullet",
-      "line": 45,
+      "line": 40,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1285,12 +1246,51 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:before,candidate,consumer,cos-core-skills-check,harness,medium,needs,partial"
+        "terms:before,candidate,consumer,cos-release-check,harness,medium,needs,partial"
       ],
       "inferred_status": "proposed",
-      "item": "`script:scripts/cos-core-skills-check.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "item": "`script:scripts/cos-release-check.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
       "kind": "bullet",
-      "line": 46,
+      "line": 41,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-smoke,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-smoke.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 42,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-status,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-status.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 43,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/acc/latest-compact.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:before,candidate,consumer,cos-usage-report,harness,medium,needs,partial"
+      ],
+      "inferred_status": "proposed",
+      "item": "`script:scripts/cos-usage-report.sh` [partial/medium]: Candidate/projectable surface needs consumer projection proof \u2192 add harness projection proof before promotion",
+      "kind": "bullet",
+      "line": 44,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1303,7 +1303,7 @@
       "inferred_status": "proposed",
       "item": "Subagents should receive only selected rows/findings, not complete ACC/readiness reports.",
       "kind": "bullet",
-      "line": 52,
+      "line": 50,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -7337,7 +7337,7 @@
       "inferred_status": "done_weak_proof",
       "item": "no agent launch latency is added).",
       "kind": "prose",
-      "line": 88,
+      "line": 90,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-078-mid-task-memory-tool.md"
     },
@@ -12681,6 +12681,20 @@
       "kind": "bullet",
       "line": 207,
       "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:scripts/engram-sync.sh",
+        "terms:cloud,cloud_chunks,compose,cos-engram-cloud-docker-smoke,each,engram,engram-sync,home"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Implemented in `scripts/cos-engram-cloud-docker-smoke`: repeatable local proof that starts the Compose profile, enrolls `luum-agent-os` and `cos-consumer-e2e-drill`, saves one observation per project using a temporary Engram home, syncs each project through `s",
+      "kind": "bullet",
+      "line": 208,
+      "next_action": "keep marked done; maintain proof links",
       "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
     },
     {
@@ -29434,6 +29448,32 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
+        "weak_terms:event"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "`event: \"engram-cloud-enroll-completed\"`",
+      "kind": "bullet",
+      "line": 135,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:event"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "`event: \"engram-cloud-sync-completed\"`",
+      "kind": "bullet",
+      "line": 136,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/engram-cloud-docker-sync.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
         "terms:canonical,cos-status,health,hooks,json,reports,skills,wired"
       ],
       "inferred_status": "done_weak_proof",
@@ -33203,7 +33243,7 @@
       },
       "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md": {
         "done_weak_proof": 5,
-        "done_with_proof": 2
+        "done_with_proof": 3
       },
       "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md": {
         "done_weak_proof": 5,
@@ -33823,6 +33863,9 @@
         "done_weak_proof": 1,
         "planned": 2
       },
+      "docs/manual-tests/engram-cloud-docker-sync.md": {
+        "done_weak_proof": 2
+      },
       "docs/manual-tests/first-run-onboarding.md": {
         "done_weak_proof": 1
       },
@@ -34077,10 +34120,10 @@
         "planned": 1
       }
     },
-    "items": 2476,
+    "items": 2479,
     "statuses": {
-      "done_weak_proof": 1027,
-      "done_with_proof": 200,
+      "done_weak_proof": 1029,
+      "done_with_proof": 201,
       "planned": 970,
       "proposed": 279
     }

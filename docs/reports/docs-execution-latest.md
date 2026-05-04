@@ -2,9 +2,9 @@
 
 ## Summary
 
-Total items: 2476
-- done_weak_proof: 1027
-- done_with_proof: 200
+Total items: 2479
+- done_weak_proof: 1029
+- done_with_proof: 201
 - planned: 970
 - proposed: 279
 
@@ -20,11 +20,11 @@ Total items: 2476
 | docs/README.md | 24 | done | done_weak_proof | 0.62 | [Multi-Session Orchestration Audit — 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) — documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap. | terms:architecture,audit,matrix,multi-ide,multi-session,next,orchestration,primitives | add explicit test/workflow/proof link |
 | docs/README.md | 64 | done | done_weak_proof | 0.62 | [Lifecycle Demotion Proof — task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) — first semantic `demoted` lifecycle transition proving shrink-without-delete behavior. | terms:behavior,demoted,demotion,first,hook,lifecycle,proof,proving | add explicit test/workflow/proof link |
 | docs/README.md | 69 | done | done_weak_proof | 0.62 | [ADR-137: Operational Trajectory — Governance Layer → Embedded Runtime](adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) — accepted directional commitment from Framing B (governance over agents) to Framing A (runtime that travels wi | terms:accepted,adr-132,adrs,axis,commitment,directional,embedded,framing | add explicit test/workflow/proof link |
-| docs/README.md | 77 | done | done_weak_proof | 0.62 | [Closure Discipline Manual Test](manual-tests/closure-discipline.md) — manual proof path for closing validation-system drift before claiming a multi-file maintainer batch is done. | terms:batch,before,claiming,closing,closure,closure-discipline,discipline,done | add explicit test/workflow/proof link |
-| docs/README.md | 111 | done | done_weak_proof | 0.62 | [ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) — accepted decision separating validation isolation from the global hook killswitch. | terms:accepted,adrs,capsule,decision,global,hook,isolation,killswitch | add explicit test/workflow/proof link |
-| docs/README.md | 129 | done | done_weak_proof | 0.62 | [ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) — accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface | terms:accepted,adapter,adr-081,adrs,backed,canonical,codex,desktop | add explicit test/workflow/proof link |
-| docs/README.md | 450 | done | done_weak_proof | 0.62 | The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions: | terms:closed,cycle,data,every,execution,executions,feedback,future | add explicit test/workflow/proof link |
-| docs/README.md | 622 | done | done_weak_proof | 0.62 | Extending from dev-time to production-capable (partially done): | terms:done,extending,partially | add explicit test/workflow/proof link |
+| docs/README.md | 79 | done | done_weak_proof | 0.62 | [Closure Discipline Manual Test](manual-tests/closure-discipline.md) — manual proof path for closing validation-system drift before claiming a multi-file maintainer batch is done. | terms:batch,before,claiming,closing,closure,closure-discipline,discipline,done | add explicit test/workflow/proof link |
+| docs/README.md | 113 | done | done_weak_proof | 0.62 | [ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) — accepted decision separating validation isolation from the global hook killswitch. | terms:accepted,adrs,capsule,decision,global,hook,isolation,killswitch | add explicit test/workflow/proof link |
+| docs/README.md | 131 | done | done_weak_proof | 0.62 | [ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) — accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface | terms:accepted,adapter,adr-081,adrs,backed,canonical,codex,desktop | add explicit test/workflow/proof link |
+| docs/README.md | 452 | done | done_weak_proof | 0.62 | The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions: | terms:closed,cycle,data,every,execution,executions,feedback,future | add explicit test/workflow/proof link |
+| docs/README.md | 624 | done | done_weak_proof | 0.62 | Extending from dev-time to production-capable (partially done): | terms:done,extending,partially | add explicit test/workflow/proof link |
 | docs/RED-TEAM-CHANGELOG.md | 25 | done | done_weak_proof | 0.62 | originals remain live and wired. Replicates the Wave C false-done incident 2026-05-02. | terms:false-done,incident,live,originals,remain,wave,wired | add explicit test/workflow/proof link |
 | docs/RED-TEAM-CHANGELOG.md | 26 | done | done_weak_proof | 0.62 | `unwired-constant.yaml` (`both`) — Verb: `wired`. Constant added to code but not surfaced | terms:added,both,code,constant,surfaced,unwired-constant,verb,wired | add explicit test/workflow/proof link |
 | docs/RED-TEAM-CHANGELOG.md | 27 | done | done_weak_proof | 0.62 | in config or exposed via env; agent claims it is wired without evidence. | terms:claims,config,evidence,exposed,wired,without | add explicit test/workflow/proof link |
@@ -298,7 +298,7 @@ Total items: 2476
 | docs/adrs/ADR-078-mid-task-memory-tool.md | 3 | done | done_weak_proof | 0.62 | **Status**: Accepted | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-078-mid-task-memory-tool.md | 12 | done | done_weak_proof | 0.62 | Accepted. | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-078-mid-task-memory-tool.md | 31 | done | done_weak_proof | 0.62 | The gap closed by this ADR: sub-agents and orchestrators have no programmatic | terms:closed,orchestrators,programmatic,sub-agents | add explicit test/workflow/proof link |
-| docs/adrs/ADR-078-mid-task-memory-tool.md | 88 | done | done_weak_proof | 0.62 | no agent launch latency is added). | terms:added,latency,launch | add explicit test/workflow/proof link |
+| docs/adrs/ADR-078-mid-task-memory-tool.md | 90 | done | done_weak_proof | 0.62 | no agent launch latency is added). | terms:added,latency,launch | add explicit test/workflow/proof link |
 | docs/adrs/ADR-079-corerules-applies-to-self-hosting.md | 5 | done | done_weak_proof | 0.62 | **Status**: Accepted | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-079-corerules-applies-to-self-hosting.md | 13 | done | done_weak_proof | 0.62 | Accepted. | weak_terms:accepted | add explicit test/workflow/proof link |
 | docs/adrs/ADR-080-hermes-cross-harness-adoption.md | 112 | done | done_weak_proof | 0.62 | must land before items 2–4 can be wired to a provider surface. | terms:before,items,land,must,provider,surface,wired | add explicit test/workflow/proof link |
@@ -944,6 +944,8 @@ Total items: 2476
 | docs/manual-tests/closure-discipline.md | 8 | done | done_weak_proof | 0.62 | Run this manually before calling a multi-file maintainer batch “done” when it | terms:batch,before,calling,done,maintainer,manually,multi-file,when | add explicit test/workflow/proof link |
 | docs/manual-tests/closure-discipline.md | 89 | done | done_weak_proof | 0.62 | A closure claim without this evidence is a partial-completion claim, not a done | terms:claim,closure,done,evidence,partial-completion,without | add explicit test/workflow/proof link |
 | docs/manual-tests/codex-host-tooling-verification.md | 164 | done | done_weak_proof | 0.62 | It does not prove Codex has already loaded newly added MCP definitions in the | terms:added,already,codex,definitions,does,loaded,newly,prove | add explicit test/workflow/proof link |
+| docs/manual-tests/engram-cloud-docker-sync.md | 135 | done | done_weak_proof | 0.62 | `event: "engram-cloud-enroll-completed"` | weak_terms:event | add explicit test/workflow/proof link |
+| docs/manual-tests/engram-cloud-docker-sync.md | 136 | done | done_weak_proof | 0.62 | `event: "engram-cloud-sync-completed"` | weak_terms:event | add explicit test/workflow/proof link |
 | docs/manual-tests/first-run-onboarding.md | 69 | done | done_weak_proof | 0.62 | `cos-status --json` reports health, canonical skills, and wired hooks. | terms:canonical,cos-status,health,hooks,json,reports,skills,wired | add explicit test/workflow/proof link |
 | docs/manual-tests/lote-2-mcp-loop.md | 54 | done | done_weak_proof | 0.62 | **Pre-conditions**: Step 1 completed. `claude` CLI is on PATH. | terms:claude,completed,path,step | add explicit test/workflow/proof link |
 | docs/manual-tests/lote-2-mcp-loop.md | 99 | done | done_weak_proof | 0.62 | **Pre-conditions**: Step 1 or Step 2 completed. The manifest is in its committed state. | terms:committed,completed,manifest,state,step | add explicit test/workflow/proof link |

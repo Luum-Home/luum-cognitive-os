@@ -44,6 +44,7 @@ READINESS_FILES = {
     "rules": "docs/reports/primitive-readiness-ledger-rules-latest.json",
 }
 DEFAULT_PROJECTION_HARNESSES = ("claude", "codex")
+DEFAULT_PROJECTION_PROFILES = ("default", "full")
 
 
 @dataclass(frozen=True)
@@ -194,6 +195,10 @@ def capability_from_readiness(row: dict[str, Any], family: str, projected: dict[
         evidence.append(f"consumer_accessibility:{row['consumer_accessibility']}")
     if projection:
         evidence.append(f"projected_harnesses:{','.join(projection['harnesses'])}")
+        if projection.get("profiles"):
+            evidence.append(f"projected_profiles:{','.join(projection['profiles'])}")
+        if projection.get("projection_class"):
+            evidence.append(f"projection_class:{projection['projection_class']}")
     return Capability(
         id=f"{kind}:{row.get('path', '')}",
         kind=kind,
@@ -278,6 +283,21 @@ def load_harness_projection(root: Path) -> tuple[AdapterStatus, dict[str, Any]]:
     return AdapterStatus("ok", "manifests/harness-projection.yaml", summary=summary), data
 
 
+def load_projection_profiles(root: Path) -> tuple[AdapterStatus, dict[str, Any]]:
+    path = root / "manifests" / "primitive-projection-profiles.yaml"
+    if not path.exists():
+        return AdapterStatus("failed", "manifests/primitive-projection-profiles.yaml", error="missing primitive projection profile manifest"), {"profiles": {}}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    profiles = data.get("profiles", {})
+    drivers = data.get("profile_driver_scripts", [])
+    summary = {
+        "profiles": sorted(profiles),
+        "profile_driver_scripts": len(drivers),
+        "projection_classes": sorted((data.get("projection_classes") or {}).keys()),
+    }
+    return AdapterStatus("ok", "manifests/primitive-projection-profiles.yaml", summary=summary), data
+
+
 def implemented_harness_ids(manifest: dict[str, Any]) -> tuple[str, ...]:
     ids = [
         str(item["id"])
@@ -305,51 +325,77 @@ def harness_projection_summary(manifest: dict[str, Any], projection_status: Adap
     return rows
 
 
-def collect_consumer_projection(root: Path, harnesses: tuple[str, ...] = DEFAULT_PROJECTION_HARNESSES) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
+def collect_consumer_projection(
+    root: Path,
+    harnesses: tuple[str, ...] = DEFAULT_PROJECTION_HARNESSES,
+    profiles: tuple[str, ...] = DEFAULT_PROJECTION_PROFILES,
+    profile_manifest: dict[str, Any] | None = None,
+) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
+    profile_manifest = profile_manifest or {"profiles": {}}
     projected: dict[str, dict[str, Any]] = {}
     errors: list[str] = []
     counts: dict[str, int] = {}
     for harness in harnesses:
-        with tempfile.TemporaryDirectory(prefix=f"cos-acc-projection-{harness}-") as temp:
-            temp_root = Path(temp)
-            result = subprocess.run(
-                ["python3", str(root / "scripts" / "cos_init.py"), "--default", "--harness", harness],
-                cwd=temp_root,
-                text=True,
-                capture_output=True,
-                check=False,
-                timeout=60,
-            )
-            if result.returncode != 0:
-                errors.append(f"{harness}:{(result.stderr or result.stdout)[-500:]}")
+        for profile in profiles:
+            mode = "--full" if profile == "full" else "--default"
+            with tempfile.TemporaryDirectory(prefix=f"cos-acc-projection-{harness}-{profile}-") as temp:
+                temp_root = Path(temp)
+                result = subprocess.run(
+                    ["python3", str(root / "scripts" / "cos_init.py"), mode, "--harness", harness],
+                    cwd=temp_root,
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                    timeout=80,
+                )
+                if result.returncode != 0:
+                    errors.append(f"{harness}/{profile}:{(result.stderr or result.stdout)[-500:]}")
+                    continue
+                harness_profile_count = 0
+                for path in (temp_root / ".cognitive-os" / "hooks" / "cos").glob("*.sh"):
+                    source = f"hooks/{path.name}"
+                    projected.setdefault(source, {"harnesses": [], "profiles": [], "paths": [], "projection_class": "shared"})
+                    projected[source]["harnesses"].append(harness)
+                    projected[source]["profiles"].append(profile)
+                    projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                    harness_profile_count += 1
+                for path in (temp_root / ".cognitive-os" / "skills" / "cos").glob("*/SKILL.md"):
+                    source = f"skills/{path.parent.name}/SKILL.md"
+                    projected.setdefault(source, {"harnesses": [], "profiles": [], "paths": [], "projection_class": "shared"})
+                    projected[source]["harnesses"].append(harness)
+                    projected[source]["profiles"].append(profile)
+                    projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                    harness_profile_count += 1
+                for path in (temp_root / ".cognitive-os" / "rules" / "cos").glob("*.md"):
+                    source = f"rules/{path.name}"
+                    projected.setdefault(source, {"harnesses": [], "profiles": [], "paths": [], "projection_class": "shared"})
+                    projected[source]["harnesses"].append(harness)
+                    projected[source]["profiles"].append(profile)
+                    projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                    harness_profile_count += 1
+                counts[f"{harness}/{profile}"] = harness_profile_count
+    if not errors:
+        for item in profile_manifest.get("profile_driver_scripts", []):
+            path = item.get("path")
+            if not path:
                 continue
-            harness_count = 0
-            for path in (temp_root / ".cognitive-os" / "hooks" / "cos").glob("*.sh"):
-                source = f"hooks/{path.name}"
-                projected.setdefault(source, {"harnesses": [], "paths": []})
-                projected[source]["harnesses"].append(harness)
-                projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
-                harness_count += 1
-            for path in (temp_root / ".cognitive-os" / "skills" / "cos").glob("*/SKILL.md"):
-                source = f"skills/{path.parent.name}/SKILL.md"
-                projected.setdefault(source, {"harnesses": [], "paths": []})
-                projected[source]["harnesses"].append(harness)
-                projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
-                harness_count += 1
-            for path in (temp_root / ".cognitive-os" / "rules" / "cos").glob("*.md"):
-                source = f"rules/{path.name}"
-                projected.setdefault(source, {"harnesses": [], "paths": []})
-                projected[source]["harnesses"].append(harness)
-                projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
-                harness_count += 1
-            counts[harness] = harness_count
+            projected.setdefault(path, {"harnesses": [], "profiles": [], "paths": [], "projection_class": item.get("class", "profile-driver")})
+            projected[path]["harnesses"].extend(harnesses)
+            projected[path]["profiles"].extend(profiles)
+            projected[path]["paths"].append(item.get("source_manifest", "manifests/primitive-projection-profiles.yaml"))
     for info in projected.values():
         info["harnesses"] = sorted(set(info["harnesses"]))
+        info["profiles"] = sorted(set(info.get("profiles", [])))
         info["paths"] = sorted(set(info["paths"]))
     if errors and not projected:
-        return AdapterStatus("failed", "consumer_projection", summary={"harnesses": list(harnesses)}, error="; ".join(errors)), {}
+        return AdapterStatus("failed", "consumer_projection", summary={"harnesses": list(harnesses), "profiles": list(profiles)}, error="; ".join(errors)), {}
     status = "unverified" if errors else "ok"
-    return AdapterStatus(status, "consumer_projection", summary={"projected_primitives": len(projected), "by_harness": counts}, error="; ".join(errors) if errors else None), projected
+    return AdapterStatus(
+        status,
+        "consumer_projection",
+        summary={"projected_primitives": len(projected), "by_harness_profile": counts},
+        error="; ".join(errors) if errors else None,
+    ), projected
 
 
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
@@ -585,11 +631,19 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
 def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bool) -> dict[str, Any]:
     refresh_statuses = refresh_adapters(root, include_slow) if refresh else {}
     harness_status, harness_manifest = load_harness_projection(root)
-    projection_status, projected = collect_consumer_projection(root, implemented_harness_ids(harness_manifest))
+    profile_status, profile_manifest = load_projection_profiles(root)
+    projection_status, projected = collect_consumer_projection(root, implemented_harness_ids(harness_manifest), DEFAULT_PROJECTION_PROFILES, profile_manifest)
     readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
-    adapters = {**refresh_statuses, "harness_projection": harness_status, "consumer_projection": projection_status, **readiness_adapters, **existing_adapters}
+    adapters = {
+        **refresh_statuses,
+        "harness_projection": harness_status,
+        "projection_profiles": profile_status,
+        "consumer_projection": projection_status,
+        **readiness_adapters,
+        **existing_adapters,
+    }
     summary = score(capabilities, findings)
     phase = phase_for(root)
     gate_data = gate(summary, findings, phase, fail_on_warn)
@@ -606,6 +660,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "findings": [asdict(finding) for finding in findings],
         "consumer_projection": scrub_project_paths(projected, root),
         "harness_projection": harness_projection_summary(harness_manifest, projection_status),
+        "projection_profiles": scrub_project_paths(profile_manifest, root),
         "persistence": {
             "local_history": ".cognitive-os/metrics/acc-pipeline-history.jsonl",
             "engram": {
