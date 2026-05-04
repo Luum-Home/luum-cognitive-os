@@ -24,9 +24,7 @@ RUN_PLATFORM_SERVICES = os.environ.get("COS_RUN_PLATFORM_SERVICES") == "1"
 try:
     from testcontainers.core.container import DockerContainer
     from testcontainers.core.network import Network
-    from testcontainers.postgres import PostgresContainer
     import docker
-    from docker.errors import ImageNotFound
 except ImportError:
     tc_available = False
 
@@ -169,7 +167,7 @@ class TestPaperclipService:
         base = paperclip_stack["base_url"]
         try:
             resp = wait_for_http(f"{base}/", timeout=30, interval=3)
-            body = resp.read().decode("utf-8", errors="replace")
+            resp.read().decode("utf-8", errors="replace")
             # UI responses are typically HTML
             assert resp.status == 200
         except TimeoutError:
@@ -334,17 +332,17 @@ class TestSeaweedFSService:
 
 
 # ===========================================================================
-# 5. Automaker (ghcr.io/automaker-org/automaker:latest) — profile: ui
+# 5. Automaker — external/manual integration only
 # ===========================================================================
 
+@pytest.mark.skip(reason="AutoMaker has no stable public GHCR image; upstream documents source-build Docker Compose.")
 class TestAutomakerService:
-    """Test Automaker UI service starts and exposes /health.
+    """Placeholder for future Automaker image smoke tests.
 
-    The image may not be publicly available — tests skip gracefully if the
-    pull fails.
+    Re-enable only after upstream publishes a stable public image digest.
     """
 
-    IMAGE = "ghcr.io/automaker-org/automaker:latest"
+    IMAGE = ""
 
     @pytest.fixture(scope="class")
     def automaker_container(self, docker_available):

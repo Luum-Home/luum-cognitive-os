@@ -89,7 +89,9 @@ synthesis library.
 Only successful tool invocations (`"success": true`) contribute to pattern
 counts — failed calls are filtered out to reduce noise. Bash rows preserve a
 redacted command shape so bypass analysis can distinguish `brew`, `pip`, `git`,
-and similar primitives without storing raw secrets or full command text.
+and similar primitives without storing raw secrets or full command text. The same
+stream emits advisory loop warnings for repeated signatures and ping-pong
+patterns, so the standalone `tool-loop-detector.sh` remains unprojected.
 
 ### Chosen defaults (binding)
 
@@ -152,7 +154,7 @@ path to promote a draft to `skills/<name>/`. Auto-promotion is never automatic
 | `skills/synthesize-skill/SKILL.md` | Operator skill — review/accept/reject/defer synthesis proposals |
 | `skills/experimental/` | Directory for auto-drafted experimental skills |
 | `tests/unit/test_skill_synthesizer.py` | 22 unit tests for `lib/skill_synthesizer.py` |
-| `tests/unit/test_tool_sequence_capture.py` | 13 unit tests for `hooks/tool-sequence-capture.sh`, including Bash command-shape redaction |
+| `tests/unit/test_tool_sequence_capture.py` | 15 unit tests for `hooks/tool-sequence-capture.sh`, including Bash command-shape redaction and loop-warning coverage |
 
 ### Metric streams written
 
