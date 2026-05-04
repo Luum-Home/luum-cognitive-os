@@ -1,21 +1,19 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-05-04T20:54:40.016647+00:00`
+Generated: `2026-05-04T21:08:37.082494+00:00`
 
 ## Summary
 
-- Files scanned: 714
-- Findings: 50
-- By kind: `{"bash-function-repeat": 10, "exact-copy": 1, "python-function-repeat": 39}`
-- By common home: `{"hooks/_lib/": 6, "lib/": 39, "scripts/_lib/": 4, "templates/ or lib/": 1}`
-- By consumer relevance: `{"consumer-project-relevant": 9, "so-local-first": 41}`
+- Files scanned: 717
+- Findings: 48
+- By kind: `{"bash-function-repeat": 8, "exact-copy": 1, "python-function-repeat": 39}`
+- By common home: `{"hooks/_lib/": 4, "lib/": 39, "scripts/_lib/": 4, "templates/ or lib/": 1}`
+- By consumer relevance: `{"consumer-project-relevant": 7, "so-local-first": 41}`
 
 ## Top Candidates
 
 | Kind | Similarity | Left | Right | Recommendation | Common home | Consumer relevance |
 |---|---:|---|---|---|---|---|
-| bash-function-repeat | 1.0 | `hooks/auto-verify.sh::_load_coverage_artifact_status` | `hooks/dod-gate.sh::_load_coverage_artifact_status` | extract-common-shell-helper | `hooks/_lib/` | consumer-project-relevant |
-| bash-function-repeat | 1.0 | `hooks/auto-verify.sh::_load_test_artifact_status` | `hooks/dod-gate.sh::_load_test_artifact_status` | extract-common-shell-helper | `hooks/_lib/` | consumer-project-relevant |
 | bash-function-repeat | 1.0 | `hooks/auto-verify.sh::found` | `hooks/completion-gate.sh::found` | extract-common-shell-helper | `hooks/_lib/` | consumer-project-relevant |
 | bash-function-repeat | 1.0 | `hooks/destructive-git-blocker.sh::_git_blocker_is_agent_context` | `hooks/destructive-rm-blocker.sh::_is_agent_context` | extract-common-shell-helper | `hooks/_lib/` | consumer-project-relevant |
 | bash-function-repeat | 1.0 | `hooks/edit-lock-drain-parked.sh::_session_id` | `hooks/edit-lock-process-negotiations.sh::_session_id` | extract-common-shell-helper | `hooks/_lib/` | consumer-project-relevant |

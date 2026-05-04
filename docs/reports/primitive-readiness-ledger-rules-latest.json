@@ -12516,17 +12516,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 7,
+        "doc": 6,
         "hook": 3,
         "rule": 2,
         "skill": 1,
         "test": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
@@ -12590,7 +12586,7 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:7"
+        "doc_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12600,7 +12596,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 14
     },
     {
       "confidence": "medium",

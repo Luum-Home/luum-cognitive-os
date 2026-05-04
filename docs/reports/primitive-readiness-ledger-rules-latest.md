@@ -85,7 +85,7 @@ Consumer accessibility: so-local-only:112
 | `rules/prompt-quality.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 42 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/python-naming.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/queue-advisor.md` | driver-specific | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/queue-drain.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/queue-drain.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/rate-limit-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/rate-limiting.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 24 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/reinvention-prevention.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |

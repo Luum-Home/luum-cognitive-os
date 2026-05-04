@@ -12,6 +12,7 @@ score, gate outcome, and persistence metadata.
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
 import subprocess
 import tempfile
@@ -259,9 +260,10 @@ def load_readiness_capabilities(
             continue
         adapters[name] = AdapterStatus("ok", rel, summary=data.get("summary", {}))
         for row in rows:
-            if row.get("path") in availability:
+            row_availability = consumer_availability_for(row.get("path", ""), availability)
+            if row_availability:
                 row = dict(row)
-                row["_consumer_availability_override"] = availability[row["path"]]
+                row["_consumer_availability_override"] = row_availability
             cap = capability_from_readiness(row, family, projected)
             capabilities.append(cap)
             if cap.mapping_status == "missing":
@@ -338,14 +340,47 @@ def load_consumer_availability(root: Path) -> tuple[AdapterStatus, dict[str, dic
             continue
         availability[str(item_path)] = dict(item)
         statuses[str(status)] = statuses.get(str(status), 0) + 1
+    patterns = []
+    for item in data.get("patterns", []):
+        pattern = item.get("pattern")
+        if not pattern:
+            continue
+        patterns.append(dict(item))
+        status = item.get("status", "unknown")
+        statuses[f"pattern:{status}"] = statuses.get(f"pattern:{status}", 0) + 1
+    if patterns:
+        availability["__patterns__"] = {"patterns": patterns}
+    explicit_count = len([key for key in availability if key != "__patterns__"])
     return (
         AdapterStatus(
             "ok",
             "manifests/primitive-consumer-availability.yaml",
-            summary={"items": len(availability), "statuses": dict(sorted(statuses.items()))},
+            summary={"items": explicit_count, "patterns": len(patterns), "statuses": dict(sorted(statuses.items()))},
         ),
         availability,
     )
+
+
+def consumer_availability_for(path: str, availability: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+    if path in availability:
+        return availability[path]
+    for item in availability.get("__patterns__", {}).get("patterns", []):
+        if fnmatch.fnmatch(path, item.get("pattern", "")):
+            return item
+    return None
+
+
+def load_shell_ci_projection(root: Path) -> tuple[AdapterStatus, dict[str, Any]]:
+    path = root / "manifests" / "shell-ci-projection.yaml"
+    if not path.exists():
+        return AdapterStatus("unverified", "manifests/shell-ci-projection.yaml", error="missing shell/CI projection manifest"), {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    summary = {
+        "commands": len(data.get("commands", [])),
+        "workflows": len(data.get("workflows", [])),
+        "profiles": sorted((data.get("profiles") or {}).keys()),
+    }
+    return AdapterStatus("ok", "manifests/shell-ci-projection.yaml", summary=summary), data
 
 
 def implemented_harness_ids(manifest: dict[str, Any]) -> tuple[str, ...]:
@@ -380,8 +415,10 @@ def collect_consumer_projection(
     harnesses: tuple[str, ...] = DEFAULT_PROJECTION_HARNESSES,
     profiles: tuple[str, ...] = DEFAULT_PROJECTION_PROFILES,
     profile_manifest: dict[str, Any] | None = None,
+    shell_ci_manifest: dict[str, Any] | None = None,
 ) -> tuple[AdapterStatus, dict[str, dict[str, Any]]]:
     profile_manifest = profile_manifest or {"profiles": {}}
+    shell_ci_manifest = shell_ci_manifest or {"commands": []}
     projected: dict[str, dict[str, Any]] = {}
     errors: list[str] = []
     counts: dict[str, int] = {}
@@ -423,6 +460,30 @@ def collect_consumer_projection(
                     projected[source]["profiles"].append(profile)
                     projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
                     harness_profile_count += 1
+                shell_result = subprocess.run(
+                    ["python3", str(root / "scripts" / "project_shell_ci.py"), "--project-dir", str(temp_root), "--profile", profile, "--json"],
+                    cwd=temp_root,
+                    text=True,
+                    capture_output=True,
+                    check=False,
+                    timeout=60,
+                )
+                if shell_result.returncode != 0:
+                    errors.append(f"{harness}/{profile}/shell-ci:{(shell_result.stderr or shell_result.stdout)[-500:]}")
+                else:
+                    for item in shell_ci_manifest.get("commands", []):
+                        source = item.get("path")
+                        if not source:
+                            continue
+                        path = temp_root / ".cognitive-os" / "scripts" / "cos" / Path(source).name
+                        if not path.exists():
+                            errors.append(f"{harness}/{profile}/shell-ci:missing {source}")
+                            continue
+                        projected.setdefault(source, {"harnesses": [], "profiles": [], "paths": [], "projection_class": "shell-ci"})
+                        projected[source]["harnesses"].append(harness)
+                        projected[source]["profiles"].append(profile)
+                        projected[source]["paths"].append(path.relative_to(temp_root).as_posix())
+                        harness_profile_count += 1
                 counts[f"{harness}/{profile}"] = harness_profile_count
     if not errors:
         for item in profile_manifest.get("profile_driver_scripts", []):
@@ -683,7 +744,14 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     harness_status, harness_manifest = load_harness_projection(root)
     profile_status, profile_manifest = load_projection_profiles(root)
     availability_status, availability = load_consumer_availability(root)
-    projection_status, projected = collect_consumer_projection(root, implemented_harness_ids(harness_manifest), DEFAULT_PROJECTION_PROFILES, profile_manifest)
+    shell_ci_status, shell_ci_manifest = load_shell_ci_projection(root)
+    projection_status, projected = collect_consumer_projection(
+        root,
+        implemented_harness_ids(harness_manifest),
+        DEFAULT_PROJECTION_PROFILES,
+        profile_manifest,
+        shell_ci_manifest,
+    )
     readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected, availability)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
@@ -692,6 +760,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "harness_projection": harness_status,
         "projection_profiles": profile_status,
         "consumer_availability": availability_status,
+        "shell_ci_projection": shell_ci_status,
         "consumer_projection": projection_status,
         **readiness_adapters,
         **existing_adapters,
