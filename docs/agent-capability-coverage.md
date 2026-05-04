@@ -460,6 +460,12 @@ outcome = block
 - arXiv 2601.19106: deterministic AST validation for hallucinated code APIs.
 - Figra package metadata: TypeScript dependency graph and alias-aware import/export analysis.
 
+## Implementation Status — 2026-05-04
+
+ADR-147 implements the first unified ACC orchestrator in `scripts/acc_pipeline.py`. It consumes the existing COS readiness ledgers and audit reports, emits `docs/acc/latest.json` plus `docs/acc/latest.md`, appends local history under `.cognitive-os/metrics/acc-pipeline-history.jsonl`, and preserves the Engram boundary honestly: the script reports Engram as unavailable unless a real bridge is configured, and the agent remains responsible for calling memory tools when surfaced.
+
+This implementation covers Cognitive OS agentic primitives first: scripts, hooks, skills, rules, docs claims, primitive coverage, and consumer-project accessibility. Application-specific adapters for endpoints, events, jobs, integrations, and workflows remain future adapters that should emit the same capability row shape.
+
 ## Surfaces
 
 ### CLI: `cos-coverage`
