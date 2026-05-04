@@ -18,6 +18,9 @@ The SO already has three different levels of commitment:
 The important distinction: **Docker Compose worker proof is implemented; full
 headless/Kubernetes/cloud-provider runtime is not.**
 
+For the service-boundary version of this distinction, see
+[`cos-service-runtime-boundary.md`](cos-service-runtime-boundary.md).
+
 ## Why this must not be a normal test lane
 
 The existing lanes (`unit`, `audit`, `contract`, `integration`, `make
