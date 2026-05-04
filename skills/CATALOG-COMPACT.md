@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 155
+Total skills: 159
 
 ## os (15)
 
@@ -68,13 +68,14 @@ Total skills: 155
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (29)
+## both (33)
 
 | Skill | Description |
 |-------|-------------|
 | agent-kpis | Calculate and report Cognitive OS KPIs and OKRs. |
 | analyze-improvements | Analyze KPIs, error patterns, and skill metrics to identify improvement… |
 | apply-improvements | Apply approved self-improvement changes from an analyze-improvements report. |
+| branch-worktree-closure | Close leftover agent branches/worktrees without losing work or bypassing main landing gates. |
 | catalog-full | Load and display the full skills catalog (skills/CATALOG.md) with invocations… |
 | caveman | Ultra-compressed communication mode. |
 | caveman-es | Modo cavernícola en español. |
@@ -89,6 +90,8 @@ Total skills: 155
 | generate-config | Read detected-stack.json and generate or update cognitive-os.yaml with detected… |
 | llm-status | Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
+| preserved-wip-cleanup | Backup preserved WIP, remove temporary blockers, and prove the inventory is clean. |
+| primitive-harvester | Turn repeatable high-value conversation recipes into governed primitive proposals. |
 | redteam-harness | Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb violations. |
 | repo-forensics | Deep forensic analysis of git repositories. |
 | repo-scout | Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals). |
@@ -101,6 +104,7 @@ Total skills: 155
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
+| worktree-triage | Compare a worktree to main and produce a safe port/validate/remove checklist. |
 
 ## project (70)
 
