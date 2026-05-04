@@ -135,3 +135,14 @@ Re-read this ADR before promoting any flow primitive out of `lab`. The promotion
 - [ADR-134](ADR-134-headless-self-improvement-proposer.md) / [ADR-135](ADR-135-self-evolving-doctrine-proposals.md) — propose-only contract pattern, transport-agnostic.
 - [`bootstrap-portability.md`](../architecture/bootstrap-portability.md) — gate that becomes load-bearing under Framing A.
 - [`cognitive-prosthesis.md`](../architecture/cognitive-prosthesis.md) — rationale layer; the "knows-when-it-doesn't-work" property applies to flows under this trajectory.
+
+## Alternatives rejected
+
+- Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
