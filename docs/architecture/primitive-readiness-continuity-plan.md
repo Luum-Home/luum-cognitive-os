@@ -99,11 +99,14 @@ Cycle commands:
 
 ```bash
 python3 scripts/primitive_readiness_ledger.py --project-dir .
+for family in hooks skills rules; do
+  python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family "$family"
+done
 python3 scripts/primitive_usage_map.py --project-dir . --target-family scripts --md-out docs/reports/primitive-usage-map-latest.md --json-out docs/reports/primitive-usage-map-latest.json
 python3 scripts/primitive_coverage.py --project-dir . --adapter cognitive-os --format markdown --out docs/reports/primitive-coverage-latest.md
 ```
 
-The readiness ledger is the canonical machine-readable script role surface. Usage and coverage reports remain supporting evidence.
+The script readiness ledger is the canonical machine-readable script role surface. The family readiness ledger provides first-pass role and consumer-accessibility rows for hooks, skills, and rules. Usage and coverage reports remain supporting evidence.
 
 The ledger must also answer whether a script is reachable from a downstream project that implements the SO. A repository-local document or skill reference is not enough: consumer agents in VS Code/Copilot, Cursor, Windsurf, Google Antigravity, Claude Code, OpenAI Codex, OpenCode, and shell/CI only get a script when an install/profile/projection path exports it. The `consumer_accessibility` field separates:
 
@@ -124,7 +127,7 @@ First review priority for scripts:
 
 ### Profile-managed install surfaces
 
-Some scripts in the lifecycle backlog install or project primitives automatically according to profile/harness. They are protected through `manifests/primitive-readiness-protected-install-surfaces.yaml`. Before candidate lifecycle metadata exists they appear in the lifecycle backlog with `priority: protected`; after this slice they have candidate rows in `manifests/primitive-lifecycle.yaml` and should be promoted only after profile projection proof. Do not demote, archive, or downgrade these rows without checking profile projection, generated harness settings, install/update/upgrade paths, and any optional-tool installation flows they control.
+Some scripts install or project primitives automatically according to profile/harness. They are protected through `manifests/primitive-readiness-protected-install-surfaces.yaml` and have candidate rows in `manifests/primitive-lifecycle.yaml`. They should be promoted only after profile projection proof. Do not demote, archive, or downgrade these rows without checking profile projection, generated harness settings, install/update/upgrade paths, and any optional-tool installation flows they control.
 
 ### Hooks
 
@@ -133,6 +136,7 @@ Hooks are the strongest runtime primitive family today, but they are also the hi
 Cycle commands:
 
 ```bash
+python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks
 python3 scripts/active_primitive_index.py --project-dir . --json
 python3 scripts/runtime_hook_reality.py --fail-on-findings
 bash -n hooks/*.sh hooks/_lib/*.sh
@@ -142,9 +146,21 @@ bash -n hooks/*.sh hooks/_lib/*.sh
 
 Skills are the intended portable agent-facing UX, but they need package boundaries. Each promoted skill must declare whether it is SO-maintainer only, shared for any project, project-specific, lab/experimental, or a compatibility wrapper around a script/hook.
 
+Cycle command:
+
+```bash
+python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills
+```
+
 ### Rules
 
 Rules should be context rules, hook-enforced rules, documentation-only doctrine, or deprecated/absorbed rules. A rule that claims enforcement must point to the enforcing hook, script, or test.
+
+Cycle command:
+
+```bash
+python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules
+```
 
 ### Memory and self-knowledge
 

@@ -1,0 +1,6323 @@
+{
+  "allowed_roles": [
+    "archive",
+    "compatibility-wrapper",
+    "lab",
+    "project-extension",
+    "shared-agent-tool",
+    "so-maintainer"
+  ],
+  "items": [
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": ".codex/skills/docs-to-artifact/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": ".codex/skills/portability-work/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/competitive-landscape.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": ".codex/skills/repo-map/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 3,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-108-concurrent-agent-safety-layer.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/concurrent-agent-safety-master.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/validation-nervous-system.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-doctor-concurrency.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "doc_consumers:3",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": ".codex/skills/test-matrix/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "script": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/generate_compact_catalog.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/__contracts__/canonical-event-emitter/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_canonical_event_emitter_contract.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
+        "test_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/__contracts__/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate_compact_catalog.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_canonical_event_emitter_contract.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/__contracts__/canonical-event-emitter/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "rule": 1,
+        "script": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/how-to-extend.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/bash-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/backfill_session_decisions.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cos_skill_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_pattern_detector.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_runner.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_smart_access.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:4",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/add-hook/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 11
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 5
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/how-to-extend.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:5",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/add-mcp/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "rule": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/how-to-extend.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/bash-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/backfill_session_decisions.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/add-rule/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 8
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 10,
+        "rule": 2,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/how-to-extend.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/bash-naming.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/check_catalog_sync.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/repair-skill/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:2",
+        "script_consumers:1",
+        "doc_consumers:10"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/add-skill/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 14
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 8,
+        "script": 2,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/runtime-hardcoding-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-install-scripts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/shell_test_utils.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_core_skills_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_init_py.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:8",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/agent-dashboard/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 15
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 3,
+        "rule": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/cognitive-load.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:2",
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/agent-stress-test/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 9,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-074-tier-0-learning-loop-closure.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-096-review-agent-pattern.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/observability-backend-evaluation-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/apply-improvements/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "doc_consumers:9"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/analyze-improvements/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 3,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/analyze-improvements/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "doc_consumers:3",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/apply-improvements/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/LESSONS-LEARNED.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/POST-MORTEM-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/subagent-context-injector.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_audit_integrity.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/audit-integrity/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-121-foundation-hardening-program.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-123-operational-stability-friction-reduction.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_cleanup_preserved_wip.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/branch-worktree-closure/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "skill": 4,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/generate-changelog/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/release-os/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/tag-release/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-release/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_bump_version.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:4",
+        "test_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/bump-version/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "hook": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/measurements/sessionstart-baseline.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/context-optimization.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate_compact_catalog.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_catalog_loading.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_compat_test.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/catalog-full/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 3,
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-081-codex-harness-adapter.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-qwen-bridge.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_caveman_integration.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/caveman-compress/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_caveman_integration.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/caveman-es/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "hook": 1,
+        "skill": 2,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-081-codex-harness-adapter.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-sources.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-qwen-bridge.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/caveman-compress/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/caveman-es/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_check_upstream_changes.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_content_policy.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_caveman_integration.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "hook_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/caveman/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 11
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 15,
+        "hook": 1,
+        "rule": 3,
+        "skill": 1,
+        "test": 7
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-019-scope-tagging.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-dispatch/migration.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-vs-project-overlap-analysis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/project-consumption-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/bmad-v6-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/features.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/cos-package-manager.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/global-vs-project-config.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/code-review-on-commit.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/adversarial-review.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/agent-sidecars.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/decision-depth-gate.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/pr-review/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_skills_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_code_review_skill.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_hook_timeout_wrappers.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cos_skill_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_paperclip_client.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_runner.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "hook_consumers:1",
+        "rule_consumers:3",
+        "test_consumers:7",
+        "doc_consumers:15",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/code-review/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 29
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 25,
+        "rule": 2,
+        "script": 3,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/FROZEN-BACKLOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/sprint-2a-orphan-fate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/executive-summary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/features.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/value-proposition.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-sources.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/design-philosophy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/getting-started.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/measurements/sessionstart-baseline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/migration-from/from-vanilla-claude-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/overview.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/os-vs-project.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/singularity.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-bootstrap.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/postinstall.js"
+        },
+        {
+          "family": "script",
+          "path": "scripts/setup.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/component-classifier/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:2",
+        "script_consumers:3",
+        "test_consumers:1",
+        "doc_consumers:25",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cognitive-os-init/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 33
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 16,
+        "rule": 2,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/docs-hook-rule-candidates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/docs-rescan-results.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/execution-backends.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/health-monitoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/ux-principles.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/auto-repair.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-bootstrap.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-config/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:2",
+        "script_consumers:1",
+        "doc_consumers:16"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cognitive-os-status/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 20
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 12,
+        "rule": 2,
+        "skill": 4,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/docs-rescan-results.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/getting-started.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/ide-compatibility.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/cognitive-os-changes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/safety-mesh.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-improvement-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing-cognitive-os-suite.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/self-improvement-protocol.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/apply-improvements/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cognitive-os-init/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/component-classifier/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/scaffold-project/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/conftest.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_opik_integration.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:4",
+        "rule_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:12"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cognitive-os-test/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 20
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/model-compatibility.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_compat_test.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/compat-test/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-019-scope-tagging.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/component-classification.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:4",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/component-classifier/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/agent-capability-coverage.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/component-reality-check/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 4,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-116-multi-session-coordination-primitives.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-coordination-status.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:4",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/coordination-status/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 15,
+        "hook": 1,
+        "script": 7,
+        "test": 6
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-026a-decisions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/bootstrap-portability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/first-run-onboarding.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/five-minute-demo.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/proof-paths.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/migration-from/from-hermes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/migration-from/from-vanilla-claude-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/release/roadmap-v1.0-full-e2e.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/usage/cos-status.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-sanity.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-release-check.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-status.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/demo-first-run-onboarding.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/demo-portability-proof.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_consumer_project_projection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_core_skills_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_status.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/e2e/test_session_startup_smoke.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cross_platform_discipline.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "script_consumers:7",
+        "test_consumers:6",
+        "doc_consumers:15",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cos-status/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 31
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "rule": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_auto_selection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/cost-predictor/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "rule": 1,
+        "script": 2,
+        "skill": 1,
+        "test": 5
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/research-first-protocol.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/backfill_session_decisions.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/decision_triage.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-backlog/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_decision_tracking_convention.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_doc_paths_tracked.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_no_undefined_imports.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_decision_triage_engram_live.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_decision_triage.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:2",
+        "test_consumers:5",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/decision-triage/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 14
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 3,
+        "doc": 6,
+        "hook": 1,
+        "script": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-144-hook-enforced-rule-projection-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-145-dependency-lane-split.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/tooling-update-protocol.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/skill-router-bash-gate.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/deps-update.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-release/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_router_bash_gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_deps_update_docker_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "hook_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:6",
+        "config_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/deps-update/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 14
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "hook": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/pattern-check.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/detect-patterns/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "skill": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/roadmap.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cognitive-os-init/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/generate-config/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/scaffold-project/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_repetition_detector.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "test_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/detect-stack/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 9
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "rule": 2,
+        "script": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/adversarial-review.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/doc_review_personas.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/smoke-doc-review-personas.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:2",
+        "script_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/doc-review-personas/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/docs-execution-audit/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "rule": 2,
+        "script": 1,
+        "skill": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-059-so-existential-validation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-061-focus-narrative-and-external-evidence.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/dogfood_score.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/component-reality-check/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_dogfood_scorer.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:2",
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/dogfood-score/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "rule": 1,
+        "script": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/domain_model.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/risk-register/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_domain_model.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_scaffolder.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/domain-model/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/utils/eval_repo_score.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/eval-repo/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 3,
+        "doc": 24,
+        "hook": 1,
+        "rule": 1,
+        "skill": 3,
+        "test": 5
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-readiness-script-overrides.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-zones.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/runtime-hardcoding-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-027.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-124-cos-distribution-boundaries.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/agent-teams-testing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/agent-teams.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/runtime-hardcoding-discipline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/competitive-reassessment-openclaw-hermes-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/durable-product-master-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-execution-requirements.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/competitive-landscape.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/kernel-contract.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/codex-host-tooling-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/five-minute-demo.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/model-evolution-resilience.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/overview.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/product-zones.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/skill-synthesis-scanner.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/engram-organization.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/deps-update/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/synthesize-skill/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-config/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_product_zones.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_runtime_hardcoding.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_active_primitive_index.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_init_py.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_synthesizer.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "test_consumers:5",
+        "doc_consumers:24",
+        "config_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/experimental/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 37
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "skill": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/bump-version/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/release-os/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/tag-release/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-release/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:4",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/generate-changelog/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 8
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "skill": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/portability-plan.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cognitive-os-init/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/detect-stack/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/scaffold-project/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_repetition_detector.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "test_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/generate-config/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 9
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 10,
+        "script": 11,
+        "test": 8
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-086-hook-execution-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-104-startup-circuit-breaker.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/incidents/2026-05-01-session-multi-spawn-hang.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/claude-code-startup-hang-regression.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/measurements/hook-timing-runbook.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-startup-recover.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_governance_roi.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate-project-settings.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/harness_parity_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/hook-stream-statusline.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/hook-timing-wrapper.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/hook_timing_report.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_gap_snapshot.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/session_start_budget.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hook_latency_budget.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_canonical_projection_behavior.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_hook_timing_wrapper.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_sessionstart_subagent_scope.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_startup_circuit_breaker.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_governance_roi.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_snapshot.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_start_budget.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:11",
+        "test_consumers:8",
+        "doc_consumers:10",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/hook-timing/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 31
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/install-recommended/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "hook": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/surface-fix-detector.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/invariant_check_helper.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_invariant_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_invariant_check_helper.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/invariant-check/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 8
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "rule": 2,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-062-multi-provider-agent-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/runbooks/llm-dispatch.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/llm-dispatch.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/llm_status.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_anthropic_api_key_references.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_llm_status.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:2",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/llm-status/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 9
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-078-mid-task-memory-tool.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:2",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/memory-scan/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_rules_enforcement.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/ops-runbook/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 3,
+        "script": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/python-stdin-heredoc-trap.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-ci-local.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_architecture_readiness.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/python_stdin_antipattern_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:3",
+        "doc_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/pattern-audit/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 5,
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-077-peer-card-local-model.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/adr-collision-reconciliation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/incidents/2026-05-02-false-done-compounding.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/user-prompt-capture.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_peer_card.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/peer-card/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 3,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/infrastructure-service-catalog.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/observability-backend-evaluation-2026-04-24.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_service_health.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/phoenix-trace-ui/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 9,
+        "script": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-130-suspend-claude-api-workflows.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-131-local-ci-migration.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/direct-anthropic-api-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/configurable-quality-gates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/overview.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-pr-review.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/code-review/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_anthropic_api_key_references.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_code_review_skill.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:9"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/pr-review/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 13
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "script": 1,
+        "skill": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/cos_primitive_harvester.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/branch-worktree-closure/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/worktree-triage/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_primitive_harvester.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "script_consumers:1",
+        "test_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/preserved-wip-cleanup/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 3,
+        "doc": 4,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/claim-signature-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_claim_signature_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_primitive_harvester.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_primitive_harvester.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_claim_signature_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:4",
+        "config_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/primitive-harvester/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 11
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 1,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-weekly-primitive-gap.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_surface_reduce.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_surface_reduce.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/primitive-surface-reduction/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "script": 2,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-readiness-continuity-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/conversation-reality-audit-2026-04-30.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-weekly-primitive-gap.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_usage_map.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_gap_workflow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_usage_map.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/primitive-usage-map/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "hook": 1,
+        "rule": 1,
+        "skill": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/project-docs-convention.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/domain-model/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/ops-runbook/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/rules-export/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/project-scaffold/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 3,
+        "skill": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/release-os/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/tag-release/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-release/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "doc_consumers:3",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/push-release/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 6,
+        "hook": 3,
+        "rule": 3,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-091-headless-clustered-runtime-direction.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/rules-consolidation-plan.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/rate-limit-drain.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/self-install.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/skill-failure-monitor.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/queue-advisor.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/queue-drain.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_claude_md_diet.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:3",
+        "rule_consumers:3",
+        "test_consumers:2",
+        "doc_consumers:6"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/queue-drain/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 14
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 4,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/radar_merge.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "doc_consumers:4",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/radar-update/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 3,
+        "doc": 17,
+        "hook": 1,
+        "rule": 2,
+        "script": 4,
+        "skill": 2,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/RED-TEAM-CHANGELOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agentic-mastery-license-weight-dx-matrix.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/tooling-stack-rationalization.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-sources.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security-stack.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/lethal-trifecta-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing-cognitive-os.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/tool-stack.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/plan-claim-validator.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/pentesting-readiness.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/install-promptfoo.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/redteam_aggregate.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/run-redteam-scenario.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/verify-archived.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-harvester/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/redteam-harness/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_security_integrations.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_redteam_baseline.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_redteam_portability_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "hook_consumers:1",
+        "rule_consumers:2",
+        "script_consumers:4",
+        "test_consumers:4",
+        "doc_consumers:17",
+        "config_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/red-team/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 33
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/RED-TEAM-CHANGELOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/RED-TEAM-COVERAGE.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_redteam_baseline.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_redteam_portability_coverage.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/redteam-harness/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 6,
+        "rule": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-019-scope-tagging.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/FROZEN-BACKLOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_auto_selection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:6"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/release-os/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 9
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "hook": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/skill-failure-monitor.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/repair-skill/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 6,
+        "rule": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-building-protocol.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/reverse-engineer/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_auto_selection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:6"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/repo-forensics/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 15,
+        "hook": 1,
+        "rule": 3,
+        "script": 2,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-080-hermes-cross-harness-adoption.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archived/cleanup-verification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/complexity-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing-cognitive-os-suite.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/resource-check.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/agent-kpis.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/resource-governance.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_core_skills_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_resource_governor.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:3",
+        "script_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:15"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/resource-governor/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 24
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 5,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-063-agent-tool-replication-strategy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-building-protocol.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/ci-setup.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "doc_consumers:5",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/reverse-engineer/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "rule": 1,
+        "script": 1,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/risk_register.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/domain-model/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_scaffolder.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_risk_register.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/risk-register/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "rule": 1,
+        "script": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-config-audit.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/rules_export.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_project_docs_writers.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:2",
+        "test_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/rules-export/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 10,
+        "rule": 1,
+        "skill": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-019-scope-tagging.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-072-test-lane-taxonomy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns-adopted.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/piter-framework.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cognitive-os-test/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_test_runner_role_taxonomy.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_auto_selection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_mcp_server_functional.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:1",
+        "test_consumers:4",
+        "doc_consumers:10"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/run-tests/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 16
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "skill": 3,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/usage/skill-authoring.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/cognitive-os-init/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/detect-stack/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/generate-config/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_skills_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_repetition_detector.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "test_consumers:3",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/scaffold-project/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 19,
+        "hook": 1,
+        "rule": 7,
+        "script": 1,
+        "skill": 5,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-037-self-knowledge-base.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/ecosystem-comparison.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/rules-consolidation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/tool-stack.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/self-install.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/e2b-integration.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/model-routing.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/repomix-integration.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/research-first-protocol.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/scout-pattern.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/radar_merge.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/eval-repo/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/pattern-audit/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/radar-update/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/repo-forensics/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/sdd-explore/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_self_install.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_auto_selection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_telemetry.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:5",
+        "hook_consumers:1",
+        "rule_consumers:7",
+        "script_consumers:1",
+        "test_consumers:4",
+        "doc_consumers:19"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/scout/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 37
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 8,
+        "rule": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-128-data-layer-integrity-fixes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/bmad-v6-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/getting-started.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_sdd_topic_keys.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_notifications.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:8"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/sdd-continue/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 11
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 12,
+        "hook": 3,
+        "rule": 5,
+        "skill": 2,
+        "test": 8
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-019-scope-tagging.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-vs-project-overlap-analysis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/automation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/organizational-model.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/skills.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/context-diet.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/notify.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/skill-tracker.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/model-routing.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/pre-dev-readiness-gate.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/repomix-integration.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/scout-pattern.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/scout/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/sdd-continue/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_hooks_batch1.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_staleness_tracking.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_flow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_safety.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_completeness_checker.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_execution_profile.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_model_router.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_routing.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "hook_consumers:3",
+        "rule_consumers:5",
+        "test_consumers:8",
+        "doc_consumers:12"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/sdd-explore/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 30
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 6,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_routing.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:6"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/sdd-resume/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 8
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 16,
+        "hook": 1,
+        "script": 2,
+        "skill": 2,
+        "test": 10
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-027.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-092-harness-skills-sync-path.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-093-simplify-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cross-tool-task-recovery-research-2026-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-install-scripts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/guides/queue-classes-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/decision-triage/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/session-wrapup/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/shell_test_utils.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_install_scripts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_core_skills_check.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_init_parity_2_3.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_session_init_nudge.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_trigger_honoured.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_fresh_install_canary.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_request_persistence.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_session_backlog.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_session_backlog.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "hook_consumers:1",
+        "script_consumers:2",
+        "test_consumers:10",
+        "doc_consumers:16"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/session-backlog/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 31
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 7,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_trigger_honoured.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:7"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/session-manager/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 8
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 4,
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_session_init_nudge.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:4"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/session-report-executive/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 8,
+        "doc": 8,
+        "hook": 3,
+        "script": 5,
+        "test": 5
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": ".codex/hooks.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-054-project-docs-convention.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-cleanup.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-init.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/session-wrapup-trigger.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_init.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/generate-project-settings.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/set-security-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_session_wrapup_trigger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_trigger_honoured.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_compaction_resilience.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_post_commit_banner.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_request_persistence.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:3",
+        "script_consumers:5",
+        "test_consumers:5",
+        "doc_consumers:8",
+        "config_consumers:8"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/session-wrapup/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 29
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 24,
+        "rule": 5,
+        "script": 1,
+        "skill": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-056-adaptive-agent-dispatch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-090-auto-skill-repair.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-vs-project-overlap-analysis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/diagnosis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/features.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-sources.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/ecosystem-comparison.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/faq.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/migration-from/from-hermes.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/overview.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/singularity.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/skills.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/auto-skill-generation.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/model-routing.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/self-improvement-protocol.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/backfill_session_decisions.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/repair-skill/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_singularity.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_skill_auto_selection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "rule_consumers:5",
+        "script_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:24"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/skill-creator/SKILL.md",
+      "role": "project-extension",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 34
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 2,
+        "hook": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/direct-anthropic-api-policy.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/_lib/killswitch_check.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/python-naming.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/so_vs_vanilla_benchmark.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_anthropic_api_key_references.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_so_vs_vanilla_benchmark.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/so-vs-vanilla/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-095-skill-synthesis-success-patterns.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/synthesize-skill/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 4,
+        "skill": 5,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/bump-version/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/generate-changelog/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/push-release/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/release-os/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/validate-release/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cos_skill_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_runner.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:5",
+        "test_consumers:2",
+        "doc_consumers:4",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/tag-release/SKILL.md",
+      "role": "so-maintainer",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 12
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 3,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/behavioral-test-contracts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/testing.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/test_run_inventory.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "doc_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/test-contract-repair/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "doc": 6,
+        "rule": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/bmad-v6-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_compat_test.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_validate_config.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:6"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/validate-config/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 3,
+        "skill": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/reduction-demotions.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/bump-version/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/deps-update/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/release-os/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:3",
+        "doc_consumers:3",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/validate-release/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 2,
+        "doc": 6,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-138-flow-contract-schema.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/vuln-remediation-flow.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_flow_contract_schema.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:6",
+        "config_consumers:2"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/vuln-remediation-flow/SKILL.md",
+      "role": "lab",
+      "role_source": "heuristic:path",
+      "supported_harnesses": [],
+      "total_consumers": 9
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 6,
+        "rule": 1,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-sources.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security-stack.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-management.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/install-garak.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:6",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/vulnerability-scan/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 10
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "script": 1,
+        "skill": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/concurrency-safety-core-consumer-contract.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_primitive_harvester.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/coordination-status/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/preserved-wip-cleanup/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_primitive_harvester.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_cos_worktree_triage.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:2",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/worktree-triage/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "confidence": {
+      "high": 51,
+      "medium": 39
+    },
+    "consumer_accessibility": {
+      "repo-skill-not-projectable": 86,
+      "so-local-only": 4
+    },
+    "roles": {
+      "compatibility-wrapper": 51,
+      "lab": 7,
+      "project-extension": 16,
+      "so-maintainer": 16
+    },
+    "total": 90,
+    "without_consumers": 0,
+    "without_lifecycle": 90
+  },
+  "target_family": "skills"
+}
