@@ -34,6 +34,10 @@ SCOPED_CLAIM_LINE = re.compile(
     r"^\s*(RESULT:|STATUS:|done\s+\d+\s+[A-Za-z][A-Za-z0-9_-]*)",
     re.IGNORECASE,
 )
+SUBJECT_CLAIM_LINE = re.compile(
+    r"^\s*(archived|deleted|removed|wired|integrated|registered|done|closed|migrated|tested|verified|claimed)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -182,15 +186,15 @@ def scoped_claim_text(text: str) -> str:
     implementation descriptions with words like "wired" or "archived". Treating
     the whole body as an agent claim produced false positives. ADR-133 moves the
     commit-boundary gate to scoped semantic lines: RESULT:, STATUS:, explicit
-    "done <number> <noun>" completion claims, or the commit subject itself.
-    The subject is still a user-facing high-stakes claim, so
-    ``git commit -m "archived hooks/foo.sh"`` must be verified, while body prose
-    below the subject is ignored unless it opts into a scoped claim line.
+    "done <number> <noun>" completion claims, or a commit subject that starts
+    with a high-stakes verb. This keeps ``git commit -m "archived hooks/foo.sh"``
+    verifiable without treating conventional-commit prose like
+    ``docs: wired core.hooksPath example`` as an operational claim.
     """
     raw_lines = text.splitlines()
     lines = [line for line in raw_lines if SCOPED_CLAIM_LINE.search(line)]
     first_nonempty = next((line for line in raw_lines if line.strip()), "")
-    if first_nonempty and first_nonempty not in lines:
+    if first_nonempty and first_nonempty not in lines and SUBJECT_CLAIM_LINE.search(first_nonempty):
         lines.insert(0, first_nonempty)
     return "\n".join(lines)
 
