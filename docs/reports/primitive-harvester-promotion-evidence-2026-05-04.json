@@ -1,0 +1,36 @@
+{
+  "artifact_plan": [
+    "skills/primitive-harvester/SKILL.md",
+    "tests/behavior/test_primitive_harvester.py",
+    "tests/red_team/portability/test_primitive_harvester_portability.py"
+  ],
+  "candidate_name": "primitive-harvester",
+  "confidence": 0.9,
+  "decision": "IMPROVE_EXISTING",
+  "existing_match": {
+    "kind": "skill",
+    "name": "primitive-harvester",
+    "path": "skills/primitive-harvester/SKILL.md",
+    "score": 1.0,
+    "tokens": [
+      "primitive",
+      "harvester"
+    ]
+  },
+  "next_action": "extend existing skill `primitive-harvester` with tests",
+  "primitive_type": "documentation-decision",
+  "reasons": [
+    "conversion_signals=2",
+    "improvement_signals=1",
+    "verification_signals=1",
+    "existing_skill_match=primitive-harvester:1.00"
+  ],
+  "risks": [
+    "concurrency"
+  ],
+  "validation_plan": [
+    "python3 -m pytest tests/behavior/test_primitive_harvester.py -q",
+    "python3 -m pytest tests/red_team/portability/test_primitive_harvester_portability.py -q",
+    "python3 scripts/cos_work_inventory.py --all --strict --json"
+  ]
+}

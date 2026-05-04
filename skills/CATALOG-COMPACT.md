@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 160
+Total skills: 158
 
 ## os (17)
 
@@ -16,7 +16,7 @@ Total skills: 160
 | agent-dashboard | Show real-time status of all running background agents |
 | audit-integrity | Symlink-aware integrity audit of hooks, libs, and skills. |
 | bump-version | Calculate and write the new version to the VERSION file |
-| deps-update | Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins) using scripts/deps-update.sh |
+| deps-update | Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Cla… |
 | generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
 | hook-timing | Analyze hook execution latency — full stats, live tail, per-event or per-session views. |
 | memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible Unicode). |
@@ -27,7 +27,7 @@ Total skills: 160
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 | vuln-remediation-flow | Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation. |
 
-## os-dev (37)
+## os-dev (35)
 
 | Skill | Description |
 |-------|-------------|
@@ -40,13 +40,11 @@ Total skills: 160
 | cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
-| __contracts__ | Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives. |
 | coordination-status | List who is editing what across concurrent COS sessions. |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | docs-execution-audit | Audit what the docs say is done vs what repo evidence proves. |
 | dogfood-score | Composite 0-100 score measuring SO self-build maturity (tests, skills, hooks, ADRs, portability, activity, docs). |
-| experimental | Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog s… |
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
@@ -199,3 +197,4 @@ Total skills: 160
 | Skill | Description |
 |-------|-------------|
 | so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
+

@@ -3248,9 +3248,9 @@ primitives:
 - id: scripts/cos_primitive_harvester
   kind: script
   owner_adr: ADR-120
-  lifecycle_state: sandbox
-  maturity: observe
-  distribution: lab
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
@@ -3259,14 +3259,27 @@ primitives:
   - scripts/cos_primitive_harvester.py
   - docs/architecture/primitive-harvester.md
   runtime_projection: false
-  behavior_evidence: behavior-test
+  behavior_evidence: primitive-harvester-proposed-improvement; behavior-test
   evidence_commands:
+  - python3 scripts/cos_primitive_harvester.py --repo . --conversation-file docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json
+    --json
   - python3 -m pytest tests/behavior/test_cos_primitive_harvester.py -q
+  promotion_evidence:
+    primary_signal: primitive-harvester
+    from_state: sandbox
+    to_state: advisory
+    approved_by: operator
+    promoted_on: '2026-05-04'
+    artifact: docs/reports/primitive-harvester-promotion-evidence-2026-05-04.json
+    rationale: The harvester classified this session's repeated claim/evidence/Shape-B
+      problem as an improvement to the existing primitive-harvester workflow; the
+      operator asked to resolve it, so the primitive is promoted from lab sandbox
+      to maintainer advisory without entering core/team or mutating runtime behavior.
   rollback_or_repair_command: Keep generated primitive proposals in lab output only
     and ignore harvester suggestions until evidence is refreshed.
   sunset_criteria: Demote to archived if proposal precision remains below the configured
     ROI threshold for two consecutive review windows.
-  docs_claim_level: observe
+  docs_claim_level: advisory
   exit_behavior: manual
   metrics_file: none
 - kind: script

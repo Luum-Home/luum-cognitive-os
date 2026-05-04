@@ -73,6 +73,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Docker Image Review — 2026-05-04](reports/docker-image-review-2026-05-04.md) — removes the broken AutoMaker GHCR image from reference compose and keeps pinned Python images unchanged.
 - [Hook-Enforced Rule Projection Manual Test](manual-tests/hook-enforced-rule-projection.md) — manual proof path for the EXCLUDED_RULES context diet, Claude/Codex projection, and dependency-upgrade bypass gate.
 - [Session Handoff — 2026-05-04](SESSION-HANDOFF-2026-05-04.md) — evidence-based ADR implementation reality matrix and step-by-step execution order after ADR-143/144 closure.
+- [ADR Implementation Closure Session — 2026-05-04](SESSION-ADR-CLOSURE-2026-05-04.md) — separate reconciliation pass for all ADRs up to ADR-138, classifying stale, superseded, obsolete, deferred, and still-current implementation gaps before writing code.
+- [Claim Boundary Resolution — 2026-05-04](reports/claim-boundary-resolution-2026-05-04.md) — resolves self-building/Shape-B/ADR-closure claims without signing external adoption evidence prematurely.
 - [DX-First Cloud Flow Bootstrap Plan](architecture/dx-cloud-flow-bootstrap-plan.md) — strategic plan for COS as runtime-of-prosthesis for cloud agent flows under human audit; vulnerability remediation in `e2b` sandbox as flow #1, with explicit bootstrap budget caps and falsifiable conditions. ADR-139..142 committed as cloud premises prereqs before promoting flow #1 beyond `lab`.
 - [Skill Efficacy Measurement](architecture/skill-efficacy.md) — marginal skill utility metrics and report surface.
 - [Runtime Benchmark MVP](architecture/runtime-benchmark-mvp.md) — no-cost local schema and leaderboard for vanilla-vs-COS comparisons.

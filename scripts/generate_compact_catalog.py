@@ -101,6 +101,8 @@ def collect_skills(root: Path = PROJECT_ROOT) -> list[dict]:
         fm = parse_frontmatter(skill_md.read_text())
         if not fm:
             continue
+        if str(fm.get("user-invocable", "")).lower() == "false":
+            continue
         skills.append({
             "name": fm.get("name", skill_md.parent.name),
             "audience": fm.get("audience", "project"),
