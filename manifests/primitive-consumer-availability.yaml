@@ -253,6 +253,42 @@ items:
   status: shell-ci-candidate
   rationale: Candidate consumer full validation wrapper; needs shell/CI projection
     proof.
+- path: hooks/dangerous-env-flag-detector.sh
+  status: so-local-only
+  rationale: Local advisory SessionStart detector for dangerous override flags; not a standalone consumer capability.
+- path: scripts/dangerous_env_flag_detector.py
+  status: so-local-only
+  rationale: Python analyzer behind the local dangerous-env hook; not a standalone consumer capability.
+- path: scripts/metrics_tamper_audit.py
+  status: so-local-only
+  rationale: Security red-team analyzer implementation; not a standalone consumer capability.
+- path: scripts/provider_spoof_audit.py
+  status: so-local-only
+  rationale: Security red-team analyzer implementation; not a standalone consumer capability.
+- path: scripts/network_sandbox_run.py
+  status: so-local-only
+  rationale: Security sandbox helper for red-team workflows; not a standalone consumer capability.
+- path: hooks/engram-obsidian-export-on-stop.sh
+  status: so-local-only
+  rationale: Optional local Stop hook for Engram-to-Obsidian export; not a standalone consumer capability.
+- path: hooks/network-egress-guard.sh
+  status: so-local-only
+  rationale: Local PreToolUse runtime guard projected by Claude settings; not a standalone consumer capability.
+- path: hooks/protected-config-write-guard.sh
+  status: so-local-only
+  rationale: Local PreToolUse runtime guard projected by Claude settings; not a standalone consumer capability.
+- path: scripts/network_egress_guard.py
+  status: so-local-only
+  rationale: Python analyzer behind the local network-egress PreToolUse guard; not a standalone consumer capability.
+- path: scripts/security-red-team
+  status: lifecycle-declared-maintainer
+  rationale: Opt-in maintainer security workflow; lifecycle metadata controls projection before consumer claims.
+- path: scripts/security_red_team.py
+  status: lifecycle-declared-maintainer
+  rationale: Python implementation behind the opt-in security workflow wrapper.
+- path: scripts/cos-key-learnings-capture
+  status: lifecycle-declared-maintainer
+  rationale: Opt-in team learning-capture helper; lifecycle metadata controls projection before consumer claims.
 patterns:
 - pattern: scripts/**
   status: so-local-only
