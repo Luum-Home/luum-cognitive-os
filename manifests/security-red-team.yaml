@@ -1,18 +1,17 @@
 schema_version: security-red-team.v1
 review_date: 2026-05-05
-purpose: >-
-  Unified Cognitive OS red-team primitive contract: inventory surface, model
-  threats, execute deterministic abuse probes, score security controls per
-  primitive, and produce a mitigation backlog.
+purpose: 'Unified Cognitive OS red-team primitive contract: inventory surface, model
+  threats, execute deterministic abuse probes, score security controls per primitive,
+  and produce a mitigation backlog.'
 outputs:
   json: .cognitive-os/reports/security-red-team/security-red-team-latest.json
   markdown: .cognitive-os/reports/security-red-team/security-red-team-latest.md
 families:
-  - surface-inventory
-  - threat-model
-  - abuse-probes
-  - primitive-scoring
-  - mitigation-backlog
+- surface-inventory
+- threat-model
+- abuse-probes
+- primitive-scoring
+- mitigation-backlog
 score_dimensions:
   isolation_strength: Does the primitive reduce filesystem/process/network blast radius?
   secret_handling: Does it avoid direct secret reads and redact/avoid secret outputs?
@@ -23,23 +22,62 @@ score_dimensions:
   failure_mode_clarity: Does it fail closed or clearly warn when degraded?
   operator_ergonomics: Can a maintainer run it without unsafe shortcuts?
 required_probes:
-  - credential_safe_integrity
-  - credential_safe_env_boundary
-  - blocked_path_policy
-  - redteam_scenario_coverage
-  - scanner_hook_presence
-  - runtime_flag_registry
-  - mcp_security_surface
-  - runtime_sensitive_file_deny
-  - protected_config_write_guard
-  - network_egress_guard
-  - mcp_tofu_pinning
-  - dangerous_env_flag_detector
-  - network_sandbox_runner
-  - metrics_tamper_audit
-  - provider_spoof_audit
+- credential_safe_integrity
+- credential_safe_env_boundary
+- blocked_path_policy
+- redteam_scenario_coverage
+- scanner_hook_presence
+- runtime_flag_registry
+- mcp_security_surface
+- runtime_sensitive_file_deny
+- protected_config_write_guard
+- network_egress_guard
+- mcp_tofu_pinning
+- dangerous_env_flag_detector
+- network_sandbox_runner
+- metrics_tamper_audit
+- provider_spoof_audit
 severity_weights:
   CRITICAL: 25
   HIGH: 15
   MEDIUM: 8
   LOW: 3
+deferred_deep_mode_backlog:
+- id: deep-provider-metrics-audits
+  description: Integrate scripts/provider_spoof_audit.py and scripts/metrics_tamper_audit.py
+    into a --deep security-red-team mode that executes audits against current metrics,
+    not only checks that the audit primitives exist.
+  target_files:
+  - scripts/security_red_team.py
+  - scripts/provider_spoof_audit.py
+  - scripts/metrics_tamper_audit.py
+  acceptance:
+  - scripts/security-red-team --deep --fail-on none emits provider/metrics audit sections
+  - tests cover malformed JSONL, offline provider spoof, and clean metrics
+- id: docker-network-none-smoke
+  description: Run an opt-in real Docker --network none smoke for scripts/network_sandbox_run.py
+    when Docker is available and local resource policy allows it.
+  target_files:
+  - scripts/network_sandbox_run.py
+  - tests/security/
+  acceptance:
+  - dry-run remains default in CI
+  - opt-in smoke proves container has --network none and cannot reach external hosts
+- id: mcp-pins-when-servers-exist
+  description: When MCP servers are configured, record trust-on-first-use pins with
+    tool-description hashes and fail on unpinned or drifted servers.
+  target_files:
+  - manifests/mcp-trust-pins.yaml
+  - scripts/mcp_tofu_audit.py
+  acceptance:
+  - actual MCP servers have pins
+  - tool description drift produces a failing audit
+- id: expand-adversarial-security-scenarios
+  description: Continue expanding tests/security and tests/red_team with ANSI/invisible
+    Unicode, symlink traversal, provider spoofing, metrics tampering, and egress variants.
+  target_files:
+  - tests/security/
+  - tests/red_team/scenarios/
+  acceptance:
+  - new scenarios are deterministic and do not require real secrets
+  - /security-red-team report links or summarizes new coverage
