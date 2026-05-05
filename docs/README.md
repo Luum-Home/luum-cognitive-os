@@ -148,7 +148,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Security Red-Team Primitive](security/security-red-team.md) — unified `/security-red-team` runner for surface inventory, threat model, abuse probes, primitive scoring, and mitigation backlog.
 - [Cognitive OS Attack Surface Inventory — 2026-05-05](security/cognitive-os-attack-surface-inventory.md) — local inventory of hooks, rules, skills, scripts, manifests, security hooks, runtime flags, and high-risk surfaces.
 - [Cognitive OS Agent Security Research — 2026-05-05](security/cognitive-os-agent-security-research-2026-05-05.md) — external-source-backed red-team assessment of COS security posture, MCP/tool risks, sandboxing, exfiltration, and mitigation backlog.
-- [Cognitive OS Security Assessment Plan](security/cognitive-os-security-assessment-plan.md) — phased defender/red-team plan for assessing SO tools, agentic primitives, secret handling, and trust controls.
+- [Cognitive OS Security Assessment Plan](../.cognitive-os/plans/research/cognitive-os-security-assessment-plan.md) — phased defender/red-team plan for assessing SO tools, agentic primitives, secret handling, and trust controls.
 - [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
 - [Primitive Fitness Evaluation Contract](architecture/primitive-fitness-evaluation-contract.md) — baseline-vs-candidate KPI/OKR fitness gate plus family ledger/ACC visibility for governed primitive self-improvement.
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.
