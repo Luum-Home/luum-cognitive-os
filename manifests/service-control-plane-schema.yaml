@@ -1,0 +1,276 @@
+schema_version: service-control-plane.v1
+owner_docs:
+  - docs/architecture/service-control-plane-research-2026-05-04.md
+  - docs/architecture/service-control-plane-implementation-plan.md
+  - docs/manual-tests/service-control-plane-proof-drills.md
+purpose: >-
+  Machine-readable contract for the future COS service control plane. This
+  manifest defines the daemon, queue, worker, lease, artifact, and publication
+  boundaries before any long-running cosd implementation ships.
+status: planned_contract
+product_claim_boundary: >-
+  COS has an implemented harness-embedded runtime, Docker worker surface, and
+  Engram Cloud service proof. This schema does not by itself mean COS has a
+  production standalone scheduler.
+
+required_surfaces:
+  - cosd
+  - task_queue
+  - scheduler
+  - lease_manager
+  - worker
+  - executor_adapter
+  - engram_cloud
+  - artifact_store
+  - propose_only_publication
+
+surfaces:
+  cosd:
+    status: planned
+    role: task_admission_and_scheduler_boundary
+    implementation_files:
+      - scripts/cosd
+    must_not:
+      - read_provider_credential_stores
+      - copy_provider_tokens
+      - merge_without_human_approval
+      - push_directly_to_main
+    owns:
+      - task_admission
+      - queue_selection
+      - scheduler_loop
+      - worker_launch_policy
+  task_queue:
+    status: planned
+    initial_storage: jsonl
+    allowed_storage:
+      - jsonl
+      - sqlite
+    implementation_files:
+      - scripts/cos-task-submit
+      - scripts/cos-queue-drain
+    required_fields:
+      - task_id
+      - kind
+      - created_at
+      - requested_by
+      - executor_id
+      - payload
+      - desired_outputs
+      - approval_policy
+    invariants:
+      - task_id_is_idempotency_key
+      - append_only_audit
+      - no_provider_credentials_in_payload
+  scheduler:
+    status: planned
+    role: select_eligible_task_and_worker
+    invariants:
+      - never_dispatch_to_unsupported_executor
+      - never_dispatch_without_successful_auth_probe_when_credentials_required
+      - never_dispatch_publish_actions_without_human_approval
+  lease_manager:
+    status: planned
+    required_fields:
+      - lease_id
+      - task_id
+      - worker_id
+      - acquired_at
+      - expires_at
+      - heartbeat_at
+      - status
+    statuses:
+      - active
+      - completed
+      - expired
+      - needs_human
+      - failed
+    invariants:
+      - one_active_lease_per_task
+      - expired_lease_cannot_publish
+      - crash_writes_recoverable_evidence
+  worker:
+    status: planned
+    implementation_files:
+      - scripts/cos-worker-run-once
+      - docker/cos-worker/docker-compose.yml
+    allowed_runtimes:
+      - host
+      - container
+      - cloud
+    first_executor: local-command
+    invariants:
+      - writes_artifact_bundle
+      - redacts_secret_like_output
+      - supports_dry_run
+      - supports_keep_for_debug
+  executor_adapter:
+    status: planned
+    registry_manifest: manifests/provider-executor-contracts.yaml
+    required_probe_statuses:
+      - ready
+      - auth_required
+      - unsupported
+      - unsafe
+    invariants:
+      - credential_mode_declared
+      - cost_mode_declared
+      - allowed_runtime_declared
+      - no_credential_store_reads
+  engram_cloud:
+    status: implemented_service_proof
+    role: cross_instance_memory_transport
+    evidence:
+      - scripts/cos-engram-cloud-docker-smoke
+      - docs/manual-tests/engram-cloud-docker-sync.md
+    not_responsible_for:
+      - task_scheduling
+      - worker_leases
+      - publication
+  artifact_store:
+    status: planned
+    initial_storage: filesystem
+    required_bundle_files:
+      - task.json
+      - lease.json
+      - executor.json
+      - result.json
+      - redaction-report.json
+      - logs/stdout.txt
+      - logs/stderr.txt
+    invariants:
+      - no_raw_secrets
+      - append_only_metadata
+      - evidence_links_are_relative_or_redacted
+  propose_only_publication:
+    status: planned
+    allowed_outputs:
+      - patch_diff
+      - draft_pr
+      - temp_branch
+      - evidence_bundle
+    blocked_actions:
+      - auto_merge
+      - direct_main_push
+      - force_push
+      - publish_credentials
+      - bypass_governance_gate
+    human_approval_required: true
+
+phase_order:
+  - contract
+  - local_queue
+  - local_worker
+  - host_cli_executor
+  - container_cli_executor
+  - api_or_proxy_executor
+  - crash_resume
+  - propose_only_publication
+  - compose_service
+  - local_kubernetes
+
+phase_gates:
+  contract:
+    required_files:
+      - manifests/service-control-plane-schema.yaml
+      - manifests/provider-executor-contracts.yaml
+      - docs/manual-tests/service-control-plane-proof-drills.md
+  local_queue:
+    requires:
+      - contract
+    scripts:
+      - scripts/cosd
+      - scripts/cos-task-submit
+      - scripts/cos-queue-drain
+    no_model_calls: true
+  local_worker:
+    requires:
+      - local_queue
+    scripts:
+      - scripts/cos-worker-run-once
+    required_executor: local-command
+    no_provider_credentials: true
+  host_cli_executor:
+    requires:
+      - local_worker
+    preferred_for: maintainer_personal_swarm
+    must_probe_auth: true
+  container_cli_executor:
+    requires:
+      - host_cli_executor
+    must_have_provider_supported_auth_story: true
+  api_or_proxy_executor:
+    requires:
+      - local_worker
+    intended_for:
+      - ci
+      - hosted
+      - team_cloud
+  crash_resume:
+    requires:
+      - local_worker
+    proof_drill: P6
+  propose_only_publication:
+    requires:
+      - crash_resume
+    human_approval_required: true
+  compose_service:
+    requires:
+      - propose_only_publication
+    includes:
+      - cosd
+      - queue
+      - worker
+      - engram_cloud
+  local_kubernetes:
+    requires:
+      - compose_service
+    cloud_provider_overlays_allowed_after: true
+
+runtime_shapes:
+  local_maintainer_host:
+    preferred_credential_modes:
+      - account-session
+    allowed_runtimes:
+      - host
+    default_cost_posture: subscription_account
+  personal_vm:
+    preferred_credential_modes:
+      - account-session
+      - device-login
+      - oauth-token
+      - api-key
+      - provider-cloud
+    allowed_runtimes:
+      - host
+      - container
+    default_cost_posture: subscription_account
+  docker_trusted_host:
+    preferred_credential_modes:
+      - device-login
+      - oauth-token
+      - api-key
+      - provider-cloud
+      - proxy-gateway
+    allowed_runtimes:
+      - container
+    default_cost_posture: unknown
+  ci_or_hosted_cloud:
+    preferred_credential_modes:
+      - api-key
+      - provider-cloud
+      - oauth-token
+      - proxy-gateway
+    allowed_runtimes:
+      - cloud
+      - container
+    default_cost_posture: api_metered
+
+not_yet_building:
+  - redis_or_valkey_queue
+  - distributed_locks
+  - multi_tenant_hosted_service
+  - full_engram_consensus
+  - autonomous_merge
+  - unofficial_credential_reuse
+
