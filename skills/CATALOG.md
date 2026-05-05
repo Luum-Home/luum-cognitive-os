@@ -24,6 +24,7 @@
 | metrics-calibrator | Analyze KPI distributions, auto-adjust thresholds, propose derived metrics | `/metrics-calibrator` | os-dev |
 | harness-audit | Evaluate harness agentic primitives for relevance, identify retirement candidates | `/harness-audit` | os-dev |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works | `/smoke-test` | os-dev |
+| proof-drill | Select and run opt-in proof drills and smoke checks for SO self-build and consumer-project validation without polluting default lanes | `/proof-drill` | both |
 | test-contract-repair | Repair failing or misleading tests without greenwashing: classify the contract, confirm history, fix runtime when needed, strengthen structural checks into behavioral proof | `/test-contract-repair` | os-dev |
 | detect-patterns | Detect systemic problems: dead metadata, broken chains, phantom entries, structural tests | `/detect-patterns` | os-dev |
 | security-audit | Comprehensive security audit: secrets, permissions, hooks, infrastructure, Docker ports | `/security-audit` | os-dev |
