@@ -77,6 +77,14 @@ make the cost-bearing decision explicit:
 COS_RUN_PROVIDER_SMOKE=1 scripts/cos-headless-service-drill --json --keep-workspace
 ```
 
+If the host Codex CLI defaults to a model unsupported by the installed CLI
+version, pin a supported model for the smoke:
+
+```bash
+COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=gpt-5.4 \
+  scripts/cos-headless-service-drill --json --keep-workspace
+```
+
 This calls the official host `codex` CLI through the service-control-plane
 adapter when `scripts/cos-auth-probe --provider codex --mode account-session`
 returns `ready`. It still does not read `~/.codex/auth.json`; the official CLI
@@ -140,36 +148,30 @@ with:
 - `logs/stdout.txt`
 - `logs/stderr.txt`
 
-### Host Codex provider smoke attempted
+### Host Codex provider smoke
 
-A cost-bearing host Codex provider smoke was attempted separately with:
+A cost-bearing host Codex provider smoke was attempted with the default host
+Codex model and failed because the installed Codex CLI rejected `gpt-5.5` as
+requiring a newer CLI. The same smoke then passed with an explicit supported
+model override:
 
 ```bash
-scripts/cos-task-submit --project-dir "$TMP_HOST" \
-  --kind provider \
-  --executor codex-cli-host \
-  --task-id task-host-codex-provider-proof \
-  --prompt 'Reply exactly: COS_PROVIDER_SMOKE_OK' \
-  --json
-
-scripts/cos-worker-run-once --project-dir "$TMP_HOST" \
-  --worker-id host-codex-proof \
-  --allow-provider-call \
-  --json
+COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=gpt-5.4 \
+  scripts/cos-headless-service-drill --json --keep-workspace
 ```
 
 Result:
 
 ```text
 provider_calls=1
-status=failed
-returncode=1
+status=completed
+returncode=0
+message=COS_PROVIDER_SMOKE_OK
 ```
 
-The official Codex CLI was authenticated, but the provider call failed because
-the installed Codex CLI reported that the configured model requires a newer
-Codex version. This proves the adapter reached the official CLI, but does **not**
-yet prove successful provider-backed agent work.
+The official Codex CLI was authenticated and executed through the host adapter.
+The adapter redacted the prompt in `command_shape` and did not read Codex
+credential stores directly.
 
 ## Current conclusion
 
@@ -177,10 +179,11 @@ yet prove successful provider-backed agent work.
   lease, workspace, artifacts, and redaction report.
 - Proven: host Codex account-session probe is ready without COS reading token
   stores.
+- Proven: account-backed host Codex provider execution works through the service
+  adapter when `COS_RUN_PROVIDER_SMOKE=1` and `COS_CODEX_EXEC_MODEL` pins a
+  model supported by the installed CLI.
 - Proven negative: Docker worker does not automatically inherit host Codex or
   Claude Code account sessions.
-- Not proven: successful account-backed Codex provider execution through the
-  service adapter, because host Codex CLI needs upgrade/alignment.
 - Not proven: Claude Code provider execution, because `claude` CLI is not on
   PATH in this environment.
 
