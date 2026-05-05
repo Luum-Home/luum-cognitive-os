@@ -14,14 +14,14 @@ import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
+from lib.project_paths import repo_root_from_file
 
-def get_project_root() -> Path:
-    return Path(__file__).resolve().parent.parent
-
-
+get_project_root = lambda: repo_root_from_file(__file__)
 BASELINE_FILE = ".cognitive-os/metrics/test-baseline.json"
-
 
 def count_tests(root: Path) -> int | None:
     """Run pytest --collect-only and return the number of collected test items."""

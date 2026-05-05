@@ -436,6 +436,27 @@ case "${_caller_lane:-}" in
     ;;
 esac
 
+skip_registry_json="$run_dir/skip-summary.json"
+skip_registry_md="$run_dir/skip-summary.md"
+skip_registry_status=0
+skip_registry_tool="$SCRIPT_DIR/test_skip_registry.py"
+skip_registry_manifest="$PROJECT_DIR/manifests/test-skip-registry.yaml"
+if [ "${COS_TEST_SKIP_REGISTRY:-1}" != "0" ] && [ -n "${_caller_lane:-}" ] && [ -f "$skip_registry_tool" ] && [ -f "$skip_registry_manifest" ] && [ -f "$junit" ]; then
+  set +e
+  python3 "$skip_registry_tool" \
+    --registry "$skip_registry_manifest" \
+    --junit "$junit" \
+    --lane "$_caller_lane" \
+    --json-out "$skip_registry_json" \
+    --md-out "$skip_registry_md" \
+    --fail-unknown
+  skip_registry_status=$?
+  set -e
+  if [ "$status" -eq 0 ] && [ "$skip_registry_status" -ne 0 ]; then
+    status="$skip_registry_status"
+  fi
+fi
+
 printf '%s\n' "$status" > "$exit_code_file"
 
 if [ "$_empty_reserved_lane" -eq 1 ]; then
@@ -491,6 +512,23 @@ PYRESOURCE
   [ -n "${_caller_docker_policy:-}" ] && echo "- Docker policy: $_caller_docker_policy"
   [ -n "${_caller_cost_policy:-}" ] && echo "- Cost policy: $_caller_cost_policy"
   [ -n "${_caller_artifact_policy:-}" ] && echo "- Artifact policy: $_caller_artifact_policy"
+  if [ -f "$skip_registry_json" ]; then
+    echo
+    echo "## Skip Registry"
+    python3 - "$skip_registry_json" <<'PYSKIPSUMMARY'
+from __future__ import annotations
+
+import json
+import sys
+
+payload = json.load(open(sys.argv[1], encoding="utf-8"))
+print(f"- Total skips: {payload.get('total_skips', 0)}")
+print(f"- Unknown skips: {payload.get('unknown_count', 0)}")
+print(f"- Status: {payload.get('status', 'unknown')}")
+for category, count in sorted((payload.get("counts_by_category") or {}).items()):
+    print(f"- {category}: {count}")
+PYSKIPSUMMARY
+  fi
   echo
   echo "## Result Lines"
   grep -E "^(=+ .* =+|[0-9]+ (failed|passed|skipped|xfailed|xpassed|error|errors)|FAILED |ERROR )" "$full_output" | tail -80 || true
