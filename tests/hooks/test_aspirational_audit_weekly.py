@@ -9,11 +9,9 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import sys
 import time
 from pathlib import Path
 
-import pytest
 
 REPO_ROOT = Path(__file__).parent.parent.parent
 HOOK = REPO_ROOT / "hooks" / "aspirational-audit-weekly.sh"
@@ -75,6 +73,8 @@ class TestHookExitBehavior:
         # No marker → fresh run should happen (and exit 0)
         result = run_hook(project)
         assert result.returncode == 0
+        marker = project / ".cognitive-os" / "metrics" / ".last-aspirational-audit"
+        assert marker.exists()
 
     def test_hook_fail_safe_on_missing_script(self, tmp_path):
         """Hook exits 0 when aspirational_audit.py is missing (fail-open)."""
@@ -100,9 +100,12 @@ class TestHookExitBehavior:
                 f"#!/usr/bin/env bash\necho hook{i}\n"
             )
         # No registered hooks → all 5 are ASPIRATIONAL → ratio = 100% > 40%
-        result = run_hook(project)
+        result = run_hook(
+            project,
+            env_overrides={"COS_ASPIRATIONAL_AUDIT_SYNC": "true"},
+        )
         assert result.returncode == 0
-        # Advisory should appear on stderr
+        # Advisory should appear on stderr in explicit synchronous proof mode
         assert "aspirational audit" in result.stderr.lower() or \
                "dormant" in result.stderr.lower() or \
                "%" in result.stderr
