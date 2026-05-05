@@ -5,6 +5,12 @@ Obsidian-compatible Markdown graph without making Obsidian the source of truth.
 
 ## Preconditions
 
+- Local Obsidian is installed and validated:
+
+  ```bash
+  bash scripts/install-obsidian-local.sh --status
+  ```
+
 - `engram serve` is running on the default local port, or the Engram HTTP API is
   otherwise reachable through the configured environment.
 - You have an Obsidian vault path you are willing to use for a test export.
