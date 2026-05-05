@@ -1,0 +1,252 @@
+schema_version: provider-executor-contracts.v1
+owner_docs:
+  - docs/architecture/service-control-plane-research-2026-05-04.md
+  - docs/architecture/service-control-plane-implementation-plan.md
+  - docs/manual-tests/service-control-plane-proof-drills.md
+purpose: >-
+  Registry for provider executor adapters that a future COS service control
+  plane may dispatch. The registry separates account-backed CLI execution,
+  containerized CLI execution, API/provider-cloud execution, and proxy/gateway
+  execution so cost and credential posture are explicit.
+status: planned_contract
+
+enums:
+  credential_modes:
+    - none
+    - account-session
+    - device-login
+    - oauth-token
+    - api-key
+    - provider-cloud
+    - proxy-gateway
+    - unknown
+  cost_modes:
+    - none
+    - subscription_account
+    - api_metered
+    - provider_cloud_metered
+    - gateway_metered
+    - unknown
+  allowed_runtimes:
+    - host
+    - container
+    - cloud
+  auth_probe_statuses:
+    - ready
+    - auth_required
+    - unsupported
+    - unsafe
+  lifecycle_states:
+    - contract
+    - lab
+    - sandbox
+    - advisory
+    - blocking
+    - demoted
+    - archived
+
+global_invariants:
+  - no_direct_credential_store_reads
+  - no_token_material_in_artifacts
+  - auth_probe_before_dispatch_when_credentials_required
+  - propose_only_output_until_human_approval
+  - provider_stdout_stderr_redacted_before_persistence
+  - missing_auth_returns_auth_required
+
+required_adapter_fields:
+  - executor_id
+  - provider
+  - runtime_kind
+  - lifecycle_state
+  - credential_modes
+  - cost_mode
+  - allowed_runtimes
+  - auth_probe
+  - machine_readable_output
+  - supports_patch_output
+  - supports_dry_run
+  - propose_only_required
+  - credential_store_access
+  - lab_exit_criteria
+
+adapters:
+  - executor_id: local-command
+    provider: local
+    runtime_kind: deterministic_subprocess
+    lifecycle_state: contract
+    credential_modes:
+      - none
+    cost_mode: none
+    allowed_runtimes:
+      - host
+      - container
+    auth_probe:
+      command: scripts/cos-auth-probe --provider local --mode none --json
+      expected_statuses:
+        - ready
+    machine_readable_output: true
+    supports_patch_output: true
+    supports_dry_run: true
+    propose_only_required: true
+    credential_store_access: forbidden
+    lab_exit_criteria:
+      - queue_local_task_completed
+      - artifact_bundle_written
+      - no_provider_credentials_required
+
+  - executor_id: codex-cli-host
+    provider: openai-codex
+    runtime_kind: official_cli_host
+    lifecycle_state: lab
+    credential_modes:
+      - account-session
+      - api-key
+    cost_mode: subscription_account
+    allowed_runtimes:
+      - host
+    auth_probe:
+      command: scripts/cos-auth-probe --provider codex --mode account-session --json
+      expected_statuses:
+        - ready
+        - auth_required
+        - unsupported
+        - unsafe
+    machine_readable_output: true
+    supports_patch_output: true
+    supports_dry_run: true
+    propose_only_required: true
+    credential_store_access: forbidden
+    notes: >-
+      Invoke the official Codex CLI in a trusted host session. COS must not read
+      ~/.codex/auth.json directly.
+    lab_exit_criteria:
+      - official_cli_invocation_proven
+      - account_session_probe_does_not_read_token_store
+      - redaction_report_written
+
+  - executor_id: claude-cli-host
+    provider: anthropic-claude-code
+    runtime_kind: official_cli_host
+    lifecycle_state: lab
+    credential_modes:
+      - account-session
+      - oauth-token
+      - api-key
+      - provider-cloud
+    cost_mode: subscription_account
+    allowed_runtimes:
+      - host
+    auth_probe:
+      command: scripts/cos-auth-probe --provider claude --mode account-session --json
+      expected_statuses:
+        - ready
+        - auth_required
+        - unsupported
+        - unsafe
+    machine_readable_output: false
+    supports_patch_output: true
+    supports_dry_run: true
+    propose_only_required: true
+    credential_store_access: forbidden
+    notes: >-
+      Invoke the official Claude Code CLI in a trusted host session. COS must
+      not read ~/.claude, macOS Keychain, OAuth tokens, or API keys directly.
+    lab_exit_criteria:
+      - official_cli_invocation_proven
+      - account_session_probe_does_not_read_token_store
+      - redaction_report_written
+
+  - executor_id: codex-cli-container
+    provider: openai-codex
+    runtime_kind: official_cli_container
+    lifecycle_state: lab
+    credential_modes:
+      - device-login
+      - api-key
+      - proxy-gateway
+    cost_mode: unknown
+    allowed_runtimes:
+      - container
+    auth_probe:
+      command: scripts/cos-auth-probe --provider codex --mode device-login --json
+      expected_statuses:
+        - ready
+        - auth_required
+        - unsupported
+        - unsafe
+    machine_readable_output: true
+    supports_patch_output: true
+    supports_dry_run: true
+    propose_only_required: true
+    credential_store_access: documented_provider_mount_only
+    lab_exit_criteria:
+      - provider_documented_container_auth
+      - auth_negative_container_proof_passes
+      - no_opaque_host_credential_copy
+
+  - executor_id: claude-cli-container
+    provider: anthropic-claude-code
+    runtime_kind: official_cli_container
+    lifecycle_state: lab
+    credential_modes:
+      - device-login
+      - oauth-token
+      - api-key
+      - provider-cloud
+      - proxy-gateway
+    cost_mode: unknown
+    allowed_runtimes:
+      - container
+    auth_probe:
+      command: scripts/cos-auth-probe --provider claude --mode device-login --json
+      expected_statuses:
+        - ready
+        - auth_required
+        - unsupported
+        - unsafe
+    machine_readable_output: false
+    supports_patch_output: true
+    supports_dry_run: true
+    propose_only_required: true
+    credential_store_access: documented_provider_mount_only
+    lab_exit_criteria:
+      - provider_documented_container_auth
+      - auth_negative_container_proof_passes
+      - no_opaque_host_credential_copy
+
+  - executor_id: proxy-gateway
+    provider: generic
+    runtime_kind: proxy_gateway
+    lifecycle_state: lab
+    credential_modes:
+      - proxy-gateway
+    cost_mode: gateway_metered
+    allowed_runtimes:
+      - host
+      - container
+      - cloud
+    auth_probe:
+      command: scripts/cos-auth-probe --provider proxy-gateway --mode proxy-gateway --json
+      expected_statuses:
+        - ready
+        - auth_required
+        - unsupported
+        - unsafe
+    machine_readable_output: true
+    supports_patch_output: true
+    supports_dry_run: true
+    propose_only_required: true
+    credential_store_access: forbidden
+    lab_exit_criteria:
+      - gateway_auth_probe_passes
+      - billing_identity_declared
+      - redaction_report_written
+
+lab_only_provider_placeholders:
+  - provider: kimi
+    reason: Awaiting provider-specific CLI/API/headless auth proof drill.
+  - provider: minimax
+    reason: Awaiting provider-specific CLI/API/headless auth proof drill.
+  - provider: deepseek
+    reason: Awaiting provider-specific CLI/API/headless auth proof drill.
+
