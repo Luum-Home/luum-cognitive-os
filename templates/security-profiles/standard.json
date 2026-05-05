@@ -491,5 +491,13 @@
         ]
       }
     ]
-  }
+  },
+  "_paperclip_hooks_registered_in_driver": [
+    "paperclip-sync.sh",
+    "paperclip-sdd-sync.sh",
+    "paperclip-agent-status.sh",
+    "paperclip-cost-stream.sh",
+    "paperclip-squad-sync.sh",
+    "paperclip-task-sync.sh"
+  ]
 }
