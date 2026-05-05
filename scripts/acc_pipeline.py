@@ -38,6 +38,7 @@ DEFAULT_WEIGHTS = {
     "rule": 2,
     "doc_claim": 2,
     "primitive_family": 3,
+    "proof_drill": 2,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -603,6 +604,56 @@ def apply_fail_new_gate(payload: dict[str, Any], baseline: dict[str, Any], stric
         payload["gate"]["status"] = "block"
         payload["gate"].setdefault("blocks", []).append(f"new_debt:{len(new_debt)}")
 
+
+
+def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "proof-drill-evidence-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", "docs/reports/proof-drill-evidence-latest.json", error="missing proof drill evidence report"), [], []
+    data = read_json(path)
+    rows = data.get("rows", []) if isinstance(data, dict) else []
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    status_counts: dict[str, int] = {}
+    for row in rows:
+        status = str(row.get("status", "unverified"))
+        status_counts[status] = status_counts.get(status, 0) + 1
+        mapping = "aligned" if status == "passed" else "stale" if status == "failed" else "unverified"
+        evidence = [
+            f"proof_drill_status:{status}",
+            f"command:{row.get('command', '')}",
+            f"source_report:{data.get('source_report', '')}",
+        ]
+        evidence.extend(str(item) for item in row.get("evidence_artifacts", []))
+        capabilities.append(Capability(
+            id=f"proof_drill:{row.get('id', '')}",
+            kind="proof_drill",
+            source={"path": data.get("source_report", str(path.relative_to(root))), "proof_drill_id": row.get("id", "")},
+            risk="medium" if "provider" not in str(row.get("command", "")).lower() else "high",
+            signature={"scope": row.get("scope"), "exit_code": row.get("exit_code"), "status": status},
+            represented_by=[{"kind": "proof_drill", "id": row.get("id", ""), "source": row.get("command", ""), "role": "evidence"}],
+            mapping_status=mapping,
+            confidence=0.92 if mapping == "aligned" else 0.7,
+            consumer_accessibility="so-local-only" if row.get("scope") == "os-self" else "projectable-needs-driver",
+            lifecycle_status="real",
+            evidence=evidence[:12],
+            weight=DEFAULT_WEIGHTS["proof_drill"],
+        ))
+        if mapping == "stale":
+            findings.append(Finding(
+                f"proof_drill:{row.get('id', '')}",
+                "high",
+                "stale",
+                "Proof drill evidence recorded a failed run",
+                evidence[:8],
+                "repair the runtime or downgrade the claim",
+            ))
+    return AdapterStatus(
+        "ok",
+        str(path.relative_to(root)),
+        summary={"rows": len(rows), "status_counts": dict(sorted(status_counts.items()))},
+    ), capabilities, findings
+
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
@@ -864,6 +915,9 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         shell_ci_manifest,
     )
     readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected, availability)
+    proof_status, proof_capabilities, proof_findings = load_proof_drill_evidence(root)
+    capabilities.extend(proof_capabilities)
+    findings.extend(proof_findings)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
     adapters = {
@@ -873,6 +927,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "consumer_availability": availability_status,
         "shell_ci_projection": shell_ci_status,
         "consumer_projection": projection_status,
+        "proof_drill_evidence": proof_status,
         **readiness_adapters,
         **existing_adapters,
     }
