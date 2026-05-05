@@ -37,6 +37,7 @@
 #
 # POSIX / macOS compatible.
 set -uo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/session-id.sh"
 
 LOCK_TTL_SECONDS="${COS_EDIT_LOCK_TTL:-1800}"      # 30 minutes
 LOCK_HEARTBEAT_SECONDS="${COS_EDIT_LOCK_HEARTBEAT:-300}"  # refresh every 5min
@@ -84,10 +85,7 @@ _meta_file_for() {
 # ── Identity ────────────────────────────────────────────────────────────────
 
 _session_id() {
-  if [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then printf '%s' "$COGNITIVE_OS_SESSION_ID"; return; fi
-  if [ -n "${CODEX_SESSION_ID:-}" ]; then printf '%s' "$CODEX_SESSION_ID"; return; fi
-  if [ -n "${CLAUDE_SESSION_ID:-}" ]; then printf '%s' "$CLAUDE_SESSION_ID"; return; fi
-  printf 'shell-%s' "${PPID:-$$}"
+  cos_session_id
 }
 
 _agent_id() {

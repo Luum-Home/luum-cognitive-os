@@ -26,6 +26,11 @@ from typing import Any
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 WRAPPER = PROJECT_ROOT / "scripts" / "pytest-with-summary.sh"
 DETECTOR = PROJECT_ROOT / "scripts" / "detect_runner_capacity.py"
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_json as _load_json
 
 
 def _run(cmd: list[str], *, cwd: Path, env: dict[str, str], timeout: int) -> subprocess.CompletedProcess[str]:
@@ -38,10 +43,6 @@ def _run(cmd: list[str], *, cwd: Path, env: dict[str, str], timeout: int) -> sub
         timeout=timeout,
         check=False,
     )
-
-
-def _load_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _write_cpu_test(path: Path, *, test_count: int, work_seconds: float) -> None:

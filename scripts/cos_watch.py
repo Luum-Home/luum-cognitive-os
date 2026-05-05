@@ -33,20 +33,15 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Deque, Dict, Iterable, List, Optional
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.project_paths import project_dir_from_env as _project_dir
+
 
 CANONICAL_CHANNEL = "cos:canonical:live"
 REFRESH_HZ = 2.0
-
-
-def _project_dir() -> Path:
-    return Path(os.environ.get("COGNITIVE_OS_PROJECT_DIR",
-                               os.environ.get("CLAUDE_PROJECT_DIR",
-                                              os.getcwd())))
-
-
-# ---------------------------------------------------------------------------
-# Event model
-# ---------------------------------------------------------------------------
 
 
 @dataclass
@@ -218,7 +213,6 @@ def _format_panel(view: AgentView) -> str:
 
 def _render_rich(view: AgentView) -> None:
     try:
-        from rich.live import Live
         from rich.panel import Panel
         from rich.text import Text
     except ImportError:

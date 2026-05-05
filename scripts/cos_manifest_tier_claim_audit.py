@@ -14,12 +14,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-import yaml
+from lib.script_io import read_yaml_mapping as load_manifest
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = REPO_ROOT / "manifests" / "primitive-lifecycle.yaml"
@@ -38,13 +43,6 @@ class Finding:
     distribution: str
     lifecycle_state: str
     maturity: str
-
-
-def load_manifest(path: Path = MANIFEST) -> dict[str, Any]:
-    loaded = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    if not isinstance(loaded, dict):
-        raise ValueError("primitive lifecycle manifest must be a mapping")
-    return loaded
 
 
 def _string_list(value: Any) -> list[str]:

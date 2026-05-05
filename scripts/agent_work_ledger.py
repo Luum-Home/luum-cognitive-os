@@ -2,29 +2,18 @@
 # SCOPE: both
 """Append-only ledger for concurrent agent work claims."""
 from __future__ import annotations
-import argparse, json, os, sys, time
+import argparse, json, sys, time
 from pathlib import Path
 from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from lib.concurrency_safety import project_runtime_dir
-
-def project_dir(args: argparse.Namespace) -> Path:
-    value = args.project_dir or os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    return Path(value).resolve()
+from lib.project_paths import project_dir_from_args as project_dir
+from lib.script_io import read_jsonl as read_events
 
 def ledger_path(project: Path) -> Path:
     path = project_runtime_dir(project) / "agent-work-ledger.jsonl"; path.parent.mkdir(parents=True, exist_ok=True); return path
-
-def read_events(path: Path) -> list[dict[str, Any]]:
-    if not path.exists(): return []
-    events = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip(): continue
-        try: events.append(json.loads(line))
-        except json.JSONDecodeError: events.append({"event": "corrupt-line", "raw": line})
-    return events
 
 def record(args: argparse.Namespace) -> int:
     project = project_dir(args)

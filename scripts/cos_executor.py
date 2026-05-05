@@ -36,6 +36,12 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.project_paths import project_dir_from_env as _project_dir
+
 # The orchestrator wraps agent messages with "type":"heartbeat|progress|..."
 # and publishes on cos:agent:*. We rebroadcast those plus any canonical
 # events written by harness adapters into cos:canonical:live.
@@ -43,12 +49,6 @@ from typing import Any, Dict, Optional
 CANONICAL_CHANNEL = "cos:canonical:live"
 MAX_EVENTS_PER_SEC = 50
 FALLBACK_POLL_INTERVAL = 0.5
-
-
-def _project_dir() -> Path:
-    return Path(os.environ.get("COGNITIVE_OS_PROJECT_DIR",
-                               os.environ.get("CLAUDE_PROJECT_DIR",
-                                              os.getcwd())))
 
 
 def _runtime_dir() -> Path:

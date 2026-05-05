@@ -5,8 +5,14 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
 
 DONE_WORDS = re.compile(r"\b(done|implemented|completed|shipped|added|wired|accepted|resolved|closed)\b", re.I)
 PLAN_WORDS = re.compile(r"\b(todo|next steps?|remaining|planned|future|pending|backlog|not yet|to implement)\b", re.I)
@@ -33,12 +39,6 @@ class DocsExecutionRow:
     confidence: float
     evidence: list[str]
     next_action: str
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore")
-    except OSError:
-        return ""
 
 def candidate_docs(root: Path) -> list[Path]:
     paths: list[Path] = []
