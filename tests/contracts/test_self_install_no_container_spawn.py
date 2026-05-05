@@ -47,6 +47,10 @@ pytestmark = [
     pytest.mark.contract,
     pytest.mark.unit,
     requires_bash,
+    # This executes every SessionStart hook; under xdist/laptop load it can run
+    # close to the global 30s default timeout even when healthy. Keep the
+    # contract deterministic by giving it an explicit lane-local budget.
+    pytest.mark.timeout(90),
     # ADR-072 follow-up: this test runs every SessionStart hook against the real
     # repo root. Concurrent xdist workers collided on .git/config.lock and the
     # shared symlink forest, forcing the contract lane to serial in 54439ea6.
