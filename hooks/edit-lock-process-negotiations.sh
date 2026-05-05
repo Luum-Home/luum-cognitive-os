@@ -16,15 +16,13 @@
 # Idempotent: already-seen requests (seen_at present) are skipped silently.
 # Graceful: missing dirs / missing primitive → exit 0.
 set -uo pipefail
+source "$(dirname "$0")/../scripts/_lib/session-id.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 
 # ── Identity helpers ──────────────────────────────────────────────────────────
 _session_id() {
-  if [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then printf '%s' "$COGNITIVE_OS_SESSION_ID"; return; fi
-  if [ -n "${CODEX_SESSION_ID:-}" ]; then        printf '%s' "$CODEX_SESSION_ID";        return; fi
-  if [ -n "${CLAUDE_SESSION_ID:-}" ]; then       printf '%s' "$CLAUDE_SESSION_ID";       return; fi
-  printf 'shell-%s' "${PPID:-$$}"
+  cos_session_id
 }
 
 _iso8601() {

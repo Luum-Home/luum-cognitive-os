@@ -27,6 +27,7 @@
 # ADR-045: PostgreSQL local daemon — extract from docker (D34)
 
 set -uo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/local-service.sh"
 
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
@@ -95,28 +96,8 @@ PYEOF
 }
 
 # ── TCP port probe ──────────────────────────────────────────────────────────
-_port_in_use() {
-    local port="$1"
-    python3 -c "
-import socket, sys
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.settimeout(0.3)
-try:
-    s.connect(('127.0.0.1', $port))
-    s.close()
-    sys.exit(0)
-except Exception:
-    sys.exit(1)
-" 2>/dev/null
-}
 
 # ── Check if our daemon is alive ────────────────────────────────────────────
-_daemon_alive() {
-    if [ ! -f "$PID_FILE" ]; then return 1; fi
-    local pid
-    pid=$(cat "$PID_FILE" 2>/dev/null || echo "")
-    [ -n "$pid" ] && kill -0 "$pid" 2>/dev/null
-}
 
 # ── --init ──────────────────────────────────────────────────────────────────
 _init() {

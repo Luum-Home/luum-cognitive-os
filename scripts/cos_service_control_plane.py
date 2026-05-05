@@ -13,12 +13,18 @@ import json
 import os
 import re
 import subprocess
-import tempfile
+import sys
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from lib.script_io import atomic_write_json
 
 import cos_auth_probe
 
@@ -83,22 +89,6 @@ def resolve_project_dir(value: str | None = None) -> Path:
 
 def service_path(project_dir: Path, relative: Path) -> Path:
     return project_dir / relative
-
-
-def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        "w",
-        encoding="utf-8",
-        dir=path.parent,
-        prefix=f".{path.name}.",
-        suffix=".tmp",
-        delete=False,
-    ) as tmp:
-        json.dump(payload, tmp, indent=2, sort_keys=True)
-        tmp.write("\n")
-        tmp_name = tmp.name
-    Path(tmp_name).replace(path)
 
 
 def append_jsonl(path: Path, payload: dict[str, Any]) -> None:
