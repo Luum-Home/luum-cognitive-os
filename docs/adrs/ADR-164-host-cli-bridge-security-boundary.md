@@ -1,7 +1,7 @@
 ---
 adr: 164
 title: Host CLI Bridge Security Boundary
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -19,7 +19,10 @@ tags: [host-cli-bridge, credentials, codex, claude, docker, cosd, provider-adapt
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for the design-only security contract scope** — 2026-05-05.
+The host CLI bridge runtime remains intentionally phase-gated; this ADR closes
+the contract, architecture, manual-test, and contract-test boundary that must
+exist before any bridge implementation can execute host commands.
 
 ## Context
 
