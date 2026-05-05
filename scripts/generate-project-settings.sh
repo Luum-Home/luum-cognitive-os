@@ -132,7 +132,7 @@ DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cle
   confidentiality-enforcer.sh
   doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh direct-main-guard.sh orchestrator-claim-gate.sh plan-claim-validator.sh completion-gate.sh
   clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh
-  session-learning.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
+  session-learning.sh engram-obsidian-export-on-stop.sh crash-recovery.sh teammate-idle.sh task-created.sh task-completed.sh"
 
 # ── Step 1: Transform paths ─────────────────────────────────────────
 # $CLAUDE_PROJECT_DIR/hooks/X.sh -> ${driver_project_expr}/.cognitive-os/hooks/cos/X.sh

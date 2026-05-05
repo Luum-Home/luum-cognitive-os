@@ -1,6 +1,6 @@
 {
   "_profile": "standard",
-  "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
+  "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
   "_hook_count": 81,
   "_events_used": [
     "SessionStart",
@@ -428,6 +428,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-crystallize-on-session-end.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-obsidian-export-on-stop.sh\""
           }
         ]
       },
