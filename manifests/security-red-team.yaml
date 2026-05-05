@@ -30,6 +30,14 @@ required_probes:
   - scanner_hook_presence
   - runtime_flag_registry
   - mcp_security_surface
+  - runtime_sensitive_file_deny
+  - protected_config_write_guard
+  - network_egress_guard
+  - mcp_tofu_pinning
+  - dangerous_env_flag_detector
+  - network_sandbox_runner
+  - metrics_tamper_audit
+  - provider_spoof_audit
 severity_weights:
   CRITICAL: 25
   HIGH: 15
