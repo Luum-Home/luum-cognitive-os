@@ -2,6 +2,7 @@
 
 **Type**: Research-only (per ADR-069)
 **Decision Status**: Awaiting operator triage
+<!-- decision-deferred: Research-only report; operator triage is still required before recording decision/cos-init-migration. -->
 **Implementation NOT performed**
 
 ## TL;DR

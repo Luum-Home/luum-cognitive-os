@@ -1,7 +1,7 @@
 ---
 adr: 157
 title: Kimi Code CLI Structural Harness Projection
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
@@ -20,7 +20,7 @@ tags: [harness, kimi, cli, projection, acc, portability]
 
 ## Status
 
-**Accepted** — 2026-05-04
+**Implemented for structural CLI projection scope** — 2026-05-04. Kimi Code project-local CLI context/config projection is generated and tested; authenticated CLI execution remains outside this ADR.
 
 ## Context
 

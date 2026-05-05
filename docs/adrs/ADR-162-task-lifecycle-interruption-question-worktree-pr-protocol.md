@@ -1,7 +1,7 @@
 ---
 adr: 162
 title: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -18,7 +18,7 @@ tags: [task-lifecycle, interruptions, questions, worktrees, branches, pull-reque
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for contract scope** — 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enforcement remains follow-up service-control-plane work.
 
 ## Context
 
