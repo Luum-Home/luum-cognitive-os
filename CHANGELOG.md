@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added — Paperclip integration wiring (ADR-169)
+
+- 6 Paperclip hooks wired into `.claude/settings.json` via the canonical projection (`cognitive-os.yaml > harness.hooks`, `hooks/_lib/registration-allowlist.txt`, `scripts/_lib/settings-driver-claude-code.sh`):
+  - SessionStart (async): `paperclip-squad-sync`, `paperclip-task-sync`
+  - PostToolUse Agent (async): `paperclip-sdd-sync`, `paperclip-agent-status`, `paperclip-cost-stream`
+  - Stop (async): `paperclip-sync`
+- 5 hook symlinks created at `hooks/paperclip-*.sh` pointing at `packages/paperclip-integration/hooks/`.
+- `docs/reports/paperclip-integration-audit-2026-05-05.md` — read-only audit that produced the wiring recommendation. Captures REAL=3 / PARTIAL=4 / MISSING=1 status across the 8 documented mappings and a falsifiable claim for re-evaluation.
+
+### Changed — Mapping #5 deferred (cos packages → skills marketplace)
+
+- `docs/paperclip-integration.md` architecture diagram no longer lists mapping #5 as active. A "Deferred mapping" callout points at the audit, names the missing `push_skills()` method, and documents reactivation conditions. The in-session `paperclip-dashboard/SKILL.md` covers skills inventory partially.
+
+### Changed — Dashboard formally demoted (ADR-169)
+
+- `dashboard/` formally archived. `dashboard/ARCHIVED.md` is the new entry point and points at ADR-169. Files preserved on disk (not deleted) so the demotion is reversible if the falsifiable claim in the ADR fires.
+- `docs/adrs/ADR-169-dashboard-formal-demotion.md` — accepted ADR enacting the 2026-03-27 *"Paperclip is the UI, Cognitive OS is the engine"* decision that had remained as maintainer cache. Falsifiable claim documented for one-year evaluation window.
+
 ### Added — Docker worker accessibility
 
 - `docs/runbooks/run-cos-in-docker.md` — operator runbook for the ADR-140 worker container. Quick Start (90 seconds), bootstrap subcommand reference, BYOK env vars per ADR-139, full stack with engram-cloud profile per ADR-141, audit-trail compliance evidence per ADR-142, troubleshooting, related-docs cross-reference. Closes the maintainer-cache discoverability gap surfaced when the runbook was missing despite the underlying infrastructure being complete.
