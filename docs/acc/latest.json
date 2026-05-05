@@ -24,49 +24,49 @@
       "summary": {
         "by_harness_profile": {
           "aider/default": 73,
-          "aider/full": 348,
+          "aider/full": 349,
           "amp-code/default": 73,
-          "amp-code/full": 348,
+          "amp-code/full": 349,
           "augment-code/default": 73,
-          "augment-code/full": 348,
+          "augment-code/full": 349,
           "claude/default": 73,
-          "claude/full": 348,
+          "claude/full": 349,
           "cline/default": 73,
-          "cline/full": 348,
+          "cline/full": 349,
           "codex/default": 73,
-          "codex/full": 348,
+          "codex/full": 349,
           "continue-dev/default": 73,
-          "continue-dev/full": 348,
+          "continue-dev/full": 349,
           "cursor/default": 73,
-          "cursor/full": 348,
+          "cursor/full": 349,
           "factory-droid/default": 73,
-          "factory-droid/full": 348,
+          "factory-droid/full": 349,
           "gemini-cli/default": 73,
-          "gemini-cli/full": 348,
+          "gemini-cli/full": 349,
           "goose/default": 73,
-          "goose/full": 348,
+          "goose/full": 349,
           "jetbrains-junie/default": 73,
-          "jetbrains-junie/full": 348,
+          "jetbrains-junie/full": 349,
           "kilo-code/default": 73,
-          "kilo-code/full": 348,
+          "kilo-code/full": 349,
           "kimi-code/default": 73,
-          "kimi-code/full": 348,
+          "kimi-code/full": 349,
           "opencode/default": 73,
-          "opencode/full": 348,
+          "opencode/full": 349,
           "qoder/default": 73,
-          "qoder/full": 348,
+          "qoder/full": 349,
           "qwen-code/default": 73,
-          "qwen-code/full": 348,
+          "qwen-code/full": 349,
           "shell-ci/default": 73,
-          "shell-ci/full": 348,
+          "shell-ci/full": 349,
           "vscode-copilot/default": 73,
-          "vscode-copilot/full": 348,
+          "vscode-copilot/full": 349,
           "warp/default": 73,
-          "warp/full": 348,
+          "warp/full": 349,
           "zed-ai/default": 73,
-          "zed-ai/full": 348
+          "zed-ai/full": 349
         },
-        "projected_primitives": 370
+        "projected_primitives": 371
       }
     },
     "docs_execution_report": {
@@ -1856,6 +1856,12 @@
       "source": "docs/reports/proof-drill-evidence-latest.json",
       "status": "ok",
       "summary": {
+        "claim_map": {
+          "claims": 4,
+          "proof_status_counts": {
+            "passed": 4
+          }
+        },
         "rows": 5,
         "status_counts": {
           "passed": 5
@@ -1924,24 +1930,24 @@
         "confidence": {
           "high": 151,
           "low": 6,
-          "medium": 191
+          "medium": 193
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 51,
           "lifecycle-declared-maintainer": 50,
           "skill-referenced-not-projectable": 2,
-          "so-local-only": 226
+          "so-local-only": 228
         },
         "low_confidence_rows": 6,
         "roles": {
           "agentic-primitive": 113,
           "driver-specific": 11,
           "lab": 22,
-          "maintainer-tool": 191,
+          "maintainer-tool": 193,
           "migration-only": 11
         },
-        "total_scripts": 348,
+        "total_scripts": 350,
         "without_consumers": 4
       }
     },
@@ -3878,12 +3884,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:56",
-        "test_consumers:325",
+        "test_consumers:326",
         "hook_consumers:75",
         "doc_consumers:437",
         "rule_consumers:42",
         "config_consumers:38",
-        "script_consumers:210",
+        "script_consumers:212",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -4788,6 +4794,44 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-demotion-loop-audit"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:2",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-deps-install.sh",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-deps-install.sh",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-deps-install.sh"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-deps-install.sh"
       },
       "weight": 3
     },
@@ -8767,6 +8811,43 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_demotion_loop_audit.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_deps_install.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_deps_install.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_deps_install.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_deps_install.py"
       },
       "weight": 3
     },
@@ -16518,7 +16599,7 @@
         "rule_consumers:2",
         "script_consumers:28",
         "test_consumers:77",
-        "doc_consumers:89",
+        "doc_consumers:91",
         "config_consumers:4",
         "role_source:default",
         "consumer_accessibility:so-local-only",
@@ -20861,7 +20942,7 @@
         "lifecycle",
         "script_consumers:6",
         "test_consumers:2",
-        "doc_consumers:17",
+        "doc_consumers:19",
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -22964,7 +23045,7 @@
         "rule_consumers:3",
         "script_consumers:16",
         "test_consumers:20",
-        "doc_consumers:78",
+        "doc_consumers:79",
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -26356,7 +26437,7 @@
         "hook_consumers:1",
         "script_consumers:7",
         "test_consumers:8",
-        "doc_consumers:19",
+        "doc_consumers:20",
         "config_consumers:4",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -30784,9 +30865,9 @@
         "skill_consumers:7",
         "hook_consumers:5",
         "rule_consumers:2",
-        "script_consumers:30",
-        "test_consumers:31",
-        "doc_consumers:61",
+        "script_consumers:31",
+        "test_consumers:32",
+        "doc_consumers:63",
         "config_consumers:9",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -33588,7 +33669,7 @@
       "evidence": [
         "proof_drill_status:passed",
         "command:COS_CLAUDE_EXEC_MODEL=sonnet scripts/cos-worker-run-once --project-dir /tmp/cos-claude-provider.6NbDJQ --worker-id host-claude-proof --allow-provider-call --json",
-        "source_report:docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "source_report:docs/reports/proof-drill-evidence-latest.json",
         "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
         "/tmp/cos-claude-provider.6NbDJQ/.cognitive-os/service/artifacts/task-claude-provider-proof/lease-7c3a6639c9e0"
       ],
@@ -33611,7 +33692,7 @@
         "status": "passed"
       },
       "source": {
-        "path": "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "path": "docs/reports/proof-drill-evidence-latest.json",
         "proof_drill_id": "claude-provider-host-smoke"
       },
       "weight": 2
@@ -33622,7 +33703,7 @@
       "evidence": [
         "proof_drill_status:passed",
         "command:COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=gpt-5.4 scripts/cos-headless-service-drill --json --keep-workspace",
-        "source_report:docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "source_report:docs/reports/proof-drill-evidence-latest.json",
         "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
         "/tmp/cos-headless-service.Ul85fJ/.cognitive-os/service/artifacts/task-headless-codex-provider-drill/lease-4e02aee4c48d"
       ],
@@ -33645,7 +33726,7 @@
         "status": "passed"
       },
       "source": {
-        "path": "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "path": "docs/reports/proof-drill-evidence-latest.json",
         "proof_drill_id": "headless-codex-provider-smoke"
       },
       "weight": 2
@@ -33656,8 +33737,10 @@
       "evidence": [
         "proof_drill_status:passed",
         "command:scripts/cos-headless-service-drill --json",
-        "source_report:docs/reports/proof-drill-opt-in-run-2026-05-05.md",
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
+        "source_report:docs/reports/proof-drill-evidence-latest.json",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-evidence-latest.json",
+        "/tmp/cos-headless-service.4VpVjp/.cognitive-os/service/artifacts/task-headless-service-drill/lease-f54e6542ba02"
       ],
       "id": "proof_drill:headless-docker-service-drill",
       "kind": "proof_drill",
@@ -33678,7 +33761,7 @@
         "status": "passed"
       },
       "source": {
-        "path": "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "path": "docs/reports/proof-drill-evidence-latest.json",
         "proof_drill_id": "headless-docker-service-drill"
       },
       "weight": 2
@@ -33689,7 +33772,7 @@
       "evidence": [
         "proof_drill_status:passed",
         "command:bash scripts/smoke-multi-provider-fallback.sh",
-        "source_report:docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "source_report:docs/reports/proof-drill-evidence-latest.json",
         "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
       ],
       "id": "proof_drill:multi-provider-fallback-live-smoke",
@@ -33711,7 +33794,7 @@
         "status": "passed"
       },
       "source": {
-        "path": "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "path": "docs/reports/proof-drill-evidence-latest.json",
         "proof_drill_id": "multi-provider-fallback-live-smoke"
       },
       "weight": 2
@@ -33722,7 +33805,7 @@
       "evidence": [
         "proof_drill_status:passed",
         "command:bash scripts/smoke-qwen-fallback.sh",
-        "source_report:docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "source_report:docs/reports/proof-drill-evidence-latest.json",
         "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
       ],
       "id": "proof_drill:qwen-fallback-live-smoke",
@@ -33744,7 +33827,151 @@
         "status": "passed"
       },
       "source": {
-        "path": "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "path": "docs/reports/proof-drill-evidence-latest.json",
+        "proof_drill_id": "qwen-fallback-live-smoke"
+      },
+      "weight": 2
+    },
+    {
+      "confidence": 0.94,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "proof_drill_id:headless-docker-service-drill",
+        "proof_drill_status:passed",
+        "claim_scope:os-self",
+        "docs/manual-tests/headless-docker-service-runtime.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-evidence-latest.json",
+        "/tmp/cos-headless-service.4VpVjp/.cognitive-os/service/artifacts/task-headless-service-drill/lease-f54e6542ba02"
+      ],
+      "id": "proof_claim:headless-docker-local-command-runtime",
+      "kind": "proof_claim",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "headless-docker-local-command-runtime",
+          "kind": "proof_claim",
+          "role": "claim-to-proof",
+          "source": "headless-docker-service-drill"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "proof_drill_id": "headless-docker-service-drill",
+        "proof_status": "passed",
+        "scope": "os-self"
+      },
+      "source": {
+        "path": "manifests/proof-drill-claim-map.yaml",
+        "proof_drill_id": "headless-docker-service-drill"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.94,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "proof_drill_id:headless-codex-provider-smoke",
+        "proof_drill_status:passed",
+        "claim_scope:os-self",
+        "docs/manual-tests/headless-docker-service-runtime.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "/tmp/cos-headless-service.Ul85fJ/.cognitive-os/service/artifacts/task-headless-codex-provider-drill/lease-4e02aee4c48d"
+      ],
+      "id": "proof_claim:host-codex-provider-adapter",
+      "kind": "proof_claim",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "host-codex-provider-adapter",
+          "kind": "proof_claim",
+          "role": "claim-to-proof",
+          "source": "headless-codex-provider-smoke"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "proof_drill_id": "headless-codex-provider-smoke",
+        "proof_status": "passed",
+        "scope": "os-self"
+      },
+      "source": {
+        "path": "manifests/proof-drill-claim-map.yaml",
+        "proof_drill_id": "headless-codex-provider-smoke"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.94,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "proof_drill_id:claude-provider-host-smoke",
+        "proof_drill_status:passed",
+        "claim_scope:os-self",
+        "docs/manual-tests/headless-docker-service-runtime.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "/tmp/cos-claude-provider.6NbDJQ/.cognitive-os/service/artifacts/task-claude-provider-proof/lease-7c3a6639c9e0"
+      ],
+      "id": "proof_claim:host-claude-provider-adapter",
+      "kind": "proof_claim",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "host-claude-provider-adapter",
+          "kind": "proof_claim",
+          "role": "claim-to-proof",
+          "source": "claude-provider-host-smoke"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "proof_drill_id": "claude-provider-host-smoke",
+        "proof_status": "passed",
+        "scope": "os-self"
+      },
+      "source": {
+        "path": "manifests/proof-drill-claim-map.yaml",
+        "proof_drill_id": "claude-provider-host-smoke"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.94,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "proof_drill_id:qwen-fallback-live-smoke",
+        "proof_drill_status:passed",
+        "claim_scope:os-self",
+        "docs/runbooks/llm-dispatch.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
+      ],
+      "id": "proof_claim:qwen-live-fallback-host",
+      "kind": "proof_claim",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "qwen-live-fallback-host",
+          "kind": "proof_claim",
+          "role": "claim-to-proof",
+          "source": "qwen-fallback-live-smoke"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "proof_drill_id": "qwen-fallback-live-smoke",
+        "proof_status": "passed",
+        "scope": "os-self"
+      },
+      "source": {
+        "path": "manifests/proof-drill-claim-map.yaml",
         "proof_drill_id": "qwen-fallback-live-smoke"
       },
       "weight": 2
@@ -35391,6 +35618,38 @@
       ],
       "paths": [
         ".cognitive-os/hooks/cos/engram-daemon-launcher.sh"
+      ],
+      "profiles": [
+        "full"
+      ],
+      "projection_class": "shared"
+    },
+    "hooks/engram-obsidian-export-on-stop.sh": {
+      "harnesses": [
+        "aider",
+        "amp-code",
+        "augment-code",
+        "claude",
+        "cline",
+        "codex",
+        "continue-dev",
+        "cursor",
+        "factory-droid",
+        "gemini-cli",
+        "goose",
+        "jetbrains-junie",
+        "kilo-code",
+        "kimi-code",
+        "opencode",
+        "qoder",
+        "qwen-code",
+        "shell-ci",
+        "vscode-copilot",
+        "warp",
+        "zed-ai"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/engram-obsidian-export-on-stop.sh"
       ],
       "profiles": [
         "full"
@@ -45683,9 +45942,11 @@
   },
   "findings": [],
   "gate": {
-    "blocks": [],
+    "blocks": [
+      "new_debt:2"
+    ],
     "phase": "reconstruction",
-    "status": "pass",
+    "status": "block",
     "thresholds": {
       "critical_missing_allowed": 0,
       "minimum_acc": 0.5,
@@ -45693,7 +45954,7 @@
     },
     "warnings": []
   },
-  "generated_at": "2026-05-05T16:47:00Z",
+  "generated_at": "2026-05-05T17:00:01Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
@@ -46254,9 +46515,24 @@
     "unverified"
   ],
   "new_debt": {
-    "count": 0,
-    "items": [],
-    "status": "pass",
+    "count": 2,
+    "items": [
+      {
+        "baseline_status": "absent",
+        "id": "script:scripts/cos-deps-install.sh",
+        "kind": "capability",
+        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
+        "status": "unreviewed-local-default"
+      },
+      {
+        "baseline_status": "absent",
+        "id": "script:scripts/cos_deps_install.py",
+        "kind": "capability",
+        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
+        "status": "unreviewed-local-default"
+      }
+    ],
+    "status": "block",
     "strict_local_defaults": true
   },
   "persistence": {
@@ -46421,9 +46697,9 @@
   "summary": {
     "acc": 1.0,
     "acc_effective": 1.0,
-    "aligned_weight": 2102,
+    "aligned_weight": 2119,
     "mapping_weight_by_status": {
-      "aligned": 2102,
+      "aligned": 2119,
       "missing": 0,
       "overexposed": 0,
       "partial": 0,
@@ -46434,13 +46710,14 @@
     "overexposed_weight": 0,
     "partial_weight": 0,
     "stale_weight": 0,
-    "total_weight": 2102,
+    "total_weight": 2119,
     "unverified_weight": 0
   },
   "weights": {
     "doc_claim": 2,
     "hook": 3,
     "primitive_family": 3,
+    "proof_claim": 3,
     "proof_drill": 2,
     "rule": 2,
     "script": 3,
