@@ -60,6 +60,10 @@ python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 
 The first local, laptop-safe slice includes:
 
+- `manifests/multi-ide-swarm-scenarios.yaml` and
+  `tests/contracts/test_multi_ide_swarm_scenarios.py` for the ADR-118-S1
+  machine-readable scenario contract.
+
 - `scripts/derived_artifact_gate.py` for registry/projection closure.
 - `lib/session_bus.py` and `scripts/session_event_bus.py` for append-only coordination events.
 - `lib/task_claim_ledger.py` and `scripts/claim_task.py` for atomic task claims.
