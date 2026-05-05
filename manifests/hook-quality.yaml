@@ -20,6 +20,7 @@ hooks:
   adaptive-bypass:
     behavior_tests:
     - tests/behavior/test_claude_md_diet.py
+    - tests/behavior/test_cos_friction_report.py
     - tests/behavior/test_cos_index_and_global_init.py
     - tests/behavior/test_cos_init_parity_2_3.py
     - tests/behavior/test_self_install.py
@@ -673,6 +674,7 @@ hooks:
     script: hooks/destructive-rm-blocker.sh
   direct-main-guard:
     behavior_tests:
+    - tests/behavior/test_cos_friction_report.py
     - tests/unit/test_active_primitive_index.py
     - tests/unit/test_direct_main_guard.py
     bypass_policy: not_required_observe_only
@@ -714,6 +716,7 @@ hooks:
     script: hooks/dispatch-gate.sh
   doc-sync-detector:
     behavior_tests:
+    - tests/behavior/test_cos_friction_report.py
     - tests/behavior/test_hooks_batch1.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
@@ -1813,6 +1816,7 @@ hooks:
     script: hooks/session-end-reap.sh
   session-heartbeat-on-prompt:
     behavior_tests:
+    - tests/behavior/test_cos_friction_report.py
     - tests/chaos/test_session_heartbeat_exercised.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
@@ -1830,6 +1834,7 @@ hooks:
     script: hooks/session-heartbeat.sh
   session-heartbeat-pre:
     behavior_tests:
+    - tests/behavior/test_cos_friction_report.py
     - tests/chaos/test_session_heartbeat_exercised.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
