@@ -1,0 +1,111 @@
+schema_version: host-cli-bridge-contract.v1
+review_date: 2026-05-05
+purpose: >-
+  Security contract for allowing a service/containerized COS runtime to request
+  official host CLI execution without reading or copying provider credential stores.
+status: design-only
+profile: host-cli-bridge
+threat_model:
+  - A container or remote ingress tries to execute arbitrary host commands.
+  - A task tries to exfiltrate ~/.codex, ~/.claude, Keychain, browser cookies, or API keys.
+  - A provider call incurs cost without human approval.
+  - A prompt injection asks the host bridge to bypass allowlists or leak logs.
+  - Multiple agents race to use the bridge and confuse audit attribution.
+non_goals:
+  - Mount host provider credential directories into containers by default.
+  - Provide a general remote shell.
+  - Bypass official Codex, Claude, Gemini, OpenCode, or other CLI auth flows.
+  - Merge or push code directly from provider output.
+transport:
+  allowed:
+    - unix-domain-socket
+    - loopback-http-with-random-token
+  default_bind: localhost-only
+  remote_bind: forbidden-by-default
+authentication:
+  required: true
+  mechanisms:
+    - per-session-random-token
+    - file-permission-restricted-socket
+    - optional-mutual-tls-for-vm
+  token_storage: .cognitive-os/instances/host-cli-bridge/runtime/bridge-token
+  token_gitignored_required: true
+authorization:
+  command_allowlist_required: true
+  default_commands:
+    - id: codex-login-status
+      executable: codex
+      args: [login, status]
+      provider_call: false
+      cost_bearing: false
+    - id: claude-version
+      executable: claude
+      args: [--version]
+      provider_call: false
+      cost_bearing: false
+  planned_provider_commands:
+    - id: codex-exec-readonly
+      executable: codex
+      args_prefix: [exec, --json, --sandbox, read-only, --skip-git-repo-check]
+      provider_call: true
+      cost_bearing: true
+      requires_human_approval: true
+    - id: claude-print-readonly
+      executable: claude
+      args_prefix: [-p]
+      provider_call: true
+      cost_bearing: true
+      requires_human_approval: true
+blocked_paths:
+  - ~/.codex/auth.json
+  - ~/.codex/state_*.sqlite
+  - ~/.claude
+  - ~/Library/Keychains
+  - ~/Library/Application Support/*/Cookies
+  - .env
+  - secrets
+redaction:
+  required: true
+  patterns:
+    - api_key
+    - auth_token
+    - bearer_token
+    - sk_openai
+    - sk_anthropic
+    - oauth_token
+audit:
+  required: true
+  path: .cognitive-os/metrics/host-cli-bridge.jsonl
+  required_fields:
+    - timestamp
+    - request_id
+    - task_id
+    - command_id
+    - provider_call
+    - cost_bearing
+    - approval_id
+    - exit_code
+    - redaction_count
+    - artifact_dir
+approval:
+  provider_calls_require_human_approval: true
+  approval_record_required: true
+  default_policy: deny-provider-calls
+runtime_limits:
+  timeout_seconds: 120
+  max_stdout_bytes: 200000
+  max_stderr_bytes: 200000
+  cwd_policy: explicit-workspace-only
+  env_policy: minimal-allowlist
+promotion_requirements:
+  non_provider_smoke:
+    - bridge starts on localhost/socket only
+    - unauthenticated request is rejected
+    - unknown command_id is rejected
+    - codex-login-status or claude-version command writes redacted audit row
+  provider_smoke:
+    - explicit opt-in env is set
+    - human approval record exists
+    - auth_probe status is ready
+    - provider output is redacted
+    - artifact bundle contains task, command, audit, result, and trust report

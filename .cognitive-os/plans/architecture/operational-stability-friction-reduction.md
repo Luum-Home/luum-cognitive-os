@@ -311,3 +311,6 @@ when all are true:
 6. Diff-aware validation lanes.
 7. Distribution boundary implementation.
 8. Chaos/productization threshold.
+## Concrete Slice Backlog
+
+Bounded ADR-123 slices are tracked in `.cognitive-os/plans/architecture/adr-118-121-123-slices.md` under `ADR-123-S*`.

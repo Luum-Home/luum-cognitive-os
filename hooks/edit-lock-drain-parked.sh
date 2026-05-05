@@ -18,6 +18,7 @@
 #
 # Bypass: COS_BYPASS_EDIT_LOCK=1 suppresses this hook too.
 set -uo pipefail
+source "$(dirname "$0")/../scripts/_lib/session-id.sh"
 
 [ "${COS_BYPASS_EDIT_LOCK:-}" = "1" ] && exit 0
 
@@ -25,10 +26,7 @@ PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}"
 
 # ── Identity helpers ──────────────────────────────────────────────────────────
 _session_id() {
-  if [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]; then printf '%s' "$COGNITIVE_OS_SESSION_ID"; return; fi
-  if [ -n "${CODEX_SESSION_ID:-}" ]; then        printf '%s' "$CODEX_SESSION_ID";        return; fi
-  if [ -n "${CLAUDE_SESSION_ID:-}" ]; then       printf '%s' "$CLAUDE_SESSION_ID";       return; fi
-  printf 'shell-%s' "${PPID:-$$}"
+  cos_session_id
 }
 
 _safe_path() {

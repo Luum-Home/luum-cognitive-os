@@ -17,6 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from lib.script_io import print_json_status as _print
 from lib.cross_instance_learning import (
     audit_federation_triggers,
     audit_registry_locks,
@@ -26,11 +27,6 @@ from lib.cross_instance_learning import (
     write_shape_b_governance_checklist,
 )
 from scripts.cos_claim_signature_audit import build_report as build_claim_signature_report
-
-
-def _print(payload: dict) -> int:
-    print(json.dumps(payload, indent=2, sort_keys=True))
-    return 0 if payload.get("status") not in {"fail"} else 1
 
 
 def _copy_repo_minimal(source: Path, target: Path) -> None:

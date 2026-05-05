@@ -1,0 +1,364 @@
+schema_version: proof-drill-registry.v1
+review_date: 2026-05-05
+owner: cognitive-os-maintainers
+purpose: Classify standard test lanes, smoke opt-ins, and proof drills so agents know
+  whether a validation belongs to normal project testing, SO self-build checks, or
+  explicit runtime qualification evidence.
+classes:
+  standard-test-lane:
+    description: Normal low-friction validation that can be selected by task scope.
+    default_lane_allowed: true
+  smoke-opt-in:
+    description: Targeted one-off runtime check for a narrow live path.
+    default_lane_allowed: false
+  proof-drill:
+    description: Evidence-producing qualification drill for SO runtime modes or providers.
+    default_lane_allowed: false
+  manual-proof:
+    description: Human-run procedure that records commands, artifacts, and limits
+      of proof.
+    default_lane_allowed: false
+scopes:
+  os-self:
+    description: Builds, verifies, or qualifies this Cognitive OS repository.
+  consumer-project:
+    description: Runs inside a downstream project that implements COS primitives.
+  both:
+    description: Can be used by the SO and by a consumer project with scope-specific
+      commands.
+required_entry_fields:
+- id
+- class
+- scope
+- primitive_kind
+- selector
+- default_lane
+- consumer_projection
+- cost_class
+- requires_credentials
+- destructive_scope
+- docs
+- automated_checks
+- when_to_run
+- proves
+- does_not_prove
+projection_profiles:
+  consumer-default:
+    description: Default consumer-project validation surface. No provider, Docker,
+      or SO maintainer proof drills.
+    allows:
+    - consumer-default
+  consumer-opt-in:
+    description: Explicit consumer-project proof surface for drills that are safe
+      only when a projection profile installs them.
+    allows:
+    - consumer-default
+    - consumer-opt-in
+  maintainer-only:
+    description: SO maintainer proof drills, provider smokes, Docker proofs, and manual
+      control-plane qualifications.
+    allows:
+    - maintainer-only
+policy:
+  opt_in_classes:
+  - smoke-opt-in
+  - proof-drill
+  - manual-proof
+  default_lane_rule: Entries in smoke-opt-in, proof-drill, or manual-proof must never
+    be added to laptop/default CI lanes. Agents may propose them only when the user
+    asks for runtime proof, provider proof, Docker/headless proof, or a one-off smoke.
+  consumer_boundary: Consumer projects use their own build/test commands through project-scoped
+    skills such as run-tests. SO-only proof drills do not travel to consumer projects
+    unless a projection manifest explicitly installs that drill.
+  evidence_rule: Every proof drill report must include command, working directory,
+    exit code, artifact paths, credential/cost posture, what the drill proves, and
+    what it does not prove.
+  provider_rule: Provider-backed smokes require explicit credentials and explicit
+    operator opt-in. The absence of credentials is a SKIPPED evidence result, not
+    a proof of provider failure.
+entries:
+- id: os-pytest-summary
+  class: standard-test-lane
+  scope: os-self
+  primitive_kind: skill
+  selector: skills/cognitive-os-test/SKILL.md
+  command: bash scripts/pytest-with-summary.sh --workers 0 --lane unit -- tests/unit
+  default_lane: selectable
+  consumer_projection: maintainer-only
+  selectors:
+  - os-self
+  - pytest
+  - unit
+  cost_class: local_cpu
+  requires_credentials: []
+  destructive_scope: read_only
+  docs:
+  - skills/cognitive-os-test/SKILL.md
+  - docs/testing.md
+  automated_checks:
+  - tests/audit/test_marker_coverage.py
+  - tests/audit/test_test_architecture_inventory.py
+  when_to_run: SO maintainer code changes that need persisted pytest evidence.
+  proves: The selected SO pytest lane executed and persisted a local summary.
+  does_not_prove: Docker, provider, remote ingress, or consumer-project runtime behavior.
+- id: consumer-project-run-tests
+  class: standard-test-lane
+  scope: consumer-project
+  primitive_kind: skill
+  selector: skills/run-tests/SKILL.md
+  command: use /run-tests in the consumer project and honor its detected framework
+  default_lane: project_defined
+  consumer_projection: consumer-default
+  selectors:
+  - consumer-project
+  - run-tests
+  cost_class: project_defined
+  requires_credentials: []
+  destructive_scope: project_defined
+  docs:
+  - skills/run-tests/SKILL.md
+  automated_checks:
+  - tests/audit/test_skills_contracts.py
+  when_to_run: Consumer-project feature, bugfix, refactor, or verification tasks.
+  proves: The project test runner selected by the skill passes or reports actionable
+    failures.
+  does_not_prove: COS self-build health, provider fallback, or headless SO runtime
+    behavior.
+- id: os-smoke-test-skill
+  class: smoke-opt-in
+  scope: os-self
+  primitive_kind: skill
+  selector: skills/smoke-test/SKILL.md
+  command: use /smoke-test for guided SO smoke selection
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - os-self
+  - smoke
+  cost_class: mixed_local_optional_docker_optional_provider
+  requires_credentials: []
+  destructive_scope: local_temp_artifacts
+  docs:
+  - skills/smoke-test/SKILL.md
+  automated_checks:
+  - tests/audit/test_skills_contracts.py
+  when_to_run: Before claiming a broad SO runtime path works, or after hook/rule/skill
+    wiring changes.
+  proves: The selected smoke phases completed with explicit environment assumptions.
+  does_not_prove: Every optional Docker/provider path unless those phases were explicitly
+    enabled.
+- id: qwen-fallback-live-smoke
+  class: smoke-opt-in
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/smoke-qwen-fallback.sh
+  command: bash scripts/smoke-qwen-fallback.sh
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - provider
+  - live
+  cost_class: provider_cost
+  requires_credentials:
+  - ALIBABA_QWEN_API_KEY
+  destructive_scope: read_only
+  docs:
+  - docs/runbooks/llm-dispatch.md
+  automated_checks: []
+  when_to_run: Explicit provider fallback validation for ADR-049/Qwen dispatch behavior.
+  proves: Qwen API key presence, endpoint reachability, chat completions response,
+    and dispatch script presence.
+  does_not_prove: Other providers, IDE harness projection, or account-free consumer
+    support.
+- id: multi-provider-fallback-live-smoke
+  class: smoke-opt-in
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/smoke-multi-provider-fallback.sh
+  command: bash scripts/smoke-multi-provider-fallback.sh
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - provider
+  - live
+  cost_class: provider_cost
+  requires_credentials:
+  - provider_specific_env
+  destructive_scope: read_only
+  docs:
+  - docs/runbooks/llm-dispatch.md
+  automated_checks: []
+  when_to_run: Explicit live validation of multi-provider fallback behavior.
+  proves: Configured provider chain can answer through live credentials.
+  does_not_prove: Free local behavior, Docker credential transport, or all future
+    provider adapters.
+- id: headless-docker-service-drill
+  class: proof-drill
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/cos-headless-service-drill
+  command: scripts/cos-headless-service-drill --json
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - docker
+  - headless
+  cost_class: local_docker
+  requires_credentials: []
+  destructive_scope: docker_temp_artifacts
+  docs:
+  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/architecture/headless-runtime-proof-strategy.md
+  automated_checks:
+  - tests/integration/test_headless_service_drill.py
+  when_to_run: Explicit Docker/headless service proof for queue, worker, leases, and
+    artifacts.
+  proves: Local Docker worker path can process an approved local-command task and
+    emit evidence.
+  does_not_prove: Provider-backed Codex/Claude execution or remote cloud worker support.
+- id: engram-cloud-docker-smoke
+  class: proof-drill
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/cos-engram-cloud-docker-smoke
+  command: scripts/cos-engram-cloud-docker-smoke --help
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - docker
+  - headless
+  cost_class: local_docker
+  requires_credentials: []
+  destructive_scope: docker_temp_artifacts
+  docs:
+  - docs/manual-tests/engram-cloud-docker-sync.md
+  - docs/architecture/cross-instance-learning-runway.md
+  automated_checks: []
+  when_to_run: Explicit Engram Cloud local Docker sync qualification.
+  proves: The selected Engram Cloud Docker sync scenario can be driven and documented.
+  does_not_prove: Hosted Engram Cloud, all conflict-resolution paths, or every consumer
+    project.
+- id: cross-instance-learning-drill
+  class: proof-drill
+  scope: both
+  primitive_kind: script
+  selector: scripts/cos-cross-instance-drill
+  command: scripts/cos-cross-instance-drill --help
+  default_lane: false
+  consumer_projection: consumer-opt-in
+  selectors:
+  - consumer-project
+  - cross-instance
+  cost_class: local_cpu_optional_docker
+  requires_credentials: []
+  destructive_scope: temp_project_artifacts
+  docs:
+  - docs/reports/cross-instance-consumer-e2e-2026-05-03.md
+  - docs/architecture/cross-instance-learning-runway.md
+  automated_checks: []
+  when_to_run: Explicit cross-instance evidence transfer or consumer E2E proof.
+  proves: The selected provenance/export/import path can be exercised in controlled
+    temp artifacts.
+  does_not_prove: Continuous federation, hosted sync, or automatic multi-tenant replication.
+- id: service-control-plane-manual-proof
+  class: manual-proof
+  scope: os-self
+  primitive_kind: documentation
+  selector: docs/manual-tests/service-control-plane-proof-drills.md
+  command: follow the documented manual proof ladder
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - manual-proof
+  - service-control-plane
+  cost_class: mixed_local_docker_optional_provider
+  requires_credentials: []
+  destructive_scope: temp_artifacts_and_optional_services
+  docs:
+  - docs/manual-tests/service-control-plane-proof-drills.md
+  - docs/architecture/service-control-plane-implementation-plan.md
+  automated_checks: []
+  when_to_run: Before promoting service-control-plane claims beyond structural/design
+    status.
+  proves: Only the specific ladder rung executed with recorded artifacts.
+  does_not_prove: Unrun provider, VM, Kubernetes, or remote ingress rungs.
+- id: headless-codex-provider-smoke
+  class: proof-drill
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/cos-headless-service-drill
+  command: COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=<supported-model> scripts/cos-headless-service-drill
+    --json --keep-workspace
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - provider
+  - docker
+  - headless
+  - codex
+  cost_class: provider_cost_and_local_docker
+  requires_credentials:
+  - codex account-session
+  destructive_scope: docker_temp_artifacts
+  docs:
+  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  automated_checks:
+  - tests/unit/test_service_control_plane_local_queue.py
+  when_to_run: Explicit account-backed host Codex provider smoke through the Docker/headless
+    service proof path.
+  proves: Host Codex provider execution can be invoked through the service-control-plane
+    adapter when explicitly opted in and pinned to a supported model.
+  does_not_prove: Claude provider execution, container credential inheritance, remote
+    ingress, VM, Kubernetes, or unconfigured providers.
+- id: test-contract-repair
+  class: standard-test-lane
+  scope: os-self
+  primitive_kind: skill
+  selector: skills/test-contract-repair/SKILL.md
+  command: use /test-contract-repair when a test is misleading, stale, or structurally
+    green only
+  default_lane: selectable
+  consumer_projection: maintainer-only
+  selectors:
+  - test-contract-repair
+  cost_class: local_cpu
+  requires_credentials: []
+  destructive_scope: repo_changes_with_tests
+  docs:
+  - skills/test-contract-repair/SKILL.md
+  - docs/architecture/behavioral-test-contracts.md
+  automated_checks:
+  - tests/audit/test_skills_contracts.py
+  when_to_run: Tests pass while product claims remain unproven, stale, or too structural.
+  proves: The repaired contract now targets behavior instead of greenwashing a claim.
+  does_not_prove: Runtime behavior until the repaired automated/manual test is executed.
+- id: claude-provider-host-smoke
+  class: proof-drill
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/cos-worker-run-once
+  command: COS_CLAUDE_EXEC_MODEL=<supported-model> scripts/cos-worker-run-once --project-dir
+    <temp-project> --worker-id host-claude-proof --allow-provider-call --json
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - provider
+  - claude
+  - host-cli-bridge
+  cost_class: provider_cost
+  requires_credentials:
+  - claude account-session
+  destructive_scope: temp_artifacts
+  docs:
+  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  automated_checks:
+  - tests/unit/test_service_control_plane_local_queue.py
+  - tests/unit/test_cos_auth_probe.py
+  when_to_run: Explicit account-backed host Claude provider smoke through the service-control-plane
+    adapter.
+  proves: Host Claude provider execution can be invoked through the service-control-plane
+    adapter when explicitly opted in and pinned to a supported model.
+  does_not_prove: Container credential inheritance, remote ingress, VM, Kubernetes,
+    or non-host Claude execution.

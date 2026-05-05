@@ -17,6 +17,7 @@ QUALITY_TERMS = ("completion", "claim", "trust", "confidence", "frontmatter", "v
 COORDINATION_TERMS = ("dispatch", "lock", "snapshot", "heartbeat", "work-queue", "prelaunch", "agent-", "dequeue")
 LIFECYCLE_TERMS = ("session", "memory", "engram", "changelog", "resume", "startup")
 VALID_TIERS = {"native", "governed", "cos_owned", "unsupported"}
+VALID_MATURITY = {"observe", "warn", "block", "emergency"}
 
 
 def load_yaml(path: Path) -> dict[str, Any]:
@@ -65,6 +66,22 @@ def safe_degradation(criticality: str) -> str:
     return "warn_and_continue_unless_exit_2"
 
 
+def default_maturity(criticality: str) -> str:
+    if criticality in {"security", "quality", "coordination"}:
+        return "warn"
+    return "observe"
+
+
+def default_bypass_policy(maturity: str) -> str:
+    if maturity == "emergency":
+        return "time_limited_operator_override_with_metric"
+    if maturity == "block":
+        return "explicit_operator_override_with_metric"
+    if maturity == "warn":
+        return "not_required_warning_only"
+    return "not_required_observe_only"
+
+
 def split_matcher(matcher: str) -> set[str]:
     return {p.strip() for p in matcher.split("|") if p.strip()}
 
@@ -104,15 +121,20 @@ def desired_manifest(existing: dict[str, Any] | None = None) -> dict[str, Any]:
     for hook_id, entry in registered_hooks().items():
         criticality = classify_criticality(hook_id, entry["script"])
         old = old_hooks.get(hook_id, {}) if isinstance(old_hooks, dict) else {}
+        old_maturity = old.get("maturity") if isinstance(old, dict) else None
+        maturity = str(old_maturity) if old_maturity in VALID_MATURITY else default_maturity(criticality)
+        false_positive_tests = old.get("false_positive_tests", []) if isinstance(old, dict) else []
         hooks[hook_id] = {
             "script": entry["script"], "event": entry["event"], "matcher": entry["matcher"], "scope": entry["scope"],
             "criticality": criticality, "max_runtime_ms": max_runtime_ms(criticality, entry["async"]), "safe_degradation": safe_degradation(criticality),
+            "maturity": maturity, "bypass_policy": str(old.get("bypass_policy") or default_bypass_policy(maturity)) if isinstance(old, dict) else default_bypass_policy(maturity),
+            "false_positive_tests": false_positive_tests if isinstance(false_positive_tests, list) else [],
             "harness_tiers": {"claude": claude_tier(entry["event"], entry["matcher"]), "codex": codex_tier(entry["event"], entry["matcher"])},
             "behavior_tests": discover_behavior_tests(hook_id, entry["script"]),
         }
         if isinstance(old, dict) and old.get("manual_tests"): hooks[hook_id]["manual_tests"] = old["manual_tests"]
         if isinstance(old, dict) and old.get("notes"): hooks[hook_id]["notes"] = old["notes"]
-    return {"schema_version": 1, "generated_by": "scripts/hook_quality_audit.py --sync", "policy": {"tier_values": sorted(VALID_TIERS), "required_behavior_coverage": REQUIRED_BEHAVIOR_COVERAGE, "blocking_exit_code": 2, "project_env_precedence": ["COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR", "cwd"]}, "hooks": hooks}
+    return {"schema_version": 1, "generated_by": "scripts/hook_quality_audit.py --sync", "policy": {"tier_values": sorted(VALID_TIERS), "maturity_values": sorted(VALID_MATURITY), "required_behavior_coverage": REQUIRED_BEHAVIOR_COVERAGE, "blocking_exit_code": 2, "project_env_precedence": ["COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR", "cwd"]}, "hooks": hooks}
 
 
 def normalize(data: dict[str, Any]) -> str:
@@ -149,6 +171,15 @@ def audit() -> tuple[list[str], dict[str, Any]]:
         if proc.returncode != 0: failures.append(f"hook {hook_id} fails bash -n: {proc.stderr.strip()}")
         tiers = entry.get("harness_tiers") or {}
         if tiers.get("claude") not in VALID_TIERS or tiers.get("codex") not in VALID_TIERS: failures.append(f"hook {hook_id} invalid harness_tiers")
+        maturity = entry.get("maturity")
+        if maturity not in VALID_MATURITY:
+            failures.append(f"hook {hook_id} invalid maturity {maturity!r}")
+        if not entry.get("bypass_policy"):
+            failures.append(f"hook {hook_id} missing bypass_policy")
+        if maturity in {"block", "emergency"}:
+            tests = [t for t in (entry.get("false_positive_tests") or []) if (REPO / str(t)).is_file()]
+            if not tests:
+                failures.append(f"hook {hook_id} is {maturity} but has no false_positive_tests")
         if hook_id in REQUIRED_BEHAVIOR_COVERAGE:
             tests = [t for t in (entry.get("behavior_tests") or []) if (REPO / str(t)).is_file()]
             if not tests: failures.append(f"hook {hook_id} is critical but has no behavior_tests")

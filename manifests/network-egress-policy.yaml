@@ -1,0 +1,59 @@
+schema_version: network-egress-policy.v1
+review_date: 2026-05-05
+purpose: >-
+  Detect and block obvious exfiltration-shaped network egress from agent shell
+  commands. This is not a packet firewall; it is a PreToolUse command guard.
+default_mode: block_exfil
+approval_env: COS_ALLOW_NETWORK_EGRESS
+allowed_domains:
+  - localhost
+  - 127.0.0.1
+  - ::1
+  - github.com
+  - raw.githubusercontent.com
+  - objects.githubusercontent.com
+  - pypi.org
+  - files.pythonhosted.org
+  - npmjs.com
+  - registry.npmjs.org
+  - rubygems.org
+  - crates.io
+  - go.dev
+  - proxy.golang.org
+  - developers.openai.com
+  - platform.openai.com
+  - docs.anthropic.com
+  - code.claude.com
+  - modelcontextprotocol.io
+provider_allowed_domains:
+  - ws-2g289ri6umgn6w8a.ap-southeast-1.maas.aliyuncs.com
+external_network_commands:
+  - curl
+  - wget
+  - nc
+  - ncat
+  - netcat
+  - ssh
+  - scp
+  - rsync
+  - ftp
+  - sftp
+  - python -m requests
+  - node -e
+exfil_indicators:
+  - .env
+  - secrets/
+  - .git/config
+  - id_rsa
+  - id_ed25519
+  - API_KEY
+  - TOKEN
+  - PASSWORD
+  - SECRET
+  - --data
+  - --data-binary
+  - --upload-file
+  - -X POST
+  - -X PUT
+  - -X PATCH
+  - -X DELETE

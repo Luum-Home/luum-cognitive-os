@@ -5,7 +5,10 @@ status: proposed
 date: 2026-05-02
 supersedes: []
 superseded_by: null
-implementation_files: []
+implementation_files:
+  - scripts/cos_repair.py
+  - scripts/cos_validate.py
+  - lib/validation_lanes.py
 tier: standard
 tags: [stability, friction-reduction, guards, maturity]
 ---
@@ -106,3 +109,10 @@ python3 scripts/derived_artifact_gate.py
 
 Phase-specific tests are listed in
 `.cognitive-os/plans/architecture/operational-stability-friction-reduction.md`.
+
+## 2026-05-05 slice evidence update
+
+ADR-123-S3 adds a dry-run-first `cos repair` surface backed by reversible
+preserved-WIP cleanup records and session reaper decisions. ADR-123-S5 adds a
+diff-aware validation recommender and merge-queue report fields for recommended
+lane, executed lane, and rationale.

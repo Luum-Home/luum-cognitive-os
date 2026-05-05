@@ -59,6 +59,86 @@ log_step() {
     assert finding["consumer_relevance"] == "consumer-project-relevant"
 
 
+def test_ignores_awk_blocks_that_look_like_shell_functions(tmp_path: Path) -> None:
+    script = r"""
+awk '
+  found {
+    if ($0 ~ /^[[:space:]]*-/) print
+  }
+' input.txt
+"""
+    write(tmp_path / "hooks/a.sh", script)
+    write(tmp_path / "hooks/b.sh", script.replace("input.txt", "other.txt"))
+
+    data = primitive_duplication_audit.audit(tmp_path, ["hooks"], min_tokens=10, shingle_size=4, threshold=0.95, primitive_threshold=0.95)
+
+    assert [item for item in data["findings"] if item["kind"] == "bash-function-repeat"] == []
+
+
+def test_ignores_symlink_alias_exact_copy(tmp_path: Path) -> None:
+    source = tmp_path / "hooks/reaper-daemon-launcher.sh"
+    alias = tmp_path / "hooks/reaper-heartbeat.sh"
+    write(source, "#!/usr/bin/env bash\n" + "echo same\n" * 30)
+    alias.symlink_to(source.name)
+
+    data = primitive_duplication_audit.audit(tmp_path, ["hooks"], min_tokens=10, shingle_size=4, threshold=0.95, primitive_threshold=0.95)
+
+    assert [item for item in data["findings"] if item["kind"] == "exact-copy"] == []
+    assert data["summary"]["files_scanned"] == 1
+
+
+def test_ignores_trivial_main_dispatch_wrappers(tmp_path: Path) -> None:
+    left = """
+def main() -> int:
+    args = build_parser().parse_args(); return int(args.func(args))
+"""
+    right = left
+    write(tmp_path / "scripts/a.py", left)
+    write(tmp_path / "scripts/b.py", right)
+
+    data = primitive_duplication_audit.audit(tmp_path, ["scripts"], min_tokens=10, shingle_size=4, threshold=0.95, primitive_threshold=0.95)
+
+    assert [item for item in data["findings"] if item["kind"] == "python-function-repeat"] == []
+
+
+def test_allowlist_can_suppress_known_finding(tmp_path: Path) -> None:
+    body = """
+def shared_logic(value: str) -> str:
+    normalized = value.strip().lower()
+    parts = []
+    for item in normalized.split('-'):
+        if item:
+            parts.append(item.replace('_', '-'))
+    return '/'.join(parts)
+"""
+    write(tmp_path / "scripts/a.py", body)
+    write(tmp_path / "scripts/b.py", body.replace("shared_logic", "other_logic"))
+    write(
+        tmp_path / "manifests/primitive-duplication-allowlist.yaml",
+        """
+entries:
+  - kind: python-function-repeat
+    left: scripts/a.py::shared_logic
+    right: scripts/b.py::other_logic
+    action: suppress
+    classification: intentional-isolation
+    reason: Test fixture keeps both sides separate.
+""",
+    )
+
+    data = primitive_duplication_audit.audit(
+        tmp_path,
+        ["scripts"],
+        min_tokens=10,
+        shingle_size=4,
+        threshold=0.95,
+        primitive_threshold=0.95,
+        allowlist_path=tmp_path / "manifests/primitive-duplication-allowlist.yaml",
+    )
+
+    assert [item for item in data["findings"] if item["kind"] == "python-function-repeat"] == []
+
+
 def test_detects_yaml_structural_repeat(tmp_path: Path) -> None:
     left = """
 name: alpha

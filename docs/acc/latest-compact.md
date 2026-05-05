@@ -2,37 +2,41 @@
 
 > Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
 
-Generated: 2026-05-05T12:43:36Z
+Generated: 2026-05-05T18:14:41Z
 Gate: pass (reconstruction)
-ACC: 1.0000
-ACC effective: 1.0000
-Capabilities: 734
-Findings: 0
+ACC: 0.9973
+ACC effective: 0.9986
+Capabilities: 806
+Findings: 2
 New debt gate: pass (0)
+Primitive fitness reports: 0
 
 ## Warnings
 
-- none
+- coverage_debt:2
 
 ## Mapping Weights
 
-- aligned: 2000
+- aligned: 2202
 - missing: 0
 - overexposed: 0
-- partial: 0
+- partial: 6
 - stale: 0
 - unverified: 0
 
 ## Consumer Accessibility
 
-- maintainer-only: 34
+- lifecycle-declared-consumer-candidate: 2
+- lifecycle-declared-maintainer: 1
+- maintainer-only: 57
 - profile-driver: 19
 - shell-ci-candidate: 15
-- so-local-only: 666
+- so-local-only: 712
 
 ## Top Findings
 
-- none
+- `script:scripts/cos-key-learnings-capture` [partial/medium]: Candidate/projectable surface needs consumer projection proof → add harness projection proof before promotion
+- `script:scripts/security-red-team` [partial/medium]: Candidate/projectable surface needs consumer projection proof → add harness projection proof before promotion
 
 ## New Debt
 

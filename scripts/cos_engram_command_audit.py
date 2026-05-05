@@ -58,7 +58,7 @@ def is_allowed_negative(line: str) -> bool:
 def is_allowed_context(path: Path, line: str) -> bool:
     relative = str(path.relative_to(ROOT))
     if relative in {
-        "scripts/cos-engram-command-audit.py",
+        "scripts/cos_engram_command_audit.py",
         "tests/audit/test_engram_command_contract.py",
     }:
         return True

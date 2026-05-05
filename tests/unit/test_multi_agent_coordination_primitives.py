@@ -102,3 +102,29 @@ def test_merge_to_main_refuses_validation_dirty_worktree() -> None:
 
     assert "validation dirtied tracked worktree" in text
     assert "status --porcelain=v1 --untracked-files=no" in text
+
+from lib.task_reconciliation import reconcile_completed_by_other_session
+
+
+def test_completed_by_other_agent_reconciles_pending_task_with_watermark(tmp_path: Path) -> None:
+    sessions = tmp_path / ".cognitive-os" / "sessions"
+    (sessions / "session-a").mkdir(parents=True)
+    (sessions / "session-b").mkdir(parents=True)
+    (sessions / "session-a" / "tasks.json").write_text(
+        '{"tasks":[{"task_id":"ADR-118-S4","status":"pending"}]}\n', encoding="utf-8"
+    )
+    watermark = tmp_path / ".cognitive-os" / "tasks" / "completion-watermark.jsonl"
+    watermark.parent.mkdir(parents=True)
+    watermark.write_text(
+        '{"task_id":"ADR-118-S4","status":"completed-by-watermark","session_id":"session-b"}\n',
+        encoding="utf-8",
+    )
+
+    reconciled = reconcile_completed_by_other_session(tmp_path)
+
+    assert len(reconciled) == 1
+    item = reconciled[0]
+    assert item.status == "completed-by-watermark"
+    assert item.pending_session == "session-a"
+    assert item.completing_session == "session-b"
+    assert item.evidence_path == str(watermark)

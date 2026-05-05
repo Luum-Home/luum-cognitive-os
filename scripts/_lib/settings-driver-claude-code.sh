@@ -147,6 +147,7 @@ cc_driver_emit() {
       "hooks/session-start-stash-reapply.sh"  "false" \
       "hooks/session-startup-protocol.sh"     "false" \
       "hooks/mcp-scan.sh"                     "true"  \
+      "hooks/dangerous-env-flag-detector.sh" "false" \
     )
   fi
 
@@ -172,12 +173,14 @@ cc_driver_emit() {
 
   local pre_all
   pre_all=$(_cc_hook_group "PreToolUse" "" \
+    "hooks/protected-config-write-guard.sh" "false" \
     "hooks/session-heartbeat.sh"    "false" \
     "hooks/lethal-trifecta-gate.sh" "false" \
   )
 
   local pre_bash
   pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
+    "hooks/network-egress-guard.sh"        "false" \
     "hooks/rate-limit-precheck.sh"         "false" \
     "hooks/agent-bash-cwd-enforcer.sh"     "false" \
     "hooks/rate-limiter.sh"                "false" \
@@ -411,7 +414,21 @@ cc_driver_emit() {
 
   printf '    "TaskCompleted": [\n'
   printf '%s\n' "$task_completed"
-  printf '    ]\n  }\n}\n'
+  printf '    ]\n  },\n'
+  printf '  "permissions": {\n'
+  printf '    "deny": [\n'
+  printf '      "Read(./.env)",\n'
+  printf '      "Read(./.env.*)",\n'
+  printf '      "Read(./secrets/**)",\n'
+  printf '      "Read(./*.key)",\n'
+  printf '      "Read(./*.pem)",\n'
+  printf '      "Read(./*.p12)",\n'
+  printf '      "Read(./*.pfx)",\n'
+  printf '      "Read(./.git/config)",\n'
+  printf '      "Read(./config/credentials.json)",\n'
+  printf '      "Read(./.ssh/**)"\n'
+  printf '    ]\n'
+  printf '  }\n}\n'
 }
 
 # ── Main entrypoint (when invoked directly, not sourced) ──────────────────────

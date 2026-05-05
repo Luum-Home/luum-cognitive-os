@@ -10,12 +10,18 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 import math
 import os
 import time
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.time_utils import parse_ts
 from typing import Any, Iterable
 
 DEFAULT_WINDOW_HOURS = 24
@@ -29,18 +35,6 @@ MINUTES_PER_FALSE_POSITIVE_CANDIDATE = 5.0
 def project_dir(raw: str | None = None) -> Path:
     value = raw or os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
     return Path(value).expanduser().resolve()
-
-
-def parse_ts(value: Any) -> float | None:
-    if isinstance(value, (int, float)):
-        return float(value)
-    if not isinstance(value, str) or not value.strip():
-        return None
-    text = value.strip().replace("Z", "+00:00")
-    try:
-        return datetime.fromisoformat(text).timestamp()
-    except ValueError:
-        return None
 
 
 def iter_jsonl(path: Path, *, since_epoch: float | None = None) -> Iterable[dict[str, Any]]:

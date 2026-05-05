@@ -81,6 +81,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/mcp-scan.sh\" ]; then bash \"$PWD/hooks/mcp-scan.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/dangerous-env-flag-detector.sh\" ]; then bash \"$PWD/hooks/dangerous-env-flag-detector.sh\"; fi"
         }
       ],
       "matcher": "startup"
@@ -124,6 +128,10 @@
   "PreToolUse": [
     {
       "hooks": [
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/network-egress-guard.sh\" ]; then bash \"$PWD/hooks/network-egress-guard.sh\"; fi"
+        },
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/rate-limit-precheck.sh\" ]; then bash \"$PWD/hooks/rate-limit-precheck.sh\"; fi"
@@ -253,6 +261,10 @@
         {
           "type": "command",
           "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-crystallize-on-session-end.sh\" ]; then bash \"$PWD/hooks/engram-crystallize-on-session-end.sh\"; fi"
+        },
+        {
+          "type": "command",
+          "command": "export COGNITIVE_OS_HARNESS=codex; export COGNITIVE_OS_PROJECT_DIR=\"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}\"; if [ -x \"$PWD/hooks/engram-obsidian-export-on-stop.sh\" ]; then bash \"$PWD/hooks/engram-obsidian-export-on-stop.sh\"; fi"
         },
         {
           "type": "command",

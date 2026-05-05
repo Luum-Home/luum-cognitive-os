@@ -1,0 +1,6 @@
+schema_version: mcp-trust-pins.v1
+review_date: 2026-05-05
+purpose: >-
+  Trust-on-first-use pins for MCP server definitions. Fingerprints include
+  server name, command, args, env key names, and config path, never env values.
+pins: []
