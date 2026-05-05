@@ -428,3 +428,27 @@ def test_task_completed_by_other_agent_is_marked_by_watermark(scratch_project: P
     task = data["tasks"][0]
     assert task["status"] == "completed-by-watermark"
     assert task["watermark_evidence"]["mode"] == "A"
+
+
+def test_completed_by_other_agent_reconciliation_fixture(scratch_project: Path) -> None:
+    from lib.task_reconciliation import reconcile_completed_by_other_session
+
+    sessions = scratch_project / ".cognitive-os" / "sessions"
+    (sessions / "codex-session").mkdir(parents=True)
+    (sessions / "claude-session").mkdir(parents=True)
+    (sessions / "codex-session" / "tasks.json").write_text(
+        json.dumps({"tasks": [{"task_id": "TASK-DONE-ELSEWHERE", "status": "pending"}]}) + "\n",
+        encoding="utf-8",
+    )
+    watermark = scratch_project / ".cognitive-os" / "tasks" / "completion-watermark.jsonl"
+    watermark.parent.mkdir(parents=True, exist_ok=True)
+    watermark.write_text(
+        json.dumps({"task_id": "TASK-DONE-ELSEWHERE", "status": "done-by-other-session", "session_id": "claude-session"}) + "\n",
+        encoding="utf-8",
+    )
+
+    report = [item.to_dict() for item in reconcile_completed_by_other_session(scratch_project)]
+
+    assert report[0]["status"] == "done-by-other-session"
+    assert report[0]["completing_session"] == "claude-session"
+    assert report[0]["pending_session"] == "codex-session"
