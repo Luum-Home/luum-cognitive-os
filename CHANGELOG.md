@@ -5,6 +5,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added — Docker worker accessibility
+
+- `docs/runbooks/run-cos-in-docker.md` — operator runbook for the ADR-140 worker container. Quick Start (90 seconds), bootstrap subcommand reference, BYOK env vars per ADR-139, full stack with engram-cloud profile per ADR-141, audit-trail compliance evidence per ADR-142, troubleshooting, related-docs cross-reference. Closes the maintainer-cache discoverability gap surfaced when the runbook was missing despite the underlying infrastructure being complete.
+- `scripts/cos-cloud-worker-bootstrap.sh` — added `up-full` subcommand that activates the engram-cloud Compose profile (postgres + pgvector + engram cloud server). `down` now stops both default and engram-cloud profiles so callers do not need to know which subset was started. Usage banner now lists every subcommand with one-line descriptions and points at the runbook.
+- `README.md` — new "Headless / cloud-worker container" section in the Quick Start area, linking to the runbook. Differentiates the Docker worker (headless / CI / evaluation) from the daily-IDE-governance install path.
+- `docs/INDEX.md` — added entry for the runbook under Operational Documents.
+- `docs/getting-started.md` — new "Headless deployment via Docker" section before "Next Steps", with a decision matrix (which path for which scenario).
+
 ## [0.25.0] - 2026-05-05 — "Embedded-Runtime Trajectory and Enterprise-Readiness"
 
 This release commits the operational direction for Cognitive OS to shift from
