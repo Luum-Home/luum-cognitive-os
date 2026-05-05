@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 159
+Total skills: 160
 
 ## os (17)
 
@@ -27,7 +27,7 @@ Total skills: 159
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 | vuln-remediation-flow | Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation. |
 
-## os-dev (35)
+## os-dev (36)
 
 | Skill | Description |
 |-------|-------------|
@@ -60,6 +60,7 @@ Total skills: 159
 | ragas-integration | Configure and use RAGAS for memory quality testing, retrieval evaluation, and… |
 | red-team | \"Red team testing for agent prompts — detects injection, jailbreak, and… |
 | security-audit | Comprehensive security audit of Cognitive OS configuration, secrets, hooks… |
+| security-red-team | Unified security red-team: inventory, threat model, abuse probes, primitive scoring,… |
 | simulation-arena | End-to-end agent workflow simulation for safety-mesh regression. |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works |
 | strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using… |
@@ -198,4 +199,3 @@ Total skills: 159
 | Skill | Description |
 |-------|-------------|
 | so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
-

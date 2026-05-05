@@ -6591,3 +6591,150 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: scripts/cos-headless-service-drill
+  kind: script
+  owner_adr: ADR-162
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-headless-service-drill
+  - docker/cos-worker/docker-compose.yml
+  - docs/manual-tests/headless-docker-service-runtime.md
+  runtime_projection: false
+  behavior_evidence: opt-in Docker/headless service proof drill; excluded from default laptop lanes
+  evidence_commands:
+  - bash -n scripts/cos-headless-service-drill
+  - python3 -m pytest tests/contracts/test_proof_drill_registry.py -q
+  rollback_or_repair_command: Remove the proof-drill registry entry or keep the script opt-in until Docker/headless evidence is refreshed.
+  sunset_criteria: Promote only with repeatable opt-in Docker evidence, or archive after 90 days without runtime proof usage.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/service/artifacts
+- id: scripts/cos-engram-cloud-docker-smoke
+  kind: script
+  owner_adr: ADR-136
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-engram-cloud-docker-smoke
+  - scripts/engram-sync.sh
+  - docker/cos-worker/docker-compose.yml
+  runtime_projection: false
+  behavior_evidence: opt-in Engram Cloud Docker smoke; requires Docker and Engram and is excluded from default laptop lanes
+  evidence_commands:
+  - bash -n scripts/cos-engram-cloud-docker-smoke
+  - python3 -m pytest tests/contracts/test_proof_drill_registry.py -q
+  rollback_or_repair_command: Remove the proof-drill registry entry or keep the smoke opt-in until Engram Cloud Docker evidence is refreshed.
+  sunset_criteria: Promote only with repeatable opt-in cloud-sync smoke evidence, or archive after 90 days without usage.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: scripts/cos_instance_init.py
+  kind: script
+  owner_adr: ADR-164
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: delivery-structure
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_instance_init.py
+  - manifests/cos-instance-profiles.yaml
+  - .cognitive-os/plans/architecture/cos-instance-installer-implementation-plan.md
+  runtime_projection: false
+  behavior_evidence: operational COS instance installer implementation; separate from consumer-project cos_init.py projection
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_instance_init.py
+  - python3 -m pytest tests/contracts/test_cos_instance_implementation_phases.py -q
+  rollback_or_repair_command: Keep operational instance profiles disabled or dry-run only until the profile contract is repaired.
+  sunset_criteria: Promote after host/VM/Kubernetes profile proof, or archive if operational instance provisioning is replaced by a typed installer.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+
+- id: scripts/cos-credential-safe-run
+  kind: script
+  owner_adr: ADR-164
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-credential-safe-run
+  - scripts/cos_credential_safe_run.py
+  - manifests/credential-safe-scripts.yaml
+  runtime_projection: false
+  behavior_evidence: credential-safe wrapper for approved scripts; opt-in maintainer/runtime boundary
+  evidence_commands:
+  - bash -n scripts/cos-credential-safe-run
+  - python3 -m py_compile scripts/cos_credential_safe_run.py
+  rollback_or_repair_command: Keep credential-safe script execution opt-in until manifest policy and redaction tests are repaired.
+  sunset_criteria: Promote only with credential redaction and approval evidence, or archive if replaced by a typed host bridge runner.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/credential-safe-runs.jsonl
+
+- id: scripts/proof-drill-select
+  kind: script
+  owner_adr: ADR-166
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/proof-drill-select
+  - scripts/proof_drill_select.py
+  - manifests/proof-drill-registry.yaml
+  runtime_projection: false
+  behavior_evidence: governed opt-in proof-drill selector; does not execute selected commands by default
+  evidence_commands:
+  - bash -n scripts/proof-drill-select
+  - python3 -m py_compile scripts/proof_drill_select.py
+  rollback_or_repair_command: Keep proof drills manual-only until selector and registry contracts are repaired.
+  sunset_criteria: Promote after selector is wired into a stable proof-drill command flow, or archive if registry selection moves elsewhere.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+
+- id: scripts/test_skip_registry.py
+  kind: script
+  owner_adr: ADR-166
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/test_skip_registry.py
+  - manifests/test-skip-registry.yaml
+  - scripts/pytest-with-summary.sh
+  runtime_projection: false
+  behavior_evidence: pytest JUnit skip classifier enforced by pytest-with-summary wrapper
+  evidence_commands:
+  - python3 -m py_compile scripts/test_skip_registry.py
+  - python3 -m pytest tests/unit/test_test_skip_registry.py -q
+  rollback_or_repair_command: Set COS_TEST_SKIP_REGISTRY=0 only as a temporary emergency bypass, then repair the registry entry.
+  sunset_criteria: Archive only if pytest or cos-test gains equivalent first-class expected-skip enforcement.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/reports/test-runs/*/skip-summary.json

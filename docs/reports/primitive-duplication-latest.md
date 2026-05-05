@@ -1,20 +1,21 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-05-05T14:35:48.125609+00:00`
+Generated: `2026-05-05T16:45:05.428762+00:00`
 
 ## Summary
 
-- Files scanned: 729
-- Findings: 0
-- By kind: `{}`
-- By common home: `{}`
-- By consumer relevance: `{}`
+- Files scanned: 747
+- Findings: 2
+- By kind: `{"python-function-repeat": 2}`
+- By common home: `{"lib/": 2}`
+- By consumer relevance: `{"so-local-first": 2}`
 
 ## Top Candidates
 
 | Kind | Classification | Similarity | Left | Right | Recommendation | Common home | Consumer relevance |
 |---|---|---:|---|---|---|---|---|
-| none | none | 0 |  |  |  |  |  |
+| python-function-repeat | candidate | 1.0 | `scripts/acc_pipeline.py::utc_now` | `scripts/proof_drill_evidence_record.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/project_shell_ci.py::load_manifest` | `scripts/proof_drill_select.py::load_registry` | extract-common-python-helper | `lib/` | so-local-first |
 
 ## Interpretation
 
