@@ -5,6 +5,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-05-05 — "Embedded-Runtime Trajectory and Enterprise-Readiness"
+
+This release commits the operational direction for Cognitive OS to shift from
+*"governance layer over coding agents"* toward *"embedded runtime for agent
+flows"* (ADR-137), and lands the enterprise-readiness surface (BYOK
+credentials, cross-OS containers, engram-cloud replication, air-gapped audit
+trail) that makes the trajectory consumable outside the maintainer's machine.
+
+158 commits since v0.24.0, 13+ new ADRs (137–149, 168), 15+ new architecture
+documents, 10+ new lib modules. The doctrine deepens with the *"Two maturity
+stages"* extension to `cognitive-prosthesis.md` — a primitive earns
+default-visible status only when both *does it work?* and *how would I know
+mechanically when it stops working?* are answered.
+
 ### Added — Closure Discipline Gate (ADR-143)
 
 - `docs/adrs/ADR-143-closure-discipline-gate.md` — accepted blocking maintainer gate for closing validator drift after fast agent batches.
@@ -31,9 +45,108 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - `docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md` — accepted ADR. Formalises `.cognitive-os/runtime/agent-audit-trail.jsonl` as the canonical compliance evidence surface. Defines `audit_class` enumeration (seven classes covering SOC 2 / ISO 27001 / GDPR relevance), `tenant_id` per-flow isolation, air-gap deployment surface (local JSONL + git-jsonl), and GDPR erasure procedure. Classifies existing governance hooks as `access_control` evidence.
 - `docs/architecture/dx-cloud-flow-bootstrap-plan.md` — updated: ADR-139..142 added as prerequisites before promoting flow #1 beyond `lab`; status updated to `ready-for-first-flow-lab`; companion docs list extended.
 
+### Added — Operational Tooling and Discipline (ADRs 144–149, 168)
+
+- ADR-144 — **Hook-Enforced Rule Projection Contract.** The mapping from
+  rules to hooks is now contract-enforced; rule projections that do not
+  reach a registered hook fail audit.
+- ADR-145 — **Dependency Lane Split.** Heavy optional dependencies move out
+  of `dev` into explicit lanes under `requirements/dependency-lanes/` so
+  upstream pins on one lane (e.g. `cognee`/`kuzu`) cannot block core
+  dependency hygiene. `pyproject.toml` `dev` extra now resolves to
+  `[web,direct_providers,testing,enforcement]`.
+- ADR-146 — **Primitive Readiness Ledger.** Each primitive carries an
+  explicit readiness record consumed by the boring-reliability dashboard
+  and by tier-claim auditing.
+- ADR-147 — **Agent Capability Coverage Pipeline.** ACC pipeline measures
+  what agents can/cannot achieve under the current primitive surface and
+  surfaces gaps as a first-class metric. Wired into the statusline segment
+  through `cos-coverage`.
+- ADR-148 — **ADR Authoring Primitive.** ADR creation itself becomes a
+  primitive with required schema, frontmatter, and admission contract;
+  prevents drift in the most load-bearing decision artifact.
+- ADR-149 — **Primitive Duplication Audit.** Audits the registry for
+  semantic duplicates (different names, same effective surface) so the
+  default-visible budget is not inflated by accidental re-implementations.
+- ADR-168 — **Cross-Device Dependency Installation Contract.** Standardised
+  install metadata so a primitive can declare its dependency requirements
+  in a way that survives installation across machines and OSes; companion
+  to ADR-140 (Docker Compose) and ADR-141 (engram cloud).
+
+### Added — Self-Improvement Loop Extensions
+
+- `lib/consumer_improvement_proposals.py` — consumer projects can now feed
+  their own observations back through the propose-only contract.
+- `lib/governed_self_improvement.py` — the self-improvement loop is now
+  audited end-to-end as a closed governed flow, not as an isolated
+  primitive.
+- `lib/key_learning_capture.py`, `lib/dispatch_optimizer.py`,
+  `lib/friction_telemetry.py`, `lib/adaptive_profile.py` — supporting
+  primitives that feed the learning loop with structured signals.
+- `lib/engram_obsidian_exporter.py` + `scripts/cos-engram-export-obsidian` —
+  manual Engram export to an Obsidian vault for human review and
+  cross-tool reading. Stop-hook variant included.
+
+### Added — Architecture Documentation
+
+- `docs/architecture/dx-cloud-flow-bootstrap-plan.md` — strategic plan for
+  COS as runtime-of-prosthesis for cloud agent flows under human audit.
+- `docs/architecture/agent-capability-coverage-pipeline.md` — ACC pipeline
+  reference.
+- `docs/architecture/bootstrap-portability.md` — cross-OS portability
+  contract for installation and runtime.
+- `docs/architecture/concurrency-safety-core-consumer-contract.md` —
+  contract surface between core and consumer projects under concurrent
+  use.
+- `docs/architecture/consumer-project-primitive-accessibility.md` —
+  accessibility guarantees for consumers.
+- `docs/architecture/cos-instance-installer.md` /
+  `cos-service-runtime-boundary.md` — installer and service-runtime
+  boundaries.
+- `docs/architecture/engram-command-contract.md` — Engram CLI contract.
+- `docs/architecture/expected-skip-registry-and-opt-in-test-lanes.md` —
+  classified skip registry; unit-lane skip policy is now explicit.
+- `docs/architecture/gdpr-erasure-procedure.md` — GDPR erasure procedure
+  companion to ADR-142.
+- `docs/architecture/adr-closure-policy.md` — closure policy for ADRs that
+  reach `accepted` and need their evidence linked.
+- `docs/architecture/functional-audit/scorecard-hooks.md` — hook
+  functional-audit scorecard.
+
+### Changed
+
+- `pyproject.toml` version bumped from `0.24.0` to `0.25.0`. The
+  dependency-lane split (ADR-145) collapses the previously bundled `llm`,
+  `observability`, `guardrails`, `jupyter`, `crawling`, `memory`,
+  `semantic` extras out of the default `dev` extra; opt in per lane via
+  `requirements/dependency-lanes/*`.
+- `rich>=15` replaces the previous `rich>=14` pin; the upstream
+  cognee/kuzu blocker that held `rich` at 14 lives in the `memory` lane
+  now and no longer constrains core.
+
 ### Internal
 
 - `manifests/hook-quality.yaml` — regenerated via `scripts/hook_quality_audit.py --sync` to register two auto-detected behavior tests for `task-completed` and `validation-lock-cleanup` hooks (drift surfaced by `derived-artifact-gate` during merge-to-main validation).
+- `manifests/expected-skip-registry.yaml` and supporting audit — unit-lane
+  skip policy classified explicitly; expected skips no longer hide as
+  silent test passes.
+
+### Falsifiable claims added (per release artefact discipline)
+
+- **Embedded-runtime trajectory**: a flow without a
+  `framing_exercise_statement` per ADR-137 cannot leave `lab`. If a flow
+  reaches `core`/`team` without one, the trajectory is broken.
+- **Closure discipline**: validator drift after a fast batch must be closed
+  by `cos-closure-discipline-audit` before the batch can be claimed
+  complete. If a drift entry remains open after a release tag, the
+  discipline is broken.
+- **ADR authoring primitive**: ADRs lacking the schema required by ADR-148
+  cannot be admitted. If ADRs land without it, the primitive is
+  decorative.
+- **Primitive duplication audit**: the registry should not contain
+  semantic duplicates after the audit runs. If `cos-primitive-duplication-audit`
+  reports duplicates and they persist past the next release, the audit
+  is decorative.
 
 ## [0.24.0] - 2026-05-03 — "Closed-Loop Self-Improvement and Shape B Runway"
 
