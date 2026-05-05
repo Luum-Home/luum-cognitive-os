@@ -11,6 +11,7 @@ Configuration (read from environment at call time):
     ALIBABA_QWEN_BASE_URL      — workspace-scoped OpenAI-compatible endpoint
                                   (default: ap-southeast-1 workspace)
     ALIBABA_QWEN_DEFAULT_MODEL — default model (default: qwen3.6-plus)
+    COS_SKIP_DOTENV          — when set to 1/true/yes, do not load repo .env
 
 ToS reminder: Qwen Coding Plan Pro is restricted to interactive coding
 tools (IDEs, coding agents). Automated/batch/backend use is prohibited.
@@ -80,13 +81,25 @@ class QwenResult:
     raw: Optional[Dict[str, Any]] = None
 
 
+def _truthy_env(name: str) -> bool:
+    """Return True for common operator truthy env values."""
+    return os.environ.get(name, "").strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _load_dotenv_once() -> None:
     """Best-effort: load repo-root .env into os.environ for ALIBABA_QWEN_* keys.
     Idempotent (won't overwrite existing env vars). Safe to call multiple times.
     Silent on any error — env loading must never crash the provider.
+
+    ``COS_SKIP_DOTENV=1`` is the public runtime flag for agent-safe smokes
+    and other callers that must not indirectly read local development secret
+    files. ``_COS_QWEN_DOTENV_LOADED`` remains an internal/test guard.
     """
     flag = "_COS_QWEN_DOTENV_LOADED"
     if os.environ.get(flag) == "1":
+        return
+    if _truthy_env("COS_SKIP_DOTENV"):
+        os.environ[flag] = "1"
         return
     try:
         from pathlib import Path as _P
