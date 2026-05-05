@@ -78,6 +78,7 @@ for path in [
 ]:
     assert Path(path).exists(), path
 PY
+python3 -m pytest tests/contracts/test_service_control_plane_contracts.py -q
 ```
 
 ## Phase 1 — Local `cosd` minimal queue
