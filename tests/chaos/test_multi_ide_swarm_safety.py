@@ -248,6 +248,8 @@ def test_codex_governed_edit_blocks_when_file_is_locked(scratch_project: Path) -
         [
             "bash",
             str(GOVERNED_EDIT),
+            "--task-id",
+            "codex-lock-test",
             "--file",
             "target.txt",
             "--reason",

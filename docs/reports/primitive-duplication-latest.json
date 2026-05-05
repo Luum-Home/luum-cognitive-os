@@ -20,6 +20,51 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:a53e91434110",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_credential_safe_run.py::_load_manifest",
+      "pair_key": "scripts/cos_credential_safe_run.py::_load_manifest :: scripts/security_red_team.py::_read_yaml",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/security_red_team.py::_read_yaml",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:cb74c83e9972",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_credential_safe_run.py::_sha256_file",
+      "pair_key": "scripts/cos_credential_safe_run.py::_sha256_file :: scripts/security_red_team.py::_file_sha256",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/security_red_team.py::_file_sha256",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:668ac079a130",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_credential_safe_run.py::_utc",
+      "pair_key": "scripts/cos_credential_safe_run.py::_utc :: scripts/security_red_team.py::_utc",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/security_red_team.py::_utc",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:b0a09dbc1c53",
       "kind": "python-function-repeat",
       "left": "scripts/project_shell_ci.py::load_manifest",
@@ -52,16 +97,16 @@
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 2
+      "lib/": 5
     },
     "by_consumer_relevance": {
-      "so-local-first": 2
+      "so-local-first": 5
     },
     "by_kind": {
-      "python-function-repeat": 2
+      "python-function-repeat": 5
     },
-    "files_scanned": 747,
-    "findings": 2
+    "files_scanned": 772,
+    "findings": 5
   },
-  "timestamp": "2026-05-05T16:45:05.428762+00:00"
+  "timestamp": "2026-05-05T17:37:15.938917+00:00"
 }

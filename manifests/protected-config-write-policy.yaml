@@ -1,0 +1,25 @@
+schema_version: protected-config-write-policy.v1
+review_date: 2026-05-05
+purpose: >-
+  Prevent prompt-injection or malicious-agent writes to agent control-plane files
+  that can alter permissions, hooks, MCP tools, rules, skills, or runtime policy.
+default_mode: block
+approval_env: COS_ALLOW_PROTECTED_CONFIG_WRITE
+protected_globs:
+  - .claude/**
+  - .codex/**
+  - .cursor/**
+  - .windsurf/**
+  - .continue/**
+  - mcp.json
+  - .mcp/**
+  - hooks/**
+  - rules/**
+  - skills/*/SKILL.md
+  - manifests/*security*.yaml
+  - manifests/credential-safe-scripts.yaml
+  - manifests/runtime-env-flags.yaml
+allowlisted_generated_outputs:
+  - .cognitive-os/reports/**
+  - .cognitive-os/metrics/**
+  - .cognitive-os/sessions/**
