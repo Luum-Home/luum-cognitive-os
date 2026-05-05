@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# PURPOSE: Minimal local COS service-control-plane status wrapper.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$SCRIPT_DIR/cos_service_control_plane.py" cosd "$@"
+
