@@ -6327,3 +6327,136 @@ primitives:
   metrics_file: .cognitive-os/locks/adr-reservations.json
   consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: Keep maintainer-only until packaged as a documented authoring command for consumer projects.
+
+- id: scripts/cos_service_control_plane.py
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_service_control_plane.py
+  runtime_projection: false
+  behavior_evidence: Python implementation for Phase 1 local JSONL queue, leases, local-command worker, and artifact bundles; no provider calls.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_service_control_plane.py
+  - python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py -q
+  rollback_or_repair_command: Remove Phase 1 service-control-plane scripts and lifecycle rows, then keep manifests as planned contracts only.
+  sunset_criteria: Promote after repeated successful proof drills for queue, leases, artifact bundles, and crash/resume; demote if Phase 1 remains unused.
+  docs_claim_level: observe
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/service/queue.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command for consumer projects.
+
+- id: scripts/cosd
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cosd
+  - scripts/cos_service_control_plane.py
+  runtime_projection: false
+  behavior_evidence: Minimal local cosd status wrapper for Phase 1 queue visibility; not a long-running scheduler yet.
+  evidence_commands:
+  - bash -n scripts/cosd
+  - python3 -m py_compile scripts/cos_service_control_plane.py
+  - python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py -q
+  rollback_or_repair_command: Remove Phase 1 service-control-plane scripts and lifecycle rows, then keep manifests as planned contracts only.
+  sunset_criteria: Promote only after cosd becomes a real scheduler loop with leases, crash/resume evidence, and bounded publication.
+  docs_claim_level: observe
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/service/queue.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command for consumer projects.
+
+- id: scripts/cos-task-submit
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-task-submit
+  - scripts/cos_service_control_plane.py
+  runtime_projection: false
+  behavior_evidence: Submits local-command tasks to the Phase 1 service queue with propose-only policy.
+  evidence_commands:
+  - bash -n scripts/cos-task-submit
+  - python3 -m py_compile scripts/cos_service_control_plane.py
+  - python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py -q
+  rollback_or_repair_command: Remove Phase 1 service-control-plane scripts and lifecycle rows, then keep manifests as planned contracts only.
+  sunset_criteria: Promote after repeated local queue proof drills; demote if service task submission remains unused.
+  docs_claim_level: observe
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/service/queue.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command for consumer projects.
+
+- id: scripts/cos-worker-run-once
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-worker-run-once
+  - scripts/cos_service_control_plane.py
+  runtime_projection: false
+  behavior_evidence: Claims and executes one pending local-command task, writing lease and artifact bundle evidence.
+  evidence_commands:
+  - bash -n scripts/cos-worker-run-once
+  - python3 -m py_compile scripts/cos_service_control_plane.py
+  - python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py -q
+  rollback_or_repair_command: Remove Phase 1 service-control-plane scripts and lifecycle rows, then keep manifests as planned contracts only.
+  sunset_criteria: Promote after crash/resume and lease-expiry proof drills; demote if worker execution remains unused.
+  docs_claim_level: observe
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/service/leases.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command for consumer projects.
+
+- id: scripts/cos-queue-drain
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-queue-drain
+  - scripts/cos_service_control_plane.py
+  runtime_projection: false
+  behavior_evidence: Reports Phase 1 local queue, lease, and task status without provider calls.
+  evidence_commands:
+  - bash -n scripts/cos-queue-drain
+  - python3 -m py_compile scripts/cos_service_control_plane.py
+  - python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py -q
+  rollback_or_repair_command: Remove Phase 1 service-control-plane scripts and lifecycle rows, then keep manifests as planned contracts only.
+  sunset_criteria: Promote after queue visibility becomes part of a real cosd operator loop; demote if unused.
+  docs_claim_level: observe
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/service/queue.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command for consumer projects.
