@@ -1286,6 +1286,7 @@ hooks:
     - tests/chaos/test_reaper_heartbeat_exercised.py
     - tests/contracts/test_self_install_no_container_spawn.py
     - tests/unit/test_cos_config_audit.py
+    - tests/unit/test_primitive_duplication_audit.py
     criticality: standard
     event: SessionStart
     harness_tiers:
@@ -1555,6 +1556,7 @@ hooks:
     - tests/behavior/test_agent_resilience.py
     - tests/behavior/test_coexistence.py
     - tests/behavior/test_compaction_protection.py
+    - tests/behavior/test_consumer_project_projection.py
     - tests/behavior/test_cos_status.py
     - tests/behavior/test_efficiency_profiles.py
     - tests/behavior/test_hook_architecture.py

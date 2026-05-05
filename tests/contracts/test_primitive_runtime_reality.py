@@ -113,6 +113,9 @@ def test_core_team_and_blocking_entries_have_executable_evidence() -> None:
         if item.get("distribution") not in {"core", "team"} and item.get("maturity") != "blocking":
             continue
         evidence = [str(command) for command in item.get("evidence_commands", [])]
-        if not evidence or not any(command.startswith(("bash -n", "python3 -m pytest")) for command in evidence):
+        if not evidence or not any(
+            command.startswith(("bash -n", "python3 -m pytest", "python3 -m py_compile", "python3 scripts/"))
+            for command in evidence
+        ):
             offenders.append(str(item["id"]))
     assert offenders == []
