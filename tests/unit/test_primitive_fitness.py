@@ -85,3 +85,128 @@ def test_missing_samples_needs_evidence(tmp_path: Path) -> None:
 
     assert report.verdict == "needs_evidence"
     assert report.delta is None
+
+
+def _write_json(path: Path, payload: dict) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
+def test_consumer_and_dependency_inputs_are_supporting_fitness_signals(tmp_path: Path) -> None:
+    baseline = _metrics(tmp_path / "baseline", trust=84, successes=3, failures=0)
+    candidate = _metrics(tmp_path / "candidate", trust=92, successes=5, failures=0)
+    baseline_bundle = _write_json(
+        tmp_path / "baseline-consumer.json",
+        {
+            "mode": "propose_only",
+            "runtime_effect": "none",
+            "action_counts": {"project-local": 2, "harness-gap": 1},
+            "proposals": [
+                {"action": "project-local", "runtime_effect": "none"},
+                {"action": "project-local", "runtime_effect": "none"},
+                {"action": "harness-gap", "runtime_effect": "none"},
+            ],
+            "policy": {"auto_merge": False},
+        },
+    )
+    candidate_bundle = _write_json(
+        tmp_path / "candidate-consumer.json",
+        {
+            "mode": "propose_only",
+            "runtime_effect": "none",
+            "action_counts": {"upstream-candidate": 3},
+            "proposals": [
+                {"action": "upstream-candidate", "runtime_effect": "none"},
+                {"action": "upstream-candidate", "runtime_effect": "none"},
+                {"action": "upstream-candidate", "runtime_effect": "none"},
+            ],
+            "policy": {"auto_merge": False},
+        },
+    )
+    baseline_deps = _write_json(
+        tmp_path / "baseline-deps.json",
+        {
+            "schema_version": "cos-deps-install.v1",
+            "profile": "core",
+            "platform": "linux",
+            "mode": "dry-run",
+            "credential_policy": "never-copy-or-read-credential-stores",
+            "already_present": [{"name": "git"}],
+            "installable": [{"name": "uv"}],
+            "manual": [],
+            "auth_bound": [],
+            "unsupported_platform": [{"name": "desktop-app"}],
+            "installed": [],
+            "failed": [],
+        },
+    )
+    candidate_deps = _write_json(
+        tmp_path / "candidate-deps.json",
+        {
+            "schema_version": "cos-deps-install.v1",
+            "profile": "core",
+            "platform": "linux",
+            "mode": "dry-run",
+            "credential_policy": "never-copy-or-read-credential-stores",
+            "already_present": [{"name": "git"}, {"name": "uv"}],
+            "installable": [],
+            "manual": [],
+            "auth_bound": [],
+            "unsupported_platform": [],
+            "installed": [],
+            "failed": [],
+        },
+    )
+
+    report = build_report(
+        primitive_id="skills/example",
+        baseline_metrics=baseline,
+        candidate_metrics=candidate,
+        baseline_consumer_proposals_json=baseline_bundle,
+        candidate_consumer_proposals_json=candidate_bundle,
+        baseline_dependency_report_json=baseline_deps,
+        candidate_dependency_report_json=candidate_deps,
+        required_delta=1.0,
+    )
+
+    assert report.verdict == "promote"
+    assert report.candidate.scores["consumer_evidence"] > report.baseline.scores["consumer_evidence"]
+    assert report.candidate.scores["portability_readiness"] > report.baseline.scores["portability_readiness"]
+    assert report.candidate.raw["consumer_evidence"]["upstream_candidate_count"] == 3
+    assert report.candidate.raw["portability_readiness"]["bucket_counts"]["unsupported_platform"] == 0
+
+
+def test_supporting_evidence_without_core_metrics_cannot_promote(tmp_path: Path) -> None:
+    baseline_bundle = _write_json(
+        tmp_path / "baseline-consumer.json",
+        {
+            "mode": "propose_only",
+            "runtime_effect": "none",
+            "action_counts": {"project-local": 1},
+            "proposals": [{"action": "project-local", "runtime_effect": "none"}],
+            "policy": {"auto_merge": False},
+        },
+    )
+    candidate_bundle = _write_json(
+        tmp_path / "candidate-consumer.json",
+        {
+            "mode": "propose_only",
+            "runtime_effect": "none",
+            "action_counts": {"upstream-candidate": 4},
+            "proposals": [{"action": "upstream-candidate", "runtime_effect": "none"} for _ in range(4)],
+            "policy": {"auto_merge": False},
+        },
+    )
+
+    report = build_report(
+        primitive_id="skills/example",
+        baseline_metrics=tmp_path / "empty-baseline",
+        candidate_metrics=tmp_path / "empty-candidate",
+        baseline_consumer_proposals_json=baseline_bundle,
+        candidate_consumer_proposals_json=candidate_bundle,
+        required_delta=1.0,
+    )
+
+    assert report.verdict == "needs_evidence"
+    assert "core_promotion_domains" in report.missing_signals
