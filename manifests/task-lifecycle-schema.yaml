@@ -1,0 +1,313 @@
+schema_version: task-lifecycle.v1
+review_date: 2026-05-05
+purpose: >-
+  Contract for Cognitive OS task execution outside a single IDE session. It
+  defines task states, interruptions, human questions, communication events,
+  worktree ownership, branch naming, and PR/propose-only publication flow.
+proof_level: contract-only
+scope:
+  - cosd
+  - local-queue
+  - remote-ingress
+  - worker-execution
+  - worktree-isolation
+  - pull-request-proposal
+principles:
+  - Remote ingress adapters enqueue intent; they never execute tools directly.
+  - A task can be interrupted only after its resumable state and evidence are persisted.
+  - Human questions are structured decision objects, not free-form hidden chat.
+  - Each non-trivial task owns an isolated worktree, branch, lease, and claimed path set.
+  - Publication is propose-only until a human or merge queue approval path accepts it.
+  - Secrets, provider tokens, and raw credential files must never be persisted in artifacts.
+  - State transitions must be append-only and replayable from events.
+identifiers:
+  task_id:
+    pattern: '^task-[a-z0-9][a-z0-9-]{5,80}$'
+    example: task-remote-ingress-r1
+  question_id:
+    pattern: '^q-[a-z0-9][a-z0-9-]{5,80}$'
+    example: q-expand-hooks-scope
+  interrupt_id:
+    pattern: '^int-[a-z0-9][a-z0-9-]{5,80}$'
+    example: int-operator-pause-001
+  lease_id:
+    pattern: '^lease-[a-z0-9][a-z0-9-]{5,80}$'
+    example: lease-task-remote-ingress-r1
+  event_id:
+    pattern: '^evt-[a-z0-9][a-z0-9-]{5,80}$'
+    example: evt-task-created-001
+task:
+  required_fields:
+    - task_id
+    - title
+    - status
+    - priority
+    - origin
+    - requested_by
+    - created_at
+    - updated_at
+    - claimed_paths
+    - worktree
+    - branch
+    - lease
+    - evidence
+  statuses:
+    queued:
+      terminal: false
+      description: Accepted by admission and waiting for a worker lease.
+      allowed_next: [claimed, cancelled]
+    claimed:
+      terminal: false
+      description: A worker reserved the task and is preparing execution.
+      allowed_next: [running, waiting_for_human, failed, cancelled]
+    running:
+      terminal: false
+      description: A worker is actively executing under a valid lease.
+      allowed_next: [paused, interrupted, waiting_for_human, needs_human, validating, failed, cancelled]
+    paused:
+      terminal: false
+      description: Operator or scheduler paused the task after evidence was saved.
+      allowed_next: [resumable, cancelled]
+    interrupted:
+      terminal: false
+      description: Execution stopped because of crash, compaction, conflict, auth, or operator interrupt.
+      allowed_next: [resumable, needs_human, failed, cancelled]
+    waiting_for_human:
+      terminal: false
+      description: A structured human answer or approval is required before continuing.
+      allowed_next: [resumable, cancelled]
+    needs_human:
+      terminal: false
+      description: Automated continuation is unsafe or ambiguous; human triage is required.
+      allowed_next: [resumable, failed, cancelled]
+    resumable:
+      terminal: false
+      description: Enough evidence and workspace state exist to continue safely.
+      allowed_next: [claimed, running, validating, cancelled]
+    validating:
+      terminal: false
+      description: Implementation finished and validation is running or queued.
+      allowed_next: [pr_ready, waiting_for_human, needs_human, failed]
+    pr_ready:
+      terminal: false
+      description: A patch bundle, branch, or draft PR exists for human review.
+      allowed_next: [approved, changes_requested, abandoned]
+    changes_requested:
+      terminal: false
+      description: Review requested changes; task can continue in the same worktree/branch if lease is renewed.
+      allowed_next: [claimed, running, abandoned]
+    approved:
+      terminal: false
+      description: Human or merge-queue approval was granted; publication remains gated by merge policy.
+      allowed_next: [merged, abandoned]
+    completed:
+      terminal: true
+      description: Task finished with evidence and no pending publication.
+      allowed_next: []
+    merged:
+      terminal: true
+      description: Approved PR or patch landed through the configured merge queue.
+      allowed_next: []
+    failed:
+      terminal: true
+      description: Task cannot complete automatically and has final evidence.
+      allowed_next: []
+    cancelled:
+      terminal: true
+      description: Operator or policy cancelled the task.
+      allowed_next: []
+    abandoned:
+      terminal: true
+      description: PR/branch/worktree were intentionally abandoned with preserved evidence.
+      allowed_next: []
+priorities: [low, normal, high, urgent]
+origins:
+  - ide
+  - cli
+  - remote-chat
+  - rest-api
+  - webhook
+  - paperclip
+  - github
+  - scheduler
+  - automation
+question:
+  required_fields:
+    - question_id
+    - task_id
+    - type
+    - blocking
+    - question
+    - options
+    - recommended_option
+    - risk_if_wrong
+    - created_at
+  types:
+    requirement:
+      blocks_by_default: true
+      description: Missing or ambiguous product/implementation requirement.
+    approval:
+      blocks_by_default: true
+      description: Human permission needed for high-risk, publication, or scope expansion action.
+    credential:
+      blocks_by_default: true
+      description: Provider, CLI, API key, OAuth, account, or remote channel auth is missing.
+    conflict:
+      blocks_by_default: true
+      description: Claimed paths, branch, worktree, or merge state conflict with another task.
+    product_decision:
+      blocks_by_default: true
+      description: User-facing behavior or roadmap choice needs product judgment.
+    clarification:
+      blocks_by_default: false
+      description: Non-blocking preference question where a safe default exists.
+    review:
+      blocks_by_default: true
+      description: Human review outcome is needed before PR publication or merge.
+  allowed_answer_actions:
+    - answer
+    - choose_option
+    - approve
+    - reject
+    - defer
+    - cancel_task
+    - narrow_scope
+    - expand_scope
+interruption:
+  required_fields:
+    - interrupt_id
+    - task_id
+    - reason
+    - status_before
+    - status_after
+    - persisted_at
+    - resumable
+    - evidence_refs
+    - resume_command
+  reasons:
+    - operator_interrupt
+    - compaction
+    - crash
+    - lease_expired
+    - auth_required
+    - path_conflict
+    - merge_conflict
+    - test_failure
+    - policy_block
+    - rate_limit
+    - budget_limit
+    - provider_unavailable
+    - unsafe_output
+    - unknown
+  required_persistence:
+    - task_snapshot
+    - worktree_path
+    - branch_name
+    - claimed_paths
+    - lease_snapshot
+    - diff_or_patch_ref
+    - validation_summary
+    - open_questions
+communication:
+  event_channel:
+    storage: append-only-jsonl
+    required_fields: [event_id, task_id, event_type, created_at, actor, payload]
+    event_types:
+      - task.created
+      - task.claimed
+      - task.started
+      - task.paused
+      - task.interrupted
+      - task.resumed
+      - task.waiting_for_human
+      - task.needs_human
+      - question.asked
+      - question.answered
+      - worktree.created
+      - branch.created
+      - lease.renewed
+      - validation.started
+      - validation.passed
+      - validation.failed
+      - pr.created
+      - pr.updated
+      - pr.approved
+      - pr.merged
+      - task.completed
+      - task.failed
+      - task.cancelled
+  control_commands:
+    - status
+    - pause
+    - resume
+    - cancel
+    - approve
+    - reject
+    - answer_question
+    - request_evidence
+    - narrow_scope
+    - expand_scope
+  evidence_channel:
+    artifact_types:
+      - task.json
+      - lease.json
+      - events.jsonl
+      - questions.jsonl
+      - interrupt.json
+      - patch.diff
+      - validation.txt
+      - trust-report.md
+      - pr-url.txt
+worktree:
+  required_fields:
+    - path
+    - branch
+    - base_ref
+    - owner_task_id
+    - claimed_paths
+    - dirty_policy
+    - cleanup_policy
+  path_template: '.worktrees/{task_id}'
+  branch_template: 'codex/{task_id}-{slug}'
+  dirty_policy:
+    default: preserve
+    allowed_values: [preserve, bundle_then_clean, reject]
+  cleanup_policy:
+    default: keep_until_task_terminal_and_evidence_persisted
+    sweeper_allowed_after_terminal: true
+    never_delete_when:
+      - tracked_changes_without_patch_bundle
+      - active_process_or_open_file
+      - branch_not_merged_or_abandoned
+      - unresolved_questions
+      - missing_evidence
+pull_request:
+  required_fields:
+    - task_id
+    - branch
+    - title
+    - body_sections
+    - evidence_refs
+    - status
+  statuses:
+    - not_required
+    - draft_pr_created
+    - review_requested
+    - changes_requested
+    - approved
+    - merged
+    - abandoned
+  required_body_sections:
+    - Task
+    - Scope
+    - Claimed Paths
+    - Evidence
+    - Open Questions
+    - Risks
+    - Rollback
+  blocked_actions:
+    - direct_push_main
+    - force_push
+    - merge_without_human_or_merge_queue_approval
+    - publish_secret_bearing_logs
+    - delete_branch_without_terminal_task_evidence

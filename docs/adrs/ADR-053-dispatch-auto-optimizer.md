@@ -1,10 +1,21 @@
+---
+adr: 53
+title: Dispatch Auto-Optimizer
+status: implemented
+implementation_files:
+  - lib/dispatch_optimizer.py
+  - scripts/auto-tune-routing
+  - tests/unit/test_provider_benchmark_and_optimizer.py
+---
+
 # ADR-053 — Dispatch Auto-Optimizer
 
 ## Status
 
-**Reserved** — stub. Blocked on ADR-050 (per-skill routing) and ADR-052
-(benchmark harness). Depends on several months of accumulated
-`llm-dispatch.jsonl` metrics. Not scheduled.
+**Implemented for reviewed proposal generation.** The repository now ships a
+metrics analyzer, routing proposal writer, CLI, and unit coverage. The optimizer
+never auto-applies routing changes; applying proposed routing in dispatch remains
+a separate human-reviewed integration step.
 
 ## Context
 
@@ -24,7 +35,7 @@ accumulated metrics and re-tunes routing per skill/task type.
 
 ## Decision
 
-**Deferred**. Reserve the design for a Python module that:
+**Implemented** as a Python module that:
 
 1. Reads `.cognitive-os/metrics/llm-dispatch.jsonl` (produced by C2
    of ADR-049)
@@ -56,23 +67,22 @@ write_proposal(proposals, path=".cognitive-os/routing/auto-tuned.yaml")
 
 ### Human-in-the-loop flow
 
-1. Weekly cron: `python3 scripts/auto-tune-routing.py`
+1. Weekly cron or manual run: `python3 scripts/auto-tune-routing --metrics .cognitive-os/metrics/llm-dispatch.jsonl`
 2. Proposal written to `.cognitive-os/routing/auto-tuned.yaml` (diff
    visible in `git status`)
 3. Operator reviews diff. Reasonable changes → commit. Weird changes →
    investigate (may reveal metrics anomaly or provider regression).
-4. On commit, `lib/dispatch.py` reads the tuned routing and applies it
-   to matching `(skill, task)` calls.
+4. A future dispatch integration can read the tuned routing and apply it
+   to matching `(skill, task)` calls after operator review.
 
 ### Cold start
 
-Before any auto-tuning happens, need:
+Before high-confidence auto-tuning happens, operators still need:
 - ≥30 days of data in `llm-dispatch.jsonl`
 - ≥10 samples per `(skill, task)` tuple being tuned
 - ADR-050 schema so skills declare `task_type` consistently
 
-Until those conditions hold: default cascade (ADR-049) is used; no
-auto-tuning applies.
+Until those conditions hold: default cascade (ADR-049) is used; generated proposals may be sparse or empty.
 
 ## Consequences
 
@@ -104,16 +114,17 @@ auto-tuning applies.
 ## Dependencies
 
 - ADR-049 cascade + JSONL metrics — done
-- ADR-050 skill routing schema — TODO
-- ADR-052 benchmark harness — TODO (provides quality signal)
-- 30+ days of production `llm-dispatch.jsonl` data — blocked on adoption
+- ADR-050 skill routing schema — current metrics must include `skill_name` and `task_type` fields for tuple-specific proposals
+- ADR-052 benchmark harness — implemented for no-cost benchmark signal production
+- 30+ days of production `llm-dispatch.jsonl` data — adoption-dependent for high-confidence tuning
 
 ## Related
 
 - ADR-049 — metric foundation
 - ADR-050 — consumer of auto-tuned routing
 - ADR-052 — quality signal producer
-- `lib/dispatch.py` — reads tuned routing (future)
+- `lib/dispatch_optimizer.py` — analyzes metrics and writes human-reviewed routing proposals
+- `scripts/auto-tune-routing` — CLI entrypoint
 - `.cognitive-os/metrics/llm-dispatch.jsonl` — primary input
 - `.cognitive-os/routing/auto-tuned.yaml` — reserved output path
 
@@ -131,4 +142,4 @@ auto-tuning applies.
 4. **Operator fatigue**: how often should proposals be generated?
    Weekly could produce noisy churn. Monthly may lag real shifts.
 
-Not scheduled. Explicitly a "when we have evidence, not on principle" ADR.
+Implemented for evidence-based proposal generation. Direct dispatch application, exploration routing, and long-window confidence policies remain future integration decisions rather than missing optimizer implementation.

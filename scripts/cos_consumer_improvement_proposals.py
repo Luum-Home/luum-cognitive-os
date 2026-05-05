@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
@@ -17,10 +16,7 @@ from lib.consumer_improvement_proposals import (  # noqa: E402
     import_consumer_improvement_bundle,
     write_consumer_improvement_bundle,
 )
-
-
-def _print(payload: dict[str, object]) -> None:
-    print(json.dumps(payload, ensure_ascii=False, sort_keys=True))
+from lib.script_io import print_json_status as _print  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

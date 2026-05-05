@@ -74,6 +74,23 @@ def test_hook_quality_harness_tiers_are_explicit_for_codex_and_claude() -> None:
     assert not failures, "\n".join(failures)
 
 
+def test_hook_quality_manifest_declares_guard_maturity_contract() -> None:
+    manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    allowed = set(manifest["policy"]["maturity_values"])
+    failures: list[str] = []
+    for hook_id, entry in manifest["hooks"].items():
+        if entry.get("maturity") not in allowed:
+            failures.append(f"{hook_id}: invalid maturity {entry.get('maturity')!r}")
+        if not entry.get("bypass_policy"):
+            failures.append(f"{hook_id}: missing bypass_policy")
+        if entry.get("maturity") in {"block", "emergency"}:
+            tests = entry.get("false_positive_tests") or []
+            existing = [path for path in tests if (REPO / path).is_file()]
+            if not existing:
+                failures.append(f"{hook_id}: block/emergency maturity requires false_positive_tests")
+    assert not failures, "\n".join(failures)
+
+
 def test_required_critical_hooks_have_behavior_coverage() -> None:
     manifest = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
     required = manifest["policy"]["required_behavior_coverage"]

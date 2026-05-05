@@ -14,8 +14,16 @@ from __future__ import annotations
 import argparse
 import json
 import re
-from dataclasses import asdict, dataclass, field
+import sys
+from dataclasses import dataclass, field
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
+from lib.project_paths import relpath as relpath
+from lib.primitive_readiness_common import family_counts, load_lifecycle, row_to_dict
 from typing import Any
 
 import yaml
@@ -102,17 +110,6 @@ class ScriptRow:
     consumers: list[Consumer] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
     next_action: str = ""
-
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore")
-    except OSError:
-        return ""
-
-
-def relpath(root: Path, path: Path) -> str:
-    return path.relative_to(root).as_posix()
 
 
 def script_files(root: Path) -> list[Path]:
@@ -223,19 +220,6 @@ def build_usage(root: Path, targets: list[Path]) -> dict[str, list[Consumer]]:
     return usage
 
 
-def load_lifecycle(root: Path) -> dict[str, dict[str, Any]]:
-    manifest = root / "manifests" / "primitive-lifecycle.yaml"
-    if not manifest.exists():
-        return {}
-    data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
-    rows = {}
-    for primitive in data.get("primitives", []):
-        pid = primitive.get("id")
-        if isinstance(pid, str):
-            rows[pid] = primitive
-    return rows
-
-
 def load_overrides(root: Path, path: str | None) -> dict[str, dict[str, Any]]:
     if not path:
         return {}
@@ -271,13 +255,6 @@ def wrapper_target(root: Path, path: Path) -> str | None:
         if match != relpath(root, path) and (root / match).exists():
             return match
     return None
-
-
-def family_counts(consumers: list[Consumer]) -> dict[str, int]:
-    counts: dict[str, int] = {}
-    for consumer in consumers:
-        counts[consumer.family] = counts.get(consumer.family, 0) + 1
-    return dict(sorted(counts.items()))
 
 
 def has_any(rel: str, patterns: tuple[str, ...]) -> bool:
@@ -446,12 +423,6 @@ def summarize(rows: list[ScriptRow]) -> dict[str, Any]:
         "agentic_primitives_without_lifecycle": without_lifecycle,
         "low_confidence_rows": sum(1 for row in rows if row.confidence == "low"),
     }
-
-
-def row_to_dict(row: ScriptRow) -> dict[str, Any]:
-    data = asdict(row)
-    data["consumers"] = [asdict(consumer) for consumer in row.consumers]
-    return data
 
 
 def write_json(rows: list[ScriptRow], path: Path) -> None:

@@ -1,7 +1,7 @@
 ---
 adr: 161
 title: Remote Control Plane and Provider Adapter Boundary
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -19,7 +19,7 @@ tags: [remote-control-plane, provider-adapters, opencode, openclaw, agent-zero, 
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for boundary/inventory scope** — 2026-05-05. The remote ingress versus provider/executor adapter boundary, alternatives manifest, report, manual test, and contract tests exist; concrete remote ingress/provider adapters remain follow-up implementation work.
 
 ## Context
 

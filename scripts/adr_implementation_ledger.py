@@ -143,16 +143,18 @@ def decision_state_from_status(status: str) -> str:
     normalized = status.lower()
     if not normalized:
         return "missing_status"
+    if "implemented" in normalized:
+        return "implemented"
     if "superseded" in normalized or "replaced" in normalized:
         return "superseded"
-    if "reserved" in normalized:
-        return "reserved"
     if "accepted" in normalized or "approved" in normalized:
         return "accepted"
     if "draft" in normalized:
         return "draft"
     if "proposed" in normalized:
         return "proposed"
+    if "reserved" in normalized:
+        return "reserved"
     return "unknown"
 
 
@@ -280,6 +282,8 @@ def implementation_state(
         return "partial", "Implementation evidence exists, but open questions or unchecked follow-ups remain"
     if evidence and IMPLEMENTED_TERMS.search(status_text):
         return "implemented", "Implementation evidence and completion language were detected"
+    if decision_state == "implemented":
+        return "implemented", "ADR status is implemented and required implementation paths exist"
     if evidence:
         return "pending_evidence", "Evidence references exist, but the ADR does not state completion clearly"
     if decision_state in {"accepted", "proposed", "draft"}:

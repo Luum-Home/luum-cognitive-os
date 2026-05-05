@@ -103,6 +103,7 @@ Equivalent to loading `skills/apply-improvements/SKILL.md` and following its ins
 | `hooks/error-learning.sh` | Captures raw error data (feeds analyze) |
 | `hooks/auto-refine.sh` | Captures iteration data (feeds analyze) |
 | `hooks/session-learning.sh` | Captures session-level learnings (feeds analyze) |
+| `scripts/cos-key-learnings-capture` | Captures assistant `## Key Learnings` into governed improvement evidence |
 | `hooks/kpi-trigger.sh` | Detects when self-improve should run |
 | `skills/analyze-improvements/` | Phase 1 — read-only analysis |
 | `skills/apply-improvements/` | Phase 2 — file-modifying application |

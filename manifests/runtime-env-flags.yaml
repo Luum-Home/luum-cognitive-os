@@ -1,0 +1,374 @@
+schema_version: runtime-env-flags.v1
+review_date: 2026-05-05
+purpose: Public runtime environment flag registry for Cognitive OS skip, disable,
+  bypass, allow, force, run, dry-run, mock, and opt-in controls. This registry starts
+  with the flag families that are already documented or newly promoted to public operator
+  controls; it is not an exhaustive grep dump of every local variable.
+required_flag_fields:
+- name
+- family
+- default
+- allowed_values
+- owner_files
+- documentation
+- risk_level
+- bypasses_safety_primitive
+families:
+  hook-suppression: Per-hook session suppression for registered hooks.
+  llm-dispatch: Provider routing and fallback controls.
+  startup-safe-mode: Startup circuit breaker and SessionStart suppression.
+  test-opt-in: Heavy, Docker, external-service, or cost-bearing test lane opt-ins.
+  safety-bypass: Explicit operator bypasses for safety primitives.
+  optional-service: Optional scanner, daemon, gateway, or integration enablement.
+  watchdog-observability: Watchdog and hot-path observability controls.
+  secret-loading: Controls whether local development secret files may be loaded.
+risk_levels:
+  low: Does not bypass safety or trigger external cost.
+  medium: Changes runtime behavior, may hide diagnostics, or controls optional services.
+  high: Bypasses safety, may affect credentials, destructive operations, or provider
+    cost.
+flags:
+- name: COS_SKIP_DOTENV
+  family: secret-loading
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  - 'true'
+  - 'false'
+  - 'yes'
+  - 'no'
+  - 'on'
+  - 'off'
+  owner_files:
+  - scripts/smoke-qwen-fallback.sh
+  - lib/qwen_provider.py
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/runbooks/llm-dispatch.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: When truthy, Qwen live-smoke paths must not load repo-local .env and
+    must rely only on already-exported environment variables. This exists so agents
+    can run live smokes without indirectly touching blocked secret files.
+- name: COS_ALLOW_CREDENTIAL_SAFE_ENV
+  family: secret-loading
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - scripts/cos-credential-safe-run
+  - scripts/cos_credential_safe_run.py
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/manual-tests/credential-safe-script-runner.md
+  risk_level: high
+  bypasses_safety_primitive: false
+  description: Explicit operator approval flag for allowlisted credential-safe scripts
+    that read selected values from a local env file without exposing secret values
+    to stdout, stderr, or audit artifacts.
+- name: DISABLE_HOOK_*
+  family: hook-suppression
+  default: unset
+  allowed_values:
+  - 'true'
+  - '1'
+  owner_files:
+  - hooks/_lib/common.sh
+  - rules/hook-security-profiles.md
+  documentation:
+  - rules/hook-security-profiles.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Per-session hook suppression pattern implemented by check_disabled_env.
+- name: COS_DISABLE_QWEN
+  family: llm-dispatch
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - scripts/orchestrator.py
+  documentation:
+  - rules/llm-dispatch.md
+  - docs/runbooks/llm-dispatch.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Skip Qwen as an LLM dispatch provider.
+- name: COS_FORCE_CLAUDE_PRIMARY
+  family: llm-dispatch
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - scripts/orchestrator.py
+  documentation:
+  - rules/llm-dispatch.md
+  - docs/runbooks/llm-dispatch.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Force Claude-first routing for LLM dispatch.
+- name: COS_DISABLE_LLM_FALLBACK
+  family: llm-dispatch
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - scripts/orchestrator.py
+  - scripts/smoke-qwen-fallback.sh
+  documentation:
+  - rules/llm-dispatch.md
+  - docs/runbooks/llm-dispatch.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Disable fallback cascade and surface provider errors directly.
+- name: COS_STARTUP_SAFE_MODE
+  family: startup-safe-mode
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/session-init.sh
+  documentation:
+  - docs/adrs/ADR-104-startup-circuit-breaker.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Skip heavy SessionStart hook bodies during startup incident recovery.
+- name: COS_DISABLE_SESSIONSTART_HOOKS
+  family: startup-safe-mode
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/session-init.sh
+  documentation:
+  - docs/adrs/ADR-104-startup-circuit-breaker.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Disable SessionStart hook bodies for startup circuit breaker recovery.
+- name: COS_RUN_HEADLESS_SERVICE_DOCKER
+  family: test-opt-in
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - tests/integration/test_headless_service_drill.py
+  documentation:
+  - docs/testing.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Opt in to Docker/headless service integration proof drills.
+- name: COS_CODEX_EXEC_MODEL
+  family: test-opt-in
+  default: unset
+  allowed_values:
+  - any Codex CLI --model value supported by the installed host CLI
+  owner_files:
+  - scripts/cos_service_control_plane.py
+  - scripts/cos-headless-service-drill
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Optional model pin for explicit Codex host provider proof drills when
+    the installed CLI default model is unsupported.
+- name: COS_RUN_DATABASE_CONTAINERS
+  family: test-opt-in
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - tests/integration/test_databases.py
+  documentation:
+  - docs/testing.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Opt in to database container integration tests.
+- name: COS_ALLOW_CONCURRENT_WRITES
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/concurrent-write-guard-codex-proxy.sh
+  documentation:
+  - docs/architecture/concurrent-agent-safety-master.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Explicitly bypass concurrent write guard in controlled situations.
+- name: COS_ALLOW_DESTRUCTIVE_GIT
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/auto-checkpoint.sh
+  documentation:
+  - docs/trust-model.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Allow destructive git-related recovery behavior when explicitly set.
+- name: COS_ALLOW_DIRECT_MAIN
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/direct-main-guard.sh
+  documentation:
+  - docs/architecture/direct-main-policy.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: One-off emergency bypass for direct main/master work.
+- name: SEMGREP_ENABLED
+  family: optional-service
+  default: 'false'
+  allowed_values:
+  - 'false'
+  - 'true'
+  owner_files:
+  - hooks/semgrep-scan.sh
+  documentation:
+  - rules/hook-security-profiles.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Enable optional Semgrep scanning hook.
+- name: AGUARA_ENABLED
+  family: optional-service
+  default: 'false'
+  allowed_values:
+  - 'false'
+  - 'true'
+  owner_files:
+  - hooks/aguara-scan.sh
+  documentation:
+  - rules/hook-security-profiles.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Enable optional Aguara security scanner hook.
+- name: AGENT_BUS_ENABLED
+  family: optional-service
+  default: 'false'
+  allowed_values:
+  - 'false'
+  - 'true'
+  owner_files:
+  - hooks/agent-bus-monitor.sh
+  documentation:
+  - docs/architecture/concurrent-agent-safety-master.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Enable optional agent bus monitoring.
+- name: BIFROST_ENABLED
+  family: optional-service
+  default: 'false'
+  allowed_values:
+  - 'false'
+  - 'true'
+  owner_files:
+  - lib/bifrost_client.py
+  documentation:
+  - docs/research/claude-code-router-evaluation-2026-04-21.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Enable optional Bifrost gateway client path.
+- name: COS_SESSION_WATCHDOG_DISABLE
+  family: watchdog-observability
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - scripts/so_session_watchdog.py
+  - lib/session_watchdog_lib.py
+  documentation:
+  - docs/architecture/session-start-runtime-diet.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Disable session watchdog launcher/records for a session.
+- name: SO_WATCHDOG_DRY_RUN
+  family: watchdog-observability
+  default: '1'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - scripts/so_session_watchdog.py
+  - lib/session_watchdog_lib.py
+  documentation:
+  - docs/architecture/session-start-runtime-diet.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Keep watchdog in dry-run mode unless explicitly disabled.
+- name: COS_MLFLOW_HOTPATH_ENABLED
+  family: watchdog-observability
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - lib/record_completion.py
+  documentation:
+  - docs/architecture/local-connected-systems-validation.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Enable MLflow hot-path completion recording.
+- name: COS_ALLOW_PROTECTED_CONFIG_WRITE
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/protected-config-write-guard.sh
+  - manifests/protected-config-write-policy.yaml
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/security/cognitive-os-agent-security-research-2026-05-05.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Explicit operator bypass for writes to agent control-plane config such
+    as .claude, .codex, .cursor, hooks, rules, skills, and security manifests.
+- name: COS_ALLOW_NETWORK_EGRESS
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/network-egress-guard.sh
+  - manifests/network-egress-policy.yaml
+  - scripts/network_egress_guard.py
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/security/cognitive-os-agent-security-research-2026-05-05.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Explicit operator bypass for exfiltration-shaped external network shell
+    commands blocked by network-egress-guard.
+- name: COS_DANGEROUS_ENV_DETECTOR_DISABLE
+  family: watchdog-observability
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/dangerous-env-flag-detector.sh
+  documentation:
+  - docs/runtime-env-flags.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Disables the advisory detector that reports active high-risk Cognitive
+    OS environment flags.
