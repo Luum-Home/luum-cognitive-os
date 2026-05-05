@@ -1,0 +1,100 @@
+schema_version: multi-ide-swarm-scenarios.v1
+adr: ADR-118
+status: implementation-slice
+slice: ADR-118-S1
+updated: 2026-05-05
+purpose: >-
+  Machine-readable backlog of the ADR-118 multi-IDE swarm safety scenarios.
+  This manifest does not execute the chaos lane by itself; it defines the
+  scenario contract that future fixtures must satisfy.
+default_lane: chaos
+real_worktree_mutation_allowed: false
+required_fields:
+  - id
+  - adr_scenario
+  - owner_primitive
+  - harness_scope
+  - lane
+  - expected_failure_action
+  - real_worktree_mutation_allowed
+scenarios:
+  - id: same-task-race
+    adr_scenario: Same task race
+    owner_primitive: task-claim-ledger
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: block-second-claim-with-holder-metadata
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S2
+  - id: registry-projection-drift
+    adr_scenario: Registry/projection drift
+    owner_primitive: derived-artifact-gate
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: block-unregenerated-projection-with-regeneration-command
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S3
+  - id: same-file-race
+    adr_scenario: Same file race
+    owner_primitive: cooperative-edit-lock
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: block-second-writer-and-preserve-winning-edit
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S2
+  - id: same-domain-lease
+    adr_scenario: Same domain lease
+    owner_primitive: resource-lease-ledger
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: block-competing-critical-domain-session
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-121-S2
+  - id: direct-main-concurrent-landing
+    adr_scenario: Direct-main concurrent landing
+    owner_primitive: merge-queue-single-writer
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: serialize-and-revalidate-against-fresh-head
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-121-S1
+  - id: dirty-worktree-pull-rebase
+    adr_scenario: Dirty worktree + pull/rebase
+    owner_primitive: destructive-git-guard
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: block-history-movement-over-owned-wip
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-121-S2
+  - id: agent-fix-overwrite
+    adr_scenario: Agent B fix overwritten
+    owner_primitive: orphan-overwrite-detector
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: emit-corruption-evidence-before-or-when-overwrite-is-detected
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S2
+  - id: cross-ide-parity
+    adr_scenario: Cross-IDE parity
+    owner_primitive: harness-projection-contracts
+    harness_scope: both
+    lane: contract
+    expected_failure_action: report-known-hook-matcher-gap-with-governed-fallback
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S1
+  - id: memory-sharing
+    adr_scenario: Memory sharing
+    owner_primitive: memory-lifecycle-doctor
+    harness_scope: both
+    lane: contract
+    expected_failure_action: fail-portability-doctor-until-both-harnesses-project-lifecycle-hooks
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S1
+  - id: completed-by-other-agent
+    adr_scenario: Completed by other agent
+    owner_primitive: watermark-reaper
+    harness_scope: both
+    lane: chaos
+    expected_failure_action: mark-pending-work-completed-by-watermark-or-other-session
+    real_worktree_mutation_allowed: false
+    acceptance_slice: ADR-118-S4
