@@ -96,7 +96,7 @@ Reinforcement is implemented via hook `hooks/engram-reinforce-on-access.sh` (Pos
 | 1 | Confidence + decay (`lib/engram_lifecycle.py`, trailer schema, ranking, reinforcement hook) | **Done** (Wave 3a) |
 | 2 | Crystallization pipeline (auto-promote N+ observations on same topic\_key → digest → `type=pattern`) | **Done** (Wave 3b) |
 | 3 | Graph traversal in queries (walk `memory_relations` SQLite table, 2-hop max, merge into ranked results) | **Done** (Wave 3b) |
-| 4 | Obsidian export as human-readable layer (read-only; no writes from Obsidian to engram) | Deferred — after Phases 1–3 ship |
+| 4 | Obsidian export as human-readable layer (read-only; no writes from Obsidian to engram) | **Manual slice done** (2026-05-05); automation deferred |
 
 Feature plan: [`.cognitive-os/plans/features/engram-lifecycle-evolution.md`](../../.cognitive-os/plans/features/engram-lifecycle-evolution.md).
 
@@ -242,6 +242,24 @@ New files introduced in this addendum:
 
 **`memory_relations` not in HTTP API**: the table is only accessible via the engram MCP server (`mem_judge` tool), not via the HTTP REST API at port 7437. The graph walker reads SQLite directly for compatibility.
 
+
+## Addendum — 2026-05-05: Phase 4 manual Obsidian export shipped
+
+`lib/engram_obsidian_exporter.py` implements the one-way Engram → Obsidian export layer requested after the follow-up research in `docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md`:
+
+- Reads observations via `lib.engram_http_client.get_recent()` with optional project, limit, and since filters.
+- Reads `memory_relations` from SQLite in read-only mode and exports only non-rejected typed relations between exported observations.
+- Renders one Markdown file per observation under `Cognitive OS/Engram/` in an explicit vault path.
+- Converts lifecycle trailer fields (`confidence`, `last_reinforced`, `reinforcement_count`, `decay_class`, etc.) into YAML frontmatter and strips the raw trailer from the Markdown body.
+- Converts accepted typed relations into Obsidian wikilinks in an `## Engram Relations` section.
+- Uses a manifest with content digests for incremental writes; `--force` rewrites planned files.
+
+`scripts/export-engram-to-obsidian.sh` is the manual wrapper. It is dry-run by default and requires `--write` before any vault files are mutated. The first real vault proof ran against `$HOME/.cognitive-os/obsidian-vaults/luum-agent-os`; evidence and structural checks live in `docs/manual-tests/engram-obsidian-export.md`.
+
+`hooks/engram-obsidian-export-on-stop.sh` adds the optional automation slice. It is safe to register only because it is gated by `COS_OBSIDIAN_VAULT`: when the variable is unset, the hook exits 0 without exporting; when set, it performs the same one-way export and logs non-blocking metrics. This does not make Obsidian the source of truth and does not create an automatic git commit path.
+
+The vault remains outside the repository by default. `docs/` is the curated, reviewed documentation source; Obsidian is a generated graph/audit view over Engram and selected links to docs. A future repo-local export must use an explicit generated path, sanitization, and manual promotion.
+
 ## Honest Limitations (post-implementation, 2026-04-27)
 
 The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against a real sandboxed engram daemon). What follows is what does **not** work, what is **partial**, and what is **best-effort** — documented so future readers don't inherit false confidence.
@@ -274,7 +292,7 @@ The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against 
 
 ### Scope decisions, deliberately
 
-11. **No Obsidian export in this ADR.** The original research recommended Obsidian as Phase 4 (optional, deferred). This ADR ships only Phases 1–3. Phase 4 remains in `.cognitive-os/plans/features/engram-lifecycle-evolution.md` as deferred work, not a missing feature.
+11. **Obsidian export is opt-in and one-way.** Phase 4 now has a one-way exporter and an optional Stop hook. The hook does nothing unless `COS_OBSIDIAN_VAULT` is set, the vault path remains explicit, the manual command is dry-run by default, and Obsidian remains a human-readable graph/audit layer rather than the source of truth. No automatic commit path is allowed.
 
 12. **No fork of engram.** The integration uses engram as-is. If a future need requires `mem_judge` write access from Python, the path is to (a) spawn engram in MCP mode and pipe stdin, or (b) propose an HTTP endpoint upstream — not to fork the binary.
 
@@ -306,11 +324,11 @@ These are not "someday" items. Each has a **trigger** (the observable signal tha
 - **Cost**: 4–6 hours including the analysis + retune + tests.
 - **Risk**: re-tuning silently changes ranking for everyone — must be a tracked ADR change with the empirical justification.
 
-### F5. Phase 4 — Obsidian export
-- **Trigger**: engram crosses ~500 observations for a single project AND the operator reports difficulty browsing memory via `mem_search` alone. Or an explicit operator request driven by a multi-week project where graph view would aid recall.
-- **Action**: implement the export hook sketched in `.cognitive-os/plans/features/engram-lifecycle-evolution.md` §Phase 4. Use the existing `engram obsidian-export --vault=...` CLI command (already in v1.14.5) — wrap it in a Stop hook with project filter + incremental mode. The lifecycle trailer becomes Markdown frontmatter via a small renderer.
-- **Cost**: 1 day. Most of the work is the renderer; engram already ships the Obsidian export CLI.
-- **Risk**: vault path discovery (operator-specific). Make it opt-in via env var `COS_OBSIDIAN_VAULT`.
+### F5. Obsidian export automation
+- **Trigger**: `docs/manual-tests/engram-obsidian-export.md` passes against a real vault and the operator wants recurring export.
+- **Action**: add an opt-in Stop hook or scheduled wrapper around `scripts/export-engram-to-obsidian.sh` that only runs when `COS_OBSIDIAN_VAULT` is set. Keep dry-run/manual mode as the default operator path.
+- **Cost**: 2–3 hours after manual proof, mostly hook registration and metrics.
+- **Risk**: vault path discovery and unwanted local file churn. Mitigate with explicit env var, project filter, incremental manifest, and no default automation.
 
 ### F6. Cloud sync e2e test
 - **Trigger**: any cross-device feature (F3) lands, OR a sync-related bug is reported.
@@ -333,6 +351,9 @@ These are not "someday" items. Each has a **trigger** (the observable signal tha
 - `lib/engram_client.py` — existing engram wrapper; `lib/engram_lifecycle.py` wraps this
 - `lib/engram_http_client.py` — HTTP REST API wrapper (added in addendum 2026-04-27)
 - `hooks/engram-reinforce-on-access.sh` — PostToolUse hook implementing reinforcement (Phase 1)
+- `lib/engram_obsidian_exporter.py` — Phase 4 one-way Obsidian Markdown export
+- `scripts/export-engram-to-obsidian.sh` — manual dry-run-first export wrapper
+- `docs/manual-tests/engram-obsidian-export.md` — manual proof path before automation
 - `rules/engram-api-safety.md` — safety policy for production daemon mutation (added in addendum)
 - `rules/RULES-COMPACT.md` — reinvention-prevention rule that excluded Mem0/Zep/Cognee migration
 - `docs/adrs/ADR-070-convention-enforcement-mechanism.md` — adjacent ADR for context on enforcement patterns
