@@ -7562,7 +7562,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 52,
         "hook": 5,
         "rule": 2,
@@ -7574,6 +7574,10 @@
         {
           "family": "config",
           "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "config",
+          "path": "manifests/harness-projection.yaml"
         },
         {
           "family": "config",
@@ -8088,7 +8092,7 @@
         "script_consumers:27",
         "test_consumers:30",
         "doc_consumers:52",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -8098,7 +8102,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 127
+      "total_consumers": 128
     },
     {
       "confidence": "medium",

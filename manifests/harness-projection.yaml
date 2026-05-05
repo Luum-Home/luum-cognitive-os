@@ -505,3 +505,208 @@ harnesses:
   research_sources:
   - https://kiro.dev/docs/cli/hooks/
   - https://kiro.dev/docs/getting-started/first-project/
+- id: cline
+  display_name: Cline
+  status: implemented
+  projection_mode: cline-workspace-rules
+  settings_paths:
+  - .clinerules/cognitive-os.md
+  - .cline/README.md
+  projected_surfaces:
+  - workspace-rules
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural workspace rule proof only; no account-backed Cline runtime invocation
+    in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP is not generated until a stable project-local Cline MCP config path is signed.
+  next_action: Investigate Cline hook/MCP project-local adapter after structural projection
+    is stable.
+  research_sources:
+  - https://docs.cline.bot/prompting/prompt-engineering-guide
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - cline
+- id: continue-dev
+  display_name: Continue.dev
+  status: implemented
+  projection_mode: continue-rules-mcpservers
+  settings_paths:
+  - .continue/rules/cognitive-os.md
+  - .continue/mcpServers/cognitive-os.json
+  projected_surfaces:
+  - rules
+  - mcp-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Continue rules/MCP placeholder proof only; no account-backed IDE runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP servers are intentionally empty placeholders.
+  next_action: Add optional Continue runtime smoke when IDE account/runtime is available.
+  research_sources:
+  - https://docs.continue.dev/guides/configuring-models-rules-tools
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - continue-dev
+- id: kilo-code
+  display_name: Kilo Code
+  status: implemented
+  projection_mode: kilo-rules-agents-mcp
+  settings_paths:
+  - AGENTS.md
+  - .kilocode/rules/cognitive-os.md
+  - .kilocode/mcp.json
+  - .kilo/kilo.jsonc
+  projected_surfaces:
+  - project-instructions
+  - rules
+  - mcp-placeholder
+  - settings-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Kilo project files proof only; no account-backed runtime invocation
+    in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - Permission settings are placeholders and do not grant tools by default.
+  next_action: Add optional Kilo runtime smoke and verify current project config syntax.
+  research_sources:
+  - https://kilo.ai/docs/automate/mcp/using-in-kilo-code
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - kilo-code
+- id: zed-ai
+  display_name: Zed AI
+  status: implemented
+  projection_mode: zed-project-rules-context-servers
+  settings_paths:
+  - .rules
+  - .zed/settings.json
+  projected_surfaces:
+  - project-rules
+  - context-server-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Zed project rule/context-server placeholder proof only; no account-backed
+    Zed runtime invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - Context servers are intentionally empty placeholders.
+  next_action: Add optional Zed runtime smoke with installed Zed and model provider
+    credentials.
+  research_sources:
+  - https://zed.dev/docs/ai/rules
+  - https://zed.dev/docs/ai/mcp
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - zed-ai
+- id: augment-code
+  display_name: Augment / Auggie
+  status: implemented
+  projection_mode: augment-rules-settings
+  settings_paths:
+  - .augment/rules/cognitive-os.md
+  - .augment/settings.json
+  projected_surfaces:
+  - rules
+  - mcp-placeholder
+  - permissions-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Augment project files proof only; no account-backed Augment runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - Permissions and MCP are placeholders until operator configures concrete tools.
+  next_action: Add optional Augment/Auggie runtime smoke when credentials are available.
+  research_sources:
+  - https://docs.augmentcode.com/cli/reference
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - augment-code
+- id: goose
+  display_name: Goose
+  status: implemented
+  projection_mode: goosehints-config
+  settings_paths:
+  - .goosehints
+  - .goose/config.json
+  projected_surfaces:
+  - project-instructions
+  - mcp-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Goose project guidance proof only; no account-backed Goose runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP/server setup remains operator-controlled.
+  next_action: Add optional Goose CLI runtime smoke when provider credentials are
+    available.
+  research_sources:
+  - https://block.github.io/goose/docs/guides/goose-cli-commands
+  - https://block.github.io/goose/docs/guides/config-file/
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - goose
+- id: aider
+  display_name: Aider
+  status: implemented
+  projection_mode: aider-conventions-config
+  settings_paths:
+  - CONVENTIONS.md
+  - .aider.conf.yml
+  projected_surfaces:
+  - project-instructions
+  - read-config
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Aider conventions/config proof only; no account-backed runtime/model invocation
+    in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - Aider remains rules/context-only; no MCP or hooks are generated.
+  next_action: Add optional Aider dry-run/model smoke when API credentials are available.
+  research_sources:
+  - https://aider.chat/docs/usage/conventions.html
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - aider

@@ -16,21 +16,29 @@ phases:
   structural-instruction-harnesses:
     status: in_progress
     implemented_harnesses:
+    - aider
     - amp-code
+    - augment-code
+    - cline
+    - continue-dev
     - cursor
     - factory-droid
     - gemini-cli
+    - goose
     - jetbrains-junie
+    - kilo-code
     - opencode
     - qoder
     - vscode-copilot
     - warp
+    - zed-ai
     acceptance:
     - acc_default_full_projection_counts
     - agents_md_native_projection_tests
     - behavior_tests_assert_generated_files
     - cos_init_temp_project_projection
     - gemini_cli_projection_tests
+    - rules_mcp_structural_projection_tests
   shell-ci-formal-harness:
     status: done
     acceptance:
@@ -63,11 +71,17 @@ phases:
   account-backed-runtime-proof:
     status: planned
     candidate_harnesses:
+    - aider
     - amp-code
+    - augment-code
+    - cline
+    - continue-dev
     - cursor
     - factory-droid
     - gemini-cli
+    - goose
     - jetbrains-junie
+    - kilo-code
     - kimi-code
     - opencode
     - qoder
@@ -75,6 +89,7 @@ phases:
     - vscode-copilot
     - warp
     - windsurf
+    - zed-ai
     acceptance:
     - optional_manual_runtime_smoke
     - reports_capture_account_boundary
