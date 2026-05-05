@@ -27,6 +27,14 @@ tags: [ui, dashboard, paperclip, demotion, architecture-fork]
 
 Accepted.
 
+### Addendum — 2026-05-05 (same day)
+
+Live verification immediately after the 6 hooks were wired surfaced a finding the audit had missed: **the Paperclip API endpoints the COS-side client expects do not exist in the current Paperclip release.** The client uses REST (`/api/notifications`, `/api/agents/status`, `/api/artifacts`); Paperclip uses tRPC (`/trpc/*`). The 50 unit tests pass because they stub the HTTP layer; against a real daemon, every POST returns 404.
+
+The dashboard demotion in ADR-169 still holds — the dashboard remains correctly archived. But the *"Paperclip is the UI"* clause is conditionally invalid: Paperclip cannot currently serve as the UI because the client contract was invented and never verified end-to-end. [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md) supersedes this clause for the active default and declares the operator CLI plus markdown reports as the primary UI surface.
+
+The 6 wired hooks remain wired. They continue to push and continue to receive 404s when the legacy Paperclip stack is up. That is honest noise, not silent failure. ADR-170 documents the path under which the integration would either be repaired against tRPC or formally removed.
+
 ## Context
 
 On 2026-03-27, the project committed in `docs/paperclip-integration.md` to:
