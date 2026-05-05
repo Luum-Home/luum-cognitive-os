@@ -11,6 +11,7 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Obsidian, Documentation Graphs, and AI Agent Memory — 2026-05-05](research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md) — follow-up on using Obsidian as a human-readable graph layer for Engram-backed agent memory.
 - [Remote SO Control Plane Alternatives — 2026-05-05](reports/remote-control-plane-alternatives-2026-05-05.md) — provider, CLI, API-key, chat/Telegram, OpenCode, OpenClaw, and Agent Zero research feeding ADR-161.
 - [Primitive Readiness Continuity Plan](architecture/primitive-readiness-continuity-plan.md) — living cycle contract for mapping docs, scripts, hooks, skills, rules, memory, and harness adapters into governed agentic primitives.
 - [Primitive Readiness Review — 2026-05-04](reports/primitive-readiness-review-2026-05-04.md) — first continuity-cycle review of lifecycle manifest, family coverage, automation-loop scripts, and low-scoring script triage.
