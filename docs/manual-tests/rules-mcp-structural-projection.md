@@ -30,10 +30,10 @@ done
 |---|---|
 | Cline | `.clinerules/cognitive-os.md`, `.cline/README.md` |
 | Continue.dev | `.continue/rules/cognitive-os.md`, `.continue/mcpServers/cognitive-os.json` |
-| Kilo Code | `AGENTS.md`, `.kilocode/rules/cognitive-os.md`, `.kilocode/mcp.json`, `.kilo/kilo.jsonc` |
+| Kilo Code | `AGENTS.md`, `.kilocode/rules/cognitive-os.md`, `.kilo/kilo.jsonc` |
 | Zed AI | `.rules`, `.zed/settings.json` |
-| Augment/Auggie | `.augment/rules/cognitive-os.md`, `.augment/settings.json` |
-| Goose | `.goosehints`, `.goose/config.json` |
+| Augment/Auggie | `.augment/rules/cognitive-os.md`, `.augment/mcp.json`, `.augment/README.md` |
+| Goose | `.goosehints` |
 | Aider | `CONVENTIONS.md`, `.aider.conf.yml` |
 
 ## Automated validation
@@ -53,6 +53,6 @@ Only run if the relevant CLI/IDE and account credentials are available. Record a
 - Continue.dev: open the project and confirm the rule/MCP placeholder is recognized.
 - Kilo Code: run/open Kilo and confirm AGENTS/rules/settings are loaded.
 - Zed AI: open the project and confirm `.rules` is loaded.
-- Augment/Auggie: run Auggie and confirm `.augment` rules/settings are recognized.
+- Augment/Auggie: run `auggie --rules .augment/rules/cognitive-os.md --mcp-config .augment/mcp.json` and confirm the rule/MCP files are recognized.
 - Goose: run Goose from the project and confirm `.goosehints` is used.
 - Aider: run Aider and confirm `.aider.conf.yml` reads `CONVENTIONS.md`.

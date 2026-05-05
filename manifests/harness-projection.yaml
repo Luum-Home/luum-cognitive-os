@@ -568,12 +568,11 @@ harnesses:
   settings_paths:
   - AGENTS.md
   - .kilocode/rules/cognitive-os.md
-  - .kilocode/mcp.json
   - .kilo/kilo.jsonc
   projected_surfaces:
   - project-instructions
   - rules
-  - mcp-placeholder
+  - mcp-placeholder-in-kilo-jsonc
   - settings-placeholder
   - rules-reference
   - skills-reference
@@ -584,7 +583,8 @@ harnesses:
     in automated tests.
   - No native COS lifecycle hook parity is claimed.
   - Permission settings are placeholders and do not grant tools by default.
-  next_action: Add optional Kilo runtime smoke and verify current project config syntax.
+  next_action: Add optional Kilo runtime smoke and verify current project config syntax;
+    keep MCP placeholder inside .kilo/kilo.jsonc per official docs.
   research_sources:
   - https://kilo.ai/docs/automate/mcp/using-in-kilo-code
   default_command:
@@ -626,24 +626,27 @@ harnesses:
 - id: augment-code
   display_name: Augment / Auggie
   status: implemented
-  projection_mode: augment-rules-settings
+  projection_mode: augment-cli-flags-rules-mcp
   settings_paths:
   - .augment/rules/cognitive-os.md
-  - .augment/settings.json
+  - .augment/mcp.json
+  - .augment/README.md
   projected_surfaces:
-  - rules
-  - mcp-placeholder
-  - permissions-placeholder
+  - rules-file-for-cli-flag
+  - mcp-config-for-cli-flag
+  - operator-invocation-guidance
   - rules-reference
   - skills-reference
   proof: temp-consumer-project-structural
   proof_level: structural
   limitations:
-  - Structural Augment project files proof only; no account-backed Augment runtime
-    invocation in automated tests.
+  - Structural Augment/Auggie CLI flag input files proof only; no account-backed Augment
+    runtime invocation in automated tests.
   - No native COS lifecycle hook parity is claimed.
-  - Permissions and MCP are placeholders until operator configures concrete tools.
-  next_action: Add optional Augment/Auggie runtime smoke when credentials are available.
+  - Files require operator invocation with --rules and --mcp-config; no user-global
+    settings are written.
+  next_action: Add optional Augment/Auggie runtime smoke using auggie --rules .augment/rules/cognitive-os.md
+    --mcp-config .augment/mcp.json when credentials are available.
   research_sources:
   - https://docs.augmentcode.com/cli/reference
   default_command:
@@ -655,13 +658,11 @@ harnesses:
 - id: goose
   display_name: Goose
   status: implemented
-  projection_mode: goosehints-config
+  projection_mode: goosehints-project-context
   settings_paths:
   - .goosehints
-  - .goose/config.json
   projected_surfaces:
   - project-instructions
-  - mcp-placeholder
   - rules-reference
   - skills-reference
   proof: temp-consumer-project-structural
@@ -670,9 +671,10 @@ harnesses:
   - Structural Goose project guidance proof only; no account-backed Goose runtime
     invocation in automated tests.
   - No native COS lifecycle hook parity is claimed.
-  - MCP/server setup remains operator-controlled.
+  - MCP/server setup remains operator-controlled through Goose CLI/config; COS does
+    not generate a non-official project config file.
   next_action: Add optional Goose CLI runtime smoke when provider credentials are
-    available.
+    available; add MCP only through official Goose extension/config path.
   research_sources:
   - https://block.github.io/goose/docs/guides/goose-cli-commands
   - https://block.github.io/goose/docs/guides/config-file/
@@ -697,8 +699,8 @@ harnesses:
   proof: temp-consumer-project-structural
   proof_level: structural
   limitations:
-  - Structural Aider conventions/config proof only; no account-backed runtime/model invocation
-    in automated tests.
+  - Structural Aider conventions/config proof only; no account-backed runtime/model
+    invocation in automated tests.
   - No native COS lifecycle hook parity is claimed.
   - Aider remains rules/context-only; no MCP or hooks are generated.
   next_action: Add optional Aider dry-run/model smoke when API credentials are available.
