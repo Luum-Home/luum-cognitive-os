@@ -148,6 +148,8 @@ cc_driver_emit() {
       "hooks/session-startup-protocol.sh"     "false" \
       "hooks/mcp-scan.sh"                     "true"  \
       "hooks/dangerous-env-flag-detector.sh" "false" \
+      "hooks/paperclip-squad-sync.sh"         "true"  \
+      "hooks/paperclip-task-sync.sh"          "true"  \
     )
   fi
 
@@ -318,6 +320,9 @@ cc_driver_emit() {
     "hooks/auto-refine.sh"            "false" \
     "hooks/dod-gate.sh"               "false" \
     "hooks/skill-tracker.sh"          "false" \
+    "hooks/paperclip-sdd-sync.sh"     "true"  \
+    "hooks/paperclip-agent-status.sh" "true"  \
+    "hooks/paperclip-cost-stream.sh"  "true"  \
   )
 
   local post_engram_mcp
@@ -340,6 +345,7 @@ cc_driver_emit() {
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
     "hooks/engram-obsidian-export-on-stop.sh" "true" \
+    "hooks/paperclip-sync.sh"                 "true"  \
   )
 
   local teammate_idle
