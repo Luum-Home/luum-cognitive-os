@@ -114,7 +114,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 3,
         "doc": 71,
         "hook": 4,
         "rule": 2,
@@ -123,10 +123,6 @@
         "test": 27
       },
       "consumers": [
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
-        },
         {
           "family": "config",
           "path": "cognitive-os.yaml"
@@ -632,7 +628,7 @@
         "script_consumers:12",
         "test_consumers:27",
         "doc_consumers:71",
-        "config_consumers:4"
+        "config_consumers:3"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -642,7 +638,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 125
+      "total_consumers": 124
     },
     {
       "confidence": "medium",
@@ -940,7 +936,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 9,
         "doc": 23,
         "hook": 1,
         "rule": 4,
@@ -951,10 +947,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -1192,7 +1184,7 @@
         "script_consumers:5",
         "test_consumers:16",
         "doc_consumers:23",
-        "config_consumers:10"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -1202,7 +1194,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 59
+      "total_consumers": 58
     },
     {
       "confidence": "medium",
@@ -2277,7 +2269,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 16,
+        "doc": 15,
         "hook": 1,
         "rule": 3,
         "script": 3,
@@ -2346,10 +2338,6 @@
         },
         {
           "family": "doc",
-          "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/self-usage-audit.md"
         },
         {
@@ -2403,7 +2391,7 @@
         "rule_consumers:3",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:16",
+        "doc_consumers:15",
         "config_consumers:2"
       ],
       "family": "rules",
@@ -2414,7 +2402,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 27
     },
     {
       "confidence": "medium",
@@ -2954,7 +2942,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 9,
         "doc": 48,
         "hook": 8,
         "rule": 2,
@@ -2965,10 +2953,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -3286,7 +3270,7 @@
         "script_consumers:3",
         "test_consumers:8",
         "doc_consumers:48",
-        "config_consumers:10"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -3296,7 +3280,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 79
+      "total_consumers": 78
     },
     {
       "confidence": "medium",
@@ -5522,7 +5506,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 9,
         "doc": 36,
         "hook": 3,
         "rule": 8,
@@ -5534,10 +5518,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -5892,7 +5872,7 @@
         "script_consumers:9",
         "test_consumers:19",
         "doc_consumers:36",
-        "config_consumers:10"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -5902,7 +5882,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 88
+      "total_consumers": 87
     },
     {
       "confidence": "medium",
@@ -6359,7 +6339,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 9,
         "doc": 30,
         "hook": 3,
         "rule": 2,
@@ -6371,10 +6351,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -6613,7 +6589,7 @@
         "script_consumers:7",
         "test_consumers:6",
         "doc_consumers:30",
-        "config_consumers:10"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -6623,7 +6599,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 59
+      "total_consumers": 58
     },
     {
       "confidence": "medium",
@@ -7594,7 +7570,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 9,
         "doc": 65,
         "hook": 5,
         "rule": 2,
@@ -7603,10 +7579,6 @@
         "test": 36
       },
       "consumers": [
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
-        },
         {
           "family": "config",
           "path": "manifests/cos-instance-implementation-phases.yaml"
@@ -8244,7 +8216,7 @@
         "script_consumers:33",
         "test_consumers:36",
         "doc_consumers:65",
-        "config_consumers:10"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -8254,7 +8226,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 158
+      "total_consumers": 157
     },
     {
       "confidence": "medium",
@@ -11335,7 +11307,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 2,
         "doc": 13,
         "hook": 4,
         "rule": 1,
@@ -11343,10 +11315,6 @@
         "test": 3
       },
       "consumers": [
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
-        },
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
@@ -11451,7 +11419,7 @@
         "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:13",
-        "config_consumers:3"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -11461,7 +11429,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -14110,7 +14078,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 11,
+        "config": 10,
         "doc": 23,
         "hook": 3,
         "rule": 3,
@@ -14122,10 +14090,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -14340,7 +14304,7 @@
         "script_consumers:5",
         "test_consumers:7",
         "doc_consumers:23",
-        "config_consumers:11"
+        "config_consumers:10"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -14350,7 +14314,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 53
+      "total_consumers": 52
     },
     {
       "confidence": "medium",
@@ -16034,7 +15998,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
+        "config": 9,
         "doc": 62,
         "hook": 3,
         "rule": 15,
@@ -16046,10 +16010,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
         },
         {
           "family": "config",
@@ -16580,7 +16540,7 @@
         "script_consumers:10",
         "test_consumers:26",
         "doc_consumers:62",
-        "config_consumers:10"
+        "config_consumers:9"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -16590,7 +16550,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 132
+      "total_consumers": 131
     },
     {
       "confidence": "medium",
