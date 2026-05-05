@@ -99,4 +99,6 @@ python3 -m pytest \
 - `scripts/proof-drill-select` and `scripts/proof_drill_select.py` provide registry selection.
 - `scripts/proof-drill-evidence-record` and `scripts/proof_drill_evidence_record.py` update machine-readable proof evidence.
 - `docs/reports/proof-drill-evidence-latest.json` is consumed by `scripts/acc_pipeline.py`.
+- `manifests/proof-drill-claim-map.yaml` lets ACC emit `proof_claim:*` capabilities for claims backed by concrete proof drills.
+- `scripts/cos-headless-service-drill` auto-records evidence for the local Docker/headless proof and for the explicit Codex provider proof.
 - Runtime flag and instance-profile contracts are covered by `manifests/runtime-env-flags.yaml` and `manifests/cos-instance-profiles.yaml`.

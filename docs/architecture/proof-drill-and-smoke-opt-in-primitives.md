@@ -96,11 +96,23 @@ The repo already contains automated tests that support this doctrine:
 - `scripts/acc_pipeline.py` consumes `docs/reports/proof-drill-evidence-latest.json`
   through the `proof_drill_evidence` adapter and maps successful proof rows to
   ACC `proof_drill:*` capabilities.
+- `manifests/proof-drill-claim-map.yaml` maps durable runtime claims to stable
+  proof drill ids so ACC also emits `proof_claim:*` capabilities. Passing
+  evidence makes the claim `aligned`; failed evidence makes it `stale`; missing
+  evidence leaves it `unverified`.
+- `scripts/cos-headless-service-drill` records local Docker/headless evidence
+  automatically after each run and records the Codex provider proof when the
+  explicit `COS_RUN_PROVIDER_SMOKE=1` lane is used.
+- `claude-provider-host-smoke` is registered as an opt-in proof drill after the
+  host probe learned to discover Claude Code at governed known locations such as
+  `$HOME/.local/bin/claude`.
 
 ## Remaining implementation slices
 
-- Wire proof-drill scripts to call the evidence writer automatically after successful runs.
-- Let ACC use proof-drill evidence to adjust specific existing doc/runtime claims
-  once those claims declare a stable `proof_drill_id`.
-- Add a Claude provider proof entry after the host probe can verify account
-  session status non-invasively.
+- Extend automatic evidence recording to any future proof scripts as they move
+  from manual report-only procedures into stable scripts.
+- Add more claim-map rows only after each claim has a stable proof drill id and
+  bounded “does not prove” language.
+- Keep consumer-project proof projection explicit; provider and Docker proof
+  drills remain maintainer-only until a separate projection profile proves them
+  safe downstream.
