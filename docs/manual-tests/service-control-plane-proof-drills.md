@@ -98,6 +98,11 @@ Expected evidence:
   `provider_cloud_metered`, or `unknown` instead of being inferred silently;
 - output remains propose-only.
 
+Current status: `cos-auth-probe` exists. In environments without the Claude CLI,
+the expected status is `unsupported`. If the CLI exists, COS still returns
+`auth_required` for account-session until a non-invasive official status probe
+is proven.
+
 ## Drill P4 — Docker sidecar CLI proof
 
 Purpose: prove a containerized official CLI path only when auth is explicit and
@@ -148,12 +153,11 @@ Expected evidence:
 
 Purpose: prove worker leases are safe.
 
-Future command shape:
+Command shape:
 
 ```bash
-scripts/cos-task-submit --kind local-command --command 'sleep 60; printf ok > result.txt'
-scripts/cos-worker-run-once --executor local-command --json &
-kill -9 "$!"
+scripts/cos-task-submit --kind local-command --task-id crash-demo --command 'printf ok > result.txt'
+scripts/cos-worker-run-once --executor local-command --ttl-seconds 0 --simulate-crash-after-lease --json
 scripts/cos-queue-drain --json
 scripts/cos-worker-run-once --executor local-command --json
 ```
@@ -164,6 +168,9 @@ Expected evidence:
 - task is requeued or marked `needs_human`;
 - second worker cannot publish under the expired lease;
 - artifact bundle explains the transition.
+
+Current status: implemented for simulated post-lease crash and lease-expiry
+resume in the local proof surface.
 
 ## Drill P7 — Provider lab promotion
 

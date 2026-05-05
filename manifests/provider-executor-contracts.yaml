@@ -8,7 +8,7 @@ purpose: >-
   plane may dispatch. The registry separates account-backed CLI execution,
   containerized CLI execution, API/provider-cloud execution, and proxy/gateway
   execution so cost and credential posture are explicit.
-status: phase1_local_command_contract
+status: phase3_auth_probe_and_host_adapter_contract
 
 enums:
   credential_modes:
@@ -97,7 +97,7 @@ adapters:
   - executor_id: codex-cli-host
     provider: openai-codex
     runtime_kind: official_cli_host
-    lifecycle_state: lab
+    lifecycle_state: sandbox
     credential_modes:
       - account-session
       - api-key
@@ -127,7 +127,7 @@ adapters:
   - executor_id: claude-cli-host
     provider: anthropic-claude-code
     runtime_kind: official_cli_host
-    lifecycle_state: lab
+    lifecycle_state: sandbox
     credential_modes:
       - account-session
       - oauth-token
