@@ -84,11 +84,22 @@ The repo already contains automated tests that support this doctrine:
 6. If documentation claims more than the proof shows, repair the claim or create
    a stronger test before closing.
 
-## Next implementation slices
+## Implemented selector and evidence adapter
 
-- Add a lightweight selector command that reads the registry and prints the next
-  safest proof candidate for a requested scope.
-- Teach COS instance profiles to reference registry entries for `doctor` and
-  `smoke` phases.
-- Extend ACC adapters so proof-drill evidence can reduce `unverified` weight
-  only for the exact scope and proof level executed.
+- `scripts/proof-drill-select` reads `manifests/proof-drill-registry.yaml` and
+  prints matching commands by `id`, `scope`, `class`, projection profile, and
+  text selectors such as `provider`, `docker`, `headless`, and `codex`.
+- `scripts/cos-instance-init --doctor --smoke --json` exposes registered proof
+  drills for the selected instance profile without executing opt-in drills.
+- `scripts/acc_pipeline.py` consumes `docs/reports/proof-drill-evidence-latest.json`
+  through the `proof_drill_evidence` adapter and maps successful proof rows to
+  ACC `proof_drill:*` capabilities.
+
+## Remaining implementation slices
+
+- Add a richer proof-drill evidence writer so every proof run updates the JSON
+  evidence report automatically instead of relying on a maintainer to write it.
+- Let ACC use proof-drill evidence to adjust specific existing doc/runtime claims
+  once those claims declare a stable `proof_drill_id`.
+- Add a Claude provider proof entry after the host probe can verify account
+  session status non-invasively.

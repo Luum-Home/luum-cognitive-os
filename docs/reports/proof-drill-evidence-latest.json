@@ -1,0 +1,50 @@
+{
+  "schema_version": "proof-drill-evidence.v1",
+  "generated_at": "2026-05-05T15:45:40Z",
+  "source_report": "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+  "rows": [
+    {
+      "id": "qwen-fallback-live-smoke",
+      "status": "passed",
+      "scope": "os-self",
+      "command": "bash scripts/smoke-qwen-fallback.sh",
+      "exit_code": 0,
+      "evidence_artifacts": ["docs/reports/proof-drill-opt-in-run-2026-05-05.md"],
+      "proves": "Qwen live fallback is configured and passed all four fallback checks on this host.",
+      "does_not_prove": "Other providers, IDE harness projection, or account-free consumer support."
+    },
+    {
+      "id": "multi-provider-fallback-live-smoke",
+      "status": "passed",
+      "scope": "os-self",
+      "command": "bash scripts/smoke-multi-provider-fallback.sh",
+      "exit_code": 0,
+      "evidence_artifacts": ["docs/reports/proof-drill-opt-in-run-2026-05-05.md"],
+      "proves": "Configured Qwen provider passed and unconfigured providers skipped cleanly.",
+      "does_not_prove": "Providers skipped as unconfigured."
+    },
+    {
+      "id": "headless-docker-service-drill",
+      "status": "passed",
+      "scope": "os-self",
+      "command": "scripts/cos-headless-service-drill --json",
+      "exit_code": 0,
+      "evidence_artifacts": ["docs/reports/proof-drill-opt-in-run-2026-05-05.md"],
+      "proves": "Docker/headless service worker can self-test, submit a local task, process it, drain the queue, and keep artifacts.",
+      "does_not_prove": "Provider-backed Codex/Claude execution or remote cloud worker support."
+    },
+    {
+      "id": "headless-codex-provider-smoke",
+      "status": "passed",
+      "scope": "os-self",
+      "command": "COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=gpt-5.4 scripts/cos-headless-service-drill --json --keep-workspace",
+      "exit_code": 0,
+      "evidence_artifacts": [
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "/tmp/cos-headless-service.Ul85fJ/.cognitive-os/service/artifacts/task-headless-codex-provider-drill/lease-4e02aee4c48d"
+      ],
+      "proves": "Host Codex provider execution can be invoked through the service-control-plane adapter with explicit opt-in and supported model pin.",
+      "does_not_prove": "Claude provider execution, container credential inheritance, remote ingress, VM, Kubernetes, or unconfigured providers."
+    }
+  ]
+}
