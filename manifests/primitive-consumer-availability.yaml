@@ -123,6 +123,48 @@ items:
 - path: scripts/weekly-aspirational-audit.sh
   status: maintainer-only
   rationale: Scheduled maintainer audit wrapper.
+- path: scripts/_lib/local-service.sh
+  status: so-local-only
+  rationale: Service-control-plane shell library used by local COS runtime drills; not a standalone consumer command.
+- path: scripts/_lib/session-id.sh
+  status: so-local-only
+  rationale: Session identity helper for local queue/worker scripts; projected only as support code when a service runtime profile exists.
+- path: scripts/cos-auth-probe
+  status: maintainer-only
+  rationale: Provider/executor auth boundary probe for ADR-161 service-control-plane work; not a default consumer surface.
+- path: scripts/cos-engram-command-audit
+  status: maintainer-only
+  rationale: Maintainer Engram command audit wrapper; consumer projects should consume reports, not this SO audit by default.
+- path: scripts/cos-queue-drain
+  status: maintainer-only
+  rationale: Local service-control-plane queue drain command for SO/runtime drills; consumer projection requires a packaged service profile.
+- path: scripts/cos-task-submit
+  status: maintainer-only
+  rationale: Local task lifecycle submission command for ADR-162 runtime experiments; not a default consumer command.
+- path: scripts/cos-worker-run-once
+  status: maintainer-only
+  rationale: One-shot worker execution helper for headless/service runtime drills; not projected to consumer projects by default.
+- path: scripts/cos_auth_probe.py
+  status: maintainer-only
+  rationale: Python implementation behind the local auth probe wrapper; not a standalone consumer projection surface.
+- path: scripts/cos_engram_command_audit.py
+  status: maintainer-only
+  rationale: Python implementation for SO Engram command audits; not consumer-project debt.
+- path: scripts/cos_service_control_plane.py
+  status: maintainer-only
+  rationale: Experimental local service-control-plane implementation; consumer availability waits for ADR-161/162 runtime adapter proof.
+- path: scripts/cosd
+  status: maintainer-only
+  rationale: Local daemon entrypoint for service-control-plane experiments; not default-visible consumer projection until packaged and smoke-tested.
+- path: scripts/export-engram-to-obsidian.sh
+  status: maintainer-only
+  rationale: Maintainer memory/export utility for local knowledge workflows; consumer projection requires an explicit memory/export package.
+- path: hooks/_lib/agent-context.sh
+  status: so-local-only
+  rationale: Hook support library for local agent context; not a standalone consumer capability.
+- path: hooks/_lib/task-event.sh
+  status: so-local-only
+  rationale: Hook support library for local task events; not a standalone consumer capability.
 - path: scripts/check_mcp_servers.py
   status: shell-ci-candidate
   rationale: Candidate consumer doctor command; needs shell/CI projection proof.
