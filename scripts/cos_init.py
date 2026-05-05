@@ -13,7 +13,7 @@ Migration history (Phases 2.1 → 2.3 → 2.final):
   MIGRATED:   main()               (Phase 2.final, 2026-04-27)
 
 Usage (direct):
-    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|kimi-code|gemini-cli|warp|amp-code|jetbrains-junie|qoder|factory-droid|shell-ci]
+    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|kimi-code|gemini-cli|warp|amp-code|jetbrains-junie|qoder|factory-droid|cline|continue-dev|kilo-code|zed-ai|augment-code|goose|aider|shell-ci]
 
 Usage (internal dispatcher — kept for backward compat):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
@@ -39,8 +39,8 @@ from pathlib import Path
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"}
+SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci")
+STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"}
 SHELL_CI_HARNESSES = {"shell-ci"}
 
 HARNESS_SETTINGS = {
@@ -57,6 +57,13 @@ HARNESS_SETTINGS = {
     "jetbrains-junie": (".junie/AGENTS.md", ".junie/AGENTS.md"),
     "qoder": ("AGENTS.md", "AGENTS.md"),
     "factory-droid": ("AGENTS.md", "AGENTS.md"),
+    "cline": (".clinerules/cognitive-os.md", ".clinerules/cognitive-os.md"),
+    "continue-dev": (".continue/rules/cognitive-os.md", ".continue/rules/cognitive-os.md"),
+    "kilo-code": (".kilocode/rules/cognitive-os.md", ".kilocode/rules/cognitive-os.md"),
+    "zed-ai": (".rules", ".rules"),
+    "augment-code": (".augment/rules/cognitive-os.md", ".augment/rules/cognitive-os.md"),
+    "goose": (".goosehints", ".goosehints"),
+    "aider": ("CONVENTIONS.md", "CONVENTIONS.md"),
     "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
 }
 
@@ -1134,6 +1141,115 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
         print("Created AGENTS.md, .factory/mcp.json, .factory/settings.json, and .factory/skills/cognitive-os/SKILL.md with Factory Droid COS projection")
         return
 
+
+
+    if harness == "cline":
+        rule = project_dir / ".clinerules" / "cognitive-os.md"
+        rule.parent.mkdir(parents=True, exist_ok=True)
+        rule.write_text(
+            "# Cognitive OS for Cline\n\n"
+            + common_body
+            + "\nCline should load this workspace rule as project instructions. MCP configuration is intentionally not generated until a stable project-local Cline MCP path is signed.\n",
+            encoding="utf-8",
+        )
+        (project_dir / ".cline" / "README.md").write_text(
+            "# Cline Cognitive OS Projection\n\n"
+            "This structural projection writes `.clinerules/cognitive-os.md` only. It does not write user-global Cline MCP settings or credentials.\n",
+            encoding="utf-8",
+        )
+        print("Created .clinerules/cognitive-os.md with Cline COS projection")
+        return
+
+    if harness == "continue-dev":
+        rule = project_dir / ".continue" / "rules" / "cognitive-os.md"
+        rule.parent.mkdir(parents=True, exist_ok=True)
+        rule.write_text(
+            "---\n"
+            "name: Cognitive OS\n"
+            "description: Cognitive OS governance, skills, and proof-level boundary\n"
+            "alwaysApply: true\n"
+            "---\n\n"
+            + common_body,
+            encoding="utf-8",
+        )
+        _write_json_if_changed(project_dir / ".continue" / "mcpServers" / "cognitive-os.json", {"mcpServers": {}})
+        print("Created .continue/rules/cognitive-os.md and .continue/mcpServers/cognitive-os.json with Continue COS projection")
+        return
+
+    if harness == "kilo-code":
+        _upsert_agents_md_block(
+            project_dir,
+            "kilo_code",
+            "Cognitive OS for Kilo Code",
+            common_body,
+            "Kilo Code should use this AGENTS.md block plus `.kilocode/rules/cognitive-os.md` as project instructions.\n",
+        )
+        rule = project_dir / ".kilocode" / "rules" / "cognitive-os.md"
+        rule.parent.mkdir(parents=True, exist_ok=True)
+        rule.write_text("# Cognitive OS for Kilo Code\n\n" + common_body, encoding="utf-8")
+        _write_json_if_changed(project_dir / ".kilocode" / "mcp.json", {"mcpServers": {}})
+        _write_json_if_changed(
+            project_dir / ".kilo" / "kilo.jsonc",
+            {
+                "instructions": ["AGENTS.md", ".kilocode/rules/cognitive-os.md", ".cognitive-os/rules/cos/RULES-COMPACT.md"],
+                "mcp": {},
+                "permissions": {"default": "ask"},
+            },
+        )
+        print("Created AGENTS.md, .kilocode/rules/cognitive-os.md, .kilocode/mcp.json, and .kilo/kilo.jsonc with Kilo COS projection")
+        return
+
+    if harness == "zed-ai":
+        rules = project_dir / ".rules"
+        rules.write_text(
+            "# Cognitive OS for Zed AI\n\n"
+            + common_body
+            + "\nZed loads `.rules` as a project rule surface. MCP/context servers are represented as an empty project-local placeholder.\n",
+            encoding="utf-8",
+        )
+        _write_json_if_changed(project_dir / ".zed" / "settings.json", {"context_servers": {}})
+        print("Created .rules and .zed/settings.json with Zed COS projection")
+        return
+
+    if harness == "augment-code":
+        rule = project_dir / ".augment" / "rules" / "cognitive-os.md"
+        rule.parent.mkdir(parents=True, exist_ok=True)
+        rule.write_text("# Cognitive OS for Augment\n\n" + common_body, encoding="utf-8")
+        _write_json_if_changed(project_dir / ".augment" / "settings.json", {"mcpServers": {}, "permissions": {"default": "ask"}})
+        print("Created .augment/rules/cognitive-os.md and .augment/settings.json with Augment COS projection")
+        return
+
+    if harness == "goose":
+        hints = project_dir / ".goosehints"
+        hints.write_text(
+            "# Cognitive OS for Goose\n\n"
+            + common_body
+            + "\nGoose should treat this file as project-local guidance. MCP/server setup remains operator-controlled.\n",
+            encoding="utf-8",
+        )
+        _write_json_if_changed(project_dir / ".goose" / "config.json", {"mcpServers": {}})
+        print("Created .goosehints and .goose/config.json with Goose COS projection")
+        return
+
+    if harness == "aider":
+        conventions = project_dir / "CONVENTIONS.md"
+        conventions.write_text(
+            "# Cognitive OS for Aider\n\n"
+            + common_body
+            + "\nAider should read this file through `.aider.conf.yml` so COS governance becomes project-local context.\n",
+            encoding="utf-8",
+        )
+        (project_dir / ".aider.conf.yml").write_text(
+            "read:\n"
+            "  - CONVENTIONS.md\n"
+            "  - .cognitive-os/rules/cos/RULES-COMPACT.md\n"
+            "auto-commits: false\n"
+            "yes-always: false\n",
+            encoding="utf-8",
+        )
+        print("Created CONVENTIONS.md and .aider.conf.yml with Aider COS projection")
+        return
+
     if harness == "cursor":
         rule = project_dir / ".cursor" / "rules" / "cognitive-os.mdc"
         rule.parent.mkdir(parents=True, exist_ok=True)
@@ -1372,6 +1488,20 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         driver_dirs.extend([".qoder"])
     elif harness == "factory-droid":
         driver_dirs.extend([".factory", ".factory/skills/cognitive-os"])
+    elif harness == "cline":
+        driver_dirs.extend([".clinerules", ".cline"])
+    elif harness == "continue-dev":
+        driver_dirs.extend([".continue/rules", ".continue/mcpServers"])
+    elif harness == "kilo-code":
+        driver_dirs.extend([".kilocode/rules", ".kilo"])
+    elif harness == "zed-ai":
+        driver_dirs.extend([".zed"])
+    elif harness == "augment-code":
+        driver_dirs.extend([".augment/rules"])
+    elif harness == "goose":
+        driver_dirs.extend([".goose"])
+    elif harness == "aider":
+        driver_dirs.extend(["."])
     elif harness == "shell-ci":
         driver_dirs.extend(["scripts", ".github/workflows", ".cognitive-os/scripts/cos"])
 
