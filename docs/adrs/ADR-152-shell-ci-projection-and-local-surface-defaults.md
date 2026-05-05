@@ -1,7 +1,7 @@
 ---
 adr: 152
 title: Shell CI Projection and Local Surface Defaults
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
@@ -19,7 +19,7 @@ tags: [acc, shell-ci, projection, duplication, consumer-availability]
 
 ## Status
 
-**Accepted** — 2026-05-04
+**Implemented for shell/CI projection and local-surface defaults** — 2026-05-04. The projection manifest, projector, ACC integration, and artifact-status extraction exist; runtime behavior remains structural projection proof, not universal shell runtime parity.
 
 ## Context
 

@@ -1,0 +1,10 @@
+schema_version: provider-benchmark-tasks.v1
+tasks:
+  - id: summarize-adr-052
+    category: summarization
+    prompt: Summarize the purpose of ADR-052 in one sentence.
+    expected_keywords: [benchmark, provider, quality]
+  - id: classify-routing-signal
+    category: classification
+    prompt: Classify a successful low-cost provider response as routing evidence.
+    expected_keywords: [routing, evidence]

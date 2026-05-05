@@ -1,7 +1,7 @@
 ---
 adr: 160
 title: Rules/MCP Structural Harness Batch and Kiro Adapter Design
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -24,7 +24,7 @@ tags: [harness, portability, rules, mcp, cline, continue, kilo, zed, augment, go
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for structural projection and Kiro design scope** — 2026-05-05. The seven rules/MCP harness projections and Kiro adapter design artifacts exist and are tested; Kiro native lifecycle runtime remains planned.
 
 ## Context
 

@@ -139,13 +139,13 @@ adrs:
   reason: ADR-060 — Local-Only Policy for Optional Services — Evidence references exist, but the ADR does not state completion
     clearly
 - adr_id: ADR-065-radar-update-curation-pipeline
-  closure_class: deferred
-  reason: ADR-065 — Tech Radar Curation Pipeline (/radar-update) — Evidence references exist, but the ADR does not state completion
-    clearly
+  closure_class: evidence-only
+  reason: ADR-065 ships /radar-update through skills/radar-update/SKILL.md, scripts/radar_merge.py, and unit coverage;
+    remaining radar content curation is operational use, not missing runtime implementation.
 - adr_id: ADR-069-research-first-protocol
-  closure_class: deferred
-  reason: 'ADR-069: Research-First Protocol for High-Risk Changes — Open questions or dependency language indicate blocked
-    work'
+  closure_class: evidence-only
+  reason: ADR-069 ships the research-first rule, decision-tracker support, and audit coverage; old dependency language is
+    stale historical context rather than current blocked implementation work.
 - adr_id: ADR-083-governed-self-improvement-loop
   closure_class: absorbed
   reason: ADR-083 — Governed Self-Improvement Loop — Pending/unresolved language found and no implementation evidence was
@@ -194,8 +194,9 @@ adrs:
   closure_class: absorbed
   reason: ADR-112 — Codex Governed Tool Layer — Decision exists, but implementation evidence was not found
 - adr_id: ADR-113-validation-capsule-liveness
-  closure_class: deferred
-  reason: 'ADR-113: Validation Capsule Liveness Primitives — Open questions or dependency language indicate blocked work'
+  closure_class: evidence-only
+  reason: ADR-113 ships validation lock cleanup, validation break/status scripts, capsule library support, and unit/integration
+    coverage; any future liveness expansion is follow-up scope, not missing core implementation.
 - adr_id: ADR-114-hook-quality-system
   closure_class: evidence-only
   reason: ADR-114 — Hook Quality System — Decision exists, but implementation evidence was not found
