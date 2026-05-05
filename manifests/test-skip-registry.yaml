@@ -19,13 +19,13 @@ expected_skips:
     applies_when: Host dependency is absent in laptop-safe validation.
     opt_in_lane: install dependency or run the explicit integration/Docker/provider lane.
   - id: explicit-opt-in-resource-lane
-    lanes: [audit, system, behavior, integration, e2e, arena, benchmark]
+    lanes: [unit, audit, system, behavior, integration, e2e, arena, benchmark]
     category: opt-in-lane
     reason_pattern: '(requires network access|requires Docker|requires \$HOME mutation|set [A-Z0-9_]+=(true|1) to enable|COS_ALLOW_|COGNITIVE_OS_TEST_DOCKER_UP|cost-bearing|provider smoke|Docker daemon|real Langfuse|testcontainers)'
     applies_when: The check is intentionally excluded from make test-laptop and default CI.
     opt_in_lane: test-docker, test-optional, test-laptop-integration, or a proof-drill registry entry.
   - id: runtime-sample-window
-    lanes: [audit, contract, behavior, hooks]
+    lanes: [unit, audit, contract, behavior, hooks]
     category: runtime-sample-precondition
     reason_pattern: '(no hook-health data|no hooks with >=|only \d+ samples|need >=|fewer than \d+ samples|not enough data|no invocations recorded|hook timing has no records|cannot compute p95|need >=2 review_by dates|Operational hook latency budget exceeded|No hooks recorded for events outside the explicit budget table)'
     applies_when: Runtime/statistical assertions need more local observations before they are meaningful.
@@ -33,7 +33,7 @@ expected_skips:
   - id: optional-profile-artifact-absent
     lanes: [unit, audit, contract, system, behavior, hooks]
     category: optional-runtime-state
-    reason_pattern: '(not found|not present|does not exist|missing|not executable|not available|No .*found|No .*directory|empty|No real .*found|No container|not running|never started|cannot import|settings\.json not present|compose file missing|got empty parameter set)'
+    reason_pattern: '(not found|not present|not configured|not cloned|does not exist|missing|not executable|not available|No .*found|No .*directory|No .*registered|No contextual_triggers defined|No global CLAUDE\.md found|empty|No real .*found|No container|not running|never started|cannot import|settings\.json not present|compose file missing|got empty parameter set|Cannot set directory permissions)'
     applies_when: The test targets an optional profile/artifact not present in this lane.
     opt_in_lane: enable the profile or run the corresponding proof drill.
   - id: documented-policy-exemption
