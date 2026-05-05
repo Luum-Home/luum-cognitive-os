@@ -7,7 +7,7 @@ purpose: >-
   Machine-readable contract for the future COS service control plane. This
   manifest defines the daemon, queue, worker, lease, artifact, and publication
   boundaries before any long-running cosd implementation ships.
-status: planned_contract
+status: phase1_local_proof
 product_claim_boundary: >-
   COS has an implemented harness-embedded runtime, Docker worker surface, and
   Engram Cloud service proof. This schema does not by itself mean COS has a
@@ -26,7 +26,7 @@ required_surfaces:
 
 surfaces:
   cosd:
-    status: planned
+    status: phase1_status_wrapper
     role: task_admission_and_scheduler_boundary
     implementation_files:
       - scripts/cosd
@@ -41,7 +41,7 @@ surfaces:
       - scheduler_loop
       - worker_launch_policy
   task_queue:
-    status: planned
+    status: phase1_jsonl_implemented
     initial_storage: jsonl
     allowed_storage:
       - jsonl
@@ -70,7 +70,7 @@ surfaces:
       - never_dispatch_without_successful_auth_probe_when_credentials_required
       - never_dispatch_publish_actions_without_human_approval
   lease_manager:
-    status: planned
+    status: phase1_jsonl_implemented
     required_fields:
       - lease_id
       - task_id
@@ -90,7 +90,7 @@ surfaces:
       - expired_lease_cannot_publish
       - crash_writes_recoverable_evidence
   worker:
-    status: planned
+    status: phase1_run_once_implemented
     implementation_files:
       - scripts/cos-worker-run-once
       - docker/cos-worker/docker-compose.yml
@@ -128,7 +128,7 @@ surfaces:
       - worker_leases
       - publication
   artifact_store:
-    status: planned
+    status: phase1_filesystem_implemented
     initial_storage: filesystem
     required_bundle_files:
       - task.json
@@ -183,6 +183,7 @@ phase_gates:
       - scripts/cos-task-submit
       - scripts/cos-queue-drain
     no_model_calls: true
+    implementation_status: implemented
   local_worker:
     requires:
       - local_queue
@@ -190,6 +191,7 @@ phase_gates:
       - scripts/cos-worker-run-once
     required_executor: local-command
     no_provider_credentials: true
+    implementation_status: implemented
   host_cli_executor:
     requires:
       - local_worker
@@ -273,4 +275,3 @@ not_yet_building:
   - full_engram_consensus
   - autonomous_merge
   - unofficial_credential_reuse
-

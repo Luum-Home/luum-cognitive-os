@@ -21,7 +21,7 @@ claiming a production daemon.
 Purpose: prove `cosd` can admit and complete one task without provider
 credentials.
 
-Future command shape:
+Command shape:
 
 ```bash
 scripts/cos-task-submit --kind local-command --command 'printf ok > result.txt'
@@ -36,6 +36,9 @@ Expected evidence:
 - one completed result;
 - artifact bundle with task, lease, result, and logs;
 - no provider credentials required.
+
+Current status: implemented as a local proof with JSONL queue, one-shot worker,
+and filesystem artifact bundle.
 
 ## Drill P2 — Account-backed Codex CLI probe
 
