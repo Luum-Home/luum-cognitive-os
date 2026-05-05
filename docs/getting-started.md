@@ -572,6 +572,27 @@ For the full guide — including every message you'll see, how to monitor the me
 
 ---
 
+## Headless deployment via Docker
+
+The path above installs Cognitive OS onto your shell profile and integrates with your existing Claude Code / Codex / Cursor session. If instead you need a **headless** surface — CI, cloud worker, evaluation without touching your shell, cross-OS deployment — there is a dedicated worker container surface defined by ADR-140:
+
+```bash
+bash scripts/cos-cloud-worker-bootstrap.sh self-test
+```
+
+This builds and runs `luum-cognitive-os-worker:local`, exercises the hook layer against a harmless event, and writes a compliance-shaped entry to `.cognitive-os/runtime/agent-audit-trail.jsonl`. No shell-profile assumptions, no host credential pickup, no IDE integration.
+
+For the full operator walkthrough (BYOK env vars, engram-cloud profile, audit trail, troubleshooting), see [`runbooks/run-cos-in-docker.md`](runbooks/run-cos-in-docker.md).
+
+When to choose which path:
+
+| Scenario | Recommended path |
+|---|---|
+| Daily Claude Code / Codex / Cursor governance on your laptop | The installation path above (this file) |
+| CI / cloud worker / headless evaluation | The Docker worker (runbook) |
+| Compliance evaluation (SOC 2 / ISO 27001 / GDPR) | The Docker worker (writes ADR-142 compliance fields by construction) |
+| Cross-OS portability test | The Docker worker (Linux / macOS / Windows + WSL2) |
+
 ## Next Steps
 
 - Read the [FAQ](faq.md) for answers to common questions
