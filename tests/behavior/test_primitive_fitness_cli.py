@@ -110,3 +110,103 @@ def test_governed_evaluate_from_fitness_records_comparative_gate(tmp_path: Path)
     payload = json.loads(evaluation.stdout)
     assert payload["status"] == "passed"
     assert payload["candidate_score"] == 84
+
+
+def _write_json(path: Path, payload: dict) -> Path:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
+def test_cli_accepts_consumer_and_dependency_evidence_inputs(tmp_path: Path) -> None:
+    baseline = _metrics(tmp_path / "baseline", 84, 2)
+    candidate = _metrics(tmp_path / "candidate", 94, 4)
+    baseline_bundle = _write_json(
+        tmp_path / "baseline-consumer.json",
+        {
+            "mode": "propose_only",
+            "runtime_effect": "none",
+            "action_counts": {"project-local": 1},
+            "proposals": [{"action": "project-local", "runtime_effect": "none"}],
+            "policy": {"auto_merge": False},
+        },
+    )
+    candidate_bundle = _write_json(
+        tmp_path / "candidate-consumer.json",
+        {
+            "mode": "propose_only",
+            "runtime_effect": "none",
+            "action_counts": {"upstream-candidate": 2},
+            "proposals": [
+                {"action": "upstream-candidate", "runtime_effect": "none"},
+                {"action": "upstream-candidate", "runtime_effect": "none"},
+            ],
+            "policy": {"auto_merge": False},
+        },
+    )
+    baseline_deps = _write_json(
+        tmp_path / "baseline-deps.json",
+        {
+            "schema_version": "cos-deps-install.v1",
+            "profile": "core",
+            "platform": "macos",
+            "mode": "dry-run",
+            "credential_policy": "never-copy-or-read-credential-stores",
+            "already_present": [{"name": "git"}],
+            "installable": [{"name": "uv"}],
+            "manual": [],
+            "auth_bound": [],
+            "unsupported_platform": [],
+            "installed": [],
+            "failed": [],
+        },
+    )
+    candidate_deps = _write_json(
+        tmp_path / "candidate-deps.json",
+        {
+            "schema_version": "cos-deps-install.v1",
+            "profile": "core",
+            "platform": "macos",
+            "mode": "dry-run",
+            "credential_policy": "never-copy-or-read-credential-stores",
+            "already_present": [{"name": "git"}, {"name": "uv"}],
+            "installable": [],
+            "manual": [],
+            "auth_bound": [],
+            "unsupported_platform": [],
+            "installed": [],
+            "failed": [],
+        },
+    )
+
+    result = subprocess.run(
+        [
+            "python3",
+            str(FITNESS),
+            "--primitive",
+            "skills/example",
+            "--baseline-metrics",
+            str(baseline),
+            "--candidate-metrics",
+            str(candidate),
+            "--baseline-consumer-proposals",
+            str(baseline_bundle),
+            "--candidate-consumer-proposals",
+            str(candidate_bundle),
+            "--baseline-dependency-report",
+            str(baseline_deps),
+            "--candidate-dependency-report",
+            str(candidate_deps),
+            "--json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr + result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["verdict"] == "promote"
+    assert payload["candidate"]["raw"]["consumer_evidence"]["upstream_candidate_count"] == 2
+    assert payload["candidate"]["raw"]["portability_readiness"]["credential_policy_ok"] is True
