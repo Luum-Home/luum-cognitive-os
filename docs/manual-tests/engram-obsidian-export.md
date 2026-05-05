@@ -72,5 +72,65 @@ Expected:
 
 - This export never writes back to Engram.
 - This export never reads or imports user edits from Obsidian.
-- No Stop hook or automatic background export is registered until this manual
-  proof path is exercised successfully.
+- No default Stop hook registration is required. The optional Stop hook remains
+  gated by an explicit `COS_OBSIDIAN_VAULT` environment variable.
+
+## Actual proof run — 2026-05-05
+
+Local vault used:
+
+```text
+$HOME/.cognitive-os/obsidian-vaults/luum-agent-os
+```
+
+Commands:
+
+```bash
+bash scripts/install-obsidian-local.sh --status
+bash scripts/export-engram-to-obsidian.sh \
+  --vault "$HOME/.cognitive-os/obsidian-vaults/luum-agent-os" \
+  --project luum-agent-os \
+  --limit 100 \
+  --write \
+  --json
+```
+
+Observed export summary:
+
+```json
+{
+  "dry_run": false,
+  "files_planned": 3,
+  "files_written": 3,
+  "relation_count": 0,
+  "output_dir": "$HOME/.cognitive-os/obsidian-vaults/luum-agent-os/Cognitive OS/Engram"
+}
+```
+
+Structural review:
+
+- Exported notes were written under `Cognitive OS/Engram/`.
+- Each sampled note had YAML frontmatter with `cos_observation_id`, `type`,
+  `project`, `created_at`, `updated_at`, `lifecycle_stage`, and source metadata.
+- The generated `_manifest.json` recorded file digests for incremental export.
+- `relation_count: 0` was expected for the sampled observations; relation
+  rendering remains covered by `tests/unit/test_engram_obsidian_exporter.py`.
+
+## Optional Stop hook proof
+
+`hooks/engram-obsidian-export-on-stop.sh` provides the opt-in automation path.
+It is safe to register as a Stop hook because it exits 0 when
+`COS_OBSIDIAN_VAULT` is unset and records non-blocking metrics when an export
+fails.
+
+Manual one-shot opt-in check:
+
+```bash
+COS_OBSIDIAN_VAULT="$HOME/.cognitive-os/obsidian-vaults/luum-agent-os" \
+COS_OBSIDIAN_EXPORT_LIMIT=100 \
+bash hooks/engram-obsidian-export-on-stop.sh
+```
+
+Observed on the same vault after the initial write: hook exited 0, appended an
+`ok` event to `.cognitive-os/metrics/obsidian-export.jsonl`, and reported
+`files_written: 0` because the manifest digests were unchanged.
