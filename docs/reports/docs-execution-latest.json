@@ -35824,7 +35824,7 @@
       "kind": "prose",
       "line": 8,
       "next_action": "add explicit test/workflow/proof link",
-      "path": "docs/security/cognitive-os-security-assessment-plan.md"
+      "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
     },
     {
       "confidence": 0.9,
@@ -35837,7 +35837,7 @@
       "kind": "prose",
       "line": 11,
       "next_action": "keep planned or add implementation proof when complete",
-      "path": "docs/security/cognitive-os-security-assessment-plan.md"
+      "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
     },
     {
       "confidence": 0.9,
@@ -35850,7 +35850,7 @@
       "kind": "prose",
       "line": 103,
       "next_action": "keep planned or add implementation proof when complete",
-      "path": "docs/security/cognitive-os-security-assessment-plan.md"
+      "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
     },
     {
       "confidence": 0.62,
@@ -38285,7 +38285,7 @@
         "done_weak_proof": 2,
         "done_with_proof": 1
       },
-      "docs/security/cognitive-os-security-assessment-plan.md": {
+      ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md": {
         "done_weak_proof": 1,
         "planned": 2
       },
