@@ -369,7 +369,11 @@ def run_host_cli_adapter(
     reason = "provider call blocked; rerun with --allow-provider-call after reviewing cost and credential posture"
 
     if executor_id == "codex-cli-host":
-        command_shape = ["codex", "exec", "--json", "--sandbox", "read-only", "--skip-git-repo-check", prompt]
+        command_shape = ["codex", "exec", "--json", "--sandbox", "read-only", "--skip-git-repo-check"]
+        codex_model = os.environ.get("COS_CODEX_EXEC_MODEL", "").strip()
+        if codex_model:
+            command_shape.extend(["--model", codex_model])
+        command_shape.append(prompt)
     else:
         command_shape = ["claude", "-p", prompt]
 
@@ -409,7 +413,7 @@ def run_host_cli_adapter(
         "artifact_dir": str(task_dir),
         "redactions": stdout_redactions + stderr_redactions,
         "provider_calls": provider_calls,
-        "command_shape": command_shape[:4] + ["<prompt>"],
+        "command_shape": command_shape[:-1] + ["<prompt>"],
     }
     atomic_write_json(task_dir / "task.json", task)
     atomic_write_json(task_dir / "lease.json", asdict(lease))
