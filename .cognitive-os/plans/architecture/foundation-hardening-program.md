@@ -154,3 +154,6 @@ directly to `main`.
 - [ ] ADR-118 swarm scenarios cover same-task, same-file, same-domain,
       projection drift, stash reapply, validation cleanup, and merge queue races.
 - [ ] Chaos suite is allowed to run slower but must produce actionable artifacts.
+## Concrete Slice Backlog
+
+Bounded ADR-121 slices are tracked in `.cognitive-os/plans/architecture/adr-118-121-123-slices.md` under `ADR-121-S*`.

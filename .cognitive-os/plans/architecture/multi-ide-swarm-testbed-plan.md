@@ -40,3 +40,6 @@ python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 
 The lane passes without mutating the real repository's stash, branches, remotes,
 or worktree.
+## Concrete Slice Backlog
+
+Bounded ADR-118 slices are tracked in `.cognitive-os/plans/architecture/adr-118-121-123-slices.md` under `ADR-118-S*`.
