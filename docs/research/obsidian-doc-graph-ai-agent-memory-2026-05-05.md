@@ -241,6 +241,10 @@ This gives Obsidian graph view enough edges to be useful while keeping typed sem
 
 ---
 
+## Implementation status — 2026-05-05
+
+The recommended manual slice is implemented in `lib/engram_obsidian_exporter.py` and `scripts/export-engram-to-obsidian.sh`. It remains dry-run by default, requires explicit `--vault`, exports lifecycle metadata as frontmatter, derives wikilinks from accepted typed Engram relations, and does not register any Stop hook automation. Manual proof path: `docs/manual-tests/engram-obsidian-export.md`.
+
 ## Recommendation
 
 Proceed with Phase 4 as a small, testable exporter. Treat it as an audit and navigation layer for humans and as optional context material for agents, not as the canonical memory store.
