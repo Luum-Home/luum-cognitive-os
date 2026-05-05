@@ -5,6 +5,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-05-05 — "Operator-CLI Primary, Phoenix Optional, Honest API Findings"
+
+This release pivots the UI surface story away from a single web dashboard
+toward an honest operator-CLI plus markdown-reports model, with Phoenix
+declared as an opt-in trace surface. Two days of audits and live verifications
+exposed that the previous *"Paperclip is the UI"* assumption was built on a
+client contract that did not match the upstream Paperclip API. The release
+documents that finding instead of papering over it, and reframes the system
+around interfaces that actually work today.
+
 ### Changed — Operator-CLI as primary UI surface (ADR-170)
 
 - `docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` — accepted. Declares the operator CLI (`cos-boring-reliability`, `cos-doctrine-proposer`, `cos-self-improvement-loop`, `cos-pr-review.sh`, `cos-cloud-worker-bootstrap.sh`, etc.) plus the `docs/reports/` markdown library as the primary UI surface. No web dashboard, no Paperclip-as-UI, no Phoenix-as-UI is required for the system to be operationally observable, governance-checked, or enterprise-evaluable.
