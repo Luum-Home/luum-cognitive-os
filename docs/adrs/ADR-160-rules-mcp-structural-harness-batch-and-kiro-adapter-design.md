@@ -52,13 +52,13 @@ Generated project-local files:
 |---|---|
 | Cline | `.clinerules/cognitive-os.md`, `.cline/README.md` |
 | Continue.dev | `.continue/rules/cognitive-os.md`, `.continue/mcpServers/cognitive-os.json` |
-| Kilo Code | `AGENTS.md`, `.kilocode/rules/cognitive-os.md`, `.kilocode/mcp.json`, `.kilo/kilo.jsonc` |
+| Kilo Code | `AGENTS.md`, `.kilocode/rules/cognitive-os.md`, `.kilo/kilo.jsonc` |
 | Zed AI | `.rules`, `.zed/settings.json` |
-| Augment/Auggie | `.augment/rules/cognitive-os.md`, `.augment/settings.json` |
-| Goose | `.goosehints`, `.goose/config.json` |
+| Augment/Auggie | `.augment/rules/cognitive-os.md`, `.augment/mcp.json`, `.augment/README.md` |
+| Goose | `.goosehints` |
 | Aider | `CONVENTIONS.md`, `.aider.conf.yml` |
 
-All generated MCP/settings files are placeholders. They contain no credentials and grant no tools by default.
+Generated MCP/settings placeholders contain no credentials and grant no tools by default. Kilo stores the MCP placeholder inside `.kilo/kilo.jsonc`; Augment files are intended for explicit `auggie --rules ... --mcp-config ...` invocation; Goose remains `.goosehints` only.
 
 Kiro remains `planned` with `proof_level: none`. The Kiro path is now documented as an adapter design, not an implementation claim.
 
