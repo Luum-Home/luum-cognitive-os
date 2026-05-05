@@ -65,7 +65,12 @@ metrics-calibrator-trigger.sh
 metrics-rotation.sh
 notify.sh
 package-sync.sh
+paperclip-agent-status.sh
+paperclip-cost-stream.sh
+paperclip-sdd-sync.sh
+paperclip-squad-sync.sh
 paperclip-sync.sh
+paperclip-task-sync.sh
 parry-scan.sh
 pre-cleanup-snapshot.sh
 pre-commit-gate.sh
