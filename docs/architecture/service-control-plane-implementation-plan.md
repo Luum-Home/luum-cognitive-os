@@ -85,6 +85,8 @@ python3 -m pytest tests/contracts/test_service_control_plane_contracts.py -q
 
 Goal: implement a local-only control plane with no model calls.
 
+Status: **implemented as a Phase 1 local proof**, not a long-running scheduler.
+
 Shape:
 
 ```text
@@ -109,6 +111,12 @@ Acceptance criteria:
 - expire lease after configured TTL;
 - write an artifact bundle with `task.json`, `lease.json`, `result.json`, and
   logs.
+
+Validation:
+
+```bash
+python3 -m pytest tests/unit/test_service_control_plane_local_queue.py -q
+```
 
 ## Phase 2 — Worker execution surface
 
@@ -381,7 +389,9 @@ manifest contracts
   -> crash-safe lease proof
 ```
 
-Only after that should `codex-cli` or `claude-cli` be attached.
+This slice is now implemented for `local-command`. Only after the local queue,
+lease, and artifact behavior remains stable should `codex-cli` or `claude-cli`
+be attached.
 
 The first model-backed slice should be host CLI, not API key, unless the
 operator explicitly requests cloud/CI semantics.
