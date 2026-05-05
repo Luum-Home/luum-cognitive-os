@@ -1,227 +1,412 @@
 schema_version: 1
-
-# Cognitive OS — Declarative dependency manifest.
-#
-# Single source of truth for Python deps, external CLIs, and MCP servers.
-# Consumed by scripts/manifest-check.sh, lib/manifest_loader.py, and
-# (eventually) install.sh / cos-update.sh / doctor.sh.
-#
-# Edit this file to add/remove a dependency. Loader rejects unknown keys
-# and missing required fields — see lib/manifest_loader.py for the schema.
-
 python:
   required:
-    - pyyaml>=6.0
-    - jinja2>=3.1
+  - pyyaml>=6.0
+  - jinja2>=3.1
   groups:
-    llm: [litellm>=1.0, redis>=5.0.0]
-    web: [fastapi>=0.100, uvicorn>=0.23]
-    observability: [opik>=1.0, langfuse>=3.0]
-    memory: [cognee>=0.1]
-    guardrails: [nemoguardrails]
-    jupyter: [jupyter, notebook]
-    crawling: [crawl4ai>=0.8.0]
+    llm:
+    - litellm>=1.0
+    - redis>=5.0.0
+    web:
+    - fastapi>=0.100
+    - uvicorn>=0.23
+    observability:
+    - opik>=1.0
+    - langfuse>=3.0
+    memory:
+    - cognee>=0.1
+    guardrails:
+    - nemoguardrails
+    jupyter:
+    - jupyter
+    - notebook
+    crawling:
+    - crawl4ai>=0.8.0
     testing:
-      - pytest>=8.0
-      - pytest-asyncio>=0.23
-      - pytest-timeout>=2.2
-      - pytest-xdist>=3.5
-      - mutmut>=3.0
-      - pytest-smell>=1.0
+    - pytest>=8.0
+    - pytest-asyncio>=0.23
+    - pytest-timeout>=2.2
+    - pytest-xdist>=3.5
+    - mutmut>=3.0
+    - pytest-smell>=1.0
     enforcement:
-      - pre-commit>=4.0
-      - ruff>=0.9.0
-      - vulture>=2.14
-      - import-linter>=2.0
-      - pytest-cov>=6.0
-      - diff-cover>=9.0
-
+    - pre-commit>=4.0
+    - ruff>=0.9.0
+    - vulture>=2.14
+    - import-linter>=2.0
+    - pytest-cov>=6.0
+    - diff-cover>=9.0
 tools:
-  - name: jq
-    criticality: required
-    check: jq --version
-    install:
-      macos: brew install jq
-      debian: apt-get install -y jq
-    consumed_by:
-      - hooks/*.sh (50+ hooks parse JSON via jq)
-      - scripts/cos-init.sh
-      - scripts/merge-settings.sh
+- name: jq
+  criticality: required
+  check: jq --version
+  install:
+    macos:
+      manager: brew
+      command: brew install jq
+    linux:
+      manager: apt
+      command: sudo apt-get install -y jq
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y jq
+  consumed_by:
+  - hooks/*.sh (50+ hooks parse JSON via jq)
+  - scripts/cos-init.sh
+  - scripts/merge-settings.sh
+  category: cli
+  profiles:
+  - core
+  - standard
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: git
+  criticality: required
+  check: git --version
+  install:
+    macos:
+      manager: brew
+      command: brew install git
+    linux:
+      manager: apt
+      command: sudo apt-get install -y git
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y git
+  consumed_by:
+  - install.sh
+  - scripts/setup-git-hooks.sh
+  category: cli
+  profiles:
+  - core
+  - standard
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: uv
+  criticality: required
+  check: uv --version
+  install:
+    macos:
+      manager: brew
+      command: brew install uv
+    linux:
+      manager: standalone
+      command: curl -LsSf https://astral.sh/uv/install.sh | sh
+    windows_wsl:
+      manager: standalone
+      command: curl -LsSf https://astral.sh/uv/install.sh | sh
+  consumed_by:
+  - scripts/setup.sh
+  - pyproject.toml workflow
+  category: package-manager
+  profiles:
+  - core
+  - standard
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: python3
+  criticality: required
+  check: python3 --version
+  min_version: '3.11'
+  install:
+    macos:
+      manager: manual
+      url: https://www.python.org/downloads/macos/
+    linux:
+      manager: apt
+      command: sudo apt-get install -y python3 python3-venv
+    windows_wsl:
+      manager: apt
+      command: sudo apt-get install -y python3 python3-venv
+  consumed_by:
+  - hooks/*.py
+  - lib/*.py
+  category: runtime
+  profiles:
+  - core
+  - standard
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: engram
+  criticality: recommended
+  check: engram --version
+  install:
+    macos:
+      manager: brew
+      command: brew install gentleman-programming/tap/engram
+    linux:
+      manager: manual
+      url: https://github.com/Gentleman-Programming/engram
+    windows_wsl:
+      manager: manual
+      url: https://github.com/Gentleman-Programming/engram
+  degraded_behavior: 'Memory features return empty results. lib/engram_client.py wraps
 
-  - name: git
-    criticality: required
-    check: git --version
-    install:
-      macos: brew install git
-      debian: apt-get install -y git
-    consumed_by:
-      - install.sh
-      - scripts/setup-git-hooks.sh
+    the CLI with try/except and returns [] on failure.
 
-  - name: uv
-    criticality: required
-    check: uv --version
-    install:
-      any: curl -LsSf https://astral.sh/uv/install.sh | sh
-    consumed_by:
-      - scripts/setup.sh
-      - pyproject.toml workflow
-
-  - name: python3
-    criticality: required
-    check: python3 --version
-    min_version: "3.11"
-    install:
-      any: see pyproject.toml requires-python
-    consumed_by:
-      - hooks/*.py
-      - lib/*.py
-
-  - name: engram
-    criticality: recommended
-    check: engram --version
-    install:
-      any: npx -y @anthropic/engram
-    degraded_behavior: |
-      Memory features return empty results. lib/engram_client.py wraps
-      the CLI with try/except and returns [] on failure.
-    consumed_by:
-      - lib/engram_client.py
-      - hooks/inject-phase-context.sh
-      - hooks/subagent-context-injector.sh
-
-  - name: gh
-    criticality: recommended
-    check: gh --version
-    install:
-      macos: brew install gh
-      debian: apt-get install -y gh
-    consumed_by:
-      - GitHub MCP automation
-      - PR/issue workflows
-
-  - name: docker
-    criticality: optional
-    check: docker --version
-    install:
-      any: see https://docs.docker.com/get-docker/
-    consumed_by:
-      - scripts/cos-bootstrap.sh
-      - infra services (Langfuse, LiteLLM)
-
-  - name: aguara
-    criticality: optional
-    check: aguara --version
-    install:
-      any: go install github.com/garagon/aguara@latest
-    enabled_when: cognitive-os.yaml security.aguara.enabled == true
-    consumed_by:
-      - hooks/aguara-scan.sh
-
-  - name: mcp-scan
-    criticality: optional
-    check: mcp-scan --version
-    install:
-      any: pip install mcp-scan
-    enabled_when: cognitive-os.yaml security.mcp_scan.enabled == true
-    consumed_by:
-      - hooks/mcp-scan.sh
-
-  - name: semgrep
-    criticality: optional
-    check: semgrep --version
-    install:
-      macos: brew install semgrep
-      debian: pip install semgrep
-    consumed_by:
-      - skills/security-scan
-
-  - name: parry-guard
-    criticality: optional
-    check: parry-guard --version
-    install:
-      macos: brew install vaporif/tap/parry-guard
-    consumed_by:
-      - skills/prompt-injection-defense
-
-  - name: promptfoo
-    criticality: optional
-    check: promptfoo --version
-    install:
-      any: npm install -g promptfoo
-    consumed_by:
-      - skills/red-team
-
-  - name: garak
-    criticality: optional
-    check: garak --version
-    install:
-      any: pip install garak
-    consumed_by:
-      - skills/vulnerability-scan
-
+    '
+  consumed_by:
+  - lib/engram_client.py
+  - hooks/inject-phase-context.sh
+  - hooks/subagent-context-injector.sh
+  category: cli
+  profiles:
+  - standard
+  - full
+  scope: user
+  syncable: state-only
+  auth_bound: false
+  manual_url: https://github.com/Gentleman-Programming/engram
+  never_copy:
+  - ~/.engram/engram.db
+- name: gh
+  criticality: recommended
+  check: gh --version
+  install:
+    macos:
+      manager: brew
+      command: brew install gh
+    linux:
+      manager: apt
+      command: sudo apt-get install -y gh
+    windows_wsl:
+      manager: manual
+      url: https://cli.github.com/
+  consumed_by:
+  - GitHub MCP automation
+  - PR/issue workflows
+  category: cli
+  profiles:
+  - standard
+  - full
+  scope: user
+  syncable: config-only
+  auth_bound: true
+  manual_url: https://cli.github.com/
+  never_copy:
+  - ~/.config/gh
+  post_install: Authenticate manually with `gh auth login`.
+- name: docker
+  criticality: optional
+  check: docker --version
+  install:
+    macos:
+      manager: manual
+      url: https://docs.docker.com/get-docker/
+    linux:
+      manager: manual
+      url: https://docs.docker.com/get-docker/
+    windows_wsl:
+      manager: manual
+      url: https://docs.docker.com/get-docker/
+  consumed_by:
+  - scripts/cos-bootstrap.sh
+  - infra services (Langfuse, LiteLLM)
+  category: container
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://docs.docker.com/get-docker/
+- name: aguara
+  criticality: optional
+  check: aguara --version
+  install:
+    macos:
+      manager: go
+      command: go install github.com/garagon/aguara@latest
+    linux:
+      manager: go
+      command: go install github.com/garagon/aguara@latest
+    windows_wsl:
+      manager: go
+      command: go install github.com/garagon/aguara@latest
+  enabled_when: cognitive-os.yaml security.aguara.enabled == true
+  consumed_by:
+  - hooks/aguara-scan.sh
+  category: security
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: mcp-scan
+  criticality: optional
+  check: mcp-scan --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user mcp-scan
+    linux:
+      manager: pip
+      command: python3 -m pip install --user mcp-scan
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user mcp-scan
+  enabled_when: cognitive-os.yaml security.mcp_scan.enabled == true
+  consumed_by:
+  - hooks/mcp-scan.sh
+  category: security
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: semgrep
+  criticality: optional
+  check: semgrep --version
+  install:
+    macos:
+      manager: brew
+      command: brew install semgrep
+    linux:
+      manager: pip
+      command: python3 -m pip install --user semgrep
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user semgrep
+  consumed_by:
+  - skills/security-scan
+  category: security
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+- name: parry-guard
+  criticality: optional
+  check: parry-guard --version
+  install:
+    macos:
+      manager: brew
+      command: brew install vaporif/tap/parry-guard
+    linux:
+      manager: manual
+      url: https://github.com/vaporif/parry
+    windows_wsl:
+      manager: manual
+      url: https://github.com/vaporif/parry
+  consumed_by:
+  - skills/prompt-injection-defense
+  category: security
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/vaporif/parry
+- name: promptfoo
+  criticality: optional
+  check: promptfoo --version
+  install:
+    macos:
+      manager: npm
+      command: npm install -g promptfoo
+    linux:
+      manager: npm
+      command: npm install -g promptfoo
+    windows_wsl:
+      manager: npm
+      command: npm install -g promptfoo
+  consumed_by:
+  - skills/red-team
+  category: security
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+- name: garak
+  criticality: optional
+  check: garak --version
+  install:
+    macos:
+      manager: pip
+      command: python3 -m pip install --user garak
+    linux:
+      manager: pip
+      command: python3 -m pip install --user garak
+    windows_wsl:
+      manager: pip
+      command: python3 -m pip install --user garak
+  consumed_by:
+  - skills/vulnerability-scan
+  category: security
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
 mcp_servers:
-  - name: engram
-    criticality: recommended
-    transport: stdio
-    command: npx
-    args: ["-y", "@anthropic/engram"]
-    register_to: ~/.claude/settings.json
-    requires_tool: engram
-    consumed_by:
-      - lib/engram_client.py
-      - hooks/inject-phase-context.sh
-
-  - name: aguara
-    criticality: optional
-    transport: stdio
-    command: mcp-aguara
-    args: []
-    register_to: ~/.claude/settings.json
-    requires_tool: aguara
-    enabled_when: cognitive-os.yaml security.aguara.enabled == true
-    consumed_by:
-      - hooks/aguara-scan.sh
-
+- name: engram
+  criticality: recommended
+  transport: stdio
+  command: npx
+  args:
+  - -y
+  - '@anthropic/engram'
+  register_to: ~/.claude/settings.json
+  requires_tool: engram
+  consumed_by:
+  - lib/engram_client.py
+  - hooks/inject-phase-context.sh
+- name: aguara
+  criticality: optional
+  transport: stdio
+  command: mcp-aguara
+  args: []
+  register_to: ~/.claude/settings.json
+  requires_tool: aguara
+  enabled_when: cognitive-os.yaml security.aguara.enabled == true
+  consumed_by:
+  - hooks/aguara-scan.sh
 profiles:
   default:
     python_groups: []
     tools_required:
-      - jq
-      - git
-      - uv
-      - python3
+    - jq
+    - git
+    - uv
+    - python3
     tools_recommended:
-      - engram
-      - gh
+    - engram
+    - gh
     mcp_servers_recommended:
-      - engram
-
+    - engram
   full:
     python_groups:
-      - llm
-      - web
-      - observability
-      - memory
-      - guardrails
-      - jupyter
-      - crawling
-      - testing
-      - enforcement
+    - llm
+    - web
+    - observability
+    - memory
+    - guardrails
+    - jupyter
+    - crawling
+    - testing
+    - enforcement
     tools_required:
-      - jq
-      - git
-      - uv
-      - python3
+    - jq
+    - git
+    - uv
+    - python3
     tools_recommended:
-      - engram
-      - gh
-      - docker
-      - aguara
-      - mcp-scan
-      - semgrep
-      - parry-guard
-      - promptfoo
+    - engram
+    - gh
+    - docker
+    - aguara
+    - mcp-scan
+    - semgrep
+    - parry-guard
+    - promptfoo
     mcp_servers_recommended:
-      - engram
-      - aguara
+    - engram
+    - aguara
