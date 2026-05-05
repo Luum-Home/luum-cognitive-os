@@ -6512,3 +6512,82 @@ primitives:
   metrics_file: none
   consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime auth probe for consumer projects.
+- id: hooks/_lib/agent-context.sh
+  kind: hook
+  owner_adr: ADR-149
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - hooks/_lib/agent-context.sh
+  runtime_projection: false
+  runtime_dependency_of:
+  - hooks/destructive-git-blocker.sh
+  - hooks/destructive-rm-blocker.sh
+  behavior_evidence: transitive runtime dependency for destructive-operation blockers
+  evidence_commands:
+  - bash -n hooks/_lib/agent-context.sh hooks/destructive-git-blocker.sh hooks/destructive-rm-blocker.sh
+  - python3 -m pytest tests/behavior/test_hooks_batch1.py -q
+  rollback_or_repair_command: Inline cos_is_agent_context back into destructive blockers or disable the helper source path.
+  sunset_criteria: Remove when destructive blockers no longer share agent-context detection.
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: none
+- id: hooks/_lib/task-event.sh
+  kind: hook
+  owner_adr: ADR-149
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - hooks/_lib/task-event.sh
+  runtime_projection: false
+  runtime_dependency_of:
+  - hooks/task-created.sh
+  - hooks/task-completed.sh
+  behavior_evidence: shared JSONL task-event metric helper
+  evidence_commands:
+  - bash -n hooks/_lib/task-event.sh hooks/task-created.sh hooks/task-completed.sh
+  - python3 -m pytest tests/behavior/test_hooks_batch1.py -q
+  rollback_or_repair_command: Inline cos_log_task_event back into task hooks or disable the helper source path.
+  sunset_criteria: Remove when task-created/task-completed no longer share event metric logging.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/task-created.jsonl
+- id: scripts/_lib/session-id.sh
+  kind: script
+  owner_adr: ADR-149
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - shell
+  projection_targets:
+  - scripts/_lib/session-id.sh
+  runtime_projection: false
+  runtime_dependency_of:
+  - hooks/edit-lock-drain-parked.sh
+  - hooks/edit-lock-process-negotiations.sh
+  - scripts/edit-coop.sh
+  behavior_evidence: shared session identity resolution for edit-lock coordination
+  evidence_commands:
+  - bash -n scripts/_lib/session-id.sh hooks/edit-lock-drain-parked.sh hooks/edit-lock-process-negotiations.sh scripts/edit-coop.sh
+  - python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q
+  rollback_or_repair_command: Inline cos_session_id back into edit-lock coordination scripts or disable the helper source path.
+  sunset_criteria: Remove when edit-lock coordination no longer needs shared session identity resolution.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
