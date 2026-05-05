@@ -86,7 +86,7 @@ If `/cognitive-os-test` fails after an auto-applied improvement:
 3. **No destructive changes**: Self-improve NEVER deletes rules, skills, or hooks. It only adds or modifies.
 4. **Improvement cooldown**: At most 1 self-improve run per 24 hours (unless manually invoked)
 5. **Data minimum**: Requires at least 10 data points before proposing improvements. With < 10 entries, only report patterns without proposing.
-6. **Comparative promotion gate**: Draft primitives must record baseline-vs-candidate evaluation before promotion. A draft cannot be promoted unless the candidate score beats the current/baseline primitive by the required delta and records no safety regressions.
+6. **Comparative promotion gate**: Draft primitives must record baseline-vs-candidate evaluation before promotion. A draft cannot be promoted unless the candidate score beats the current/baseline primitive by the required delta and records no safety regressions. Prefer `scripts/cos-primitive-fitness` over hand-entered scores when baseline and candidate metric directories are available.
 
 ## Integration with Session Lifecycle
 
@@ -198,3 +198,20 @@ Before `scripts/cos_governed_self_improvement.py promote` can copy a draft into
 This makes the loop evolutionary rather than merely additive: Key Learnings and
 other signals may create proposals, but only measured candidates can be
 promoted.
+
+When the candidate has baseline/candidate metric evidence, use the primitive
+fitness contract instead of manual scores:
+
+```bash
+scripts/cos-primitive-fitness \
+  --primitive <primitive-id> \
+  --baseline-metrics <baseline-metrics-dir> \
+  --candidate-metrics <candidate-metrics-dir> \
+  --json > primitive-fitness.json
+
+python3 scripts/cos_governed_self_improvement.py \
+  evaluate-from-fitness <draft-id> \
+  --fitness-report primitive-fitness.json
+```
+
+Reference: `docs/architecture/primitive-fitness-evaluation-contract.md`.

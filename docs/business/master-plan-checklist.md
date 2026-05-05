@@ -189,6 +189,7 @@
 - [x] Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap, and deployment/onboarding gaps.
 
 - [x] Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.
+- [x] Primitive self-improvement promotion is now gated by baseline-vs-candidate fitness evidence through [Primitive Fitness Evaluation Contract](../architecture/primitive-fitness-evaluation-contract.md), `lib/primitive_fitness.py`, and `scripts/cos-primitive-fitness`.
 - [x] Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.
 
 - [x] Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).
