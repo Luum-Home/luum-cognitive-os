@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+import importlib.util
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,6 +37,14 @@ def run_python(script: Path, *args: str, cwd: Path) -> subprocess.CompletedProce
 def payload(proc: subprocess.CompletedProcess[str]) -> dict:
     assert proc.stdout, proc.stderr
     return json.loads(proc.stdout)
+
+
+def load_derived_gate():
+    spec = importlib.util.spec_from_file_location("derived_artifact_gate", ROOT / "scripts" / "derived_artifact_gate.py")
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -191,6 +200,20 @@ def test_same_file_race_blocks_second_writer(scratch_project: Path) -> None:
     assert "BLOCKED" in second.stderr
     assert "session=session-a" in second.stderr
     assert (scratch_project / "target.txt").read_text(encoding="utf-8") == "session-a fix\n"
+
+
+def test_projection_drift_requires_derived_artifact_closure(monkeypatch: pytest.MonkeyPatch) -> None:
+    gate = load_derived_gate()
+    monkeypatch.setattr(gate, "changed_staged", lambda: {"cognitive-os.yaml"})
+    failures: list[str] = []
+
+    gate.check_staged_closure(failures)
+
+    assert failures
+    assert "Stage regenerated artifacts too" in failures[0]
+    assert "manifests/hook-quality.yaml" in failures[0]
+    assert ".claude/settings.json" in failures[0]
+    assert ".codex/hooks.json" in failures[0]
 
 
 def test_codex_governed_edit_blocks_when_file_is_locked(scratch_project: Path) -> None:
