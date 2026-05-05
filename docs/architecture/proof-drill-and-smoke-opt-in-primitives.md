@@ -91,14 +91,15 @@ The repo already contains automated tests that support this doctrine:
   text selectors such as `provider`, `docker`, `headless`, and `codex`.
 - `scripts/cos-instance-init --doctor --smoke --json` exposes registered proof
   drills for the selected instance profile without executing opt-in drills.
+- `scripts/proof-drill-evidence-record` updates `docs/reports/proof-drill-evidence-latest.json`
+  after a proof run.
 - `scripts/acc_pipeline.py` consumes `docs/reports/proof-drill-evidence-latest.json`
   through the `proof_drill_evidence` adapter and maps successful proof rows to
   ACC `proof_drill:*` capabilities.
 
 ## Remaining implementation slices
 
-- Add a richer proof-drill evidence writer so every proof run updates the JSON
-  evidence report automatically instead of relying on a maintainer to write it.
+- Wire proof-drill scripts to call the evidence writer automatically after successful runs.
 - Let ACC use proof-drill evidence to adjust specific existing doc/runtime claims
   once those claims declare a stable `proof_drill_id`.
 - Add a Claude provider proof entry after the host probe can verify account

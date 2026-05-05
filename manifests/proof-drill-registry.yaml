@@ -333,3 +333,32 @@ entries:
   when_to_run: Tests pass while product claims remain unproven, stale, or too structural.
   proves: The repaired contract now targets behavior instead of greenwashing a claim.
   does_not_prove: Runtime behavior until the repaired automated/manual test is executed.
+- id: claude-provider-host-smoke
+  class: proof-drill
+  scope: os-self
+  primitive_kind: script
+  selector: scripts/cos-worker-run-once
+  command: COS_CLAUDE_EXEC_MODEL=<supported-model> scripts/cos-worker-run-once --project-dir
+    <temp-project> --worker-id host-claude-proof --allow-provider-call --json
+  default_lane: false
+  consumer_projection: maintainer-only
+  selectors:
+  - provider
+  - claude
+  - host-cli-bridge
+  cost_class: provider_cost
+  requires_credentials:
+  - claude account-session
+  destructive_scope: temp_artifacts
+  docs:
+  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  automated_checks:
+  - tests/unit/test_service_control_plane_local_queue.py
+  - tests/unit/test_cos_auth_probe.py
+  when_to_run: Explicit account-backed host Claude provider smoke through the service-control-plane
+    adapter.
+  proves: Host Claude provider execution can be invoked through the service-control-plane
+    adapter when explicitly opted in and pinned to a supported model.
+  does_not_prove: Container credential inheritance, remote ingress, VM, Kubernetes,
+    or non-host Claude execution.

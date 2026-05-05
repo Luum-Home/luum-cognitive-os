@@ -229,3 +229,61 @@ def test_codex_provider_adapter_honors_explicit_model_override(tmp_path: Path, m
         "gpt-5.4",
         "<prompt>",
     ]
+
+
+def test_claude_provider_adapter_honors_explicit_model_override(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    scp.submit_task(
+        tmp_path,
+        kind="provider",
+        command=None,
+        executor_id="claude-cli-host",
+        prompt="Reply exactly: COS_CLAUDE_PROVIDER_SMOKE_OK",
+        task_id="claude-provider-model",
+    )
+
+    def fake_probe(provider: str, mode: str) -> scp.cos_auth_probe.AuthProbeResult:
+        assert provider == "claude"
+        assert mode == "account-session"
+        return scp.cos_auth_probe.AuthProbeResult(
+            provider="claude",
+            mode="account-session",
+            status=scp.cos_auth_probe.READY,
+            credential_store_access="forbidden",
+            command="claude auth status",
+            reason="ready",
+            cost_mode="subscription_account",
+            allowed_runtime=["host"],
+        )
+
+    def fake_run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        assert Path(command[0]).name == "claude"
+        assert command[1:-1] == [
+            "-p",
+            "--output-format",
+            "json",
+            "--tools",
+            "",
+            "--model",
+            "sonnet",
+        ]
+        return subprocess.CompletedProcess(command, 0, stdout='{"result":"COS_CLAUDE_PROVIDER_SMOKE_OK"}', stderr="")
+
+    monkeypatch.setenv("COS_CLAUDE_EXEC_MODEL", "sonnet")
+    monkeypatch.setattr(scp.cos_auth_probe, "probe", fake_probe)
+    monkeypatch.setattr(scp.subprocess, "run", fake_run)
+
+    result = scp.worker_run_once(tmp_path, worker_id="claude-provider-worker", allow_provider_call=True)
+
+    assert result["status"] == "completed"
+    assert result["result"]["provider_calls"] == 1
+    assert result["result"]["command_shape"] == [
+        "claude",
+        "-p",
+        "--output-format",
+        "json",
+        "--tools",
+        "",
+        "--model",
+        "sonnet",
+        "<prompt>",
+    ]
