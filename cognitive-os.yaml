@@ -1073,6 +1073,20 @@ harness:
       event: PreCompact
       scope: os-only
 
+
+    # ── SessionStart (Paperclip integration, ADR-043) ────────────────────────
+    paperclip-squad-sync:
+      script: hooks/paperclip-squad-sync.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    paperclip-task-sync:
+      script: hooks/paperclip-task-sync.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
     # ── PreToolUse — all tools ────────────────────────────────────────────────
     protected-config-write-guard:
       script: hooks/protected-config-write-guard.sh
@@ -1657,6 +1671,29 @@ harness:
       async: true
       scope: os-only
 
+
+    # ── PostToolUse — Agent (Paperclip integration, ADR-043) ─────────────────
+    paperclip-sdd-sync:
+      script: hooks/paperclip-sdd-sync.sh
+      event: PostToolUse
+      matcher: Agent
+      async: true
+      scope: os-only
+
+    paperclip-agent-status:
+      script: hooks/paperclip-agent-status.sh
+      event: PostToolUse
+      matcher: Agent
+      async: true
+      scope: os-only
+
+    paperclip-cost-stream:
+      script: hooks/paperclip-cost-stream.sh
+      event: PostToolUse
+      matcher: Agent
+      async: true
+      scope: os-only
+
     # ── Stop ──────────────────────────────────────────────────────────────────
     session-summary-reminder:
       script: hooks/session-summary-reminder.sh
@@ -1719,6 +1756,14 @@ harness:
     session-end-reap:
       script: hooks/session-end-reap.sh
       event: Stop
+      scope: os-only
+
+
+    # ── Stop (Paperclip integration, ADR-043) ────────────────────────────────
+    paperclip-sync:
+      script: hooks/paperclip-sync.sh
+      event: Stop
+      async: true
       scope: os-only
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────
