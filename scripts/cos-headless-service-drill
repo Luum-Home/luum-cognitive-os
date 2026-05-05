@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# PURPOSE: Opt-in headless Docker service drill for COS local-command runtime and provider auth boundaries.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+COMPOSE_FILE="$ROOT/docker/cos-worker/docker-compose.yml"
+KEEP_WORKSPACE=0
+JSON=0
+RUN_PROVIDER_SMOKE="${COS_RUN_PROVIDER_SMOKE:-0}"
+WORKSPACE=""
+
+usage() {
+  cat <<'USAGE'
+Usage: scripts/cos-headless-service-drill [--json] [--keep-workspace] [--workspace PATH]
+
+Runs an opt-in headless COS Docker proof:
+  1. Copies the current committed repo snapshot to a disposable workspace.
+  2. Boots docker/cos-worker and runs --self-test.
+  3. Probes host Codex/Claude account-session availability without reading token stores.
+  4. Probes container Codex/Claude account-session availability.
+  5. Submits and executes a local-command task inside the container.
+  6. Optionally runs a host Codex provider smoke only when COS_RUN_PROVIDER_SMOKE=1.
+
+This drill does not mount host CLI credential stores into Docker and does not
+make provider calls unless COS_RUN_PROVIDER_SMOKE=1 is explicit.
+USAGE
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --json) JSON=1 ;;
+    --keep-workspace) KEEP_WORKSPACE=1 ;;
+    --workspace) shift; WORKSPACE="${1:-}" ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "unknown argument: $1" >&2; usage >&2; exit 2 ;;
+  esac
+  shift
+done
+
+command -v docker >/dev/null 2>&1 || { echo "docker not found" >&2; exit 3; }
+docker compose version >/dev/null 2>&1 || { echo "docker compose not available" >&2; exit 3; }
+
+git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null
+HEAD_SHA="$(git -C "$ROOT" rev-parse --short HEAD)"
+if [ -z "$WORKSPACE" ]; then
+  WORKSPACE="$(mktemp -d /tmp/cos-headless-service.XXXXXX)"
+  git -C "$ROOT" archive HEAD | tar -x -C "$WORKSPACE"
+else
+  mkdir -p "$WORKSPACE"
+fi
+
+cleanup() {
+  if [ "$KEEP_WORKSPACE" != "1" ] && [ -n "${WORKSPACE:-}" ] && [ -d "$WORKSPACE" ]; then
+    rm -rf "$WORKSPACE"
+  fi
+}
+trap cleanup EXIT
+
+run_capture() {
+  local name="$1"
+  shift
+  local out status
+  set +e
+  out="$("$@" 2>&1)"
+  status=$?
+  set -e
+  printf '%s\n' "$out" > "$WORKSPACE/.${name}.out"
+  printf '%s' "$status" > "$WORKSPACE/.${name}.status"
+}
+
+run_json_capture() {
+  local name="$1"
+  shift
+  run_capture "$name" "$@"
+}
+
+mkdir -p "$WORKSPACE/.cognitive-os/drills"
+
+run_capture docker_self_test env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker --self-test
+run_json_capture host_codex_probe "$ROOT/scripts/cos-auth-probe" --provider codex --mode account-session --json
+run_json_capture host_claude_probe "$ROOT/scripts/cos-auth-probe" --provider claude --mode account-session --json
+run_json_capture container_codex_probe env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-auth-probe --provider codex --mode account-session --json
+run_json_capture container_claude_probe env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-auth-probe --provider claude --mode account-session --json
+run_json_capture submit env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-task-submit --kind local-command --task-id task-headless-service-drill --command 'printf service-ok > result.txt' --json
+run_json_capture worker env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-worker-run-once --worker-id docker-headless-drill --json
+run_json_capture drain env COS_WORKSPACE="$WORKSPACE" docker compose -f "$COMPOSE_FILE" run --rm cos-worker scripts/cos-queue-drain --json
+
+PROVIDER_SMOKE_STATUS="skipped"
+if [ "$RUN_PROVIDER_SMOKE" = "1" ]; then
+  run_json_capture provider_submit "$ROOT/scripts/cos-task-submit" --project-dir "$WORKSPACE" --kind provider --executor codex-cli-host --task-id task-headless-codex-provider-drill --prompt 'Reply exactly: COS_PROVIDER_SMOKE_OK' --json
+  run_json_capture provider_worker "$ROOT/scripts/cos-worker-run-once" --project-dir "$WORKSPACE" --worker-id host-codex-drill --allow-provider-call --json
+  run_json_capture provider_drain "$ROOT/scripts/cos-queue-drain" --project-dir "$WORKSPACE" --json
+  PROVIDER_SMOKE_STATUS="ran"
+fi
+
+python3 - <<'PY' "$WORKSPACE" "$HEAD_SHA" "$PROVIDER_SMOKE_STATUS" "$JSON" "$KEEP_WORKSPACE"
+from __future__ import annotations
+import json
+import sys
+from pathlib import Path
+
+workspace = Path(sys.argv[1])
+head_sha = sys.argv[2]
+provider_smoke_status = sys.argv[3]
+json_output = sys.argv[4] == "1"
+keep_workspace = sys.argv[5] == "1"
+
+def read(name: str) -> dict:
+    raw = (workspace / f".{name}.out").read_text(errors="replace")
+    status = int((workspace / f".{name}.status").read_text())
+    json_line = None
+    for line in raw.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("{") and stripped.endswith("}"):
+            json_line = stripped
+    parsed = None
+    if json_line:
+        try:
+            parsed = json.loads(json_line)
+        except json.JSONDecodeError:
+            parsed = None
+    return {"exit_code": status, "raw": raw.strip(), "json": parsed}
+
+names = [
+    "docker_self_test",
+    "host_codex_probe",
+    "host_claude_probe",
+    "container_codex_probe",
+    "container_claude_probe",
+    "submit",
+    "worker",
+    "drain",
+]
+if provider_smoke_status == "ran":
+    names += ["provider_submit", "provider_worker", "provider_drain"]
+results = {name: read(name) for name in names}
+worker_json = results["worker"].get("json") or {}
+drain_json = results["drain"].get("json") or {}
+summary = {
+    "ok": results["docker_self_test"]["exit_code"] == 0
+    and results["submit"]["exit_code"] == 0
+    and results["worker"]["exit_code"] == 0
+    and worker_json.get("status") == "completed"
+    and (drain_json.get("counts") or {}).get("completed") == 1,
+    "head_sha": head_sha,
+    "workspace": str(workspace) if keep_workspace else "deleted-on-exit",
+    "provider_smoke": provider_smoke_status,
+    "host_codex_status": ((results["host_codex_probe"].get("json") or {}).get("status")),
+    "host_claude_status": ((results["host_claude_probe"].get("json") or {}).get("status")),
+    "container_codex_status": ((results["container_codex_probe"].get("json") or {}).get("status")),
+    "container_claude_status": ((results["container_claude_probe"].get("json") or {}).get("status")),
+    "local_task_status": worker_json.get("status"),
+    "artifact_dir": (worker_json.get("result") or {}).get("artifact_dir"),
+    "result_workspace": (worker_json.get("result") or {}).get("workspace"),
+    "results": results,
+}
+if json_output:
+    print(json.dumps(summary, sort_keys=True))
+else:
+    print(f"ok={summary['ok']}")
+    print(f"head_sha={head_sha}")
+    print(f"host_codex_status={summary['host_codex_status']}")
+    print(f"host_claude_status={summary['host_claude_status']}")
+    print(f"container_codex_status={summary['container_codex_status']}")
+    print(f"container_claude_status={summary['container_claude_status']}")
+    print(f"local_task_status={summary['local_task_status']}")
+    print(f"artifact_dir={summary['artifact_dir']}")
+    print(f"workspace={summary['workspace']}")
+raise SystemExit(0 if summary["ok"] else 1)
+PY
