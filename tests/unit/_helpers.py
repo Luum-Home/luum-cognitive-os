@@ -66,7 +66,7 @@ skip_when_valkey_running = pytest.mark.skipif(
 )
 
 #: Mark a test for a feature that is not yet implemented.
-requires_feature = pytest.mark.skip(reason="Feature not yet implemented")
+requires_feature = pytest.mark.xfail(reason="Feature not yet implemented", strict=True)
 
 
 # ---------------------------------------------------------------------------
