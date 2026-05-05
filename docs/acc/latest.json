@@ -77,7 +77,7 @@
         "aspirational": 38,
         "coverage_pct": 54.3,
         "dormant": 160,
-        "generated_at": "2026-05-05T12:33:33Z",
+        "generated_at": "2026-05-05T12:41:54Z",
         "mapped": 268,
         "metadata": 56,
         "on_demand": 287,
@@ -104,7 +104,7 @@
       "source": "docs_execution",
       "status": "ok",
       "summary": {
-        "items": 2656,
+        "items": 2658,
         "json": "<repo-root>/docs/reports/docs-execution-latest.json",
         "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
@@ -128,7 +128,7 @@
             "planned": 1
           },
           "docs/README.md": {
-            "done_weak_proof": 13,
+            "done_weak_proof": 14,
             "planned": 15,
             "proposed": 6
           },
@@ -1366,7 +1366,7 @@
           },
           "docs/business/master-plan-checklist.md": {
             "done_weak_proof": 67,
-            "done_with_proof": 70,
+            "done_with_proof": 71,
             "planned": 10
           },
           "docs/business/master-plan-execution-requirements.md": {
@@ -1780,10 +1780,10 @@
             "planned": 1
           }
         },
-        "items": 2656,
+        "items": 2658,
         "statuses": {
-          "done_weak_proof": 1100,
-          "done_with_proof": 219,
+          "done_weak_proof": 1101,
+          "done_with_proof": 220,
           "planned": 1045,
           "proposed": 292
         }
@@ -1958,13 +1958,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=230 test-mentioned-files=106; actionable_gaps=0",
+            "evidence": "mcp-mentioned-files=231 test-mentioned-files=106; actionable_gaps=0",
             "family": "mcp_tools",
             "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 124,
+            "partial_signal": 125,
             "proven_signal": 106,
             "severity": "low",
-            "total": 230
+            "total": 231
           },
           {
             "aspirational_signal": 0,
@@ -1998,13 +1998,13 @@
           },
           {
             "aspirational_signal": 0,
-            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=219 mapped_claims=412",
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=220 mapped_claims=412",
             "family": "docs_adrs",
             "next_action": "no hard docs gaps; improve weak proof opportunistically",
-            "partial_signal": 2437,
-            "proven_signal": 631,
+            "partial_signal": 2438,
+            "proven_signal": 632,
             "severity": "low",
-            "total": 3068
+            "total": 3070
           }
         ],
         "hook_latency": {
@@ -2014,7 +2014,7 @@
           "p95_ms": 1622
         },
         "overall_risk": "high",
-        "timestamp": "2026-05-05T12:34:42.453309+00:00"
+        "timestamp": "2026-05-05T12:43:17.161206+00:00"
       }
     },
     "projection_profiles": {
@@ -44435,7 +44435,7 @@
     },
     "warnings": []
   },
-  "generated_at": "2026-05-05T12:35:02Z",
+  "generated_at": "2026-05-05T12:43:36Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
@@ -44484,23 +44484,24 @@
     "augment-code": {
       "display_name": "Augment / Auggie",
       "limitations": [
-        "Structural Augment project files proof only; no account-backed Augment runtime invocation in automated tests.",
+        "Structural Augment/Auggie CLI flag input files proof only; no account-backed Augment runtime invocation in automated tests.",
         "No native COS lifecycle hook parity is claimed.",
-        "Permissions and MCP are placeholders until operator configures concrete tools."
+        "Files require operator invocation with --rules and --mcp-config; no user-global settings are written."
       ],
-      "next_action": "Add optional Augment/Auggie runtime smoke when credentials are available.",
+      "next_action": "Add optional Augment/Auggie runtime smoke using auggie --rules .augment/rules/cognitive-os.md --mcp-config .augment/mcp.json when credentials are available.",
       "projected_surfaces": [
-        "rules",
-        "mcp-placeholder",
-        "permissions-placeholder",
+        "rules-file-for-cli-flag",
+        "mcp-config-for-cli-flag",
+        "operator-invocation-guidance",
         "rules-reference",
         "skills-reference"
       ],
-      "projection_mode": "augment-rules-settings",
+      "projection_mode": "augment-cli-flags-rules-mcp",
       "proof_status": "ok",
       "settings_paths": [
         ".augment/rules/cognitive-os.md",
-        ".augment/settings.json"
+        ".augment/mcp.json",
+        ".augment/README.md"
       ],
       "status": "implemented"
     },
@@ -44690,20 +44691,18 @@
       "limitations": [
         "Structural Goose project guidance proof only; no account-backed Goose runtime invocation in automated tests.",
         "No native COS lifecycle hook parity is claimed.",
-        "MCP/server setup remains operator-controlled."
+        "MCP/server setup remains operator-controlled through Goose CLI/config; COS does not generate a non-official project config file."
       ],
-      "next_action": "Add optional Goose CLI runtime smoke when provider credentials are available.",
+      "next_action": "Add optional Goose CLI runtime smoke when provider credentials are available; add MCP only through official Goose extension/config path.",
       "projected_surfaces": [
         "project-instructions",
-        "mcp-placeholder",
         "rules-reference",
         "skills-reference"
       ],
-      "projection_mode": "goosehints-config",
+      "projection_mode": "goosehints-project-context",
       "proof_status": "ok",
       "settings_paths": [
-        ".goosehints",
-        ".goose/config.json"
+        ".goosehints"
       ],
       "status": "implemented"
     },
@@ -44735,11 +44734,11 @@
         "No native COS lifecycle hook parity is claimed.",
         "Permission settings are placeholders and do not grant tools by default."
       ],
-      "next_action": "Add optional Kilo runtime smoke and verify current project config syntax.",
+      "next_action": "Add optional Kilo runtime smoke and verify current project config syntax; keep MCP placeholder inside .kilo/kilo.jsonc per official docs.",
       "projected_surfaces": [
         "project-instructions",
         "rules",
-        "mcp-placeholder",
+        "mcp-placeholder-in-kilo-jsonc",
         "settings-placeholder",
         "rules-reference",
         "skills-reference"
@@ -44749,7 +44748,6 @@
       "settings_paths": [
         "AGENTS.md",
         ".kilocode/rules/cognitive-os.md",
-        ".kilocode/mcp.json",
         ".kilo/kilo.jsonc"
       ],
       "status": "implemented"
