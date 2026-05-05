@@ -51,6 +51,16 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/architecture/startup-circuit-breaker-plan.md",  # ADR-101 design companion
     "docs/architecture/boring-reliability-control-plane.md",  # control-plane architecture, not an active plan
     "docs/architecture/dx-cloud-flow-bootstrap-plan.md",  # architecture bootstrap plan linked from docs index
+    "docs/architecture/harness-implementation-roadmap.md",  # architecture roadmap for harness rollout
+    "docs/architecture/multi-ide-harness-implementation-plan.md",  # architecture plan linked from harness ADR batch
+    "docs/architecture/primitive-duplication-audit-implementation-plan.md",  # ADR-149 implementation companion
+    "docs/architecture/primitive-readiness-continuity-plan.md",  # primitive readiness architecture companion
+    "docs/architecture/service-control-plane-implementation-plan.md",  # service-control-plane architecture companion
+    "docs/architecture/service-control-plane-research-2026-05-04.md",  # research artifact, not active plan
+    "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # ADR title includes control-plane, not active plan
+    "docs/manual-tests/remote-control-plane-boundary.md",  # manual-test artifact
+    "docs/manual-tests/service-control-plane-proof-drills.md",  # manual-test artifact
+    "docs/reports/remote-control-plane-alternatives-2026-05-05.md",  # report artifact
     "docs/architecture/expansion-hardening-plan.md",  # expansion-hardening architecture plan linked from ADR work
     "docs/architecture/plans/",  # runtime contract plan docs are linked from product entrypoints
     "docs/reports/pending-plans-audit-2026-04-30.md",  # audit report, not active plan
@@ -121,6 +131,7 @@ def test_no_plan_files_outside_canonical_root() -> None:
         if rel_parts[:2] == (".claude", "worktrees"):
             continue
         if rel_parts[:2] in {
+            (".cognitive-os", "sessions"),
             (".cognitive-os", "generated"),
             (".cognitive-os", "runtime"),
             (".cognitive-os", "snapshots"),

@@ -118,6 +118,33 @@ def test_synthetic_minimal_manifest_loads(tmp_path):
     assert manifest.profile("default").tools_required == ["jq"]
 
 
+def test_tool_structured_install_metadata_loads(tmp_path):
+    payload = _minimal_manifest()
+    payload["tools"][0].update(
+        {
+            "category": "cli",
+            "profiles": ["core", "standard", "full"],
+            "scope": "system",
+            "syncable": "no",
+            "auth_bound": False,
+            "install": {
+                "macos": {"manager": "brew", "command": "brew install jq"},
+                "linux": {"manager": "apt", "command": "sudo apt-get install -y jq"},
+                "windows_wsl": {"manager": "apt", "command": "sudo apt-get install -y jq"},
+            },
+        }
+    )
+
+    p = _write(tmp_path, payload)
+    tool = load_manifest(p).tool("jq")
+
+    assert tool is not None
+    assert tool.profiles == ["core", "standard", "full"]
+    assert tool.install["macos"]["manager"] == "brew"
+    assert tool.scope == "system"
+    assert tool.syncable == "no"
+
+
 def test_default_path_honors_env_override(tmp_path, monkeypatch):
     p = _write(tmp_path, _minimal_manifest())
     monkeypatch.setenv("COS_MANIFEST_PATH", str(p))
@@ -248,6 +275,22 @@ def test_tool_install_must_be_str_str_mapping(tmp_path):
     payload["tools"][0]["install"] = ["not", "a", "mapping"]
     p = _write(tmp_path, payload)
     with pytest.raises(ManifestError, match="install must be a mapping"):
+        load_manifest(p)
+
+
+def test_tool_structured_install_rejects_unknown_fields(tmp_path):
+    payload = _minimal_manifest()
+    payload["tools"][0]["install"] = {"macos": {"manager": "brew", "script": "brew install jq"}}
+    p = _write(tmp_path, payload)
+    with pytest.raises(ManifestError, match="install must be a mapping"):
+        load_manifest(p)
+
+
+def test_tool_invalid_syncable_raises(tmp_path):
+    payload = _minimal_manifest()
+    payload["tools"][0]["syncable"] = "sometimes"
+    p = _write(tmp_path, payload)
+    with pytest.raises(ManifestError, match="syncable"):
         load_manifest(p)
 
 

@@ -60,6 +60,10 @@ python3 -m pytest tests/chaos/test_multi_ide_swarm_safety.py -q
 
 The first local, laptop-safe slice includes:
 
+- `manifests/multi-ide-swarm-scenarios.yaml` and
+  `tests/contracts/test_multi_ide_swarm_scenarios.py` for the ADR-118-S1
+  machine-readable scenario contract.
+
 - `scripts/derived_artifact_gate.py` for registry/projection closure.
 - `lib/session_bus.py` and `scripts/session_event_bus.py` for append-only coordination events.
 - `lib/task_claim_ledger.py` and `scripts/claim_task.py` for atomic task claims.
@@ -108,3 +112,11 @@ Canonical task id priority is explicit task id fields first, then a stable hash
 of normalized prompt/description, then the native tool-use id as last-resort
 correlation. This makes duplicate semantic tasks collide even when different
 IDEs generate different native tool ids.
+
+## 2026-05-05 reconciliation fixture update
+
+ADR-118-S4 adds `lib/task_reconciliation.py` and scratch-repo tests that prove
+a pending task in one session can be reconciled as `completed-by-watermark` or
+`done-by-other-session` when another session writes the completion watermark.
+The report names both the pending session and the completing session, avoiding
+double implementation.

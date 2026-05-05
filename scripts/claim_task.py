@@ -6,7 +6,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
 
@@ -15,17 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from lib.task_claim_ledger import acquire_claim, list_claims, release_claim  # noqa: E402
-
-
-def project_dir(args: argparse.Namespace) -> Path:
-    value = (
-        args.project_dir
-        or os.environ.get("COGNITIVE_OS_PROJECT_DIR")
-        or os.environ.get("CODEX_PROJECT_DIR")
-        or os.environ.get("CLAUDE_PROJECT_DIR")
-        or os.getcwd()
-    )
-    return Path(value).resolve()
+from lib.project_paths import project_dir_from_args as project_dir
 
 
 def emit(payload: dict) -> None:

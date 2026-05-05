@@ -14,12 +14,18 @@ from __future__ import annotations
 import argparse
 import fnmatch
 import json
+import sys
 import subprocess
 import tempfile
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_json, write_json
 
 import yaml
 
@@ -32,6 +38,9 @@ DEFAULT_WEIGHTS = {
     "rule": 2,
     "doc_claim": 2,
     "primitive_family": 3,
+    "proof_drill": 2,
+    "proof_claim": 3,
+    "primitive_fitness": 2,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -86,15 +95,6 @@ class Finding:
 
 def utc_now() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-
-
-def read_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
-def write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
 def scrub_project_paths(value: Any, root: Path) -> Any:
@@ -291,6 +291,7 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("docs_execution", ["python3", "scripts/docs_execution_audit.py", "--project-dir", "."]),
         ("primitive_duplication", ["python3", "scripts/primitive_duplication_audit.py", "--project-root", "."]),
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
+        ("primitive_fitness_ledger", ["python3", "scripts/primitive_fitness_ledger.py", "--project-dir", "."]),
     ]
     if include_slow:
         commands.append(("primitive_coverage", ["python3", "scripts/primitive_coverage.py", "--project-dir", ".", "--adapter", "cognitive-os", "--format", "json"]))
@@ -606,6 +607,216 @@ def apply_fail_new_gate(payload: dict[str, Any], baseline: dict[str, Any], stric
         payload["gate"]["status"] = "block"
         payload["gate"].setdefault("blocks", []).append(f"new_debt:{len(new_debt)}")
 
+
+
+def load_proof_drill_claim_map(root: Path, evidence_by_id: dict[str, dict[str, Any]]) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "manifests" / "proof-drill-claim-map.yaml"
+    if not path.exists():
+        return AdapterStatus("unverified", "manifests/proof-drill-claim-map.yaml", error="missing proof drill claim map"), [], []
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    claims = data.get("claims", []) if isinstance(data, dict) else []
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    status_counts: dict[str, int] = {}
+    for claim in claims:
+        claim_id = str(claim.get("id", ""))
+        proof_id = str(claim.get("proof_drill_id", ""))
+        evidence_row = evidence_by_id.get(proof_id)
+        proof_status = str((evidence_row or {}).get("status", "unverified"))
+        status_counts[proof_status] = status_counts.get(proof_status, 0) + 1
+        if proof_status == "passed":
+            mapping = str(claim.get("status_when_passed", "aligned"))
+        elif proof_status == "failed":
+            mapping = "stale"
+        else:
+            mapping = "unverified"
+        evidence = [
+            f"proof_drill_id:{proof_id}",
+            f"proof_drill_status:{proof_status}",
+            f"claim_scope:{claim.get('scope', '')}",
+        ]
+        evidence.extend(str(item) for item in claim.get("docs", []) or [])
+        if evidence_row:
+            evidence.extend(str(item) for item in evidence_row.get("evidence_artifacts", []) or [])
+        capabilities.append(Capability(
+            id=f"proof_claim:{claim_id}",
+            kind="proof_claim",
+            source={"path": str(path.relative_to(root)), "proof_drill_id": proof_id},
+            risk=str(claim.get("risk", "medium")),
+            signature={"scope": claim.get("scope"), "proof_drill_id": proof_id, "proof_status": proof_status},
+            represented_by=[{"kind": "proof_claim", "id": claim_id, "source": proof_id, "role": "claim-to-proof"}],
+            mapping_status=mapping if mapping in MAPPING_STATUSES else "unverified",
+            confidence=0.94 if mapping == "aligned" else 0.72,
+            consumer_accessibility=str(claim.get("consumer_accessibility", "so-local-only")),
+            lifecycle_status=str(claim.get("lifecycle_status", "real")),
+            evidence=evidence[:12],
+            weight=int(claim.get("weight", DEFAULT_WEIGHTS["proof_claim"])),
+        ))
+        if mapping == "stale":
+            findings.append(Finding(
+                f"proof_claim:{claim_id}",
+                "high",
+                "stale",
+                "Proof-backed claim has failed evidence",
+                evidence[:8],
+                "repair the runtime or downgrade the claim",
+            ))
+        elif mapping == "unverified":
+            findings.append(Finding(
+                f"proof_claim:{claim_id}",
+                "medium",
+                "unverified",
+                "Proof-backed claim lacks passing evidence",
+                evidence[:8],
+                "run or record the mapped proof drill",
+            ))
+    return AdapterStatus(
+        "ok",
+        str(path.relative_to(root)),
+        summary={"claims": len(claims), "proof_status_counts": dict(sorted(status_counts.items()))},
+    ), capabilities, findings
+
+
+def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "proof-drill-evidence-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", "docs/reports/proof-drill-evidence-latest.json", error="missing proof drill evidence report"), [], []
+    data = read_json(path)
+    rows = data.get("rows", []) if isinstance(data, dict) else []
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    status_counts: dict[str, int] = {}
+    evidence_by_id: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        proof_id = str(row.get("id", ""))
+        evidence_by_id[proof_id] = row
+        status = str(row.get("status", "unverified"))
+        status_counts[status] = status_counts.get(status, 0) + 1
+        mapping = "aligned" if status == "passed" else "stale" if status == "failed" else "unverified"
+        evidence = [
+            f"proof_drill_status:{status}",
+            f"command:{row.get('command', '')}",
+            f"source_report:{data.get('source_report', '')}",
+        ]
+        evidence.extend(str(item) for item in row.get("evidence_artifacts", []))
+        capabilities.append(Capability(
+            id=f"proof_drill:{proof_id}",
+            kind="proof_drill",
+            source={"path": data.get("source_report", str(path.relative_to(root))), "proof_drill_id": proof_id},
+            risk="medium" if "provider" not in str(row.get("command", "")).lower() else "high",
+            signature={"scope": row.get("scope"), "exit_code": row.get("exit_code"), "status": status},
+            represented_by=[{"kind": "proof_drill", "id": proof_id, "source": row.get("command", ""), "role": "evidence"}],
+            mapping_status=mapping,
+            confidence=0.92 if mapping == "aligned" else 0.7,
+            consumer_accessibility="so-local-only" if row.get("scope") == "os-self" else "projectable-needs-driver",
+            lifecycle_status="real",
+            evidence=evidence[:12],
+            weight=DEFAULT_WEIGHTS["proof_drill"],
+        ))
+        if mapping == "stale":
+            findings.append(Finding(
+                f"proof_drill:{proof_id}",
+                "high",
+                "stale",
+                "Proof drill evidence recorded a failed run",
+                evidence[:8],
+                "repair the runtime or downgrade the claim",
+            ))
+    claim_status, claim_capabilities, claim_findings = load_proof_drill_claim_map(root, evidence_by_id)
+    capabilities.extend(claim_capabilities)
+    findings.extend(claim_findings)
+    adapter_summary = {"rows": len(rows), "status_counts": dict(sorted(status_counts.items()))}
+    if claim_status.status == "ok":
+        adapter_summary["claim_map"] = claim_status.summary
+    else:
+        adapter_summary["claim_map_status"] = claim_status.status
+        if claim_status.error:
+            adapter_summary["claim_map_error"] = claim_status.error
+    return AdapterStatus(
+        "ok",
+        str(path.relative_to(root)),
+        summary=adapter_summary,
+    ), capabilities, findings
+
+
+def load_primitive_fitness_ledger(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "primitive-fitness-ledger-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", "docs/reports/primitive-fitness-ledger-latest.json", error="missing primitive fitness ledger"), [], []
+    data = read_json(path)
+    rows = data.get("items", []) if isinstance(data, dict) else []
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    status_counts: dict[str, int] = {}
+    family_counts: dict[str, int] = {}
+    for row in rows:
+        primitive_id = str(row.get("primitive_id", ""))
+        if not primitive_id:
+            continue
+        mapping = str(row.get("mapping_status") or "unverified")
+        if mapping not in MAPPING_STATUSES:
+            mapping = "unverified"
+        family = str(row.get("family") or "other")
+        verdict = str(row.get("verdict") or "needs_evidence")
+        status_counts[mapping] = status_counts.get(mapping, 0) + 1
+        family_counts[family] = family_counts.get(family, 0) + 1
+        evidence = [
+            f"fitness_verdict:{verdict}",
+            f"fitness_delta:{row.get('delta')}",
+            f"source_report:{row.get('source_report', '')}",
+        ]
+        evidence.extend(f"missing_signal:{item}" for item in row.get("missing_signals", [])[:4])
+        evidence.extend(f"safety_regression:{item}" for item in row.get("safety_regressions", [])[:4])
+        capabilities.append(Capability(
+            id=f"primitive_fitness:{primitive_id}",
+            kind="primitive_fitness",
+            source={"path": row.get("source_report", ""), "primitive_id": primitive_id, "family": family},
+            risk="high" if row.get("safety_regressions") else "medium",
+            signature={
+                "family": family,
+                "verdict": verdict,
+                "delta": row.get("delta"),
+                "candidate_score": row.get("candidate_score"),
+                "baseline_score": row.get("baseline_score"),
+            },
+            represented_by=[{"kind": "primitive_fitness", "id": primitive_id, "source": row.get("source_report", ""), "role": "fitness-evidence"}],
+            mapping_status=mapping,
+            confidence=0.9 if mapping == "aligned" else 0.76 if mapping in {"partial", "stale"} else 0.62,
+            consumer_accessibility="so-local-only",
+            lifecycle_status="real" if verdict == "promote" else "dormant",
+            evidence=evidence[:12],
+            weight=DEFAULT_WEIGHTS["primitive_fitness"],
+        ))
+        if verdict == "reject":
+            findings.append(Finding(
+                f"primitive_fitness:{primitive_id}",
+                "high",
+                "stale",
+                "Primitive fitness report rejected the candidate",
+                evidence[:8],
+                "repair the candidate or keep the baseline primitive",
+            ))
+        elif verdict == "needs_evidence":
+            findings.append(Finding(
+                f"primitive_fitness:{primitive_id}",
+                "medium",
+                "unverified",
+                "Primitive fitness report lacks enough evidence for promotion",
+                evidence[:8],
+                "collect core runtime metrics and rerun primitive fitness",
+            ))
+    summary = data.get("summary", {}) if isinstance(data.get("summary"), dict) else {}
+    return AdapterStatus(
+        "ok",
+        str(path.relative_to(root)),
+        summary={
+            "reports": len(rows),
+            "families": dict(sorted(family_counts.items())),
+            "mapping_statuses": dict(sorted(status_counts.items())),
+            "verdicts": summary.get("verdicts", {}),
+        },
+    ), capabilities, findings
+
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
@@ -720,6 +931,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"- Capabilities: {len(payload['capabilities'])}",
         f"- Findings: {len(payload['findings'])}",
         f"- Mapping weights: {summary['mapping_weight_by_status']}",
+        f"- Primitive fitness reports: {payload['adapters'].get('primitive_fitness_ledger', {}).get('summary', {}).get('reports', 0)}",
         f"- New debt gate: {payload.get('new_debt', {}).get('status', 'not_evaluated')} ({payload.get('new_debt', {}).get('count', 0)})",
         "",
         "## Adapter Status",
@@ -802,6 +1014,7 @@ def render_compact_markdown(payload: dict[str, Any]) -> str:
         f"Capabilities: {compact['capability_count']}",
         f"Findings: {compact['finding_count']}",
         f"New debt gate: {compact['new_debt'].get('status', 'not_evaluated')} ({compact['new_debt'].get('count', 0)})",
+        f"Primitive fitness reports: {payload['adapters'].get('primitive_fitness_ledger', {}).get('summary', {}).get('reports', 0)}",
         "",
         "## Warnings",
         "",
@@ -867,6 +1080,12 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         shell_ci_manifest,
     )
     readiness_adapters, capabilities, findings = load_readiness_capabilities(root, projected, availability)
+    proof_status, proof_capabilities, proof_findings = load_proof_drill_evidence(root)
+    capabilities.extend(proof_capabilities)
+    findings.extend(proof_findings)
+    fitness_status, fitness_capabilities, fitness_findings = load_primitive_fitness_ledger(root)
+    capabilities.extend(fitness_capabilities)
+    findings.extend(fitness_findings)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
     adapters = {
@@ -876,6 +1095,8 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "consumer_availability": availability_status,
         "shell_ci_projection": shell_ci_status,
         "consumer_projection": projection_status,
+        "proof_drill_evidence": proof_status,
+        "primitive_fitness_ledger": fitness_status,
         **readiness_adapters,
         **existing_adapters,
     }

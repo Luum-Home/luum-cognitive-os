@@ -5,8 +5,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import load_json_or_empty as load_json
 
 
 @dataclass(frozen=True)
@@ -16,13 +22,6 @@ class BacklogItem:
     source: str
     item: str
     reason: str
-
-
-def load_json(path: Path) -> dict:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
 
 
 def build_backlog(row_audit: dict, claim_audit: dict) -> list[BacklogItem]:

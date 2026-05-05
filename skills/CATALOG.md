@@ -24,9 +24,11 @@
 | metrics-calibrator | Analyze KPI distributions, auto-adjust thresholds, propose derived metrics | `/metrics-calibrator` | os-dev |
 | harness-audit | Evaluate harness agentic primitives for relevance, identify retirement candidates | `/harness-audit` | os-dev |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works | `/smoke-test` | os-dev |
+| proof-drill | Select and run opt-in proof drills and smoke checks for SO self-build and consumer-project validation without polluting default lanes | `/proof-drill` | both |
 | test-contract-repair | Repair failing or misleading tests without greenwashing: classify the contract, confirm history, fix runtime when needed, strengthen structural checks into behavioral proof | `/test-contract-repair` | os-dev |
 | detect-patterns | Detect systemic problems: dead metadata, broken chains, phantom entries, structural tests | `/detect-patterns` | os-dev |
 | security-audit | Comprehensive security audit: secrets, permissions, hooks, infrastructure, Docker ports | `/security-audit` | os-dev |
+| security-red-team | Unified security red-team: inventory, threat model, abuse probes, primitive scoring, mitigation backlog | `/security-red-team` | os-dev |
 | pentest-self | Self-penetration testing: validate safety mesh across 6 categories | `/pentest-self` | os-dev |
 | arena | Run competitive benchmarks against AI coding tools | `/arena` | os-dev |
 | simulation-arena | Run scripted scenarios simulating developer workflows, measure safety mesh | `/simulate` | os-dev |
@@ -337,3 +339,10 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **repair-skill** — Drain the skill repair queue and propose regeneration or deprecation for degraded skills
 - **review-output** — Manually trigger review of a specific past sub-agent output or the most recent N outputs. Bypasses sample-rate gate but respects the daily budget cap. Produces review findings in Engram and .cognitive-os/metrics/review-findings.jsonl.
 - **synthesize-skill** — Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates
+- **branch-worktree-closure** — Use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature worktrees and must decide whether to merge, preserve, or remove them safely.
+- **peer-card** — Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
+- **preserved-wip-cleanup** — Archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie session registry entries after all agents stop.
+- **primitive-harvester** — Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.
+- **proof-drill** — Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.
+- **redteam-harness** — Run red-team scenarios against the agent OS to detect false-done, partial-completion, and unwired-constant failure modes per ADR-105/ADR-106.
+- **worktree-triage** — Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.

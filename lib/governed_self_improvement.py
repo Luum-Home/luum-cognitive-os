@@ -31,6 +31,24 @@ class ImprovementSignal:
 
 
 @dataclass(frozen=True)
+class PrimitivePromotionEvaluation:
+    """Comparative evaluation required before promoting a draft primitive."""
+
+    draft_id: str
+    status: str
+    baseline_score: float
+    candidate_score: float
+    delta: float
+    required_delta: float
+    safety_regressions: list[str]
+    evidence_commands: list[str]
+    evaluated_at: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(frozen=True)
 class ImprovementDraft:
     """Draft improvement artifact stored under `.cognitive-os/improvements`."""
 
@@ -103,6 +121,7 @@ def suggest_improvement_signals(
         metrics / "skill-metrics.jsonl"
     )
     sessions = _read_jsonl(metrics / "session-learnings.jsonl")
+    key_learnings = _read_jsonl(metrics / "key-learnings.jsonl")
 
     signals: list[ImprovementSignal] = []
 
@@ -164,6 +183,26 @@ def suggest_improvement_signals(
                     priority="P2",
                 )
             )
+
+    for entry in key_learnings:
+        if entry.get("actionability") != "candidate-improvement":
+            continue
+        text = str(entry.get("text") or "").strip()
+        if not text:
+            continue
+        slug = _slugify(f"codify learning {text}")
+        artifact = str(entry.get("recommended_artifact") or "documentation")
+        signals.append(
+            ImprovementSignal(
+                signal_type="key_learning_candidate",
+                slug=slug,
+                title=f"Codify key learning as `{artifact}`",
+                summary=f"Captured key learning suggests a durable {artifact}: {text}",
+                evidence=[entry],
+                recommended_artifact=artifact,
+                priority="P2",
+            )
+        )
 
     return signals
 
@@ -233,6 +272,7 @@ def create_improvement_draft(project_dir: str | Path, signal: ImprovementSignal)
         skill_path=str(skill_path.relative_to(root)),
         tests_required=[
             "python3 -m pytest tests/unit/test_governed_self_improvement.py -q",
+            "scripts/cos_governed_self_improvement.py evaluate <draft_id> --baseline-score <current> --candidate-score <candidate>",
             "manual approval before promotion",
         ],
     )
@@ -249,6 +289,86 @@ def load_improvement_draft(project_dir: str | Path, draft_id: str) -> Improvemen
     data = json.loads(draft_file.read_text(encoding="utf-8"))
     signal = ImprovementSignal(**data["signal"])
     return ImprovementDraft(signal=signal, **{k: v for k, v in data.items() if k != "signal"})
+
+
+def _draft_dir(project_dir: Path, draft_id: str) -> Path:
+    return project_dir / ".cognitive-os" / "improvements" / "drafts" / draft_id
+
+
+def write_promotion_evaluation(
+    project_dir: str | Path,
+    draft_id: str,
+    *,
+    baseline_score: float,
+    candidate_score: float,
+    required_delta: float = 1.0,
+    safety_regressions: list[str] | None = None,
+    evidence_commands: list[str] | None = None,
+) -> PrimitivePromotionEvaluation:
+    """Write comparative evidence proving a draft primitive beats baseline.
+
+    Scores are normalized to a 0-100 scale by the caller. Promotion requires the
+    candidate to exceed the baseline by ``required_delta`` and to report no
+    safety regressions. This keeps chat-derived or metrics-derived drafts in a
+    proposal state until they have measurable fitness evidence.
+    """
+    root = Path(project_dir)
+    draft = load_improvement_draft(root, draft_id)
+    regressions = [item for item in (safety_regressions or []) if item.strip()]
+    delta = candidate_score - baseline_score
+    status = "passed" if delta >= required_delta and not regressions else "failed"
+    evaluation = PrimitivePromotionEvaluation(
+        draft_id=draft.draft_id,
+        status=status,
+        baseline_score=float(baseline_score),
+        candidate_score=float(candidate_score),
+        delta=float(delta),
+        required_delta=float(required_delta),
+        safety_regressions=regressions,
+        evidence_commands=evidence_commands or [],
+        evaluated_at=_utc_now(),
+    )
+    draft_dir = _draft_dir(root, draft_id)
+    draft_dir.mkdir(parents=True, exist_ok=True)
+    (draft_dir / "promotion-evaluation.json").write_text(
+        json.dumps(evaluation.to_dict(), indent=2, sort_keys=True),
+        encoding="utf-8",
+    )
+    metrics = _metrics_dir(root)
+    metrics.mkdir(parents=True, exist_ok=True)
+    with (metrics / "primitive-promotion-evaluations.jsonl").open(
+        "a", encoding="utf-8"
+    ) as handle:
+        handle.write(json.dumps(evaluation.to_dict(), sort_keys=True) + "\n")
+    return evaluation
+
+
+def load_promotion_evaluation(
+    project_dir: str | Path, draft_id: str
+) -> PrimitivePromotionEvaluation:
+    """Load the comparative promotion evidence for a draft."""
+    root = Path(project_dir)
+    path = _draft_dir(root, draft_id) / "promotion-evaluation.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return PrimitivePromotionEvaluation(**data)
+
+
+def _assert_promotion_evaluation_passes(
+    project_dir: Path, draft_id: str
+) -> PrimitivePromotionEvaluation:
+    try:
+        evaluation = load_promotion_evaluation(project_dir, draft_id)
+    except FileNotFoundError as exc:
+        raise PermissionError(
+            "promotion requires comparative primitive evaluation: "
+            "run `cos_governed_self_improvement.py evaluate` first"
+        ) from exc
+    if evaluation.status != "passed":
+        raise PermissionError(
+            "promotion evaluation failed: candidate_score must beat baseline_score "
+            "by required_delta and safety_regressions must be empty"
+        )
+    return evaluation
 
 
 def promote_improvement_draft(
@@ -268,6 +388,7 @@ def promote_improvement_draft(
 
     root = Path(project_dir)
     draft = load_improvement_draft(root, draft_id)
+    evaluation = _assert_promotion_evaluation_passes(root, draft_id)
     if not draft.skill_path:
         raise ValueError(f"draft {draft_id} has no skill artifact to promote")
 
@@ -287,6 +408,7 @@ def promote_improvement_draft(
         "promoted_at": _utc_now(),
         "target": str(target.relative_to(root)),
         "source": draft.skill_path,
+        "promotion_evaluation": evaluation.to_dict(),
     }
     (target_dir / "promotion.json").write_text(
         json.dumps(promotion, indent=2, sort_keys=True), encoding="utf-8"

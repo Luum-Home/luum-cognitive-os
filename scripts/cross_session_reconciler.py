@@ -2,26 +2,15 @@
 # SCOPE: both
 """Read-only cross-session reconciler for concurrent-agent safety state."""
 from __future__ import annotations
-import argparse, json, os, subprocess, sys
+import argparse, json, subprocess, sys
 from pathlib import Path
 from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from lib.concurrency_safety import load_concurrency_safety_config, project_runtime_dir
-
-def project_dir(args: argparse.Namespace) -> Path:
-    value = args.project_dir or os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    return Path(value).resolve()
-
-def read_jsonl(path: Path) -> list[dict[str, Any]]:
-    if not path.exists(): return []
-    events = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        if not line.strip(): continue
-        try: events.append(json.loads(line))
-        except json.JSONDecodeError: events.append({"event": "corrupt-line", "raw": line})
-    return events
+from lib.project_paths import project_dir_from_args as project_dir
+from lib.script_io import read_jsonl
 
 def read_json_files(path: Path) -> list[dict[str, Any]]:
     if not path.exists(): return []

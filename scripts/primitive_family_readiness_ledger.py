@@ -11,11 +11,18 @@ from __future__ import annotations
 
 import argparse
 import json
-from dataclasses import asdict, dataclass, field
+import sys
+from dataclasses import dataclass, field
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
+from lib.project_paths import relpath as relpath
+from lib.primitive_readiness_common import family_counts, load_lifecycle, row_to_dict
 from typing import Any
 
-import yaml
 
 REPO_IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules", ".git"}
 REPO_IGNORE_PREFIXES = ("docs/reports/", "dashboard/.next/", ".claude/plugins/")
@@ -73,17 +80,6 @@ class FamilyRow:
     consumers: list[Consumer] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
     next_action: str = ""
-
-
-def relpath(root: Path, path: Path) -> str:
-    return path.relative_to(root).as_posix()
-
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore")
-    except OSError:
-        return ""
 
 
 def ignored(root: Path, path: Path) -> bool:
@@ -159,26 +155,6 @@ def usage_map(root: Path, targets: list[Path]) -> dict[str, list[Consumer]]:
                 rows.append(Consumer(classify_consumer(root, consumer), consumer_rel))
         output[target_rel] = sorted(rows, key=lambda item: (item.family, item.path))
     return output
-
-
-def load_lifecycle(root: Path) -> dict[str, dict[str, Any]]:
-    manifest = root / "manifests" / "primitive-lifecycle.yaml"
-    if not manifest.exists():
-        return {}
-    data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
-    rows = {}
-    for primitive in data.get("primitives", []):
-        pid = primitive.get("id")
-        if isinstance(pid, str):
-            rows[pid] = primitive
-    return rows
-
-
-def family_counts(consumers: list[Consumer]) -> dict[str, int]:
-    counts: dict[str, int] = {}
-    for consumer in consumers:
-        counts[consumer.family] = counts.get(consumer.family, 0) + 1
-    return dict(sorted(counts.items()))
 
 
 def lower_text(root: Path, path: Path) -> str:
@@ -301,12 +277,6 @@ def summarize(rows: list[FamilyRow]) -> dict[str, Any]:
         "without_lifecycle": without_lifecycle,
         "without_consumers": sum(1 for row in rows if row.total_consumers == 0),
     }
-
-
-def row_to_dict(row: FamilyRow) -> dict[str, Any]:
-    data = asdict(row)
-    data["consumers"] = [asdict(consumer) for consumer in row.consumers]
-    return data
 
 
 def write_json(rows: list[FamilyRow], path: Path) -> None:

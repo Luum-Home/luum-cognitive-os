@@ -37,6 +37,10 @@ from pathlib import Path
 
 # ── Repository root (cos source directory) ───────────────────────────
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
+if str(COS_SOURCE_DIR) not in sys.path:
+    sys.path.insert(0, str(COS_SOURCE_DIR))
+
+from lib.script_io import write_json as _write_json_if_changed
 
 
 SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci")
@@ -894,12 +898,6 @@ def _apply_efficiency_profile(
 
 
 # ── Helper: harness settings generation ──────────────────────────────
-
-
-def _write_json_if_changed(path: Path, payload: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
 
 
 def _upsert_agents_md_for_kimi(project_dir: Path, common_body: str) -> None:

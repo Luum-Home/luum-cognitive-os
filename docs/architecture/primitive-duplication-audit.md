@@ -43,12 +43,22 @@ The script writes:
 Each JSON finding includes:
 
 - `kind`
+- `classification`
 - `left` / `right`
 - `similarity`
 - `recommendation`
 - `common_home`
 - `consumer_relevance`
 - `rationale`
+
+## False-positive controls
+
+The audit avoids known false positives before producing refactor candidates:
+
+- file aliases are deduplicated by resolved path, so compatibility symlinks do not appear as `exact-copy` debt;
+- shell function detection requires real shell function syntax (`name() {` or `function name {`) and does not treat embedded AWK blocks such as `found { ... }` as Bash helpers;
+- trivial Python CLI dispatch wrappers named `main` are ignored when they only call `args.func(args)`;
+- optional allowlist entries in `manifests/primitive-duplication-allowlist.yaml` can suppress or reclassify intentional findings with an explicit reason.
 
 ## Triage policy
 

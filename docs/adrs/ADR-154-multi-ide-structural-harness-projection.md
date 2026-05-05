@@ -1,7 +1,7 @@
 ---
 adr: 154
 title: Multi-IDE Structural Harness Projection
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
@@ -20,7 +20,7 @@ tags: [harness, portability, acc, projection, ide]
 
 ## Status
 
-**Accepted** — 2026-05-04
+**Implemented for structural projection scope** — 2026-05-04. OpenCode, VS Code Copilot, and Cursor project-local projections are generated and tested; this does not claim native lifecycle-hook parity.
 
 ## Context
 

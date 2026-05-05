@@ -5,9 +5,15 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.time_utils import parse_ts
 from typing import Any
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -55,18 +61,6 @@ def iter_jsonl(path: Path):
                 continue
     except OSError:
         return
-
-
-def parse_ts(value: Any) -> float | None:
-    if isinstance(value, (int, float)):
-        return float(value)
-    if not isinstance(value, str) or not value.strip():
-        return None
-    text = value.strip().replace("Z", "+00:00")
-    try:
-        return datetime.fromisoformat(text).timestamp()
-    except ValueError:
-        return None
 
 
 def hook_name(event: dict[str, Any], fallback: str) -> str:

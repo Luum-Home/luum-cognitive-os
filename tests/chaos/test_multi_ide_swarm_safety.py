@@ -4,6 +4,7 @@ import json
 import os
 import subprocess
 import sys
+import importlib.util
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -36,6 +37,14 @@ def run_python(script: Path, *args: str, cwd: Path) -> subprocess.CompletedProce
 def payload(proc: subprocess.CompletedProcess[str]) -> dict:
     assert proc.stdout, proc.stderr
     return json.loads(proc.stdout)
+
+
+def load_derived_gate():
+    spec = importlib.util.spec_from_file_location("derived_artifact_gate", ROOT / "scripts" / "derived_artifact_gate.py")
+    assert spec and spec.loader
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def git(cwd: Path, *args: str) -> subprocess.CompletedProcess[str]:
@@ -193,6 +202,20 @@ def test_same_file_race_blocks_second_writer(scratch_project: Path) -> None:
     assert (scratch_project / "target.txt").read_text(encoding="utf-8") == "session-a fix\n"
 
 
+def test_projection_drift_requires_derived_artifact_closure(monkeypatch: pytest.MonkeyPatch) -> None:
+    gate = load_derived_gate()
+    monkeypatch.setattr(gate, "changed_staged", lambda: {"cognitive-os.yaml"})
+    failures: list[str] = []
+
+    gate.check_staged_closure(failures)
+
+    assert failures
+    assert "Stage regenerated artifacts too" in failures[0]
+    assert "manifests/hook-quality.yaml" in failures[0]
+    assert ".claude/settings.json" in failures[0]
+    assert ".codex/hooks.json" in failures[0]
+
+
 def test_codex_governed_edit_blocks_when_file_is_locked(scratch_project: Path) -> None:
     env = os.environ.copy()
     env.update(
@@ -225,6 +248,8 @@ def test_codex_governed_edit_blocks_when_file_is_locked(scratch_project: Path) -
         [
             "bash",
             str(GOVERNED_EDIT),
+            "--task-id",
+            "codex-lock-test",
             "--file",
             "target.txt",
             "--reason",
@@ -405,3 +430,27 @@ def test_task_completed_by_other_agent_is_marked_by_watermark(scratch_project: P
     task = data["tasks"][0]
     assert task["status"] == "completed-by-watermark"
     assert task["watermark_evidence"]["mode"] == "A"
+
+
+def test_completed_by_other_agent_reconciliation_fixture(scratch_project: Path) -> None:
+    from lib.task_reconciliation import reconcile_completed_by_other_session
+
+    sessions = scratch_project / ".cognitive-os" / "sessions"
+    (sessions / "codex-session").mkdir(parents=True)
+    (sessions / "claude-session").mkdir(parents=True)
+    (sessions / "codex-session" / "tasks.json").write_text(
+        json.dumps({"tasks": [{"task_id": "TASK-DONE-ELSEWHERE", "status": "pending"}]}) + "\n",
+        encoding="utf-8",
+    )
+    watermark = scratch_project / ".cognitive-os" / "tasks" / "completion-watermark.jsonl"
+    watermark.parent.mkdir(parents=True, exist_ok=True)
+    watermark.write_text(
+        json.dumps({"task_id": "TASK-DONE-ELSEWHERE", "status": "done-by-other-session", "session_id": "claude-session"}) + "\n",
+        encoding="utf-8",
+    )
+
+    report = [item.to_dict() for item in reconcile_completed_by_other_session(scratch_project)]
+
+    assert report[0]["status"] == "done-by-other-session"
+    assert report[0]["completing_session"] == "claude-session"
+    assert report[0]["pending_session"] == "codex-session"
