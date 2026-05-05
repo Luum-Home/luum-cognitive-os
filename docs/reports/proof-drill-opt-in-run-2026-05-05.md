@@ -129,6 +129,34 @@ Evidence was recorded in `docs/reports/proof-drill-evidence-latest.json` under
 `proof_claim:host-claude-provider-adapter` through
 `manifests/proof-drill-claim-map.yaml`.
 
+
+## Automatic evidence recording follow-up
+
+After adding the evidence recorder integration, the non-provider Docker/headless
+drill was re-run with evidence auto-recording enabled:
+
+```bash
+scripts/cos-headless-service-drill --json --keep-workspace
+# ok=true
+# provider_smoke=skipped
+# host_codex_status=ready
+# host_claude_status=ready
+# container_codex_status=unsupported
+# container_claude_status=unsupported
+# local_task_status=completed
+# evidence_recording.headless-docker-service-drill.exit_code=0
+```
+
+Artifact captured for that run:
+
+```text
+/tmp/cos-headless-service.4VpVjp/.cognitive-os/service/artifacts/task-headless-service-drill/lease-f54e6542ba02
+```
+
+The generated machine-readable row lives in
+`docs/reports/proof-drill-evidence-latest.json` and is consumed by ACC together
+with `manifests/proof-drill-claim-map.yaml`.
+
 ## What this proves
 
 - Qwen live fallback is configured and working in this host environment.

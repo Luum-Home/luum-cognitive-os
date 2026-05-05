@@ -129,6 +129,45 @@ items:
 - path: scripts/_lib/session-id.sh
   status: so-local-only
   rationale: Session identity helper for local queue/worker scripts; projected only as support code when a service runtime profile exists.
+- path: scripts/auto-tune-routing
+  status: maintainer-only
+  rationale: Human-reviewed dispatch optimizer wrapper for SO routing experiments; not a default consumer command.
+- path: scripts/auto_tune_routing.py
+  status: maintainer-only
+  rationale: Python implementation behind the dispatch optimizer wrapper; proposals require maintainer review before use.
+- path: scripts/benchmark-providers
+  status: maintainer-only
+  rationale: Provider benchmark wrapper for SO/provider research; consumer projects should use their own evaluation harness unless explicitly configured.
+- path: scripts/benchmark_providers.py
+  status: maintainer-only
+  rationale: Python provider benchmark implementation for ADR-052; not projected as a default consumer primitive.
+- path: scripts/cos-headless-service-drill
+  status: maintainer-only
+  rationale: Opt-in Docker/headless proof drill for SO runtime qualification; excluded from default consumer and laptop lanes.
+- path: scripts/cos-instance-init
+  status: maintainer-only
+  rationale: Operational COS instance installer wrapper; separate from consumer-project projection.
+- path: scripts/cos_instance_init.py
+  status: maintainer-only
+  rationale: Operational COS instance installer implementation; not a default consumer projection surface.
+- path: skills/proof-drill/SKILL.md
+  status: maintainer-only
+  rationale: Opt-in proof-drill selector for SO validation and explicit consumer boundary checks; not loaded by default lanes.
+- path: scripts/proof-drill-select
+  status: maintainer-only
+  rationale: Proof-drill selector wrapper for governed opt-in validation; not a default consumer command.
+- path: scripts/proof_drill_select.py
+  status: maintainer-only
+  rationale: Python proof-drill selector implementation; consumer projects should use explicit proof-drill projection only.
+- path: scripts/test_skip_registry.py
+  status: maintainer-only
+  rationale: Maintainer validation-governance helper for classifying skipped tests; not a consumer runtime command.
+- path: scripts/cos-credential-safe-run
+  status: maintainer-only
+  rationale: Credential-safe maintainer/runtime wrapper for approved scripts; not a default consumer command.
+- path: scripts/cos_credential_safe_run.py
+  status: maintainer-only
+  rationale: Python implementation behind credential-safe script runner; projected only through explicit runtime profiles.
 - path: scripts/cos-auth-probe
   status: maintainer-only
   rationale: Provider/executor auth boundary probe for ADR-161 service-control-plane work; not a default consumer surface.

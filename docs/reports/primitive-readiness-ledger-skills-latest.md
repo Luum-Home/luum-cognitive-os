@@ -1,8 +1,8 @@
 # Primitive Readiness Ledger — Skills
 
-Total rows: 90
-Rows without lifecycle metadata: 90
-Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
+Total rows: 91
+Rows without lifecycle metadata: 91
+Consumer accessibility: repo-skill-not-projectable:87, so-local-only:4
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
@@ -27,15 +27,15 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/caveman-compress/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/caveman-es/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 2 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/caveman/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/code-review/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 29 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/code-review/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 30 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/cognitive-os-init/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 33 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/cognitive-os-status/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/cognitive-os-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/cognitive-os-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/compat-test/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/component-classifier/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/component-reality-check/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/coordination-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/cos-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 39 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/cos-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 40 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/cost-predictor/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/decision-triage/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/deps-update/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
@@ -49,7 +49,7 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/experimental/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 37 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/generate-changelog/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/generate-config/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/hook-timing/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 32 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/hook-timing/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/install-recommended/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 2 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/invariant-check/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/llm-status/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
@@ -64,10 +64,11 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/primitive-surface-reduction/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-usage-map/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/project-scaffold/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/proof-drill/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/push-release/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/queue-drain/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/queue-drain/SKILL.md` | project-extension | default | medium | repo-skill-not-projectable |  | 27 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/radar-update/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/red-team/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/red-team/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 36 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/redteam-harness/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/release-os/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/repair-skill/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
@@ -76,7 +77,7 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/reverse-engineer/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/risk-register/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/rules-export/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/run-tests/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/run-tests/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 24 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/scaffold-project/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/scout/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 37 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/sdd-continue/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
@@ -90,7 +91,7 @@ Consumer accessibility: repo-skill-not-projectable:86, so-local-only:4
 | `skills/so-vs-vanilla/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/synthesize-skill/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 1 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/tag-release/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
-| `skills/test-contract-repair/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 4 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/test-contract-repair/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/validate-config/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/validate-release/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/vuln-remediation-flow/SKILL.md` | lab | heuristic:path | medium | repo-skill-not-projectable |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
