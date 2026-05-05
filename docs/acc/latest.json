@@ -77,6 +77,10 @@
       "status": "ok",
       "summary": {
         "documents": {
+          ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md": {
+            "done_weak_proof": 1,
+            "planned": 2
+          },
           "AGENTS.md": {
             "done_weak_proof": 1,
             "planned": 1
@@ -1762,10 +1766,6 @@
           "docs/security/cognitive-os-attack-surface-inventory.md": {
             "done_weak_proof": 2,
             "done_with_proof": 1
-          },
-          ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md": {
-            "done_weak_proof": 1,
-            "planned": 2
           },
           "docs/security/lethal-trifecta-gate.md": {
             "done_weak_proof": 1
@@ -47331,7 +47331,7 @@
       "coverage_debt:2"
     ]
   },
-  "generated_at": "2026-05-05T18:14:41Z",
+  "generated_at": "2026-05-05T19:21:42Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
