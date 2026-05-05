@@ -13,7 +13,7 @@ pytestmark = pytest.mark.audit
 
 def test_engram_command_contract_audit_passes() -> None:
     result = subprocess.run(
-        ["python3", str(ROOT / "scripts" / "cos-engram-command-audit.py"), "--fail-on-findings"],
+        [str(ROOT / "scripts" / "cos-engram-command-audit"), "--fail-on-findings"],
         cwd=ROOT,
         text=True,
         stdout=subprocess.PIPE,

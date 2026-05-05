@@ -238,3 +238,34 @@ class TestLockContention:
                 )
             finally:
                 fcntl.flock(holder_fh, fcntl.LOCK_UN)
+
+from lib.merge_queue import head_drift, record_validation_lane, try_acquire_worker_lock, worker_lock_path  # noqa: E402
+
+
+def test_worker_lock_is_single_writer(queue_file):
+    first = try_acquire_worker_lock(queue_file)
+    assert first is not None
+    try:
+        assert try_acquire_worker_lock(queue_file) is None
+        assert worker_lock_path(queue_file).name == "merge-queue.worker.lock"
+    finally:
+        first.close()
+
+
+def test_head_drift_requires_refetch_or_rebase():
+    decision = head_drift(current_head="new", expected_head="old")
+
+    assert decision["ok_to_land"] is False
+    assert decision["action"] == "refetch-or-rebase"
+    assert "drifted" in decision["reason"]
+
+
+def test_merge_queue_records_validation_lane_fields(queue_file):
+    entry_id = enqueue("session/lane", "s-lane", queue_path=queue_file)
+
+    assert record_validation_lane(entry_id, recommended_lane="landing", executed_lane="fast", rationale=["runtime script changed"], queue_path=queue_file)
+    entry = status(entry_id, queue_path=queue_file)
+
+    assert entry["recommended_lane"] == "landing"
+    assert entry["executed_lane"] == "fast"
+    assert entry["validation_rationale"] == ["runtime script changed"]

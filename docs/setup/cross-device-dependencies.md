@@ -93,6 +93,11 @@ This document backs ADR-168.
 `manifests/dependencies.yaml` should remain the source of truth, but evolve from
 check inventory into install contract.
 
+Implementation status on 2026-05-05: the production manifest now carries the
+ADR-168 metadata for the current tool inventory, and the loader accepts both
+legacy string install recipes and structured platform recipes. New dependency
+entries should prefer the structured form below.
+
 Illustrative schema:
 
 ```yaml
@@ -176,6 +181,28 @@ Rules:
 7. It never reads `.env`, key files, browser stores, Keychain, `~/.codex`,
    `~/.claude`, or provider credential directories.
 
+Implemented command examples:
+
+```bash
+# Safe report for the smallest portable profile.
+scripts/cos-deps-install.sh --profile core --platform auto --dry-run --json
+
+# Inspect full optional/security tooling without installing.
+scripts/cos-deps-install.sh --profile full --platform macos --dry-run
+
+# Apply only safe, non-auth-bound dependencies with platform commands.
+scripts/cos-deps-install.sh --profile core --platform auto --apply
+```
+
+The JSON report includes `category`, `profiles`, `scope`, `syncable`,
+`auth_bound`, `install_manager`, `manual_url`, `never_copy`, and `post_install`
+so doctors and ACC evidence can distinguish portable installs from host-local
+or login-bound work.
+
+Auth-bound example: `gh` may be installed by the script when a safe platform
+command exists, but credential state is never copied; the report points operators
+to `gh auth login` and lists `~/.config/gh` as `never_copy`.
+
 ---
 
 ## External tooling patterns
@@ -199,15 +226,17 @@ Sources:
 
 ## Migration plan
 
-1. Add schema v2 tests around `lib/manifest_loader.py` before changing the
-   manifest.
-2. Add `scope`, `syncable`, `auth_bound`, and platform install metadata for core
-   tools first: `git`, `jq`, `uv`, `python3`.
-3. Add `scripts/cos-deps-install.sh` as dry-run/report-only.
-4. Turn on `--apply` for safe non-auth-bound core tools.
-5. Migrate `scripts/setup.sh` to call the new installer or mark it as legacy.
-6. Gradually register optional/security/desktop tools.
-7. Add manual proof paths for macOS, Linux, and Windows/WSL.
+1. Done — schema tests cover structured install metadata and invalid syncability.
+2. Done — `scope`, `syncable`, `auth_bound`, and platform install metadata are
+   present for core tools: `git`, `jq`, `uv`, `python3`.
+3. Done — `scripts/cos-deps-install.sh` is dry-run by default and emits JSON.
+4. Done — `--apply` only executes rows classified as installable,
+   non-manual, and non-auth-bound.
+5. Pending — migrate `scripts/setup.sh` to call the new installer or mark it as
+   a legacy wrapper.
+6. In progress — optional/security tools are represented with conservative
+   manual/auth metadata where needed.
+7. Pending — add manual proof paths for Linux and Windows/WSL hosts.
 
 ---
 

@@ -54,6 +54,54 @@ def test_cli_suggest_draft_inspect_and_promote(tmp_path: Path) -> None:
     assert denied.returncode != 0
     assert "promotion requires" in denied.stderr
 
+    unevaluated = _run(
+        tmp_path,
+        "promote",
+        "repair-test-failure-checkout",
+        "--approved-by",
+        "behavior-test",
+    )
+    assert unevaluated.returncode != 0
+    assert "comparative primitive evaluation" in unevaluated.stderr
+
+    failed_evaluation = _run(
+        tmp_path,
+        "evaluate",
+        "repair-test-failure-checkout",
+        "--baseline-score",
+        "90",
+        "--candidate-score",
+        "90",
+        "--safety-regression",
+        "new guard false positive",
+    )
+    assert failed_evaluation.returncode == 0, failed_evaluation.stderr
+    assert json.loads(failed_evaluation.stdout)["status"] == "failed"
+
+    blocked = _run(
+        tmp_path,
+        "promote",
+        "repair-test-failure-checkout",
+        "--approved-by",
+        "behavior-test",
+    )
+    assert blocked.returncode != 0
+    assert "promotion evaluation failed" in blocked.stderr
+
+    passed_evaluation = _run(
+        tmp_path,
+        "evaluate",
+        "repair-test-failure-checkout",
+        "--baseline-score",
+        "88",
+        "--candidate-score",
+        "91",
+        "--evidence-command",
+        "python3 -m pytest tests/unit/test_governed_self_improvement.py -q",
+    )
+    assert passed_evaluation.returncode == 0, passed_evaluation.stderr
+    assert json.loads(passed_evaluation.stdout)["status"] == "passed"
+
     promoted = _run(
         tmp_path,
         "promote",
@@ -64,4 +112,5 @@ def test_cli_suggest_draft_inspect_and_promote(tmp_path: Path) -> None:
     assert promoted.returncode == 0, promoted.stderr
     payload = json.loads(promoted.stdout)
     assert payload["target"] == ".cognitive-os/skills/cos/repair-test-failure-checkout/SKILL.md"
+    assert payload["promotion_evaluation"]["candidate_score"] > payload["promotion_evaluation"]["baseline_score"]
     assert (tmp_path / payload["target"]).exists()

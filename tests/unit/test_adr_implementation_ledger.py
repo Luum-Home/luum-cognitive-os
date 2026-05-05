@@ -91,6 +91,62 @@ Accepted — implemented.
     assert "Required implementation paths are missing" in record.reason
 
 
+def test_frontmatter_implemented_status_with_existing_paths_is_implemented(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "adrs"
+    scripts = project / "scripts"
+    adrs.mkdir(parents=True)
+    scripts.mkdir()
+    (scripts / "implemented-helper").write_text("#!/usr/bin/env bash\n", encoding="utf-8")
+    (adrs / "ADR-001-frontmatter-implemented.md").write_text(
+        """---
+adr: 1
+title: Frontmatter Implemented
+status: implemented
+implementation_files:
+  - scripts/implemented-helper
+---
+
+# ADR-001 Frontmatter Implemented
+
+## Status
+
+Implemented for declared scope.
+""",
+        encoding="utf-8",
+    )
+
+    [record] = adr_implementation_ledger.scan_adrs(project)
+
+    assert record.decision_state == "implemented"
+    assert record.implementation_state == "implemented"
+    assert record.missing_required_paths == []
+
+
+def test_accepted_status_wins_over_reserved_note_in_body(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    adrs = project / "docs" / "adrs"
+    adrs.mkdir(parents=True)
+    (adrs / "ADR-001-accepted-reserved-note.md").write_text(
+        """# ADR-001 Accepted Reserved Note
+
+## Status
+
+Accepted.
+
+## Decision
+
+The numbering range remains reserved for taxonomy extensions.
+""",
+        encoding="utf-8",
+    )
+
+    [record] = adr_implementation_ledger.scan_adrs(project)
+
+    assert record.decision_state == "accepted"
+    assert record.implementation_state == "pending"
+
+
 def test_missing_acceptance_criteria_path_keeps_partial_when_other_evidence_exists(tmp_path: Path) -> None:
     project = tmp_path / "project"
     adrs = project / "docs" / "adrs"

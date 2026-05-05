@@ -13,12 +13,18 @@ import json
 import os
 import re
 import subprocess
-import tempfile
+import sys
 import uuid
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from lib.script_io import atomic_write_json
 
 import cos_auth_probe
 
@@ -83,22 +89,6 @@ def resolve_project_dir(value: str | None = None) -> Path:
 
 def service_path(project_dir: Path, relative: Path) -> Path:
     return project_dir / relative
-
-
-def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        "w",
-        encoding="utf-8",
-        dir=path.parent,
-        prefix=f".{path.name}.",
-        suffix=".tmp",
-        delete=False,
-    ) as tmp:
-        json.dump(payload, tmp, indent=2, sort_keys=True)
-        tmp.write("\n")
-        tmp_name = tmp.name
-    Path(tmp_name).replace(path)
 
 
 def append_jsonl(path: Path, payload: dict[str, Any]) -> None:
@@ -379,19 +369,24 @@ def run_host_cli_adapter(
     reason = "provider call blocked; rerun with --allow-provider-call after reviewing cost and credential posture"
 
     if executor_id == "codex-cli-host":
-        command_shape = ["codex", "exec", "--json", "--sandbox", "read-only", "--skip-git-repo-check", prompt]
+        command_shape = ["codex", "exec", "--json", "--sandbox", "read-only", "--skip-git-repo-check"]
+        codex_model = os.environ.get("COS_CODEX_EXEC_MODEL", "").strip()
+        if codex_model:
+            command_shape.extend(["--model", codex_model])
+        command_shape.append(prompt)
     else:
-        command_shape = ["claude", "-p", prompt]
+        claude_binary = os.environ.get("COS_CLAUDE_BIN", "").strip() or cos_auth_probe._which_claude(os.environ.get("PATH")) or "claude"
+        command_shape = [claude_binary, "-p", "--output-format", "json", "--tools", ""]
+        claude_model = os.environ.get("COS_CLAUDE_EXEC_MODEL", "").strip()
+        if claude_model:
+            command_shape.extend(["--model", claude_model])
+        command_shape.append(prompt)
 
     if allow_provider_call:
         if probe.status != cos_auth_probe.READY:
             status = "auth_required"
             returncode = 2
             reason = probe.reason
-        elif executor_id == "claude-cli-host":
-            status = "unsupported"
-            returncode = 3
-            reason = "claude-cli-host provider execution is not enabled until a non-invasive auth status probe is implemented"
         else:
             result = subprocess.run(
                 command_shape,
@@ -419,7 +414,7 @@ def run_host_cli_adapter(
         "artifact_dir": str(task_dir),
         "redactions": stdout_redactions + stderr_redactions,
         "provider_calls": provider_calls,
-        "command_shape": command_shape[:4] + ["<prompt>"],
+        "command_shape": ([Path(command_shape[0]).name] + command_shape[1:-1]) + ["<prompt>"],
     }
     atomic_write_json(task_dir / "task.json", task)
     atomic_write_json(task_dir / "lease.json", asdict(lease))

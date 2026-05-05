@@ -2,16 +2,13 @@
 # SCOPE: both
 """Append-only approval ledger for high-risk concurrent-agent actions."""
 from __future__ import annotations
-import argparse, hashlib, json, os, sys, time
+import argparse, hashlib, json, sys, time
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 from lib.concurrency_safety import project_runtime_dir
-
-def project_dir(args: argparse.Namespace) -> Path:
-    value = args.project_dir or os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.environ.get("CODEX_PROJECT_DIR") or os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    return Path(value).resolve()
+from lib.project_paths import project_dir_from_args as project_dir
 
 def ledger_path(project: Path) -> Path:
     path = project_runtime_dir(project) / "approval-ledger.jsonl"; path.parent.mkdir(parents=True, exist_ok=True); return path

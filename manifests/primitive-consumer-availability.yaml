@@ -123,6 +123,87 @@ items:
 - path: scripts/weekly-aspirational-audit.sh
   status: maintainer-only
   rationale: Scheduled maintainer audit wrapper.
+- path: scripts/_lib/local-service.sh
+  status: so-local-only
+  rationale: Service-control-plane shell library used by local COS runtime drills; not a standalone consumer command.
+- path: scripts/_lib/session-id.sh
+  status: so-local-only
+  rationale: Session identity helper for local queue/worker scripts; projected only as support code when a service runtime profile exists.
+- path: scripts/auto-tune-routing
+  status: maintainer-only
+  rationale: Human-reviewed dispatch optimizer wrapper for SO routing experiments; not a default consumer command.
+- path: scripts/auto_tune_routing.py
+  status: maintainer-only
+  rationale: Python implementation behind the dispatch optimizer wrapper; proposals require maintainer review before use.
+- path: scripts/benchmark-providers
+  status: maintainer-only
+  rationale: Provider benchmark wrapper for SO/provider research; consumer projects should use their own evaluation harness unless explicitly configured.
+- path: scripts/benchmark_providers.py
+  status: maintainer-only
+  rationale: Python provider benchmark implementation for ADR-052; not projected as a default consumer primitive.
+- path: scripts/cos-headless-service-drill
+  status: maintainer-only
+  rationale: Opt-in Docker/headless proof drill for SO runtime qualification; excluded from default consumer and laptop lanes.
+- path: scripts/cos-instance-init
+  status: maintainer-only
+  rationale: Operational COS instance installer wrapper; separate from consumer-project projection.
+- path: scripts/cos_instance_init.py
+  status: maintainer-only
+  rationale: Operational COS instance installer implementation; not a default consumer projection surface.
+- path: skills/proof-drill/SKILL.md
+  status: maintainer-only
+  rationale: Opt-in proof-drill selector for SO validation and explicit consumer boundary checks; not loaded by default lanes.
+- path: scripts/proof-drill-select
+  status: maintainer-only
+  rationale: Proof-drill selector wrapper for governed opt-in validation; not a default consumer command.
+- path: scripts/proof_drill_select.py
+  status: maintainer-only
+  rationale: Python proof-drill selector implementation; consumer projects should use explicit proof-drill projection only.
+- path: scripts/test_skip_registry.py
+  status: maintainer-only
+  rationale: Maintainer validation-governance helper for classifying skipped tests; not a consumer runtime command.
+- path: scripts/cos-credential-safe-run
+  status: maintainer-only
+  rationale: Credential-safe maintainer/runtime wrapper for approved scripts; not a default consumer command.
+- path: scripts/cos_credential_safe_run.py
+  status: maintainer-only
+  rationale: Python implementation behind credential-safe script runner; projected only through explicit runtime profiles.
+- path: scripts/cos-auth-probe
+  status: maintainer-only
+  rationale: Provider/executor auth boundary probe for ADR-161 service-control-plane work; not a default consumer surface.
+- path: scripts/cos-engram-command-audit
+  status: maintainer-only
+  rationale: Maintainer Engram command audit wrapper; consumer projects should consume reports, not this SO audit by default.
+- path: scripts/cos-queue-drain
+  status: maintainer-only
+  rationale: Local service-control-plane queue drain command for SO/runtime drills; consumer projection requires a packaged service profile.
+- path: scripts/cos-task-submit
+  status: maintainer-only
+  rationale: Local task lifecycle submission command for ADR-162 runtime experiments; not a default consumer command.
+- path: scripts/cos-worker-run-once
+  status: maintainer-only
+  rationale: One-shot worker execution helper for headless/service runtime drills; not projected to consumer projects by default.
+- path: scripts/cos_auth_probe.py
+  status: maintainer-only
+  rationale: Python implementation behind the local auth probe wrapper; not a standalone consumer projection surface.
+- path: scripts/cos_engram_command_audit.py
+  status: maintainer-only
+  rationale: Python implementation for SO Engram command audits; not consumer-project debt.
+- path: scripts/cos_service_control_plane.py
+  status: maintainer-only
+  rationale: Experimental local service-control-plane implementation; consumer availability waits for ADR-161/162 runtime adapter proof.
+- path: scripts/cosd
+  status: maintainer-only
+  rationale: Local daemon entrypoint for service-control-plane experiments; not default-visible consumer projection until packaged and smoke-tested.
+- path: scripts/export-engram-to-obsidian.sh
+  status: maintainer-only
+  rationale: Maintainer memory/export utility for local knowledge workflows; consumer projection requires an explicit memory/export package.
+- path: hooks/_lib/agent-context.sh
+  status: so-local-only
+  rationale: Hook support library for local agent context; not a standalone consumer capability.
+- path: hooks/_lib/task-event.sh
+  status: so-local-only
+  rationale: Hook support library for local task events; not a standalone consumer capability.
 - path: scripts/check_mcp_servers.py
   status: shell-ci-candidate
   rationale: Candidate consumer doctor command; needs shell/CI projection proof.
@@ -172,6 +253,42 @@ items:
   status: shell-ci-candidate
   rationale: Candidate consumer full validation wrapper; needs shell/CI projection
     proof.
+- path: hooks/dangerous-env-flag-detector.sh
+  status: so-local-only
+  rationale: Local advisory SessionStart detector for dangerous override flags; not a standalone consumer capability.
+- path: scripts/dangerous_env_flag_detector.py
+  status: so-local-only
+  rationale: Python analyzer behind the local dangerous-env hook; not a standalone consumer capability.
+- path: scripts/metrics_tamper_audit.py
+  status: so-local-only
+  rationale: Security red-team analyzer implementation; not a standalone consumer capability.
+- path: scripts/provider_spoof_audit.py
+  status: so-local-only
+  rationale: Security red-team analyzer implementation; not a standalone consumer capability.
+- path: scripts/network_sandbox_run.py
+  status: so-local-only
+  rationale: Security sandbox helper for red-team workflows; not a standalone consumer capability.
+- path: hooks/engram-obsidian-export-on-stop.sh
+  status: so-local-only
+  rationale: Optional local Stop hook for Engram-to-Obsidian export; not a standalone consumer capability.
+- path: hooks/network-egress-guard.sh
+  status: so-local-only
+  rationale: Local PreToolUse runtime guard projected by Claude settings; not a standalone consumer capability.
+- path: hooks/protected-config-write-guard.sh
+  status: so-local-only
+  rationale: Local PreToolUse runtime guard projected by Claude settings; not a standalone consumer capability.
+- path: scripts/network_egress_guard.py
+  status: so-local-only
+  rationale: Python analyzer behind the local network-egress PreToolUse guard; not a standalone consumer capability.
+- path: scripts/security-red-team
+  status: lifecycle-declared-maintainer
+  rationale: Opt-in maintainer security workflow; lifecycle metadata controls projection before consumer claims.
+- path: scripts/security_red_team.py
+  status: lifecycle-declared-maintainer
+  rationale: Python implementation behind the opt-in security workflow wrapper.
+- path: scripts/cos-key-learnings-capture
+  status: lifecycle-declared-maintainer
+  rationale: Opt-in team learning-capture helper; lifecycle metadata controls projection before consumer claims.
 patterns:
 - pattern: scripts/**
   status: so-local-only
