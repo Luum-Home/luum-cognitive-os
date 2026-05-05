@@ -61,3 +61,29 @@ def test_cli_wrapper_json_does_not_require_real_provider(tmp_path: Path) -> None
     output = os.popen(f"{REPO_ROOT / 'scripts' / 'cos-auth-probe'} --provider local --mode none --json").read()
 
     assert '"status": "ready"' in output
+
+
+def test_fake_claude_auth_status_can_report_ready(tmp_path: Path) -> None:
+    fake = tmp_path / "claude"
+    fake.write_text("#!/bin/sh\nif [ \"$1 $2\" = \"auth status\" ]; then echo '{\"loggedIn\": true}'; exit 0; fi\necho '2.1.62 (Claude Code)'\n", encoding="utf-8")
+    fake.chmod(0o755)
+
+    result = probe.probe("claude", "account-session", env={"PATH": str(tmp_path)}, path=str(tmp_path))
+
+    assert result.status == "ready"
+    assert result.command == "claude auth status"
+    assert result.credential_store_access == "forbidden"
+
+
+def test_claude_known_local_bin_is_discovered_when_not_on_path(tmp_path: Path, monkeypatch) -> None:
+    local_bin = tmp_path / ".local" / "bin"
+    local_bin.mkdir(parents=True)
+    fake = local_bin / "claude"
+    fake.write_text("#!/bin/sh\nif [ \"$1 $2\" = \"auth status\" ]; then echo '{\"loggedIn\": true}'; exit 0; fi\necho '2.1.62 (Claude Code)'\n", encoding="utf-8")
+    fake.chmod(0o755)
+    monkeypatch.setenv("HOME", str(tmp_path))
+
+    result = probe.probe("claude", "account-session", env={"PATH": ""}, path="")
+
+    assert result.status == "ready"
+    assert result.command == "claude auth status"
