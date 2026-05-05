@@ -8,7 +8,7 @@ purpose: >-
   plane may dispatch. The registry separates account-backed CLI execution,
   containerized CLI execution, API/provider-cloud execution, and proxy/gateway
   execution so cost and credential posture are explicit.
-status: planned_contract
+status: phase1_local_command_contract
 
 enums:
   credential_modes:
@@ -73,7 +73,7 @@ adapters:
   - executor_id: local-command
     provider: local
     runtime_kind: deterministic_subprocess
-    lifecycle_state: contract
+    lifecycle_state: sandbox
     credential_modes:
       - none
     cost_mode: none
@@ -249,4 +249,3 @@ lab_only_provider_placeholders:
     reason: Awaiting provider-specific CLI/API/headless auth proof drill.
   - provider: deepseek
     reason: Awaiting provider-specific CLI/API/headless auth proof drill.
-
