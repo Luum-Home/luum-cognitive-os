@@ -31,6 +31,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--required-delta", type=float, default=1.0)
     parser.add_argument("--min-sample-count", type=int, default=1)
     parser.add_argument("--evidence-command", action="append", default=[])
+    parser.add_argument("--output", help="Optional path to write the primitive fitness report JSON")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
@@ -51,6 +52,10 @@ def main(argv: list[str] | None = None) -> int:
         evidence_commands=args.evidence_command,
     )
     payload = report.to_dict()
+    if args.output:
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     if args.json:
         print(json.dumps(payload, indent=2, sort_keys=True))
     else:

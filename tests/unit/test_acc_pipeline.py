@@ -126,6 +126,33 @@ def make_repo(tmp_path: Path) -> Path:
                 ],
             },
         )
+
+    write_json(
+        root / "docs" / "reports" / "primitive-fitness-ledger-latest.json",
+        {
+            "schema_version": "primitive-fitness-ledger.v1",
+            "summary": {
+                "total_reports": 1,
+                "verdicts": {"promote": 1},
+                "mapping_statuses": {"aligned": 1},
+                "families": {"scripts": {"total": 1}},
+            },
+            "items": [
+                {
+                    "primitive_id": "scripts/projected.sh",
+                    "family": "scripts",
+                    "verdict": "promote",
+                    "mapping_status": "aligned",
+                    "delta": 4.0,
+                    "baseline_score": 80,
+                    "candidate_score": 84,
+                    "source_report": "docs/reports/primitive-fitness/projected.json",
+                    "missing_signals": [],
+                    "safety_regressions": [],
+                }
+            ],
+        },
+    )
     write_json(
         root / "docs" / "reports" / "docs-execution-latest.json",
         {
@@ -162,6 +189,8 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["adapters"]["projection_profiles"]["status"] == "ok"
     assert payload["adapters"]["consumer_availability"]["status"] == "ok"
     assert payload["adapters"]["shell_ci_projection"]["status"] == "ok"
+    assert payload["adapters"]["primitive_fitness_ledger"]["status"] == "ok"
+    assert any(cap["id"] == "primitive_fitness:scripts/projected.sh" for cap in payload["capabilities"])
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
@@ -227,7 +256,9 @@ def test_write_report_outputs_json_markdown_and_history(tmp_path: Path) -> None:
 
     assert json.loads((root / "docs" / "acc" / "latest.json").read_text())["schema_version"] == "acc.report.v1"
     assert "Agent Capability Coverage" in (root / "docs" / "acc" / "latest.md").read_text()
+    assert "Primitive fitness reports" in (root / "docs" / "acc" / "latest.md").read_text()
     assert "Context Diet Rule" in (root / "docs" / "acc" / "latest-compact.md").read_text()
+    assert "Primitive fitness reports" in (root / "docs" / "acc" / "latest-compact.md").read_text()
     assert (root / ".cognitive-os" / "metrics" / "acc-pipeline-history.jsonl").exists()
 
 
