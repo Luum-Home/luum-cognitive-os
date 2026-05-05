@@ -505,7 +505,7 @@ def audit(
             "shingle_size": shingle_size,
             "threshold": threshold,
             "primitive_threshold": primitive_threshold,
-            "allowlist": str(allowlist_path) if allowlist_path else None,
+            "allowlist": rel(root, allowlist_path) if allowlist_path and allowlist_path.is_relative_to(root) else str(allowlist_path) if allowlist_path else None,
         },
         "summary": summarize(findings, len(files)),
         "findings": [asdict(finding) | {"pair_key": finding.pair_key} for finding in findings],

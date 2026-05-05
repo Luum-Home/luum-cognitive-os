@@ -2761,7 +2761,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 21,
         "hook": 2,
         "rule": 2,
@@ -2772,6 +2772,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/remote-control-plane-alternatives.yaml"
         },
         {
           "family": "doc",
@@ -2909,7 +2913,7 @@
         "script_consumers:5",
         "test_consumers:2",
         "doc_consumers:21",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -2919,7 +2923,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 33
+      "total_consumers": 34
     },
     {
       "confidence": "medium",
@@ -7563,10 +7567,10 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 52,
+        "doc": 56,
         "hook": 5,
         "rule": 2,
-        "script": 27,
+        "script": 28,
         "skill": 7,
         "test": 30
       },
@@ -7593,6 +7597,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adoption-tiers.md"
         },
         {
@@ -7614,6 +7622,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md"
         },
         {
           "family": "doc",
@@ -7713,6 +7725,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/session-filesystem-reaper.md"
         },
         {
@@ -7770,6 +7786,10 @@
         {
           "family": "doc",
           "path": "docs/release/roadmap-v1.0-full-e2e.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md"
         },
         {
           "family": "doc",
@@ -7886,6 +7906,10 @@
         {
           "family": "script",
           "path": "scripts/cos_new_adr.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_service_control_plane.py"
         },
         {
           "family": "script",
@@ -8089,9 +8113,9 @@
         "skill_consumers:7",
         "hook_consumers:5",
         "rule_consumers:2",
-        "script_consumers:27",
+        "script_consumers:28",
         "test_consumers:30",
-        "doc_consumers:52",
+        "doc_consumers:56",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -8102,7 +8126,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 128
+      "total_consumers": 133
     },
     {
       "confidence": "medium",
@@ -12548,13 +12572,23 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 2,
         "doc": 9,
         "hook": 3,
         "rule": 2,
+        "script": 2,
         "skill": 1,
-        "test": 2
+        "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
@@ -12612,6 +12646,14 @@
           "path": "rules/queue-advisor.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-queue-drain"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_service_control_plane.py"
+        },
+        {
           "family": "skill",
           "path": "skills/queue-drain/SKILL.md"
         },
@@ -12622,6 +12664,14 @@
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_service_control_plane_local_queue.py"
         }
       ],
       "distribution": null,
@@ -12629,8 +12679,10 @@
         "skill_consumers:1",
         "hook_consumers:3",
         "rule_consumers:2",
-        "test_consumers:2",
-        "doc_consumers:9"
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:9",
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12640,7 +12692,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
