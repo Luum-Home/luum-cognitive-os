@@ -16297,12 +16297,12 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 59,
+        "doc": 60,
         "hook": 11,
         "rule": 10,
         "script": 5,
         "skill": 3,
-        "test": 40
+        "test": 41
       },
       "consumers": [
         {
@@ -16420,6 +16420,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-fitness-evaluation-contract.md"
         },
         {
           "family": "doc",
@@ -16723,6 +16727,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_primitive_fitness_cli.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_self_improvement.py"
         },
         {
@@ -16861,8 +16869,8 @@
         "hook_consumers:11",
         "rule_consumers:10",
         "script_consumers:5",
-        "test_consumers:40",
-        "doc_consumers:59",
+        "test_consumers:41",
+        "doc_consumers:60",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -16875,7 +16883,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 137
+      "total_consumers": 139
     },
     {
       "confidence": "high",
