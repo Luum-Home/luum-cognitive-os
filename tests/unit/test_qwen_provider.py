@@ -31,6 +31,11 @@ class TestConfigDetection(unittest.TestCase):
         with patch.dict(os.environ, {"_COS_QWEN_DOTENV_LOADED": "1"}, clear=True):
             self.assertFalse(qwen_provider.is_configured())
 
+    def test_cos_skip_dotenv_prevents_dotenv_autoload(self):
+        with patch.dict(os.environ, {"COS_SKIP_DOTENV": "1"}, clear=True):
+            self.assertFalse(qwen_provider.is_configured())
+            self.assertEqual(os.environ.get("_COS_QWEN_DOTENV_LOADED"), "1")
+
     def test_is_configured_true_with_env(self):
         with patch.dict(os.environ, {"ALIBABA_QWEN_API_KEY": "sk-test"}):
             self.assertTrue(qwen_provider.is_configured())
