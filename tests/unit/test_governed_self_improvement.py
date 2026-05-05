@@ -11,6 +11,7 @@ from lib.governed_self_improvement import (
     create_improvement_draft,
     promote_improvement_draft,
     suggest_improvement_signals,
+    write_promotion_evaluation,
 )
 
 
@@ -101,8 +102,58 @@ def test_promotion_requires_approval_and_stays_canonical(tmp_path: Path) -> None
     with pytest.raises(PermissionError):
         promote_improvement_draft(tmp_path, draft.draft_id)
 
+    write_promotion_evaluation(
+        tmp_path,
+        draft.draft_id,
+        baseline_score=78,
+        candidate_score=82,
+        evidence_commands=["python3 -m pytest tests/unit/test_governed_self_improvement.py -q"],
+    )
     promotion = promote_improvement_draft(tmp_path, draft.draft_id, approved_by="test-reviewer")
 
     assert promotion["target"] == ".cognitive-os/skills/cos/repair-test-failure-billing/SKILL.md"
     assert (tmp_path / promotion["target"]).exists()
     assert not (tmp_path / "skills" / "repair-test-failure-billing" / "SKILL.md").exists()
+    assert promotion["promotion_evaluation"]["status"] == "passed"
+
+
+def test_promotion_requires_comparative_primitive_evaluation(tmp_path: Path) -> None:
+    _write_jsonl(
+        tmp_path / ".cognitive-os" / "metrics" / "key-learnings.jsonl",
+        [
+            {
+                "text": "Repeated workflow should become a skill.",
+                "actionability": "candidate-improvement",
+                "recommended_artifact": "skill",
+            }
+        ],
+    )
+    draft = create_improvement_draft(tmp_path, suggest_improvement_signals(tmp_path)[0])
+
+    with pytest.raises(PermissionError, match="comparative primitive evaluation"):
+        promote_improvement_draft(tmp_path, draft.draft_id, approved_by="test-reviewer")
+
+
+def test_failing_comparative_evaluation_blocks_promotion(tmp_path: Path) -> None:
+    _write_jsonl(
+        tmp_path / ".cognitive-os" / "metrics" / "error-learning.jsonl",
+        [
+            {"type": "BUILD_ERROR", "service": "worker"},
+            {"type": "BUILD_ERROR", "service": "worker"},
+            {"type": "BUILD_ERROR", "service": "worker"},
+        ],
+    )
+    draft = create_improvement_draft(tmp_path, suggest_improvement_signals(tmp_path)[0])
+
+    evaluation = write_promotion_evaluation(
+        tmp_path,
+        draft.draft_id,
+        baseline_score=80,
+        candidate_score=80.5,
+        required_delta=1.0,
+        safety_regressions=["new false positive in guard fixture"],
+    )
+
+    assert evaluation.status == "failed"
+    with pytest.raises(PermissionError, match="promotion evaluation failed"):
+        promote_improvement_draft(tmp_path, draft.draft_id, approved_by="test-reviewer")

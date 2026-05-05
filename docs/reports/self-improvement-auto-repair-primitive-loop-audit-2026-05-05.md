@@ -183,8 +183,8 @@ core primitive without proof.
 
 ### Required additional primitive
 
-The missing explicit primitive is a **consumer improvement proposal exporter**.
-It should summarize local consumer signals into a portable, sanitized proposal
+The explicit primitive is now implemented as **consumer improvement proposal export/import**.
+It summarizes local consumer signals into a portable, sanitized proposal
 bundle rather than dumping raw memory or full vault content.
 
 Suggested shape:
@@ -194,6 +194,7 @@ scripts/cos-export-consumer-improvement-proposals \
   --project my-service \
   --since 30d \
   --profile core \
+  --threshold 3 \
   --output /tmp/my-service-cos-improvement-proposals.json
 ```
 

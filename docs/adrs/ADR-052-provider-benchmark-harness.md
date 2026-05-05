@@ -1,9 +1,23 @@
+---
+adr: 52
+title: Provider Benchmark Harness
+status: implemented
+implementation_files:
+  - docs/benchmarks/provider-quality-smoke.yaml
+  - scripts/benchmark-providers
+  - scripts/benchmark_providers.py
+  - tests/unit/test_provider_benchmark_and_optimizer.py
+---
+
 # ADR-052 — Provider Benchmark Harness
 
 ## Status
 
-**Reserved** — stub. Blocked on having ≥3 providers wired (today: Qwen
-+ Claude = 2). Not scheduled.
+**Implemented for the no-cost offline harness scope.** The repository now ships a
+fixture-backed benchmark runner, a smoke task set, JSON/JSONL result output, and
+unit coverage. Real provider invocations and LLM-as-judge scoring remain
+explicit opt-in future adapter work so the harness can be validated without
+spending tokens or depending on network availability.
 
 ## Context
 
@@ -24,27 +38,26 @@ providers on real tasks.
 
 ## Decision
 
-**Deferred**. Reserve the design for an offline benchmark tool:
+**Implemented** as an offline benchmark tool with a provider-adapter boundary:
 
 ### Proposed tool
 
-`scripts/benchmark-providers.py`:
+`scripts/benchmark_providers.py`:
 
 ```bash
-python3 scripts/benchmark-providers.py \
-  --task-set docs/benchmarks/sdd-design-tasks.yaml \
+python3 scripts/benchmark_providers.py \
+  --task-set docs/benchmarks/provider-quality-smoke.yaml \
   --providers qwen,claude \
   --runs 3 \
   --judge claude   # use Claude to rate Qwen's outputs (LLM-as-judge)
 ```
 
-Output: per-provider quality score, cost, latency — CSV + markdown
-report.
+Output: per-provider quality score, cost, latency, and per-task details as JSON; optional JSONL output is append-compatible with metric pipelines.
 
 ### Task sets
 
-Curated YAML files per skill category:
-- `docs/benchmarks/sdd-design-tasks.yaml` — architectural reasoning
+Curated YAML files per skill category can extend the shipped smoke set:
+- `docs/benchmarks/provider-quality-smoke.yaml` — architectural reasoning
 - `docs/benchmarks/code-implementation-tasks.yaml` — write function X
 - `docs/benchmarks/classification-tasks.yaml` — tag/label prompts
 - `docs/benchmarks/summarization-tasks.yaml` — compress N lines
@@ -54,7 +67,7 @@ ground truth (optional for automated eval).
 
 ### Judge model
 
-For subjective tasks (design quality, prose clarity), use LLM-as-judge:
+The implemented harness uses deterministic expected-keyword checks for the no-cost baseline. For subjective tasks (design quality, prose clarity), a future adapter can use LLM-as-judge:
 - Run same prompt through each provider
 - Blind-label outputs
 - Ask judge: "Which response is better on [criteria]?"
@@ -82,8 +95,7 @@ For objective tasks (code compiles, passes tests), use programmatic eval:
 }
 ```
 
-Appended to `.cognitive-os/metrics/benchmark-results.jsonl` — feeds
-ADR-053 auto-optimizer.
+Optionally appended to `.cognitive-os/metrics/benchmark-results.jsonl` or another operator-selected JSONL path — feeds ADR-053 auto-optimizer proposals.
 
 ## Consequences
 
@@ -96,8 +108,8 @@ ADR-053 auto-optimizer.
 
 ### Negative
 
-- Benchmark runs cost real money (N prompts × M providers × K runs =
-  nontrivial cost)
+- Real-provider benchmark runs cost real money (N prompts × M providers × K runs =
+  nontrivial cost); the shipped fixture providers avoid that cost for CI smoke tests
 - Judge bias: LLM judges have their own preferences (may favor own-family)
 - Curation work: task sets need periodic refresh to match real workload
 
@@ -108,9 +120,10 @@ ADR-053 auto-optimizer.
 
 ## Dependencies
 
-- At least 3 providers wired (Qwen + Claude + one more) — today: 2
+- No-cost fixture provider baseline — done
 - ADR-049 stable (cascade mechanics solid) — done
 - ADR-051 Phase 1+ (for multi-step task benchmarks) — done (Phase 1)
+- Real provider adapters — future opt-in extension, not required for the implemented contract
 
 ## Related
 
@@ -119,7 +132,7 @@ ADR-053 auto-optimizer.
 - ADR-051 — agent loop (tool-use tasks need it)
 - ADR-053 — auto-optimizer (the ultimate consumer)
 - `lib/dispatch.py` — instrumented; benchmark reuses metrics schema
-- `docs/benchmarks/` (reserved directory, not created yet)
+- `docs/benchmarks/provider-quality-smoke.yaml` — shipped smoke task set
 
 ## Open questions
 
@@ -131,5 +144,4 @@ ADR-053 auto-optimizer.
 4. Confidence intervals: N=3 runs per task is minimum. Higher = more
    cost. Is variance reproducible enough to trust N=3?
 
-Not scheduled. Unblocks ADR-053 auto-optimizer when curation resources
-are available.
+Implemented for the deterministic offline scope. Broader curated task sets, real provider adapters, and subjective judge rotation remain future research/operations work rather than missing core implementation.
