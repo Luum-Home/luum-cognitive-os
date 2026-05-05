@@ -19,7 +19,12 @@ tags: [dependencies, installation, portability, cross-device, manifests]
 
 ## Status
 
-**Implemented for the manifest-driven dry-run installer and credential-safe reporting scope** — 2026-05-05. The current implementation provides cross-platform dry-run JSON, conservative auth-bound/manual reporting, and an apply path for installable non-auth-bound dependencies; broader schema-v2 field migration remains incremental follow-up work.
+**Implemented for the manifest-driven dry-run installer and credential-safe
+reporting scope** — 2026-05-05. The current implementation provides
+cross-platform dry-run JSON, conservative auth-bound/manual reporting, an apply
+path for installable non-auth-bound dependencies, and loader support for
+ADR-168 structured install metadata. Doctor convergence and legacy
+`scripts/setup.sh` delegation remain incremental follow-up work.
 
 ## Context
 
@@ -175,3 +180,28 @@ Implemented installer slice:
 python3 -m pytest tests/unit/test_manifest_loader.py tests/contracts/test_cross_device_dependencies.py -q
 scripts/cos-deps-install.sh --profile core --dry-run --json
 ```
+
+Implemented schema and automation-adjacent slice:
+
+```bash
+python3 -m pytest \
+  tests/unit/test_manifest_loader.py \
+  tests/contracts/test_cross_device_dependencies.py \
+  tests/behavior/test_engram_obsidian_export_hook.py \
+  -q
+bash -n scripts/cos-deps-install.sh hooks/engram-obsidian-export-on-stop.sh
+scripts/cos-deps-install.sh --profile core --platform macos --dry-run --json
+```
+
+Current implementation evidence:
+
+- `manifests/dependencies.yaml` carries `category`, `profiles`, `scope`,
+  `syncable`, `auth_bound`, platform install metadata, and `never_copy` where
+  credential state exists.
+- `lib/manifest_loader.py` validates those fields while still accepting legacy
+  string install entries during migration.
+- `scripts/cos_deps_install.py` emits JSON buckets for `already_present`,
+  `installable`, `manual`, `auth_bound`, `unsupported_platform`, `installed`,
+  and `failed`.
+- `tests/contracts/test_cross_device_dependencies.py` enforces the no-credential
+  copy invariant and the presence of cross-platform metadata for core tools.
