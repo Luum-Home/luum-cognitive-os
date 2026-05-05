@@ -3834,12 +3834,22 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 2,
         "doc": 9,
         "hook": 3,
         "rule": 3,
-        "test": 2
+        "script": 2,
+        "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-084-headless-clustered-runtime-shape.md"
@@ -3901,20 +3911,38 @@
           "path": "rules/queue-drain.md"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-queue-drain"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_service_control_plane.py"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         },
         {
           "family": "test",
           "path": "tests/behavior/test_claude_md_diet.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_service_control_plane_local_queue.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:3",
         "rule_consumers:3",
-        "test_consumers:2",
-        "doc_consumers:9"
+        "script_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:9",
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3924,7 +3952,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 23
     },
     {
       "confidence": "high",
