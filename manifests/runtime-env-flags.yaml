@@ -325,3 +325,50 @@ flags:
   risk_level: medium
   bypasses_safety_primitive: false
   description: Enable MLflow hot-path completion recording.
+- name: COS_ALLOW_PROTECTED_CONFIG_WRITE
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/protected-config-write-guard.sh
+  - manifests/protected-config-write-policy.yaml
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/security/cognitive-os-agent-security-research-2026-05-05.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Explicit operator bypass for writes to agent control-plane config such
+    as .claude, .codex, .cursor, hooks, rules, skills, and security manifests.
+- name: COS_ALLOW_NETWORK_EGRESS
+  family: safety-bypass
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/network-egress-guard.sh
+  - manifests/network-egress-policy.yaml
+  - scripts/network_egress_guard.py
+  documentation:
+  - docs/runtime-env-flags.md
+  - docs/security/cognitive-os-agent-security-research-2026-05-05.md
+  risk_level: high
+  bypasses_safety_primitive: true
+  description: Explicit operator bypass for exfiltration-shaped external network shell
+    commands blocked by network-egress-guard.
+- name: COS_DANGEROUS_ENV_DETECTOR_DISABLE
+  family: watchdog-observability
+  default: '0'
+  allowed_values:
+  - '0'
+  - '1'
+  owner_files:
+  - hooks/dangerous-env-flag-detector.sh
+  documentation:
+  - docs/runtime-env-flags.md
+  risk_level: medium
+  bypasses_safety_primitive: false
+  description: Disables the advisory detector that reports active high-risk Cognitive
+    OS environment flags.

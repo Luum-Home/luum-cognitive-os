@@ -6,13 +6,14 @@
       "source": "manifests/primitive-consumer-availability.yaml",
       "status": "ok",
       "summary": {
-        "items": 76,
+        "items": 88,
         "patterns": 6,
         "statuses": {
+          "lifecycle-declared-maintainer": 3,
           "maintainer-only": 57,
           "pattern:so-local-only": 6,
           "shell-ci-candidate": 15,
-          "so-local-only": 4
+          "so-local-only": 13
         }
       }
     },
@@ -24,49 +25,90 @@
       "summary": {
         "by_harness_profile": {
           "aider/default": 73,
-          "aider/full": 349,
+          "aider/full": 352,
           "amp-code/default": 73,
-          "amp-code/full": 349,
+          "amp-code/full": 352,
           "augment-code/default": 73,
-          "augment-code/full": 349,
+          "augment-code/full": 352,
           "claude/default": 73,
-          "claude/full": 349,
+          "claude/full": 352,
           "cline/default": 73,
-          "cline/full": 349,
+          "cline/full": 352,
           "codex/default": 73,
-          "codex/full": 349,
+          "codex/full": 352,
           "continue-dev/default": 73,
-          "continue-dev/full": 349,
+          "continue-dev/full": 352,
           "cursor/default": 73,
-          "cursor/full": 349,
+          "cursor/full": 352,
           "factory-droid/default": 73,
-          "factory-droid/full": 349,
+          "factory-droid/full": 352,
           "gemini-cli/default": 73,
-          "gemini-cli/full": 349,
+          "gemini-cli/full": 352,
           "goose/default": 73,
-          "goose/full": 349,
+          "goose/full": 352,
           "jetbrains-junie/default": 73,
-          "jetbrains-junie/full": 349,
+          "jetbrains-junie/full": 352,
           "kilo-code/default": 73,
-          "kilo-code/full": 349,
+          "kilo-code/full": 352,
           "kimi-code/default": 73,
-          "kimi-code/full": 349,
+          "kimi-code/full": 352,
           "opencode/default": 73,
-          "opencode/full": 349,
+          "opencode/full": 352,
           "qoder/default": 73,
-          "qoder/full": 349,
+          "qoder/full": 352,
           "qwen-code/default": 73,
-          "qwen-code/full": 349,
+          "qwen-code/full": 352,
           "shell-ci/default": 73,
-          "shell-ci/full": 349,
+          "shell-ci/full": 352,
           "vscode-copilot/default": 73,
-          "vscode-copilot/full": 349,
+          "vscode-copilot/full": 352,
           "warp/default": 73,
-          "warp/full": 349,
+          "warp/full": 352,
           "zed-ai/default": 73,
-          "zed-ai/full": 349
+          "zed-ai/full": 352
         },
-        "projected_primitives": 371
+        "projected_primitives": 374
+      }
+    },
+    "cos_coverage": {
+      "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
+      "error": null,
+      "source": "cos_coverage",
+      "status": "ok",
+      "summary": {
+        "aspirational": 38,
+        "coverage_pct": 54.3,
+        "dormant": 160,
+        "generated_at": "2026-05-05T17:35:52Z",
+        "mapped": 268,
+        "metadata": 56,
+        "on_demand": 287,
+        "project": "<repo-root>",
+        "real": 235,
+        "tiers": {
+          "A": 2,
+          "B": 4,
+          "C": 39,
+          "D": 155
+        },
+        "trend": {
+          "coverage_pct": "flat",
+          "dormant": "flat",
+          "real": "flat"
+        },
+        "unmapped": 0,
+        "weak_proof": 0
+      }
+    },
+    "docs_execution": {
+      "command": "python3 scripts/docs_execution_audit.py --project-dir .",
+      "error": null,
+      "source": "docs_execution",
+      "status": "ok",
+      "summary": {
+        "items": 2778,
+        "json": "<repo-root>/docs/reports/docs-execution-latest.json",
+        "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
       }
     },
     "docs_execution_report": {
@@ -88,8 +130,8 @@
             "planned": 1
           },
           "docs/README.md": {
-            "done_weak_proof": 15,
-            "planned": 17,
+            "done_weak_proof": 16,
+            "planned": 19,
             "proposed": 6
           },
           "docs/RED-TEAM-CHANGELOG.md": {
@@ -137,10 +179,10 @@
             "planned": 2
           },
           "docs/acc/latest-compact.md": {
-            "proposed": 2
+            "proposed": 5
           },
           "docs/acc/latest.md": {
-            "proposed": 1
+            "proposed": 2
           },
           "docs/adoption-tiers.md": {
             "done_weak_proof": 4,
@@ -652,8 +694,8 @@
             "proposed": 1
           },
           "docs/adrs/ADR-118-multi-ide-swarm-testbed.md": {
-            "done_weak_proof": 3,
-            "planned": 2
+            "done_weak_proof": 5,
+            "planned": 3
           },
           "docs/adrs/ADR-119-session-filesystem-reaper.md": {
             "done_weak_proof": 2,
@@ -862,8 +904,13 @@
             "done_weak_proof": 2
           },
           "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md": {
-            "done_weak_proof": 2,
+            "done_weak_proof": 1,
             "planned": 1
+          },
+          "docs/adrs/ADR-168-cross-device-dependency-installation.md": {
+            "done_weak_proof": 4,
+            "planned": 2,
+            "proposed": 1
           },
           "docs/adrs/README.md": {
             "planned": 1
@@ -1049,7 +1096,9 @@
             "proposed": 1
           },
           "docs/architecture/cross-instance-learning-runway.md": {
-            "planned": 1
+            "done_weak_proof": 1,
+            "planned": 1,
+            "proposed": 1
           },
           "docs/architecture/cross-platform-ci.md": {
             "done_weak_proof": 2
@@ -1257,6 +1306,9 @@
           },
           "docs/architecture/primitive-readiness-ledger-family-extension.md": {
             "planned": 2
+          },
+          "docs/architecture/proof-drill-and-smoke-opt-in-primitives.md": {
+            "planned": 1
           },
           "docs/architecture/python-stdin-heredoc-trap.md": {
             "done_weak_proof": 1,
@@ -1509,6 +1561,9 @@
             "done_weak_proof": 1,
             "planned": 2
           },
+          "docs/manual-tests/consumer-improvement-proposals.md": {
+            "proposed": 2
+          },
           "docs/manual-tests/engram-cloud-docker-sync.md": {
             "done_weak_proof": 2
           },
@@ -1702,6 +1757,7 @@
           },
           "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md": {
             "done_weak_proof": 5,
+            "done_with_proof": 1,
             "proposed": 1
           },
           "docs/roadmap.md": {
@@ -1737,11 +1793,24 @@
           "docs/security-stack.md": {
             "planned": 2
           },
-          "docs/security/cognitive-os-security-assessment-plan.md": {
+          "docs/security/cognitive-os-agent-security-research-2026-05-05.md": {
+            "done_weak_proof": 1,
             "planned": 1
+          },
+          "docs/security/cognitive-os-attack-surface-inventory.md": {
+            "done_weak_proof": 2,
+            "done_with_proof": 1
+          },
+          "docs/security/cognitive-os-security-assessment-plan.md": {
+            "done_weak_proof": 1,
+            "planned": 2
           },
           "docs/security/lethal-trifecta-gate.md": {
             "done_weak_proof": 1
+          },
+          "docs/security/security-red-team.md": {
+            "done_weak_proof": 1,
+            "planned": 1
           },
           "docs/self-building-protocol.md": {
             "done_weak_proof": 2
@@ -1761,6 +1830,11 @@
           "docs/session-concurrency.md": {
             "done_weak_proof": 1,
             "proposed": 1
+          },
+          "docs/setup/cross-device-dependencies.md": {
+            "done_weak_proof": 4,
+            "done_with_proof": 1,
+            "planned": 2
           },
           "docs/setup/dependencies.md": {
             "proposed": 1
@@ -1809,13 +1883,96 @@
             "planned": 1
           }
         },
-        "items": 2740,
+        "items": 2778,
         "statuses": {
-          "done_weak_proof": 1148,
-          "done_with_proof": 225,
-          "planned": 1074,
-          "proposed": 293
+          "done_weak_proof": 1164,
+          "done_with_proof": 228,
+          "planned": 1085,
+          "proposed": 301
         }
+      }
+    },
+    "family_readiness_hooks": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks",
+      "error": null,
+      "source": "family_readiness_hooks",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 132,
+          "medium": 86
+        },
+        "consumer_accessibility": {
+          "lifecycle-declared-consumer-candidate": 1,
+          "lifecycle-declared-maintainer": 120,
+          "projected-consumer-surface": 11,
+          "so-local-only": 86
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.md",
+        "roles": {
+          "driver-specific": 13,
+          "lab": 103,
+          "memory-lifecycle": 69,
+          "observability": 26,
+          "runtime-safety": 7
+        },
+        "total": 218,
+        "without_consumers": 0,
+        "without_lifecycle": 86
+      }
+    },
+    "family_readiness_rules": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules",
+      "error": null,
+      "source": "family_readiness_rules",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "medium": 112
+        },
+        "consumer_accessibility": {
+          "so-local-only": 112
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.md",
+        "roles": {
+          "context-only": 6,
+          "doctrine": 4,
+          "driver-specific": 48,
+          "hook-enforced": 43,
+          "lab": 11
+        },
+        "total": 112,
+        "without_consumers": 0,
+        "without_lifecycle": 112
+      }
+    },
+    "family_readiness_skills": {
+      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills",
+      "error": null,
+      "source": "family_readiness_skills",
+      "status": "ok",
+      "summary": {
+        "confidence": {
+          "high": 53,
+          "medium": 39
+        },
+        "consumer_accessibility": {
+          "repo-skill-not-projectable": 88,
+          "so-local-only": 4
+        },
+        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.json",
+        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.md",
+        "roles": {
+          "compatibility-wrapper": 53,
+          "lab": 7,
+          "project-extension": 16,
+          "so-maintainer": 16
+        },
+        "total": 92,
+        "without_consumers": 0,
+        "without_lifecycle": 92
       }
     },
     "harness_projection": {
@@ -1828,6 +1985,133 @@
         "planned": 5,
         "total": 26,
         "unsupported": 0
+      }
+    },
+    "primitive_duplication": {
+      "command": "python3 scripts/primitive_duplication_audit.py --project-root .",
+      "error": null,
+      "source": "primitive_duplication",
+      "status": "ok",
+      "summary": {
+        "by_common_home": {
+          "lib/": 5
+        },
+        "by_consumer_relevance": {
+          "so-local-first": 5
+        },
+        "by_kind": {
+          "python-function-repeat": 5
+        },
+        "files_scanned": 772,
+        "findings": 5
+      }
+    },
+    "primitive_gap_snapshot": {
+      "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
+      "error": null,
+      "source": "primitive_gap_snapshot",
+      "status": "ok",
+      "summary": {
+        "families": [
+          {
+            "aspirational_signal": 3,
+            "evidence": "row-audit proven=100 partial_nonblocking=135 actionable_gaps=3",
+            "family": "hooks",
+            "next_action": "close actionable rows",
+            "partial_signal": 135,
+            "proven_signal": 100,
+            "severity": "high",
+            "total": 238
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=187 partial_nonblocking=54 actionable_gaps=0",
+            "family": "skills",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 54,
+            "proven_signal": 187,
+            "severity": "low",
+            "total": 241
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "row-audit proven=112 partial_nonblocking=0 actionable_gaps=0",
+            "family": "rules",
+            "next_action": "no actionable gaps; harden weak proof opportunistically",
+            "partial_signal": 0,
+            "proven_signal": 112,
+            "severity": "low",
+            "total": 112
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "memory-named=9 runtime-or-test-referenced=9; actionable_gaps=0",
+            "family": "memory",
+            "next_action": "row-audit memory primitives when Engram APIs change",
+            "partial_signal": 0,
+            "proven_signal": 9,
+            "severity": "low",
+            "total": 9
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "mcp-mentioned-files=245 test-mentioned-files=114; actionable_gaps=0",
+            "family": "mcp_tools",
+            "next_action": "separate installed/optional/reference-only integrations before promotion",
+            "partial_signal": 131,
+            "proven_signal": 114,
+            "severity": "low",
+            "total": 245
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "projection-files=2 test-mentioned=2; actionable_gaps=0",
+            "family": "config_projection",
+            "next_action": "map config keys to readers and projected driver outputs",
+            "partial_signal": 0,
+            "proven_signal": 2,
+            "severity": "low",
+            "total": 2
+          },
+          {
+            "aspirational_signal": 9,
+            "evidence": "row-audit proven=86 partial_nonblocking=26 actionable_gaps=9",
+            "family": "metrics",
+            "next_action": "close actionable rows",
+            "partial_signal": 26,
+            "proven_signal": 86,
+            "severity": "high",
+            "total": 121
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "test_py=816 audit-contract-quality=44; actionable_gaps=0",
+            "family": "tests_quality_gates",
+            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
+            "partial_signal": 772,
+            "proven_signal": 44,
+            "severity": "low",
+            "total": 816
+          },
+          {
+            "aspirational_signal": 0,
+            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=228 mapped_claims=418",
+            "family": "docs_adrs",
+            "next_action": "no hard docs gaps; improve weak proof opportunistically",
+            "partial_signal": 2550,
+            "proven_signal": 646,
+            "severity": "low",
+            "total": 3196
+          }
+        ],
+        "hook_latency": {
+          "events": 2500,
+          "max_ms": 5969,
+          "p50_ms": 414,
+          "p95_ms": 1622
+        },
+        "overall_risk": "high",
+        "timestamp": "2026-05-05T17:37:36.063748+00:00"
       }
     },
     "projection_profiles": {
@@ -1875,23 +2159,23 @@
       "status": "ok",
       "summary": {
         "confidence": {
-          "high": 128,
+          "high": 132,
           "medium": 86
         },
         "consumer_accessibility": {
           "lifecycle-declared-consumer-candidate": 1,
-          "lifecycle-declared-maintainer": 116,
+          "lifecycle-declared-maintainer": 120,
           "projected-consumer-surface": 11,
           "so-local-only": 86
         },
         "roles": {
-          "driver-specific": 12,
+          "driver-specific": 13,
           "lab": 103,
-          "memory-lifecycle": 66,
+          "memory-lifecycle": 69,
           "observability": 26,
           "runtime-safety": 7
         },
-        "total": 214,
+        "total": 218,
         "without_consumers": 0,
         "without_lifecycle": 86
       }
@@ -1928,27 +2212,27 @@
       "summary": {
         "agentic_primitives_without_lifecycle": 0,
         "confidence": {
-          "high": 151,
-          "low": 6,
-          "medium": 193
+          "high": 154,
+          "low": 8,
+          "medium": 209
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
-          "lifecycle-declared-consumer-candidate": 51,
-          "lifecycle-declared-maintainer": 50,
+          "lifecycle-declared-consumer-candidate": 53,
+          "lifecycle-declared-maintainer": 51,
           "skill-referenced-not-projectable": 2,
-          "so-local-only": 228
+          "so-local-only": 246
         },
-        "low_confidence_rows": 6,
+        "low_confidence_rows": 8,
         "roles": {
-          "agentic-primitive": 113,
+          "agentic-primitive": 116,
           "driver-specific": 11,
-          "lab": 22,
-          "maintainer-tool": 193,
+          "lab": 23,
+          "maintainer-tool": 210,
           "migration-only": 11
         },
-        "total_scripts": 350,
-        "without_consumers": 4
+        "total_scripts": 371,
+        "without_consumers": 5
       }
     },
     "readiness:skills": {
@@ -1958,23 +2242,30 @@
       "status": "ok",
       "summary": {
         "confidence": {
-          "high": 52,
+          "high": 53,
           "medium": 39
         },
         "consumer_accessibility": {
-          "repo-skill-not-projectable": 87,
+          "repo-skill-not-projectable": 88,
           "so-local-only": 4
         },
         "roles": {
-          "compatibility-wrapper": 52,
+          "compatibility-wrapper": 53,
           "lab": 7,
           "project-extension": 16,
           "so-maintainer": 16
         },
-        "total": 91,
+        "total": 92,
         "without_consumers": 0,
-        "without_lifecycle": 91
+        "without_lifecycle": 92
       }
+    },
+    "script_readiness_refresh": {
+      "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
+      "error": "154, \"low\": 8, \"medium\": 209}, \"consumer_accessibility\": {\"install-profile-managed\": 19, \"lifecycle-declared-consumer-candidate\": 53, \"lifecycle-declared-maintainer\": 51, \"skill-referenced-not-projectable\": 2, \"so-local-only\": 246}, \"json\": \"docs/reports/primitive-readiness-ledger-scripts-latest.json\", \"lifecycle_backlog_json\": \"docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json\", \"lifecycle_backlog_markdown\": \"docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md\", \"low_confidence_rows\": 8, \"markdown\": \"docs/reports/primitive-readiness-ledger-scripts-latest.md\", \"roles\": {\"agentic-primitive\": 116, \"driver-specific\": 11, \"lab\": 23, \"maintainer-tool\": 210, \"migration-only\": 11}, \"total_scripts\": 371, \"without_consumers\": 5}\n",
+      "source": "script_readiness_refresh",
+      "status": "failed",
+      "summary": {}
     },
     "shell_ci_projection": {
       "command": null,
@@ -3883,13 +4174,13 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:56",
-        "test_consumers:326",
+        "skill_consumers:57",
+        "test_consumers:335",
         "hook_consumers:75",
-        "doc_consumers:437",
+        "doc_consumers:443",
         "rule_consumers:42",
         "config_consumers:38",
-        "script_consumers:212",
+        "script_consumers:221",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -4637,7 +4928,7 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_credential_safe_run.py",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -5460,6 +5751,43 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "doc_consumers:2",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-export-consumer-improvement-proposals",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-export-consumer-improvement-proposals",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-export-consumer-improvement-proposals"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-export-consumer-improvement-proposals"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "doc_consumers:4",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
@@ -5968,7 +6296,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:3",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:5",
         "script_consumers:1",
         "role_source:lifecycle",
@@ -6046,6 +6374,43 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-import-consumer-evidence"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "doc_consumers:2",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-import-consumer-improvement-proposals",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-import-consumer-improvement-proposals",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-import-consumer-improvement-proposals"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-import-consumer-improvement-proposals"
       },
       "weight": 3
     },
@@ -6167,6 +6532,50 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-instance-init"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.68,
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:3",
+        "rule_consumers:1",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:lifecycle-declared-maintainer",
+        "availability_match:exact",
+        "availability_rationale:Opt-in team learning-capture helper; lifecycle metadata controls projection before consumer claims."
+      ],
+      "id": "script:scripts/cos-key-learnings-capture",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "partial",
+      "represented_by": [
+        {
+          "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+          "id": "scripts/cos-key-learnings-capture",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/cos-key-learnings-capture"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "team",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-key-learnings-capture"
       },
       "weight": 3
     },
@@ -6460,6 +6869,43 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-operational-status",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-operational-status",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-operational-status"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-operational-status"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:1",
         "doc_consumers:1",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
@@ -6609,6 +7055,43 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-preamble-budget"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-profile-explain",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-profile-explain",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-profile-explain"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-profile-explain"
       },
       "weight": 3
     },
@@ -6891,6 +7374,43 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-release-check.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-repair",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-repair",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-repair"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-repair"
       },
       "weight": 3
     },
@@ -7397,7 +7917,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3",
         "script_consumers:1",
         "role_source:lifecycle",
@@ -7485,7 +8005,7 @@
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:7",
         "doc_consumers:17",
-        "config_consumers:2",
+        "config_consumers:1",
         "script_consumers:4",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
@@ -7560,6 +8080,42 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-usage-report.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-validate",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-validate",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-validate"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-validate"
       },
       "weight": 3
     },
@@ -7901,7 +8457,7 @@
       "evidence": [
         "lifecycle",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:4",
         "script_consumers:1",
         "role_source:lifecycle",
@@ -8393,6 +8949,7 @@
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:2",
+        "script_consumers:1",
         "role_source:heuristic:path",
         "consumer_accessibility:skill-referenced-not-projectable",
         "availability_override:so-local-only",
@@ -8550,6 +9107,43 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "script_consumers:2",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_consumer_improvement_proposals.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_consumer_improvement_proposals.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_consumer_improvement_proposals.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_consumer_improvement_proposals.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
         "script_consumers:1",
@@ -8630,7 +9224,7 @@
       "evidence": [
         "test_consumers:1",
         "config_consumers:3",
-        "script_consumers:1",
+        "script_consumers:2",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:maintainer-only",
@@ -8818,6 +9412,7 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "doc_consumers:1",
         "script_consumers:1",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
@@ -9208,6 +9803,8 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
+        "rule_consumers:1",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -9407,6 +10004,44 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "config_consumers:1",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_key_learnings_capture.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_key_learnings_capture.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_key_learnings_capture.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_key_learnings_capture.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "config_consumers:2",
         "script_consumers:1",
         "role_source:heuristic:self-evolution",
@@ -9482,6 +10117,43 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_new_adr.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_operational_status.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_operational_status.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_operational_status.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_operational_status.py"
       },
       "weight": 3
     },
@@ -9609,6 +10281,43 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_profile_explain.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_profile_explain.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_profile_explain.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_profile_explain.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_wip_safety_score.py",
         "config_consumers:1",
@@ -9645,6 +10354,45 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_recovery_drill.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:1",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_repair.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_repair.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_repair.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_repair.py"
       },
       "weight": 3
     },
@@ -10013,6 +10761,45 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_validate.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_validate.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_validate.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_validate.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:1",
         "doc_consumers:4",
         "rule_consumers:1",
         "config_consumers:1",
@@ -10092,7 +10879,7 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:3",
-        "test_consumers:4",
+        "test_consumers:5",
         "hook_consumers:2",
         "doc_consumers:8",
         "config_consumers:2",
@@ -10420,6 +11207,44 @@
     },
     {
       "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "hook_consumers:1",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:usage:repo",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Python analyzer behind the local dangerous-env hook; not a standalone consumer capability."
+      ],
+      "id": "script:scripts/dangerous_env_flag_detector.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/dangerous_env_flag_detector.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/dangerous_env_flag_detector.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/dangerous_env_flag_detector.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
       "consumer_accessibility": "maintainer-only",
       "evidence": [
         "lifecycle",
@@ -10675,7 +11500,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver-claude-code.sh",
-        "test_consumers:1",
+        "test_consumers:2",
         "hook_consumers:1",
         "doc_consumers:4",
         "script_consumers:1",
@@ -10884,7 +11709,7 @@
         "wrapper_for:scripts/setup.sh",
         "test_consumers:4",
         "doc_consumers:14",
-        "config_consumers:8",
+        "config_consumers:7",
         "script_consumers:3",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
@@ -11137,9 +11962,10 @@
       "confidence": 0.9,
       "consumer_accessibility": "maintainer-only",
       "evidence": [
+        "hook_consumers:1",
         "doc_consumers:4",
         "config_consumers:1",
-        "role_source:usage:doc-rule",
+        "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
         "availability_override:maintainer-only",
         "availability_match:exact",
@@ -12277,7 +13103,6 @@
       "evidence": [
         "test_consumers:4",
         "doc_consumers:5",
-        "config_consumers:1",
         "script_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
@@ -12308,6 +13133,44 @@
       "source": {
         "family": "scripts",
         "path": "scripts/manifest-check.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "doc_consumers:2",
+        "script_consumers:1",
+        "role_source:usage:doc-rule",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/mcp_tofu_audit.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/mcp_tofu_audit.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/mcp_tofu_audit.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/mcp_tofu_audit.py"
       },
       "weight": 3
     },
@@ -12477,6 +13340,43 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "config_consumers:1",
+        "script_consumers:1",
+        "role_source:default",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Security red-team analyzer implementation; not a standalone consumer capability."
+      ],
+      "id": "script:scripts/metrics_tamper_audit.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/metrics_tamper_audit.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/metrics_tamper_audit.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/metrics_tamper_audit.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "doc_consumers:1",
         "config_consumers:1",
         "role_source:heuristic:path",
@@ -12508,6 +13408,82 @@
       "source": {
         "family": "scripts",
         "path": "scripts/migrate-to-cognitive-os.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "hook_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:3",
+        "role_source:usage:repo",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Python analyzer behind the local network-egress PreToolUse guard; not a standalone consumer capability."
+      ],
+      "id": "script:scripts/network_egress_guard.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/network_egress_guard.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/network_egress_guard.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/network_egress_guard.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1",
+        "role_source:heuristic:path",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Security sandbox helper for red-team workflows; not a standalone consumer capability."
+      ],
+      "id": "script:scripts/network_sandbox_run.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/network_sandbox_run.py",
+          "kind": "script",
+          "role": "lab",
+          "source": "scripts/network_sandbox_run.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "lab",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/network_sandbox_run.py"
       },
       "weight": 3
     },
@@ -13321,7 +14297,8 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
+        "script_consumers:1",
         "role_source:usage:repo",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -13470,6 +14447,43 @@
       "source": {
         "family": "scripts",
         "path": "scripts/proof_drill_select.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "config_consumers:1",
+        "script_consumers:1",
+        "role_source:default",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Security red-team analyzer implementation; not a standalone consumer capability."
+      ],
+      "id": "script:scripts/provider_spoof_audit.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/provider_spoof_audit.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/provider_spoof_audit.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/provider_spoof_audit.py"
       },
       "weight": 3
     },
@@ -14398,6 +15412,50 @@
       "weight": 3
     },
     {
+      "confidence": 0.68,
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/security_red_team.py",
+        "skill_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:7",
+        "config_consumers:3",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:lifecycle-declared-maintainer",
+        "availability_match:exact"
+      ],
+      "id": "script:scripts/security-red-team",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "partial",
+      "represented_by": [
+        {
+          "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+          "id": "scripts/security-red-team",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/security-red-team"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "team",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/security-red-team"
+      },
+      "weight": 3
+    },
+    {
       "confidence": 0.9,
       "consumer_accessibility": "maintainer-only",
       "evidence": [
@@ -14438,6 +15496,49 @@
       "source": {
         "family": "scripts",
         "path": "scripts/security_audit_writer.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/cos_credential_safe_run.py",
+        "test_consumers:2",
+        "config_consumers:2",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:lifecycle-declared-maintainer",
+        "availability_match:exact",
+        "availability_rationale:Python implementation behind the opt-in security workflow wrapper."
+      ],
+      "id": "script:scripts/security_red_team.py",
+      "kind": "script",
+      "lifecycle_status": "dormant",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "lifecycle-declared-maintainer",
+          "id": "scripts/security_red_team.py",
+          "kind": "script",
+          "role": "agentic-primitive",
+          "source": "scripts/security_red_team.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "agentic-primitive",
+        "supported_harnesses": [
+          "shell"
+        ]
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/security_red_team.py"
       },
       "weight": 3
     },
@@ -16233,7 +17334,7 @@
         "skill_consumers:7",
         "hook_consumers:27",
         "rule_consumers:5",
-        "script_consumers:30",
+        "script_consumers:31",
         "test_consumers:56",
         "doc_consumers:74",
         "config_consumers:3",
@@ -16315,10 +17416,10 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "skill_consumers:2",
-        "hook_consumers:64",
+        "hook_consumers:67",
         "rule_consumers:6",
         "script_consumers:22",
-        "test_consumers:31",
+        "test_consumers:32",
         "doc_consumers:49",
         "config_consumers:3",
         "role_source:heuristic:text",
@@ -16719,7 +17820,7 @@
         "rule_consumers:3",
         "script_consumers:1",
         "test_consumers:9",
-        "doc_consumers:33",
+        "doc_consumers:34",
         "config_consumers:6",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -16794,7 +17895,7 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "hook_consumers:60",
+        "hook_consumers:61",
         "script_consumers:2",
         "test_consumers:11",
         "doc_consumers:7",
@@ -17833,9 +18934,9 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "rule_consumers:2",
-        "script_consumers:1",
+        "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:5",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -18401,9 +19502,9 @@
         "lifecycle",
         "hook_consumers:3",
         "rule_consumers:4",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:15",
-        "doc_consumers:35",
+        "doc_consumers:36",
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -18917,7 +20018,7 @@
         "rule_consumers:2",
         "script_consumers:5",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -19341,6 +20442,51 @@
       "evidence": [
         "lifecycle",
         "script_consumers:3",
+        "doc_consumers:1",
+        "config_consumers:7",
+        "role_source:lifecycle",
+        "lifecycle_state:advisory",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Local advisory SessionStart detector for dangerous override flags; not a standalone consumer capability.",
+        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
+        "projected_profiles:full"
+      ],
+      "id": "hook:hooks/dangerous-env-flag-detector.sh",
+      "kind": "hook",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "hooks/dangerous-env-flag-detector.sh",
+          "kind": "hook",
+          "role": "memory-lifecycle",
+          "source": "hooks/dangerous-env-flag-detector.sh"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "memory-lifecycle",
+        "supported_harnesses": [
+          "claude",
+          "codex"
+        ]
+      },
+      "source": {
+        "family": "hooks",
+        "path": "hooks/dangerous-env-flag-detector.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "script_consumers:3",
         "test_consumers:2",
         "doc_consumers:5",
         "config_consumers:9",
@@ -19388,8 +20534,8 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:6",
-        "test_consumers:8",
-        "doc_consumers:13",
+        "test_consumers:9",
+        "doc_consumers:14",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -19433,7 +20579,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:6",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -20118,6 +21264,50 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "lifecycle",
+        "script_consumers:3",
+        "test_consumers:1",
+        "doc_consumers:5",
+        "config_consumers:6",
+        "role_source:lifecycle",
+        "lifecycle_state:advisory",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Optional local Stop hook for Engram-to-Obsidian export; not a standalone consumer capability.",
+        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
+      ],
+      "id": "hook:hooks/engram-obsidian-export-on-stop.sh",
+      "kind": "hook",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "hooks/engram-obsidian-export-on-stop.sh",
+          "kind": "hook",
+          "role": "memory-lifecycle",
+          "source": "hooks/engram-obsidian-export-on-stop.sh"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "memory-lifecycle",
+        "supported_harnesses": [
+          "claude"
+        ]
+      },
+      "source": {
+        "family": "hooks",
+        "path": "hooks/engram-obsidian-export-on-stop.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
         "hook_consumers:2",
         "script_consumers:3",
         "test_consumers:2",
@@ -20208,7 +21398,7 @@
         "hook_consumers:11",
         "rule_consumers:10",
         "script_consumers:5",
-        "test_consumers:39",
+        "test_consumers:40",
         "doc_consumers:59",
         "config_consumers:9",
         "role_source:lifecycle",
@@ -20898,7 +22088,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:11",
+        "doc_consumers:13",
         "config_consumers:5",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -20940,9 +22130,9 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "lifecycle",
-        "script_consumers:6",
+        "script_consumers:7",
         "test_consumers:2",
-        "doc_consumers:19",
+        "doc_consumers:21",
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -21231,6 +22421,50 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "lifecycle",
+        "script_consumers:3",
+        "test_consumers:1",
+        "doc_consumers:3",
+        "config_consumers:7",
+        "role_source:lifecycle",
+        "lifecycle_state:blocking",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Local PreToolUse runtime guard projected by Claude settings; not a standalone consumer capability.",
+        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
+      ],
+      "id": "hook:hooks/network-egress-guard.sh",
+      "kind": "hook",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "hooks/network-egress-guard.sh",
+          "kind": "hook",
+          "role": "driver-specific",
+          "source": "hooks/network-egress-guard.sh"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "driver-specific",
+        "supported_harnesses": [
+          "claude"
+        ]
+      },
+      "source": {
+        "family": "hooks",
+        "path": "hooks/network-egress-guard.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "hook_consumers:6",
         "rule_consumers:1",
         "script_consumers:4",
@@ -21277,7 +22511,7 @@
         "hook_consumers:1",
         "script_consumers:4",
         "test_consumers:9",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -21438,7 +22672,8 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "doc_consumers:10",
+        "script_consumers:1",
+        "doc_consumers:11",
         "config_consumers:2",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -21519,9 +22754,9 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "lifecycle",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:6",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:6",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -22176,6 +23411,50 @@
       "evidence": [
         "lifecycle",
         "script_consumers:3",
+        "test_consumers:1",
+        "doc_consumers:3",
+        "config_consumers:6",
+        "role_source:lifecycle",
+        "lifecycle_state:blocking",
+        "consumer_accessibility:lifecycle-declared-maintainer",
+        "availability_override:so-local-only",
+        "availability_match:exact",
+        "availability_rationale:Local PreToolUse runtime guard projected by Claude settings; not a standalone consumer capability.",
+        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
+      ],
+      "id": "hook:hooks/protected-config-write-guard.sh",
+      "kind": "hook",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "hooks/protected-config-write-guard.sh",
+          "kind": "hook",
+          "role": "memory-lifecycle",
+          "source": "hooks/protected-config-write-guard.sh"
+        }
+      ],
+      "risk": "high",
+      "signature": {
+        "distribution": "maintainer",
+        "role": "memory-lifecycle",
+        "supported_harnesses": [
+          "claude"
+        ]
+      },
+      "source": {
+        "family": "hooks",
+        "path": "hooks/protected-config-write-guard.sh"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "lifecycle",
+        "script_consumers:3",
         "test_consumers:3",
         "doc_consumers:2",
         "config_consumers:6",
@@ -22309,7 +23588,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:advisory",
@@ -22398,7 +23677,7 @@
         "rule_consumers:3",
         "script_consumers:8",
         "test_consumers:17",
-        "doc_consumers:42",
+        "doc_consumers:43",
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -22910,7 +24189,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:5",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:7",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -23001,7 +24280,7 @@
         "rule_consumers:5",
         "script_consumers:10",
         "test_consumers:13",
-        "doc_consumers:42",
+        "doc_consumers:43",
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -23128,8 +24407,9 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "rule_consumers:3",
+        "script_consumers:1",
         "test_consumers:4",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:3",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -23137,8 +24417,7 @@
         "availability_match:pattern",
         "availability_pattern:hooks/*.sh",
         "availability_rationale:Unprojected hooks are local optional/runtime surfaces unless cos_init projection proves them.",
-        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
-        "projected_profiles:full"
+        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
       ],
       "id": "hook:hooks/semgrep-scan.sh",
       "kind": "hook",
@@ -24473,7 +25752,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:3",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:3",
         "config_consumers:7",
         "role_source:lifecycle",
@@ -25829,7 +27108,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
         "availability_override:so-local-only",
@@ -27172,7 +28451,9 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "doc_consumers:2",
+        "skill_consumers:1",
+        "script_consumers:1",
+        "doc_consumers:5",
         "config_consumers:1",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -27615,10 +28896,10 @@
       "confidence": 0.9,
       "consumer_accessibility": "maintainer-only",
       "evidence": [
-        "script_consumers:6",
-        "test_consumers:5",
-        "doc_consumers:10",
-        "config_consumers:7",
+        "script_consumers:7",
+        "test_consumers:6",
+        "doc_consumers:11",
+        "config_consumers:8",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
         "availability_override:maintainer-only",
@@ -27777,13 +29058,13 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "skill_consumers:2",
+        "skill_consumers:3",
         "hook_consumers:1",
         "rule_consumers:2",
-        "script_consumers:4",
-        "test_consumers:4",
-        "doc_consumers:19",
-        "config_consumers:4",
+        "script_consumers:6",
+        "test_consumers:7",
+        "doc_consumers:24",
+        "config_consumers:5",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
         "availability_override:so-local-only",
@@ -27819,8 +29100,10 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:7",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
         "availability_override:so-local-only",
@@ -27828,8 +29111,7 @@
         "availability_pattern:skills/**/SKILL.md",
         "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them.",
         "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
-        "projected_profiles:full",
-        "projection_class:shared"
+        "projected_profiles:full"
       ],
       "id": "skill:skills/redteam-harness/SKILL.md",
       "kind": "skill",
@@ -28402,6 +29684,46 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "script_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:7",
+        "config_consumers:3",
+        "role_source:usage:script-hook",
+        "consumer_accessibility:repo-skill-not-projectable",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:skills/**/SKILL.md",
+        "availability_rationale:Unprojected repo skills are repo-only or maintainer surfaces unless default/full projection proves them."
+      ],
+      "id": "skill:skills/security-red-team/SKILL.md",
+      "kind": "skill",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "skills/security-red-team/SKILL.md",
+          "kind": "skill",
+          "role": "compatibility-wrapper",
+          "source": "skills/security-red-team/SKILL.md"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "distribution": null,
+        "role": "compatibility-wrapper",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "skills",
+        "path": "skills/security-red-team/SKILL.md"
+      },
+      "weight": 2
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "skill_consumers:2",
         "hook_consumers:1",
         "script_consumers:2",
@@ -28893,10 +30215,11 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:1",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
@@ -29019,7 +30342,7 @@
         "skill_consumers:5",
         "hook_consumers:4",
         "rule_consumers:2",
-        "script_consumers:11",
+        "script_consumers:12",
         "test_consumers:27",
         "doc_consumers:71",
         "config_consumers:4",
@@ -29524,8 +30847,8 @@
         "rule_consumers:3",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:15",
-        "config_consumers:1",
+        "doc_consumers:16",
+        "config_consumers:2",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -30865,9 +32188,9 @@
         "skill_consumers:7",
         "hook_consumers:5",
         "rule_consumers:2",
-        "script_consumers:31",
-        "test_consumers:32",
-        "doc_consumers:63",
+        "script_consumers:33",
+        "test_consumers:34",
+        "doc_consumers:64",
         "config_consumers:9",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -31076,7 +32399,7 @@
         "hook_consumers:12",
         "rule_consumers:9",
         "script_consumers:5",
-        "test_consumers:39",
+        "test_consumers:40",
         "doc_consumers:59",
         "config_consumers:9",
         "role_source:heuristic:text",
@@ -31492,10 +32815,10 @@
         "skill_consumers:1",
         "hook_consumers:3",
         "rule_consumers:1",
-        "script_consumers:6",
-        "test_consumers:7",
-        "doc_consumers:12",
-        "config_consumers:5",
+        "script_consumers:8",
+        "test_consumers:8",
+        "doc_consumers:13",
+        "config_consumers:6",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -31704,7 +33027,7 @@
         "rule_consumers:3",
         "script_consumers:7",
         "test_consumers:16",
-        "doc_consumers:74",
+        "doc_consumers:76",
         "config_consumers:7",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -32076,7 +33399,7 @@
       "evidence": [
         "hook_consumers:16",
         "rule_consumers:1",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:11",
         "doc_consumers:13",
         "config_consumers:5",
@@ -33333,16 +34656,16 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "role_source:default",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
         "availability_match:pattern",
         "availability_pattern:rules/*.md",
         "availability_rationale:Unprojected rules are doctrine/context surfaces unless default/full projection proves them.",
-        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai",
-        "projected_profiles:full"
+        "projected_harnesses:aider,amp-code,augment-code,claude,cline,codex,continue-dev,cursor,factory-droid,gemini-cli,goose,jetbrains-junie,kilo-code,kimi-code,opencode,qoder,qwen-code,shell-ci,vscode-copilot,warp,zed-ai"
       ],
       "id": "rule:rules/supply-chain-defense.md",
       "kind": "rule",
@@ -35206,6 +36529,38 @@
       ],
       "projection_class": "shared"
     },
+    "hooks/dangerous-env-flag-detector.sh": {
+      "harnesses": [
+        "aider",
+        "amp-code",
+        "augment-code",
+        "claude",
+        "cline",
+        "codex",
+        "continue-dev",
+        "cursor",
+        "factory-droid",
+        "gemini-cli",
+        "goose",
+        "jetbrains-junie",
+        "kilo-code",
+        "kimi-code",
+        "opencode",
+        "qoder",
+        "qwen-code",
+        "shell-ci",
+        "vscode-copilot",
+        "warp",
+        "zed-ai"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/dangerous-env-flag-detector.sh"
+      ],
+      "profiles": [
+        "full"
+      ],
+      "projection_class": "shared"
+    },
     "hooks/destructive-git-blocker.sh": {
       "harnesses": [
         "aider",
@@ -36175,6 +37530,38 @@
       ],
       "projection_class": "shared"
     },
+    "hooks/network-egress-guard.sh": {
+      "harnesses": [
+        "aider",
+        "amp-code",
+        "augment-code",
+        "claude",
+        "cline",
+        "codex",
+        "continue-dev",
+        "cursor",
+        "factory-droid",
+        "gemini-cli",
+        "goose",
+        "jetbrains-junie",
+        "kilo-code",
+        "kimi-code",
+        "opencode",
+        "qoder",
+        "qwen-code",
+        "shell-ci",
+        "vscode-copilot",
+        "warp",
+        "zed-ai"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/network-egress-guard.sh"
+      ],
+      "profiles": [
+        "full"
+      ],
+      "projection_class": "shared"
+    },
     "hooks/notify.sh": {
       "harnesses": [
         "aider",
@@ -36746,6 +38133,38 @@
       ],
       "paths": [
         ".cognitive-os/hooks/cos/prompt-quality-llm.sh"
+      ],
+      "profiles": [
+        "full"
+      ],
+      "projection_class": "shared"
+    },
+    "hooks/protected-config-write-guard.sh": {
+      "harnesses": [
+        "aider",
+        "amp-code",
+        "augment-code",
+        "claude",
+        "cline",
+        "codex",
+        "continue-dev",
+        "cursor",
+        "factory-droid",
+        "gemini-cli",
+        "goose",
+        "jetbrains-junie",
+        "kilo-code",
+        "kimi-code",
+        "opencode",
+        "qoder",
+        "qwen-code",
+        "shell-ci",
+        "vscode-copilot",
+        "warp",
+        "zed-ai"
+      ],
+      "paths": [
+        ".cognitive-os/hooks/cos/protected-config-write-guard.sh"
       ],
       "profiles": [
         "full"
@@ -45940,21 +47359,64 @@
       "projection_class": "shared"
     }
   },
-  "findings": [],
+  "findings": [
+    {
+      "capability_id": "script:scripts/cos-key-learnings-capture",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:3",
+        "rule_consumers:1",
+        "config_consumers:2",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:lifecycle-declared-maintainer",
+        "availability_match:exact",
+        "availability_rationale:Opt-in team learning-capture helper; lifecycle metadata controls projection before consumer claims."
+      ],
+      "message": "Candidate/projectable surface needs consumer projection proof",
+      "next_action": "add harness projection proof before promotion",
+      "severity": "medium",
+      "status": "partial"
+    },
+    {
+      "capability_id": "script:scripts/security-red-team",
+      "evidence": [
+        "lifecycle",
+        "wrapper_for:scripts/security_red_team.py",
+        "skill_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:7",
+        "config_consumers:3",
+        "script_consumers:1",
+        "role_source:lifecycle",
+        "lifecycle_state:candidate",
+        "consumer_accessibility:lifecycle-declared-consumer-candidate",
+        "availability_override:lifecycle-declared-maintainer",
+        "availability_match:exact"
+      ],
+      "message": "Candidate/projectable surface needs consumer projection proof",
+      "next_action": "add harness projection proof before promotion",
+      "severity": "medium",
+      "status": "partial"
+    }
+  ],
   "gate": {
-    "blocks": [
-      "new_debt:2"
-    ],
+    "blocks": [],
     "phase": "reconstruction",
-    "status": "block",
+    "status": "pass",
     "thresholds": {
       "critical_missing_allowed": 0,
       "minimum_acc": 0.5,
       "minimum_effective_acc": 0.4
     },
-    "warnings": []
+    "warnings": [
+      "coverage_debt:2"
+    ]
   },
-  "generated_at": "2026-05-05T17:00:01Z",
+  "generated_at": "2026-05-05T17:37:53Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
@@ -46515,25 +47977,10 @@
     "unverified"
   ],
   "new_debt": {
-    "count": 2,
-    "items": [
-      {
-        "baseline_status": "absent",
-        "id": "script:scripts/cos-deps-install.sh",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      },
-      {
-        "baseline_status": "absent",
-        "id": "script:scripts/cos_deps_install.py",
-        "kind": "capability",
-        "reason": "new capability matched a broad local-surface default instead of an explicit row or projection proof",
-        "status": "unreviewed-local-default"
-      }
-    ],
-    "status": "block",
-    "strict_local_defaults": true
+    "count": 0,
+    "items": [],
+    "status": "not_evaluated",
+    "strict_local_defaults": null
   },
   "persistence": {
     "engram": {
@@ -46695,22 +48142,22 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 1.0,
-    "acc_effective": 1.0,
-    "aligned_weight": 2119,
+    "acc": 0.9973,
+    "acc_effective": 0.9986,
+    "aligned_weight": 2190,
     "mapping_weight_by_status": {
-      "aligned": 2119,
+      "aligned": 2190,
       "missing": 0,
       "overexposed": 0,
-      "partial": 0,
+      "partial": 6,
       "stale": 0,
       "unverified": 0
     },
     "missing_weight": 0,
     "overexposed_weight": 0,
-    "partial_weight": 0,
+    "partial_weight": 6,
     "stale_weight": 0,
-    "total_weight": 2119,
+    "total_weight": 2196,
     "unverified_weight": 0
   },
   "weights": {

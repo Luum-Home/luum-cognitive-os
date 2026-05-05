@@ -22,7 +22,6 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Headless Docker Service Runtime Manual Test](manual-tests/headless-docker-service-runtime.md) — non-IDE Docker worker proof for queue, leases, artifacts, provider auth boundaries, and future service runtime flows.
 - [ADR-162: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol](adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) — contract for pausing/resuming tasks, structured agent questions, worktree ownership, branches, and propose-only PR flow.
 - [Obsidian, Documentation Graphs, and AI Agent Memory — 2026-05-05](research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md) — follow-up on using Obsidian as a human-readable graph layer for Engram-backed agent memory.
-- [Self-Improvement, Auto-Repair, and Primitive Evolution Audit — 2026-05-05](reports/self-improvement-auto-repair-primitive-loop-audit-2026-05-05.md) — implementation audit for governed MAPE-K self-repair, skill improvement, and primitive evolution loops.
 - [Engram Obsidian Export Manual Test](manual-tests/engram-obsidian-export.md) — dry-run, write, and incremental proof path for the manual Engram → Obsidian graph export.
 - [Local Obsidian Installation](setup/obsidian-local.md) — Homebrew-managed local Obsidian install and validation for the optional Engram graph export workflow.
 - [Remote SO Control Plane Alternatives — 2026-05-05](reports/remote-control-plane-alternatives-2026-05-05.md) — provider, CLI, API-key, chat/Telegram, OpenCode, OpenClaw, and Agent Zero research feeding ADR-161.
@@ -146,6 +145,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Lethal Trifecta Gate](security/lethal-trifecta-gate.md) — deterministic PreToolUse block for private data + untrusted content + external communication.
 - [Credential-Safe Runner Red-Team Review — 2026-05-05](security/credential-safe-runner-red-team-2026-05-05.md) — malicious-agent attack review for the `.env`-backed Qwen smoke primitive and the mitigations added.
 - [Security Red-Team Primitive](security/security-red-team.md) — unified `/security-red-team` runner for surface inventory, threat model, abuse probes, primitive scoring, and mitigation backlog.
+- [Cognitive OS Attack Surface Inventory — 2026-05-05](security/cognitive-os-attack-surface-inventory.md) — local inventory of hooks, rules, skills, scripts, manifests, security hooks, runtime flags, and high-risk surfaces.
+- [Cognitive OS Agent Security Research — 2026-05-05](security/cognitive-os-agent-security-research-2026-05-05.md) — external-source-backed red-team assessment of COS security posture, MCP/tool risks, sandboxing, exfiltration, and mitigation backlog.
 - [Cognitive OS Security Assessment Plan](security/cognitive-os-security-assessment-plan.md) — phased defender/red-team plan for assessing SO tools, agentic primitives, secret handling, and trust controls.
 - [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.

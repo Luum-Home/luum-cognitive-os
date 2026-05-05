@@ -251,6 +251,111 @@ def probe_mcp_security_surface(findings: list[Finding]) -> ProbeResult:
     return ProbeResult("mcp_security_surface", "PASS", evidence)
 
 
+def probe_runtime_sensitive_file_deny(findings: list[Finding]) -> ProbeResult:
+    settings = REPO_ROOT / ".claude" / "settings.json"
+    if not settings.exists():
+        findings.append(Finding(
+            "runtime_sensitive_file_deny_missing",
+            "HIGH",
+            "Committed runtime settings are missing",
+            str(settings),
+            "Commit runtime settings with explicit sensitive-file deny rules.",
+        ))
+        return ProbeResult("runtime_sensitive_file_deny", "FAIL", "settings missing")
+    data = json.loads(settings.read_text(encoding="utf-8"))
+    deny = set(data.get("permissions", {}).get("deny", []))
+    required = {"Read(./.env)", "Read(./.env.*)", "Read(./secrets/**)", "Read(./.git/config)"}
+    missing = sorted(required - deny)
+    if missing:
+        findings.append(Finding(
+            "runtime_sensitive_file_deny_incomplete",
+            "HIGH",
+            "Runtime settings do not deny every required sensitive path",
+            f"missing={missing}",
+            "Add explicit permissions.deny entries for env, secrets, and git config.",
+        ))
+        return ProbeResult("runtime_sensitive_file_deny", "FAIL", f"missing={missing}")
+    return ProbeResult("runtime_sensitive_file_deny", "PASS", "committed settings deny .env, .env.*, secrets/**, and .git/config")
+
+
+def probe_protected_config_write_guard(findings: list[Finding]) -> ProbeResult:
+    hook = REPO_ROOT / "hooks" / "protected-config-write-guard.sh"
+    policy = REPO_ROOT / "manifests" / "protected-config-write-policy.yaml"
+    if not hook.exists() or not policy.exists():
+        findings.append(Finding(
+            "protected_config_write_guard_missing",
+            "HIGH",
+            "Protected config write guard is missing",
+            f"hook={hook.exists()} policy={policy.exists()}",
+            "Add a PreToolUse guard and policy for agent control-plane config writes.",
+        ))
+        return ProbeResult("protected_config_write_guard", "FAIL", "hook/policy missing")
+    return ProbeResult("protected_config_write_guard", "PASS", "protected config write hook and manifest exist")
+
+
+def probe_network_egress_guard(findings: list[Finding]) -> ProbeResult:
+    hook = REPO_ROOT / "hooks" / "network-egress-guard.sh"
+    policy = REPO_ROOT / "manifests" / "network-egress-policy.yaml"
+    if not hook.exists() or not policy.exists():
+        findings.append(Finding(
+            "network_egress_guard_missing",
+            "HIGH",
+            "Network egress guard is missing",
+            f"hook={hook.exists()} policy={policy.exists()}",
+            "Add a PreToolUse network egress guard and allowlist policy.",
+        ))
+        return ProbeResult("network_egress_guard", "FAIL", "hook/policy missing")
+    return ProbeResult("network_egress_guard", "PASS", "network egress hook and allowlist manifest exist")
+
+
+def probe_mcp_tofu_pinning(findings: list[Finding]) -> ProbeResult:
+    manifest = REPO_ROOT / "manifests" / "mcp-trust-pins.yaml"
+    script = REPO_ROOT / "scripts" / "mcp_tofu_audit.py"
+    if not manifest.exists() or not script.exists():
+        findings.append(Finding(
+            "mcp_tofu_pinning_missing",
+            "MEDIUM",
+            "MCP trust-on-first-use pinning is missing",
+            f"manifest={manifest.exists()} script={script.exists()}",
+            "Add MCP trust pins and an audit that fingerprints command/args/env key names.",
+        ))
+        return ProbeResult("mcp_tofu_pinning", "WARN", "manifest/script missing")
+    return ProbeResult("mcp_tofu_pinning", "PASS", "MCP trust pins manifest and audit script exist")
+
+
+def probe_dangerous_env_flag_detector(findings: list[Finding]) -> ProbeResult:
+    script = REPO_ROOT / "scripts" / "dangerous_env_flag_detector.py"
+    hook = REPO_ROOT / "hooks" / "dangerous-env-flag-detector.sh"
+    if not script.exists() or not hook.exists():
+        findings.append(Finding("dangerous_env_flag_detector_missing", "MEDIUM", "Dangerous env flag detector is missing", f"script={script.exists()} hook={hook.exists()}", "Add active dangerous env flag posture detection."))
+        return ProbeResult("dangerous_env_flag_detector", "WARN", "script/hook missing")
+    return ProbeResult("dangerous_env_flag_detector", "PASS", "dangerous env flag detector script and hook exist")
+
+
+def probe_network_sandbox_runner(findings: list[Finding]) -> ProbeResult:
+    script = REPO_ROOT / "scripts" / "network_sandbox_run.py"
+    if not script.exists():
+        findings.append(Finding("network_sandbox_runner_missing", "HIGH", "Network sandbox runner is missing", str(script), "Add a real no-network sandbox runner for high-risk commands."))
+        return ProbeResult("network_sandbox_runner", "FAIL", "script missing")
+    return ProbeResult("network_sandbox_runner", "PASS", "docker --network none sandbox runner exists")
+
+
+def probe_metrics_tamper_audit(findings: list[Finding]) -> ProbeResult:
+    script = REPO_ROOT / "scripts" / "metrics_tamper_audit.py"
+    if not script.exists():
+        findings.append(Finding("metrics_tamper_audit_missing", "MEDIUM", "Metrics tamper audit is missing", str(script), "Add JSONL tamper detection for security-relevant metrics."))
+        return ProbeResult("metrics_tamper_audit", "WARN", "script missing")
+    return ProbeResult("metrics_tamper_audit", "PASS", "metrics tamper audit exists")
+
+
+def probe_provider_spoof_audit(findings: list[Finding]) -> ProbeResult:
+    script = REPO_ROOT / "scripts" / "provider_spoof_audit.py"
+    if not script.exists():
+        findings.append(Finding("provider_spoof_audit_missing", "MEDIUM", "Provider spoof audit is missing", str(script), "Add provider proof spoof detection for llm-dispatch metrics."))
+        return ProbeResult("provider_spoof_audit", "WARN", "script missing")
+    return ProbeResult("provider_spoof_audit", "PASS", "provider spoof audit exists")
+
+
 def run_probes() -> tuple[list[ProbeResult], list[Finding]]:
     findings: list[Finding] = []
     probes = [
@@ -261,6 +366,14 @@ def run_probes() -> tuple[list[ProbeResult], list[Finding]]:
         probe_scanner_hook_presence,
         probe_runtime_flag_registry,
         probe_mcp_security_surface,
+        probe_runtime_sensitive_file_deny,
+        probe_protected_config_write_guard,
+        probe_network_egress_guard,
+        probe_mcp_tofu_pinning,
+        probe_dangerous_env_flag_detector,
+        probe_network_sandbox_runner,
+        probe_metrics_tamper_audit,
+        probe_provider_spoof_audit,
     ]
     return [probe(findings) for probe in probes], findings
 
