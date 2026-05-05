@@ -21,10 +21,17 @@ import yaml
 SCHEMA_VERSION = 1
 VALID_CRITICALITIES = {"required", "recommended", "optional"}
 VALID_PROFILES = {"default", "full"}
+VALID_TOOL_CATEGORIES = {"runtime", "package-manager", "cli", "ai-cli", "desktop-app", "container", "security", "mcp", "service"}
+VALID_SCOPES = {"project", "user", "system"}
+VALID_SYNCABLE = {"yes", "no", "state-only", "config-only"}
 TOP_LEVEL_KEYS = {"schema_version", "python", "tools", "mcp_servers", "profiles"}
 TOOL_KEYS = {
     "name", "criticality", "check", "install", "min_version",
     "degraded_behavior", "consumed_by", "enabled_when",
+    # ADR-168 cross-device install contract fields. Optional during migration;
+    # required for core tools by contract tests.
+    "category", "profiles", "scope", "syncable", "auth_bound",
+    "manual_url", "never_copy", "post_install",
 }
 MCP_KEYS = {
     "name", "criticality", "transport", "command", "args",
@@ -45,11 +52,19 @@ class Tool:
     name: str
     criticality: str
     check: str
-    install: dict[str, str]
+    install: dict[str, Any]
     min_version: str | None = None
     degraded_behavior: str | None = None
     consumed_by: list[str] = field(default_factory=list)
     enabled_when: str | None = None
+    category: str = "cli"
+    profiles: list[str] = field(default_factory=list)
+    scope: str = "system"
+    syncable: str = "no"
+    auth_bound: bool = False
+    manual_url: str | None = None
+    never_copy: list[str] = field(default_factory=list)
+    post_install: str | None = None
 
 
 @dataclass(frozen=True)
@@ -243,9 +258,30 @@ def _build_tool(raw: Any, index: int) -> Tool:
         )
     install = raw["install"]
     if not isinstance(install, dict) or not all(
-        isinstance(k, str) and isinstance(v, str) for k, v in install.items()
+        isinstance(k, str) and _valid_install_value(v) for k, v in install.items()
     ):
-        raise ManifestError(f"tools[{index}].install must be a mapping of str→str")
+        raise ManifestError(f"tools[{index}].install must be a mapping of platform→string-or-mapping")
+
+    category = raw.get("category", "cli")
+    if category not in VALID_TOOL_CATEGORIES:
+        raise ManifestError(
+            f"tools[{index}].category {category!r} invalid; valid: {sorted(VALID_TOOL_CATEGORIES)}"
+        )
+    scope = raw.get("scope", "system")
+    if scope not in VALID_SCOPES:
+        raise ManifestError(f"tools[{index}].scope {scope!r} invalid; valid: {sorted(VALID_SCOPES)}")
+    syncable = raw.get("syncable", "no")
+    if syncable not in VALID_SYNCABLE:
+        raise ManifestError(f"tools[{index}].syncable {syncable!r} invalid; valid: {sorted(VALID_SYNCABLE)}")
+    profiles = raw.get("profiles", []) or []
+    if not isinstance(profiles, list) or not all(isinstance(x, str) for x in profiles):
+        raise ManifestError(f"tools[{index}].profiles must be a list of strings")
+    auth_bound = raw.get("auth_bound", False)
+    if not isinstance(auth_bound, bool):
+        raise ManifestError(f"tools[{index}].auth_bound must be a boolean")
+    never_copy = raw.get("never_copy", []) or []
+    if not isinstance(never_copy, list) or not all(isinstance(x, str) for x in never_copy):
+        raise ManifestError(f"tools[{index}].never_copy must be a list of strings")
     consumed_by = raw.get("consumed_by", []) or []
     if not isinstance(consumed_by, list) or not all(isinstance(x, str) for x in consumed_by):
         raise ManifestError(f"tools[{index}].consumed_by must be a list of strings")
@@ -258,7 +294,24 @@ def _build_tool(raw: Any, index: int) -> Tool:
         degraded_behavior=raw.get("degraded_behavior"),
         consumed_by=list(consumed_by),
         enabled_when=raw.get("enabled_when"),
+        category=category,
+        profiles=list(profiles),
+        scope=scope,
+        syncable=syncable,
+        auth_bound=auth_bound,
+        manual_url=raw.get("manual_url"),
+        never_copy=list(never_copy),
+        post_install=raw.get("post_install"),
     )
+
+
+def _valid_install_value(value: Any) -> bool:
+    if isinstance(value, str):
+        return True
+    if isinstance(value, dict):
+        allowed = {"manager", "command", "url", "notes"}
+        return set(value).issubset(allowed) and all(isinstance(k, str) for k in value) and all(isinstance(v, str) for v in value.values())
+    return False
 
 
 def _build_mcp(raw: Any, index: int) -> MCPServer:
