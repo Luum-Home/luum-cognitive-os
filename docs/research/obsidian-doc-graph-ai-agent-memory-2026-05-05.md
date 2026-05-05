@@ -2,7 +2,7 @@
 
 **Date**: 2026-05-05  
 **Scope**: Follow-up on the prior work about converting documentation into a graph / "brain" for AI coding agents, with Obsidian as a possible human-facing layer.  
-**Local conclusion**: Cognitive OS already researched and implemented the load-bearing backend pieces in Engram Phases 1–3. Obsidian export remains deferred.
+**Local conclusion**: Cognitive OS already researched and implemented the load-bearing backend pieces in Engram Phases 1–3. Phase 4 is now implemented as a one-way, dry-run-first Engram → Obsidian export with optional Stop-hook automation gated by `COS_OBSIDIAN_VAULT`; Obsidian remains a derived graph/audit layer, not the source of truth.
 
 ---
 
@@ -23,7 +23,7 @@
 |---|---|---|
 | `docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` | Primary prior research. It compared Obsidian, Karpathy-style LLM Wiki, LLM Wiki v2, Mem0, Zep/Graphiti, Cognee, Letta, GraphRAG, HippoRAG, LightRAG, and related memory tools. | Current. |
 | `docs/adrs/ADR-071-engram-lifecycle-evolution.md` | Accepted decision: extend Engram with lifecycle trailers, confidence/decay, crystallization, and graph traversal instead of making Obsidian primary memory. | Current; Phases 1–3 marked done. |
-| `.cognitive-os/plans/features/engram-lifecycle-evolution.md` | Execution plan for ADR-071. | Phases 1–3 shipped; Phase 4 Obsidian export deferred. |
+| `.cognitive-os/plans/features/engram-lifecycle-evolution.md` | Execution plan for ADR-071. | Phases 1–3 shipped; Phase 4 manual export shipped and opt-in automation added. |
 | `docs/adrs/ADR-037-self-knowledge-base.md` | Earlier self-knowledge index for the repo: API surface, dependency graph, glossary, and summary. | Accepted; implemented by self-knowledge builder. |
 | `docs/architecture/memory-lifecycle.md` | Operator map of which hooks/libraries/tests save and recover memory. | Current orientation doc. |
 | `infra/cognee/README.md` | Optional Cognee service with NetworkX + LanceDB default backends. | Optional external memory/RAG surface, not primary. |
@@ -60,7 +60,7 @@ The earlier analysis did **not** conclude "make Obsidian the primary brain." It 
 2. Obsidian is weak as the **authoritative memory backend** because vanilla wikilinks are untyped, lack project scoping, lack confidence/decay, and have no native supersession or lifecycle semantics.
 3. The backend needs typed relations, freshness, confidence, decay, crystallization, and bounded graph traversal.
 4. Engram already had enough foundation to extend additively, so COS implemented lifecycle wrappers instead of migrating memory to Obsidian/Mem0/Zep/Cognee.
-5. Phase 4 remains: export Engram observations and relations into an Obsidian vault for human audit.
+5. Phase 4's correct scope is export of Engram observations and relations into an Obsidian vault for human audit, with no import path back into Engram.
 
 This is consistent with the ecosystem pattern found in the new search: the strongest tools combine **hybrid retrieval + graph traversal + temporal/lifecycle metadata + token-budgeted context assembly**. Obsidian alone is the UI/file substrate, not the memory logic.
 
@@ -243,11 +243,71 @@ This gives Obsidian graph view enough edges to be useful while keeping typed sem
 
 ## Implementation status — 2026-05-05
 
-The recommended manual slice is implemented in `lib/engram_obsidian_exporter.py` and `scripts/export-engram-to-obsidian.sh`. It remains dry-run by default, requires explicit `--vault`, exports lifecycle metadata as frontmatter, derives wikilinks from accepted typed Engram relations, and does not register any Stop hook automation. Manual proof path: `docs/manual-tests/engram-obsidian-export.md`.
+The recommended manual slice is implemented in `lib/engram_obsidian_exporter.py` and `scripts/export-engram-to-obsidian.sh`. It remains dry-run by default, requires explicit `--vault`, exports lifecycle metadata as frontmatter, derives wikilinks from accepted typed Engram relations, and never writes from Obsidian back to Engram.
+
+The first real vault proof wrote to:
+
+```text
+$HOME/.cognitive-os/obsidian-vaults/luum-agent-os
+```
+
+That location is intentionally outside the repository. It is an operator-local
+workspace for browsing generated notes in Obsidian, not a versioned project
+artifact. Manual proof path: `docs/manual-tests/engram-obsidian-export.md`.
+
+Optional automation is now implemented in `hooks/engram-obsidian-export-on-stop.sh`.
+The hook exits 0 without exporting unless `COS_OBSIDIAN_VAULT` is set. With that
+variable set, it runs the same one-way export with `--write`, records metrics in
+`.cognitive-os/metrics/obsidian-export.jsonl`, and still exits 0 on failures so
+session shutdown is not blocked.
+
+## Repo docs versus Obsidian vault
+
+The repo and the vault have different jobs. Treating them as the same artifact
+would create duplicate sources of truth.
+
+| Layer | Role | Versioning policy |
+|---|---|---|
+| `docs/` | Canonical, curated human documentation: ADRs, setup guides, runbooks, manual tests, architecture notes. | Versioned in git and reviewed like source. |
+| Engram | Operational memory: session summaries, decisions, discoveries, bugfixes, lifecycle metadata, typed relations. | Persisted in Engram; exported when useful. |
+| Local Obsidian vault | Derived graph/audit UI over Engram and selected repo docs. | Operator-local by default; may live in the user's chosen sync system. |
+| Generated repo export, if added later | Sanitized, curated subset for durable knowledge indexes. | Only under an explicit generated folder with clear ownership and review. |
+
+`docs/` should not be copied wholesale into Engram, and Engram exports should not
+be promoted into `docs/` automatically. Instead:
+
+- formal decisions live in `docs/adrs/`;
+- setup and operational instructions live in `docs/setup/` and `docs/runbooks/`;
+- manual proof evidence lives in `docs/manual-tests/`;
+- raw or semi-structured memory lives in Engram;
+- Obsidian links those surfaces for navigation.
+
+This means the Obsidian graph may contain wikilinks to docs, but it should not
+duplicate the content of each ADR or setup guide. A generated Engram note can
+link to `[[ADR-071-engram-lifecycle-evolution]]` or
+`[[engram-obsidian-export]]`; the ADR itself remains the authoritative prose.
+
+## Automation policy
+
+Automation is safe when the output target and source-of-truth boundary are
+explicit.
+
+| Automation | Status | Default | Rationale |
+|---|---|---|---|
+| Engram → local Obsidian vault | Implemented via `hooks/engram-obsidian-export-on-stop.sh`. | Off unless `COS_OBSIDIAN_VAULT` is set. | Useful for personal graph browsing; no git noise. |
+| Repo docs → Obsidian index | Proposed follow-up. | Off. | Should create links/indexes, not duplicate all docs content. |
+| Engram → repo-local generated export | Possible follow-up. | Off and manual promotion only. | Needs sanitization and lifecycle filtering before git. |
+| Obsidian → Engram or Obsidian → `docs/` | Rejected for now. | Off. | Would make Obsidian an uncontrolled write path and create source-of-truth conflicts. |
+| Stop hook that commits exports | Rejected for now. | Off. | Creates noisy commits and risks publishing local/private memory. |
+
+If a repo-local export is added later, it should use a path such as
+`docs/knowledge/engram/` with `generated: true` frontmatter, no `.obsidian/`
+state, no local absolute paths, no credentials, and an explicit promotion command
+rather than automatic commits.
 
 ## Recommendation
 
-Proceed with Phase 4 as a small, testable exporter. Treat it as an audit and navigation layer for humans and as optional context material for agents, not as the canonical memory store.
+Keep Phase 4 as a small, testable exporter. Treat it as an audit and navigation layer for humans and as optional context material for agents, not as the canonical memory store.
 
 The minimum valuable slice is one-way export from Engram to Obsidian with:
 
@@ -256,7 +316,8 @@ The minimum valuable slice is one-way export from Engram to Obsidian with:
 - lifecycle frontmatter,
 - wikilinks from existing relations,
 - atomic writes,
-- no default Stop-hook automation.
+- no default Stop-hook automation;
+- optional Stop-hook export only when `COS_OBSIDIAN_VAULT` is set.
 
 ---
 
@@ -266,3 +327,5 @@ The minimum valuable slice is one-way export from Engram to Obsidian with:
 2. Obsidian is best positioned as a human-facing graph export layer, not as the authoritative memory backend for Cognitive OS.
 3. The current ecosystem is converging on hybrid retrieval: BM25/FTS, vectors, graph traversal, temporal scoring, reranking, and token-budgeted context bundles.
 4. A Phase 4 Obsidian exporter should be one-way, explicit, dry-run-first, and project-scoped to avoid vault corruption and cross-project memory leakage.
+5. The local Obsidian vault should stay outside the repository by default; `docs/` remains the curated source for durable documentation while Obsidian serves as a generated graph view.
+6. Automation is acceptable only as opt-in export, not as automatic commit or as an Obsidian-to-docs write path.
