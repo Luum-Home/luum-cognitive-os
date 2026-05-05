@@ -36,31 +36,54 @@ def detect_platform() -> str:
     return system or "unknown"
 
 
-def command_for(tool: Tool, target_platform: str) -> tuple[str | None, str]:
+def command_for(tool: Tool, target_platform: str) -> tuple[str | None, str, str, str | None]:
+    """Return (command, source, manager, url) for a tool/platform.
+
+    Supports both legacy manifest values (`macos: brew install jq`) and the
+    ADR-168 structured shape (`macos: {manager, command|url}`).
+    """
     install = tool.install or {}
     key_order = [target_platform]
     if target_platform in {"linux", "windows_wsl"}:
         key_order.extend(["debian", "linux"])
     key_order.extend(["any", "macos"] if target_platform == "macos" else ["any"])
     for key in key_order:
-        command = install.get(key)
-        if command:
-            return command, key
-    return None, "unsupported_platform"
+        value = install.get(key)
+        if not value:
+            continue
+        if isinstance(value, str):
+            return value, key, "legacy", None
+        if isinstance(value, dict):
+            manager = str(value.get("manager") or "manual")
+            command = value.get("command")
+            url = value.get("url")
+            return str(command) if command else None, key, manager, str(url) if url else None
+    return None, "unsupported_platform", "unsupported", None
 
 
 def status_for(tool: Tool, target_platform: str) -> dict[str, Any]:
-    command, source = command_for(tool, target_platform)
+    command, source, manager, url = command_for(tool, target_platform)
     present = shutil.which(tool.name) is not None
-    auth_bound = tool.name in AUTH_BOUND_TOOLS
-    manual = command is None or any(marker in command.lower() for marker in MANUAL_INSTALL_MARKERS)
+    auth_bound = bool(getattr(tool, "auth_bound", False)) or tool.name in AUTH_BOUND_TOOLS
+    command_text = command or ""
+    manual = command is None or manager == "manual" or any(
+        marker in command_text.lower() for marker in MANUAL_INSTALL_MARKERS
+    )
     return {
         "name": tool.name,
+        "category": getattr(tool, "category", "cli"),
         "criticality": tool.criticality,
+        "profiles": list(getattr(tool, "profiles", [])),
+        "scope": getattr(tool, "scope", "system"),
+        "syncable": getattr(tool, "syncable", "no"),
         "present": present,
         "auth_bound": auth_bound,
         "install_command": command,
         "install_source": source,
+        "install_manager": manager,
+        "manual_url": url or getattr(tool, "manual_url", None),
+        "never_copy": list(getattr(tool, "never_copy", [])),
+        "post_install": getattr(tool, "post_install", None),
         "manual": manual,
         "action": "already_present" if present else "manual" if auth_bound or manual else "installable",
     }
@@ -109,6 +132,8 @@ def build_report(profile_name: str, target_platform: str, *, apply: bool) -> dic
 
     if apply:
         for row in list(report["installable"]):
+            if row.get("auth_bound") or row.get("manual") or not row.get("install_command"):
+                continue
             proc = subprocess.run(row["install_command"], shell=True, text=True, capture_output=True, check=False)
             result = {**row, "returncode": proc.returncode}
             if proc.returncode == 0:
