@@ -27,7 +27,7 @@ expected_skips:
   - id: runtime-sample-window
     lanes: [unit, audit, contract, behavior, hooks]
     category: runtime-sample-precondition
-    reason_pattern: '(no hook-health data|no hooks with >=|only \d+ samples|need >=|fewer than \d+ samples|not enough data|no invocations recorded|hook timing has no records|cannot compute p95|need >=2 review_by dates|Operational hook latency budget exceeded|No hooks recorded for events outside the explicit budget table)'
+    reason_pattern: '(no hook-health data|no hooks with >=|only \d+ samples|need >=|fewer than \d+ samples|not enough data|no invocations recorded|hook timing has no records|hook timing has no valid records|cannot compute p95|need >=2 review_by dates|Operational hook latency budget exceeded|No hooks recorded for events outside the explicit budget table)'
     applies_when: Runtime/statistical assertions need more local observations before they are meaningful.
     opt_in_lane: run runtime workload long enough to produce samples, then rerun the contract.
   - id: optional-profile-artifact-absent
