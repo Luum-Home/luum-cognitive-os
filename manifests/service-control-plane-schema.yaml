@@ -63,14 +63,14 @@ surfaces:
       - append_only_audit
       - no_provider_credentials_in_payload
   scheduler:
-    status: planned
+    status: phase2_run_once_with_expiry
     role: select_eligible_task_and_worker
     invariants:
       - never_dispatch_to_unsupported_executor
       - never_dispatch_without_successful_auth_probe_when_credentials_required
       - never_dispatch_publish_actions_without_human_approval
   lease_manager:
-    status: phase1_jsonl_implemented
+    status: phase2_expiry_and_resume_implemented
     required_fields:
       - lease_id
       - task_id
@@ -105,7 +105,7 @@ surfaces:
       - supports_dry_run
       - supports_keep_for_debug
   executor_adapter:
-    status: planned
+    status: phase3_auth_probe_and_host_adapter_skeleton
     registry_manifest: manifests/provider-executor-contracts.yaml
     required_probe_statuses:
       - ready
@@ -197,10 +197,12 @@ phase_gates:
       - local_worker
     preferred_for: maintainer_personal_swarm
     must_probe_auth: true
+    implementation_status: dry_run_adapter_implemented
   container_cli_executor:
     requires:
       - host_cli_executor
     must_have_provider_supported_auth_story: true
+    implementation_status: auth_probe_only
   api_or_proxy_executor:
     requires:
       - local_worker
@@ -208,10 +210,12 @@ phase_gates:
       - ci
       - hosted
       - team_cloud
+    implementation_status: auth_probe_only
   crash_resume:
     requires:
       - local_worker
     proof_drill: P6
+    implementation_status: implemented_for_expired_lease_resume
   propose_only_publication:
     requires:
       - crash_resume

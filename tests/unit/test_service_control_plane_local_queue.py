@@ -131,3 +131,43 @@ def test_phase_one_rejects_provider_executor(tmp_path: Path) -> None:
             executor_id="codex-cli-host",
         )
 
+
+def test_expired_crash_lease_allows_resume(tmp_path: Path) -> None:
+    scp.submit_task(tmp_path, kind="local-command", command="printf resumed > resumed.txt", task_id="resume")
+
+    crashed = scp.worker_run_once(
+        tmp_path,
+        worker_id="crashing-worker",
+        ttl_seconds=0,
+        simulate_crash_after_lease=True,
+    )
+    assert crashed["status"] == "crash_simulated"
+
+    drained = scp.queue_drain(tmp_path)
+    assert drained["expired_leases"]
+    assert drained["counts"]["pending"] == 1
+
+    resumed = scp.worker_run_once(tmp_path, worker_id="resuming-worker")
+    assert resumed["status"] == "completed"
+    assert Path(resumed["result"]["workspace"], "resumed.txt").read_text(encoding="utf-8") == "resumed"
+
+
+def test_provider_host_adapter_defaults_to_needs_human_without_provider_call(tmp_path: Path) -> None:
+    scp.submit_task(
+        tmp_path,
+        kind="provider",
+        command=None,
+        executor_id="codex-cli-host",
+        prompt="Summarize this temporary repository.",
+        task_id="provider-dry",
+        dry_run=True,
+    )
+
+    result = scp.worker_run_once(tmp_path, worker_id="provider-worker")
+
+    assert result["status"] == "needs_human"
+    assert result["result"]["provider_calls"] == 0
+    artifact_dir = Path(result["result"]["artifact_dir"])
+    executor = json.loads((artifact_dir / "executor.json").read_text(encoding="utf-8"))
+    assert executor["executor_id"] == "codex-cli-host"
+    assert executor["credential_mode"] == "account-session"
