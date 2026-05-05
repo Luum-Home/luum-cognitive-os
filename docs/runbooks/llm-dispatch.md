@@ -180,10 +180,37 @@ export COS_DISABLE_LLM_FALLBACK=1
 Effect: primary provider fires; if it fails, error surfaces immediately.
 Use for debugging (see raw errors) or strict single-provider policy.
 
-### 4.5 Re-enable
+### 4.5 Agent-safe Qwen smoke without `.env`
+
+Use `COS_SKIP_DOTENV=1` when an agent or automation must run the Qwen live
+smoke using only already-exported environment variables. This avoids indirectly
+loading repo-local `.env` while preserving the default human workflow.
 
 ```bash
-unset COS_DISABLE_QWEN COS_FORCE_CLAUDE_PRIMARY COS_DISABLE_LLM_FALLBACK
+export ALIBABA_QWEN_API_KEY=...
+COS_SKIP_DOTENV=1 bash scripts/smoke-qwen-fallback.sh
+```
+
+### 4.6 Credential-safe Qwen smoke with allowlisted `.env` keys
+
+When the operator explicitly wants the agent to run the live smoke using
+repo-local `.env` credentials, use the credential-safe primitive instead of
+running the smoke script directly:
+
+```bash
+scripts/cos-credential-safe-run qwen-fallback-smoke --approve
+```
+
+The wrapper reads only `ALIBABA_QWEN_API_KEY`, `ALIBABA_QWEN_BASE_URL`, and
+`ALIBABA_QWEN_WORKSPACE_ID` from `.env`, forces `COS_SKIP_DOTENV=1` for the
+child process, verifies the pinned script hash, starts the child with a
+sanitized environment, redacts output, bounds model-visible output, and writes
+`.cognitive-os/metrics/credential-safe-runs.jsonl` without secret values.
+
+### 4.7 Re-enable
+
+```bash
+unset COS_DISABLE_QWEN COS_FORCE_CLAUDE_PRIMARY COS_DISABLE_LLM_FALLBACK COS_SKIP_DOTENV
 ```
 
 ## 5. Troubleshooting

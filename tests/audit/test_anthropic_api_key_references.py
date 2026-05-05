@@ -77,6 +77,7 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference("scripts/cos_auth_probe.py", "auth_probe_policy", "provider-specific auth readiness probe checks env presence only"),
     AllowedReference("tests/audit/test_adr_139_141_142_cloud_surfaces.py", "audit_test", "guards blocked credential defaults"),
     AllowedReference("tests/unit/test_service_control_plane_local_queue.py", "test_fixture", "secret redaction fixture"),
+    AllowedReference("manifests/credential-safe-scripts.yaml", "credential_safe_runner_policy", "explicit denylist for credential-safe script runner"),
 
     # Explicit examples / benchmark / arena / tests.
     AllowedReference("docs/benchmarks/so-vs-vanilla-tasks.yaml", "fake_benchmark_secret", "fake key example"),

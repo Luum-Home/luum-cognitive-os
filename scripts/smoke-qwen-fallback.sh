@@ -25,13 +25,23 @@ set -uo pipefail
 cd "$(dirname "$0")/.."
 PROJECT_DIR="$(pwd)"
 
-# Source .env if present (for ALIBABA_QWEN_API_KEY, ALIBABA_QWEN_BASE_URL)
-if [ -f "$PROJECT_DIR/.env" ]; then
-  set -a
-  # shellcheck disable=SC1091
-  source "$PROJECT_DIR/.env" 2>/dev/null || true
-  set +a
-fi
+# Source .env if present (for ALIBABA_QWEN_API_KEY, ALIBABA_QWEN_BASE_URL).
+# COS_SKIP_DOTENV=1 is the public operator/agent-safe bypass for live smokes
+# that must use already-exported environment variables only. It also prevents
+# lib/qwen_provider.py from auto-loading .env later in the Python process.
+case "${COS_SKIP_DOTENV:-0}" in
+  1|true|TRUE|yes|YES|on|ON)
+    export _COS_QWEN_DOTENV_LOADED=1
+    ;;
+  *)
+    if [ -f "$PROJECT_DIR/.env" ]; then
+      set -a
+      # shellcheck disable=SC1091
+      source "$PROJECT_DIR/.env" 2>/dev/null || true
+      set +a
+    fi
+    ;;
+esac
 
 say() { printf '\n=== %s ===\n' "$*"; }
 fail() { printf '  FAIL: %s\n' "$*" >&2; }
@@ -63,7 +73,11 @@ print(f'SUCCESS={r.success} ERROR={r.error[:80] if r.error else \"\"}')
 if echo "$live_result" | grep -q 'SUCCESS=True'; then
   pass "qwen_provider.call() → success"
 elif echo "$live_result" | grep -q 'UNCONFIGURED'; then
-  fail "ALIBABA_QWEN_API_KEY not set — set it in .env"
+  if [ "${COS_SKIP_DOTENV:-0}" = "1" ]; then
+    fail "ALIBABA_QWEN_API_KEY not set — COS_SKIP_DOTENV=1 requires exported env credentials"
+  else
+    fail "ALIBABA_QWEN_API_KEY not set — set it in .env or export it in the shell"
+  fi
   exit 2
 else
   fail "live call did NOT succeed: $live_result"
