@@ -9,7 +9,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/_lib/artifact-status.sh` | runtime-safety | default | medium | so-local-only |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/cache.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 202 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/circuit-breaker.sh` | observability | heuristic:text | medium | so-local-only |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/_lib/common.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 173 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/_lib/common.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 172 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/execute-repair.sh` | observability | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/file_checker.sh` | runtime-safety | default | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/hook-pipe.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |

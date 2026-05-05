@@ -1007,7 +1007,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 49,
+        "doc": 48,
         "hook": 64,
         "rule": 6,
         "script": 19,
@@ -1030,10 +1030,6 @@
         {
           "family": "doc",
           "path": "docs/INDEX.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1715,7 +1711,7 @@
         "rule_consumers:6",
         "script_consumers:19",
         "test_consumers:31",
-        "doc_consumers:49",
+        "doc_consumers:48",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -1726,7 +1722,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 173
+      "total_consumers": 172
     },
     {
       "confidence": "medium",
