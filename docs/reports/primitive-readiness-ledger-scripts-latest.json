@@ -14,6 +14,98 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "script": 3
+      },
+      "consumers": [
+        {
+          "family": "script",
+          "path": "scripts/cos-paperclip-local.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-postgres-local.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-valkey-local.sh"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "declare supported harnesses and fallback behavior",
+      "override_rationale": null,
+      "path": "scripts/_lib/local-service.sh",
+      "protected_install_surface": false,
+      "role": "driver-specific",
+      "role_source": "heuristic:path",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 1,
+        "hook": 2,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/edit-lock-drain-parked.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/edit-lock-process-negotiations.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/edit-coop.sh"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "hook_consumers:2",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/_lib/session-id.sh",
+      "lifecycle_state": "advisory",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/_lib/session-id.sh",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
         "doc": 1,
         "script": 2,
         "test": 1
@@ -426,7 +518,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 32,
+        "doc": 33,
         "test": 2
       },
       "consumers": [
@@ -556,6 +648,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/remote-control-plane-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/rules-mcp-structural-projection.md"
         },
         {
@@ -576,7 +672,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:32",
+        "doc_consumers:33",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -593,7 +689,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 35,
+      "total_consumers": 36,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -2930,13 +3026,13 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 28,
-        "doc": 412,
-        "hook": 68,
+        "config": 32,
+        "doc": 419,
+        "hook": 75,
         "rule": 42,
-        "script": 192,
+        "script": 202,
         "skill": 55,
-        "test": 312
+        "test": 315
       },
       "consumers": [
         {
@@ -3037,11 +3133,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/provider-executor-contracts.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/reduction-demotions.json"
         },
         {
           "family": "config",
+          "path": "manifests/remote-control-plane-alternatives.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
         },
         {
           "family": "config",
@@ -3050,6 +3158,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/task-lifecycle-schema.yaml"
         },
         {
           "family": "doc",
@@ -3098,6 +3210,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3650,6 +3766,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md"
         },
         {
           "family": "doc",
@@ -4373,6 +4497,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/engram-obsidian-export.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/first-run-onboarding.md"
         },
         {
@@ -4409,6 +4537,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/remote-control-plane-boundary.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/rules-mcp-structural-projection.md"
         },
         {
@@ -4418,6 +4550,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/shell-ci-formal-harness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/task-lifecycle-worktree-pr-flow.md"
         },
         {
           "family": "doc",
@@ -4577,6 +4713,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/wisc-framework-analysis.md"
         },
         {
@@ -4701,6 +4841,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/_lib/agent-context.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/_lib/artifact-status.sh"
         },
         {
@@ -4714,6 +4858,10 @@
         {
           "family": "hook",
           "path": "hooks/_lib/stash-lock.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/_lib/task-event.sh"
         },
         {
           "family": "hook",
@@ -4781,6 +4929,10 @@
         },
         {
           "family": "hook",
+          "path": "hooks/destructive-rm-blocker.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/direct-main-guard.sh"
         },
         {
@@ -4798,6 +4950,14 @@
         {
           "family": "hook",
           "path": "hooks/ecosystem-check.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/edit-lock-drain-parked.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/edit-lock-process-negotiations.sh"
         },
         {
           "family": "hook",
@@ -4886,6 +5046,14 @@
         {
           "family": "hook",
           "path": "hooks/state-heartbeat.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/task-completed.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/task-created.sh"
         },
         {
           "family": "hook",
@@ -5141,6 +5309,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/_lib/session-id.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/_lib/settings-driver-bare.sh"
         },
         {
@@ -5210,6 +5382,10 @@
         {
           "family": "script",
           "path": "scripts/cos-audit-archive"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-auth-probe"
         },
         {
           "family": "script",
@@ -5317,7 +5493,7 @@
         },
         {
           "family": "script",
-          "path": "scripts/cos-engram-command-audit.py"
+          "path": "scripts/cos-engram-command-audit"
         },
         {
           "family": "script",
@@ -5437,6 +5613,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-queue-drain"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-recovery-drill"
         },
         {
@@ -5485,6 +5665,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-task-submit"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-tier-claim-audit"
         },
         {
@@ -5529,6 +5713,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-worker-run-once"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-worktree-sweeper.sh"
         },
         {
@@ -5538,6 +5726,10 @@
         {
           "family": "script",
           "path": "scripts/cos_architecture_readiness.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_auth_probe.py"
         },
         {
           "family": "script",
@@ -5601,6 +5793,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_engram_command_audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_executor.py"
         },
         {
@@ -5634,6 +5830,10 @@
         {
           "family": "script",
           "path": "scripts/cos_self_improvement_loop.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_service_control_plane.py"
         },
         {
           "family": "script",
@@ -5677,6 +5877,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cosd"
+        },
+        {
+          "family": "script",
           "path": "scripts/cost_predict.py"
         },
         {
@@ -5706,6 +5910,10 @@
         {
           "family": "script",
           "path": "scripts/doctor.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/edit-coop.sh"
         },
         {
           "family": "script",
@@ -6553,6 +6761,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_service_control_plane_contracts.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_session_start_tooling_contract.py"
         },
         {
@@ -6918,6 +7130,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_architecture_readiness.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_auth_probe.py"
         },
         {
           "family": "test",
@@ -7293,6 +7509,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_service_control_plane_local_queue.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_session_state.py"
         },
         {
@@ -7381,12 +7601,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:55",
-        "test_consumers:312",
-        "hook_consumers:68",
-        "doc_consumers:412",
+        "test_consumers:315",
+        "hook_consumers:75",
+        "doc_consumers:419",
         "rule_consumers:42",
-        "config_consumers:28",
-        "script_consumers:192"
+        "config_consumers:32",
+        "script_consumers:202"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -7402,7 +7622,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1109,
+      "total_consumers": 1140,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -7628,6 +7848,69 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 3,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/provider-executor-contracts.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-research-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_auth_probe.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-auth-probe",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-auth-probe",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -9408,10 +9691,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 7,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md"
@@ -9449,7 +9737,8 @@
       "evidence": [
         "wrapper_for:scripts/engram-sync.sh",
         "test_consumers:1",
-        "doc_consumers:7"
+        "doc_consumers:7",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -9463,7 +9752,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/engram-sync.sh"
     },
     {
@@ -9547,14 +9836,9 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/architecture/engram-command-contract.md"
-        },
         {
           "family": "test",
           "path": "tests/audit/test_engram_command_contract.py"
@@ -9562,8 +9846,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
-        "doc_consumers:1"
+        "test_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -9571,13 +9854,13 @@
       "lifecycle_state": null,
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": null,
-      "path": "scripts/cos-engram-command-audit.py",
+      "path": "scripts/cos-engram-command-audit",
       "protected_install_surface": false,
       "role": "maintainer-tool",
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 1,
       "wrapper_for": null
     },
     {
@@ -11236,6 +11519,61 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-queue-drain",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-queue-drain",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -12301,6 +12639,61 @@
       "consumer_families": {
         "config": 2,
         "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-task-submit",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-task-submit",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
         "script": 2,
         "test": 2
       },
@@ -13032,6 +13425,61 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 2,
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos-worker-run-once",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos-worker-run-once",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -13273,6 +13721,63 @@
       "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
+        "config": 1,
+        "doc": 1,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-auth-probe"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_anthropic_api_key_references.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_auth_probe.py",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos_auth_probe.py",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 5,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
         "config": 2,
         "script": 1
       },
@@ -13380,7 +13885,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "rule": 1,
         "test": 4
@@ -13397,6 +13902,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-037-self-knowledge-base.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md"
         },
         {
           "family": "hook",
@@ -13427,7 +13936,7 @@
       "evidence": [
         "test_consumers:4",
         "hook_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:1",
         "config_consumers:1"
       ],
@@ -13443,7 +13952,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -14182,6 +14691,44 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 4,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "script": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/architecture/engram-command-contract.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-engram-command-audit"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos_engram_command_audit.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -15178,6 +15725,69 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 1,
+        "script": 4,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-queue-drain"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-task-submit"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-worker-run-once"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cosd"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_service_control_plane_local_queue.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "config_consumers:1",
+        "script_consumers:4"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cos_service_control_plane.py",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cos_service_control_plane.py",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 7,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
@@ -15960,6 +16570,99 @@
         "shell"
       ],
       "total_consumers": 6,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless an explicit package/profile projects it to consumers",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 3,
+        "doc": 8,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/service-control-plane-schema.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/task-lifecycle-schema.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-service-runtime-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/service-control-plane-research-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/service-control-plane-proof-drills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/task-lifecycle-worktree-pr-flow.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_service_control_plane.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_service_control_plane_contracts.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "test_consumers:2",
+        "doc_consumers:8",
+        "config_consumers:3",
+        "script_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/cosd",
+      "lifecycle_state": "sandbox",
+      "next_action": "keep non-default until tests and operator value justify promotion",
+      "override_rationale": null,
+      "path": "scripts/cosd",
+      "protected_install_surface": false,
+      "role": "lab",
+      "role_source": "lifecycle",
+      "skill_consumers": 0,
+      "supported_harnesses": [
+        "shell"
+      ],
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -17415,6 +18118,46 @@
       "skill_consumers": 0,
       "supported_harnesses": [],
       "total_consumers": 15,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "low",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-071-engram-lifecycle-evolution.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/engram-obsidian-export.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:3"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/export-engram-to-obsidian.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:doc-rule",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -24815,25 +25558,26 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 137,
-      "medium": 183
+      "high": 145,
+      "low": 1,
+      "medium": 185
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 49,
-      "lifecycle-declared-maintainer": 38,
+      "lifecycle-declared-maintainer": 46,
       "skill-referenced-not-projectable": 2,
-      "so-local-only": 212
+      "so-local-only": 215
     },
-    "low_confidence_rows": 0,
+    "low_confidence_rows": 1,
     "roles": {
-      "agentic-primitive": 106,
-      "driver-specific": 10,
-      "lab": 13,
-      "maintainer-tool": 180,
+      "agentic-primitive": 107,
+      "driver-specific": 11,
+      "lab": 20,
+      "maintainer-tool": 182,
       "migration-only": 11
     },
-    "total_scripts": 320,
+    "total_scripts": 331,
     "without_consumers": 4
   },
   "target_family": "scripts"

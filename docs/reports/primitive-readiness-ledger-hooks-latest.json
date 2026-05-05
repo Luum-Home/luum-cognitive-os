@@ -9,6 +9,179 @@
   ],
   "items": [
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 7,
+        "doc": 16,
+        "hook": 3,
+        "rule": 1,
+        "script": 3,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/dependencies.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-026-r2-r3-design-review.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-055b-destructive-git-block.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/LESSONS-LEARNED.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/POST-MORTEM-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/core-vs-extensions.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cos-dispatch/migration.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/ux2-hook-hygiene.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/open-source-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/hook-security-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-usage-audit.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/destructive-git-blocker.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/destructive-rm-blocker.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/subagent-context-injector.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/ROADMAP.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/set-security-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/chaos/test_destructive_rm_blocker.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_hook_graceful_degradation.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_subagent_context_injector.py"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "hook_consumers:3",
+        "rule_consumers:1",
+        "script_consumers:3",
+        "test_consumers:4",
+        "doc_consumers:16",
+        "config_consumers:7"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/_lib/agent-context.sh",
+      "lifecycle_state": "advisory",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "hooks/_lib/agent-context.sh",
+      "role": "memory-lifecycle",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 34
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -521,10 +694,6 @@
         },
         {
           "family": "script",
-          "path": "scripts/cos-engram-command-audit.py"
-        },
-        {
-          "family": "script",
           "path": "scripts/cos-update.sh"
         },
         {
@@ -542,6 +711,10 @@
         {
           "family": "script",
           "path": "scripts/cos_coverage.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_engram_command_audit.py"
         },
         {
           "family": "script",
@@ -1007,10 +1180,10 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 48,
+        "doc": 49,
         "hook": 64,
         "rule": 6,
-        "script": 19,
+        "script": 22,
         "skill": 2,
         "test": 31
       },
@@ -1030,6 +1203,10 @@
         {
           "family": "doc",
           "path": "docs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1533,6 +1710,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_service_control_plane.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_work_inventory.py"
         },
         {
@@ -1554,6 +1735,14 @@
         {
           "family": "script",
           "path": "scripts/primitive_duplication_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_family_readiness_ledger.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_readiness_ledger.py"
         },
         {
           "family": "script",
@@ -1709,9 +1898,9 @@
         "skill_consumers:2",
         "hook_consumers:64",
         "rule_consumers:6",
-        "script_consumers:19",
+        "script_consumers:22",
         "test_consumers:31",
-        "doc_consumers:48",
+        "doc_consumers:49",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -1722,7 +1911,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 172
+      "total_consumers": 176
     },
     {
       "confidence": "medium",
@@ -4624,6 +4813,47 @@
       "role_source": "heuristic:text",
       "supported_harnesses": [],
       "total_consumers": 7
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 1,
+        "hook": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/task-completed.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/task-created.sh"
+        }
+      ],
+      "distribution": "maintainer",
+      "evidence": [
+        "lifecycle",
+        "hook_consumers:2",
+        "config_consumers:1"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/_lib/task-event.sh",
+      "lifecycle_state": "advisory",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "hooks/_lib/task-event.sh",
+      "role": "observability",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "shell"
+      ],
+      "total_consumers": 3
     },
     {
       "confidence": "medium",
@@ -15277,7 +15507,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 4,
+        "doc": 5,
         "hook": 2,
         "script": 4,
         "test": 4
@@ -15328,6 +15558,10 @@
           "path": "docs/architecture/memory-lifecycle.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/engram-daemon-launcher.sh"
         },
@@ -15374,7 +15608,7 @@
         "hook_consumers:2",
         "script_consumers:4",
         "test_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -15387,7 +15621,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -15519,7 +15753,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 4,
+        "doc": 5,
         "hook": 2,
         "script": 3,
         "test": 2
@@ -15566,6 +15800,10 @@
           "path": "docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/engram-daemon-launcher.sh"
         },
@@ -15600,7 +15838,7 @@
         "hook_consumers:2",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -15613,7 +15851,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "medium",
@@ -22873,7 +23111,7 @@
         "doc": 3,
         "hook": 2,
         "script": 4,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -22959,6 +23197,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_config_audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_duplication_audit.py"
         }
       ],
       "distribution": "lab",
@@ -22966,7 +23208,7 @@
         "lifecycle",
         "hook_consumers:2",
         "script_consumers:4",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:3",
         "config_consumers:9"
       ],
@@ -22980,7 +23222,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -22991,7 +23233,7 @@
         "doc": 5,
         "hook": 2,
         "script": 4,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -23061,13 +23303,17 @@
         {
           "family": "test",
           "path": "tests/integration/test_reaper_single_instance.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_duplication_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:2",
         "script_consumers:4",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:5",
         "config_consumers:3"
       ],
@@ -23079,7 +23325,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "medium",
@@ -29884,7 +30130,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 8,
         "script": 5,
         "test": 1
@@ -29917,6 +30163,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/task-lifecycle-schema.yaml"
         },
         {
           "family": "doc",
@@ -29981,7 +30231,7 @@
         "script_consumers:5",
         "test_consumers:1",
         "doc_consumers:8",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/task-created.sh",
@@ -29993,7 +30243,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -31610,23 +31860,23 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 126,
+      "high": 128,
       "medium": 86
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 1,
-      "lifecycle-declared-maintainer": 114,
+      "lifecycle-declared-maintainer": 116,
       "projected-consumer-surface": 11,
       "so-local-only": 86
     },
     "roles": {
       "driver-specific": 12,
       "lab": 103,
-      "memory-lifecycle": 65,
-      "observability": 25,
+      "memory-lifecycle": 66,
+      "observability": 26,
       "runtime-safety": 7
     },
-    "total": 212,
+    "total": 214,
     "without_consumers": 0,
     "without_lifecycle": 86
   },
