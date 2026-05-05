@@ -34,6 +34,32 @@ def _which(binary: str, path: str | None = None) -> str | None:
     return shutil.which(binary, path=path)
 
 
+def _known_claude_candidates() -> list[Path]:
+    home = Path.home()
+    return [
+        home / ".local" / "bin" / "claude",
+        home / ".npm-global" / "bin" / "claude",
+        home / ".bun" / "bin" / "claude",
+        Path("/Applications/Claude.app/Contents/MacOS/claude"),
+        home / "Library" / "Application Support" / "Claude" / "claude-code" / "latest" / "claude.app" / "Contents" / "MacOS" / "claude",
+    ]
+
+
+def _which_claude(path: str | None = None) -> str | None:
+    found = _which("claude", path)
+    if found:
+        return found
+    for candidate in _known_claude_candidates():
+        if candidate.exists() and candidate.is_file():
+            return str(candidate)
+    claude_code_root = Path.home() / "Library" / "Application Support" / "Claude" / "claude-code"
+    if claude_code_root.exists():
+        for candidate in sorted(claude_code_root.glob("*/claude.app/Contents/MacOS/claude"), reverse=True):
+            if candidate.exists() and candidate.is_file():
+                return str(candidate)
+    return None
+
+
 def _run_status(command: list[str], *, env: Mapping[str, str], cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
     safe_env = dict(env)
     return subprocess.run(
@@ -129,16 +155,30 @@ def probe(provider: str, mode: str, *, env: Mapping[str, str] | None = None, pat
                 allowed_runtime=["host", "container"],
             )
         if mode in {"account-session", "device-login"}:
-            claude = _which("claude", path)
+            claude = _which_claude(path)
             if not claude:
                 return AuthProbeResult(
                     provider=provider,
                     mode=mode,
                     status=UNSUPPORTED,
                     credential_store_access="forbidden",
-                    reason="claude CLI not found on PATH",
+                    reason="claude CLI not found on PATH or known install locations",
                     cost_mode="subscription_account",
                     allowed_runtime=["host"],
+                )
+            auth = _run_status([claude, "auth", "status"], env=env)
+            auth_output = f"{auth.stdout}\n{auth.stderr}"
+            logged_in = auth.returncode == 0 and "loggedIn" in auth_output and "true" in auth_output
+            if logged_in:
+                return AuthProbeResult(
+                    provider=provider,
+                    mode=mode,
+                    status=READY,
+                    credential_store_access="forbidden",
+                    command="claude auth status",
+                    reason="claude CLI reports an authenticated account session",
+                    cost_mode="subscription_account",
+                    allowed_runtime=["host"] if mode == "account-session" else ["host", "container"],
                 )
             version = _run_status([claude, "--version"], env=env)
             if version.returncode != 0:
@@ -148,7 +188,7 @@ def probe(provider: str, mode: str, *, env: Mapping[str, str] | None = None, pat
                     status=UNSUPPORTED,
                     credential_store_access="forbidden",
                     command="claude --version",
-                    reason="claude CLI exists but did not respond to --version",
+                    reason="claude CLI exists but did not respond to auth status or --version",
                     cost_mode="subscription_account",
                     allowed_runtime=["host"],
                 )
@@ -157,8 +197,8 @@ def probe(provider: str, mode: str, *, env: Mapping[str, str] | None = None, pat
                 mode=mode,
                 status=AUTH_REQUIRED,
                 credential_store_access="forbidden",
-                command="claude --version",
-                reason="claude CLI exists, but COS has no non-invasive account-session status probe yet",
+                command="claude auth status",
+                reason="claude CLI exists but did not report an authenticated account session",
                 cost_mode="subscription_account",
                 allowed_runtime=["host"] if mode == "account-session" else ["host", "container"],
             )

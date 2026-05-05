@@ -1,13 +1,15 @@
 ---
 adr: 167
 title: Proof Drill Selector and ACC Evidence Adapter
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
 implementation_files:
   - scripts/proof-drill-select
   - scripts/proof_drill_select.py
+  - scripts/proof-drill-evidence-record
+  - scripts/proof_drill_evidence_record.py
   - manifests/proof-drill-registry.yaml
   - docs/reports/proof-drill-evidence-latest.json
   - scripts/cos_instance_init.py
@@ -25,7 +27,7 @@ tags: [proof-drills, acc, instance-installer, runtime-flags, consumer-projection
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for the proof-drill selector, evidence recorder, ACC adapter, instance-profile projection, and runtime-flag registry scope** — 2026-05-05. Live proof execution remains opt-in according to the proof-drill registry; this ADR closes the selector/evidence/control-plane integration boundary.
 
 ## Context
 
@@ -43,15 +45,17 @@ or misuse the flag outside the normal runtime flag contract.
 1. Add `scripts/proof-drill-select` as the selector/doctor primitive for the
    proof-drill registry. It selects by id, scope, class, projection profile, and
    text tokens such as `provider`, `docker`, `headless`, and `codex`.
-2. Extend `manifests/proof-drill-registry.yaml` with explicit
+2. Add `scripts/proof-drill-evidence-record` so proof runs can update the
+   machine-readable evidence report consumed by ACC.
+3. Extend `manifests/proof-drill-registry.yaml` with explicit
    `consumer_projection` classification and projection profiles:
    `consumer-default`, `consumer-opt-in`, and `maintainer-only`.
-3. Extend `cos-instance-init` so instance plans expose registered proof drills
+4. Extend `cos-instance-init` so instance plans expose registered proof drills
    and default-safe doctor commands without executing opt-in drills.
-4. Add `docs/reports/proof-drill-evidence-latest.json` and teach
+5. Add `docs/reports/proof-drill-evidence-latest.json` and teach
    `scripts/acc_pipeline.py` to load proof-drill evidence as aligned/stale/
    unverified ACC capabilities.
-5. Register `COS_CODEX_EXEC_MODEL` in `manifests/runtime-env-flags.yaml` and
+6. Register `COS_CODEX_EXEC_MODEL` in `manifests/runtime-env-flags.yaml` and
    document it as a test opt-in/provider-smoke model pin.
 
 ## Consumer projection rule
@@ -89,3 +93,10 @@ python3 -m pytest \
   tests/contracts/test_runtime_env_flags.py \
   -q
 ```
+
+## Implementation Evidence
+
+- `scripts/proof-drill-select` and `scripts/proof_drill_select.py` provide registry selection.
+- `scripts/proof-drill-evidence-record` and `scripts/proof_drill_evidence_record.py` update machine-readable proof evidence.
+- `docs/reports/proof-drill-evidence-latest.json` is consumed by `scripts/acc_pipeline.py`.
+- Runtime flag and instance-profile contracts are covered by `manifests/runtime-env-flags.yaml` and `manifests/cos-instance-profiles.yaml`.
