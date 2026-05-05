@@ -927,6 +927,7 @@ hooks:
     - tests/behavior/test_cos_init_parity_2_3.py
     - tests/behavior/test_governed_self_improvement_cli.py
     - tests/behavior/test_hook_triggers.py
+    - tests/behavior/test_primitive_fitness_cli.py
     - tests/behavior/test_self_improvement.py
     - tests/behavior/test_singularity.py
     - tests/chaos/test_error_learning_exercised.py

@@ -414,7 +414,21 @@ cc_driver_emit() {
 
   printf '    "TaskCompleted": [\n'
   printf '%s\n' "$task_completed"
-  printf '    ]\n  }\n}\n'
+  printf '    ]\n  },\n'
+  printf '  "permissions": {\n'
+  printf '    "deny": [\n'
+  printf '      "Read(./.env)",\n'
+  printf '      "Read(./.env.*)",\n'
+  printf '      "Read(./secrets/**)",\n'
+  printf '      "Read(./*.key)",\n'
+  printf '      "Read(./*.pem)",\n'
+  printf '      "Read(./*.p12)",\n'
+  printf '      "Read(./*.pfx)",\n'
+  printf '      "Read(./.git/config)",\n'
+  printf '      "Read(./config/credentials.json)",\n'
+  printf '      "Read(./.ssh/**)"\n'
+  printf '    ]\n'
+  printf '  }\n}\n'
 }
 
 # ── Main entrypoint (when invoked directly, not sourced) ──────────────────────
