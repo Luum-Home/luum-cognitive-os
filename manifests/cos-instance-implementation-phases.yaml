@@ -1,0 +1,168 @@
+schema_version: cos-instance-implementation-phases.v1
+review_date: 2026-05-05
+purpose: >-
+  Roadmap and gated implementation phases for operational Cognitive OS instance
+  provisioning after ADR-163. This governs local, Docker/headless, host CLI
+  bridge, remote ingress, worktree/PR, VM, and Kubernetes runtime progression.
+principles:
+  - Preserve current IDE and CLI-local workflows while adding service/headless modes.
+  - Do not execute provider calls from new service paths until explicit auth, cost, approval, and redaction gates exist.
+  - Do not read, copy, or mount provider credential stores by default.
+  - Promote planned profiles only after manual proof and automated contract evidence.
+  - Every phase must have a rollback or disable path.
+status_values:
+  planned: Design exists but implementation is blocked or not started.
+  in_progress: Work may begin but proof is incomplete.
+  implemented: Code/docs/tests exist and the acceptance criteria are satisfied for the stated proof level.
+  blocked: External dependency or unresolved security decision prevents implementation.
+proof_levels:
+  contract: Manifest/docs/tests prove shape only.
+  local-smoke: Local non-provider smoke passed.
+  docker-smoke: Docker worker smoke passed.
+  bridge-smoke: Host bridge non-provider smoke passed.
+  provider-smoke: Account-backed provider execution passed with redacted evidence.
+  remote-ingress-smoke: Remote ingress can enqueue/status tasks without direct execution.
+  pr-smoke: Worktree/branch/PR proposal flow passed.
+phases:
+  - id: phase-1-instance-init
+    title: Instance init contract and local/docker metadata
+    status: implemented
+    proof_level: contract
+    profiles: [local, docker-headless]
+    objective: Separate consumer-project projection from operational SO instance provisioning.
+    deliverables:
+      - manifests/cos-instance-profiles.yaml
+      - scripts/cos-instance-init
+      - scripts/cos_instance_init.py
+      - docs/adrs/ADR-163-cos-instance-installer.md
+      - docs/architecture/cos-instance-installer.md
+      - docs/manual-tests/cos-instance-installer.md
+      - tests/contracts/test_cos_instance_profiles.py
+    acceptance:
+      - python3 -m pytest tests/contracts/test_cos_instance_profiles.py -q
+      - scripts/cos-instance-init --profile local --dry-run --json
+      - scripts/cos-instance-init --profile docker-headless --dry-run --json
+    rollback: Remove generated .cognitive-os/instances/<profile>/ metadata; no consumer-project projection is modified.
+  - id: phase-2-instance-up-doctor-smoke
+    title: Instance up/doctor/smoke command surface
+    status: planned
+    proof_level: contract
+    profiles: [local, docker-headless]
+    objective: Add operator commands that wrap init, status checks, and smoke drills without provider calls by default.
+    deliverables:
+      - scripts/cos-instance-up
+      - scripts/cos-instance-doctor
+      - scripts/cos-instance-smoke
+      - tests/contracts/test_cos_instance_command_surface.py
+      - docs/manual-tests/cos-instance-command-surface.md
+    acceptance:
+      - scripts/cos-instance-doctor --profile local --json
+      - scripts/cos-instance-smoke --profile docker-headless --no-provider --json
+      - python3 -m pytest tests/contracts/test_cos_instance_command_surface.py -q
+    rollback: Keep cos-instance-init metadata; disable wrapper commands from operator docs.
+  - id: phase-3-host-cli-bridge-design
+    title: Host CLI bridge security contract
+    status: implemented
+    proof_level: contract
+    profiles: [host-cli-bridge]
+    objective: Define how Docker/cosd may request host Codex/Claude CLI execution without copying credential stores.
+    deliverables:
+      - docs/adrs/ADR-164-host-cli-bridge-security-boundary.md
+      - docs/architecture/host-cli-bridge-security-boundary.md
+      - docs/manual-tests/host-cli-bridge-security-boundary.md
+      - manifests/host-cli-bridge-contract.yaml
+      - tests/contracts/test_host_cli_bridge_contract.py
+    acceptance:
+      - python3 -m pytest tests/contracts/test_host_cli_bridge_contract.py -q
+    rollback: Keep host-cli-bridge profile planned/write-blocked.
+  - id: phase-4-host-cli-bridge-non-provider-smoke
+    title: Host CLI bridge non-provider smoke
+    status: planned
+    proof_level: bridge-smoke
+    profiles: [host-cli-bridge]
+    objective: Prove bridge lifecycle, auth, allowlist, audit, and redaction with harmless non-provider commands only.
+    deliverables:
+      - scripts/cos-host-cli-bridge
+      - scripts/cos-host-cli-bridge-client
+      - tests/integration/test_host_cli_bridge_non_provider.py
+      - docs/manual-tests/host-cli-bridge-non-provider-smoke.md
+    acceptance:
+      - COS_RUN_HOST_CLI_BRIDGE_SMOKE=1 python3 -m pytest tests/integration/test_host_cli_bridge_non_provider.py -q
+      - scripts/cos-host-cli-bridge-client --command codex-login-status --json
+    rollback: Stop bridge process, delete socket/token file, preserve audit log.
+  - id: phase-5-host-provider-smoke
+    title: Host Codex/Claude provider smoke
+    status: planned
+    proof_level: provider-smoke
+    profiles: [host-cli-bridge]
+    objective: Execute account-backed provider task through official CLI only after human approval/cost gate.
+    deliverables:
+      - docs/manual-tests/host-provider-smoke.md
+      - tests/integration/test_host_provider_smoke_opt_in.py
+      - redaction evidence bundle
+    acceptance:
+      - COS_RUN_PROVIDER_SMOKE=1 COS_APPROVE_PROVIDER_COST=1 python3 -m pytest tests/integration/test_host_provider_smoke_opt_in.py -q
+    rollback: Disable provider command allowlist entries; preserve failed/success evidence.
+  - id: phase-6-remote-ingress-lab
+    title: Remote ingress lab for Telegram/Paperclip/GitHub/REST
+    status: planned
+    proof_level: remote-ingress-smoke
+    profiles: [docker-headless, host-cli-bridge]
+    objective: Allow remote surfaces to enqueue/status tasks without direct execution.
+    deliverables:
+      - scripts/cos-remote-ingress-lab
+      - tests/contracts/test_remote_ingress_task_mapping.py
+      - docs/manual-tests/remote-ingress-lab.md
+    acceptance:
+      - python3 -m pytest tests/contracts/test_remote_ingress_task_mapping.py -q
+      - mocked inbound update creates queued task and replay is ignored
+    rollback: Disable ingress adapters; queued tasks remain inspectable.
+  - id: phase-7-worktree-branch-pr-runtime
+    title: Worktree, branch, and PR proposal runtime
+    status: planned
+    proof_level: pr-smoke
+    profiles: [local, docker-headless, host-cli-bridge]
+    objective: Implement ADR-162 task lifecycle through isolated worktree, branch, validation, and draft PR/patch proposal.
+    deliverables:
+      - scripts/cos-worktree-allocate
+      - scripts/cos-pr-propose
+      - tests/integration/test_task_worktree_pr_flow.py
+      - docs/manual-tests/task-worktree-pr-flow-runtime.md
+    acceptance:
+      - COS_RUN_WORKTREE_PR_SMOKE=1 python3 -m pytest tests/integration/test_task_worktree_pr_flow.py -q
+    rollback: Preserve worktree and patch bundle; never delete unmerged work.
+  - id: phase-8-vm-instance
+    title: VM/EC2 instance provisioning
+    status: planned
+    proof_level: local-smoke
+    profiles: [vm]
+    objective: Provision a single-node service instance on a VM/VPS/EC2 style host.
+    deliverables:
+      - docs/manual-tests/vm-instance-provisioning.md
+      - scripts/cos-instance-init support for --profile vm --write
+      - service manager template
+    acceptance:
+      - scripts/cos-instance-init --profile vm --dry-run --json
+      - VM smoke evidence recorded manually
+    rollback: Stop service, preserve artifacts, remove service manager unit.
+  - id: phase-9-k8s-instance
+    title: Kubernetes worker pod provisioning
+    status: planned
+    proof_level: docker-smoke
+    profiles: [k8s]
+    objective: Provision queue-backed worker pods with readiness/liveness and external credential boundaries.
+    deliverables:
+      - docs/manual-tests/k8s-instance-provisioning.md
+      - k8s manifests or Helm prototype
+      - tests/contracts/test_k8s_instance_manifest.py
+    acceptance:
+      - kubectl get namespace cognitive-os
+      - worker pod readiness/liveness proof recorded manually
+    rollback: Delete namespace or release; preserve external artifact store.
+gates:
+  planned_profiles_write_blocked:
+    profiles: [host-cli-bridge, vm, k8s]
+    enforced_by: tests/contracts/test_cos_instance_profiles.py
+  host_cli_bridge_provider_call_blocked_until_phase_5: true
+  remote_ingress_direct_execution_blocked: true
+  credential_store_copy_blocked: true

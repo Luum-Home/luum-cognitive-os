@@ -11,6 +11,8 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [COS Instance Installer Implementation Roadmap](architecture/cos-instance-installer-implementation-plan.md) — phased runbook for local, Docker/headless, host CLI bridge, remote ingress, worktree/PR, VM, and Kubernetes instance modes.
+- [ADR-164: Host CLI Bridge Security Boundary](adrs/ADR-164-host-cli-bridge-security-boundary.md) — security contract for letting service runtimes request official host CLIs without copying credential stores.
 - [COS Instance Installer](architecture/cos-instance-installer.md) — separates consumer-project projection from operational SO instance provisioning for local, Docker/headless, host bridge, VM, and Kubernetes profiles.
 - [Headless Docker Service Runtime Manual Test](manual-tests/headless-docker-service-runtime.md) — non-IDE Docker worker proof for queue, leases, artifacts, provider auth boundaries, and future service runtime flows.
 - [ADR-162: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol](adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) — contract for pausing/resuming tasks, structured agent questions, worktree ownership, branches, and propose-only PR flow.
