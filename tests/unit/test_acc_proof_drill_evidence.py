@@ -23,7 +23,8 @@ def test_acc_loads_proof_drill_evidence_as_aligned_capabilities() -> None:
 def test_acc_proof_drill_evidence_summary_counts_passed_rows() -> None:
     status, capabilities, _findings = acc_pipeline.load_proof_drill_evidence(REPO)
 
-    assert status.summary["status_counts"]["passed"] == len(capabilities)
-    codex = next(cap for cap in capabilities if cap.id == "proof_drill:headless-codex-provider-smoke")
+    proof_capabilities = [cap for cap in capabilities if cap.kind == "proof_drill"]
+    assert status.summary["status_counts"]["passed"] == len(proof_capabilities)
+    codex = next(cap for cap in proof_capabilities if cap.id == "proof_drill:headless-codex-provider-smoke")
     assert codex.risk == "high"
     assert any("COS_CODEX_EXEC_MODEL" in item for item in codex.evidence)
