@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Select governed proof-drill and smoke opt-in commands without executing them.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$SCRIPT_DIR/proof_drill_select.py" "$@"

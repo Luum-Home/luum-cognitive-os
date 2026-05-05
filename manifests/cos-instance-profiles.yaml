@@ -1,49 +1,53 @@
 schema_version: cos-instance-profiles.v1
 review_date: 2026-05-05
-purpose: >-
-  Instance installer contract for constructing operational Cognitive OS runtimes.
+purpose: Instance installer contract for constructing operational Cognitive OS runtimes.
   This is separate from consumer-project projection (`scripts/cos_init.py`).
 separation_of_concerns:
   consumer_project_installer:
     command: scripts/cos_init.py
     owns:
-      - project-local harness projection
-      - hooks/rules/skills/config projection into consumer repositories
-      - profile-managed primitive installation
+    - project-local harness projection
+    - hooks/rules/skills/config projection into consumer repositories
+    - profile-managed primitive installation
     does_not_own:
-      - daemon/service runtime provisioning
-      - host CLI account-session bridge
-      - Docker worker lifecycle
-      - VM/pod/EC2 deployment
+    - daemon/service runtime provisioning
+    - host CLI account-session bridge
+    - Docker worker lifecycle
+    - VM/pod/EC2 deployment
   cos_instance_installer:
     command: scripts/cos-instance-init
     owns:
-      - operational COS runtime instance metadata
-      - local/headless service directories
-      - Docker worker smoke readiness
-      - future host bridge, VM, and Kubernetes bootstrap plans
+    - operational COS runtime instance metadata
+    - local/headless service directories
+    - Docker worker smoke readiness
+    - future host bridge, VM, and Kubernetes bootstrap plans
     does_not_own:
-      - consumer project harness projection
-      - copying provider credential stores
-      - direct publication/merge decisions
+    - consumer project harness projection
+    - copying provider credential stores
+    - direct publication/merge decisions
 principles:
-  - Cognitive OS is not an IDE plugin; it is an agent governance/runtime layer with multiple frontends.
-  - IDE, CLI local, shell/CI, Docker service, remote ingress, VM, and pod workers are runtime entrypoints for the same SO.
-  - Instance provisioning must not weaken existing IDE workflows.
-  - Instance provisioning must not read or copy provider token stores.
-  - Provider execution starts disabled unless an explicit auth probe and cost/approval gate pass.
-  - Every instance profile needs a dry-run plan and a manual proof path before runtime claims are promoted.
+- Cognitive OS is not an IDE plugin; it is an agent governance/runtime layer with
+  multiple frontends.
+- IDE, CLI local, shell/CI, Docker service, remote ingress, VM, and pod workers are
+  runtime entrypoints for the same SO.
+- Instance provisioning must not weaken existing IDE workflows.
+- Instance provisioning must not read or copy provider token stores.
+- Provider execution starts disabled unless an explicit auth probe and cost/approval
+  gate pass.
+- Every instance profile needs a dry-run plan and a manual proof path before runtime
+  claims are promoted.
 required_profile_fields:
-  - id
-  - display_name
-  - status
-  - proof_level
-  - target
-  - entrypoints
-  - writes
-  - requires
-  - smoke_commands
-  - evidence_sources
+- id
+- display_name
+- status
+- proof_level
+- target
+- entrypoints
+- writes
+- requires
+- smoke_commands
+- evidence_sources
+- proof_drill_ids
 proof_levels:
   contract: Manifest and installer dry-run/write contract exists.
   local-smoke: Local machine smoke was executed and recorded.
@@ -51,146 +55,158 @@ proof_levels:
   provider-smoke: Account-backed provider execution succeeded and was recorded.
   planned: Design exists but installer must not claim runtime support.
 profiles:
-  - id: local
-    display_name: Local COS Instance
-    status: implemented
-    proof_level: contract
-    target: maintainer-host
-    entrypoints:
-      - ide-harness
-      - cli-local
-      - shell-ci
-    writes:
-      - .cognitive-os/instances/local/instance.json
-      - .cognitive-os/instances/local/commands.md
-      - .cognitive-os/runtime/
-      - .cognitive-os/service/
-    requires:
-      - python3
-      - git
-    optional_requires:
-      - codex
-      - claude
-      - engram
-      - paperclip
-    smoke_commands:
-      - scripts/cos-auth-probe --provider codex --mode account-session --json
-      - scripts/cos-auth-probe --provider claude --mode account-session --json
-      - scripts/cos-queue-drain --json
-    evidence_sources:
-      - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
-      - docs/architecture/cos-service-runtime-boundary.md
-      - docs/architecture/service-control-plane-implementation-plan.md
-  - id: docker-headless
-    display_name: Docker Headless COS Instance
-    status: implemented
-    proof_level: docker-smoke
-    target: local-docker
-    entrypoints:
-      - docker-worker
-      - cli-local
-      - future-remote-ingress
-    writes:
-      - .cognitive-os/instances/docker-headless/instance.json
-      - .cognitive-os/instances/docker-headless/commands.md
-      - .cognitive-os/service/
-      - .cognitive-os/runtime/
-    requires:
-      - docker
-      - docker-compose-v2
-      - git
-    optional_requires:
-      - codex-host-cli
-      - claude-host-cli
-      - engram-cloud
-    smoke_commands:
-      - scripts/cos-headless-service-drill --json
-      - COS_RUN_HEADLESS_SERVICE_DOCKER=1 python3 -m pytest tests/integration/test_headless_service_drill.py -q
-    evidence_sources:
-      - docs/manual-tests/headless-docker-service-runtime.md
-      - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
-      - docker/cos-worker/docker-compose.yml
-  - id: host-cli-bridge
-    display_name: Host CLI Bridge COS Instance
-    status: planned
-    proof_level: planned
-    target: maintainer-host-bridge
-    entrypoints:
-      - docker-or-cosd-to-host-cli
-      - codex-cli-host
-      - claude-cli-host
-    writes:
-      - .cognitive-os/instances/host-cli-bridge/instance.json
-    requires:
-      - explicit-loopback-or-socket-auth
-      - allowlisted-commands
-      - provider-auth-probes
-      - cost-approval-gate
-    optional_requires:
-      - codex
-      - claude
-    smoke_commands:
-      - scripts/cos-auth-probe --provider codex --mode account-session --json
-      - scripts/cos-auth-probe --provider claude --mode account-session --json
-    evidence_sources:
-      - docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md
-      - docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md
-      - docs/manual-tests/headless-docker-service-runtime.md
-  - id: vm
-    display_name: VM / EC2 COS Instance
-    status: planned
-    proof_level: planned
-    target: vm-or-ec2
-    entrypoints:
-      - cosd
-      - worker-service
-      - remote-ingress
-    writes:
-      - .cognitive-os/instances/vm/instance.json
-    requires:
-      - repo-checkout
-      - service-manager
-      - explicit-provider-auth-mode
-      - artifact-storage
-      - audit-log-export
-    optional_requires:
-      - systemd
-      - launchd
-      - engram-cloud
-    smoke_commands:
-      - scripts/cos-headless-service-drill --json
-    evidence_sources:
-      - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
-      - docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md
-  - id: k8s
-    display_name: Kubernetes COS Instance
-    status: planned
-    proof_level: planned
-    target: kubernetes
-    entrypoints:
-      - worker-pod
-      - queue-backed-worker
-      - remote-ingress
-    writes:
-      - .cognitive-os/instances/k8s/instance.json
-    requires:
-      - namespace
-      - external-secrets-or-provider-cloud-auth
-      - queue-backend
-      - artifact-volume
-      - readiness-liveness-probes
-    optional_requires:
-      - engram-cloud
-      - ingress-controller
-    smoke_commands:
-      - kubectl get namespace cognitive-os
-    evidence_sources:
-      - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
-      - docs/adrs/ADR-140-cross-os-containerized-deployment.md
+- id: local
+  display_name: Local COS Instance
+  status: implemented
+  proof_level: contract
+  target: maintainer-host
+  entrypoints:
+  - ide-harness
+  - cli-local
+  - shell-ci
+  writes:
+  - .cognitive-os/instances/local/instance.json
+  - .cognitive-os/instances/local/commands.md
+  - .cognitive-os/runtime/
+  - .cognitive-os/service/
+  requires:
+  - python3
+  - git
+  optional_requires:
+  - codex
+  - claude
+  - engram
+  - paperclip
+  smoke_commands:
+  - scripts/cos-auth-probe --provider codex --mode account-session --json
+  - scripts/cos-auth-probe --provider claude --mode account-session --json
+  - scripts/cos-queue-drain --json
+  evidence_sources:
+  - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
+  - docs/architecture/cos-service-runtime-boundary.md
+  - docs/architecture/service-control-plane-implementation-plan.md
+  proof_drill_ids:
+  - os-pytest-summary
+- id: docker-headless
+  display_name: Docker Headless COS Instance
+  status: implemented
+  proof_level: docker-smoke
+  target: local-docker
+  entrypoints:
+  - docker-worker
+  - cli-local
+  - future-remote-ingress
+  writes:
+  - .cognitive-os/instances/docker-headless/instance.json
+  - .cognitive-os/instances/docker-headless/commands.md
+  - .cognitive-os/service/
+  - .cognitive-os/runtime/
+  requires:
+  - docker
+  - docker-compose-v2
+  - git
+  optional_requires:
+  - codex-host-cli
+  - claude-host-cli
+  - engram-cloud
+  smoke_commands:
+  - scripts/cos-headless-service-drill --json
+  - COS_RUN_HEADLESS_SERVICE_DOCKER=1 python3 -m pytest tests/integration/test_headless_service_drill.py
+    -q
+  evidence_sources:
+  - docs/manual-tests/headless-docker-service-runtime.md
+  - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+  - docker/cos-worker/docker-compose.yml
+  proof_drill_ids:
+  - headless-docker-service-drill
+  - headless-codex-provider-smoke
+- id: host-cli-bridge
+  display_name: Host CLI Bridge COS Instance
+  status: planned
+  proof_level: planned
+  target: maintainer-host-bridge
+  entrypoints:
+  - docker-or-cosd-to-host-cli
+  - codex-cli-host
+  - claude-cli-host
+  writes:
+  - .cognitive-os/instances/host-cli-bridge/instance.json
+  requires:
+  - explicit-loopback-or-socket-auth
+  - allowlisted-commands
+  - provider-auth-probes
+  - cost-approval-gate
+  optional_requires:
+  - codex
+  - claude
+  smoke_commands:
+  - scripts/cos-auth-probe --provider codex --mode account-session --json
+  - scripts/cos-auth-probe --provider claude --mode account-session --json
+  evidence_sources:
+  - docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md
+  - docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md
+  - docs/manual-tests/headless-docker-service-runtime.md
+  proof_drill_ids:
+  - headless-codex-provider-smoke
+- id: vm
+  display_name: VM / EC2 COS Instance
+  status: planned
+  proof_level: planned
+  target: vm-or-ec2
+  entrypoints:
+  - cosd
+  - worker-service
+  - remote-ingress
+  writes:
+  - .cognitive-os/instances/vm/instance.json
+  requires:
+  - repo-checkout
+  - service-manager
+  - explicit-provider-auth-mode
+  - artifact-storage
+  - audit-log-export
+  optional_requires:
+  - systemd
+  - launchd
+  - engram-cloud
+  smoke_commands:
+  - scripts/cos-headless-service-drill --json
+  evidence_sources:
+  - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
+  - docs/architecture/cloud-worker-runtime-tooling-research-2026-05.md
+  proof_drill_ids:
+  - service-control-plane-manual-proof
+- id: k8s
+  display_name: Kubernetes COS Instance
+  status: planned
+  proof_level: planned
+  target: kubernetes
+  entrypoints:
+  - worker-pod
+  - queue-backed-worker
+  - remote-ingress
+  writes:
+  - .cognitive-os/instances/k8s/instance.json
+  requires:
+  - namespace
+  - external-secrets-or-provider-cloud-auth
+  - queue-backend
+  - artifact-volume
+  - readiness-liveness-probes
+  optional_requires:
+  - engram-cloud
+  - ingress-controller
+  smoke_commands:
+  - kubectl get namespace cognitive-os
+  evidence_sources:
+  - docs/adrs/ADR-091-headless-clustered-runtime-direction.md
+  - docs/adrs/ADR-140-cross-os-containerized-deployment.md
+  proof_drill_ids:
+  - service-control-plane-manual-proof
 blocked_behaviors:
-  - copying ~/.codex/auth.json
-  - copying ~/.claude
-  - reading macOS Keychain or browser cookies
-  - mounting opaque host credential directories into containers by default
-  - direct push to main from an instance worker
-  - merge without human or merge-queue approval
+- copying ~/.codex/auth.json
+- copying ~/.claude
+- reading macOS Keychain or browser cookies
+- mounting opaque host credential directories into containers by default
+- direct push to main from an instance worker
+- merge without human or merge-queue approval

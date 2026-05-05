@@ -14,6 +14,7 @@ REQUIRED_ENTRIES = {
     "qwen-fallback-live-smoke",
     "multi-provider-fallback-live-smoke",
     "headless-docker-service-drill",
+    "headless-codex-provider-smoke",
     "engram-cloud-docker-smoke",
     "cross-instance-learning-drill",
     "service-control-plane-manual-proof",
@@ -26,6 +27,7 @@ REQUIRED_FIELDS = {
     "primitive_kind",
     "selector",
     "default_lane",
+    "consumer_projection",
     "cost_class",
     "requires_credentials",
     "destructive_scope",
@@ -58,6 +60,7 @@ def test_registry_has_required_entries_and_schema() -> None:
         assert entry["class"] in registry["classes"], entry["id"]
         assert entry["scope"] in registry["scopes"], entry["id"]
         assert entry["primitive_kind"] in {"skill", "script", "documentation"}, entry["id"]
+        assert entry["consumer_projection"] in {"consumer-default", "consumer-opt-in", "maintainer-only"}, entry["id"]
         assert isinstance(entry["docs"], list) and entry["docs"], entry["id"]
         assert isinstance(entry["automated_checks"], list), entry["id"]
         assert entry["proves"], entry["id"]
@@ -96,8 +99,19 @@ def test_consumer_project_boundary_is_represented() -> None:
     assert consumer_rows
     assert any(row["id"] == "consumer-project-run-tests" for row in consumer_rows)
     for row in consumer_rows:
+        assert row["consumer_projection"] in {"consumer-default", "consumer-opt-in"}, row["id"]
         assert not str(row["selector"]).startswith("scripts/smoke-"), row["id"]
         assert not str(row["selector"]).startswith("scripts/cos-headless"), row["id"]
+
+
+def test_consumer_default_projection_excludes_provider_and_docker_drills() -> None:
+    registry = _registry()
+    default_allowed = set(registry["projection_profiles"]["consumer-default"]["allows"])
+    assert default_allowed == {"consumer-default"}
+    for entry in registry["entries"]:
+        if entry["consumer_projection"] in default_allowed:
+            assert "provider" not in str(entry.get("cost_class", "")).lower(), entry["id"]
+            assert "docker" not in str(entry.get("cost_class", "")).lower(), entry["id"]
 
 
 def test_registry_policy_declares_evidence_and_provider_skip_rules() -> None:

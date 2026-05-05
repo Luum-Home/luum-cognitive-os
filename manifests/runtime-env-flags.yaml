@@ -1,0 +1,32 @@
+schema_version: runtime-env-flags.v1
+review_date: 2026-05-05
+purpose: Public runtime environment flag registry for proof-drill/provider-smoke controls.
+required_flag_fields:
+  - name
+  - family
+  - default
+  - allowed_values
+  - owner_files
+  - documentation
+  - risk_level
+  - bypasses_safety_primitive
+families:
+  test-opt-in: Heavy, Docker, external-service, or cost-bearing test lane opt-ins.
+risk_levels:
+  medium: Changes runtime behavior for explicit opt-in proof drills.
+flags:
+  - name: COS_CODEX_EXEC_MODEL
+    family: test-opt-in
+    default: unset
+    allowed_values:
+      - any Codex CLI --model value supported by the installed host CLI
+    owner_files:
+      - scripts/cos_service_control_plane.py
+      - scripts/cos-headless-service-drill
+    documentation:
+      - docs/runtime-env-flags.md
+      - docs/manual-tests/headless-docker-service-runtime.md
+      - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+    risk_level: medium
+    bypasses_safety_primitive: false
+    description: Optional model pin for explicit Codex host provider proof drills when the installed CLI default model is unsupported.
