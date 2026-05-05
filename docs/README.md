@@ -13,16 +13,22 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Key Documents
 - [Cross-Device Dependency Installation](setup/cross-device-dependencies.md) — inventory and target contract for what installs per machine versus travels via git, Docker, Engram, or package manifests.
 - [ADR-168: Cross-Device Dependency Installation Contract](adrs/ADR-168-cross-device-dependency-installation.md) — accepted contract for manifest-driven dependency install metadata, dry-run-first installer behavior, and no-credential-copy boundaries.
+- [Expected Skip Registry and Opt-In Test Lanes](architecture/expected-skip-registry-and-opt-in-test-lanes.md) — ADR-166 policy and implementation plan for keeping legitimate skips while failing new unclassified skips.
 - [Proof Drill and Smoke Opt-In Primitives](architecture/proof-drill-and-smoke-opt-in-primitives.md) — registry-backed boundary between SO self-build tests, consumer-project validation, smoke opt-ins, and proof drills.
 - [COS Instance Installer Implementation Roadmap](../.cognitive-os/plans/architecture/cos-instance-installer-implementation-plan.md) — phased runbook for local, Docker/headless, host CLI bridge, remote ingress, worktree/PR, VM, and Kubernetes instance modes.
 - [ADR-164: Host CLI Bridge Security Boundary](adrs/ADR-164-host-cli-bridge-security-boundary.md) — security contract for letting service runtimes request official host CLIs without copying credential stores.
 - [COS Instance Installer](architecture/cos-instance-installer.md) — separates consumer-project projection from operational SO instance provisioning for local, Docker/headless, host bridge, VM, and Kubernetes profiles.
+- [ADR Implementation Reconciliation — 2026-05-05](reports/adr-implementation-reconciliation-2026-05-05.md) — reconciles ADR implementation status, fixes ACC fail-new classification debt, and documents the remaining non-implementation ADR buckets.
 - [Headless Docker Service Runtime Manual Test](manual-tests/headless-docker-service-runtime.md) — non-IDE Docker worker proof for queue, leases, artifacts, provider auth boundaries, and future service runtime flows.
 - [ADR-162: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol](adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) — contract for pausing/resuming tasks, structured agent questions, worktree ownership, branches, and propose-only PR flow.
 - [Obsidian, Documentation Graphs, and AI Agent Memory — 2026-05-05](research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md) — follow-up on using Obsidian as a human-readable graph layer for Engram-backed agent memory.
 - [Engram Obsidian Export Manual Test](manual-tests/engram-obsidian-export.md) — dry-run, write, and incremental proof path for the manual Engram → Obsidian graph export.
 - [Local Obsidian Installation](setup/obsidian-local.md) — Homebrew-managed local Obsidian install and validation for the optional Engram graph export workflow.
 - [Remote SO Control Plane Alternatives — 2026-05-05](reports/remote-control-plane-alternatives-2026-05-05.md) — provider, CLI, API-key, chat/Telegram, OpenCode, OpenClaw, and Agent Zero research feeding ADR-161.
+- [Runtime Environment Flags Inventory — 2026-05-05](architecture/runtime-env-flags-inventory.md) — current skip/disable/bypass/allow/opt-in flag families and the missing central manifest contract.
+- [Runtime Environment Flags](runtime-env-flags.md) — central public runtime flag index backed by `manifests/runtime-env-flags.yaml`, including `COS_SKIP_DOTENV`.
+- [Credential-Safe Script Runner Manual Test](manual-tests/credential-safe-script-runner.md) — allowlisted env-file runner for live smokes that redacts output and audits key names only.
+- [Multi-Provider Agent Delegation Research — 2026-05-05](reports/multi-provider-agent-delegation-research-2026-05-05.md) — Qwen, Kimi, DeepSeek, MiniMax, OpenClaw/Lucy, routers, and provider-adapter continuation research across 51 current sources.
 - [Primitive Readiness Continuity Plan](architecture/primitive-readiness-continuity-plan.md) — living cycle contract for mapping docs, scripts, hooks, skills, rules, memory, and harness adapters into governed agentic primitives.
 - [Primitive Readiness Review — 2026-05-04](reports/primitive-readiness-review-2026-05-04.md) — first continuity-cycle review of lifecycle manifest, family coverage, automation-loop scripts, and low-scoring script triage.
 - [Primitive Readiness Ledger Manual Test](manual-tests/primitive-readiness-ledger.md) — manual proof path for regenerating and inspecting the script readiness ledger.
@@ -137,6 +143,9 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Adversarial Generalization MVP](architecture/adversarial-generalization.md) — generated messy-task scenarios and deterministic rubric.
 - [Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) — licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.
 - [Lethal Trifecta Gate](security/lethal-trifecta-gate.md) — deterministic PreToolUse block for private data + untrusted content + external communication.
+- [Credential-Safe Runner Red-Team Review — 2026-05-05](security/credential-safe-runner-red-team-2026-05-05.md) — malicious-agent attack review for the `.env`-backed Qwen smoke primitive and the mitigations added.
+- [Security Red-Team Primitive](security/security-red-team.md) — unified `/security-red-team` runner for surface inventory, threat model, abuse probes, primitive scoring, and mitigation backlog.
+- [Cognitive OS Security Assessment Plan](security/cognitive-os-security-assessment-plan.md) — phased defender/red-team plan for assessing SO tools, agentic primitives, secret handling, and trust controls.
 - [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.
 - [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.

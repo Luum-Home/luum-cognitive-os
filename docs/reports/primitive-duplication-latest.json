@@ -1,5 +1,36 @@
 {
-  "findings": [],
+  "findings": [
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:85539ffea4fa",
+      "kind": "python-function-repeat",
+      "left": "scripts/acc_pipeline.py::utc_now",
+      "pair_key": "scripts/acc_pipeline.py::utc_now :: scripts/proof_drill_evidence_record.py::utc_now",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/proof_drill_evidence_record.py::utc_now",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:b0a09dbc1c53",
+      "kind": "python-function-repeat",
+      "left": "scripts/project_shell_ci.py::load_manifest",
+      "pair_key": "scripts/project_shell_ci.py::load_manifest :: scripts/proof_drill_select.py::load_registry",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/proof_drill_select.py::load_registry",
+      "severity": "medium",
+      "similarity": 1.0
+    }
+  ],
   "parameters": {
     "allowlist": "manifests/primitive-duplication-allowlist.yaml",
     "include": [
@@ -20,11 +51,17 @@
   },
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
-    "by_common_home": {},
-    "by_consumer_relevance": {},
-    "by_kind": {},
-    "files_scanned": 729,
-    "findings": 0
+    "by_common_home": {
+      "lib/": 2
+    },
+    "by_consumer_relevance": {
+      "so-local-first": 2
+    },
+    "by_kind": {
+      "python-function-repeat": 2
+    },
+    "files_scanned": 747,
+    "findings": 2
   },
-  "timestamp": "2026-05-05T14:35:48.125609+00:00"
+  "timestamp": "2026-05-05T16:45:05.428762+00:00"
 }

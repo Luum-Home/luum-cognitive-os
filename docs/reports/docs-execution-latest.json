@@ -80,6 +80,32 @@
       "path": "docs/HOW-TO-USE-COS.md"
     },
     {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:buckets,classification,debt,documents,fail-new,fixes,implementation,reconciliation"
+      ],
+      "inferred_status": "planned",
+      "item": "[ADR Implementation Reconciliation \u2014 2026-05-05](reports/adr-implementation-reconciliation-2026-05-05.md) \u2014 reconciles ADR implementation status, fixes ACC fail-new classification debt, and documents the remaining non-implementation ADR buckets.",
+      "kind": "bullet",
+      "line": 19,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/README.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:artifacts,auth,boundaries,docker,flows,future,headless,headless-docker-service-runtime"
+      ],
+      "inferred_status": "planned",
+      "item": "[Headless Docker Service Runtime Manual Test](manual-tests/headless-docker-service-runtime.md) \u2014 non-IDE Docker worker proof for queue, leases, artifacts, provider auth boundaries, and future service runtime flows.",
+      "kind": "bullet",
+      "line": 20,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/README.md"
+    },
+    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -88,7 +114,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-146: Primitive Readiness Ledger](adrs/ADR-146-primitive-readiness-ledger.md) \u2014 accepted contract for the machine-readable script role ledger and future ratchet gates.",
       "kind": "bullet",
-      "line": 21,
+      "line": 33,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -101,7 +127,7 @@
       "inferred_status": "planned",
       "item": "[ACC Fail-New Gate Manual Test](manual-tests/acc-fail-new-gate.md) \u2014 manual proof that ACC blocks new debt and keeps planned harnesses roadmap-only.",
       "kind": "bullet",
-      "line": 28,
+      "line": 40,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -114,7 +140,7 @@
       "inferred_status": "planned",
       "item": "[ADR-153: ACC Fail-New Gate and Harness Proof Boundary](adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md) \u2014 ratchet decision for strict new-debt blocking and planned-harness non-promotion.",
       "kind": "bullet",
-      "line": 29,
+      "line": 41,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -127,7 +153,7 @@
       "inferred_status": "planned",
       "item": "[Harness Proof Levels](architecture/harness-proof-levels.md) \u2014 explicit boundary between structural projection, optional runtime smoke, native lifecycle proof, and planned-only support.",
       "kind": "bullet",
-      "line": 31,
+      "line": 43,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -140,7 +166,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-154: Multi-IDE Structural Harness Projection](adrs/ADR-154-multi-ide-structural-harness-projection.md) \u2014 decision to promote OpenCode, VS Code Copilot, and Cursor to implemented structural projection harnesses.",
       "kind": "bullet",
-      "line": 33,
+      "line": 45,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -153,7 +179,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-155: Shell CI Formal Harness Projection](adrs/ADR-155-shell-ci-formal-harness.md) \u2014 decision to promote Shell/CI to an implemented structural command/workflow harness.",
       "kind": "bullet",
-      "line": 35,
+      "line": 47,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -166,7 +192,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-156: Qwen Code Structural Harness Projection](adrs/ADR-156-qwen-code-structural-harness-projection.md) \u2014 decision to promote Qwen Code to implemented structural projection.",
       "kind": "bullet",
-      "line": 37,
+      "line": 49,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -179,7 +205,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-157: Kimi Code CLI Structural Harness Projection](adrs/ADR-157-kimi-code-cli-structural-harness-projection.md) \u2014 decision to promote Kimi Code CLI to implemented structural projection.",
       "kind": "bullet",
-      "line": 39,
+      "line": 51,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -192,7 +218,7 @@
       "inferred_status": "planned",
       "item": "[ADR-158: AI Agent Harness Landscape and Proof Backlog](adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md) \u2014 decision to track broad ecosystem coverage in a separate machine-readable backlog without overclaiming runtime support.",
       "kind": "bullet",
-      "line": 41,
+      "line": 53,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -205,7 +231,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-160: Rules/MCP Structural Harness Batch and Kiro Adapter Design](adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md) \u2014 decision to promote Cline, Continue, Kilo, Zed, Augment, Goose, and Aider to structural projection while preserv",
       "kind": "bullet",
-      "line": 43,
+      "line": 55,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -218,7 +244,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Harness Docs Currentness Audit \u2014 2026-05-05](reports/harness-docs-currentness-audit-2026-05-05.md) \u2014 official-doc contrast for all implemented/planned harness projection claims, including Kilo, Goose, and Augment corrections.",
       "kind": "bullet",
-      "line": 44,
+      "line": 56,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -231,7 +257,7 @@
       "inferred_status": "proposed",
       "item": "[Kiro Lifecycle Adapter Design](architecture/kiro-lifecycle-adapter-design.md) \u2014 staged adapter design and gates before Kiro can be considered for native lifecycle proof.",
       "kind": "bullet",
-      "line": 46,
+      "line": 58,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -244,7 +270,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Multi-Session Orchestration Audit \u2014 2026-05-02](architecture/multi-session-orchestration-audit-2026-05-02.md) \u2014 documented-vs-implemented matrix for multi-IDE/session/agent orchestration primitives and the next reconciler gap.",
       "kind": "bullet",
-      "line": 50,
+      "line": 62,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -257,7 +283,7 @@
       "inferred_status": "planned",
       "item": "[Headless Runtime Proof Drills](manual-tests/headless-runtime-proof-drills.md) \u2014 manual proof ladder for Docker worker, Engram Cloud sync, future headless task execution, crash/resume, VM, Kubernetes, and provider overlays.",
       "kind": "bullet",
-      "line": 87,
+      "line": 99,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -270,7 +296,7 @@
       "inferred_status": "planned",
       "item": "[COS Service Runtime Boundary](architecture/cos-service-runtime-boundary.md) \u2014 explicit boundary between today's IDE-embedded runtime, Docker worker surface, Engram Cloud service, and the future `cosd`/scheduler control plane.",
       "kind": "bullet",
-      "line": 88,
+      "line": 100,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -283,7 +309,7 @@
       "inferred_status": "planned",
       "item": "[COS Service Control Plane Research \u2014 2026-05-04](architecture/service-control-plane-research-2026-05-04.md) \u2014 reference-system and credential-mode analysis for a future `cosd` scheduler/queue/worker service without credential scraping.",
       "kind": "bullet",
-      "line": 89,
+      "line": 101,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -296,7 +322,7 @@
       "inferred_status": "proposed",
       "item": "[Self-Evolving Doctrine Proposals](architecture/self-evolving-doctrine-proposals.md) \u2014 control-plane evidence can generate proposed doctrine amendments without mutating runtime rules.",
       "kind": "bullet",
-      "line": 93,
+      "line": 105,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -309,7 +335,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Lifecycle Demotion Proof \u2014 task-completed hook](reports/lifecycle-demotion-task-completed-2026-05-03.md) \u2014 first semantic `demoted` lifecycle transition proving shrink-without-delete behavior.",
       "kind": "bullet",
-      "line": 97,
+      "line": 109,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -322,7 +348,7 @@
       "inferred_status": "proposed",
       "item": "[ADR-135: Self-Evolving Doctrine Proposals](adrs/ADR-135-self-evolving-doctrine-proposals.md) \u2014 control-plane evidence generates proposed doctrine amendments without mutating runtime rules.",
       "kind": "bullet",
-      "line": 100,
+      "line": 112,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -335,7 +361,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-137: Operational Trajectory \u2014 Governance Layer \u2192 Embedded Runtime](adrs/ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) \u2014 accepted directional commitment from Framing B (governance over agents) to Framing A (runtime that travels wi",
       "kind": "bullet",
-      "line": 102,
+      "line": 114,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -348,7 +374,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[Closure Discipline Manual Test](manual-tests/closure-discipline.md) \u2014 manual proof path for closing validation-system drift before claiming a multi-file maintainer batch is done.",
       "kind": "bullet",
-      "line": 112,
+      "line": 124,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -361,7 +387,7 @@
       "inferred_status": "planned",
       "item": "[Hook Registration Classification \u2014 2026-05-04](reports/hook-registration-classification-2026-05-04.md) \u2014 classifies the remaining unregistered hook surface into future, conditional, manual, deprecated, demoted, and promotion-candidate buckets.",
       "kind": "bullet",
-      "line": 115,
+      "line": 127,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -374,7 +400,7 @@
       "inferred_status": "planned",
       "item": "[Python Major Follow-up \u2014 2026-05-04](reports/python-major-followup-2026-05-04.md) \u2014 second-pass resolver evidence for wrapt, setuptools, and the remaining blocked major clusters.",
       "kind": "bullet",
-      "line": 117,
+      "line": 129,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -387,8 +413,21 @@
       "inferred_status": "proposed",
       "item": "[Agentic Mastery License, Weight, and DX Matrix](architecture/agentic-mastery-license-weight-dx-matrix.md) \u2014 licensing confidence, dependency weight, default-install impact, and DX value for candidate external tools.",
       "kind": "bullet",
-      "line": 130,
+      "line": 142,
       "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/README.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:added,attack,backed,credential-safe,mitigations,primitive,qwen,red-team"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "[Credential-Safe Runner Red-Team Review \u2014 2026-05-05](security/credential-safe-runner-red-team-2026-05-05.md) \u2014 malicious-agent attack review for the `.env`-backed Qwen smoke primitive and the mitigations added.",
+      "kind": "bullet",
+      "line": 144,
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
     {
@@ -400,7 +439,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-109: Validation Capsule Worktree Isolation](adrs/ADR-109-validation-capsule-worktree-isolation.md) \u2014 accepted decision separating validation isolation from the global hook killswitch.",
       "kind": "bullet",
-      "line": 146,
+      "line": 160,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -413,7 +452,7 @@
       "inferred_status": "proposed",
       "item": "[Design Philosophy](design-philosophy.md) \u2014 biological-system framing for the OS",
       "kind": "bullet",
-      "line": 151,
+      "line": 165,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/README.md"
     },
@@ -426,7 +465,7 @@
       "inferred_status": "planned",
       "item": "[Cross-Tool Task Recovery Research \u2014 2026-05](architecture/cross-tool-task-recovery-research-2026-05.md) \u2014 investigation of solved/pending task recovery across Codex, Claude Code, Engram, local ledgers, transcripts, and git.",
       "kind": "bullet",
-      "line": 161,
+      "line": 175,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -439,7 +478,7 @@
       "inferred_status": "done_weak_proof",
       "item": "[ADR-081: Codex Harness Adapter](adrs/ADR-081-codex-harness-adapter.md) \u2014 accepted Codex adapter backed by sanitized live Codex Desktop payload fixtures, making Codex a first-class canonical harness surface",
       "kind": "bullet",
-      "line": 164,
+      "line": 178,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -452,7 +491,7 @@
       "inferred_status": "planned",
       "item": "[Harness Driver Parity](architecture/harness-driver-parity.md) \u2014 how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities",
       "kind": "bullet",
-      "line": 175,
+      "line": 189,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -465,7 +504,7 @@
       "inferred_status": "planned",
       "item": "[Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) \u2014 validation snapshot and remaining work before merging the master-plan portability branch",
       "kind": "bullet",
-      "line": 194,
+      "line": 208,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -478,7 +517,7 @@
       "inferred_status": "planned",
       "item": "[Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) \u2014 current full-suite evidence, passing proof paths, and remaining failure families",
       "kind": "bullet",
-      "line": 195,
+      "line": 209,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -491,7 +530,7 @@
       "inferred_status": "planned",
       "item": "`experimental`: squads, organization specs, future control-plane designs, and high-variance systems that should not dominate the README.",
       "kind": "bullet",
-      "line": 204,
+      "line": 218,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -504,7 +543,7 @@
       "inferred_status": "planned",
       "item": "The following model describes the long-range architecture. Treat it as future architecture unless a layer has a linked proof path, test, or operator workflow.",
       "kind": "prose",
-      "line": 210,
+      "line": 224,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/README.md"
     },
@@ -517,7 +556,7 @@
       "inferred_status": "done_weak_proof",
       "item": "The self-improvement loop is a closed feedback cycle where every agent execution produces data that improves future executions:",
       "kind": "prose",
-      "line": 485,
+      "line": 499,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -530,7 +569,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Extending from dev-time to production-capable (partially done):",
       "kind": "prose",
-      "line": 657,
+      "line": 671,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/README.md"
     },
@@ -1360,6 +1399,45 @@
       "path": "docs/SESSION-HANDOFF-2026-05-04.md"
     },
     {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:added,docker,headless,outside,proof,runtime,service"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "> Docker/headless service proof added for Cognitive OS runtime outside the IDE;",
+      "kind": "prose",
+      "line": 3,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:chat,control,future,pods,remote,surfaces,workers"
+      ],
+      "inferred_status": "planned",
+      "item": "future pods/EC2 workers, and remote chat/control surfaces.",
+      "kind": "prose",
+      "line": 12,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:consistent,future,rule,sessions"
+      ],
+      "inferred_status": "planned",
+      "item": "sessions. That is consistent with the no-credential-scraping rule. Future",
+      "kind": "prose",
+      "line": 16,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md"
+    },
+    {
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
@@ -1381,7 +1459,7 @@
       "inferred_status": "proposed",
       "item": "Subagents should receive only selected rows/findings, not complete ACC/readiness reports.",
       "kind": "bullet",
-      "line": 45,
+      "line": 47,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest-compact.md"
     },
@@ -1394,7 +1472,7 @@
       "inferred_status": "proposed",
       "item": "shell-ci-candidate: 15",
       "kind": "bullet",
-      "line": 55,
+      "line": 50,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/acc/latest.md"
     },
@@ -1442,7 +1520,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:marks,matching,reaper,stale-task,tasks,watermark,when"
+        "terms:done-by-other-session,marks,matching,reaper,stale-task,tasks,watermark,when"
       ],
       "inferred_status": "done_weak_proof",
       "item": "Stale-task watermark \u2014 reaper marks tasks done-by-other-session when a matching",
@@ -5390,38 +5468,103 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:blocked,having,providers,qwen,reserved,stub,today,wired"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Reserved** \u2014 stub. Blocked on having \u22653 providers wired (today: Qwen",
+      "item": "status: implemented",
       "kind": "prose",
-      "line": 5,
+      "line": 4,
       "next_action": "add explicit test/workflow/proof link",
-      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
-    },
-    {
-      "confidence": 0.86,
-      "declared_status": "proposed",
-      "evidence": [
-        "terms:architectural,benchmarks,reasoning,yaml"
-      ],
-      "inferred_status": "proposed",
-      "item": "`docs/benchmarks/sdd-design-tasks.yaml` \u2014 architectural reasoning",
-      "kind": "bullet",
-      "line": 47,
-      "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
     },
     {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:claude,least,more,providers,qwen,today,wired"
+        "terms:harness,implemented,no-cost,offline,repository,scope,ships"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "At least 3 providers wired (Qwen + Claude + one more) \u2014 today: 2",
+      "item": "**Implemented for the no-cost offline harness scope.** The repository now ships a",
+      "kind": "prose",
+      "line": 16,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:adapter,explicit,future,harness,opt-in,validated,without,work"
+      ],
+      "inferred_status": "planned",
+      "item": "explicit opt-in future adapter work so the harness can be validated without",
+      "kind": "prose",
+      "line": 19,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:benchmark,boundary,implemented,offline,provider-adapter,tool"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Implemented** as an offline benchmark tool with a provider-adapter boundary:",
+      "kind": "prose",
+      "line": 41,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:category,curated,extend,files,shipped,skill,smoke,yaml"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Curated YAML files per skill category can extend the shipped smoke set:",
+      "kind": "prose",
+      "line": 59,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adapter,baseline,checks,clarity,design,deterministic,future,harness"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "The implemented harness uses deterministic expected-keyword checks for the no-cost baseline. For subjective tasks (design quality, prose clarity), a future adapter can use LLM-as-judge:",
+      "kind": "prose",
+      "line": 70,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:avoid,cost,fixture,nontrivial,providers,shipped,smoke,tests"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "nontrivial cost); the shipped fixture providers avoid that cost for CI smoke tests",
+      "kind": "prose",
+      "line": 112,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:baseline,done,fixture,no-cost,provider"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "No-cost fixture provider baseline \u2014 done",
       "kind": "bullet",
-      "line": 111,
+      "line": 123,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
     },
@@ -5434,7 +5577,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-049 stable (cascade mechanics solid) \u2014 done",
       "kind": "bullet",
-      "line": 112,
+      "line": 124,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
     },
@@ -5447,9 +5590,75 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-051 Phase 1+ (for multi-step task benchmarks) \u2014 done (Phase 1)",
       "kind": "bullet",
-      "line": 113,
+      "line": 125,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adapters,contract,extension,future,implemented,opt-in,provider,real"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Real provider adapters \u2014 future opt-in extension, not required for the implemented contract",
+      "kind": "bullet",
+      "line": 126,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/benchmarks/provider-quality-smoke.yaml",
+        "terms:benchmarks,provider-quality-smoke,shipped,smoke,task,yaml"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "`docs/benchmarks/provider-quality-smoke.yaml` \u2014 shipped smoke task set",
+      "kind": "bullet",
+      "line": 135,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:adapters,broader,core,curated,deterministic,future,implementation,implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented for the deterministic offline scope. Broader curated task sets, real provider adapters, and subjective judge rotation remain future research/operations work rather than missing core implementation.",
+      "kind": "prose",
+      "line": 147,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-052-provider-benchmark-harness.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: implemented",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:generation,implemented,proposal,repository,reviewed,ships"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Implemented for reviewed proposal generation.** The repository now ships a",
+      "kind": "prose",
+      "line": 15,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
     {
       "confidence": 0.62,
@@ -5460,8 +5669,34 @@
       "inferred_status": "done_weak_proof",
       "item": "rate-limited, DeepSeek added vision)",
       "kind": "prose",
-      "line": 17,
+      "line": 28,
       "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:implemented,module,python"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Implemented** as a Python module that:",
+      "kind": "prose",
+      "line": 38,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:apply,dispatch,future,integration,read,routing,tuned"
+      ],
+      "inferred_status": "planned",
+      "item": "4. A future dispatch integration can read the tuned routing and apply it",
+      "kind": "prose",
+      "line": 75,
+      "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
     {
@@ -5473,7 +5708,7 @@
       "inferred_status": "planned",
       "item": "future metrics. Can oscillate if not damped.",
       "kind": "prose",
-      "line": 91,
+      "line": 101,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
@@ -5486,7 +5721,7 @@
       "inferred_status": "proposed",
       "item": "\"Weird proposal\" is hard to debug. Why did it move this skill from",
       "kind": "bullet",
-      "line": 92,
+      "line": 102,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
@@ -5499,48 +5734,34 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-049 cascade + JSONL metrics \u2014 done",
       "kind": "bullet",
-      "line": 106,
+      "line": 116,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
     {
-      "confidence": 0.9,
-      "declared_status": "planned",
+      "confidence": 0.62,
+      "declared_status": "done",
       "evidence": [
-        "terms:adr-050,routing,schema,skill,todo"
+        "terms:adr-052,benchmark,harness,implemented,no-cost,production,signal"
       ],
-      "inferred_status": "planned",
-      "item": "ADR-050 skill routing schema \u2014 TODO",
+      "inferred_status": "done_weak_proof",
+      "item": "ADR-052 benchmark harness \u2014 implemented for no-cost benchmark signal production",
       "kind": "bullet",
-      "line": 107,
-      "next_action": "keep planned or add implementation proof when complete",
+      "line": 118,
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
     {
-      "confidence": 0.9,
-      "declared_status": "planned",
+      "confidence": 0.62,
+      "declared_status": "done",
       "evidence": [
-        "terms:adr-052,benchmark,harness,provides,quality,signal,todo"
+        "terms:application,confidence,decisions,direct,dispatch,evidence-based,exploration,future"
       ],
-      "inferred_status": "planned",
-      "item": "ADR-052 benchmark harness \u2014 TODO (provides quality signal)",
-      "kind": "bullet",
-      "line": 108,
-      "next_action": "keep planned or add implementation proof when complete",
-      "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
-    },
-    {
-      "confidence": 0.9,
-      "declared_status": "planned",
-      "evidence": [
-        "path:lib/dispatch.py",
-        "terms:dispatch,future,reads,routing,tuned"
-      ],
-      "inferred_status": "planned",
-      "item": "`lib/dispatch.py` \u2014 reads tuned routing (future)",
-      "kind": "bullet",
-      "line": 116,
-      "next_action": "keep planned or add implementation proof when complete",
+      "inferred_status": "done_weak_proof",
+      "item": "Implemented for evidence-based proposal generation. Direct dispatch application, exploration routing, and long-window confidence policies remain future integration decisions rather than missing optimizer implementation.",
+      "kind": "prose",
+      "line": 145,
+      "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-053-dispatch-auto-optimizer.md"
     },
     {
@@ -10719,7 +10940,7 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "terms:commit,cross-reference,decision,event,events,every,expected_outputs,extend"
+        "terms:commit,cross-reference,decision,done-by-other-session,event,events,every,expected_outputs"
       ],
       "inferred_status": "done_weak_proof",
       "item": "**Decision**: extend `so-reaper.sh` to subscribe to P1.3 events. On every `commit` event with `expected_outputs` matching a `pending` task in any session's `tasks.json`, mark that task `done-by-other-session` with cross-reference `done_by_commit` and `done_by_",
@@ -10937,7 +11158,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-116 P1.1 is now wired into the Claude-style Agent lifecycle:",
       "kind": "prose",
-      "line": 96,
+      "line": 100,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-118-multi-ide-swarm-testbed.md"
     },
@@ -11140,7 +11361,7 @@
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
-        "terms:become,failures,instead,invariant,named,validation"
+        "terms:attributable,become,failures,instead,invariant,named,validation"
       ],
       "inferred_status": "proposed",
       "item": "Validation failures should become attributable to a named invariant instead of",
@@ -13570,10 +13791,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -13583,10 +13804,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:adapter,availability,below,changes,classification,consumer,contract,exist"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-04",
+      "item": "**Implemented for manifest/classification scope** \u2014 2026-05-04. The consumer availability manifest, ACC adapter, and contract tests named below exist; future script role changes still require manifest maintenance.",
       "kind": "prose",
       "line": 21,
       "next_action": "add explicit test/workflow/proof link",
@@ -13675,25 +13896,12 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
-      "next_action": "add explicit test/workflow/proof link",
-      "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
-    },
-    {
-      "confidence": 0.62,
-      "declared_status": "done",
-      "evidence": [
-        "weak_terms:accepted"
-      ],
-      "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-04",
-      "kind": "prose",
-      "line": 22,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md"
     },
@@ -13793,10 +14001,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -13806,10 +14014,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:claim,code,copilot,cursor,does,generated,implemented,native"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-04",
+      "item": "**Implemented for structural projection scope** \u2014 2026-05-04. OpenCode, VS Code Copilot, and Cursor project-local projections are generated and tested; this does not claim native lifecycle-hook parity.",
       "kind": "prose",
       "line": 23,
       "next_action": "add explicit test/workflow/proof link",
@@ -13965,10 +14173,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -13978,10 +14186,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:account-backed,behavior,code,context,generated,implemented,outside,project-local"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-04",
+      "item": "**Implemented for structural projection scope** \u2014 2026-05-04. Qwen Code project-local settings/context projection is generated and tested; account-backed Qwen runtime behavior remains outside this ADR.",
       "kind": "prose",
       "line": 23,
       "next_action": "add explicit test/workflow/proof link",
@@ -14032,10 +14240,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -14045,10 +14253,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:authenticated,code,config,context,execution,generated,implemented,kimi"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-04",
+      "item": "**Implemented for structural CLI projection scope** \u2014 2026-05-04. Kimi Code project-local CLI context/config projection is generated and tested; authenticated CLI execution remains outside this ADR.",
       "kind": "prose",
       "line": 23,
       "next_action": "add explicit test/workflow/proof link",
@@ -14310,10 +14518,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -14336,10 +14544,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:adapter,artifacts,design,exist,harness,implemented,kiro,lifecycle"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-05",
+      "item": "**Implemented for structural projection and Kiro design scope** \u2014 2026-05-05. The seven rules/MCP harness projections and Kiro adapter design artifacts exist and are tested; Kiro native lifecycle runtime remains planned.",
       "kind": "prose",
       "line": 27,
       "next_action": "add explicit test/workflow/proof link",
@@ -14403,10 +14611,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -14416,23 +14624,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "weak_terms:implemented"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-05",
-      "kind": "prose",
-      "line": 22,
-      "next_action": "add explicit test/workflow/proof link",
-      "path": "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md"
-    },
-    {
-      "confidence": 0.62,
-      "declared_status": "done",
-      "evidence": [
-        "weak_terms:accepted"
-      ],
-      "inferred_status": "done_weak_proof",
-      "item": "status: accepted",
+      "item": "status: implemented",
       "kind": "prose",
       "line": 4,
       "next_action": "add explicit test/workflow/proof link",
@@ -14442,10 +14637,10 @@
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
-        "weak_terms:accepted"
+        "terms:checklist,contract,enforcement,exist,follow-up,full,implemented,lifecycle"
       ],
       "inferred_status": "done_weak_proof",
-      "item": "**Accepted** \u2014 2026-05-05",
+      "item": "**Implemented for contract scope** \u2014 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enforcement remains follow-up service-control-plane work.",
       "kind": "prose",
       "line": 21,
       "next_action": "add explicit test/workflow/proof link",
@@ -14476,6 +14671,305 @@
       "line": 114,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-05",
+      "kind": "prose",
+      "line": 23,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:bridge,future,host,kubernetes,pods,through,worker"
+      ],
+      "inferred_status": "planned",
+      "item": "through a future host CLI bridge, on a VM/EC2 host, or as Kubernetes worker pods.",
+      "kind": "prose",
+      "line": 34,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:implemented,installer,profiles,starts"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "The installer starts with two implemented profiles:",
+      "kind": "prose",
+      "line": 54,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:declared,exists,future,profiles,proof,until,write-blocked"
+      ],
+      "inferred_status": "planned",
+      "item": "Future profiles are declared but write-blocked until proof exists:",
+      "kind": "prose",
+      "line": 61,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:before,code,future,profile,stable,taxonomy,work"
+      ],
+      "inferred_status": "planned",
+      "item": "Future VM/pod/host-bridge work has a stable profile taxonomy before code is",
+      "kind": "bullet",
+      "line": 79,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:added"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "added.",
+      "kind": "prose",
+      "line": 80,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:look,planned,profiles,real,their,unless,write-blocked"
+      ],
+      "inferred_status": "planned",
+      "item": "Planned profiles may look real unless their `planned`/write-blocked status is",
+      "kind": "bullet",
+      "line": 88,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:dry-run,planned,profiles,visible,write-blocked"
+      ],
+      "inferred_status": "planned",
+      "item": "Planned profiles are dry-run visible but write-blocked.",
+      "kind": "bullet",
+      "line": 117,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-163-cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: implemented",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:contract,design-only,implemented,scope,security"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Implemented for the design-only security contract scope** \u2014 2026-05-05.",
+      "kind": "prose",
+      "line": 22,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:clear,cosd,docker,future,headless,need,planned,profile"
+      ],
+      "inferred_status": "planned",
+      "item": "planned profile. The need is clear: a Docker/headless or future `cosd` runtime",
+      "kind": "prose",
+      "line": 30,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:claude,codex,correct,default,must,next,sessions,step"
+      ],
+      "inferred_status": "planned",
+      "item": "Codex/Claude sessions. That is a correct default. The next step must be a",
+      "kind": "prose",
+      "line": 36,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:bridge,future,host"
+      ],
+      "inferred_status": "planned",
+      "item": "any future host CLI bridge.",
+      "kind": "prose",
+      "line": 44,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:bridge,example,first,implemented,must,non-provider,only,phase"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "The first implemented bridge phase must be non-provider only: for example,",
+      "kind": "prose",
+      "line": 60,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: implemented",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:added,drills,explicit,must,opt-ins,proof,smoke,they"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "3. Proof drills and smoke opt-ins are explicit opt-ins. They must not be added",
+      "kind": "prose",
+      "line": 47,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:future,installer,instance,instead,prose,reference,registry,work"
+      ],
+      "inferred_status": "planned",
+      "item": "Future COS instance installer work can reference a registry instead of prose.",
+      "kind": "bullet",
+      "line": 61,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:implemented"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: implemented",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:enforcement,first,implemented,slice"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Implemented for the first enforcement slice** \u2014 2026-05-05.",
+      "kind": "prose",
+      "line": 22,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "status: accepted",
+      "kind": "prose",
+      "line": 4,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "weak_terms:accepted"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "**Accepted** \u2014 2026-05-05",
+      "kind": "prose",
+      "line": 30,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:cos_codex_exec_model,future,registering,without"
+      ],
+      "inferred_status": "planned",
+      "item": "`COS_CODEX_EXEC_MODEL`. Without registering it, future agents could rediscover",
+      "kind": "prose",
+      "line": 40,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md"
     },
     {
       "confidence": 0.9,
@@ -17572,6 +18066,71 @@
       "path": "docs/architecture/cos-dispatch/test-strategy.md"
     },
     {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:boundary,cosd,embedded,execution,future,service"
+      ],
+      "inferred_status": "planned",
+      "item": "embedded execution from the future `cosd` service boundary.",
+      "kind": "prose",
+      "line": 25,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:bridge,docker,future,planned,runtime,service,where"
+      ],
+      "inferred_status": "planned",
+      "item": "Planned. This is the future bridge where a Docker/service runtime can ask the",
+      "kind": "prose",
+      "line": 59,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:deployment,planned,shape,single-node"
+      ],
+      "inferred_status": "planned",
+      "item": "Planned. This is the EC2/VPS/single-node deployment shape.",
+      "kind": "prose",
+      "line": 66,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:deployment,external,namespace,planned,shape"
+      ],
+      "inferred_status": "planned",
+      "item": "Planned. This is the worker-pod deployment shape with namespace, external",
+      "kind": "prose",
+      "line": 70,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/cos-instance-installer.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:implemented,metadata,profiles,write"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Write metadata for implemented profiles:",
+      "kind": "prose",
+      "line": 82,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/cos-instance-installer.md"
+    },
+    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -18658,6 +19217,19 @@
       "line": 68,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/architecture/expansion-hardening-plan.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "proposed",
+      "evidence": [
+        "terms:block,failing,normal,test,when"
+      ],
+      "inferred_status": "proposed",
+      "item": "a normal failing test when it should block now;",
+      "kind": "bullet",
+      "line": 21,
+      "next_action": "keep as proposal until accepted/implemented",
+      "path": "docs/architecture/expected-skip-registry-and-opt-in-test-lanes.md"
     },
     {
       "confidence": 0.9,
@@ -20239,6 +20811,19 @@
       "path": "docs/architecture/hook-quality-system.md"
     },
     {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:adapter,adapters,claude,clis,codex,future,gemini,need"
+      ],
+      "inferred_status": "planned",
+      "item": "adapters. Codex, Claude, Gemini, OpenCode, or future CLIs still need adapter",
+      "kind": "prose",
+      "line": 69,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/architecture/host-cli-bridge-security-boundary.md"
+    },
+    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -21777,6 +22362,47 @@
       "line": 277,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/architecture/red-team-harness-proposal.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:rules/hook-security-profiles.md",
+        "terms:hook-security-profiles,implemented,rules,through"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "`rules/hook-security-profiles.md` and implemented through",
+      "kind": "prose",
+      "line": 36,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/architecture/runtime-env-flags-inventory.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:manifests/runtime-env-flags.yaml",
+        "terms:closed,manifests,partially,runtime-env-flags,yaml"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "That gap is now partially closed by `manifests/runtime-env-flags.yaml` and",
+      "kind": "prose",
+      "line": 80,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/architecture/runtime-env-flags-inventory.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:added,cos_skip_dotenv,flag,isolated,such"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "A new flag such as `COS_SKIP_DOTENV=1` should not be added as an isolated",
+      "kind": "prose",
+      "line": 86,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/architecture/runtime-env-flags-inventory.md"
     },
     {
       "confidence": 0.9,
@@ -26551,6 +27177,20 @@
       "path": "docs/business/master-plan-checklist.md"
     },
     {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "terms:across,covering,current,deepseek,delegation,kimi,minimax,multi-provider"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Multi-provider agent delegation research is refreshed in [Multi-Provider Agent Delegation Research \u2014 2026-05-05](../reports/multi-provider-agent-delegation-research-2026-05-05.md), covering Qwen, Kimi, DeepSeek, MiniMax, OpenClaw/Lucy, and router/coworker patt",
+      "kind": "checkbox",
+      "line": 126,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/business/master-plan-checklist.md"
+    },
+    {
       "confidence": 0.62,
       "declared_status": "done",
       "evidence": [
@@ -26559,7 +27199,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Gemini CLI plus AGENTS.md-native Warp, Amp, Junie, Qoder, and Factory Droid have structural temp-project projection, while Kiro lifecycle hooks remain investigation-only until adapter/runtime proof exists.",
       "kind": "checkbox",
-      "line": 126,
+      "line": 127,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26572,7 +27212,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Cline, Continue.dev, Kilo Code, Zed AI, Augment/Auggie, Goose, and Aider have structural temp-project projection, with Kiro native-lifecycle promotion gated behind adapter design, event mapping, and runtime smoke.",
       "kind": "checkbox",
-      "line": 127,
+      "line": 128,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26586,7 +27226,7 @@
       "inferred_status": "done_with_proof",
       "item": "Harness projection claims were contrasted against current official docs in [Harness Docs Currentness Audit \u2014 2026-05-05](../reports/harness-docs-currentness-audit-2026-05-05.md), correcting Kilo, Goose, and Augment file-shape drift.",
       "kind": "checkbox",
-      "line": 128,
+      "line": 129,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26601,7 +27241,7 @@
       "inferred_status": "done_with_proof",
       "item": "Codex has a governed fallback layer for non-native Agent and Edit/Write hook chains through `scripts/cos_governed_runner.py` plus the Codex wrapper `scripts/cos_codex_guard.py`, so portability gaps are explicit rather than silently accepted.",
       "kind": "checkbox",
-      "line": 129,
+      "line": 130,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26616,7 +27256,7 @@
       "inferred_status": "done_with_proof",
       "item": "Harness engineering is now documented and protected through [Harness Engineering](../architecture/harness-engineering.md), `manifests/harness-profiles.yaml`, `cos init-check`, `cos doctor harness`, `cos measure harness-profiles`, and `cos sprint run --dispatch",
       "kind": "checkbox",
-      "line": 130,
+      "line": 131,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26629,7 +27269,7 @@
       "inferred_status": "done_weak_proof",
       "item": "User-facing setup messages are clear and product-grade.",
       "kind": "checkbox",
-      "line": 131,
+      "line": 132,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26643,7 +27283,7 @@
       "inferred_status": "done_with_proof",
       "item": "`hooks/self-install.sh` meets its performance expectations.",
       "kind": "checkbox",
-      "line": 132,
+      "line": 133,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26658,7 +27298,7 @@
       "inferred_status": "done_with_proof",
       "item": "Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.",
       "kind": "checkbox",
-      "line": 133,
+      "line": 134,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26672,7 +27312,7 @@
       "inferred_status": "done_with_proof",
       "item": "A non-expert can reach a working baseline without reading deep architecture docs through [First-Run Onboarding Proof](../manual-tests/first-run-onboarding.md).",
       "kind": "checkbox",
-      "line": 134,
+      "line": 135,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26686,7 +27326,7 @@
       "inferred_status": "done_with_proof",
       "item": "The repo is explicitly classified into core, compatibility, extensions, and experimental zones through [manifests/product-zones.yaml](../../manifests/product-zones.yaml).",
       "kind": "checkbox",
-      "line": 138,
+      "line": 139,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26702,7 +27342,7 @@
       "inferred_status": "done_with_proof",
       "item": "Major docs present non-core systems as optional or secondary through [README](../../README.md), [Docs Index](../README.md), and [Product Zones](../product-zones.md).",
       "kind": "checkbox",
-      "line": 139,
+      "line": 140,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26715,7 +27355,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Dashboard-heavy messaging is de-emphasized in top-level product docs.",
       "kind": "checkbox",
-      "line": 140,
+      "line": 141,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26728,7 +27368,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Squad and organization-heavy messaging is de-emphasized in top-level product docs.",
       "kind": "checkbox",
-      "line": 141,
+      "line": 142,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26741,7 +27381,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Experimental subsystems that compete with the wedge are archived, frozen, or clearly demoted through the product-zone taxonomy and top-level docs.",
       "kind": "checkbox",
-      "line": 142,
+      "line": 143,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26754,7 +27394,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A feature reality audit exists to classify core, optional, and overextended surfaces.",
       "kind": "checkbox",
-      "line": 143,
+      "line": 144,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26768,7 +27408,7 @@
       "inferred_status": "done_with_proof",
       "item": "External infrastructure is evaluated through a lightweight/default versus optional/reference decision frame in [Tooling Stack Rationalization](../architecture/tooling-stack-rationalization.md).",
       "kind": "checkbox",
-      "line": 144,
+      "line": 145,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26782,7 +27422,7 @@
       "inferred_status": "done_with_proof",
       "item": "Docker, Python, cloud, and reference services are cataloged in [Infrastructure Service Catalog](../architecture/infrastructure-service-catalog.md).",
       "kind": "checkbox",
-      "line": 145,
+      "line": 146,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26796,7 +27436,7 @@
       "inferred_status": "done_with_proof",
       "item": "Local connected-system validation is documented in [Local Connected Systems Validation](../manual-tests/local-connected-systems-validation.md), including dependency manifest checks, setup profiles, MCP wiring, optional-service boundaries, and persistent test s",
       "kind": "checkbox",
-      "line": 146,
+      "line": 147,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26810,7 +27450,7 @@
       "inferred_status": "done_with_proof",
       "item": "Observability backends are evaluated through a backend-neutral event-contract decision in [Observability Backend Evaluation](../architecture/observability-backend-evaluation-2026-04-24.md).",
       "kind": "checkbox",
-      "line": 147,
+      "line": 148,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26823,7 +27463,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Provider compatibility is explicitly inventoried.",
       "kind": "checkbox",
-      "line": 151,
+      "line": 152,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26836,7 +27476,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Provider-agnostic outcome metrics exist.",
       "kind": "checkbox",
-      "line": 152,
+      "line": 153,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26851,7 +27491,7 @@
       "inferred_status": "done_with_proof",
       "item": "A canonical demo shows provider and harness switching without system rewrites through [Five-Minute Demo](../manual-tests/five-minute-demo.md) and `scripts/demo-portability-proof.sh`.",
       "kind": "checkbox",
-      "line": 153,
+      "line": 154,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26865,7 +27505,7 @@
       "inferred_status": "done_with_proof",
       "item": "A canonical demo shows real quality gates in action through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
-      "line": 154,
+      "line": 155,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26879,7 +27519,7 @@
       "inferred_status": "done_with_proof",
       "item": "A canonical demo shows the core becoming usable in minutes through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
-      "line": 155,
+      "line": 156,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26893,7 +27533,7 @@
       "inferred_status": "done_with_proof",
       "item": "The repo contains a short proof path for \u201ceasy to adopt, serious to trust\u201d through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
-      "line": 156,
+      "line": 157,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26907,7 +27547,7 @@
       "inferred_status": "done_with_proof",
       "item": "The repo contains a short proof path for resilience under ecosystem churn through [Product Proof Paths](../manual-tests/proof-paths.md).",
       "kind": "checkbox",
-      "line": 157,
+      "line": 158,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26920,7 +27560,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Fix `README.md` reference to missing `docs/benchmark-results.md`.",
       "kind": "checkbox",
-      "line": 161,
+      "line": 162,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26934,7 +27574,7 @@
       "inferred_status": "done_with_proof",
       "item": "Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.",
       "kind": "checkbox",
-      "line": 162,
+      "line": 163,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26948,7 +27588,7 @@
       "inferred_status": "planned",
       "item": "Redesign and re-enable `.github/workflows/ci.yml`; current repository evidence is `.github/workflows/ci.yml.disabled`, so the product-core CI claim is not complete yet.",
       "kind": "checkbox",
-      "line": 163,
+      "line": 164,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26962,7 +27602,7 @@
       "inferred_status": "done_with_proof",
       "item": "Triage and improve `hooks/self-install.sh` performance against behavior-test expectations.",
       "kind": "checkbox",
-      "line": 164,
+      "line": 165,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26975,7 +27615,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Publish a simple \u201ccore vs extension\u201d taxonomy document or section.",
       "kind": "checkbox",
-      "line": 165,
+      "line": 166,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -26989,7 +27629,7 @@
       "inferred_status": "done_with_proof",
       "item": "Prepare a canonical five-minute product demo path through [Five-Minute Demo](../manual-tests/five-minute-demo.md).",
       "kind": "checkbox",
-      "line": 166,
+      "line": 167,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27003,7 +27643,7 @@
       "inferred_status": "planned",
       "item": "Reduce the full Python suite from 195 failures to zero; current evidence is tracked in [Full Suite Validation Report](../reports/full-suite-validation-2026-04-23.md).",
       "kind": "checkbox",
-      "line": 167,
+      "line": 168,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27017,7 +27657,7 @@
       "inferred_status": "done_with_proof",
       "item": "Preserve branch diagnostic report is documented in [Preserve Branch Governance Report \u2014 2026-05-02](../reports/preserve-branch-governance-2026-05-02.md).",
       "kind": "checkbox",
-      "line": 171,
+      "line": 172,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27031,7 +27671,7 @@
       "inferred_status": "done_with_proof",
       "item": "ADR-110 defines preserve branch governance in [ADR-110](../adrs/ADR-110-preserve-branch-governance.md).",
       "kind": "checkbox",
-      "line": 172,
+      "line": 173,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27045,7 +27685,7 @@
       "inferred_status": "done_with_proof",
       "item": "Preserve branch lifecycle and consumer projection are documented in [Preserve Branch Lifecycle](../architecture/preserve-branch-lifecycle.md).",
       "kind": "checkbox",
-      "line": 173,
+      "line": 174,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27059,7 +27699,7 @@
       "inferred_status": "done_with_proof",
       "item": "`scripts/cos-doctor-preserve.sh --json` detects missing manifests, mixed scope, integrated branches, non-ancestor tips, and delete candidates.",
       "kind": "checkbox",
-      "line": 174,
+      "line": 175,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27073,7 +27713,7 @@
       "inferred_status": "done_with_proof",
       "item": "Preserve governance behavior tests cover the required scenarios in `tests/behavior/test_cos_doctor_preserve.py`.",
       "kind": "checkbox",
-      "line": 175,
+      "line": 176,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27086,7 +27726,7 @@
       "inferred_status": "planned",
       "item": "Existing local `codex/preserve-*` branches have manifests or are explicitly reconciled/deleted.",
       "kind": "checkbox",
-      "line": 176,
+      "line": 177,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27099,7 +27739,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can understand the product quickly.",
       "kind": "checkbox",
-      "line": 180,
+      "line": 181,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27112,7 +27752,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can install it without pain.",
       "kind": "checkbox",
-      "line": 181,
+      "line": 182,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27125,7 +27765,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can see real evidence of value quickly.",
       "kind": "checkbox",
-      "line": 182,
+      "line": 183,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27138,7 +27778,7 @@
       "inferred_status": "done_weak_proof",
       "item": "A new user can grow into deeper capabilities without needing agent-infrastructure expertise first.",
       "kind": "checkbox",
-      "line": 183,
+      "line": 184,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27153,7 +27793,7 @@
       "inferred_status": "done_with_proof",
       "item": "Headless/clustered runtime direction is documented without overclaiming cluster readiness in [ADR-091](../adrs/ADR-091-headless-clustered-runtime-direction.md) and [Headless and Clustered Runtime Plan](../../.cognitive-os/plans/architecture/headless-clustered-",
       "kind": "checkbox",
-      "line": 185,
+      "line": 186,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27167,7 +27807,7 @@
       "inferred_status": "done_with_proof",
       "item": "Cloud/headless worker tooling research is documented in [Cloud Worker Runtime Tooling Research \u2014 2026-05](../architecture/cloud-worker-runtime-tooling-research-2026-05.md), with lightweight queue and durable-execution options staged behind `cos run-task`.",
       "kind": "checkbox",
-      "line": 186,
+      "line": 187,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27181,7 +27821,7 @@
       "inferred_status": "done_with_proof",
       "item": "Competitive/runtime benchmark direction is documented in [Runtime Comparison Benchmark Plan](../../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md), covering vanilla Claude/Codex, COS-enabled harnesses, and prior-art tools across workstat",
       "kind": "checkbox",
-      "line": 187,
+      "line": 188,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27194,7 +27834,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Competitive reassessment against OpenClaw and Hermes Agent is documented in [Competitive Reassessment: OpenClaw and Hermes Agent](competitive-reassessment-openclaw-hermes-2026-04.md), including native self-improvement, skill lifecycle, memory/profile bootstrap",
       "kind": "checkbox",
-      "line": 188,
+      "line": 189,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27208,7 +27848,7 @@
       "inferred_status": "done_with_proof",
       "item": "Governed self-improvement execution plan is documented in [Governed Self-Improvement Roadmap](../../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md), and the first detect/draft/promote slice is covered by unit and behavior tests.",
       "kind": "checkbox",
-      "line": 190,
+      "line": 191,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27221,7 +27861,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.",
       "kind": "checkbox",
-      "line": 191,
+      "line": 192,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27234,7 +27874,7 @@
       "inferred_status": "done_weak_proof",
       "item": "Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).",
       "kind": "checkbox",
-      "line": 193,
+      "line": 194,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27249,7 +27889,7 @@
       "inferred_status": "done_with_proof",
       "item": "Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixe",
       "kind": "checkbox",
-      "line": 194,
+      "line": 195,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27265,7 +27905,7 @@
       "inferred_status": "done_with_proof",
       "item": "Validation capsules are documented and implemented in [ADR-109](../adrs/ADR-109-validation-capsule-worktree-isolation.md), [Validation Capsule](../architecture/validation-capsule.md), and `scripts/cos-validation-capsule.sh`, separating release validation from ",
       "kind": "checkbox",
-      "line": 195,
+      "line": 196,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27279,7 +27919,7 @@
       "inferred_status": "planned",
       "item": "Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).",
       "kind": "checkbox",
-      "line": 196,
+      "line": 197,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27294,7 +27934,7 @@
       "inferred_status": "planned",
       "item": "Execute the remaining ADR implementation backlog through [ADR Implementation Closure Session \u2014 2026-05-04](../SESSION-ADR-CLOSURE-2026-05-04.md) and [Session Handoff \u2014 2026-05-04](../SESSION-HANDOFF-2026-05-04.md): reconcile all ADRs up to ADR-138 before imple",
       "kind": "checkbox",
-      "line": 197,
+      "line": 198,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27307,7 +27947,7 @@
       "inferred_status": "done_weak_proof",
       "item": "ADR-119 session filesystem reaper archives stale clean session directories, preserves pending content, and emits aggregate session-volume alarms.",
       "kind": "checkbox",
-      "line": 199,
+      "line": 200,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27321,7 +27961,7 @@
       "inferred_status": "done_with_proof",
       "item": "Boring Reliability Control Plane is documented in [Boring Reliability Control Plane](../architecture/boring-reliability-control-plane.md), with profile, preamble, default-visible, false-positive, WIP safety, recovery drill, runtime reality, and dashboard CLIs ",
       "kind": "checkbox",
-      "line": 200,
+      "line": 201,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27335,7 +27975,7 @@
       "inferred_status": "done_with_proof",
       "item": "Agentic kernel philosophy is documented in [Agentic Kernel Philosophy](../architecture/agentic-kernel-philosophy.md), establishing small-core, driver, boot-path, and evidence-backed primitive doctrine.",
       "kind": "checkbox",
-      "line": 201,
+      "line": 202,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27350,7 +27990,7 @@
       "inferred_status": "done_with_proof",
       "item": "Expansion hardening is documented in [Expansion Hardening Plan](../architecture/expansion-hardening-plan.md) and [ADR-133](../adrs/ADR-133-expansion-without-monsterization.md), with `scripts/cos-lab-first-gate` preventing unevidenced core/team/blocking/default",
       "kind": "checkbox",
-      "line": 202,
+      "line": 203,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27366,7 +28006,7 @@
       "inferred_status": "done_with_proof",
       "item": "Headless self-improvement proposing is documented in [Headless Self-Improvement Proposer](../architecture/headless-self-improvement-proposer.md), [ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md), and [Headless Self-Improvement Proposer Plan](..",
       "kind": "checkbox",
-      "line": 203,
+      "line": 204,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27381,7 +28021,7 @@
       "inferred_status": "done_with_proof",
       "item": "Self-evolving doctrine proposals are documented in [Self-Evolving Doctrine Proposals](../architecture/self-evolving-doctrine-proposals.md) and [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md), with `scripts/cos-doctrine-proposer` generating propo",
       "kind": "checkbox",
-      "line": 204,
+      "line": 205,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27396,7 +28036,7 @@
       "inferred_status": "done_with_proof",
       "item": "Cross-instance learning runway is documented in [Cross-Instance Learning Runway](../architecture/cross-instance-learning-runway.md) and [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), with consumer evidence exchange, deterministic registry locks,",
       "kind": "checkbox",
-      "line": 205,
+      "line": 206,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -27410,7 +28050,21 @@
       "inferred_status": "done_with_proof",
       "item": "Cross-instance local consumer E2E is documented in [Cross-Instance Consumer E2E Drill \u2014 2026-05-03](../reports/cross-instance-consumer-e2e-2026-05-03.md), proving install, provenance export/import, drills, and that self-owned evidence does not sign external-he",
       "kind": "checkbox",
-      "line": 206,
+      "line": 207,
+      "next_action": "keep marked done; maintain proof links",
+      "path": "docs/business/master-plan-checklist.md"
+    },
+    {
+      "confidence": 0.86,
+      "declared_status": "done",
+      "evidence": [
+        "path:manifests/test-skip-registry.yaml",
+        "terms:classified,enforced,expected,fail,growing,instead,manifests,pytest"
+      ],
+      "inferred_status": "done_with_proof",
+      "item": "Expected test skips are classified and enforced through ADR-166, `manifests/test-skip-registry.yaml`, and the pytest summary wrapper so new unclassified skips fail instead of silently growing.",
+      "kind": "checkbox",
+      "line": 209,
       "next_action": "keep marked done; maintain proof links",
       "path": "docs/business/master-plan-checklist.md"
     },
@@ -28354,7 +29008,7 @@
       "confidence": 0.9,
       "declared_status": "planned",
       "evidence": [
-        "terms:access,binding,ensure,external,security"
+        "terms:access,binding,ensure,external,localhost-only,security"
       ],
       "inferred_status": "planned",
       "item": "Security: ensure localhost-only binding, no external access",
@@ -31694,7 +32348,7 @@
       "inferred_status": "planned",
       "item": "Passing `--force` rewrites planned files.",
       "kind": "bullet",
-      "line": 63,
+      "line": 69,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/manual-tests/engram-obsidian-export.md"
     },
@@ -31723,6 +32377,32 @@
       "line": 120,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/manual-tests/five-minute-demo.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:completed,drain,reports,task"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "drain reports one completed task.",
+      "kind": "prose",
+      "line": 54,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/headless-docker-service-runtime.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:artifacts,completed,task,under,wrote"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "The completed task wrote artifacts under:",
+      "kind": "prose",
+      "line": 135,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/headless-docker-service-runtime.md"
     },
     {
       "confidence": 0.9,
@@ -31814,6 +32494,58 @@
       "line": 174,
       "next_action": "keep planned or add implementation proof when complete",
       "path": "docs/manual-tests/headless-runtime-proof-drills.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:before,bridge,contract,design-only,future,host,validate"
+      ],
+      "inferred_status": "planned",
+      "item": "Validate the design-only contract for the future host CLI bridge before any",
+      "kind": "prose",
+      "line": 5,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:approval,commands,confirm,human,planned,provider,require"
+      ],
+      "inferred_status": "planned",
+      "item": "7. Confirm provider commands are planned and require human approval.",
+      "kind": "prose",
+      "line": 24,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:execution,future,gated,host,phase,provider,remains,unimplemented"
+      ],
+      "inferred_status": "planned",
+      "item": "Host provider execution remains unimplemented and gated to a future phase.",
+      "kind": "bullet",
+      "line": 41,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/host-cli-bridge-security-boundary.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "terms:host-cli-bridge,planned,profile,remains,write-blocked"
+      ],
+      "inferred_status": "planned",
+      "item": "`host-cli-bridge` profile remains planned/write-blocked in",
+      "kind": "bullet",
+      "line": 42,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/host-cli-bridge-security-boundary.md"
     },
     {
       "confidence": 0.62,
@@ -32116,6 +32848,19 @@
       "path": "docs/manual-tests/primitive-readiness-ledger.md"
     },
     {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "weak_terms:gaps,remaining"
+      ],
+      "inferred_status": "planned",
+      "item": "remaining gaps.",
+      "kind": "bullet",
+      "line": 93,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/manual-tests/proof-drill-registry.md"
+    },
+    {
       "confidence": 0.86,
       "declared_status": "proposed",
       "evidence": [
@@ -32165,6 +32910,19 @@
       "item": "Expected: both Qwen counts are positive and status is `implemented`.",
       "kind": "prose",
       "line": 65,
+      "next_action": "add explicit test/workflow/proof link",
+      "path": "docs/manual-tests/qwen-code-structural-projection.md"
+    },
+    {
+      "confidence": 0.62,
+      "declared_status": "done",
+      "evidence": [
+        "terms:account-backed,claim,code,delegation,exist,fallback,implemented,items"
+      ],
+      "inferred_status": "done_weak_proof",
+      "item": "Until those six items exist, the supported claim remains: Qwen Code structural projection is implemented; Qwen API fallback has code and a live smoke script; real account-backed Qwen delegation is unproven.",
+      "kind": "prose",
+      "line": 84,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/manual-tests/qwen-code-structural-projection.md"
     },
@@ -34406,7 +35164,7 @@
       "inferred_status": "proposed",
       "item": "Test: `echo $ALIBABA_QWEN_API_KEY | wc -c` should be 37 chars (35 +",
       "kind": "bullet",
-      "line": 200,
+      "line": 227,
       "next_action": "keep as proposal until accepted/implemented",
       "path": "docs/runbooks/llm-dispatch.md"
     },
@@ -34619,6 +35377,19 @@
       "line": 47,
       "next_action": "add explicit test/workflow/proof link",
       "path": "docs/secret-detection.md"
+    },
+    {
+      "confidence": 0.9,
+      "declared_status": "planned",
+      "evidence": [
+        "weak_terms:actionable,backlog"
+      ],
+      "inferred_status": "planned",
+      "item": "with citations and an actionable backlog.",
+      "kind": "prose",
+      "line": 98,
+      "next_action": "keep planned or add implementation proof when complete",
+      "path": "docs/security/cognitive-os-security-assessment-plan.md"
     },
     {
       "confidence": 0.62,
@@ -35247,8 +36018,8 @@
         "planned": 1
       },
       "docs/README.md": {
-        "done_weak_proof": 14,
-        "planned": 15,
+        "done_weak_proof": 15,
+        "planned": 17,
         "proposed": 6
       },
       "docs/RED-TEAM-CHANGELOG.md": {
@@ -35290,6 +36061,10 @@
         "done_weak_proof": 7,
         "planned": 3,
         "proposed": 2
+      },
+      "docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md": {
+        "done_weak_proof": 1,
+        "planned": 2
       },
       "docs/acc/latest-compact.md": {
         "proposed": 2
@@ -35519,12 +36294,13 @@
         "proposed": 1
       },
       "docs/adrs/ADR-052-provider-benchmark-harness.md": {
-        "done_weak_proof": 4,
-        "proposed": 1
+        "done_weak_proof": 11,
+        "done_with_proof": 1,
+        "planned": 1
       },
       "docs/adrs/ADR-053-dispatch-auto-optimizer.md": {
-        "done_weak_proof": 2,
-        "planned": 4,
+        "done_weak_proof": 7,
+        "planned": 2,
         "proposed": 1
       },
       "docs/adrs/ADR-054-project-docs-convention.md": {
@@ -35952,7 +36728,7 @@
         "proposed": 1
       },
       "docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md": {
-        "done_weak_proof": 2,
+        "done_weak_proof": 1,
         "planned": 3
       },
       "docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md": {
@@ -35994,11 +36770,30 @@
         "proposed": 2
       },
       "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md": {
-        "done_weak_proof": 2
+        "done_weak_proof": 1
       },
       "docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md": {
         "done_weak_proof": 2,
         "planned": 2
+      },
+      "docs/adrs/ADR-163-cos-instance-installer.md": {
+        "done_weak_proof": 4,
+        "planned": 5
+      },
+      "docs/adrs/ADR-164-host-cli-bridge-security-boundary.md": {
+        "done_weak_proof": 3,
+        "planned": 3
+      },
+      "docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md": {
+        "done_weak_proof": 2,
+        "planned": 1
+      },
+      "docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md": {
+        "done_weak_proof": 2
+      },
+      "docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md": {
+        "done_weak_proof": 2,
+        "planned": 1
       },
       "docs/adrs/README.md": {
         "planned": 1
@@ -36167,6 +36962,10 @@
       "docs/architecture/cos-dispatch/test-strategy.md": {
         "planned": 27
       },
+      "docs/architecture/cos-instance-installer.md": {
+        "done_weak_proof": 1,
+        "planned": 4
+      },
       "docs/architecture/cos-run-task-contract.md": {
         "done_weak_proof": 1,
         "planned": 1,
@@ -36214,6 +37013,9 @@
       "docs/architecture/expansion-hardening-plan.md": {
         "done_weak_proof": 3,
         "done_with_proof": 1
+      },
+      "docs/architecture/expected-skip-registry-and-opt-in-test-lanes.md": {
+        "proposed": 1
       },
       "docs/architecture/functional-audit/scorecard-hooks.md": {
         "done_weak_proof": 9,
@@ -36323,6 +37125,9 @@
       "docs/architecture/hook-quality-system.md": {
         "planned": 3
       },
+      "docs/architecture/host-cli-bridge-security-boundary.md": {
+        "planned": 1
+      },
       "docs/architecture/infrastructure-service-catalog.md": {
         "done_weak_proof": 3,
         "planned": 5
@@ -36400,6 +37205,10 @@
         "done_weak_proof": 2,
         "done_with_proof": 1,
         "planned": 16
+      },
+      "docs/architecture/runtime-env-flags-inventory.md": {
+        "done_weak_proof": 1,
+        "done_with_proof": 2
       },
       "docs/architecture/self-evolving-doctrine-proposals.md": {
         "planned": 2,
@@ -36494,7 +37303,7 @@
       },
       "docs/business/master-plan-checklist.md": {
         "done_weak_proof": 67,
-        "done_with_proof": 71,
+        "done_with_proof": 73,
         "planned": 10
       },
       "docs/business/master-plan-execution-requirements.md": {
@@ -36642,8 +37451,14 @@
       "docs/manual-tests/five-minute-demo.md": {
         "planned": 1
       },
+      "docs/manual-tests/headless-docker-service-runtime.md": {
+        "done_weak_proof": 2
+      },
       "docs/manual-tests/headless-runtime-proof-drills.md": {
         "planned": 7
+      },
+      "docs/manual-tests/host-cli-bridge-security-boundary.md": {
+        "planned": 4
       },
       "docs/manual-tests/kimi-code-cli-structural-projection.md": {
         "done_weak_proof": 1
@@ -36666,13 +37481,16 @@
       "docs/manual-tests/primitive-readiness-ledger.md": {
         "planned": 2
       },
+      "docs/manual-tests/proof-drill-registry.md": {
+        "planned": 1
+      },
       "docs/manual-tests/proof-paths.md": {
         "done_weak_proof": 1,
         "planned": 1,
         "proposed": 1
       },
       "docs/manual-tests/qwen-code-structural-projection.md": {
-        "done_weak_proof": 1
+        "done_weak_proof": 2
       },
       "docs/manual-tests/service-control-plane-proof-drills.md": {
         "done_weak_proof": 4,
@@ -36849,6 +37667,9 @@
       "docs/security-stack.md": {
         "planned": 2
       },
+      "docs/security/cognitive-os-security-assessment-plan.md": {
+        "planned": 1
+      },
       "docs/security/lethal-trifecta-gate.md": {
         "done_weak_proof": 1
       },
@@ -36918,11 +37739,11 @@
         "planned": 1
       }
     },
-    "items": 2681,
+    "items": 2740,
     "statuses": {
-      "done_weak_proof": 1118,
-      "done_with_proof": 220,
-      "planned": 1050,
+      "done_weak_proof": 1148,
+      "done_with_proof": 225,
+      "planned": 1074,
       "proposed": 293
     }
   }
