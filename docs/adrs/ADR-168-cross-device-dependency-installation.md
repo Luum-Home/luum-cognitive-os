@@ -1,7 +1,7 @@
 ---
 adr: 168
 title: Cross-Device Dependency Installation Contract
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -19,7 +19,7 @@ tags: [dependencies, installation, portability, cross-device, manifests]
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for the manifest-driven dry-run installer and credential-safe reporting scope** — 2026-05-05. The current implementation provides cross-platform dry-run JSON, conservative auth-bound/manual reporting, and an apply path for installable non-auth-bound dependencies; broader schema-v2 field migration remains incremental follow-up work.
 
 ## Context
 
@@ -169,7 +169,7 @@ python3 -m pytest tests/unit/test_manifest_loader.py tests/integration/test_inst
 bash scripts/manifest-check.sh --profile default || true
 ```
 
-Future implementation slice:
+Implemented installer slice:
 
 ```bash
 python3 -m pytest tests/unit/test_manifest_loader.py tests/contracts/test_cross_device_dependencies.py -q

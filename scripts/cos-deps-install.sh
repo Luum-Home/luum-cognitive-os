@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# Dry-run-first cross-device dependency installer for ADR-168.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$SCRIPT_DIR/cos_deps_install.py" "$@"
