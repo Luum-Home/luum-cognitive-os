@@ -745,7 +745,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 5,
+        "doc": 6,
         "hook": 1,
         "test": 1
       },
@@ -771,6 +771,10 @@
           "path": "docs/architecture/functional-audit/scorecard-skills.md"
         },
         {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/subagent-context-injector.sh"
         },
@@ -783,7 +787,7 @@
       "evidence": [
         "hook_consumers:1",
         "test_consumers:1",
-        "doc_consumers:5"
+        "doc_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -793,7 +797,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -3243,7 +3247,9 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 2
+        "doc": 5,
+        "script": 1,
+        "skill": 1
       },
       "consumers": [
         {
@@ -3257,11 +3263,33 @@
         {
           "family": "doc",
           "path": "docs/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/security-red-team.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/security_red_team.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/security-red-team/SKILL.md"
         }
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:2",
+        "skill_consumers:1",
+        "script_consumers:1",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3272,7 +3300,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -3813,10 +3841,10 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 7,
-        "doc": 10,
-        "script": 6,
-        "test": 5
+        "config": 8,
+        "doc": 11,
+        "script": 7,
+        "test": 6
       },
       "consumers": [
         {
@@ -3826,6 +3854,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/proof-drill-claim-map.yaml"
         },
         {
           "family": "config",
@@ -3877,6 +3909,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/headless-docker-service-runtime.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/headless-runtime-proof-drills.md"
         },
         {
@@ -3890,6 +3926,10 @@
         {
           "family": "script",
           "path": "scripts/acc_pipeline.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-headless-service-drill"
         },
         {
           "family": "script",
@@ -3921,6 +3961,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_proof_drill_claim_map.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_proof_drill_registry.py"
         },
         {
@@ -3934,10 +3978,10 @@
       ],
       "distribution": null,
       "evidence": [
-        "script_consumers:6",
-        "test_consumers:5",
-        "doc_consumers:10",
-        "config_consumers:7"
+        "script_consumers:7",
+        "test_consumers:6",
+        "doc_consumers:11",
+        "config_consumers:8"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3947,7 +3991,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
@@ -4201,13 +4245,13 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 4,
-        "doc": 19,
+        "config": 5,
+        "doc": 24,
         "hook": 1,
         "rule": 2,
-        "script": 4,
-        "skill": 2,
-        "test": 4
+        "script": 6,
+        "skill": 3,
+        "test": 7
       },
       "consumers": [
         {
@@ -4227,6 +4271,10 @@
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/security-red-team.yaml"
+        },
+        {
           "family": "doc",
           "path": "docs/README.md"
         },
@@ -4237,6 +4285,14 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4288,11 +4344,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/security/cognitive-os-security-assessment-plan.md"
         },
         {
           "family": "doc",
           "path": "docs/security/lethal-trifecta-gate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/security-red-team.md"
         },
         {
           "family": "doc",
@@ -4328,6 +4396,14 @@
         },
         {
           "family": "script",
+          "path": "scripts/security-red-team"
+        },
+        {
+          "family": "script",
+          "path": "scripts/security_red_team.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/verify-archived.sh"
         },
         {
@@ -4337,6 +4413,10 @@
         {
           "family": "skill",
           "path": "skills/redteam-harness/SKILL.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/security-red-team/SKILL.md"
         },
         {
           "family": "test",
@@ -4352,18 +4432,30 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_security_red_team_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/security/test_boundary_enforcement_p0.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/security/test_security_red_team_runner.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:2",
+        "skill_consumers:3",
         "hook_consumers:1",
         "rule_consumers:2",
-        "script_consumers:4",
-        "test_consumers:4",
-        "doc_consumers:19",
-        "config_consumers:4"
+        "script_consumers:6",
+        "test_consumers:7",
+        "doc_consumers:24",
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4373,14 +4465,16 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 36
+      "total_consumers": 48
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4,
+        "doc": 7,
+        "script": 1,
+        "skill": 1,
         "test": 2
       },
       "consumers": [
@@ -4401,6 +4495,26 @@
           "path": "docs/architecture/red-team-harness-proposal.md"
         },
         {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/security-red-team.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/security_red_team.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/security-red-team/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_redteam_baseline.py"
         },
@@ -4411,8 +4525,10 @@
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4"
+        "doc_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4422,7 +4538,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -5544,6 +5660,91 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 3,
+        "doc": 7,
+        "script": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/security-red-team.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-security-assessment-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/security-red-team.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/security_red_team.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_security_red_team_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/security/test_boundary_enforcement_p0.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/security/test_security_red_team_runner.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:7",
+        "config_consumers:3"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/security-red-team/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 14
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
         "doc": 16,
         "hook": 1,
         "script": 2,
@@ -6533,9 +6734,10 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 6,
+        "doc": 8,
         "rule": 1,
         "script": 1,
+        "skill": 1,
         "test": 1
       },
       "consumers": [
@@ -6568,6 +6770,14 @@
           "path": "docs/security-stack.md"
         },
         {
+          "family": "doc",
+          "path": "docs/security/cognitive-os-attack-surface-inventory.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/security-red-team.md"
+        },
+        {
           "family": "rule",
           "path": "rules/skill-management.md"
         },
@@ -6576,16 +6786,21 @@
           "path": "scripts/install-garak.sh"
         },
         {
+          "family": "skill",
+          "path": "skills/security-red-team/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -6596,7 +6811,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -6669,22 +6884,22 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 52,
+      "high": 53,
       "medium": 39
     },
     "consumer_accessibility": {
-      "repo-skill-not-projectable": 87,
+      "repo-skill-not-projectable": 88,
       "so-local-only": 4
     },
     "roles": {
-      "compatibility-wrapper": 52,
+      "compatibility-wrapper": 53,
       "lab": 7,
       "project-extension": 16,
       "so-maintainer": 16
     },
-    "total": 91,
+    "total": 92,
     "without_consumers": 0,
-    "without_lifecycle": 91
+    "without_lifecycle": 92
   },
   "target_family": "skills"
 }

@@ -2,42 +2,44 @@
 
 > Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
 
-Generated: 2026-05-05T17:00:01Z
-Gate: block (reconstruction)
-ACC: 1.0000
-ACC effective: 1.0000
-Capabilities: 776
-Findings: 0
-New debt gate: block (2)
+Generated: 2026-05-05T17:37:53Z
+Gate: pass (reconstruction)
+ACC: 0.9973
+ACC effective: 0.9986
+Capabilities: 802
+Findings: 2
+New debt gate: not_evaluated (0)
 
 ## Warnings
 
-- none
+- coverage_debt:2
 
 ## Mapping Weights
 
-- aligned: 2119
+- aligned: 2190
 - missing: 0
 - overexposed: 0
-- partial: 0
+- partial: 6
 - stale: 0
 - unverified: 0
 
 ## Consumer Accessibility
 
+- lifecycle-declared-consumer-candidate: 2
+- lifecycle-declared-maintainer: 1
 - maintainer-only: 57
 - profile-driver: 19
 - shell-ci-candidate: 15
-- so-local-only: 685
+- so-local-only: 708
 
 ## Top Findings
 
-- none
+- `script:scripts/cos-key-learnings-capture` [partial/medium]: Candidate/projectable surface needs consumer projection proof → add harness projection proof before promotion
+- `script:scripts/security-red-team` [partial/medium]: Candidate/projectable surface needs consumer projection proof → add harness projection proof before promotion
 
 ## New Debt
 
-- `script:scripts/cos-deps-install.sh` [unreviewed-local-default]: new capability matched a broad local-surface default instead of an explicit row or projection proof
-- `script:scripts/cos_deps_install.py` [unreviewed-local-default]: new capability matched a broad local-surface default instead of an explicit row or projection proof
+- none
 
 ## Context Diet Rule
 
