@@ -404,6 +404,7 @@ COS_RUN_OPIK_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integratio
 COS_RUN_COGNEE_REFERENCE=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_cognee_integration.py -q -ra
 COS_RUN_SMART_INFRA_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_smart_infra_containers.py -q -ra
 COS_RUN_ENGRAM_CLOUD_CONTAINERS=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_engram_cloud_docker.py -q -ra
+COS_RUN_HEADLESS_SERVICE_DOCKER=1 bash scripts/pytest-with-summary.sh -- tests/integration/test_headless_service_drill.py -q -ra
 ```
 
 For the stronger Engram Cloud proof that starts the Compose profile and performs
