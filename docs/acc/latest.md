@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-05T18:14:41Z
+Generated: 2026-05-05T19:21:42Z
 Phase: reconstruction
 Gate: pass
 
@@ -21,7 +21,7 @@ Gate: pass
 |---|---|---|---|
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 88, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 3, "maintainer-only": 57, "pattern:so-local-only": 6, "shell-ci-candidate": 15, "so-local-only": 13}}` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"aider/default": 73, "aider/full": 352, "amp-code/default": 73, "amp-code/full": 352, "augment-code/default": 73, "augment-code/full": 352, "claude/default": 73, "claude/full": 352, "cline/default": 73, "cline/full":` |
-| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 16, "planned": 19, "proposed": 7}, ` |
+| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md": {"done_weak_proof": 1, "planned": 2}, "AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": ` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 21, "planned": 5, "total": 26, "unsupported": 0}` |
 | primitive_fitness_ledger | ok | `docs/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
 | projection_profiles | ok | `manifests/primitive-projection-profiles.yaml` | `{"profile_driver_scripts": 19, "profiles": ["default", "full"], "projection_classes": ["default", "full", "maintainer-only", "profile-driver", "shared"]}` |

@@ -44,7 +44,24 @@ if [[ ! -f "${AUDIT_SCRIPT}" ]]; then
     exit 0
 fi
 
-# ── Run audit in background with 30s timeout ─────────────────────────────────
+# SessionStart must stay fast and must not dirty tracked report files. Default
+# to scheduling a dry-run summary in the background; tests and manual proof
+# drills can opt into the legacy synchronous advisory/write path with
+# COS_ASPIRATIONAL_AUDIT_SYNC=true.
+if [[ "${COS_ASPIRATIONAL_AUDIT_SYNC:-false}" != "true" ]]; then
+    mkdir -p "${METRICS_DIR}" 2>/dev/null || true
+    date +%s > "${MARKER_FILE}" 2>/dev/null || true
+    (
+        python3 "${AUDIT_SCRIPT}" \
+            --dry-run \
+            --json \
+            --project-root "${PROJECT_DIR}" \
+            >/dev/null 2>&1
+    ) &
+    exit 0
+fi
+
+# ── Run audit synchronously for explicit proof drills ────────────────────────
 SUMMARY_JSON=""
 AUDIT_FAILED=0
 
