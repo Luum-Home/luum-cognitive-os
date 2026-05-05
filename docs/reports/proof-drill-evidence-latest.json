@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-05T16:45:46Z",
+  "generated_at": "2026-05-05T16:58:06Z",
   "rows": [
     {
       "command": "COS_CLAUDE_EXEC_MODEL=sonnet scripts/cos-worker-run-once --project-dir /tmp/cos-claude-provider.6NbDJQ --worker-id host-claude-proof --allow-provider-call --json",
@@ -32,11 +32,14 @@
       "command": "scripts/cos-headless-service-drill --json",
       "does_not_prove": "Provider-backed Codex/Claude execution or remote cloud worker support.",
       "evidence_artifacts": [
-        "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
+        "docs/reports/proof-drill-opt-in-run-2026-05-05.md",
+        "docs/reports/proof-drill-evidence-latest.json",
+        "/tmp/cos-headless-service.4VpVjp/.cognitive-os/service/artifacts/task-headless-service-drill/lease-f54e6542ba02"
       ],
       "exit_code": 0,
       "id": "headless-docker-service-drill",
       "proves": "Docker/headless service worker can self-test, submit a local task, process it, drain the queue, and keep artifacts.",
+      "recorded_at": "2026-05-05T16:58:06Z",
       "scope": "os-self",
       "status": "passed"
     },
@@ -66,5 +69,5 @@
     }
   ],
   "schema_version": "proof-drill-evidence.v1",
-  "source_report": "docs/reports/proof-drill-opt-in-run-2026-05-05.md"
+  "source_report": "docs/reports/proof-drill-evidence-latest.json"
 }
