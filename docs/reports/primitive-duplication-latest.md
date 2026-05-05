@@ -1,20 +1,23 @@
 # Primitive Duplication Audit — Latest
 
-Generated: `2026-05-05T16:45:05.428762+00:00`
+Generated: `2026-05-05T17:37:15.938917+00:00`
 
 ## Summary
 
-- Files scanned: 747
-- Findings: 2
-- By kind: `{"python-function-repeat": 2}`
-- By common home: `{"lib/": 2}`
-- By consumer relevance: `{"so-local-first": 2}`
+- Files scanned: 772
+- Findings: 5
+- By kind: `{"python-function-repeat": 5}`
+- By common home: `{"lib/": 5}`
+- By consumer relevance: `{"so-local-first": 5}`
 
 ## Top Candidates
 
 | Kind | Classification | Similarity | Left | Right | Recommendation | Common home | Consumer relevance |
 |---|---|---:|---|---|---|---|---|
 | python-function-repeat | candidate | 1.0 | `scripts/acc_pipeline.py::utc_now` | `scripts/proof_drill_evidence_record.py::utc_now` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_credential_safe_run.py::_load_manifest` | `scripts/security_red_team.py::_read_yaml` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_credential_safe_run.py::_sha256_file` | `scripts/security_red_team.py::_file_sha256` | extract-common-python-helper | `lib/` | so-local-first |
+| python-function-repeat | candidate | 1.0 | `scripts/cos_credential_safe_run.py::_utc` | `scripts/security_red_team.py::_utc` | extract-common-python-helper | `lib/` | so-local-first |
 | python-function-repeat | candidate | 1.0 | `scripts/project_shell_ci.py::load_manifest` | `scripts/proof_drill_select.py::load_registry` | extract-common-python-helper | `lib/` | so-local-first |
 
 ## Interpretation

@@ -54,6 +54,38 @@ COS_ALLOW_CREDENTIAL_SAFE_ENV=1 \
 The runner is allowlist-only and redacts stdout/stderr before returning output
 to the agent.
 
+## Safety-bypass flags
+
+### `COS_ALLOW_PROTECTED_CONFIG_WRITE`
+
+`COS_ALLOW_PROTECTED_CONFIG_WRITE=1` bypasses
+`hooks/protected-config-write-guard.sh` for a single explicitly reviewed
+operation. This is high risk because protected config writes can alter agent
+permissions, hooks, MCP tools, rules, skills, or security manifests.
+
+Leave unset by default. Set only when a human has reviewed the exact diff and
+intends to modify control-plane files such as `.claude/**`, `.codex/**`,
+`.cursor/**`, `hooks/**`, `rules/**`, `skills/*/SKILL.md`, or security
+manifests.
+
+### `COS_ALLOW_NETWORK_EGRESS`
+
+`COS_ALLOW_NETWORK_EGRESS=1` bypasses `hooks/network-egress-guard.sh` for
+external network shell commands that look like data exfiltration. This is high
+risk because it can allow prompt-injected commands to send code, secrets, or
+metadata to untrusted domains.
+
+Leave unset by default. Prefer adding narrow domains to
+`manifests/network-egress-policy.yaml` over using this bypass.
+
+## Watchdog / posture detector flags
+
+### `COS_DANGEROUS_ENV_DETECTOR_DISABLE`
+
+`COS_DANGEROUS_ENV_DETECTOR_DISABLE=1` disables the advisory detector that
+reports active high-risk Cognitive OS flags such as hook suppressions and safety
+bypasses. Leave unset unless the detector itself is broken and noisy.
+
 ## Test opt-in flags
 
 ### `COS_CODEX_EXEC_MODEL`

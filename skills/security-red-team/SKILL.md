@@ -10,7 +10,7 @@ description: >
 triggers: ["/security-red-team", "/security-redteam", "/sec-red-team"]
 audience: os-dev
 version: 1.0.0
-summary_line: Unified Cognitive OS security red-team: inventory, threat model, abuse probes, risk scoring, and mitigation backlog.
+summary_line: "Unified Cognitive OS security red-team: inventory, threat model, abuse probes, risk scoring, and mitigation backlog."
 platforms: ["claude-code", "codex", "bare_cli"]
 prerequisites:
   - python3

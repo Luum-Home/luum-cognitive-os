@@ -1007,6 +1007,11 @@ harness:
       async: true
       scope: os-only
 
+    dangerous-env-flag-detector:
+      script: hooks/dangerous-env-flag-detector.sh
+      event: SessionStart
+      scope: os-only
+
     # ── UserPromptSubmit ──────────────────────────────────────────────────────
     user-prompt-capture:
       script: hooks/user-prompt-capture.sh
@@ -1069,6 +1074,12 @@ harness:
       scope: os-only
 
     # ── PreToolUse — all tools ────────────────────────────────────────────────
+    protected-config-write-guard:
+      script: hooks/protected-config-write-guard.sh
+      event: PreToolUse
+      matcher: ""
+      scope: os-only
+
     session-heartbeat-pre:
       script: hooks/session-heartbeat.sh
       event: PreToolUse
@@ -1089,6 +1100,12 @@ harness:
 
     # ── PreToolUse — Bash only ────────────────────────────────────────────────
     # Codex: limited (Bash matcher only — these project to Codex PreToolUse)
+    network-egress-guard:
+      script: hooks/network-egress-guard.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: os-only
+
     rate-limit-precheck:
       script: hooks/rate-limit-precheck.sh
       event: PreToolUse
@@ -1689,6 +1706,12 @@ harness:
 
     engram-crystallize-on-session-end:
       script: hooks/engram-crystallize-on-session-end.sh
+      event: Stop
+      async: true
+      scope: os-only
+
+    engram-obsidian-export-on-stop:
+      script: hooks/engram-obsidian-export-on-stop.sh
       event: Stop
       async: true
       scope: os-only
