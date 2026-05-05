@@ -23,6 +23,12 @@ COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
         ("cursor", ".cursor/rules/cognitive-os.mdc"),
         ("qwen-code", ".qwen/settings.json"),
         ("kimi-code", "AGENTS.md"),
+        ("gemini-cli", ".gemini/settings.json"),
+        ("warp", "AGENTS.md"),
+        ("amp-code", "AGENTS.md"),
+        ("jetbrains-junie", ".junie/AGENTS.md"),
+        ("qoder", "AGENTS.md"),
+        ("factory-droid", "AGENTS.md"),
         ("shell-ci", ".cognitive-os/shell-ci-projection.json"),
     ],
 )
@@ -66,6 +72,41 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert "Cognitive OS for Kimi Code CLI" in agents
         assert json.loads((tmp_path / ".kimi/mcp.json").read_text()) == {"mcpServers": {}}
         assert "--mcp-config-file .kimi/mcp.json" in (tmp_path / ".kimi/README.md").read_text()
+
+    if harness == "gemini-cli":
+        gemini = json.loads((tmp_path / ".gemini/settings.json").read_text())
+        assert gemini["contextFileName"] == ["GEMINI.md", "AGENTS.md"]
+        assert ".cognitive-os/rules/cos" in gemini["includeDirectories"]
+        assert gemini["mcpServers"] == {}
+        assert gemini["autoAccept"] is False
+        assert "Cognitive OS" in (tmp_path / "GEMINI.md").read_text()
+    if harness == "warp":
+        agents = (tmp_path / "AGENTS.md").read_text()
+        assert "COGNITIVE_OS_WARP_START" in agents
+        assert "Cognitive OS for Warp Agent" in agents
+        assert "WARP.md" in agents
+        assert (tmp_path / ".warp/README.md").is_file()
+    if harness == "amp-code":
+        agents = (tmp_path / "AGENTS.md").read_text()
+        assert "COGNITIVE_OS_AMP_START" in agents
+        assert "Cognitive OS for Amp" in agents
+        assert json.loads((tmp_path / ".amp/settings.json").read_text()) == {"amp.mcpServers": {}}
+    if harness == "jetbrains-junie":
+        junie = (tmp_path / ".junie/AGENTS.md").read_text()
+        assert "Cognitive OS for JetBrains Junie" in junie
+        assert "RULES-COMPACT.md" in junie
+        assert (tmp_path / ".junie/README.md").is_file()
+    if harness == "qoder":
+        agents = (tmp_path / "AGENTS.md").read_text()
+        assert "COGNITIVE_OS_QODER_START" in agents
+        assert json.loads((tmp_path / ".mcp.json").read_text()) == {"mcpServers": {}}
+        assert json.loads((tmp_path / ".qoder/settings.json").read_text())["permissions"]["deny"] == []
+    if harness == "factory-droid":
+        agents = (tmp_path / "AGENTS.md").read_text()
+        assert "COGNITIVE_OS_FACTORY_DROID_START" in agents
+        assert json.loads((tmp_path / ".factory/mcp.json").read_text()) == {"mcpServers": {}}
+        assert json.loads((tmp_path / ".factory/settings.json").read_text()) == {"hooks": {}}
+        assert "name: cognitive-os" in (tmp_path / ".factory/skills/cognitive-os/SKILL.md").read_text()
     if harness == "shell-ci":
         shell_meta = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
         assert shell_meta["commands_projected"] == 15
