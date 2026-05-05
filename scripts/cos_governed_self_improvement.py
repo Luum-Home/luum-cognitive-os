@@ -48,6 +48,13 @@ def main() -> int:
     evaluate_parser.add_argument("--evidence-command", action="append", default=[])
     evaluate_parser.add_argument("--safety-regression", action="append", default=[])
 
+    fitness_parser = sub.add_parser(
+        "evaluate-from-fitness",
+        help="Record promotion evidence from a primitive fitness report",
+    )
+    fitness_parser.add_argument("draft_id")
+    fitness_parser.add_argument("--fitness-report", required=True)
+
     inspect_parser = sub.add_parser("inspect", help="Inspect an existing draft")
     inspect_parser.add_argument("draft_id")
 
@@ -81,6 +88,30 @@ def main() -> int:
             required_delta=args.required_delta,
             evidence_commands=args.evidence_command,
             safety_regressions=args.safety_regression,
+        )
+        print(json.dumps(evaluation.to_dict(), indent=2, sort_keys=True))
+        return 0
+
+    if args.command == "evaluate-from-fitness":
+        report_path = Path(args.fitness_report)
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+        baseline = report.get("baseline", {}).get("overall_score")
+        candidate = report.get("candidate", {}).get("overall_score")
+        if baseline is None or candidate is None:
+            parser.error("fitness report must contain baseline/candidate overall_score")
+        regressions = list(report.get("safety_regressions") or [])
+        if report.get("verdict") != "promote" and not regressions:
+            regressions.append(f"fitness verdict is {report.get('verdict')}")
+        evidence_commands = list(report.get("evidence_commands") or [])
+        evidence_commands.append(f"primitive fitness report: {report_path}")
+        evaluation = write_promotion_evaluation(
+            project_dir,
+            args.draft_id,
+            baseline_score=float(baseline),
+            candidate_score=float(candidate),
+            required_delta=float(report.get("required_delta", 1.0)),
+            evidence_commands=evidence_commands,
+            safety_regressions=regressions,
         )
         print(json.dumps(evaluation.to_dict(), indent=2, sort_keys=True))
         return 0
