@@ -2,11 +2,15 @@ schema_version: harness-projection.v1
 purpose: Declares harness/IDE projection status for Cognitive OS consumer-project
   ACC proof.
 status_values:
-  implemented: Projection proof exists and ACC may execute it. This means structural projection unless proof_level says runtime-smoke or native-lifecycle.
+  implemented: Projection proof exists and ACC may execute it. This means structural
+    projection unless proof_level says runtime-smoke or native-lifecycle.
 proof_levels:
-  structural: Project-local files/configs are generated and shape-tested from official docs; runtime execution is not claimed.
-  runtime-smoke: A real account-backed or CLI/IDE runtime smoke has been executed and recorded.
-  native-lifecycle: Native lifecycle hooks/events are projected and tested for the harness.
+  structural: Project-local files/configs are generated and shape-tested from official
+    docs; runtime execution is not claimed.
+  runtime-smoke: A real account-backed or CLI/IDE runtime smoke has been executed
+    and recorded.
+  native-lifecycle: Native lifecycle hooks/events are projected and tested for the
+    harness.
   planned: Harness is in product scope but native projection proof is not implemented
     yet.
   unsupported: Harness is intentionally out of scope for now.
@@ -295,3 +299,209 @@ harnesses:
   - --default
   - --harness
   - shell-ci
+- id: gemini-cli
+  display_name: Gemini CLI
+  status: implemented
+  projection_mode: gemini-project-settings-context-mcp
+  settings_paths:
+  - .gemini/settings.json
+  - GEMINI.md
+  projected_surfaces:
+  - context
+  - instructions
+  - skills-reference
+  - rules-reference
+  - mcp-placeholder
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural project settings/context proof only; no account-backed Gemini CLI runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP servers are intentionally empty placeholders until profiles configure concrete
+    tools.
+  next_action: Add optional Gemini CLI runtime smoke when Gemini CLI credentials are
+    available.
+  research_sources:
+  - https://raw.githubusercontent.com/google-gemini/gemini-cli/main/docs/cli/configuration.md
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - gemini-cli
+- id: warp
+  display_name: Warp Agent
+  status: implemented
+  projection_mode: agents-md-project-rules
+  settings_paths:
+  - AGENTS.md
+  - .warp/README.md
+  projected_surfaces:
+  - project-instructions
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural AGENTS.md project-rules proof only; no account-backed Warp runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - COS does not write user-global Warp rules.
+  next_action: Add optional Warp runtime smoke when a Warp account-backed host is
+    available.
+  research_sources:
+  - https://docs.warp.dev/agent-platform/capabilities/rules
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - warp
+- id: amp-code
+  display_name: Amp Code
+  status: implemented
+  projection_mode: agents-md-workspace-settings-mcp
+  settings_paths:
+  - AGENTS.md
+  - .amp/settings.json
+  projected_surfaces:
+  - project-instructions
+  - mcp-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural AGENTS.md/workspace settings proof only; no account-backed Amp runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - Workspace MCP servers are empty placeholders and require operator trust/approval.
+  next_action: Add optional Amp runtime smoke when Amp credentials are available.
+  research_sources:
+  - https://ampcode.com/manual
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - amp-code
+- id: jetbrains-junie
+  display_name: JetBrains Junie
+  status: implemented
+  projection_mode: junie-agents-md
+  settings_paths:
+  - .junie/AGENTS.md
+  - .junie/README.md
+  projected_surfaces:
+  - project-instructions
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural .junie/AGENTS.md proof only; no account-backed JetBrains IDE runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - MCP is documented through IDE settings and is not generated as a project file
+    until a stable project-local path is signed.
+  next_action: Add optional Junie runtime smoke when JetBrains IDE account/license
+    is available.
+  research_sources:
+  - https://www.jetbrains.com/help/ai-assistant/junie-agent.html
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - jetbrains-junie
+- id: qoder
+  display_name: Qoder CLI
+  status: implemented
+  projection_mode: agents-md-project-mcp-settings
+  settings_paths:
+  - AGENTS.md
+  - .mcp.json
+  - .qoder/settings.json
+  projected_surfaces:
+  - project-instructions
+  - mcp-placeholder
+  - permissions-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural AGENTS.md/.mcp.json proof only; no account-backed Qoder CLI runtime
+    invocation in automated tests.
+  - No native COS lifecycle hook parity is claimed.
+  - Permission settings are placeholders and do not grant tools by default.
+  next_action: Add optional Qoder CLI runtime smoke when Qoder authentication is available.
+  research_sources:
+  - https://docs.qoder.com/cli/using-cli
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - qoder
+- id: factory-droid
+  display_name: Factory Droid
+  status: implemented
+  projection_mode: agents-md-factory-skills-mcp-hooks
+  settings_paths:
+  - AGENTS.md
+  - .factory/mcp.json
+  - .factory/settings.json
+  - .factory/skills/cognitive-os/SKILL.md
+  projected_surfaces:
+  - project-instructions
+  - factory-skill
+  - mcp-placeholder
+  - hooks-placeholder
+  - rules-reference
+  - skills-reference
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Structural Factory project files proof only; no account-backed Droid runtime invocation
+    in automated tests.
+  - No native COS lifecycle hook parity is claimed despite Factory hook similarity
+    until event mapping and runtime smoke are implemented.
+  - Generated hooks are empty placeholders; COS hooks are not wired into Factory runtime
+    yet.
+  next_action: Investigate Factory hook event mapping as a possible future native-lifecycle
+    adapter.
+  research_sources:
+  - https://docs.factory.ai/cli/configuration/agents-md
+  - https://docs.factory.ai/cli/configuration/skills
+  - https://docs.factory.ai/reference/hooks-reference
+  - https://docs.factory.ai/cli/configuration/mcp
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - factory-droid
+- id: kiro
+  display_name: Kiro
+  status: planned
+  projection_mode: kiro-steering-hooks-mcp-investigation
+  settings_paths:
+  - .kiro/steering
+  - agent configuration file (exact project path under investigation)
+  projected_surfaces:
+  - steering
+  - hooks
+  - mcp
+  - agents
+  proof: none
+  proof_level: none
+  limitations:
+  - Official docs expose lifecycle/tool hooks, but COS has not mapped event payloads
+    or generated a project agent configuration yet.
+  - No runtime smoke or native lifecycle parity is claimed.
+  next_action: Design Kiro hook adapter mapping before any native-lifecycle promotion.
+  research_sources:
+  - https://kiro.dev/docs/cli/hooks/
+  - https://kiro.dev/docs/getting-started/first-project/
