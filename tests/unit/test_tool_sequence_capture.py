@@ -271,7 +271,8 @@ class TestToolSequenceCaptureLatency:
         # real blocking behaviour. On loaded CI/laptop runs, subprocess and
         # filesystem jitter can push several fast invocations across second
         # boundaries, so use a tolerant 70% zero-sample floor and rely on the
-        # >=2000ms guard below for real blocking.
+        # >2000ms guard below for real blocking. With second-resolution timing,
+        # an exact 2000ms sample can still represent just-over-1s scheduling jitter.
         sorted_durations = sorted(hook_durations)
         zero_count = hook_durations.count(0)
         zero_pct = zero_count / len(hook_durations)
@@ -281,9 +282,9 @@ class TestToolSequenceCaptureLatency:
             f"(hook finishes in < 1 second). Got {zero_pct:.0%}. "
             f"Samples: {sorted_durations}"
         )
-        assert max(hook_durations) < 2000, (
-            f"Hook body took >= 2 seconds in at least one invocation — "
-            f"suggests real blocking. Samples: {sorted_durations}"
+        assert max(hook_durations) <= 2000, (
+            f"Hook body took more than two coarse clock seconds in at least "
+            f"one invocation — suggests real blocking. Samples: {sorted_durations}"
         )
 
         # Note: duration_ms=0 means hook completed in < 1 second (date +%s resolution).
