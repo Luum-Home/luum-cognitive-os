@@ -219,8 +219,8 @@ candidates:
   - mcp
   official_sources:
   - https://goose-docs.ai/docs/quickstart/
-  next_action: Implemented structural `.goosehints` and `.goose/config.json`; add
-    runtime smoke when available.
+  next_action: Implemented structural `.goosehints`; no non-official project config
+    file is generated.
 - id: kilo-code
   display_name: Kilo Code
   category: ide-cli
@@ -232,8 +232,8 @@ candidates:
   - mcp
   official_sources:
   - https://kilo.ai/docs/automate/mcp/using-in-kilo-code
-  next_action: Implemented structural AGENTS.md, `.kilocode` rules/MCP, and `.kilo/kilo.jsonc`;
-    add runtime smoke when available.
+  next_action: Implemented structural AGENTS.md, `.kilocode` rules, and `.kilo/kilo.jsonc`;
+    MCP placeholder lives in `.kilo/kilo.jsonc` per docs.
 - id: augment-code
   display_name: Augment / Auggie
   category: cli-ide
@@ -246,8 +246,8 @@ candidates:
   - permissions
   official_sources:
   - https://docs.augmentcode.com/cli/reference
-  next_action: Implemented structural `.augment/rules` and settings placeholder; add
-    runtime smoke when available.
+  next_action: Implemented structural Augment/Auggie files for explicit `--rules`
+    and `--mcp-config` CLI flags; no implicit workspace settings claim.
 - id: jetbrains-junie
   display_name: JetBrains Junie
   category: ide-cli

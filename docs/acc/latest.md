@@ -1,6 +1,6 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-05T12:35:02Z
+Generated: 2026-05-05T12:43:36Z
 Phase: reconstruction
 Gate: pass
 
@@ -20,9 +20,9 @@ Gate: pass
 |---|---|---|---|
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 49, "patterns": 6, "statuses": {"maintainer-only": 34, "pattern:so-local-only": 6, "shell-ci-candidate": 15}}` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"aider/default": 73, "aider/full": 347, "amp-code/default": 73, "amp-code/full": 347, "augment-code/default": 73, "augment-code/full": 347, "claude/default": 73, "claude/full": 347, "cline/default": 73, "cline/full":` |
-| cos_coverage | ok | `cos_coverage` | `{"aspirational": 38, "coverage_pct": 54.3, "dormant": 160, "generated_at": "2026-05-05T12:33:33Z", "mapped": 268, "metadata": 56, "on_demand": 287, "project": "<repo-root>", "real": 235, "tiers": {"A": 2, "B": 4, "C": 39, "D": 155}, "trend"` |
-| docs_execution | ok | `docs_execution` | `{"items": 2656, "json": "<repo-root>/docs/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"}` |
-| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 13, "planned": 15, "proposed": 6}, ` |
+| cos_coverage | ok | `cos_coverage` | `{"aspirational": 38, "coverage_pct": 54.3, "dormant": 160, "generated_at": "2026-05-05T12:41:54Z", "mapped": 268, "metadata": 56, "on_demand": 287, "project": "<repo-root>", "real": 235, "tiers": {"A": 2, "B": 4, "C": 39, "D": 155}, "trend"` |
+| docs_execution | ok | `docs_execution` | `{"items": 2658, "json": "<repo-root>/docs/reports/docs-execution-latest.json", "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"}` |
+| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 14, "planned": 15, "proposed": 6}, ` |
 | family_readiness_hooks | ok | `family_readiness_hooks` | `{"confidence": {"high": 126, "medium": 86}, "consumer_accessibility": {"lifecycle-declared-consumer-candidate": 1, "lifecycle-declared-maintainer": 114, "projected-consumer-surface": 11, "so-local-only": 86}, "json": "<repo-root>/docs/repor` |
 | family_readiness_rules | ok | `family_readiness_rules` | `{"confidence": {"medium": 112}, "consumer_accessibility": {"so-local-only": 112}, "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json", "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest` |
 | family_readiness_skills | ok | `family_readiness_skills` | `{"confidence": {"high": 51, "medium": 39}, "consumer_accessibility": {"repo-skill-not-projectable": 86, "so-local-only": 4}, "json": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.json", "markdown": "<repo-root>/docs/rep` |

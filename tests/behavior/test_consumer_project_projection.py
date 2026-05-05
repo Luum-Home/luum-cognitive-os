@@ -124,18 +124,20 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
     if harness == "kilo-code":
         assert "COGNITIVE_OS_KILO_CODE_START" in (tmp_path / "AGENTS.md").read_text()
         assert "Cognitive OS for Kilo Code" in (tmp_path / ".kilocode/rules/cognitive-os.md").read_text()
-        assert json.loads((tmp_path / ".kilocode/mcp.json").read_text()) == {"mcpServers": {}}
+        assert not (tmp_path / ".kilocode/mcp.json").exists()
         kilo = json.loads((tmp_path / ".kilo/kilo.jsonc").read_text())
+        assert kilo["mcp"] == {}
         assert ".kilocode/rules/cognitive-os.md" in kilo["instructions"]
     if harness == "zed-ai":
         assert "Cognitive OS for Zed AI" in (tmp_path / ".rules").read_text()
         assert json.loads((tmp_path / ".zed/settings.json").read_text()) == {"context_servers": {}}
     if harness == "augment-code":
         assert "Cognitive OS for Augment" in (tmp_path / ".augment/rules/cognitive-os.md").read_text()
-        assert json.loads((tmp_path / ".augment/settings.json").read_text())["permissions"]["default"] == "ask"
+        assert json.loads((tmp_path / ".augment/mcp.json").read_text()) == {"mcpServers": {}}
+        assert "--rules .augment/rules/cognitive-os.md" in (tmp_path / ".augment/README.md").read_text()
     if harness == "goose":
         assert "Cognitive OS for Goose" in (tmp_path / ".goosehints").read_text()
-        assert json.loads((tmp_path / ".goose/config.json").read_text()) == {"mcpServers": {}}
+        assert not (tmp_path / ".goose/config.json").exists()
     if harness == "aider":
         assert "Cognitive OS for Aider" in (tmp_path / "CONVENTIONS.md").read_text()
         assert "CONVENTIONS.md" in (tmp_path / ".aider.conf.yml").read_text()
