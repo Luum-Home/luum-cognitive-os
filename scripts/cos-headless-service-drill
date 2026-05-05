@@ -23,7 +23,9 @@ Runs an opt-in headless COS Docker proof:
   6. Optionally runs a host Codex provider smoke only when COS_RUN_PROVIDER_SMOKE=1.
 
 This drill does not mount host CLI credential stores into Docker and does not
-make provider calls unless COS_RUN_PROVIDER_SMOKE=1 is explicit.
+make provider calls unless COS_RUN_PROVIDER_SMOKE=1 is explicit. If the host
+Codex default model is not supported by the installed CLI, set
+COS_CODEX_EXEC_MODEL to a supported model for the opt-in provider smoke.
 USAGE
 }
 
