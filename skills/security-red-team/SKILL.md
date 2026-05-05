@@ -122,3 +122,14 @@ Use these after `/security-red-team` identifies where to dig deeper:
 - Primitive scores are present.
 - Findings include severity, evidence, and recommendation.
 - Backlog items point to concrete mitigation actions.
+
+## Deferred deep-mode backlog
+
+Track these follow-ups in `manifests/security-red-team.yaml` under
+`deferred_deep_mode_backlog`:
+
+1. Integrate provider/metrics audits into a future `--deep` mode.
+2. Run an opt-in real Docker `--network none` smoke when resources allow.
+3. Add MCP trust pins when actual MCP servers are configured.
+4. Continue expanding deterministic adversarial scenarios for ANSI/invisible
+   Unicode, symlink traversal, provider spoofing, metrics tampering, and egress.
