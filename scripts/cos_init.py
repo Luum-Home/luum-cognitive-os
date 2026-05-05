@@ -13,7 +13,7 @@ Migration history (Phases 2.1 → 2.3 → 2.final):
   MIGRATED:   main()               (Phase 2.final, 2026-04-27)
 
 Usage (direct):
-    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|kimi-code|shell-ci]
+    python3 scripts/cos_init.py [--default|--full] [--harness claude|codex|opencode|vscode-copilot|cursor|qwen-code|kimi-code|gemini-cli|warp|amp-code|jetbrains-junie|qoder|factory-droid|shell-ci]
 
 Usage (internal dispatcher — kept for backward compat):
     python3 scripts/cos_init.py --internal-call detect_harness [project_root]
@@ -39,8 +39,8 @@ from pathlib import Path
 COS_SOURCE_DIR = Path(__file__).parent.parent.resolve()
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code"}
+SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "shell-ci")
+STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"}
 SHELL_CI_HARNESSES = {"shell-ci"}
 
 HARNESS_SETTINGS = {
@@ -51,6 +51,12 @@ HARNESS_SETTINGS = {
     "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
     "qwen-code": (".qwen/settings.json", ".qwen/settings.json"),
     "kimi-code": ("AGENTS.md", "AGENTS.md"),
+    "gemini-cli": (".gemini/settings.json", ".gemini/settings.json"),
+    "warp": ("AGENTS.md", "AGENTS.md"),
+    "amp-code": ("AGENTS.md", "AGENTS.md"),
+    "jetbrains-junie": (".junie/AGENTS.md", ".junie/AGENTS.md"),
+    "qoder": ("AGENTS.md", "AGENTS.md"),
+    "factory-droid": ("AGENTS.md", "AGENTS.md"),
     "shell-ci": (".cognitive-os/shell-ci-projection.json", ".cognitive-os/shell-ci-projection.json"),
 }
 
@@ -913,6 +919,33 @@ def _upsert_agents_md_for_kimi(project_dir: Path, common_body: str) -> None:
     else:
         agents.write_text(block, encoding="utf-8")
 
+
+def _upsert_agents_md_block(project_dir: Path, marker_slug: str, title: str, body: str, extra: str = "") -> None:
+    """Append or replace a bounded Cognitive OS block in project AGENTS.md."""
+    agents = project_dir / "AGENTS.md"
+    start = f"<!-- COGNITIVE_OS_{marker_slug.upper().replace('-', '_')}_START -->"
+    end = f"<!-- COGNITIVE_OS_{marker_slug.upper().replace('-', '_')}_END -->"
+    block = (
+        f"{start}\n"
+        f"# {title}\n\n"
+        f"{body}\n"
+        f"{extra}\n"
+        "Proof boundary: this is account-free structural projection of project instructions/config only. "
+        "It does not prove account-backed runtime behavior or native Claude/Codex lifecycle hook parity.\n"
+        f"{end}\n"
+    )
+    if agents.exists():
+        text = agents.read_text(encoding="utf-8")
+        if start in text and end in text:
+            before = text.split(start, 1)[0]
+            after = text.split(end, 1)[1]
+            agents.write_text(before + block + after.lstrip("\n"), encoding="utf-8")
+        else:
+            sep = "" if text.endswith("\n") else "\n"
+            agents.write_text(text + sep + "\n" + block, encoding="utf-8")
+    else:
+        agents.write_text(block, encoding="utf-8")
+
 def _write_structural_instruction_harness_settings(project_dir: Path, harness: str, mode: str) -> None:
     """Write project-local instruction/config files for harnesses without native COS hooks.
 
@@ -993,6 +1026,112 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
             },
         )
         print("Created .qwen/settings.json and QWEN.md with COS projection")
+        return
+
+
+
+    if harness == "gemini-cli":
+        gemini_md = project_dir / "GEMINI.md"
+        gemini_md.write_text(
+            common_body
+            + "\nGemini CLI should load this file through `contextFileName` and project-local `.gemini/settings.json`.\n",
+            encoding="utf-8",
+        )
+        _write_json_if_changed(
+            project_dir / ".gemini" / "settings.json",
+            {
+                "contextFileName": ["GEMINI.md", "AGENTS.md"],
+                "includeDirectories": [".cognitive-os/rules/cos", ".cognitive-os/skills/cos"],
+                "loadMemoryFromIncludeDirectories": True,
+                "fileFiltering": {"respectGitIgnore": True, "enableRecursiveFileSearch": True},
+                "mcpServers": {},
+                "autoAccept": False,
+            },
+        )
+        print("Created .gemini/settings.json and GEMINI.md with Gemini CLI COS projection")
+        return
+
+    if harness == "warp":
+        _upsert_agents_md_block(
+            project_dir,
+            "warp",
+            "Cognitive OS for Warp Agent",
+            common_body,
+            "Warp project rules use root `AGENTS.md` by default. Keep `WARP.md` absent unless the operator intentionally wants Warp's documented precedence over `AGENTS.md`.\n",
+        )
+        (project_dir / ".warp" / "README.md").write_text(
+            "# Warp Cognitive OS Projection\n\n"
+            "Warp reads root `AGENTS.md` as project rules. This directory is informational only; no user-global Warp settings are written.\n",
+            encoding="utf-8",
+        )
+        print("Created AGENTS.md with Warp COS projection")
+        return
+
+    if harness == "amp-code":
+        _upsert_agents_md_block(
+            project_dir,
+            "amp",
+            "Cognitive OS for Amp",
+            common_body,
+            "Amp supports @-mentions from AGENTS.md. Treat `.cognitive-os/rules/cos/RULES-COMPACT.md` and `.cognitive-os/skills/cos/` as the COS entrypoints.\n",
+        )
+        _write_json_if_changed(project_dir / ".amp" / "settings.json", {"amp.mcpServers": {}})
+        print("Created AGENTS.md and .amp/settings.json with Amp COS projection")
+        return
+
+    if harness == "jetbrains-junie":
+        junie = project_dir / ".junie" / "AGENTS.md"
+        junie.parent.mkdir(parents=True, exist_ok=True)
+        junie.write_text(
+            "# Cognitive OS for JetBrains Junie\n\n"
+            + common_body
+            + "\nJunie's preferred project guideline location is `.junie/AGENTS.md`; root `AGENTS.md` remains available for other AGENTS.md-native tools.\n",
+            encoding="utf-8",
+        )
+        (project_dir / ".junie" / "README.md").write_text(
+            "# Junie Cognitive OS Projection\n\n"
+            "Junie reads `.junie/AGENTS.md` by default. MCP configuration is intentionally not generated because JetBrains exposes it through IDE project settings and an mcp.json editor flow.\n",
+            encoding="utf-8",
+        )
+        print("Created .junie/AGENTS.md with JetBrains Junie COS projection")
+        return
+
+    if harness == "qoder":
+        _upsert_agents_md_block(
+            project_dir,
+            "qoder",
+            "Cognitive OS for Qoder CLI",
+            common_body,
+            "Qoder CLI uses project `AGENTS.md` as its memory file and project `.mcp.json` for committed MCP server definitions.\n",
+        )
+        _write_json_if_changed(project_dir / ".mcp.json", {"mcpServers": {}})
+        _write_json_if_changed(project_dir / ".qoder" / "settings.json", {"permissions": {"ask": [], "allow": [], "deny": []}})
+        print("Created AGENTS.md, .mcp.json, and .qoder/settings.json with Qoder COS projection")
+        return
+
+    if harness == "factory-droid":
+        _upsert_agents_md_block(
+            project_dir,
+            "factory_droid",
+            "Cognitive OS for Factory Droid",
+            common_body,
+            "Factory Droid reads project `AGENTS.md`, can load project `.factory/skills/`, project `.factory/mcp.json`, and project hooks from `.factory/settings.json`.\n",
+        )
+        _write_json_if_changed(project_dir / ".factory" / "mcp.json", {"mcpServers": {}})
+        _write_json_if_changed(project_dir / ".factory" / "settings.json", {"hooks": {}})
+        skill = project_dir / ".factory" / "skills" / "cognitive-os" / "SKILL.md"
+        skill.parent.mkdir(parents=True, exist_ok=True)
+        skill.write_text(
+            "---\n"
+            "name: cognitive-os\n"
+            "description: Use when Factory Droid needs Cognitive OS governance, rules, skills, verification, or proof-level boundaries.\n"
+            "---\n\n"
+            "# Cognitive OS\n\n"
+            "Use `.cognitive-os/rules/cos/RULES-COMPACT.md` as the compact governance entrypoint. "
+            "Use `.cognitive-os/skills/cos/` for projected COS skills. Do not claim native lifecycle parity unless Factory hooks are explicitly mapped and runtime-smoked.\n",
+            encoding="utf-8",
+        )
+        print("Created AGENTS.md, .factory/mcp.json, .factory/settings.json, and .factory/skills/cognitive-os/SKILL.md with Factory Droid COS projection")
         return
 
     if harness == "cursor":
@@ -1221,6 +1360,18 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
         driver_dirs.extend([".qwen"])
     elif harness == "kimi-code":
         driver_dirs.extend([".kimi"])
+    elif harness == "gemini-cli":
+        driver_dirs.extend([".gemini"])
+    elif harness == "warp":
+        driver_dirs.extend([".warp"])
+    elif harness == "amp-code":
+        driver_dirs.extend([".amp"])
+    elif harness == "jetbrains-junie":
+        driver_dirs.extend([".junie"])
+    elif harness == "qoder":
+        driver_dirs.extend([".qoder"])
+    elif harness == "factory-droid":
+        driver_dirs.extend([".factory", ".factory/skills/cognitive-os"])
     elif harness == "shell-ci":
         driver_dirs.extend(["scripts", ".github/workflows", ".cognitive-os/scripts/cos"])
 
