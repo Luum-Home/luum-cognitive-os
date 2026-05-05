@@ -1,6 +1,6 @@
 [project]
 name = "luum-cognitive-os"
-version = "0.25.0"
+version = "0.26.0"
 description = "Luum Cognitive OS — agent orchestration, memory, and tooling"
 requires-python = ">=3.11"
 dependencies = [
