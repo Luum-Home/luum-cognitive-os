@@ -2,13 +2,13 @@
 
 > Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
 
-Generated: 2026-05-05T16:47:00Z
-Gate: pass (reconstruction)
+Generated: 2026-05-05T17:00:01Z
+Gate: block (reconstruction)
 ACC: 1.0000
 ACC effective: 1.0000
-Capabilities: 770
+Capabilities: 776
 Findings: 0
-New debt gate: pass (0)
+New debt gate: block (2)
 
 ## Warnings
 
@@ -16,7 +16,7 @@ New debt gate: pass (0)
 
 ## Mapping Weights
 
-- aligned: 2102
+- aligned: 2119
 - missing: 0
 - overexposed: 0
 - partial: 0
@@ -28,7 +28,7 @@ New debt gate: pass (0)
 - maintainer-only: 57
 - profile-driver: 19
 - shell-ci-candidate: 15
-- so-local-only: 679
+- so-local-only: 685
 
 ## Top Findings
 
@@ -36,7 +36,8 @@ New debt gate: pass (0)
 
 ## New Debt
 
-- none
+- `script:scripts/cos-deps-install.sh` [unreviewed-local-default]: new capability matched a broad local-surface default instead of an explicit row or projection proof
+- `script:scripts/cos_deps_install.py` [unreviewed-local-default]: new capability matched a broad local-surface default instead of an explicit row or projection proof
 
 ## Context Diet Rule
 
