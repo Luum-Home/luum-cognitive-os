@@ -70,47 +70,6 @@
         "projected_primitives": 374
       }
     },
-    "cos_coverage": {
-      "command": "python3 scripts/cos_coverage.py --project-dir . --json --refresh",
-      "error": null,
-      "source": "cos_coverage",
-      "status": "ok",
-      "summary": {
-        "aspirational": 38,
-        "coverage_pct": 54.3,
-        "dormant": 160,
-        "generated_at": "2026-05-05T17:35:52Z",
-        "mapped": 268,
-        "metadata": 56,
-        "on_demand": 287,
-        "project": "<repo-root>",
-        "real": 235,
-        "tiers": {
-          "A": 2,
-          "B": 4,
-          "C": 39,
-          "D": 155
-        },
-        "trend": {
-          "coverage_pct": "flat",
-          "dormant": "flat",
-          "real": "flat"
-        },
-        "unmapped": 0,
-        "weak_proof": 0
-      }
-    },
-    "docs_execution": {
-      "command": "python3 scripts/docs_execution_audit.py --project-dir .",
-      "error": null,
-      "source": "docs_execution",
-      "status": "ok",
-      "summary": {
-        "items": 2778,
-        "json": "<repo-root>/docs/reports/docs-execution-latest.json",
-        "markdown": "<repo-root>/docs/reports/docs-execution-latest.md"
-      }
-    },
     "docs_execution_report": {
       "command": null,
       "error": null,
@@ -1892,89 +1851,6 @@
         }
       }
     },
-    "family_readiness_hooks": {
-      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family hooks",
-      "error": null,
-      "source": "family_readiness_hooks",
-      "status": "ok",
-      "summary": {
-        "confidence": {
-          "high": 132,
-          "medium": 86
-        },
-        "consumer_accessibility": {
-          "lifecycle-declared-consumer-candidate": 1,
-          "lifecycle-declared-maintainer": 120,
-          "projected-consumer-surface": 11,
-          "so-local-only": 86
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.json",
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-hooks-latest.md",
-        "roles": {
-          "driver-specific": 13,
-          "lab": 103,
-          "memory-lifecycle": 69,
-          "observability": 26,
-          "runtime-safety": 7
-        },
-        "total": 218,
-        "without_consumers": 0,
-        "without_lifecycle": 86
-      }
-    },
-    "family_readiness_rules": {
-      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family rules",
-      "error": null,
-      "source": "family_readiness_rules",
-      "status": "ok",
-      "summary": {
-        "confidence": {
-          "medium": 112
-        },
-        "consumer_accessibility": {
-          "so-local-only": 112
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.json",
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-rules-latest.md",
-        "roles": {
-          "context-only": 6,
-          "doctrine": 4,
-          "driver-specific": 48,
-          "hook-enforced": 43,
-          "lab": 11
-        },
-        "total": 112,
-        "without_consumers": 0,
-        "without_lifecycle": 112
-      }
-    },
-    "family_readiness_skills": {
-      "command": "python3 scripts/primitive_family_readiness_ledger.py --project-dir . --target-family skills",
-      "error": null,
-      "source": "family_readiness_skills",
-      "status": "ok",
-      "summary": {
-        "confidence": {
-          "high": 53,
-          "medium": 39
-        },
-        "consumer_accessibility": {
-          "repo-skill-not-projectable": 88,
-          "so-local-only": 4
-        },
-        "json": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.json",
-        "markdown": "<repo-root>/docs/reports/primitive-readiness-ledger-skills-latest.md",
-        "roles": {
-          "compatibility-wrapper": 53,
-          "lab": 7,
-          "project-extension": 16,
-          "so-maintainer": 16
-        },
-        "total": 92,
-        "without_consumers": 0,
-        "without_lifecycle": 92
-      }
-    },
     "harness_projection": {
       "command": null,
       "error": null,
@@ -1985,133 +1861,6 @@
         "planned": 5,
         "total": 26,
         "unsupported": 0
-      }
-    },
-    "primitive_duplication": {
-      "command": "python3 scripts/primitive_duplication_audit.py --project-root .",
-      "error": null,
-      "source": "primitive_duplication",
-      "status": "ok",
-      "summary": {
-        "by_common_home": {
-          "lib/": 5
-        },
-        "by_consumer_relevance": {
-          "so-local-first": 5
-        },
-        "by_kind": {
-          "python-function-repeat": 5
-        },
-        "files_scanned": 772,
-        "findings": 5
-      }
-    },
-    "primitive_gap_snapshot": {
-      "command": "python3 scripts/primitive_gap_snapshot.py --project-root . --json",
-      "error": null,
-      "source": "primitive_gap_snapshot",
-      "status": "ok",
-      "summary": {
-        "families": [
-          {
-            "aspirational_signal": 3,
-            "evidence": "row-audit proven=100 partial_nonblocking=135 actionable_gaps=3",
-            "family": "hooks",
-            "next_action": "close actionable rows",
-            "partial_signal": 135,
-            "proven_signal": 100,
-            "severity": "high",
-            "total": 238
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "row-audit proven=187 partial_nonblocking=54 actionable_gaps=0",
-            "family": "skills",
-            "next_action": "no actionable gaps; harden weak proof opportunistically",
-            "partial_signal": 54,
-            "proven_signal": 187,
-            "severity": "low",
-            "total": 241
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "row-audit proven=112 partial_nonblocking=0 actionable_gaps=0",
-            "family": "rules",
-            "next_action": "no actionable gaps; harden weak proof opportunistically",
-            "partial_signal": 0,
-            "proven_signal": 112,
-            "severity": "low",
-            "total": 112
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "memory-named=9 runtime-or-test-referenced=9; actionable_gaps=0",
-            "family": "memory",
-            "next_action": "row-audit memory primitives when Engram APIs change",
-            "partial_signal": 0,
-            "proven_signal": 9,
-            "severity": "low",
-            "total": 9
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "mcp-mentioned-files=245 test-mentioned-files=114; actionable_gaps=0",
-            "family": "mcp_tools",
-            "next_action": "separate installed/optional/reference-only integrations before promotion",
-            "partial_signal": 131,
-            "proven_signal": 114,
-            "severity": "low",
-            "total": 245
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "projection-files=2 test-mentioned=2; actionable_gaps=0",
-            "family": "config_projection",
-            "next_action": "map config keys to readers and projected driver outputs",
-            "partial_signal": 0,
-            "proven_signal": 2,
-            "severity": "low",
-            "total": 2
-          },
-          {
-            "aspirational_signal": 9,
-            "evidence": "row-audit proven=86 partial_nonblocking=26 actionable_gaps=9",
-            "family": "metrics",
-            "next_action": "close actionable rows",
-            "partial_signal": 26,
-            "proven_signal": 86,
-            "severity": "high",
-            "total": 121
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "test_py=816 audit-contract-quality=44; actionable_gaps=0",
-            "family": "tests_quality_gates",
-            "next_action": "keep test-quality audit coverage growing; no actionable primitive gap in this snapshot",
-            "partial_signal": 772,
-            "proven_signal": 44,
-            "severity": "low",
-            "total": 816
-          },
-          {
-            "aspirational_signal": 0,
-            "evidence": "docs_hard_gaps=0 unmapped_claims=0 done_with_proof=228 mapped_claims=418",
-            "family": "docs_adrs",
-            "next_action": "no hard docs gaps; improve weak proof opportunistically",
-            "partial_signal": 2550,
-            "proven_signal": 646,
-            "severity": "low",
-            "total": 3196
-          }
-        ],
-        "hook_latency": {
-          "events": 2500,
-          "max_ms": 5969,
-          "p50_ms": 414,
-          "p95_ms": 1622
-        },
-        "overall_risk": "high",
-        "timestamp": "2026-05-05T17:37:36.063748+00:00"
       }
     },
     "projection_profiles": {
@@ -2259,13 +2008,6 @@
         "without_consumers": 0,
         "without_lifecycle": 92
       }
-    },
-    "script_readiness_refresh": {
-      "command": "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence",
-      "error": "154, \"low\": 8, \"medium\": 209}, \"consumer_accessibility\": {\"install-profile-managed\": 19, \"lifecycle-declared-consumer-candidate\": 53, \"lifecycle-declared-maintainer\": 51, \"skill-referenced-not-projectable\": 2, \"so-local-only\": 246}, \"json\": \"docs/reports/primitive-readiness-ledger-scripts-latest.json\", \"lifecycle_backlog_json\": \"docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.json\", \"lifecycle_backlog_markdown\": \"docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md\", \"low_confidence_rows\": 8, \"markdown\": \"docs/reports/primitive-readiness-ledger-scripts-latest.md\", \"roles\": {\"agentic-primitive\": 116, \"driver-specific\": 11, \"lab\": 23, \"maintainer-tool\": 210, \"migration-only\": 11}, \"total_scripts\": 371, \"without_consumers\": 5}\n",
-      "source": "script_readiness_refresh",
-      "status": "failed",
-      "summary": {}
     },
     "shell_ci_projection": {
       "command": null,
@@ -47416,7 +47158,7 @@
       "coverage_debt:2"
     ]
   },
-  "generated_at": "2026-05-05T17:37:53Z",
+  "generated_at": "2026-05-05T17:39:13Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
@@ -47979,8 +47721,8 @@
   "new_debt": {
     "count": 0,
     "items": [],
-    "status": "not_evaluated",
-    "strict_local_defaults": null
+    "status": "pass",
+    "strict_local_defaults": true
   },
   "persistence": {
     "engram": {
