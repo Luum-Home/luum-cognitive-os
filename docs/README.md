@@ -11,6 +11,9 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Cross-Device Dependency Installation](setup/cross-device-dependencies.md) — inventory and target contract for what installs per machine versus travels via git, Docker, Engram, or package manifests.
+- [ADR-168: Cross-Device Dependency Installation Contract](adrs/ADR-168-cross-device-dependency-installation.md) — accepted contract for manifest-driven dependency install metadata, dry-run-first installer behavior, and no-credential-copy boundaries.
+
 - [Remote SO Control Plane Alternatives — 2026-05-05](reports/remote-control-plane-alternatives-2026-05-05.md) — provider, CLI, API-key, chat/Telegram, OpenCode, OpenClaw, and Agent Zero research feeding ADR-161.
 - [Primitive Readiness Continuity Plan](architecture/primitive-readiness-continuity-plan.md) — living cycle contract for mapping docs, scripts, hooks, skills, rules, memory, and harness adapters into governed agentic primitives.
 - [Primitive Readiness Review — 2026-05-04](reports/primitive-readiness-review-2026-05-04.md) — first continuity-cycle review of lifecycle manifest, family coverage, automation-loop scripts, and low-scoring script triage.
