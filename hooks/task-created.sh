@@ -18,6 +18,7 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/task-event.sh"
 
 # Skip in private mode
 check_private_mode
@@ -31,13 +32,7 @@ METRICS_DIR=$(resolve_session_dir)
 METRICS_FILE="$METRICS_DIR/task-created.jsonl"
 
 log_task_event() {
-  local action="$1"
-  local reason="${2:-}"
-  local timestamp
-  timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date +"%Y-%m-%dT%H:%M:%SZ")
-
-  local entry="{\"timestamp\":\"$timestamp\",\"action\":\"$action\",\"reason\":\"$reason\"}"
-  echo "$entry" >> "$METRICS_FILE" 2>/dev/null || true
+  cos_log_task_event "$METRICS_FILE" "$1" "${2:-}"
 }
 
 # ─── Extract task description ───────────────────────────────────────────────

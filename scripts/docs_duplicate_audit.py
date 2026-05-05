@@ -10,9 +10,16 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
+from lib.similarity import jaccard, pair_key
 
 WORD_RE = re.compile(r"[a-zA-Z0-9_/-]+")
 DEFAULT_EXCLUDE_PARTS = {"node_modules", ".git", ".venv", "__pycache__"}
@@ -35,18 +42,7 @@ class DuplicateFinding:
     right_title: str
     reason: str
 
-    @property
-    def pair_key(self) -> str:
-        return " :: ".join(sorted([self.left, self.right]))
-
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(errors="ignore")
-    except OSError:
-        return ""
-
-
+    pair_key = property(lambda self: pair_key(self.left, self.right))
 def normalize_text(text: str) -> str:
     lines = []
     in_frontmatter = False
@@ -102,12 +98,6 @@ def collect_docs(root: Path, include: list[str], min_tokens: int, shingle_size: 
                 )
             )
     return records
-
-
-def jaccard(left: set[str], right: set[str]) -> float:
-    if not left or not right:
-        return 0.0
-    return len(left & right) / len(left | right)
 
 
 def same_normalized_title(left: str, right: str) -> bool:
