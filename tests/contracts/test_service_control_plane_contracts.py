@@ -62,6 +62,8 @@ def test_service_control_plane_phase_order_prevents_provider_first_build() -> No
     local_worker = schema["phase_gates"]["local_worker"]
     assert local_worker["required_executor"] == "local-command"
     assert local_worker["no_provider_credentials"] is True
+    assert schema["phase_gates"]["crash_resume"]["implementation_status"] == "implemented_for_expired_lease_resume"
+    assert schema["phase_gates"]["host_cli_executor"]["implementation_status"] == "dry_run_adapter_implemented"
 
 
 def test_service_control_plane_runtime_shapes_separate_maintainer_and_hosted_credentials() -> None:
@@ -124,6 +126,7 @@ def test_provider_executor_registry_starts_with_local_command_before_model_provi
     for executor_id in ["codex-cli-host", "claude-cli-host"]:
         adapter = adapters[executor_id]
         assert adapter["runtime_kind"] == "official_cli_host"
+        assert adapter["lifecycle_state"] == "sandbox"
         assert "account-session" in adapter["credential_modes"]
         assert adapter["cost_mode"] == "subscription_account"
         assert adapter["allowed_runtimes"] == ["host"]

@@ -40,6 +40,8 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-task-submit",
     "scripts/cos-worker-run-once",
     "scripts/cos-queue-drain",
+    "scripts/cos-auth-probe",
+    "scripts/cos_auth_probe.py",
 }
 
 
