@@ -1,6 +1,6 @@
 # Feature Plan: Engram Lifecycle Evolution
 
-**Status**: Phases 1, 2, 3 SHIPPED 2026-04-27 (commit pending). Phase 4 (Obsidian export) deferred. See "Honest Limitations" in the ADR before assuming behaviour.
+**Status**: Phases 1, 2, 3 SHIPPED 2026-04-27. Phase 4 manual Obsidian export implemented 2026-05-05; no automatic Stop hook is registered. See "Honest Limitations" in the ADR before assuming behaviour.
 **Date**: 2026-04-27 (created), 2026-04-27 (Phases 1–3 implemented)
 **ADR**: [`docs/adrs/ADR-071-engram-lifecycle-evolution.md`](../../docs/adrs/ADR-071-engram-lifecycle-evolution.md)
 **Research**: [`docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md`](../../docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md)
@@ -194,20 +194,32 @@ Default `α_graph = 0.2`. Graph-connected observations that did not appear in th
 
 ---
 
-## Phase 4 (optional): Obsidian export (sketch, deferred)
+## Phase 4 (optional): Obsidian export (manual slice shipped)
 
 ### Concept
 
 A read-only export layer that renders engram observations as Obsidian Markdown with wikilinks derived from `mem_judge` edges. One `.md` file per observation, named by `topic_key` with `/` replaced by `-`. Wikilinks generated from typed edges: `[[target-note]]` with edge type as link text prefix. No writes from Obsidian back to engram — the vault is a human-readable audit layer only.
 
-**Deferred until**: Phases 1–3 are shipped, stable, and the graph is populated enough to make the visualization meaningful.
+**Status**: Manual export slice shipped 2026-05-05 after an explicit operator request. Automation remains deferred until the manual proof path passes against a real vault.
 
-### Files to create (Phase 4, not yet)
+### Files created
 
 | File | Purpose |
 |---|---|
-| `lib/engram_obsidian_exporter.py` | Export observations to Markdown vault at configurable path |
-| `scripts/export-engram-to-obsidian.sh` | CLI wrapper for manual export trigger |
+| `lib/engram_obsidian_exporter.py` | Lifecycle-aware exporter from Engram observations + typed relations to Obsidian Markdown |
+| `scripts/export-engram-to-obsidian.sh` | Manual wrapper; dry-run by default; `--vault` required; `--write` required for mutation |
+| `tests/unit/test_engram_obsidian_exporter.py` | Unit coverage for dry-run, write, lifecycle frontmatter, relation wikilinks, rejected-relation skip, since filter, and manifest idempotence |
+| `docs/manual-tests/engram-obsidian-export.md` | Human proof path before enabling any automation |
+
+### Definition of Done — Phase 4 manual slice
+
+- [x] `lib/engram_obsidian_exporter.py` exists and never writes to Engram.
+- [x] `scripts/export-engram-to-obsidian.sh` requires explicit `--vault`.
+- [x] Dry-run is default; `--write` is required before files are created.
+- [x] Markdown frontmatter includes Engram identity plus lifecycle trailer fields when present.
+- [x] Typed accepted relations become Obsidian wikilinks; rejected relations are excluded.
+- [x] Incremental manifest skips unchanged files; `--force` rewrites.
+- [x] No Stop hook or automatic export is registered.
 
 ---
 

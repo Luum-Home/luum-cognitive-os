@@ -26,6 +26,7 @@ binary instead of old or aspirational command shapes.
 | Cloud serve | `engram cloud serve` | `docker/cos-worker/docker-compose.yml`, `scripts/cos-engram-cloud-docker-smoke` |
 | Cloud upgrade | `engram cloud upgrade` | `scripts/cos-engram-cloud-enroll --upgrade` |
 | Diagnostics | `engram doctor [--json] [--project P] [--check CODE]` | operator/doctor docs |
+| Obsidian vault export | `engram obsidian-export --vault PATH [--project PROJECT] [--limit N] [--since DATE] [--force]` | upstream CLI operator fallback; COS uses `lib/engram_obsidian_exporter.py` for lifecycle-aware rendering |
 
 ## Unsupported or non-contract command shapes
 
@@ -60,6 +61,6 @@ appear to succeed while saving/searching the wrong value.
 ## Verification
 
 ```bash
-python3 scripts/cos-engram-command-audit.py --fail-on-findings
-python3 -m pytest tests/unit/test_engram_client.py tests/unit/test_safe_engram.py tests/audit/test_engram_command_contract.py -q
+python3 scripts/cos_engram_command_audit.py --fail-on-findings
+python3 -m pytest tests/unit/test_engram_obsidian_exporter.py tests/unit/test_engram_client.py tests/unit/test_safe_engram.py tests/audit/test_engram_command_contract.py -q
 ```
