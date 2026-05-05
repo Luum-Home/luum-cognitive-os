@@ -19,6 +19,11 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_json as _load_json
 
 try:
     import yaml
@@ -36,10 +41,6 @@ class HookRegistration:
     script: str
     command: str
     async_run: bool
-
-
-def _load_json(path: Path) -> dict[str, Any]:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:

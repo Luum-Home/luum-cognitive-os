@@ -15,9 +15,17 @@ import ast
 import hashlib
 import json
 import re
+import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
+from lib.similarity import jaccard, pair_key
+from lib.project_paths import relpath as rel
 from typing import Any
 
 try:
@@ -26,10 +34,13 @@ except ImportError:  # pragma: no cover - PyYAML is a repo dependency.
     yaml = None  # type: ignore[assignment]
 
 WORD_RE = re.compile(r"[A-Za-z0-9_./:-]+")
-SHELL_FUNCTION_RE = re.compile(r"(?m)^\s*(?:function\s+)?([A-Za-z_][A-Za-z0-9_-]*)\s*(?:\(\))?\s*\{\s*$")
+SHELL_FUNCTION_RE = re.compile(
+    r"(?m)^\s*(?:function\s+([A-Za-z_][A-Za-z0-9_-]*)\s*(?:\(\))?|([A-Za-z_][A-Za-z0-9_-]*)\s*\(\))\s*\{\s*$"
+)
 DEFAULT_INCLUDE = ["scripts", "hooks", "manifests", "rules", "skills", "cognitive-os.yaml"]
 EXCLUDE_PARTS = {".git", ".venv", "node_modules", "__pycache__", ".pytest_cache", ".ruff_cache"}
 TEXT_SUFFIXES = {".py", ".sh", ".bash", ".zsh", ".yaml", ".yml", ".json", ".md"}
+DEFAULT_ALLOWLIST = "manifests/primitive-duplication-allowlist.yaml"
 
 
 @dataclass(frozen=True)
@@ -45,23 +56,9 @@ class Finding:
     common_home: str
     consumer_relevance: str
     rationale: str
+    classification: str = "candidate"
 
-    @property
-    def pair_key(self) -> str:
-        return " :: ".join(sorted([self.left, self.right]))
-
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore")
-    except OSError:
-        return ""
-
-
-def rel(root: Path, path: Path) -> str:
-    return path.relative_to(root).as_posix()
-
-
+    pair_key = property(lambda self: pair_key(self.left, self.right))
 def stable_id(kind: str, left: str, right: str, extra: str = "") -> str:
     digest = hashlib.sha1(f"{kind}\0{left}\0{right}\0{extra}".encode("utf-8")).hexdigest()[:12]
     return f"{kind}:{digest}"
@@ -69,6 +66,7 @@ def stable_id(kind: str, left: str, right: str, extra: str = "") -> str:
 
 def collect_files(root: Path, include: list[str]) -> list[Path]:
     files: list[Path] = []
+    by_realpath: dict[Path, Path] = {}
     for item in include:
         base = root / item
         candidates = [base] if base.is_file() else sorted(base.rglob("*")) if base.exists() else []
@@ -78,7 +76,12 @@ def collect_files(root: Path, include: list[str]) -> list[Path]:
             if any(part in EXCLUDE_PARTS for part in path.parts):
                 continue
             if path.suffix in TEXT_SUFFIXES or path.name in {"cognitive-os.yaml", "AGENTS.md", "README.md"}:
-                files.append(path)
+                try:
+                    realpath = path.resolve(strict=True)
+                except OSError:
+                    realpath = path.resolve()
+                by_realpath.setdefault(realpath, path)
+    files.extend(by_realpath.values())
     return sorted(set(files))
 
 
@@ -101,12 +104,6 @@ def shingles(text: str, size: int) -> set[str]:
     if len(tokens) < size:
         return set(tokens)
     return {" ".join(tokens[index : index + size]) for index in range(len(tokens) - size + 1)}
-
-
-def jaccard(left: set[str], right: set[str]) -> float:
-    if not left or not right:
-        return 0.0
-    return len(left & right) / len(left | right)
 
 
 def common_home_for_path(path: str, kind: str) -> str:
@@ -186,6 +183,8 @@ def python_function_fingerprints(root: Path, files: list[Path]) -> list[Finding]
         for node in ast.walk(tree):
             if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 continue
+            if is_trivial_python_wrapper(node):
+                continue
             body_dump = ast.dump(ast.Module(body=node.body, type_ignores=[]), include_attributes=False)
             if len(body_dump) < 180:
                 continue
@@ -215,6 +214,45 @@ def python_function_fingerprints(root: Path, files: list[Path]) -> list[Finding]
     return findings
 
 
+def is_trivial_python_wrapper(node: ast.FunctionDef | ast.AsyncFunctionDef) -> bool:
+    """Ignore tiny command dispatch wrappers that are clearer repeated in CLIs."""
+    if node.name != "main":
+        return False
+    body = list(node.body)
+    if len(body) == 2 and isinstance(body[0], ast.Assign):
+        targets = body[0].targets
+        value = body[0].value
+        assigns_args = (
+            len(targets) == 1
+            and isinstance(targets[0], ast.Name)
+            and targets[0].id == "args"
+            and isinstance(value, ast.Call)
+            and isinstance(value.func, ast.Attribute)
+            and value.func.attr == "parse_args"
+        )
+        if not assigns_args:
+            return False
+        statement = body[1]
+    elif len(body) == 1:
+        statement = body[0]
+    else:
+        return False
+    if not isinstance(statement, ast.Return):
+        return False
+    value = statement.value
+    if isinstance(value, ast.Call) and isinstance(value.func, ast.Name) and value.func.id == "int" and value.args:
+        value = value.args[0]
+    if not isinstance(value, ast.Call):
+        return False
+    func = value.func
+    return (
+        isinstance(func, ast.Attribute)
+        and func.attr == "func"
+        and isinstance(func.value, ast.Name)
+        and func.value.id == "args"
+    )
+
+
 def shell_function_blocks(text: str) -> list[tuple[str, str]]:
     lines = text.splitlines()
     blocks: list[tuple[str, str]] = []
@@ -224,7 +262,7 @@ def shell_function_blocks(text: str) -> list[tuple[str, str]]:
         if not match:
             index += 1
             continue
-        name = match.group(1)
+        name = match.group(1) or match.group(2)
         start = index
         depth = lines[index].count("{") - lines[index].count("}")
         index += 1
@@ -357,6 +395,68 @@ def dedupe_findings(findings: list[Finding]) -> list[Finding]:
     return sorted(by_id.values(), key=lambda item: (-item.similarity, item.kind, item.left, item.right))
 
 
+def load_allowlist(path: Path | None) -> list[dict[str, Any]]:
+    if path is None or not path.exists():
+        return []
+    if yaml is None:
+        return []
+    loaded = yaml.safe_load(read_text(path)) or {}
+    if isinstance(loaded, dict):
+        entries = loaded.get("entries", [])
+    elif isinstance(loaded, list):
+        entries = loaded
+    else:
+        entries = []
+    return [entry for entry in entries if isinstance(entry, dict)]
+
+
+def allowlist_entry_matches(finding: Finding, entry: dict[str, Any]) -> bool:
+    if entry.get("finding_id") == finding.finding_id:
+        return True
+    left = entry.get("left")
+    right = entry.get("right")
+    if left and right and {left, right} == {finding.left, finding.right}:
+        return entry.get("kind") in {None, finding.kind}
+    pattern = entry.get("pair_key")
+    if pattern and pattern == finding.pair_key:
+        return entry.get("kind") in {None, finding.kind}
+    return False
+
+
+def apply_allowlist(findings: list[Finding], entries: list[dict[str, Any]]) -> list[Finding]:
+    if not entries:
+        return findings
+    filtered: list[Finding] = []
+    for finding in findings:
+        match = next((entry for entry in entries if allowlist_entry_matches(finding, entry)), None)
+        if not match:
+            filtered.append(finding)
+            continue
+        action = str(match.get("action", "classify"))
+        if action == "suppress":
+            continue
+        classification = str(match.get("classification", finding.classification))
+        recommendation = str(match.get("recommendation", finding.recommendation))
+        rationale = str(match.get("reason", finding.rationale))
+        filtered.append(
+            Finding(
+                finding.finding_id,
+                finding.kind,
+                finding.severity,
+                finding.confidence,
+                finding.left,
+                finding.right,
+                finding.similarity,
+                recommendation,
+                finding.common_home,
+                finding.consumer_relevance,
+                rationale,
+                classification,
+            )
+        )
+    return filtered
+
+
 def summarize(findings: list[Finding], files_scanned: int) -> dict[str, Any]:
     by_kind: dict[str, int] = {}
     by_home: dict[str, int] = {}
@@ -374,7 +474,15 @@ def summarize(findings: list[Finding], files_scanned: int) -> dict[str, Any]:
     }
 
 
-def audit(root: Path, include: list[str], min_tokens: int, shingle_size: int, threshold: float, primitive_threshold: float) -> dict[str, Any]:
+def audit(
+    root: Path,
+    include: list[str],
+    min_tokens: int,
+    shingle_size: int,
+    threshold: float,
+    primitive_threshold: float,
+    allowlist_path: Path | None = None,
+) -> dict[str, Any]:
     files = collect_files(root, include)
     findings = dedupe_findings(
         [
@@ -385,6 +493,8 @@ def audit(root: Path, include: list[str], min_tokens: int, shingle_size: int, th
             *primitive_overlap_findings(root, files, primitive_threshold),
         ]
     )
+    allowlist_entries = load_allowlist(allowlist_path)
+    findings = apply_allowlist(findings, allowlist_entries)
     return {
         "schema_version": "primitive-duplication-audit.v1",
         "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -395,6 +505,7 @@ def audit(root: Path, include: list[str], min_tokens: int, shingle_size: int, th
             "shingle_size": shingle_size,
             "threshold": threshold,
             "primitive_threshold": primitive_threshold,
+            "allowlist": str(allowlist_path) if allowlist_path else None,
         },
         "summary": summarize(findings, len(files)),
         "findings": [asdict(finding) | {"pair_key": finding.pair_key} for finding in findings],
@@ -418,15 +529,15 @@ def render_markdown(data: dict[str, Any]) -> str:
         "",
         "## Top Candidates",
         "",
-        "| Kind | Similarity | Left | Right | Recommendation | Common home | Consumer relevance |",
-        "|---|---:|---|---|---|---|---|",
+        "| Kind | Classification | Similarity | Left | Right | Recommendation | Common home | Consumer relevance |",
+        "|---|---|---:|---|---|---|---|---|",
     ]
     for finding in data.get("findings", [])[:100]:
         lines.append(
-            f"| {finding['kind']} | {finding['similarity']} | `{finding['left']}` | `{finding['right']}` | {finding['recommendation']} | `{finding['common_home']}` | {finding['consumer_relevance']} |"
+            f"| {finding['kind']} | {finding.get('classification', 'candidate')} | {finding['similarity']} | `{finding['left']}` | `{finding['right']}` | {finding['recommendation']} | `{finding['common_home']}` | {finding['consumer_relevance']} |"
         )
     if not data.get("findings"):
-        lines.append("| none | 0 |  |  |  |  |  |")
+        lines.append("| none | none | 0 |  |  |  |  |  |")
     lines += [
         "",
         "## Interpretation",
@@ -449,6 +560,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--json-out", default="docs/reports/primitive-duplication-latest.json")
     parser.add_argument("--markdown", default="docs/reports/primitive-duplication-latest.md")
+    parser.add_argument("--allowlist", default=DEFAULT_ALLOWLIST)
     parser.add_argument("--fail-on-findings", action="store_true")
     return parser.parse_args()
 
@@ -457,7 +569,8 @@ def main() -> int:
     args = parse_args()
     root = Path(args.project_root).resolve()
     include = args.include or DEFAULT_INCLUDE
-    data = audit(root, include, args.min_tokens, args.shingle_size, args.threshold, args.primitive_threshold)
+    allowlist_path = root / args.allowlist if args.allowlist else None
+    data = audit(root, include, args.min_tokens, args.shingle_size, args.threshold, args.primitive_threshold, allowlist_path)
 
     json_path = root / args.json_out
     json_path.parent.mkdir(parents=True, exist_ok=True)

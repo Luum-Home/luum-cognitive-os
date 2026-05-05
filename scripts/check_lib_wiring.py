@@ -13,12 +13,14 @@ from __future__ import annotations
 import re
 import sys
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
+from lib.project_paths import repo_root_from_file
 
-def get_project_root() -> Path:
-    return Path(__file__).resolve().parent.parent
-
-
+get_project_root = lambda: repo_root_from_file(__file__)
+get_project_root = lambda: repo_root_from_file(__file__)
 def get_libs(root: Path) -> list[str]:
     """Return sorted list of bare module names from lib/*.py."""
     lib_dir = root / "lib"
