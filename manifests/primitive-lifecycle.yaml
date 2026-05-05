@@ -6460,3 +6460,55 @@ primitives:
   metrics_file: .cognitive-os/service/queue.jsonl
   consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command for consumer projects.
+
+- id: scripts/cos-auth-probe
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-auth-probe
+  - scripts/cos_auth_probe.py
+  runtime_projection: false
+  behavior_evidence: Probes local, Codex, Claude, and proxy-gateway credential readiness without reading provider credential stores.
+  evidence_commands:
+  - bash -n scripts/cos-auth-probe
+  - python3 -m py_compile scripts/cos_auth_probe.py
+  - python3 -m pytest tests/unit/test_cos_auth_probe.py tests/contracts/test_service_control_plane_contracts.py -q
+  rollback_or_repair_command: Remove scripts/cos-auth-probe and scripts/cos_auth_probe.py, then keep provider adapters in lab.
+  sunset_criteria: Promote after provider proof drills show stable ready/auth_required/unsupported/unsafe status mapping without credential leakage.
+  docs_claim_level: observe
+  exit_behavior: mixed
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime auth probe for consumer projects.
+
+- id: scripts/cos_auth_probe.py
+  kind: script
+  owner_adr: ADR-091
+  lifecycle_state: sandbox
+  maturity: observe
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos_auth_probe.py
+  runtime_projection: false
+  behavior_evidence: Python implementation for provider auth probes; checks official CLI status commands or explicit environment credentials only.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos_auth_probe.py
+  - python3 -m pytest tests/unit/test_cos_auth_probe.py -q
+  rollback_or_repair_command: Remove scripts/cos_auth_probe.py and wrapper, then keep provider adapters in lab.
+  sunset_criteria: Keep while scripts/cos-auth-probe is active; archive only if auth probing moves to another canonical primitive.
+  docs_claim_level: observe
+  exit_behavior: mixed
+  metrics_file: none
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime auth probe for consumer projects.
