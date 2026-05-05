@@ -112,3 +112,11 @@ Canonical task id priority is explicit task id fields first, then a stable hash
 of normalized prompt/description, then the native tool-use id as last-resort
 correlation. This makes duplicate semantic tasks collide even when different
 IDEs generate different native tool ids.
+
+## 2026-05-05 reconciliation fixture update
+
+ADR-118-S4 adds `lib/task_reconciliation.py` and scratch-repo tests that prove
+a pending task in one session can be reconciled as `completed-by-watermark` or
+`done-by-other-session` when another session writes the completion watermark.
+The report names both the pending session and the completing session, avoiding
+double implementation.

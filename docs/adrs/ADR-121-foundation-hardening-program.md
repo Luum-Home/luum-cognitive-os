@@ -9,6 +9,8 @@ implementation_files:
   - tests/unit/test_validation_capsule.py
   - tests/behavior/test_cos_cleanup_preserved_wip.py
   - scripts/derived_artifact_gate.py
+  - lib/merge_queue.py
+  - lib/validation_lanes.py
 tier: strict
 tags: [hardening, foundation, validation, invariants]
 ---
@@ -98,3 +100,10 @@ Phase-level acceptance is tracked in
 `.cognitive-os/plans/architecture/foundation-hardening-program.md` and requires
 border cases for live/stale/corrupt locks, concurrent WIP, guard false positives,
 main-head drift, branch/worktree closure, rollback, and cleanup/reaper races.
+
+## 2026-05-05 slice evidence update
+
+ADR-121-S1 adds explicit merge-queue worker lock helpers and fresh-HEAD drift
+decisions so main landings are serialized and require refetch/rebase when the
+remote head changes. ADR-121-S4 adds lane budget metadata for `fast`, `landing`,
+`laptop`, `full`, and `chaos`, plus active report/capsule retention protection.
