@@ -147,6 +147,7 @@ cc_driver_emit() {
       "hooks/session-start-stash-reapply.sh"  "false" \
       "hooks/session-startup-protocol.sh"     "false" \
       "hooks/mcp-scan.sh"                     "true"  \
+      "hooks/dangerous-env-flag-detector.sh" "false" \
     )
   fi
 
@@ -172,12 +173,14 @@ cc_driver_emit() {
 
   local pre_all
   pre_all=$(_cc_hook_group "PreToolUse" "" \
+    "hooks/protected-config-write-guard.sh" "false" \
     "hooks/session-heartbeat.sh"    "false" \
     "hooks/lethal-trifecta-gate.sh" "false" \
   )
 
   local pre_bash
   pre_bash=$(_cc_hook_group "PreToolUse" "Bash" \
+    "hooks/network-egress-guard.sh"        "false" \
     "hooks/rate-limit-precheck.sh"         "false" \
     "hooks/agent-bash-cwd-enforcer.sh"     "false" \
     "hooks/rate-limiter.sh"                "false" \
@@ -336,6 +339,7 @@ cc_driver_emit() {
     "hooks/session-end-reap.sh"               "false" \
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
+    "hooks/engram-obsidian-export-on-stop.sh" "true" \
   )
 
   local teammate_idle
