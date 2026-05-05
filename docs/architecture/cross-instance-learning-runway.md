@@ -136,6 +136,56 @@ If Shape-B triggers fire, the next ADR should design distributed locks,
 federated memory, code-owner/quorum rules, and cross-machine runtime marker
 handling.
 
+
+## Consumer primitive improvement runway
+
+The same runway should carry improvement signals from projects that implement
+Cognitive OS, not only adoption evidence.
+
+A consumer project may learn that a projected SO primitive is weak for its stack,
+that a local workflow should become a project primitive, or that a harness driver
+is missing. Those learnings should travel upstream as sanitized proposals, not as
+raw memory dumps and not as automatic core mutations.
+
+Safe flow:
+
+1. The consumer project records local metrics and Engram observations with its
+   own project scope.
+2. The consumer exports a bounded proposal bundle with provenance, primitive ids,
+   counts, test/manual-proof links, and sanitized excerpts.
+3. Upstream imports the bundle in propose-only mode.
+4. The proposal is classified as `project-local`, `upstream-candidate`,
+   `harness-gap`, `docs-only`, or `reject`.
+5. Any upstream promotion still requires lifecycle metadata, tests, ACC or
+   consumer-projection proof, and human review.
+
+Implemented helper commands:
+
+```bash
+scripts/cos-export-consumer-improvement-proposals \
+  --project my-service \
+  --profile core \
+  --since 30d \
+  --threshold 3 \
+  --output /tmp/my-service-cos-improvement-proposals.json
+
+scripts/cos-import-consumer-improvement-proposals \
+  /tmp/my-service-cos-improvement-proposals.json
+```
+
+The import command writes only under `.cognitive-os/improvements/proposals/`.
+
+This preserves the distinction between:
+
+- **consumer-local improvement**: useful inside one implementing project;
+- **transferable SO primitive improvement**: supported by evidence that should
+  be reviewed upstream;
+- **external adoption evidence**: independent proof that the SO helped a project.
+
+The runway must not copy credentials, full vaults, IDE state, or proprietary
+project context. Engram bundles remain scoped and propose-only; Obsidian remains
+a local graph/audit view unless a sanitized export is explicitly generated.
+
 ## Safety boundary
 
 The runway does not:
