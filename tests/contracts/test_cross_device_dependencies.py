@@ -38,6 +38,33 @@ def test_auth_bound_dependencies_are_reported_not_installed() -> None:
 
     assert "gh" in auth_names
     assert all(row["action"] != "installable" for row in payload["auth_bound"])
+    gh = next(row for row in payload["auth_bound"] if row["name"] == "gh")
+    assert gh["syncable"] == "config-only"
+    assert "~/.config/gh" in gh["never_copy"]
+    assert "gh auth login" in gh["post_install"]
+
+
+def test_core_tools_have_adr_168_platform_metadata() -> None:
+    payload = run_install("--profile", "core", "--platform", "macos", "--dry-run", "--json")
+    rows = {row["name"]: row for bucket in ("already_present", "installable", "manual") for row in payload[bucket]}
+
+    for name in ("jq", "git", "uv", "python3"):
+        row = rows[name]
+        assert "core" in row["profiles"]
+        assert row["scope"] in {"user", "system"}
+        assert row["syncable"] == "no"
+        assert row["install_manager"] in {"brew", "apt", "standalone", "manual", "legacy"}
+        assert row["install_source"] in {"macos", "linux", "windows_wsl", "debian", "any"}
+
+
+@pytest.mark.parametrize("platform", ["macos", "linux", "windows_wsl"])
+def test_core_tools_report_no_credential_copy_paths(platform: str) -> None:
+    payload = run_install("--profile", "core", "--platform", platform, "--dry-run", "--json")
+    rows = [row for bucket in ("already_present", "installable", "manual", "auth_bound") for row in payload[bucket]]
+
+    assert payload["credential_policy"] == "never-copy-or-read-credential-stores"
+    assert all(not row["auth_bound"] for row in rows if row["name"] in {"jq", "git", "uv", "python3"})
+    assert all(not row["never_copy"] for row in rows if row["name"] in {"jq", "git", "uv", "python3"})
 
 
 def test_adr_168_links_installer_and_contract_test() -> None:
