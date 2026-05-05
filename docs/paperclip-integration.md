@@ -24,10 +24,16 @@ User <---> Paperclip (UI on localhost:3200)
                        |-- Agent Bus           -> Paperclip agent heartbeats
                        |-- Metrics JSONL       -> Paperclip spend tracking
                        |-- Squads YAML         -> Paperclip org chart
-                       |-- cos packages        -> Paperclip skills marketplace
                        |-- Singularity events  -> Paperclip inbox
                        '-- Safety mesh blocks  -> Paperclip blocked status
 ```
+
+> **Deferred mapping (#5 — `cos packages -> Paperclip skills marketplace`):** removed from the active surface as of 2026-05-05. The paperclip-integration audit
+> ([`docs/reports/paperclip-integration-audit-2026-05-05.md`](reports/paperclip-integration-audit-2026-05-05.md)) classified this mapping as MISSING — there is no
+> `push_skills()` method on `PaperclipClient`, no hook, and no test. The skills surface is partially covered in-session by
+> `packages/paperclip-integration/skills/paperclip-dashboard/SKILL.md`. Reactivation requires either a defined Paperclip API endpoint for skills inventory or a
+> different target (separate page in Paperclip, or fold into existing inbox). Until that decision is made and a `push_skills()` method exists,
+> mapping #5 is intentionally absent from the architecture diagram.
 
 ## Concept Mapping
 

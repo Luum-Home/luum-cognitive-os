@@ -1,0 +1,1 @@
+../packages/paperclip-integration/hooks/paperclip-squad-sync.sh
