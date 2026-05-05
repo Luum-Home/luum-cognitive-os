@@ -16,16 +16,11 @@ import json
 import os
 import sys
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-
-def _is_claude_code() -> bool:
-    """Detect if we're running under Claude Code."""
-    env = os.environ
-    return bool(
-        env.get("CLAUDE_PROJECT_DIR")
-        or env.get("CLAUDE_SESSION_ID")
-        or "claude" in env.get("USER_AGENT", "").lower()
-    )
+from lib.harness_environment import is_claude_code as _is_claude_code
 
 
 def _load_active_tasks(project_dir: Path) -> list[dict]:

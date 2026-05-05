@@ -38,6 +38,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="destructive-rm-blocker"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/agent-context.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
 BLOCKS_LOG="$PROJECT_DIR/.cognitive-os/metrics/rm-op-blocks.jsonl"
@@ -252,16 +253,7 @@ TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 #   3. ORCHESTRATOR_MODE == executor
 #   4. Parent process name matches claude or claude-code (best-effort)
 _is_agent_context() {
-  [ -n "${CLAUDE_AGENT_ID:-}" ]             && return 0
-  [ -n "${COGNITIVE_OS_SESSION_ID:-}" ]     && return 0
-  [ "${ORCHESTRATOR_MODE:-}" = "executor" ] && return 0
-  # Best-effort parent process detection (suppressed on error)
-  local ppid_name
-  ppid_name=$(ps -p $PPID -o comm= 2>/dev/null || true)
-  if echo "$ppid_name" | grep -qiE '^claude(-code)?$'; then
-    return 0
-  fi
-  return 1
+  cos_is_agent_context
 }
 
 AGENT_ID="${CLAUDE_AGENT_ID:-${COGNITIVE_OS_SESSION_ID:-}}"

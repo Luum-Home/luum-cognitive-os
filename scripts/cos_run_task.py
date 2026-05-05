@@ -13,7 +13,6 @@ import argparse
 import json
 import subprocess
 import sys
-import tempfile
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -21,8 +20,12 @@ from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
+
+from lib.script_io import atomic_write_json
 
 from cos_headless_publication import check_publication_policy  # noqa: E402
 from cos_headless_safe_mode import read_state, resolve_project_dir  # noqa: E402
@@ -56,22 +59,6 @@ def outcome_path(project_dir: Path, task_id: str) -> Path:
     if not safe_id:
         safe_id = "task"
     return project_dir / OUTCOME_DIR / f"{safe_id}.json"
-
-
-def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(
-        "w",
-        encoding="utf-8",
-        dir=path.parent,
-        prefix=f".{path.name}.",
-        suffix=".tmp",
-        delete=False,
-    ) as tmp:
-        json.dump(payload, tmp, indent=2, sort_keys=True)
-        tmp.write("\n")
-        tmp_name = tmp.name
-    Path(tmp_name).replace(path)
 
 
 def build_parser() -> argparse.ArgumentParser:
