@@ -38,6 +38,7 @@
 | [session-concurrency.md](session-concurrency.md) | Multi-session support: isolation, advisory file locking, metrics merging |
 | [singularity.md](singularity.md) | Codebase Singularity: autonomous MAPE-K control loop for codebase health |
 | [auto-repair-system.md](auto-repair-system.md) | Auto-repair MAPE-K loop: detect, classify, and fix errors autonomously |
+| [runbooks/run-cos-in-docker.md](runbooks/run-cos-in-docker.md) | Operator runbook for the ADR-140 worker container surface: Docker Quick Start, BYOK env, full stack with engram-cloud, audit trail, troubleshooting |
 
 ### Core Patterns
 
