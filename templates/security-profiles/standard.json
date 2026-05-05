@@ -428,6 +428,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-crystallize-on-session-end.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-obsidian-export-on-stop.sh\"",
+            "async": true
           }
         ]
       },

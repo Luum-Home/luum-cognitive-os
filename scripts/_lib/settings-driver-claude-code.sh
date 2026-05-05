@@ -336,6 +336,7 @@ cc_driver_emit() {
     "hooks/session-end-reap.sh"               "false" \
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
+    "hooks/engram-obsidian-export-on-stop.sh" "true" \
   )
 
   local teammate_idle
