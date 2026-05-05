@@ -21,14 +21,13 @@ Current reconciled ledger after local implementation/reconciliation:
 
 | State | Count | Meaning |
 |---|---:|---|
-| implemented | 147 | ADR scope has implementation evidence or explicit implemented status with required paths present. |
+| implemented | 148 | ADR scope has implementation evidence or explicit implemented status with required paths present. |
 | absorbed | 11 | Intent is covered by later decisions/architecture. |
 | deferred | 3 | Program or future capability intentionally not closed as one implementation. |
 | obsolete | 3 | No longer active because the context changed. |
 | superseded | 2 | Replaced by another ADR. |
-| pending | 1 | New in-development ADR from another agent, not safe to take over in this session. |
 
-Attention count: **1**, and it is intentionally not ours: `ADR-164-host-cli-bridge-security-boundary` appeared with untracked/modified implementation artifacts from another agent. Its worktree surfaces include host-CLI bridge ADR/architecture/manual-test/manifest files, so it should be reconciled by that agent or after explicit handoff.
+Attention count: **0**. `ADR-164-host-cli-bridge-security-boundary` was inspected after its host-CLI bridge contract artifacts became clean/tracked in the worktree, then reconciled as implemented for its design-only security-contract scope without changing the bridge runtime phase gate.
 
 `scripts/audit_adrs.py --json` reports no failures:
 
@@ -62,6 +61,7 @@ heuristics were stale:
 | ADR-160 | Implemented for rules/MCP structural projection and Kiro design scope. | Kiro native lifecycle runtime remains planned. |
 | ADR-161 | Implemented for remote ingress/provider boundary and inventory scope. | Concrete remote ingress/provider adapters remain follow-up work. |
 | ADR-162 | Implemented for task lifecycle contract scope. | Full queue/worker/PR runtime enforcement remains service-control-plane follow-up work. |
+| ADR-164 | Implemented for design-only host CLI bridge security-contract scope. | `manifests/host-cli-bridge-contract.yaml`, architecture/manual-test docs, and `tests/contracts/test_host_cli_bridge_contract.py` exist. | Host command execution remains phase-gated; provider calls remain blocked until later explicit approval/cost/redaction phases. |
 
 ## Test and Ledger Corrections
 
@@ -83,7 +83,7 @@ python3 scripts/audit_adrs.py --json
 # failures: 0
 
 python3 scripts/adr_implementation_ledger.py --json
-# attention_count: 1 (ADR-164 in another agent's worktree scope)
+# attention_count: 0
 ```
 
 ## Remaining Non-Implementation Buckets
@@ -91,15 +91,14 @@ python3 scripts/adr_implementation_ledger.py --json
 These are not current “missing implementation” findings:
 
 - deferred: ADR-118, ADR-121, ADR-123. These are phase/program umbrellas, not atomic features to implement blindly in this session.
-- pending: ADR-164. It is in active parallel-agent development and should not be overwritten here.
 - superseded: ADR-011, ADR-084.
 - obsolete: ADR-017, ADR-022, ADR-058.
 - absorbed: 11 older ADRs covered by later architecture/decision records.
 
 ## Next Work
 
-1. Let the ADR-164 owner finish or explicitly hand off host-CLI bridge security-boundary artifacts before reconciling that ADR.
-2. If the user wants ADR-118/121/123 advanced, split each program into concrete phase slices with separate acceptance criteria before implementation.
-3. Keep ACC strict: new scripts/hooks should receive explicit consumer availability classification or projection proof.
-4. Add real provider adapters to ADR-052 only behind an explicit no-surprise-cost boundary.
-5. Wire ADR-053 proposals into dispatch only after operator-reviewed routing policy semantics are accepted.
+1. If the user wants ADR-118/121/123 advanced, split each program into concrete phase slices with separate acceptance criteria before implementation.
+2. Keep ACC strict: new scripts/hooks should receive explicit consumer availability classification or projection proof.
+3. Add real provider adapters to ADR-052 only behind an explicit no-surprise-cost boundary.
+4. Wire ADR-053 proposals into dispatch only after operator-reviewed routing policy semantics are accepted.
+5. Keep host CLI bridge runtime implementation behind the ADR-164 phase gates; do not enable provider calls without approval, audit, redaction, and cost controls.
