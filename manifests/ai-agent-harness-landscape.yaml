@@ -156,8 +156,8 @@ candidates:
 - id: cline
   display_name: Cline
   category: ide-cli
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - .clinerules
@@ -167,7 +167,8 @@ candidates:
   - hooks
   official_sources:
   - https://docs.cline.bot/customization/cline-rules
-  next_action: Implement structural rules/MCP projection, then investigate hooks.
+  next_action: Implemented structural `.clinerules/cognitive-os.md`; investigate Cline
+    hook/MCP adapter separately.
 - id: roo-code
   display_name: Roo Code
   category: ide
@@ -183,8 +184,8 @@ candidates:
 - id: continue-dev
   display_name: Continue.dev
   category: ide
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - .continue
@@ -192,48 +193,52 @@ candidates:
   - mcp
   official_sources:
   - https://docs.continue.dev/guides/configuring-models-rules-tools
-  next_action: Implement structural config/rules/MCP projection.
+  next_action: Implemented structural `.continue/rules` and `.continue/mcpServers`
+    projection; add runtime smoke when available.
 - id: aider
   display_name: Aider
   category: cli
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - CONVENTIONS.md
   - .aider.conf.yml
   official_sources:
   - https://aider.chat/docs/usage/conventions.html
-  next_action: Implement rules-only structural projection if worth maintaining.
+  next_action: Implemented structural CONVENTIONS.md and `.aider.conf.yml`; add runtime/model
+    smoke when available.
 - id: goose
   display_name: Goose
   category: cli-desktop
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - instructions
   - mcp
   official_sources:
   - https://goose-docs.ai/docs/quickstart/
-  next_action: Implement structural CLI instructions/MCP projection.
+  next_action: Implemented structural `.goosehints` and `.goose/config.json`; add
+    runtime smoke when available.
 - id: kilo-code
   display_name: Kilo Code
   category: ide-cli
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - .kilo/kilo.jsonc
   - mcp
   official_sources:
   - https://kilo.ai/docs/automate/mcp/using-in-kilo-code
-  next_action: Implement structural project config projection.
+  next_action: Implemented structural AGENTS.md, `.kilocode` rules/MCP, and `.kilo/kilo.jsonc`;
+    add runtime smoke when available.
 - id: augment-code
   display_name: Augment / Auggie
   category: cli-ide
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - rules
@@ -241,7 +246,8 @@ candidates:
   - permissions
   official_sources:
   - https://docs.augmentcode.com/cli/reference
-  next_action: Implement structural rules/MCP projection.
+  next_action: Implemented structural `.augment/rules` and settings placeholder; add
+    runtime smoke when available.
 - id: jetbrains-junie
   display_name: JetBrains Junie
   category: ide-cli
@@ -259,8 +265,8 @@ candidates:
 - id: zed-ai
   display_name: Zed AI
   category: ide
-  status: candidate
-  proof_level: none
+  status: implemented
+  proof_level: structural
   availability_boundary: local-project
   projection_surface:
   - .rules
@@ -270,7 +276,8 @@ candidates:
   official_sources:
   - https://zed.dev/docs/ai/rules
   - https://zed.dev/docs/ai/mcp
-  next_action: Implement structural rules/MCP projection.
+  next_action: Implemented structural `.rules` and `.zed/settings.json`; add runtime
+    smoke when available.
 - id: amp-code
   display_name: Amp Code
   category: cli-ide

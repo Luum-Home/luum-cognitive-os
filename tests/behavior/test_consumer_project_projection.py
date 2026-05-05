@@ -29,6 +29,13 @@ COS_INIT = REPO_ROOT / "scripts" / "cos_init.py"
         ("jetbrains-junie", ".junie/AGENTS.md"),
         ("qoder", "AGENTS.md"),
         ("factory-droid", "AGENTS.md"),
+        ("cline", ".clinerules/cognitive-os.md"),
+        ("continue-dev", ".continue/rules/cognitive-os.md"),
+        ("kilo-code", ".kilocode/rules/cognitive-os.md"),
+        ("zed-ai", ".rules"),
+        ("augment-code", ".augment/rules/cognitive-os.md"),
+        ("goose", ".goosehints"),
+        ("aider", "CONVENTIONS.md"),
         ("shell-ci", ".cognitive-os/shell-ci-projection.json"),
     ],
 )
@@ -107,6 +114,31 @@ def test_default_install_projects_core_primitives_into_consumer_project(tmp_path
         assert json.loads((tmp_path / ".factory/mcp.json").read_text()) == {"mcpServers": {}}
         assert json.loads((tmp_path / ".factory/settings.json").read_text()) == {"hooks": {}}
         assert "name: cognitive-os" in (tmp_path / ".factory/skills/cognitive-os/SKILL.md").read_text()
+
+    if harness == "cline":
+        assert "Cognitive OS for Cline" in (tmp_path / ".clinerules/cognitive-os.md").read_text()
+        assert (tmp_path / ".cline/README.md").is_file()
+    if harness == "continue-dev":
+        assert "alwaysApply: true" in (tmp_path / ".continue/rules/cognitive-os.md").read_text()
+        assert json.loads((tmp_path / ".continue/mcpServers/cognitive-os.json").read_text()) == {"mcpServers": {}}
+    if harness == "kilo-code":
+        assert "COGNITIVE_OS_KILO_CODE_START" in (tmp_path / "AGENTS.md").read_text()
+        assert "Cognitive OS for Kilo Code" in (tmp_path / ".kilocode/rules/cognitive-os.md").read_text()
+        assert json.loads((tmp_path / ".kilocode/mcp.json").read_text()) == {"mcpServers": {}}
+        kilo = json.loads((tmp_path / ".kilo/kilo.jsonc").read_text())
+        assert ".kilocode/rules/cognitive-os.md" in kilo["instructions"]
+    if harness == "zed-ai":
+        assert "Cognitive OS for Zed AI" in (tmp_path / ".rules").read_text()
+        assert json.loads((tmp_path / ".zed/settings.json").read_text()) == {"context_servers": {}}
+    if harness == "augment-code":
+        assert "Cognitive OS for Augment" in (tmp_path / ".augment/rules/cognitive-os.md").read_text()
+        assert json.loads((tmp_path / ".augment/settings.json").read_text())["permissions"]["default"] == "ask"
+    if harness == "goose":
+        assert "Cognitive OS for Goose" in (tmp_path / ".goosehints").read_text()
+        assert json.loads((tmp_path / ".goose/config.json").read_text()) == {"mcpServers": {}}
+    if harness == "aider":
+        assert "Cognitive OS for Aider" in (tmp_path / "CONVENTIONS.md").read_text()
+        assert "CONVENTIONS.md" in (tmp_path / ".aider.conf.yml").read_text()
     if harness == "shell-ci":
         shell_meta = json.loads((tmp_path / ".cognitive-os/shell-ci-projection.json").read_text())
         assert shell_meta["commands_projected"] == 15
