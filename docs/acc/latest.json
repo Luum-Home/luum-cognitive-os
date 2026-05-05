@@ -91,7 +91,7 @@
           "docs/README.md": {
             "done_weak_proof": 16,
             "planned": 19,
-            "proposed": 6
+            "proposed": 7
           },
           "docs/RED-TEAM-CHANGELOG.md": {
             "done_weak_proof": 5
@@ -1254,6 +1254,9 @@
             "planned": 1,
             "proposed": 1
           },
+          "docs/architecture/primitive-fitness-evaluation-contract.md": {
+            "proposed": 2
+          },
           "docs/architecture/primitive-harvester.md": {
             "done_weak_proof": 1,
             "planned": 1
@@ -1383,8 +1386,8 @@
             "planned": 27
           },
           "docs/business/master-plan-checklist.md": {
-            "done_weak_proof": 67,
-            "done_with_proof": 73,
+            "done_weak_proof": 69,
+            "done_with_proof": 74,
             "planned": 10
           },
           "docs/business/master-plan-execution-requirements.md": {
@@ -1769,7 +1772,7 @@
           },
           "docs/security/security-red-team.md": {
             "done_weak_proof": 1,
-            "planned": 1
+            "planned": 2
           },
           "docs/self-building-protocol.md": {
             "done_weak_proof": 2
@@ -1842,12 +1845,12 @@
             "planned": 1
           }
         },
-        "items": 2778,
+        "items": 2785,
         "statuses": {
-          "done_weak_proof": 1164,
-          "done_with_proof": 228,
-          "planned": 1085,
-          "proposed": 301
+          "done_weak_proof": 1166,
+          "done_with_proof": 229,
+          "planned": 1086,
+          "proposed": 304
         }
       }
     },
@@ -1861,6 +1864,18 @@
         "planned": 5,
         "total": 26,
         "unsupported": 0
+      }
+    },
+    "primitive_fitness_ledger": {
+      "command": null,
+      "error": null,
+      "source": "docs/reports/primitive-fitness-ledger-latest.json",
+      "status": "ok",
+      "summary": {
+        "families": {},
+        "mapping_statuses": {},
+        "reports": 0,
+        "verdicts": {}
       }
     },
     "projection_profiles": {
@@ -1963,24 +1978,24 @@
         "confidence": {
           "high": 154,
           "low": 8,
-          "medium": 209
+          "medium": 213
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 53,
           "lifecycle-declared-maintainer": 51,
           "skill-referenced-not-projectable": 2,
-          "so-local-only": 246
+          "so-local-only": 250
         },
         "low_confidence_rows": 8,
         "roles": {
           "agentic-primitive": 116,
           "driver-specific": 11,
           "lab": 23,
-          "maintainer-tool": 210,
+          "maintainer-tool": 214,
           "migration-only": 11
         },
-        "total_scripts": 371,
+        "total_scripts": 375,
         "without_consumers": 5
       }
     },
@@ -3917,12 +3932,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:57",
-        "test_consumers:335",
+        "test_consumers:338",
         "hook_consumers:75",
-        "doc_consumers:443",
+        "doc_consumers:444",
         "rule_consumers:42",
         "config_consumers:38",
-        "script_consumers:221",
+        "script_consumers:223",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate"
@@ -4835,7 +4850,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -5493,7 +5508,7 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "doc_consumers:2",
+        "doc_consumers:3",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -6797,6 +6812,83 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos-preamble-budget"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:2",
+        "doc_consumers:2",
+        "rule_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-primitive-fitness",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-primitive-fitness",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-primitive-fitness"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-primitive-fitness"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "wrapper_for:scripts/primitive_fitness_ledger.py",
+        "doc_consumers:2",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-primitive-fitness-ledger",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-primitive-fitness-ledger",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-primitive-fitness-ledger"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-primitive-fitness-ledger"
       },
       "weight": 3
     },
@@ -9544,8 +9636,8 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "test_consumers:1",
-        "doc_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:2",
         "rule_consumers:1",
         "role_source:heuristic:self-evolution",
         "consumer_accessibility:so-local-only",
@@ -9934,6 +10026,44 @@
       "source": {
         "family": "scripts",
         "path": "scripts/cos_preamble_budget.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
+        "test_consumers:1",
+        "script_consumers:1",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos_primitive_fitness.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos_primitive_fitness.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos_primitive_fitness.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos_primitive_fitness.py"
       },
       "weight": 3
     },
@@ -10952,6 +11082,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "hook_consumers:1",
+        "doc_consumers:1",
         "config_consumers:2",
         "script_consumers:1",
         "role_source:usage:repo",
@@ -12883,6 +13014,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "doc_consumers:2",
+        "config_consumers:1",
         "script_consumers:1",
         "role_source:usage:doc-rule",
         "consumer_accessibility:so-local-only",
@@ -13082,9 +13214,10 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "config_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2",
         "script_consumers:1",
-        "role_source:default",
+        "role_source:usage:doc-rule",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
         "availability_match:exact",
@@ -13196,7 +13329,8 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "test_consumers:1",
-        "config_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2",
         "script_consumers:1",
         "role_source:heuristic:path",
         "consumer_accessibility:so-local-only",
@@ -13710,6 +13844,44 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "test_consumers:1",
+        "script_consumers:2",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/primitive_fitness_ledger.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/primitive_fitness_ledger.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/primitive_fitness_ledger.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/primitive_fitness_ledger.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "test_consumers:3",
         "doc_consumers:4",
         "script_consumers:3",
@@ -14196,9 +14368,10 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
-        "config_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:2",
         "script_consumers:1",
-        "role_source:default",
+        "role_source:usage:doc-rule",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
         "availability_match:exact",
@@ -15248,7 +15421,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_credential_safe_run.py",
         "test_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -21140,8 +21313,8 @@
         "hook_consumers:11",
         "rule_consumers:10",
         "script_consumers:5",
-        "test_consumers:40",
-        "doc_consumers:59",
+        "test_consumers:41",
+        "doc_consumers:60",
         "config_consumers:9",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
@@ -31931,9 +32104,9 @@
         "hook_consumers:5",
         "rule_consumers:2",
         "script_consumers:33",
-        "test_consumers:34",
-        "doc_consumers:64",
-        "config_consumers:9",
+        "test_consumers:36",
+        "doc_consumers:65",
+        "config_consumers:10",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -32141,8 +32314,8 @@
         "hook_consumers:12",
         "rule_consumers:9",
         "script_consumers:5",
-        "test_consumers:40",
-        "doc_consumers:59",
+        "test_consumers:41",
+        "doc_consumers:60",
         "config_consumers:9",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -32558,8 +32731,8 @@
         "hook_consumers:3",
         "rule_consumers:1",
         "script_consumers:8",
-        "test_consumers:8",
-        "doc_consumers:13",
+        "test_consumers:9",
+        "doc_consumers:14",
         "config_consumers:6",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -34610,8 +34783,8 @@
         "hook_consumers:3",
         "rule_consumers:15",
         "script_consumers:10",
-        "test_consumers:24",
-        "doc_consumers:61",
+        "test_consumers:26",
+        "doc_consumers:62",
         "config_consumers:10",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
@@ -47158,7 +47331,7 @@
       "coverage_debt:2"
     ]
   },
-  "generated_at": "2026-05-05T17:39:13Z",
+  "generated_at": "2026-05-05T18:14:41Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
@@ -47886,9 +48059,9 @@
   "summary": {
     "acc": 0.9973,
     "acc_effective": 0.9986,
-    "aligned_weight": 2190,
+    "aligned_weight": 2202,
     "mapping_weight_by_status": {
-      "aligned": 2190,
+      "aligned": 2202,
       "missing": 0,
       "overexposed": 0,
       "partial": 6,
@@ -47899,13 +48072,14 @@
     "overexposed_weight": 0,
     "partial_weight": 6,
     "stale_weight": 0,
-    "total_weight": 2196,
+    "total_weight": 2208,
     "unverified_weight": 0
   },
   "weights": {
     "doc_claim": 2,
     "hook": 3,
     "primitive_family": 3,
+    "primitive_fitness": 2,
     "proof_claim": 3,
     "proof_drill": 2,
     "rule": 2,

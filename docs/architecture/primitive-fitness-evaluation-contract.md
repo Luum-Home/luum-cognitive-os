@@ -98,6 +98,38 @@ not equivalent to proof that a primitive is better:
 This keeps the Obsidian/Engram/consumer graph useful for audit and discovery
 without turning downstream text or generated vault notes into a promotion oracle.
 
+
+## Aggregate visibility through ledger and ACC
+
+Individual fitness reports are candidate-specific. For session handoffs, weekly
+reviews, and ACC, the SO also maintains a family-level ledger:
+
+```bash
+scripts/cos-primitive-fitness-ledger --project-dir .
+```
+
+The ledger scans primitive fitness report JSON files from:
+
+- `docs/reports/primitive-fitness/*.json`
+- `.cognitive-os/reports/primitive-fitness/*.json`
+- `.cognitive-os/metrics/primitive-fitness-reports/*.json`
+
+and writes:
+
+- `docs/reports/primitive-fitness-ledger-latest.json`
+- `docs/reports/primitive-fitness-ledger-latest.md`
+
+It groups verdicts by primitive family (`hooks`, `skills`, `scripts`, `rules`,
+`other`) and maps them into ACC statuses: `promote → aligned`,
+`keep_draft → partial`, `needs_evidence → unverified`, and `reject → stale`.
+The ACC pipeline loads this ledger as the `primitive_fitness_ledger` adapter and
+adds lightweight capability rows with findings for rejected or under-evidenced
+fitness reports.
+
+This connection is intentionally visibility-only: ACC can surface stale or
+under-evidenced primitive fitness, but promotion still happens only through the
+governed promotion flow.
+
 ## Obsidian relationship
 
 Obsidian should visualize this chain after evidence becomes durable memory or a
