@@ -86,6 +86,7 @@ If `/cognitive-os-test` fails after an auto-applied improvement:
 3. **No destructive changes**: Self-improve NEVER deletes rules, skills, or hooks. It only adds or modifies.
 4. **Improvement cooldown**: At most 1 self-improve run per 24 hours (unless manually invoked)
 5. **Data minimum**: Requires at least 10 data points before proposing improvements. With < 10 entries, only report patterns without proposing.
+6. **Comparative promotion gate**: Draft primitives must record baseline-vs-candidate evaluation before promotion. A draft cannot be promoted unless the candidate score beats the current/baseline primitive by the required delta and records no safety regressions.
 
 ## Integration with Session Lifecycle
 
@@ -171,6 +172,7 @@ Library: `lib/staged_verification.py`
 | `metrics/kpi-history.jsonl` | KPI snapshots over time | `kpi-trigger.sh` |
 | `metrics/session-learnings.jsonl` | Per-session error summaries | `session-learning.sh` |
 | `metrics/key-learnings.jsonl` | Captured assistant `## Key Learnings` items that may become governed improvement signals | `scripts/cos-key-learnings-capture` |
+| `metrics/primitive-promotion-evaluations.jsonl` | Baseline-vs-candidate evidence proving a draft primitive performs better before promotion | `scripts/cos_governed_self_improvement.py evaluate` |
 | `metrics/improvement-blocklist.jsonl` | Failed improvements to skip | `/self-improve` rollback |
 | `metrics/.self-improve-recommended` | Flag file for next session | `kpi-trigger.sh` |
 | `metrics/skill-archive.jsonl` | Scored skill execution history | `lib/skill_archive.py` |
@@ -180,3 +182,19 @@ Library: `lib/staged_verification.py`
 Assistant `## Key Learnings` sections are not self-improvement by themselves. They become SO evidence only when captured through `scripts/cos-key-learnings-capture`, which writes deduplicated rows to `metrics/key-learnings.jsonl`. The governed self-improvement CLI reads actionable rows and emits draftable `key_learning_candidate` signals. Promotion still requires the normal draft/review path; no rule, skill, hook, script, or manifest is changed directly from chat text.
 
 Reference: `docs/architecture/key-learnings-capture-self-improvement.md`.
+
+## Comparative Promotion Evaluation
+
+Human approval is necessary but not sufficient for promoting a draft primitive.
+Before `scripts/cos_governed_self_improvement.py promote` can copy a draft into
+`.cognitive-os/skills/cos/`, the draft must pass
+`scripts/cos_governed_self_improvement.py evaluate` with:
+
+1. a baseline score for the current primitive or current workflow;
+2. a candidate score for the draft primitive;
+3. candidate score at least `required_delta` above baseline; and
+4. zero safety regressions.
+
+This makes the loop evolutionary rather than merely additive: Key Learnings and
+other signals may create proposals, but only measured candidates can be
+promoted.
