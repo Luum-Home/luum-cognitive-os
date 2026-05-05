@@ -44,3 +44,22 @@ This primitive does not replace focused tools. It routes to them:
 - `/security-audit` for configuration/secrets/infrastructure audit;
 - `/vulnerability-scan` for Garak LLM endpoint probes;
 - `/memory-scan` for memory poisoning checks.
+
+## Deferred deep-mode backlog
+
+These are intentionally tracked as follow-up work instead of being implied by the
+safe default runner:
+
+1. **Provider/metrics audits in deep mode** — wire
+   `scripts/provider_spoof_audit.py` and `scripts/metrics_tamper_audit.py` into
+   a future `scripts/security-red-team --deep` path that audits current metrics,
+   not just primitive presence.
+2. **Real Docker no-network smoke** — run an opt-in smoke for
+   `scripts/network_sandbox_run.py` with Docker `--network none` when Docker is
+   available and local resource policy allows it. CI keeps dry-run coverage.
+3. **MCP pins when servers exist** — populate `manifests/mcp-trust-pins.yaml`
+   when concrete MCP servers are configured; include tool-description hashes and
+   fail on drift.
+4. **Expanded adversarial scenarios** — keep adding deterministic scenarios for
+   ANSI/invisible Unicode, symlink traversal, provider spoofing, metrics
+   tampering, and network egress variants.

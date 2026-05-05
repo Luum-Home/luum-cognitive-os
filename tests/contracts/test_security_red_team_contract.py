@@ -50,3 +50,31 @@ def test_catalog_mentions_security_red_team() -> None:
 
     assert "security-red-team" in catalog
     assert "/security-red-team" in catalog
+
+
+def test_deferred_deep_mode_backlog_tracks_open_security_followups() -> None:
+    data = yaml.safe_load(MANIFEST.read_text(encoding="utf-8"))
+    backlog = {item["id"]: item for item in data["deferred_deep_mode_backlog"]}
+
+    assert "deep-provider-metrics-audits" in backlog
+    assert "docker-network-none-smoke" in backlog
+    assert "mcp-pins-when-servers-exist" in backlog
+    assert "expand-adversarial-security-scenarios" in backlog
+    for item in backlog.values():
+        assert item["description"]
+        assert item["target_files"]
+        assert item["acceptance"]
+
+
+def test_security_red_team_docs_mention_deferred_deep_mode_backlog() -> None:
+    doc_text = DOC.read_text(encoding="utf-8")
+    skill_text = SKILL.read_text(encoding="utf-8")
+
+    for needle in [
+        "Provider/metrics audits in deep mode",
+        "Real Docker no-network smoke",
+        "MCP pins when servers exist",
+        "Expanded adversarial scenarios",
+    ]:
+        assert needle in doc_text
+    assert "deferred_deep_mode_backlog" in skill_text
