@@ -13,7 +13,11 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_json as normalized_json_file
 
 import yaml
 
@@ -43,10 +47,6 @@ def changed_staged() -> set[str]:
 
 def fail(message: str, failures: list[str]) -> None:
     failures.append(message)
-
-
-def normalized_json_file(path: Path) -> Any:
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def check_hook_quality(failures: list[str]) -> None:

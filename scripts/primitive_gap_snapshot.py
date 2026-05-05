@@ -16,6 +16,11 @@ import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
 
 def _load_script_module(name: str):
     path = Path(__file__).resolve().with_name(f"{name}.py")
@@ -59,13 +64,6 @@ class Snapshot:
     overall_risk: str
     families: list[PrimitiveFamilySnapshot]
     hook_latency: dict[str, int | None]
-
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(errors="ignore")
-    except OSError:
-        return ""
 
 
 def text_files(root: Path, paths: list[str]) -> list[Path]:

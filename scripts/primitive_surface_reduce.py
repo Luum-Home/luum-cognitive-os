@@ -13,10 +13,21 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 import shutil
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import load_json_or_empty as load_json
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_io import read_text as read_text
 
 
 @dataclass(frozen=True)
@@ -27,20 +38,6 @@ class ReductionAction:
     safe_to_apply: bool
     reason: str
     destination: str | None = None
-
-
-def read_text(path: Path) -> str:
-    try:
-        return path.read_text(encoding="utf-8", errors="ignore")
-    except OSError:
-        return ""
-
-
-def load_json(path: Path) -> dict:
-    try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
-        return {}
 
 
 def repo_files(root: Path, pattern: str) -> list[Path]:
