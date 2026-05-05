@@ -16,13 +16,21 @@ phases:
   structural-instruction-harnesses:
     status: in_progress
     implemented_harnesses:
-    - opencode
-    - vscode-copilot
+    - amp-code
     - cursor
+    - factory-droid
+    - gemini-cli
+    - jetbrains-junie
+    - opencode
+    - qoder
+    - vscode-copilot
+    - warp
     acceptance:
-    - cos_init_temp_project_projection
-    - behavior_tests_assert_generated_files
     - acc_default_full_projection_counts
+    - agents_md_native_projection_tests
+    - behavior_tests_assert_generated_files
+    - cos_init_temp_project_projection
+    - gemini_cli_projection_tests
   shell-ci-formal-harness:
     status: done
     acceptance:
@@ -46,20 +54,27 @@ phases:
     status: planned
     candidate_harnesses:
     - deepseek-provider
-    - minimax-maxclaw
     - google-antigravity
+    - kiro
+    - minimax-maxclaw
     acceptance:
     - provider_or_hosted_boundary_documented
     - no_ide_projection_claim_without_local_config
   account-backed-runtime-proof:
     status: planned
     candidate_harnesses:
-    - opencode
-    - vscode-copilot
+    - amp-code
     - cursor
-    - qwen-code
-    - windsurf
+    - factory-droid
+    - gemini-cli
+    - jetbrains-junie
     - kimi-code
+    - opencode
+    - qoder
+    - qwen-code
+    - vscode-copilot
+    - warp
+    - windsurf
     acceptance:
     - optional_manual_runtime_smoke
     - reports_capture_account_boundary

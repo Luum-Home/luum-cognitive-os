@@ -89,3 +89,12 @@ def test_ide_compatibility_uses_proof_levels_not_legacy_claims() -> None:
         assert phrase not in text
     assert "proof levels" in text.lower()
     assert "does not claim COS works in every listed IDE/CLI" in text
+
+
+def test_new_structural_harnesses_are_promoted_in_landscape() -> None:
+    by_id = {item["id"]: item for item in _landscape()["candidates"]}
+    for harness in ("gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"):
+        assert by_id[harness]["status"] == "implemented"
+        assert by_id[harness]["proof_level"] == "structural"
+    assert by_id["kiro"]["status"] == "lifecycle-investigation"
+    assert by_id["kiro"]["proof_level"] == "none"
