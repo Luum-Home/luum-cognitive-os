@@ -1,7 +1,7 @@
 ---
 adr: 156
 title: Qwen Code Structural Harness Projection
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
@@ -20,7 +20,7 @@ tags: [harness, qwen, projection, acc, portability]
 
 ## Status
 
-**Accepted** — 2026-05-04
+**Implemented for structural projection scope** — 2026-05-04. Qwen Code project-local settings/context projection is generated and tested; account-backed Qwen runtime behavior remains outside this ADR.
 
 ## Context
 
