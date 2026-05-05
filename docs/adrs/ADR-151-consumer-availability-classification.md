@@ -1,7 +1,7 @@
 ---
 adr: 151
 title: Consumer Availability Classification Manifest
-status: accepted
+status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null
@@ -18,7 +18,7 @@ tags: [acc, consumer-availability, primitive-readiness, projection]
 
 ## Status
 
-**Accepted** — 2026-05-04
+**Implemented for manifest/classification scope** — 2026-05-04. The consumer availability manifest, ACC adapter, and contract tests named below exist; future script role changes still require manifest maintenance.
 
 ## Context
 
