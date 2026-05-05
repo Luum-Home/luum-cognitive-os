@@ -11,6 +11,7 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Headless Docker Service Runtime Manual Test](manual-tests/headless-docker-service-runtime.md) — non-IDE Docker worker proof for queue, leases, artifacts, provider auth boundaries, and future service runtime flows.
 - [ADR-162: Task Lifecycle, Interruption, Question, Worktree, and PR Protocol](adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) — contract for pausing/resuming tasks, structured agent questions, worktree ownership, branches, and propose-only PR flow.
 - [Obsidian, Documentation Graphs, and AI Agent Memory — 2026-05-05](research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md) — follow-up on using Obsidian as a human-readable graph layer for Engram-backed agent memory.
 - [Engram Obsidian Export Manual Test](manual-tests/engram-obsidian-export.md) — dry-run, write, and incremental proof path for the manual Engram → Obsidian graph export.
