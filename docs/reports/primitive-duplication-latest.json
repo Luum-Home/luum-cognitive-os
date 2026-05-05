@@ -105,8 +105,8 @@
     "by_kind": {
       "python-function-repeat": 5
     },
-    "files_scanned": 772,
+    "files_scanned": 774,
     "findings": 5
   },
-  "timestamp": "2026-05-05T17:37:15.938917+00:00"
+  "timestamp": "2026-05-05T18:12:48.966099+00:00"
 }

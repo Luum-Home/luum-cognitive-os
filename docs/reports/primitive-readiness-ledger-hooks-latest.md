@@ -104,7 +104,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/engram-obsidian-export-on-stop.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
 | `hooks/engram-reinforce-on-access.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 18 | keep maintainer-only or add explicit export path |
 | `hooks/epic-task-detector.sh` | lab | heuristic:path | medium | so-local-only |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/error-learning.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 137 | keep maintainer-only or add explicit export path |
+| `hooks/error-learning.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 139 | keep maintainer-only or add explicit export path |
 | `hooks/error-pattern-detector.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 50 | keep maintainer-only or add explicit export path |
 | `hooks/error-pipeline.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 46 | keep maintainer-only or add explicit export path |
 | `hooks/git-commit-scope-guard.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 17 | keep maintainer-only or add explicit export path |
