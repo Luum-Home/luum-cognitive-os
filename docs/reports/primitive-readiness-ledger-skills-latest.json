@@ -2580,15 +2580,10 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
         "doc": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "config",
-          "path": ".claude/settings.local.json"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-065-radar-update-curation-pipeline.md"
@@ -2601,8 +2596,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:1",
-        "config_consumers:1"
+        "doc_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2612,7 +2606,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 2
     },
     {
       "confidence": "medium",
@@ -4246,7 +4240,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 5,
-        "doc": 24,
+        "doc": 23,
         "hook": 1,
         "rule": 2,
         "script": 6,
@@ -4352,10 +4346,6 @@
         },
         {
           "family": "doc",
-          "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/security/lethal-trifecta-gate.md"
         },
         {
@@ -4454,7 +4444,7 @@
         "rule_consumers:2",
         "script_consumers:6",
         "test_consumers:7",
-        "doc_consumers:24",
+        "doc_consumers:23",
         "config_consumers:5"
       ],
       "family": "skills",
@@ -4465,7 +4455,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 48
+      "total_consumers": 47
     },
     {
       "confidence": "high",
@@ -5661,7 +5651,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 3,
-        "doc": 7,
+        "doc": 6,
         "script": 1,
         "test": 3
       },
@@ -5700,10 +5690,6 @@
         },
         {
           "family": "doc",
-          "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
-        },
-        {
-          "family": "doc",
           "path": "docs/security/security-red-team.md"
         },
         {
@@ -5727,7 +5713,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:7",
+        "doc_consumers:6",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -5738,7 +5724,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 13
     },
     {
       "confidence": "high",
