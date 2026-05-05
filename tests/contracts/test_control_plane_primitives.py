@@ -35,6 +35,11 @@ CONTROL_PLANE_PRIMITIVES = {
     "scripts/cos-engram-bundle",
     "scripts/cos-federation-trigger-audit",
     "scripts/cos-cross-instance-drill",
+    "scripts/cos_service_control_plane.py",
+    "scripts/cosd",
+    "scripts/cos-task-submit",
+    "scripts/cos-worker-run-once",
+    "scripts/cos-queue-drain",
 }
 
 
