@@ -124,6 +124,7 @@
 - [x] Harness transparency status is documented honestly: memory protection and fallback persistence work today across Claude Code and Codex, while ADR-064 Surfaces 2–4 remain the path to full cross-harness transparency.
 - [x] AI agent IDE/CLI/hosted-agent landscape is tracked without overclaiming runtime support through [AI Agent Harness Landscape — 2026-05-04](../reports/ai-agent-harness-landscape-2026-05-04.md), [ADR-158](../adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md), and `manifests/ai-agent-harness-landscape.yaml`.
 - [x] Gemini CLI plus AGENTS.md-native Warp, Amp, Junie, Qoder, and Factory Droid have structural temp-project projection, while Kiro lifecycle hooks remain investigation-only until adapter/runtime proof exists.
+- [x] Cline, Continue.dev, Kilo Code, Zed AI, Augment/Auggie, Goose, and Aider have structural temp-project projection, with Kiro native-lifecycle promotion gated behind adapter design, event mapping, and runtime smoke.
 - [x] Codex has a governed fallback layer for non-native Agent and Edit/Write hook chains through `scripts/cos_governed_runner.py` plus the Codex wrapper `scripts/cos_codex_guard.py`, so portability gaps are explicit rather than silently accepted.
 - [x] Harness engineering is now documented and protected through [Harness Engineering](../architecture/harness-engineering.md), `manifests/harness-profiles.yaml`, `cos init-check`, `cos doctor harness`, `cos measure harness-profiles`, and `cos sprint run --dispatch`.
 - [x] User-facing setup messages are clear and product-grade.

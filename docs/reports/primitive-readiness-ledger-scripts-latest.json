@@ -426,7 +426,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 30,
+        "doc": 32,
         "test": 2
       },
       "consumers": [
@@ -492,6 +492,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -552,6 +556,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/manual-tests/rules-mcp-structural-projection.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/shell-ci-formal-harness.md"
         },
         {
@@ -568,7 +576,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:30",
+        "doc_consumers:32",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -585,7 +593,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 33,
+      "total_consumers": 35,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -2923,7 +2931,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 28,
-        "doc": 409,
+        "doc": 412,
         "hook": 68,
         "rule": 42,
         "script": 192,
@@ -3641,6 +3649,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/README.md"
         },
         {
@@ -3974,6 +3986,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/infrastructure-service-catalog.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/kiro-lifecycle-adapter-design.md"
         },
         {
           "family": "doc",
@@ -4390,6 +4406,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/qwen-code-structural-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/rules-mcp-structural-projection.md"
         },
         {
           "family": "doc",
@@ -7363,7 +7383,7 @@
         "skill_consumers:55",
         "test_consumers:312",
         "hook_consumers:68",
-        "doc_consumers:409",
+        "doc_consumers:412",
         "rule_consumers:42",
         "config_consumers:28",
         "script_consumers:192"
@@ -7382,7 +7402,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1106,
+      "total_consumers": 1109,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -14574,7 +14594,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 5,
-        "doc": 21,
+        "doc": 24,
         "script": 3,
         "test": 7
       },
@@ -14637,6 +14657,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/agent-capability-coverage-pipeline.md"
         },
         {
@@ -14646,6 +14670,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/harness-implementation-roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/kiro-lifecycle-adapter-design.md"
         },
         {
           "family": "doc",
@@ -14678,6 +14706,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/qwen-code-structural-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/rules-mcp-structural-projection.md"
         },
         {
           "family": "doc",
@@ -14730,7 +14762,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:7",
-        "doc_consumers:21",
+        "doc_consumers:24",
         "config_consumers:5",
         "script_consumers:3"
       ],
@@ -14748,7 +14780,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 36,
+      "total_consumers": 39,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
