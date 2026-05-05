@@ -60,7 +60,7 @@ Total skills: 160
 | ragas-integration | Configure and use RAGAS for memory quality testing, retrieval evaluation, and… |
 | red-team | \"Red team testing for agent prompts — detects injection, jailbreak, and… |
 | security-audit | Comprehensive security audit of Cognitive OS configuration, secrets, hooks… |
-| security-red-team | Unified security red-team: inventory, threat model, abuse probes, primitive scoring,… |
+| security-red-team | Unified Cognitive OS security red-team: inventory, threat model, abuse probes, risk scoring, and mitigation backlog. |
 | simulation-arena | End-to-end agent workflow simulation for safety-mesh regression. |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works |
 | strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using… |
