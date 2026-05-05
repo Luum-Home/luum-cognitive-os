@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-05-05T18:12:53Z",
+  "items": [],
+  "schema_version": "primitive-fitness-ledger.v1",
+  "source_globs": [
+    "docs/reports/primitive-fitness/*.json",
+    ".cognitive-os/reports/primitive-fitness/*.json",
+    ".cognitive-os/metrics/primitive-fitness-reports/*.json"
+  ],
+  "summary": {
+    "families": {
+      "hooks": {
+        "average_candidate_score": null,
+        "mapping_statuses": {},
+        "needs_evidence": 0,
+        "promote": 0,
+        "reject": 0,
+        "total": 0,
+        "verdicts": {}
+      },
+      "other": {
+        "average_candidate_score": null,
+        "mapping_statuses": {},
+        "needs_evidence": 0,
+        "promote": 0,
+        "reject": 0,
+        "total": 0,
+        "verdicts": {}
+      },
+      "rules": {
+        "average_candidate_score": null,
+        "mapping_statuses": {},
+        "needs_evidence": 0,
+        "promote": 0,
+        "reject": 0,
+        "total": 0,
+        "verdicts": {}
+      },
+      "scripts": {
+        "average_candidate_score": null,
+        "mapping_statuses": {},
+        "needs_evidence": 0,
+        "promote": 0,
+        "reject": 0,
+        "total": 0,
+        "verdicts": {}
+      },
+      "skills": {
+        "average_candidate_score": null,
+        "mapping_statuses": {},
+        "needs_evidence": 0,
+        "promote": 0,
+        "reject": 0,
+        "total": 0,
+        "verdicts": {}
+      }
+    },
+    "mapping_statuses": {},
+    "total_reports": 0,
+    "unreadable_reports": 0,
+    "verdicts": {}
+  }
+}

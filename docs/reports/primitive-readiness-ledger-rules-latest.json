@@ -7594,13 +7594,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 9,
-        "doc": 64,
+        "config": 10,
+        "doc": 65,
         "hook": 5,
         "rule": 2,
         "script": 33,
         "skill": 7,
-        "test": 34
+        "test": 36
       },
       "consumers": [
         {
@@ -7634,6 +7634,10 @@
         {
           "family": "config",
           "path": "manifests/runtime-env-flags.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/security-red-team.yaml"
         },
         {
           "family": "config",
@@ -7874,6 +7878,10 @@
         {
           "family": "doc",
           "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/security/security-red-team.md"
         },
         {
           "family": "doc",
@@ -8125,6 +8133,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_primitive_fitness_cli.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_register_mcps.py"
         },
         {
@@ -8205,6 +8217,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_fitness.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_queue_rebase.py"
         },
         {
@@ -8226,9 +8242,9 @@
         "hook_consumers:5",
         "rule_consumers:2",
         "script_consumers:33",
-        "test_consumers:34",
-        "doc_consumers:64",
-        "config_consumers:9"
+        "test_consumers:36",
+        "doc_consumers:65",
+        "config_consumers:10"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -8238,7 +8254,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 154
+      "total_consumers": 158
     },
     {
       "confidence": "medium",
@@ -8520,12 +8536,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 9,
-        "doc": 59,
+        "doc": 60,
         "hook": 12,
         "rule": 9,
         "script": 5,
         "skill": 3,
-        "test": 40
+        "test": 41
       },
       "consumers": [
         {
@@ -8643,6 +8659,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-fitness-evaluation-contract.md"
         },
         {
           "family": "doc",
@@ -8946,6 +8966,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_primitive_fitness_cli.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_self_improvement.py"
         },
         {
@@ -9083,8 +9107,8 @@
         "hook_consumers:12",
         "rule_consumers:9",
         "script_consumers:5",
-        "test_consumers:40",
-        "doc_consumers:59",
+        "test_consumers:41",
+        "doc_consumers:60",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -9095,7 +9119,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 137
+      "total_consumers": 139
     },
     {
       "confidence": "medium",
@@ -10108,12 +10132,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 13,
+        "doc": 14,
         "hook": 3,
         "rule": 1,
         "script": 8,
         "skill": 1,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -10171,6 +10195,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/dx-cloud-flow-bootstrap-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-fitness-evaluation-contract.md"
         },
         {
           "family": "doc",
@@ -10274,6 +10302,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_fitness.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_provider_benchmark_and_optimizer.py"
         }
       ],
@@ -10283,8 +10315,8 @@
         "hook_consumers:3",
         "rule_consumers:1",
         "script_consumers:8",
-        "test_consumers:8",
-        "doc_consumers:13",
+        "test_consumers:9",
+        "doc_consumers:14",
         "config_consumers:6"
       ],
       "family": "rules",
@@ -10295,7 +10327,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 40
+      "total_consumers": 42
     },
     {
       "confidence": "medium",
@@ -16003,12 +16035,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 61,
+        "doc": 62,
         "hook": 3,
         "rule": 15,
         "script": 10,
         "skill": 6,
-        "test": 24
+        "test": 26
       },
       "consumers": [
         {
@@ -16150,6 +16182,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-fitness-evaluation-contract.md"
         },
         {
           "family": "doc",
@@ -16465,6 +16501,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_primitive_fitness_cli.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_safety_mesh_integration.py"
         },
         {
@@ -16513,6 +16553,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_fitness.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_integration.py"
         },
         {
@@ -16534,8 +16578,8 @@
         "hook_consumers:3",
         "rule_consumers:15",
         "script_consumers:10",
-        "test_consumers:24",
-        "doc_consumers:61",
+        "test_consumers:26",
+        "doc_consumers:62",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -16546,7 +16590,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 129
+      "total_consumers": 132
     },
     {
       "confidence": "medium",

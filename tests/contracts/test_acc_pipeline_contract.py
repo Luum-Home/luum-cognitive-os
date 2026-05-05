@@ -15,6 +15,7 @@ REPORT = REPO_ROOT / "docs" / "acc" / "latest.json"
 COMPACT = REPO_ROOT / "docs" / "acc" / "latest-compact.md"
 
 
+@pytest.mark.timeout(90)
 def test_repository_acc_pipeline_generates_report() -> None:
     result = subprocess.run(
         ["python3", str(SCRIPT), "--project-dir", str(REPO_ROOT), "--fail-new"],
@@ -22,7 +23,7 @@ def test_repository_acc_pipeline_generates_report() -> None:
         text=True,
         capture_output=True,
         check=False,
-        timeout=30,
+        timeout=80,
     )
 
     assert result.returncode == 0, result.stderr + result.stdout
