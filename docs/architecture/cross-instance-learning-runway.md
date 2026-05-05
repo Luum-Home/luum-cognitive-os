@@ -159,6 +159,22 @@ Safe flow:
 5. Any upstream promotion still requires lifecycle metadata, tests, ACC or
    consumer-projection proof, and human review.
 
+Implemented helper commands:
+
+```bash
+scripts/cos-export-consumer-improvement-proposals \
+  --project my-service \
+  --profile core \
+  --since 30d \
+  --threshold 3 \
+  --output /tmp/my-service-cos-improvement-proposals.json
+
+scripts/cos-import-consumer-improvement-proposals \
+  /tmp/my-service-cos-improvement-proposals.json
+```
+
+The import command writes only under `.cognitive-os/improvements/proposals/`.
+
 This preserves the distinction between:
 
 - **consumer-local improvement**: useful inside one implementing project;
