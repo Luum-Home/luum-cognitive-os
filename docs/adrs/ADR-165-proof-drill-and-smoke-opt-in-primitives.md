@@ -1,7 +1,7 @@
 ---
 adr: 165
 title: Proof Drill and Smoke Opt-In Agentic Primitives
-status: accepted
+status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -19,7 +19,7 @@ tags: [testing, proof-drills, smoke, primitives, self-build, consumer-projects]
 
 ## Status
 
-**Accepted** — 2026-05-05
+**Implemented for the proof-drill registry and smoke opt-in primitive scope** — 2026-05-05. The ADR closes the governed registry, agent procedure, manual proof path, and contract-test boundary; live provider, Docker, VM, or Kubernetes proof execution remains explicit opt-in evidence, not default-lane implementation.
 
 ## Context
 
