@@ -24,6 +24,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--candidate-repo", help="Candidate repo root for dogfood scoring")
     parser.add_argument("--baseline-dogfood-json", help="Precomputed baseline dogfood score JSON")
     parser.add_argument("--candidate-dogfood-json", help="Precomputed candidate dogfood score JSON")
+    parser.add_argument("--baseline-consumer-proposals", help="Baseline consumer improvement proposal bundle JSON")
+    parser.add_argument("--candidate-consumer-proposals", help="Candidate consumer improvement proposal bundle JSON")
+    parser.add_argument("--baseline-dependency-report", help="Baseline cos-deps-install JSON report")
+    parser.add_argument("--candidate-dependency-report", help="Candidate cos-deps-install JSON report")
     parser.add_argument("--required-delta", type=float, default=1.0)
     parser.add_argument("--min-sample-count", type=int, default=1)
     parser.add_argument("--evidence-command", action="append", default=[])
@@ -38,6 +42,10 @@ def main(argv: list[str] | None = None) -> int:
         candidate_repo=args.candidate_repo,
         baseline_dogfood_json=args.baseline_dogfood_json,
         candidate_dogfood_json=args.candidate_dogfood_json,
+        baseline_consumer_proposals_json=args.baseline_consumer_proposals,
+        candidate_consumer_proposals_json=args.candidate_consumer_proposals,
+        baseline_dependency_report_json=args.baseline_dependency_report,
+        candidate_dependency_report_json=args.candidate_dependency_report,
         required_delta=args.required_delta,
         min_sample_count=args.min_sample_count,
         evidence_commands=args.evidence_command,
