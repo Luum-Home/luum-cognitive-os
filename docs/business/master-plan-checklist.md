@@ -123,6 +123,7 @@
   checks only where they provide clear value.
 - [x] Harness transparency status is documented honestly: memory protection and fallback persistence work today across Claude Code and Codex, while ADR-064 Surfaces 2–4 remain the path to full cross-harness transparency.
 - [x] AI agent IDE/CLI/hosted-agent landscape is tracked without overclaiming runtime support through [AI Agent Harness Landscape — 2026-05-04](../reports/ai-agent-harness-landscape-2026-05-04.md), [ADR-158](../adrs/ADR-158-ai-agent-harness-landscape-and-proof-backlog.md), and `manifests/ai-agent-harness-landscape.yaml`.
+- [x] Multi-provider agent delegation research is refreshed in [Multi-Provider Agent Delegation Research — 2026-05-05](../reports/multi-provider-agent-delegation-research-2026-05-05.md), covering Qwen, Kimi, DeepSeek, MiniMax, OpenClaw/Lucy, and router/coworker patterns across 51 current sources.
 - [x] Gemini CLI plus AGENTS.md-native Warp, Amp, Junie, Qoder, and Factory Droid have structural temp-project projection, while Kiro lifecycle hooks remain investigation-only until adapter/runtime proof exists.
 - [x] Cline, Continue.dev, Kilo Code, Zed AI, Augment/Auggie, Goose, and Aider have structural temp-project projection, with Kiro native-lifecycle promotion gated behind adapter design, event mapping, and runtime smoke.
 - [x] Harness projection claims were contrasted against current official docs in [Harness Docs Currentness Audit — 2026-05-05](../reports/harness-docs-currentness-audit-2026-05-05.md), correcting Kilo, Goose, and Augment file-shape drift.
@@ -204,3 +205,5 @@
 - [x] Self-evolving doctrine proposals are documented in [Self-Evolving Doctrine Proposals](../architecture/self-evolving-doctrine-proposals.md) and [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md), with `scripts/cos-doctrine-proposer` generating proposed, non-runtime doctrine amendments from control-plane evidence.
 - [x] Cross-instance learning runway is documented in [Cross-Instance Learning Runway](../architecture/cross-instance-learning-runway.md) and [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), with consumer evidence exchange, deterministic registry locks, propose-only Engram bundles, and Shape-B federation trigger audit.
 - [x] Cross-instance local consumer E2E is documented in [Cross-Instance Consumer E2E Drill — 2026-05-03](../reports/cross-instance-consumer-e2e-2026-05-03.md), proving install, provenance export/import, drills, and that self-owned evidence does not sign external-help claims.
+
+- [x] Expected test skips are classified and enforced through ADR-166, `manifests/test-skip-registry.yaml`, and the pytest summary wrapper so new unclassified skips fail instead of silently growing.
