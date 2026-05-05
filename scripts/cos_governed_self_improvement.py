@@ -19,6 +19,7 @@ from lib.governed_self_improvement import (
     load_improvement_draft,
     promote_improvement_draft,
     suggest_improvement_signals,
+    write_promotion_evaluation,
 )
 
 
@@ -36,6 +37,16 @@ def main() -> int:
     promote_parser.add_argument("draft_id")
     promote_parser.add_argument("--approved-by")
     promote_parser.add_argument("--auto-promote", action="store_true")
+
+    evaluate_parser = sub.add_parser(
+        "evaluate", help="Record baseline-vs-candidate evidence before promotion"
+    )
+    evaluate_parser.add_argument("draft_id")
+    evaluate_parser.add_argument("--baseline-score", type=float, required=True)
+    evaluate_parser.add_argument("--candidate-score", type=float, required=True)
+    evaluate_parser.add_argument("--required-delta", type=float, default=1.0)
+    evaluate_parser.add_argument("--evidence-command", action="append", default=[])
+    evaluate_parser.add_argument("--safety-regression", action="append", default=[])
 
     inspect_parser = sub.add_parser("inspect", help="Inspect an existing draft")
     inspect_parser.add_argument("draft_id")
@@ -59,6 +70,19 @@ def main() -> int:
     if args.command == "inspect":
         draft = load_improvement_draft(project_dir, args.draft_id)
         print(json.dumps(asdict(draft), indent=2, sort_keys=True))
+        return 0
+
+    if args.command == "evaluate":
+        evaluation = write_promotion_evaluation(
+            project_dir,
+            args.draft_id,
+            baseline_score=args.baseline_score,
+            candidate_score=args.candidate_score,
+            required_delta=args.required_delta,
+            evidence_commands=args.evidence_command,
+            safety_regressions=args.safety_regression,
+        )
+        print(json.dumps(evaluation.to_dict(), indent=2, sort_keys=True))
         return 0
 
     if args.command == "promote":

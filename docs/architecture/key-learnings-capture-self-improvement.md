@@ -60,8 +60,10 @@ A key learning becomes an SO improvement only after one of these happens:
 1. It is captured into `key-learnings.jsonl`.
 2. The governed self-improvement loop emits a signal.
 3. A draft is created under `.cognitive-os/improvements/drafts/`.
-4. A human or approved automation promotes the draft into a durable primitive.
-5. Targeted tests validate the primitive.
+4. Comparative evaluation proves the candidate draft performs better than the
+   current/baseline primitive by the required delta, with no safety regressions.
+5. A human or approved automation promotes the draft into a durable primitive.
+6. Targeted tests validate the primitive.
 
 This preserves the distinction between memory, evidence, and behavior:
 
@@ -70,7 +72,13 @@ This preserves the distinction between memory, evidence, and behavior:
 | Conversation | `## Key Learnings` in a chat response | No |
 | Evidence | `.cognitive-os/metrics/key-learnings.jsonl` | No |
 | Proposal | `.cognitive-os/improvements/drafts/<id>/` | No |
+| Evaluation | `.cognitive-os/improvements/drafts/<id>/promotion-evaluation.json` | No |
 | Primitive | rule, skill, hook, script, manifest, ADR, test | Yes, after review |
+
+Promotion is blocked unless `scripts/cos_governed_self_improvement.py evaluate`
+writes a passing baseline-vs-candidate comparison. Human approval alone is not
+enough; the promoted candidate must show measured improvement and no recorded
+safety regression.
 
 ## Verification
 
