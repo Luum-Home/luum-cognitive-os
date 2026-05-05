@@ -123,6 +123,8 @@ def build_report(profile_name: str, target_platform: str, *, apply: bool) -> dic
             report["auth_bound"].append(row)
         if row["present"]:
             report["already_present"].append(row)
+        elif row["auth_bound"]:
+            continue
         elif row["install_command"] is None:
             report["unsupported_platform"].append(row)
         elif row["manual"]:
