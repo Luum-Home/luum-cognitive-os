@@ -60,7 +60,7 @@ import os
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -188,6 +188,10 @@ def enqueue(
         # P2.2 extensions (optional, populated by gate_runner / merge_rollback)
         "gate_evidence": None,
         "revert_sha": None,
+        "recommended_lane": None,
+        "executed_lane": None,
+        "validation_rationale": [],
+        "base_head": None,
     }
 
     # Atomic append under exclusive lock.
@@ -313,3 +317,79 @@ def list_pending(*, queue_path: Optional[str | Path] = None) -> list[dict]:
     return [
         dict(e) for e in _read_all(path) if e.get("status") in PENDING_STATUSES
     ]
+
+
+# ---------------------------------------------------------------------------
+# ADR-121/123 landing helpers
+# ---------------------------------------------------------------------------
+
+WORKER_LOCK_NAME = "merge-queue.worker.lock"
+
+
+def worker_lock_path(queue_path: Optional[str | Path] = None) -> Path:
+    """Return the single-writer worker lock path for a queue file."""
+    path = _resolve_queue_path(queue_path)
+    return path.parent / WORKER_LOCK_NAME
+
+
+def try_acquire_worker_lock(queue_path: Optional[str | Path] = None):
+    """Acquire the non-blocking worker lock, returning an open fd or ``None``.
+
+    Callers must keep the returned file handle open while landing to main and
+    close it after the push/revalidation transaction ends.
+    """
+    lock_path = worker_lock_path(queue_path)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    fh = lock_path.open("a", encoding="utf-8")
+    try:
+        fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        fh.close()
+        return None
+    return fh
+
+
+def head_drift(current_head: str, expected_head: str | None) -> dict[str, Any]:
+    """Return a fresh-HEAD landing decision for merge-queue workers."""
+    if not expected_head:
+        return {"ok_to_land": False, "reason": "missing expected base head", "action": "refetch-or-rebase"}
+    if current_head != expected_head:
+        return {
+            "ok_to_land": False,
+            "reason": "main head drifted since enqueue",
+            "expected_head": expected_head,
+            "current_head": current_head,
+            "action": "refetch-or-rebase",
+        }
+    return {"ok_to_land": True, "reason": "fresh head verified", "expected_head": expected_head, "current_head": current_head}
+
+
+def record_validation_lane(
+    entry_id: str,
+    *,
+    recommended_lane: str,
+    executed_lane: str | None = None,
+    rationale: list[str] | None = None,
+    queue_path: Optional[str | Path] = None,
+) -> bool:
+    """Attach lane recommendation/execution evidence to a queue entry."""
+    path = _resolve_queue_path(queue_path)
+    lock_file = path.with_suffix(".lock")
+    lock_file.parent.mkdir(parents=True, exist_ok=True)
+    updated = False
+    with lock_file.open("a", encoding="utf-8") as lock_fh:
+        fcntl.flock(lock_fh, fcntl.LOCK_EX)
+        try:
+            entries = _read_all(path)
+            for entry in entries:
+                if entry.get("id") == entry_id:
+                    entry["recommended_lane"] = recommended_lane
+                    entry["executed_lane"] = executed_lane
+                    entry["validation_rationale"] = rationale or []
+                    updated = True
+                    break
+            if updated:
+                _write_all(path, entries)
+        finally:
+            fcntl.flock(lock_fh, fcntl.LOCK_UN)
+    return updated
