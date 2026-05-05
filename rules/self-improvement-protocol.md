@@ -170,6 +170,13 @@ Library: `lib/staged_verification.py`
 |------|---------|------------|
 | `metrics/kpi-history.jsonl` | KPI snapshots over time | `kpi-trigger.sh` |
 | `metrics/session-learnings.jsonl` | Per-session error summaries | `session-learning.sh` |
+| `metrics/key-learnings.jsonl` | Captured assistant `## Key Learnings` items that may become governed improvement signals | `scripts/cos-key-learnings-capture` |
 | `metrics/improvement-blocklist.jsonl` | Failed improvements to skip | `/self-improve` rollback |
 | `metrics/.self-improve-recommended` | Flag file for next session | `kpi-trigger.sh` |
 | `metrics/skill-archive.jsonl` | Scored skill execution history | `lib/skill_archive.py` |
+
+## Key Learnings Capture
+
+Assistant `## Key Learnings` sections are not self-improvement by themselves. They become SO evidence only when captured through `scripts/cos-key-learnings-capture`, which writes deduplicated rows to `metrics/key-learnings.jsonl`. The governed self-improvement CLI reads actionable rows and emits draftable `key_learning_candidate` signals. Promotion still requires the normal draft/review path; no rule, skill, hook, script, or manifest is changed directly from chat text.
+
+Reference: `docs/architecture/key-learnings-capture-self-improvement.md`.
