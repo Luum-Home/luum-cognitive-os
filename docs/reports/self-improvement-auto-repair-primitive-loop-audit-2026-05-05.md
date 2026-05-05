@@ -119,6 +119,105 @@ Obsidian is useful for self-improvement in three specific ways:
 
 It should not become the executor. The executor remains the governed primitive loop: hooks, scripts, skills, tests, manifests, and human approval gates.
 
+
+## Cross-project primitive improvement target
+
+The desired end state is not only “agents are not amnesic.” It is a governed
+learning system where evidence from the SO and from consumer projects can improve
+both sides without leaking state or silently mutating runtime behavior.
+
+### Two improvement loops, one safety contract
+
+| Loop | Learns from | May improve | Promotion boundary |
+|---|---|---|---|
+| SO self-improvement | SO-maintainer sessions, SO tests, primitive ledgers, ACC, Engram observations. | Core SO hooks, scripts, skills, rules, docs, manifests. | ADR/proposal/test gate before live runtime changes. |
+| Consumer-project primitive improvement | Downstream project failures, local skill feedback, harness projection evidence, consumer evidence bundles. | Project-local `.cognitive-os/` extensions first; upstream SO primitives only through exported evidence/proposals. | Consumer keeps local authority; upstream accepts only reviewed, provenance-carrying proposals. |
+
+A project that implements the SO should be able to generate local improvement
+signals such as:
+
+- “this projected skill failed five times on this stack”;
+- “this hook is too strict for this harness”;
+- “this local workflow repeated often enough to become a project skill”;
+- “this SO primitive needs a driver for this IDE/harness”;
+- “this repair pattern worked in this project and should be proposed upstream.”
+
+Those signals should become **proposals**, not direct upstream mutations.
+
+### Transfer path for consumer learnings
+
+The existing cross-instance runway already contains the right primitives:
+
+1. Consumer project records local evidence in JSONL metrics, Engram observations,
+   ACC outputs, and primitive readiness rows.
+2. Consumer exports a bounded evidence package through the ADR-136 runway
+   (`cos-export-consumer-evidence`, `cos-engram-bundle`, registry locks, or later
+   Engram cloud sync).
+3. Upstream imports evidence in propose-only mode (`cos-import-consumer-evidence`,
+   `cos-engram-import-propose`) and preserves provenance/independence metadata.
+4. The SO converts repeated evidence into one of:
+   - a project-local extension recommendation;
+   - a candidate SO primitive improvement;
+   - a harness projection gap;
+   - a docs/ADR update;
+   - a rejected/non-transferable local pattern.
+5. Promotion follows normal gates: tests, lifecycle metadata, ACC/consumer
+   projection proof, and human review.
+
+This keeps the “learning across projects” promise honest: consumer projects can
+teach the SO, but only through reviewable evidence. A maintainer-owned drill does
+not sign external adoption, and a consumer-local workaround does not become a
+core primitive without proof.
+
+### What should travel versus stay local
+
+| Artifact | Travels upstream? | Notes |
+|---|---:|---|
+| Sanitized failure pattern | Yes | No secrets, no proprietary payloads, include stack/harness metadata. |
+| Primitive readiness gap | Yes | Good input to ACC and lifecycle backlog. |
+| Successful repeated workflow | Yes, as proposal | Draft skill/script only; no automatic promotion. |
+| Consumer project credentials/config | No | Never copy `.env`, tokens, Keychain, provider auth, or local IDE state. |
+| Project-specific business rules | Usually no | Keep as project-local primitives unless multiple independent projects confirm generality. |
+| Engram observations | Yes, only via scoped bundle/propose import | Preserve `project`, `topic_key`, provenance, and conflict review. |
+| Obsidian vault | No by default | It is an operator-local graph view; export/import should use Engram bundles or sanitized docs. |
+
+### Required additional primitive
+
+The missing explicit primitive is a **consumer improvement proposal exporter**.
+It should summarize local consumer signals into a portable, sanitized proposal
+bundle rather than dumping raw memory or full vault content.
+
+Suggested shape:
+
+```bash
+scripts/cos-export-consumer-improvement-proposals \
+  --project my-service \
+  --since 30d \
+  --profile core \
+  --output /tmp/my-service-cos-improvement-proposals.json
+```
+
+The bundle should include:
+
+- project/harness/profile metadata;
+- primitive ids involved;
+- failure/success counts;
+- linked tests or manual proof;
+- sanitized excerpts only;
+- provenance and independence fields;
+- recommended action: `project-local`, `upstream-candidate`, `harness-gap`,
+  `docs-only`, or `reject`.
+
+The matching upstream import should be propose-only:
+
+```bash
+scripts/cos-import-consumer-improvement-proposals \
+  /tmp/my-service-cos-improvement-proposals.json
+```
+
+and write only under `.cognitive-os/improvements/proposals/` or
+`docs/proposals/` until reviewed.
+
 ## Implementation reality matrix
 
 | Capability | Designed? | Implemented? | Autonomous by default? | Notes |
@@ -156,7 +255,8 @@ It should not become the executor. The executor remains the governed primitive l
    - run skill failure monitor or Python module;
    - run `scripts/cos-self-improvement-loop --profile core --json`;
    - verify `mode: propose_only` and `human_approval_required: true`.
-3. Link Obsidian exported notes to primitive ids and ADRs, but keep `docs/` as the canonical curated surface.
+3. Add a consumer improvement proposal exporter/importer pair so downstream projects can propose project-local or upstream primitive improvements without leaking raw memory or credentials.
+4. Link Obsidian exported notes to primitive ids and ADRs, but keep `docs/` as the canonical curated surface.
 
 ## Verification commands used for this audit
 
@@ -175,3 +275,4 @@ python3 scripts/active_primitive_index.py --project-dir . --json
 1. Obsidian/Engram support self-improvement as memory and audit layers, but the actual repair/improvement executor is the governed MAPE-K primitive loop.
 2. Cognitive OS intentionally favors propose-only and queue-based repair for high-risk self-modification surfaces.
 3. Primitive evolution is now mediated by readiness ledgers, ACC, lifecycle metadata, and discipline gates rather than ad hoc docs claims.
+4. Consumer projects should improve their own local primitives first and export sanitized, provenance-carrying proposals upstream only when evidence is transferable.
