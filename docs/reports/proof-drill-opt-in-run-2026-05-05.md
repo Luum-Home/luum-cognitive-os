@@ -83,6 +83,52 @@ python3 -m pytest tests/integration/test_headless_service_drill.py -q
 # 1 skipped; Docker proof remains opt-in/manual unless its explicit integration gate is enabled
 ```
 
+## Claude provider follow-up proof
+
+A second host sweep found Claude Code installed outside the default Codex shell
+`PATH` at `$HOME/.local/bin/claude`. The auth probe now searches this governed
+known location and uses `claude auth status` without reading token stores.
+
+Non-provider probe:
+
+```bash
+$HOME/.local/bin/claude --version
+# 2.1.62 (Claude Code)
+
+$HOME/.local/bin/claude auth status
+# loggedIn=true, authMethod=claude.ai, apiProvider=firstParty, subscriptionType=max
+```
+
+Direct provider smoke, cost-bearing and explicit:
+
+```bash
+$HOME/.local/bin/claude -p --model sonnet --output-format json --tools "" \
+  --max-budget-usd 0.30 'Reply exactly: COS_CLAUDE_PROVIDER_SMOKE_OK'
+# result=COS_CLAUDE_PROVIDER_SMOKE_OK, subtype=success, total_cost_usd=0.19062125000000002
+```
+
+Service-control-plane provider smoke, also explicit:
+
+```bash
+scripts/cos-task-submit --project-dir /tmp/cos-claude-provider.6NbDJQ \
+  --kind provider --executor claude-cli-host \
+  --task-id task-claude-provider-proof \
+  --prompt 'Reply exactly: COS_CLAUDE_PROVIDER_SMOKE_OK' --json
+
+COS_CLAUDE_EXEC_MODEL=sonnet scripts/cos-worker-run-once \
+  --project-dir /tmp/cos-claude-provider.6NbDJQ \
+  --worker-id host-claude-proof --allow-provider-call --json
+
+scripts/cos-queue-drain --project-dir /tmp/cos-claude-provider.6NbDJQ --json
+# status=completed, provider_calls=1, returncode=0
+# result=COS_CLAUDE_PROVIDER_SMOKE_OK, total_cost_usd=0.1497275
+```
+
+Evidence was recorded in `docs/reports/proof-drill-evidence-latest.json` under
+`claude-provider-host-smoke`; ACC now maps this evidence to the durable claim
+`proof_claim:host-claude-provider-adapter` through
+`manifests/proof-drill-claim-map.yaml`.
+
 ## What this proves
 
 - Qwen live fallback is configured and working in this host environment.
@@ -93,13 +139,17 @@ python3 -m pytest tests/integration/test_headless_service_drill.py -q
 - Host Codex account-session probing works without exposing credential stores.
 - Host Codex provider execution can be invoked through the SO control-plane
   adapter when explicitly opted in and pinned to a supported model.
+- Host Claude account-session probing works from a governed known CLI location
+  without exposing credential stores.
+- Host Claude provider execution can be invoked through the SO control-plane
+  adapter when explicitly opted in and pinned to a supported model.
 
 ## What this does not prove
 
-- Claude CLI account-session support on this host; `claude` was not found on
-  `PATH` during the proof.
 - Codex or Claude account sessions inside Docker; both were unsupported by
   design because credential stores are not mounted.
 - Remote ingress, Kubernetes, VM, or hosted worker paths.
 - Provider support for unconfigured providers skipped by the multi-provider
   smoke.
+- Claude container execution, VM execution, Kubernetes execution, or remote
+  host-cli bridge execution; only the local host adapter was proven.

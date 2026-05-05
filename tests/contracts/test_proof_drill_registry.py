@@ -15,6 +15,7 @@ REQUIRED_ENTRIES = {
     "multi-provider-fallback-live-smoke",
     "headless-docker-service-drill",
     "headless-codex-provider-smoke",
+    "claude-provider-host-smoke",
     "engram-cloud-docker-smoke",
     "cross-instance-learning-drill",
     "service-control-plane-manual-proof",

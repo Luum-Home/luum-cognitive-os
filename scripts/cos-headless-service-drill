@@ -96,9 +96,10 @@ if [ "$RUN_PROVIDER_SMOKE" = "1" ]; then
   PROVIDER_SMOKE_STATUS="ran"
 fi
 
-python3 - <<'PY' "$WORKSPACE" "$HEAD_SHA" "$PROVIDER_SMOKE_STATUS" "$JSON" "$KEEP_WORKSPACE"
+python3 - <<'PY' "$WORKSPACE" "$HEAD_SHA" "$PROVIDER_SMOKE_STATUS" "$JSON" "$KEEP_WORKSPACE" "$ROOT"
 from __future__ import annotations
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -107,6 +108,7 @@ head_sha = sys.argv[2]
 provider_smoke_status = sys.argv[3]
 json_output = sys.argv[4] == "1"
 keep_workspace = sys.argv[5] == "1"
+root = Path(sys.argv[6])
 
 def read(name: str) -> dict:
     raw = (workspace / f".{name}.out").read_text(errors="replace")
@@ -157,6 +159,56 @@ summary = {
     "result_workspace": (worker_json.get("result") or {}).get("workspace"),
     "results": results,
 }
+
+def record_evidence(args: list[str]) -> dict:
+    command = [str(root / "scripts" / "proof-drill-evidence-record"), *args, "--json"]
+    result = subprocess.run(command, cwd=root, text=True, capture_output=True, check=False)
+    payload = None
+    if result.stdout.strip().startswith("{"):
+        try:
+            payload = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            payload = None
+    return {"exit_code": result.returncode, "json": payload, "stderr": result.stderr.strip()[-400:]}
+
+evidence_recording = {}
+evidence_recording["headless-docker-service-drill"] = record_evidence([
+    "--id", "headless-docker-service-drill",
+    "--status", "passed" if summary["ok"] else "failed",
+    "--scope", "os-self",
+    "--command", "scripts/cos-headless-service-drill --json",
+    "--exit-code", "0" if summary["ok"] else "1",
+    "--artifact", "docs/reports/proof-drill-evidence-latest.json",
+    *(["--artifact", str(summary["artifact_dir"])] if summary.get("artifact_dir") else []),
+    "--proves", "Docker/headless service worker can self-test, submit a local task, process it, drain the queue, and keep artifacts.",
+    "--does-not-prove", "Provider-backed Codex/Claude execution or remote cloud worker support.",
+    "--source-report", "docs/reports/proof-drill-evidence-latest.json",
+])
+if provider_smoke_status == "ran":
+    provider_worker_json = (results.get("provider_worker", {}).get("json") or {})
+    provider_drain_json = (results.get("provider_drain", {}).get("json") or {})
+    provider_ok = (
+        results.get("provider_submit", {}).get("exit_code") == 0
+        and results.get("provider_worker", {}).get("exit_code") == 0
+        and provider_worker_json.get("status") == "completed"
+        and (provider_drain_json.get("counts") or {}).get("completed", 0) >= 1
+    )
+    provider_artifact = (provider_worker_json.get("result") or {}).get("artifact_dir")
+    evidence_recording["headless-codex-provider-smoke"] = record_evidence([
+        "--id", "headless-codex-provider-smoke",
+        "--status", "passed" if provider_ok else "failed",
+        "--scope", "os-self",
+        "--command", "COS_RUN_PROVIDER_SMOKE=1 COS_CODEX_EXEC_MODEL=<supported-model> scripts/cos-headless-service-drill --json --keep-workspace",
+        "--exit-code", "0" if provider_ok else "1",
+        "--artifact", "docs/reports/proof-drill-evidence-latest.json",
+        *(["--artifact", str(provider_artifact)] if provider_artifact else []),
+        "--proves", "Host Codex provider execution can be invoked through the service-control-plane adapter with explicit opt-in and supported model pin.",
+        "--does-not-prove", "Claude provider execution, container credential inheritance, remote ingress, VM, Kubernetes, or unconfigured providers.",
+        "--source-report", "docs/reports/proof-drill-evidence-latest.json",
+    ])
+summary["evidence_recording"] = evidence_recording
+if any(row.get("exit_code") != 0 for row in evidence_recording.values()):
+    summary["ok"] = False
 if json_output:
     print(json.dumps(summary, sort_keys=True))
 else:

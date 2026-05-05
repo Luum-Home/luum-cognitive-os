@@ -99,7 +99,7 @@ scripts/cos-auth-probe --provider codex --mode account-session --json
 # status=ready, command="codex login status", credential_store_access=forbidden
 
 scripts/cos-auth-probe --provider claude --mode account-session --json
-# status=unsupported, reason="claude CLI not found on PATH"
+# status=ready when Claude Code is installed at PATH or a governed known location such as $HOME/.local/bin/claude
 ```
 
 Inside Docker worker:
@@ -111,7 +111,7 @@ docker compose -f docker/cos-worker/docker-compose.yml run --rm cos-worker \
 
 docker compose -f docker/cos-worker/docker-compose.yml run --rm cos-worker \
   scripts/cos-auth-probe --provider claude --mode account-session --json
-# status=unsupported, reason="claude CLI not found on PATH"
+# status=ready when Claude Code is installed at PATH or a governed known location such as $HOME/.local/bin/claude
 ```
 
 Interpretation: the current container **does not inherit** host Codex/Claude
@@ -126,10 +126,11 @@ protected host executor bridge.
 scripts/cos-headless-service-drill --json --keep-workspace
 # ok=true
 # host_codex_status=ready
-# host_claude_status=unsupported
+# host_claude_status=ready when Claude Code is installed/authenticated on the host; otherwise unsupported
 # container_codex_status=unsupported
 # container_claude_status=unsupported
 # local_task_status=completed
+# evidence_recording.headless-docker-service-drill.exit_code=0
 ```
 
 The completed task wrote artifacts under:
@@ -173,6 +174,36 @@ The official Codex CLI was authenticated and executed through the host adapter.
 The adapter redacted the prompt in `command_shape` and did not read Codex
 credential stores directly.
 
+### Host Claude provider smoke
+
+Claude provider execution is separate from the Docker local-command proof and
+remains cost-bearing. It must be opted in manually through the service-control
+plane and a supported model pin:
+
+```bash
+scripts/cos-task-submit --project-dir /tmp/cos-claude-provider.<id> \
+  --kind provider --executor claude-cli-host \
+  --task-id task-claude-provider-proof \
+  --prompt 'Reply exactly: COS_CLAUDE_PROVIDER_SMOKE_OK' --json
+
+COS_CLAUDE_EXEC_MODEL=sonnet scripts/cos-worker-run-once \
+  --project-dir /tmp/cos-claude-provider.<id> \
+  --worker-id host-claude-proof --allow-provider-call --json
+```
+
+Expected evidence shape:
+
+```text
+status=completed
+provider_calls=1
+returncode=0
+message=COS_CLAUDE_PROVIDER_SMOKE_OK
+```
+
+Record the result through `scripts/proof-drill-evidence-record` as
+`claude-provider-host-smoke`; ACC maps it to
+`proof_claim:host-claude-provider-adapter`.
+
 ## Current conclusion
 
 - Proven: Docker worker boots and executes a non-model COS task through queue,
@@ -182,10 +213,13 @@ credential stores directly.
 - Proven: account-backed host Codex provider execution works through the service
   adapter when `COS_RUN_PROVIDER_SMOKE=1` and `COS_CODEX_EXEC_MODEL` pins a
   model supported by the installed CLI.
+- Proven: account-backed host Claude provider execution works through the service
+  adapter when `--allow-provider-call` is explicit and `COS_CLAUDE_EXEC_MODEL`
+  pins a model supported by the installed CLI.
 - Proven negative: Docker worker does not automatically inherit host Codex or
   Claude Code account sessions.
-- Not proven: Claude Code provider execution, because `claude` CLI is not on
-  PATH in this environment.
+- Not proven: Claude or Codex provider execution inside the container, remote
+  ingress, VM, Kubernetes, or protected host-cli bridge execution.
 
 ## Cleanup
 
