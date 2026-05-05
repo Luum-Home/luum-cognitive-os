@@ -44,14 +44,17 @@ if [[ ! -f "${AUDIT_SCRIPT}" ]]; then
     exit 0
 fi
 
-# SessionStart must stay fast.  Default to scheduling the weekly audit in the
-# background; tests and manual proof drills can opt into the legacy synchronous
-# advisory path with COS_ASPIRATIONAL_AUDIT_SYNC=true.
+# SessionStart must stay fast and must not dirty tracked report files. Default
+# to scheduling a dry-run summary in the background; tests and manual proof
+# drills can opt into the legacy synchronous advisory/write path with
+# COS_ASPIRATIONAL_AUDIT_SYNC=true.
 if [[ "${COS_ASPIRATIONAL_AUDIT_SYNC:-false}" != "true" ]]; then
     mkdir -p "${METRICS_DIR}" 2>/dev/null || true
     date +%s > "${MARKER_FILE}" 2>/dev/null || true
     (
         python3 "${AUDIT_SCRIPT}" \
+            --dry-run \
+            --json \
             --project-root "${PROJECT_DIR}" \
             >/dev/null 2>&1
     ) &
