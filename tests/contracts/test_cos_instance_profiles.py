@@ -24,6 +24,7 @@ REQUIRED_PROFILE_FIELDS = {
     "writes",
     "requires",
     "smoke_commands",
+    "proof_drill_ids",
     "evidence_sources",
 }
 
@@ -54,6 +55,7 @@ def test_instance_profile_manifest_contract() -> None:
         assert isinstance(profile["entrypoints"], list)
         assert isinstance(profile["writes"], list)
         assert isinstance(profile["smoke_commands"], list)
+        assert isinstance(profile["proof_drill_ids"], list)
         assert isinstance(profile["evidence_sources"], list)
 
     assert {"local", "docker-headless", "host-cli-bridge", "vm", "k8s"} <= ids
@@ -70,6 +72,14 @@ def test_local_and_docker_profiles_dry_run() -> None:
     assert docker["plan"]["profile"] == "docker-headless"
     assert docker["plan"]["file_checks"]
     assert "scripts/cos-headless-service-drill --json" in docker["plan"]["smoke_commands"]
+    assert {row["id"] for row in docker["plan"]["proof_drills"]} >= {"headless-docker-service-drill", "headless-codex-provider-smoke"}
+
+
+def test_instance_doctor_and_smoke_expose_proof_drill_handoff() -> None:
+    docker = _run("--profile", "docker-headless", "--dry-run", "--doctor", "--smoke", "--json")
+    assert docker["plan"]["proof_drills"]
+    assert any(row["opt_in_required"] for row in docker["plan"]["proof_drills"])
+    assert any("opt-in drills are not executed automatically" in note for note in docker["plan"]["notes"])
 
 
 def test_write_creates_instance_metadata_in_disposable_workspace() -> None:
