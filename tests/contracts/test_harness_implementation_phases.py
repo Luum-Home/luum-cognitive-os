@@ -14,7 +14,7 @@ def test_harness_phase_manifest_tracks_implemented_structural_harnesses() -> Non
     structural = phases["phases"]["structural-instruction-harnesses"]
 
     assert structural["status"] == "in_progress"
-    assert {"opencode", "vscode-copilot", "cursor", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"} <= set(structural["implemented_harnesses"])
+    assert {"opencode", "vscode-copilot", "cursor", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"} <= set(structural["implemented_harnesses"])
     assert "acc_default_full_projection_counts" in structural["acceptance"]
 
     shell_ci = phases["phases"]["shell-ci-formal-harness"]
@@ -32,7 +32,7 @@ def test_implemented_harnesses_have_projection_commands_and_limitations() -> Non
     implemented = [item for item in manifest["harnesses"] if item["status"] == "implemented"]
 
     ids = {item["id"] for item in implemented}
-    assert {"claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "shell-ci"} <= ids
+    assert {"claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci"} <= ids
     for item in implemented:
         assert item.get("default_command"), item["id"]
         assert item.get("proof") not in {None, "none"}, item["id"]
@@ -54,6 +54,13 @@ def test_structural_harnesses_do_not_claim_runtime_support() -> None:
         "jetbrains-junie",
         "qoder",
         "factory-droid",
+        "cline",
+        "continue-dev",
+        "kilo-code",
+        "zed-ai",
+        "augment-code",
+        "goose",
+        "aider",
     }
 
     by_id = {item["id"]: item for item in manifest["harnesses"]}
