@@ -159,10 +159,6 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/dangerous-env-flag-detector.sh\""
-          },
-          {
-            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/protected-config-write-guard.sh\""
           },
           {
@@ -684,7 +680,9 @@
         ]
       }
     ],
-    "TaskCompleted": []
+    "TaskCompleted": [
+
+    ]
   },
   "permissions": {
     "deny": [
