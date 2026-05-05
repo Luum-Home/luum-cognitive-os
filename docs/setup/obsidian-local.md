@@ -93,9 +93,25 @@ bash scripts/export-engram-to-obsidian.sh \
   --write
 ```
 
+Local proof vault used for the 2026-05-05 manual run:
+
+```text
+$HOME/.cognitive-os/obsidian-vaults/luum-agent-os
+```
+
+Optional automation exists as an explicit Stop-hook helper:
+
+```bash
+COS_OBSIDIAN_VAULT=/absolute/path/to/obsidian-vault \
+bash hooks/engram-obsidian-export-on-stop.sh
+```
+
+Register that hook only when the operator wants session-end export on that
+device. With `COS_OBSIDIAN_VAULT` unset, the hook exits 0 without exporting.
+
 ## Safety invariants
 
 - Installing Obsidian does not enable automatic Engram export.
 - The export script is still dry-run by default.
-- No Stop hook is registered for Obsidian sync.
+- Stop-hook export is opt-in through `COS_OBSIDIAN_VAULT`.
 - Vault paths are explicit and operator-owned.
