@@ -137,6 +137,20 @@ docker compose -f .cognitive-os/docker-compose.cognitive-os.yml up -d
 Cognitive OS services are completely isolated — zero dependencies on your
 application. Remove it with zero impact on your app.
 
+**Headless / cloud-worker container** (alternative deployment path)
+
+If you want to evaluate Cognitive OS without installing it onto your shell
+profile, or you need a CI / cloud worker that runs the same hooks the
+maintainer's machine runs, use the ADR-140 worker container:
+
+```bash
+bash scripts/cos-cloud-worker-bootstrap.sh self-test
+```
+
+Cross-OS (Linux / macOS / Windows + WSL2). BYOK credentials per ADR-139.
+Full stack with engram-cloud replication via `up-full`. See the operator
+runbook: [`docs/runbooks/run-cos-in-docker.md`](docs/runbooks/run-cos-in-docker.md).
+
 **Configuration** — main config in `cognitive-os.yaml`:
 `project.phase`, `project.name`, `project.type`, model routing, quality gates.
 
