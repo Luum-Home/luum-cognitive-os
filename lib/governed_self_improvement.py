@@ -103,6 +103,7 @@ def suggest_improvement_signals(
         metrics / "skill-metrics.jsonl"
     )
     sessions = _read_jsonl(metrics / "session-learnings.jsonl")
+    key_learnings = _read_jsonl(metrics / "key-learnings.jsonl")
 
     signals: list[ImprovementSignal] = []
 
@@ -164,6 +165,26 @@ def suggest_improvement_signals(
                     priority="P2",
                 )
             )
+
+    for entry in key_learnings:
+        if entry.get("actionability") != "candidate-improvement":
+            continue
+        text = str(entry.get("text") or "").strip()
+        if not text:
+            continue
+        slug = _slugify(f"codify learning {text}")
+        artifact = str(entry.get("recommended_artifact") or "documentation")
+        signals.append(
+            ImprovementSignal(
+                signal_type="key_learning_candidate",
+                slug=slug,
+                title=f"Codify key learning as `{artifact}`",
+                summary=f"Captured key learning suggests a durable {artifact}: {text}",
+                evidence=[entry],
+                recommended_artifact=artifact,
+                priority="P2",
+            )
+        )
 
     return signals
 
