@@ -146,6 +146,12 @@ scripts/cos-queue-drain --json
 Goal: invoke account-backed or API-backed provider runtimes through explicit
 adapters.
 
+Status: **implemented only to auth-probe plus host-adapter dry-run skeleton**.
+`codex-cli-host` and `claude-cli-host` can be admitted as provider tasks and
+produce artifact bundles without model calls. Real provider execution remains
+behind `--allow-provider-call`; Claude execution is still blocked until a
+non-invasive account-session status probe exists.
+
 Provider adapters should be added in this order:
 
 1. `local-command` — no model, no credentials, proves queue and artifacts.
@@ -199,9 +205,20 @@ Acceptance criteria:
 - account-backed host CLI adapters are allowed for maintainer/local mode but
   are not assumed portable to Docker/cloud.
 
+Validation:
+
+```bash
+python3 -m pytest tests/unit/test_cos_auth_probe.py tests/unit/test_service_control_plane_local_queue.py -q
+```
+
 ## Phase 4 — Crash/resume and WIP safety
 
 Goal: make failed headless tasks recoverable.
+
+Status: **partially implemented** for the local Phase 1/2 proof. A worker can
+simulate a crash after lease acquisition, the lease expires, and a later
+`cos-worker-run-once` can reclaim the pending task. This is not yet a durable
+long-running heartbeat scheduler.
 
 Required behavior:
 
