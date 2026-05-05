@@ -1187,7 +1187,6 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
         rule = project_dir / ".kilocode" / "rules" / "cognitive-os.md"
         rule.parent.mkdir(parents=True, exist_ok=True)
         rule.write_text("# Cognitive OS for Kilo Code\n\n" + common_body, encoding="utf-8")
-        _write_json_if_changed(project_dir / ".kilocode" / "mcp.json", {"mcpServers": {}})
         _write_json_if_changed(
             project_dir / ".kilo" / "kilo.jsonc",
             {
@@ -1196,7 +1195,7 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
                 "permissions": {"default": "ask"},
             },
         )
-        print("Created AGENTS.md, .kilocode/rules/cognitive-os.md, .kilocode/mcp.json, and .kilo/kilo.jsonc with Kilo COS projection")
+        print("Created AGENTS.md, .kilocode/rules/cognitive-os.md, and .kilo/kilo.jsonc with Kilo COS projection")
         return
 
     if harness == "zed-ai":
@@ -1215,8 +1214,13 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
         rule = project_dir / ".augment" / "rules" / "cognitive-os.md"
         rule.parent.mkdir(parents=True, exist_ok=True)
         rule.write_text("# Cognitive OS for Augment\n\n" + common_body, encoding="utf-8")
-        _write_json_if_changed(project_dir / ".augment" / "settings.json", {"mcpServers": {}, "permissions": {"default": "ask"}})
-        print("Created .augment/rules/cognitive-os.md and .augment/settings.json with Augment COS projection")
+        _write_json_if_changed(project_dir / ".augment" / "mcp.json", {"mcpServers": {}})
+        (project_dir / ".augment" / "README.md").write_text(
+            "# Augment/Auggie Cognitive OS Projection\n\n"
+            "Use `auggie --rules .augment/rules/cognitive-os.md --mcp-config .augment/mcp.json` from the project root when opting into this structural projection. No user-global Augment settings are written.\n",
+            encoding="utf-8",
+        )
+        print("Created .augment/rules/cognitive-os.md and .augment/mcp.json with Augment COS projection")
         return
 
     if harness == "goose":
@@ -1227,8 +1231,7 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
             + "\nGoose should treat this file as project-local guidance. MCP/server setup remains operator-controlled.\n",
             encoding="utf-8",
         )
-        _write_json_if_changed(project_dir / ".goose" / "config.json", {"mcpServers": {}})
-        print("Created .goosehints and .goose/config.json with Goose COS projection")
+        print("Created .goosehints with Goose COS projection")
         return
 
     if harness == "aider":
@@ -1499,7 +1502,7 @@ def main(argv: list[str] | None = None) -> int:  # noqa: C901 — port fidelity 
     elif harness == "augment-code":
         driver_dirs.extend([".augment/rules"])
     elif harness == "goose":
-        driver_dirs.extend([".goose"])
+        driver_dirs.extend([])
     elif harness == "aider":
         driver_dirs.extend(["."])
     elif harness == "shell-ci":
