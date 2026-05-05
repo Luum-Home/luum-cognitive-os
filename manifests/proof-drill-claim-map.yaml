@@ -1,0 +1,59 @@
+schema_version: proof-drill-claim-map.v1
+review_date: 2026-05-05
+owner: cognitive-os-maintainers
+purpose: Map durable COS runtime claims to concrete proof-drill evidence rows so ACC can distinguish documented intent from proven behavior.
+policy:
+  evidence_source: docs/reports/proof-drill-evidence-latest.json
+  no_evidence_status: unverified
+  failed_evidence_status: stale
+  passing_evidence_default_status: aligned
+  consumer_boundary: os-self proof claims remain SO-local unless a consumer projection profile explicitly installs the related primitive and proof drill.
+claims:
+  - id: headless-docker-local-command-runtime
+    proof_drill_id: headless-docker-service-drill
+    claim: Docker/headless service worker can self-test, submit a local command, process it, drain the queue, and preserve artifacts.
+    scope: os-self
+    risk: high
+    consumer_accessibility: so-local-only
+    lifecycle_status: real
+    status_when_passed: aligned
+    weight: 3
+    docs:
+      - docs/manual-tests/headless-docker-service-runtime.md
+      - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  - id: host-codex-provider-adapter
+    proof_drill_id: headless-codex-provider-smoke
+    claim: Host Codex provider execution can be invoked through the service-control-plane adapter with explicit opt-in and supported model pin.
+    scope: os-self
+    risk: high
+    consumer_accessibility: so-local-only
+    lifecycle_status: real
+    status_when_passed: aligned
+    weight: 3
+    docs:
+      - docs/manual-tests/headless-docker-service-runtime.md
+      - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  - id: host-claude-provider-adapter
+    proof_drill_id: claude-provider-host-smoke
+    claim: Host Claude provider execution can be invoked through the service-control-plane adapter with explicit opt-in and supported model pin.
+    scope: os-self
+    risk: high
+    consumer_accessibility: so-local-only
+    lifecycle_status: real
+    status_when_passed: aligned
+    weight: 3
+    docs:
+      - docs/manual-tests/headless-docker-service-runtime.md
+      - docs/reports/proof-drill-opt-in-run-2026-05-05.md
+  - id: qwen-live-fallback-host
+    proof_drill_id: qwen-fallback-live-smoke
+    claim: Qwen live fallback is configured and passed the host smoke checks.
+    scope: os-self
+    risk: medium
+    consumer_accessibility: so-local-only
+    lifecycle_status: real
+    status_when_passed: aligned
+    weight: 2
+    docs:
+      - docs/runbooks/llm-dispatch.md
+      - docs/reports/proof-drill-opt-in-run-2026-05-05.md

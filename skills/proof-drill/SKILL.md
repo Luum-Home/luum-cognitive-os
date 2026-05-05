@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 name: proof-drill
 version: 1.0.0

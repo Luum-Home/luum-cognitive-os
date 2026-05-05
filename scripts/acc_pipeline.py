@@ -39,6 +39,7 @@ DEFAULT_WEIGHTS = {
     "doc_claim": 2,
     "primitive_family": 3,
     "proof_drill": 2,
+    "proof_claim": 3,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -606,6 +607,74 @@ def apply_fail_new_gate(payload: dict[str, Any], baseline: dict[str, Any], stric
 
 
 
+def load_proof_drill_claim_map(root: Path, evidence_by_id: dict[str, dict[str, Any]]) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "manifests" / "proof-drill-claim-map.yaml"
+    if not path.exists():
+        return AdapterStatus("unverified", "manifests/proof-drill-claim-map.yaml", error="missing proof drill claim map"), [], []
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    claims = data.get("claims", []) if isinstance(data, dict) else []
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    status_counts: dict[str, int] = {}
+    for claim in claims:
+        claim_id = str(claim.get("id", ""))
+        proof_id = str(claim.get("proof_drill_id", ""))
+        evidence_row = evidence_by_id.get(proof_id)
+        proof_status = str((evidence_row or {}).get("status", "unverified"))
+        status_counts[proof_status] = status_counts.get(proof_status, 0) + 1
+        if proof_status == "passed":
+            mapping = str(claim.get("status_when_passed", "aligned"))
+        elif proof_status == "failed":
+            mapping = "stale"
+        else:
+            mapping = "unverified"
+        evidence = [
+            f"proof_drill_id:{proof_id}",
+            f"proof_drill_status:{proof_status}",
+            f"claim_scope:{claim.get('scope', '')}",
+        ]
+        evidence.extend(str(item) for item in claim.get("docs", []) or [])
+        if evidence_row:
+            evidence.extend(str(item) for item in evidence_row.get("evidence_artifacts", []) or [])
+        capabilities.append(Capability(
+            id=f"proof_claim:{claim_id}",
+            kind="proof_claim",
+            source={"path": str(path.relative_to(root)), "proof_drill_id": proof_id},
+            risk=str(claim.get("risk", "medium")),
+            signature={"scope": claim.get("scope"), "proof_drill_id": proof_id, "proof_status": proof_status},
+            represented_by=[{"kind": "proof_claim", "id": claim_id, "source": proof_id, "role": "claim-to-proof"}],
+            mapping_status=mapping if mapping in MAPPING_STATUSES else "unverified",
+            confidence=0.94 if mapping == "aligned" else 0.72,
+            consumer_accessibility=str(claim.get("consumer_accessibility", "so-local-only")),
+            lifecycle_status=str(claim.get("lifecycle_status", "real")),
+            evidence=evidence[:12],
+            weight=int(claim.get("weight", DEFAULT_WEIGHTS["proof_claim"])),
+        ))
+        if mapping == "stale":
+            findings.append(Finding(
+                f"proof_claim:{claim_id}",
+                "high",
+                "stale",
+                "Proof-backed claim has failed evidence",
+                evidence[:8],
+                "repair the runtime or downgrade the claim",
+            ))
+        elif mapping == "unverified":
+            findings.append(Finding(
+                f"proof_claim:{claim_id}",
+                "medium",
+                "unverified",
+                "Proof-backed claim lacks passing evidence",
+                evidence[:8],
+                "run or record the mapped proof drill",
+            ))
+    return AdapterStatus(
+        "ok",
+        str(path.relative_to(root)),
+        summary={"claims": len(claims), "proof_status_counts": dict(sorted(status_counts.items()))},
+    ), capabilities, findings
+
+
 def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
     path = root / "docs" / "reports" / "proof-drill-evidence-latest.json"
     if not path.exists():
@@ -615,7 +684,10 @@ def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capabilit
     capabilities: list[Capability] = []
     findings: list[Finding] = []
     status_counts: dict[str, int] = {}
+    evidence_by_id: dict[str, dict[str, Any]] = {}
     for row in rows:
+        proof_id = str(row.get("id", ""))
+        evidence_by_id[proof_id] = row
         status = str(row.get("status", "unverified"))
         status_counts[status] = status_counts.get(status, 0) + 1
         mapping = "aligned" if status == "passed" else "stale" if status == "failed" else "unverified"
@@ -626,12 +698,12 @@ def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capabilit
         ]
         evidence.extend(str(item) for item in row.get("evidence_artifacts", []))
         capabilities.append(Capability(
-            id=f"proof_drill:{row.get('id', '')}",
+            id=f"proof_drill:{proof_id}",
             kind="proof_drill",
-            source={"path": data.get("source_report", str(path.relative_to(root))), "proof_drill_id": row.get("id", "")},
+            source={"path": data.get("source_report", str(path.relative_to(root))), "proof_drill_id": proof_id},
             risk="medium" if "provider" not in str(row.get("command", "")).lower() else "high",
             signature={"scope": row.get("scope"), "exit_code": row.get("exit_code"), "status": status},
-            represented_by=[{"kind": "proof_drill", "id": row.get("id", ""), "source": row.get("command", ""), "role": "evidence"}],
+            represented_by=[{"kind": "proof_drill", "id": proof_id, "source": row.get("command", ""), "role": "evidence"}],
             mapping_status=mapping,
             confidence=0.92 if mapping == "aligned" else 0.7,
             consumer_accessibility="so-local-only" if row.get("scope") == "os-self" else "projectable-needs-driver",
@@ -641,17 +713,27 @@ def load_proof_drill_evidence(root: Path) -> tuple[AdapterStatus, list[Capabilit
         ))
         if mapping == "stale":
             findings.append(Finding(
-                f"proof_drill:{row.get('id', '')}",
+                f"proof_drill:{proof_id}",
                 "high",
                 "stale",
                 "Proof drill evidence recorded a failed run",
                 evidence[:8],
                 "repair the runtime or downgrade the claim",
             ))
+    claim_status, claim_capabilities, claim_findings = load_proof_drill_claim_map(root, evidence_by_id)
+    capabilities.extend(claim_capabilities)
+    findings.extend(claim_findings)
+    adapter_summary = {"rows": len(rows), "status_counts": dict(sorted(status_counts.items()))}
+    if claim_status.status == "ok":
+        adapter_summary["claim_map"] = claim_status.summary
+    else:
+        adapter_summary["claim_map_status"] = claim_status.status
+        if claim_status.error:
+            adapter_summary["claim_map_error"] = claim_status.error
     return AdapterStatus(
         "ok",
         str(path.relative_to(root)),
-        summary={"rows": len(rows), "status_counts": dict(sorted(status_counts.items()))},
+        summary=adapter_summary,
     ), capabilities, findings
 
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
