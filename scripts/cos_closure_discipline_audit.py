@@ -15,6 +15,11 @@ import subprocess
 import sys
 from dataclasses import dataclass, asdict
 from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.project_paths import safe_relpath as rel
 from typing import Iterable
 
 WORKFLOW_REF_RE = re.compile(r"\.github/workflows/([A-Za-z0-9_.-]+\.ya?ml)\b")
@@ -47,13 +52,6 @@ def iter_text_files(root: Path, dirs: Iterable[str]) -> Iterable[Path]:
             if path.name == "test_closure_discipline_audit.py":
                 continue
             yield path
-
-
-def rel(root: Path, path: Path) -> str:
-    try:
-        return str(path.relative_to(root))
-    except ValueError:
-        return str(path)
 
 
 def audit_disabled_workflow_references(root: Path) -> list[Finding]:

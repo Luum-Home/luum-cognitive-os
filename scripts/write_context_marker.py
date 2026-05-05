@@ -34,6 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from lib.time_utils import now_iso as _now_iso
+
 from scripts.cos_task_claims import claim_task
 
 VALID_KINDS = ("orchestrator", "subagent", "cron", "hook", "human")
@@ -43,10 +45,6 @@ MAX_PARENT_DEPTH = 10
 # ---------------------------------------------------------------------------
 # Fix 2 (ADR-097): PID capture — update active-tasks.json when subagent starts
 # ---------------------------------------------------------------------------
-
-def _now_iso() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
 
 def _active_tasks_path(repo: Path) -> Path:
     return repo / ".cognitive-os" / "tasks" / "active-tasks.json"
