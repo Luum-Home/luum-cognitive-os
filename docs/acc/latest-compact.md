@@ -2,13 +2,14 @@
 
 > Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
 
-Generated: 2026-05-05T17:39:13Z
+Generated: 2026-05-05T18:14:41Z
 Gate: pass (reconstruction)
 ACC: 0.9973
 ACC effective: 0.9986
-Capabilities: 802
+Capabilities: 806
 Findings: 2
 New debt gate: pass (0)
+Primitive fitness reports: 0
 
 ## Warnings
 
@@ -16,7 +17,7 @@ New debt gate: pass (0)
 
 ## Mapping Weights
 
-- aligned: 2190
+- aligned: 2202
 - missing: 0
 - overexposed: 0
 - partial: 6
@@ -30,7 +31,7 @@ New debt gate: pass (0)
 - maintainer-only: 57
 - profile-driver: 19
 - shell-ci-candidate: 15
-- so-local-only: 708
+- so-local-only: 712
 
 ## Top Findings
 
