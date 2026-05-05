@@ -11,6 +11,7 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+- [Proof Drill and Smoke Opt-In Primitives](architecture/proof-drill-and-smoke-opt-in-primitives.md) — registry-backed boundary between SO self-build tests, consumer-project validation, smoke opt-ins, and proof drills.
 - [COS Instance Installer Implementation Roadmap](../.cognitive-os/plans/architecture/cos-instance-installer-implementation-plan.md) — phased runbook for local, Docker/headless, host CLI bridge, remote ingress, worktree/PR, VM, and Kubernetes instance modes.
 - [ADR-164: Host CLI Bridge Security Boundary](adrs/ADR-164-host-cli-bridge-security-boundary.md) — security contract for letting service runtimes request official host CLIs without copying credential stores.
 - [COS Instance Installer](architecture/cos-instance-installer.md) — separates consumer-project projection from operational SO instance provisioning for local, Docker/headless, host bridge, VM, and Kubernetes profiles.

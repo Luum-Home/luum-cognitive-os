@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 158
+Total skills: 159
 
 ## os (17)
 
@@ -67,7 +67,7 @@ Total skills: 158
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (33)
+## both (34)
 
 | Skill | Description |
 |-------|-------------|
@@ -91,6 +91,7 @@ Total skills: 158
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
 | preserved-wip-cleanup | Backup preserved WIP, remove temporary blockers, and prove the inventory is clean. |
 | primitive-harvester | Turn repeatable high-value conversation recipes into governed primitive proposals. |
+| proof-drill | Select opt-in proof drills and smoke checks without default-lane pollution. |
 | redteam-harness | Execute red-team scenarios, aggregate baseline, and detect ADR-105 verb violations. |
 | repo-forensics | Deep forensic analysis of git repositories. |
 | repo-scout | Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals). |
