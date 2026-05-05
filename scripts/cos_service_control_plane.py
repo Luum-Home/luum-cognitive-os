@@ -375,17 +375,18 @@ def run_host_cli_adapter(
             command_shape.extend(["--model", codex_model])
         command_shape.append(prompt)
     else:
-        command_shape = ["claude", "-p", prompt]
+        claude_binary = os.environ.get("COS_CLAUDE_BIN", "").strip() or cos_auth_probe._which_claude(os.environ.get("PATH")) or "claude"
+        command_shape = [claude_binary, "-p", "--output-format", "json", "--tools", ""]
+        claude_model = os.environ.get("COS_CLAUDE_EXEC_MODEL", "").strip()
+        if claude_model:
+            command_shape.extend(["--model", claude_model])
+        command_shape.append(prompt)
 
     if allow_provider_call:
         if probe.status != cos_auth_probe.READY:
             status = "auth_required"
             returncode = 2
             reason = probe.reason
-        elif executor_id == "claude-cli-host":
-            status = "unsupported"
-            returncode = 3
-            reason = "claude-cli-host provider execution is not enabled until a non-invasive auth status probe is implemented"
         else:
             result = subprocess.run(
                 command_shape,
@@ -413,7 +414,7 @@ def run_host_cli_adapter(
         "artifact_dir": str(task_dir),
         "redactions": stdout_redactions + stderr_redactions,
         "provider_calls": provider_calls,
-        "command_shape": command_shape[:-1] + ["<prompt>"],
+        "command_shape": ([Path(command_shape[0]).name] + command_shape[1:-1]) + ["<prompt>"],
     }
     atomic_write_json(task_dir / "task.json", task)
     atomic_write_json(task_dir / "lease.json", asdict(lease))
