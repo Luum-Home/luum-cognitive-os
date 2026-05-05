@@ -6738,3 +6738,206 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/reports/test-runs/*/skip-summary.json
+
+- id: hooks/engram-obsidian-export-on-stop.sh
+  kind: hook
+  owner_adr: ADR-071
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/engram-obsidian-export-on-stop.sh
+  runtime_projection: true
+  behavior_evidence: Optional Stop hook exports Engram observations to Obsidian; no-op unless COS_OBSIDIAN_VAULT is set.
+  evidence_commands:
+  - bash -n hooks/engram-obsidian-export-on-stop.sh
+  - python3 -m pytest tests/behavior/test_engram_obsidian_export_hook.py -q
+  rollback_or_repair_command: Remove the Stop hook registration or unset COS_OBSIDIAN_VAULT to disable export.
+  sunset_criteria: Archive if Engram Obsidian export moves to an explicit user-run command or native memory sync.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/*/obsidian-export.jsonl
+
+- id: scripts/security-red-team
+  kind: script
+  owner_adr: ADR-164
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/security-red-team
+  - scripts/security_red_team.py
+  - manifests/security-red-team.yaml
+  - docs/security/security-red-team.md
+  runtime_projection: false
+  behavior_evidence: Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring, and mitigation backlog generation.
+  evidence_commands:
+  - bash -n scripts/security-red-team
+  - python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py -q
+  rollback_or_repair_command: Keep the runner manual-only and repair the manifest/contracts before projecting it into a default lane.
+  sunset_criteria: Promote after stable security lane evidence exists, or archive if the workflow moves into a typed security audit package.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/reports/security-red-team-latest.json
+
+- id: scripts/security_red_team.py
+  kind: script
+  owner_adr: ADR-164
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/security_red_team.py
+  - manifests/security-red-team.yaml
+  runtime_projection: false
+  behavior_evidence: Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.
+  evidence_commands:
+  - python3 -m py_compile scripts/security_red_team.py
+  - python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py -q
+  rollback_or_repair_command: Keep scripts/security-red-team manual-only until implementation contracts pass.
+  sunset_criteria: Merge into a packaged security audit module if the runner graduates beyond maintainer use.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/reports/security-red-team-latest.json
+
+- id: scripts/cos-key-learnings-capture
+  kind: script
+  owner_adr: ADR-071
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-key-learnings-capture
+  - scripts/cos_key_learnings_capture.py
+  runtime_projection: false
+  behavior_evidence: Opt-in key-learnings capture helper for turning session learnings into improvement signals.
+  evidence_commands:
+  - bash -n scripts/cos-key-learnings-capture
+  - python3 -m py_compile scripts/cos_key_learnings_capture.py
+  rollback_or_repair_command: Keep the helper opt-in and repair the capture pipeline before adding it to default hooks.
+  sunset_criteria: Promote if learning capture becomes a stable hook/service primitive, or archive if superseded by native Engram passive capture.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/*/key-learnings.jsonl
+
+- id: hooks/network-egress-guard.sh
+  kind: hook
+  owner_adr: ADR-164
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  latency_budget_ms: 250
+  projection_targets:
+  - .claude/settings.json
+  - hooks/network-egress-guard.sh
+  - scripts/network_egress_guard.py
+  - manifests/network-egress-policy.yaml
+  runtime_projection: true
+  behavior_evidence: PreToolUse Bash guard blocks exfiltration-shaped external network commands unless COS_ALLOW_NETWORK_EGRESS is explicitly enabled.
+  evidence_commands:
+  - bash -n hooks/network-egress-guard.sh
+  - python3 -m py_compile scripts/network_egress_guard.py
+  - python3 -m pytest tests/security/test_boundary_enforcement_p0.py -q
+  repair_message: Review the blocked command for credential or secret exfiltration before setting COS_ALLOW_NETWORK_EGRESS=1.
+  false_positive_tests:
+  - tests/security/test_boundary_enforcement_p0.py
+  promotion_evidence:
+    primary_signal: runtime-safety-exit2
+    from_state: new
+    to_state: blocking
+    approved_by: operator
+    promoted_on: '2026-05-05'
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    rationale: Blocks exfiltration-shaped external network commands at the PreToolUse Bash boundary with explicit opt-out and false-positive tests.
+  rollback_or_repair_command: Remove the PreToolUse registration or set COS_ALLOW_NETWORK_EGRESS=1 only for explicitly reviewed one-off commands.
+  sunset_criteria: Promote after stable red-team coverage exists, or archive if network egress policy moves into a typed host bridge guard.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
+
+- id: hooks/protected-config-write-guard.sh
+  kind: hook
+  owner_adr: ADR-164
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  latency_budget_ms: 150
+  projection_targets:
+  - .claude/settings.json
+  - hooks/protected-config-write-guard.sh
+  - manifests/protected-config-write-policy.yaml
+  runtime_projection: true
+  behavior_evidence: PreToolUse edit/write guard blocks writes to protected control-plane paths unless COS_ALLOW_PROTECTED_CONFIG_WRITE is explicitly enabled.
+  evidence_commands:
+  - bash -n hooks/protected-config-write-guard.sh
+  - python3 -m pytest tests/security/test_boundary_enforcement_p0.py -q
+  repair_message: Review the protected control-plane write before setting COS_ALLOW_PROTECTED_CONFIG_WRITE=1.
+  false_positive_tests:
+  - tests/security/test_boundary_enforcement_p0.py
+  promotion_evidence:
+    primary_signal: runtime-safety-exit2
+    from_state: new
+    to_state: blocking
+    approved_by: operator
+    promoted_on: '2026-05-05'
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    rationale: Blocks accidental protected control-plane writes at the PreToolUse write boundary with explicit opt-out and false-positive tests.
+  rollback_or_repair_command: Remove the PreToolUse registration or set COS_ALLOW_PROTECTED_CONFIG_WRITE=1 only for explicitly reviewed control-plane edits.
+  sunset_criteria: Promote after stable protected-config tests exist, or archive if write protection moves into a typed host bridge guard.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: none
+
+
+- id: hooks/dangerous-env-flag-detector.sh
+  kind: hook
+  owner_adr: ADR-164
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/dangerous-env-flag-detector.sh
+  - scripts/dangerous_env_flag_detector.py
+  runtime_projection: true
+  behavior_evidence: Advisory SessionStart detector warns when dangerous COS override flags are active.
+  evidence_commands:
+  - bash -n hooks/dangerous-env-flag-detector.sh
+  - python3 -m py_compile scripts/dangerous_env_flag_detector.py
+  - python3 -m pytest tests/security/test_adversarial_p1_p2.py -q
+  rollback_or_repair_command: Unset dangerous COS override flags or disable the detector with COS_DANGEROUS_ENV_DETECTOR_DISABLE=1 for emergency probes.
+  sunset_criteria: Archive if dangerous override detection moves into a typed runtime environment guard.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
