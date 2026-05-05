@@ -1,0 +1,37 @@
+schema_version: security-red-team.v1
+review_date: 2026-05-05
+purpose: >-
+  Unified Cognitive OS red-team primitive contract: inventory surface, model
+  threats, execute deterministic abuse probes, score security controls per
+  primitive, and produce a mitigation backlog.
+outputs:
+  json: .cognitive-os/reports/security-red-team/security-red-team-latest.json
+  markdown: .cognitive-os/reports/security-red-team/security-red-team-latest.md
+families:
+  - surface-inventory
+  - threat-model
+  - abuse-probes
+  - primitive-scoring
+  - mitigation-backlog
+score_dimensions:
+  isolation_strength: Does the primitive reduce filesystem/process/network blast radius?
+  secret_handling: Does it avoid direct secret reads and redact/avoid secret outputs?
+  auditability: Does it emit structured evidence without sensitive data?
+  tamper_resistance: Does it detect drift or unauthorized mutation?
+  least_privilege: Does it run with narrow command/env/file access?
+  test_coverage: Are abuse/failure cases covered by automated tests?
+  failure_mode_clarity: Does it fail closed or clearly warn when degraded?
+  operator_ergonomics: Can a maintainer run it without unsafe shortcuts?
+required_probes:
+  - credential_safe_integrity
+  - credential_safe_env_boundary
+  - blocked_path_policy
+  - redteam_scenario_coverage
+  - scanner_hook_presence
+  - runtime_flag_registry
+  - mcp_security_surface
+severity_weights:
+  CRITICAL: 25
+  HIGH: 15
+  MEDIUM: 8
+  LOW: 3
