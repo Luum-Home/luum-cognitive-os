@@ -6,7 +6,7 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PHASES = REPO_ROOT / "manifests" / "cos-instance-implementation-phases.yaml"
-RUNBOOK = REPO_ROOT / "docs" / "architecture" / "cos-instance-installer-implementation-plan.md"
+RUNBOOK = REPO_ROOT / ".cognitive-os" / "plans" / "architecture" / "cos-instance-installer-implementation-plan.md"
 
 REQUIRED_PHASE_FIELDS = {
     "id",
