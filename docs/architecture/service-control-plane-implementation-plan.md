@@ -4,6 +4,23 @@ This plan turns the service-control-plane research into a staged build. It is
 deliberately not a new product claim. It is a proof ladder for making the future
 `cosd` boundary real without weakening credential safety or local DX.
 
+
+## Remote ingress and provider-adapter boundary
+
+ADR-161 adds the missing remote-operation boundary for this plan. `cosd` must
+treat Telegram, REST/webhooks, Paperclip, GitHub comments, and future chat
+surfaces as **remote ingress adapters** only: they authenticate, allowlist,
+normalize, rate-limit, and enqueue tasks. They do not own model credentials and
+do not execute tools directly.
+
+Provider/model work remains behind executor adapters with explicit credential
+mode and `auth_probe` status. OpenCode, official account-backed CLIs, API-key
+providers, OpenAI-compatible gateways, and local model runtimes are executor or
+provider-gateway candidates, not ingress surfaces.
+
+Research inventory: `manifests/remote-control-plane-alternatives.yaml`. Human
+report: `docs/reports/remote-control-plane-alternatives-2026-05-05.md`.
+
 ## Target architecture
 
 ```mermaid
