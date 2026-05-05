@@ -4352,7 +4352,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-security-assessment-plan.md"
+          "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
         },
         {
           "family": "doc",
@@ -5700,7 +5700,7 @@
         },
         {
           "family": "doc",
-          "path": "docs/security/cognitive-os-security-assessment-plan.md"
+          "path": ".cognitive-os/plans/research/cognitive-os-security-assessment-plan.md"
         },
         {
           "family": "doc",
