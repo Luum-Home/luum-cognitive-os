@@ -98,3 +98,10 @@ def test_new_structural_harnesses_are_promoted_in_landscape() -> None:
         assert by_id[harness]["proof_level"] == "structural"
     assert by_id["kiro"]["status"] == "lifecycle-investigation"
     assert by_id["kiro"]["proof_level"] == "none"
+
+
+def test_rules_mcp_harnesses_are_promoted_in_landscape() -> None:
+    by_id = {item["id"]: item for item in _landscape()["candidates"]}
+    for harness in ("cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"):
+        assert by_id[harness]["status"] == "implemented"
+        assert by_id[harness]["proof_level"] == "structural"
