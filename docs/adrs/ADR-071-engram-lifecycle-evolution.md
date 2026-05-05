@@ -254,7 +254,11 @@ New files introduced in this addendum:
 - Converts accepted typed relations into Obsidian wikilinks in an `## Engram Relations` section.
 - Uses a manifest with content digests for incremental writes; `--force` rewrites planned files.
 
-`scripts/export-engram-to-obsidian.sh` is the manual wrapper. It is dry-run by default and requires `--write` before any vault files are mutated. No Stop hook is registered; automatic export remains deferred until `docs/manual-tests/engram-obsidian-export.md` is run successfully against a real vault.
+`scripts/export-engram-to-obsidian.sh` is the manual wrapper. It is dry-run by default and requires `--write` before any vault files are mutated. The first real vault proof ran against `$HOME/.cognitive-os/obsidian-vaults/luum-agent-os`; evidence and structural checks live in `docs/manual-tests/engram-obsidian-export.md`.
+
+`hooks/engram-obsidian-export-on-stop.sh` adds the optional automation slice. It is safe to register only because it is gated by `COS_OBSIDIAN_VAULT`: when the variable is unset, the hook exits 0 without exporting; when set, it performs the same one-way export and logs non-blocking metrics. This does not make Obsidian the source of truth and does not create an automatic git commit path.
+
+The vault remains outside the repository by default. `docs/` is the curated, reviewed documentation source; Obsidian is a generated graph/audit view over Engram and selected links to docs. A future repo-local export must use an explicit generated path, sanitization, and manual promotion.
 
 ## Honest Limitations (post-implementation, 2026-04-27)
 
@@ -288,7 +292,7 @@ The implementation works end-to-end (89 tests passing: 75 unit + 14 e2e against 
 
 ### Scope decisions, deliberately
 
-11. **Obsidian export is manual-only.** Phase 4 now has a one-way exporter, but no Stop hook or automatic background sync is registered. The vault path must be explicit, dry-run is the default, and Obsidian remains a human-readable graph/audit layer rather than the source of truth.
+11. **Obsidian export is opt-in and one-way.** Phase 4 now has a one-way exporter and an optional Stop hook. The hook does nothing unless `COS_OBSIDIAN_VAULT` is set, the vault path remains explicit, the manual command is dry-run by default, and Obsidian remains a human-readable graph/audit layer rather than the source of truth. No automatic commit path is allowed.
 
 12. **No fork of engram.** The integration uses engram as-is. If a future need requires `mem_judge` write access from Python, the path is to (a) spawn engram in MCP mode and pipe stdin, or (b) propose an HTTP endpoint upstream — not to fork the binary.
 
