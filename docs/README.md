@@ -149,6 +149,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Cognitive OS Agent Security Research — 2026-05-05](security/cognitive-os-agent-security-research-2026-05-05.md) — external-source-backed red-team assessment of COS security posture, MCP/tool risks, sandboxing, exfiltration, and mitigation backlog.
 - [Cognitive OS Security Assessment Plan](security/cognitive-os-security-assessment-plan.md) — phased defender/red-team plan for assessing SO tools, agentic primitives, secret handling, and trust controls.
 - [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
+- [Primitive Fitness Evaluation Contract](architecture/primitive-fitness-evaluation-contract.md) — baseline-vs-candidate KPI/OKR fitness gate for governed primitive self-improvement.
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.
 - [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
 - [Validation Nervous System](architecture/validation-nervous-system.md) — SO-maintainer doctrine for test selection, resource policy, persistent artifacts, governance gates, and release validation.
