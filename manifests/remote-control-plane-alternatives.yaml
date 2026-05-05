@@ -1,0 +1,284 @@
+schema_version: remote-control-plane-alternatives.v1
+review_date: 2026-05-05
+purpose: >-
+  Verified landscape for remote Cognitive OS control-plane and provider-adapter
+  design. This is a research input, not a runtime support claim.
+proof_levels:
+  official-doc: Current public documentation was reviewed.
+  repo-readme: GitHub repository metadata and README were reviewed.
+  local-doc: Existing Cognitive OS documentation was reviewed.
+  unverified: Listed item was not yet source-verified.
+classification_values:
+  remote-control-plane: Provides channel/chat/web/API gateway patterns.
+  provider-runtime: Provides model provider, CLI, API-key, or local model routing patterns.
+  coding-executor: Can run coding tasks or shell/file tools for a project workspace.
+  reference-only: Useful as comparison only; not a direct COS integration candidate.
+license_posture_values:
+  allowed: License appears compatible with current COS license policy.
+  blocked: License appears blocked by current COS license policy.
+  review: License is absent, mixed, or requires legal review.
+principles:
+  - Do not scrape vendor credential stores, cookies, keychains, or CLI auth files.
+  - Prefer official CLI invocation or documented API/OAuth/device-login flows.
+  - Separate remote ingress from provider execution.
+  - Treat Telegram, Discord, Slack, webhooks, and web UIs as untrusted ingress surfaces.
+  - Keep all first implementations lab/propose-only until auth probes and redaction tests pass.
+projects:
+  - id: paperclip
+    display_name: Paperclip
+    source: local-doc
+    proof_level: local-doc
+    language: unknown
+    license: unknown
+    license_posture: review
+    classifications: [remote-control-plane, reference-only]
+    remote_ingress: [local-rest-ui]
+    provider_strategy: delegates-to-cos
+    credential_strategy: none-in-paperclip-doc
+    source_urls:
+      - docs/paperclip-integration.md
+    notes: Paperclip is documented as a localhost/UI REST sink for metrics, issues, spend, agent status, and notifications; it is not the model/provider router.
+  - id: openclaw
+    display_name: OpenClaw
+    source: github
+    proof_level: official-doc
+    repository: openclaw/openclaw
+    language: TypeScript
+    license: MIT
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, slack, whatsapp, signal, matrix, teams, webchat, gateway]
+    provider_strategy: multi-provider-model-config-plus-cli
+    credential_strategy: api-key-oauth-auth-profiles
+    source_urls:
+      - https://github.com/openclaw/openclaw
+      - https://docs.openclaw.ai/
+    notes: Local-first Gateway, channel pairing, auth profiles/failover, and sandbox policy are the strongest comparable patterns.
+  - id: nanoclaw
+    display_name: NanoClaw
+    source: github
+    proof_level: repo-readme
+    repository: qwibitai/nanoclaw
+    language: TypeScript
+    license: MIT
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, whatsapp, slack, local-cli]
+    provider_strategy: anthropic-agents-sdk-plus-optional-codex-opencode-ollama
+    credential_strategy: onecli-provider-configuration
+    source_urls:
+      - https://github.com/qwibitai/nanoclaw
+    notes: Useful pattern for minimal container-first forks and add-on channel/provider modules.
+  - id: picoclaw
+    display_name: PicoClaw
+    source: github
+    proof_level: repo-readme
+    repository: sipeed/picoclaw
+    language: Go
+    license: MIT
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, slack, whatsapp, webui, gateway]
+    provider_strategy: webui-configured-providers-openrouter-ollama-vllm-and-others
+    credential_strategy: provider-api-keys-in-config
+    source_urls:
+      - https://github.com/sipeed/picoclaw
+    notes: Strong Go/minimal reference for WebUI-driven provider/channel setup.
+  - id: zeroclaw-labs
+    display_name: ZeroClaw Labs
+    source: github
+    proof_level: repo-readme
+    repository: zeroclaw-labs/zeroclaw
+    language: Rust
+    license: Apache-2.0
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, matrix, email, voice, webhook, cli]
+    provider_strategy: anthropic-openai-ollama-and-provider-adapters
+    credential_strategy: local-keys-in-workspace
+    source_urls:
+      - https://github.com/zeroclaw-labs/zeroclaw
+    notes: Useful Rust/single-binary reference for provider/channel/tool boundaries.
+  - id: zeroclaw-openagen
+    display_name: ZeroClaw OpenAgen
+    source: github
+    proof_level: repo-readme
+    repository: openagen/zeroclaw
+    language: Rust
+    license: Apache-2.0
+    license_posture: allowed
+    classifications: [reference-only, provider-runtime]
+    remote_ingress: [unknown]
+    provider_strategy: similar-to-zeroclaw-labs
+    credential_strategy: unknown
+    source_urls:
+      - https://github.com/openagen/zeroclaw
+    notes: Lower-priority duplicate/reference candidate versus zeroclaw-labs.
+  - id: nanobot-ai
+    display_name: Nanobot AI
+    source: github
+    proof_level: repo-readme
+    repository: nanobot-ai/nanobot
+    language: Go
+    license: Apache-2.0
+    license_posture: allowed
+    classifications: [provider-runtime, reference-only]
+    remote_ingress: [cli, mcp]
+    provider_strategy: llmProviders-openai-anthropic-azure-bedrock-ollama
+    credential_strategy: environment-api-keys-and-provider-config
+    source_urls:
+      - https://github.com/nanobot-ai/nanobot
+    notes: Better reference for MCP-agent/provider config than for chat-gateway ingress.
+  - id: hkuds-nanobot
+    display_name: HKUDS Nanobot
+    source: github
+    proof_level: repo-readme
+    repository: HKUDS/nanobot
+    language: Python
+    license: MIT
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, slack, whatsapp, matrix, wechat]
+    provider_strategy: multi-provider-openai-compatible-local-and-copilot
+    credential_strategy: provider-specific-auth-and-nullable-api-keys
+    source_urls:
+      - https://github.com/HKUDS/nanobot
+    notes: Useful high-churn comparison for provider/channel breadth, but requires extra scrutiny before copying patterns.
+  - id: tinyagi
+    display_name: TinyAGI / TinyClaw
+    source: github
+    proof_level: repo-readme
+    repository: TinyAGI/tinyagi
+    language: TypeScript
+    license: MIT
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime, coding-executor]
+    remote_ingress: [telegram, discord, whatsapp, web-portal, cli]
+    provider_strategy: anthropic-openai-codex-and-openai-compatible-custom-providers
+    credential_strategy: per-provider-token-management
+    source_urls:
+      - https://github.com/TinyAGI/tinyagi
+    notes: Good reference for team rooms, CLI viewer, web portal, and provider-token separation.
+  - id: warengonzaga-tinyclaw
+    display_name: Original TinyClaw
+    source: github
+    proof_level: repo-readme
+    repository: warengonzaga/tinyclaw
+    language: TypeScript
+    license: GPL-3.0
+    license_posture: review
+    classifications: [reference-only, provider-runtime]
+    remote_ingress: [discord]
+    provider_strategy: ollama-cloud-first
+    credential_strategy: provider-account-or-api-keys
+    source_urls:
+      - https://github.com/warengonzaga/tinyclaw
+    notes: License requires review before code reuse; safe only as conceptual reference.
+  - id: nullclaw
+    display_name: NullClaw
+    source: github
+    proof_level: repo-readme
+    repository: nullclaw/nullclaw
+    language: Zig
+    license: MIT
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, slack, whatsapp, signal, webhook, cli, gateway]
+    provider_strategy: many-providers-openai-compatible-local-models
+    credential_strategy: encrypted-local-secrets-and-env
+    source_urls:
+      - https://github.com/nullclaw/nullclaw
+    notes: Strong minimal binary reference for local secret encryption and channel health commands.
+  - id: ironclaw
+    display_name: IronClaw
+    source: github
+    proof_level: repo-readme
+    repository: nearai/ironclaw
+    language: Rust
+    license: Apache-2.0
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, slack, webhook, gateway]
+    provider_strategy: near-ai-default-plus-anthropic-openai-copilot-gemini-ollama-openrouter
+    credential_strategy: environment-and-config
+    source_urls:
+      - https://github.com/nearai/ironclaw
+    notes: Relevant for privacy/security/extensibility and WASM/plugin boundaries.
+  - id: pinchy
+    display_name: Pinchy
+    source: github
+    proof_level: repo-readme
+    repository: heypinchy/pinchy
+    language: TypeScript
+    license: AGPL-3.0
+    license_posture: blocked
+    classifications: [remote-control-plane, reference-only]
+    remote_ingress: [web-ui, openclaw-gateway]
+    provider_strategy: openai-anthropic-google-ollama
+    credential_strategy: provider-management-ui
+    source_urls:
+      - https://github.com/heypinchy/pinchy
+    notes: Useful conceptually for enterprise/offline/audit-trail posture, but AGPL blocks code reuse under current policy.
+  - id: zeptoclaw
+    display_name: ZeptoClaw
+    source: github
+    proof_level: repo-readme
+    repository: qhkm/zeptoclaw
+    language: Rust
+    license: Apache-2.0
+    license_posture: allowed
+    classifications: [remote-control-plane, provider-runtime]
+    remote_ingress: [telegram, discord, slack, whatsapp, webhook, cli, gateway]
+    provider_strategy: api-key-provider-table-plus-local-models
+    credential_strategy: config-or-environment-with-secret-scanner
+    source_urls:
+      - https://github.com/qhkm/zeptoclaw
+    notes: Relevant for sandbox, DLP/secret-leak scanner, and compact provider/channel matrix.
+  - id: opencode-current
+    display_name: OpenCode current
+    source: official-doc
+    proof_level: official-doc
+    repository: anomalyco/opencode
+    language: TypeScript
+    license: MIT
+    license_posture: allowed
+    classifications: [provider-runtime, coding-executor]
+    remote_ingress: [http-server, tui, cli, web]
+    provider_strategy: ai-sdk-providers-openai-compatible-custom-providers-local-models
+    credential_strategy: connect-command-env-api-key-and-server-basic-auth
+    source_urls:
+      - https://github.com/anomalyco/opencode
+      - https://opencode.ai/docs/config/
+      - https://opencode.ai/docs/providers/
+      - https://opencode.ai/docs/server/
+    notes: Best current open-source executor/reference for provider abstraction plus headless HTTP server.
+  - id: opencode-archived-go
+    display_name: OpenCode archived Go
+    source: github
+    proof_level: repo-readme
+    repository: opencode-ai/opencode
+    language: Go
+    license: MIT
+    license_posture: allowed
+    classifications: [provider-runtime, coding-executor, reference-only]
+    remote_ingress: [cli]
+    provider_strategy: openai-anthropic-gemini-bedrock-groq-azure-openai-openrouter
+    credential_strategy: environment-and-config
+    source_urls:
+      - https://github.com/opencode-ai/opencode
+    notes: Archived; useful historical Go reference but not the current OpenCode line.
+  - id: agent-zero
+    display_name: Agent Zero
+    source: official-doc
+    proof_level: official-doc
+    repository: agent0ai/agent-zero
+    language: Python
+    license: NOASSERTION
+    license_posture: review
+    classifications: [remote-control-plane, provider-runtime, coding-executor]
+    remote_ingress: [web-ui, cli-connector, remote-url]
+    provider_strategy: webui-configured-llm-provider-plus-account-backed-codex-oauth
+    credential_strategy: project-secrets-settings-and-oauth
+    source_urls:
+      - https://github.com/agent0ai/agent-zero
+    notes: A0 CLI Connector is the closest comparable pattern for remote/host-machine controlled execution without putting the whole agent inside the IDE.
