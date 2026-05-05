@@ -20,7 +20,7 @@ def test_service_control_plane_schema_declares_required_surfaces() -> None:
     schema = _load(SERVICE_SCHEMA)
 
     assert schema["schema_version"] == "service-control-plane.v1"
-    assert schema["status"] == "planned_contract"
+    assert schema["status"] == "phase1_local_proof"
     assert set(schema["required_surfaces"]) == {
         "cosd",
         "task_queue",
@@ -119,7 +119,7 @@ def test_provider_executor_registry_starts_with_local_command_before_model_provi
     local = adapters["local-command"]
     assert local["credential_modes"] == ["none"]
     assert local["cost_mode"] == "none"
-    assert local["lifecycle_state"] == "contract"
+    assert local["lifecycle_state"] == "sandbox"
 
     for executor_id in ["codex-cli-host", "claude-cli-host"]:
         adapter = adapters[executor_id]
@@ -142,4 +142,3 @@ def test_lab_only_provider_placeholders_do_not_claim_runtime_support() -> None:
 
     assert placeholders == {"kimi", "minimax", "deepseek"}
     assert placeholders.isdisjoint(adapter_providers)
-
