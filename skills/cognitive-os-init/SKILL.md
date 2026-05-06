@@ -12,6 +12,13 @@ summary_line: META skill — initialize Cognitive OS for a project by chaining d
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcognitive[- ]?os[- ]?init\b'
+    confidence: 0.95
+  - pattern: '\b(init|initializ\w*|inicializar?)\s+(cognitive\s+os|cos)\b'
+    confidence: 0.90
+  - pattern: '\bset\s*up\s+(cognitive\s+os|cos)\s+(for|en|on)\s+(this|a)\s+project\b'
+    confidence: 0.85
 ---
 
 # Cognitive OS Init

@@ -22,8 +22,15 @@ from lib.doctrine_proposer import build_doctrine_proposals, build_report, write_
 from lib.self_improvement_loop import build_self_improvement_plan
 
 
+def _safe_boring_dashboard(project_root: Path, profile: str) -> dict:
+    try:
+        return cos_boring_reliability.build_dashboard(profile, project_root)
+    except Exception as exc:  # noqa: BLE001
+        return {"status": "warn", "dashboard_error": str(exc)}
+
+
 def _self_improvement_plan(project_root: Path, profile: str) -> dict:
-    boring = cos_boring_reliability.build_dashboard(profile, project_root)
+    boring = _safe_boring_dashboard(project_root, profile)
     claim_signature = cos_claim_signature_audit.build_report(
         project_root / "manifests" / "primitive-lifecycle.yaml",
         project_root / "manifests" / "external-adoption-evidence.yaml",
@@ -44,7 +51,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     project_root = args.project_dir.resolve()
-    boring = cos_boring_reliability.build_dashboard(args.profile, project_root)
+    boring = _safe_boring_dashboard(project_root, args.profile)
     plan = _self_improvement_plan(project_root, args.profile)
     report = build_report(
         project_root=project_root,
