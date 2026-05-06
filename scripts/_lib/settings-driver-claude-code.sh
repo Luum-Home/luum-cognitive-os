@@ -166,6 +166,7 @@ cc_driver_emit() {
     "hooks/agent-message-inbox-context.sh"         "true"  \
     "hooks/rule-router-prompt-suggest.sh"         "true"  \
     "hooks/adr-relevance-suggest.sh"              "true"  \
+    "hooks/skill-router-prompt-suggest.sh"        "true"  \
     "hooks/context-budget-meter.sh"              "false" \
   )
 
@@ -194,6 +195,7 @@ cc_driver_emit() {
     "hooks/rate-limiter.sh"                "false" \
     "hooks/destructive-rm-blocker.sh"      "false" \
     "hooks/destructive-git-blocker.sh"     "false" \
+    "hooks/untracked-work-preservation-guard.sh" "false" \
     "hooks/branch-ownership-lock.sh"       "false" \
     "hooks/symlink-mutation-guard.sh"      "false" \
     "hooks/git-commit-scope-guard.sh"           "false" \
@@ -339,6 +341,7 @@ cc_driver_emit() {
     "hooks/dod-gate.sh"               "false" \
     "hooks/skill-tracker.sh"          "false" \
     "hooks/skill-post-execution-analysis.sh" "true"  \
+    "hooks/orchestrator-decision-trace.sh" "true"  \
   )
   # skill-post-execution-analysis.sh added per ADR-176 (2026-05-05) — async, discipline-gated
 
