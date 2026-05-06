@@ -32,13 +32,14 @@ SCRIPT_SUFFIXES = {"", ".py", ".sh", ".js", ".mjs", ".txt"}
 IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules", ".git"}
 IGNORE_PREFIXES = ("docs/reports/", ".claude/plugins/", "dashboard/.next/")
 DEFAULT_HARNESSES = ("claude", "codex", "shell-ci")
-DEFAULT_SURFACES = ("claude", "codex", "shell-ci", "cos-cli", "acc-report", "dashboard")
+DEFAULT_SURFACES = ("claude", "codex", "shell-ci", "cos-cli", "acc-report", "dashboard", "tui")
 STRUCTURAL_HARNESSES = {"cursor", "vscode-copilot", "opencode", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"}
 SURFACE_KIND_BY_ID = {
     "shell-ci": "shell-ci",
     "cos-cli": "cli",
     "acc-report": "report",
     "dashboard": "ui",
+    "tui": "ui",
 }
 CLI_COMMANDS = {
     "scripts/cos": ["scripts/cos status --json", "scripts/cos coverage --json", "scripts/cos primitive harness-coverage --print-json"],
@@ -55,6 +56,10 @@ REPORT_SURFACES = {
 UI_SURFACES = {
     "dashboard": {
         "evidence": ["dashboard/lib/cos-api.ts", "dashboard/app/page.tsx"],
+        "operable": False,
+    },
+    "tui": {
+        "evidence": ["scripts/cos-tui"],
         "operable": False,
     },
 }
@@ -137,6 +142,8 @@ def _implemented_surfaces(root: Path) -> tuple[str, ...]:
             ids.append(surface_id)
     if not (root / "dashboard").exists() and "dashboard" in ids:
         ids.remove("dashboard")
+    if not (root / "scripts" / "cos-tui").exists() and "tui" in ids:
+        ids.remove("tui")
     return tuple(ids)
 
 
@@ -527,8 +534,8 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
         f"Surfaces by kind: {report['summary']['surfaces_by_kind']}",
         f"Wired hooks by harness: {report['summary']['harness_wired_hooks']}",
         "",
-        "| Primitive | Family | Scope | Coverage | Gap | Policy | Claude | Codex | Shell CI | COS CLI | ACC Report | Dashboard |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| Primitive | Family | Scope | Coverage | Gap | Policy | Claude | Codex | Shell CI | COS CLI | ACC Report | Dashboard | TUI |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for row in report["items"]:
         h = row["harnesses"]
@@ -555,7 +562,7 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
                 bits.append("proven")
             return "<br>".join(bits)
         lines.append(
-            f"| `{row['primitive']}` | {row['family']} | {row.get('scope') or ''} | {row['coverage']} | {row.get('gap') or ''} | {row.get('gap_policy') or ''} | {cell('claude')} | {cell('codex')} | {cell('shell-ci')} | {cell('cos-cli')} | {cell('acc-report')} | {cell('dashboard')} |"
+            f"| `{row['primitive']}` | {row['family']} | {row.get('scope') or ''} | {row['coverage']} | {row.get('gap') or ''} | {row.get('gap_policy') or ''} | {cell('claude')} | {cell('codex')} | {cell('shell-ci')} | {cell('cos-cli')} | {cell('acc-report')} | {cell('dashboard')} | {cell('tui')} |"
         )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

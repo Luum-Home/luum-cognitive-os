@@ -9,6 +9,22 @@ policies:
     severity: medium
     status: partial
     rationale: Scope says portable, but Codex lacks an equivalent adapter or wiring.
+  - id: acceptable-codex-no-agent-event
+    severity: advisory
+    status: aligned
+    rationale: Codex currently has no native Agent-tool lifecycle event equivalent for this primitive; keep surface intent but do not block parity.
+  - id: optional-env-gated-surface
+    severity: advisory
+    status: aligned
+    rationale: Primitive is intentionally off unless an operator enables an environment variable or optional service.
+  - id: optional-governance-observer
+    severity: advisory
+    status: aligned
+    rationale: Primitive is an optional governance observer that can run on demand or in selected profiles rather than every IDE lifecycle.
+  - id: claude-posttool-agent-only
+    severity: advisory
+    status: aligned
+    rationale: Primitive is a Claude Agent PostToolUse observer; Codex lacks an equivalent native Agent completion event.
   - id: structural-only-ok
     severity: advisory
     status: aligned
@@ -64,6 +80,28 @@ rules:
       - hooks/subagent-context-injector.sh
       - hooks/task-created.sh
       - hooks/teammate-idle.sh
+  - policy: acceptable-codex-no-agent-event
+    family: hooks
+    primitives:
+      - hooks/adaptive-bypass.sh
+      - hooks/agent-checkpoint.sh
+      - hooks/agent-prelaunch.sh
+      - hooks/agent-quota-advisor.sh
+      - hooks/agent-qwen-bridge.sh
+      - hooks/agent-working-dir-inject.sh
+      - hooks/aguara-scan.sh
+  - policy: optional-env-gated-surface
+    family: hooks
+    primitives:
+      - hooks/agent-bus-monitor.sh
+  - policy: optional-governance-observer
+    family: hooks
+    primitives:
+      - hooks/adr-detector.sh
+  - policy: claude-posttool-agent-only
+    family: hooks
+    primitives:
+      - hooks/agent-output-verifier.sh
   - policy: structural-only-ok
     families: [rules, skills, templates]
     scopes: [os-only, project, both]

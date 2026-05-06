@@ -4,6 +4,7 @@
 # Routes:
 #   cos status [flags]                 -> scripts/cos-status.sh
 #   cos coverage [flags]               -> scripts/cos-coverage
+#   cos tui --snapshot                 -> scripts/cos-tui
 #   cos primitive harness-coverage     -> scripts/primitive_harness_coverage.py
 #   cos init-check                     -> scripts/cos-doctor-harness.sh --init-check
 #   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
@@ -29,6 +30,10 @@ case "$SUBCMD" in
   coverage)
     shift
     exec bash "$SCRIPT_DIR/cos-coverage" "$@"
+    ;;
+  tui)
+    shift
+    exec python3 "$SCRIPT_DIR/cos-tui" --project-dir "$PROJECT_ROOT" "$@"
     ;;
   primitive)
     if [ "${2:-}" = "harness-coverage" ] || [ "${2:-}" = "surface-coverage" ]; then
@@ -103,6 +108,7 @@ cos — Cognitive OS command-line
 Usage:
   cos status [--verbose|--json|--help]   Show what is active (profile, skills, hooks, rules, health)
   cos coverage [--json|--brief|--refresh] Show ACC coverage with exit code + JSON contract
+  cos tui --snapshot                     Show observe-only primitive surface snapshot
   cos primitive harness-coverage [--print-json] Generate primitive surface coverage
   cos primitive surface-coverage [--print-json] Alias for primitive harness coverage
   cos init-check                         Check the minimal harness readiness path
@@ -125,6 +131,7 @@ sources, update, version.
 
 Routed to scripts/cos-status.sh: status.
 Routed to scripts/cos-coverage: coverage.
+Routed to scripts/cos-tui: tui.
 Routed to scripts/primitive_harness_coverage.py: primitive harness-coverage, primitive surface-coverage.
 EOF
     exit 0

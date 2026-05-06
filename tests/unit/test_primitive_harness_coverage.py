@@ -38,6 +38,7 @@ def make_repo(tmp_path: Path) -> Path:
     (root / "rules" / "RULES-COMPACT.md").write_text("<!-- SCOPE: both -->\n# Rules\n")
     (root / "scripts" / "cos").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho cos\n")
     (root / "scripts" / "cos-status.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho status\n")
+    (root / "scripts" / "cos-tui").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('snapshot')\n")
     (root / "scripts" / "cos-coverage").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho coverage\n")
     (root / "scripts" / "cos_coverage.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('{}')\n")
     (root / "scripts" / "primitive_harness_coverage.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('{}')\n")
@@ -170,6 +171,9 @@ def test_report_and_ui_surfaces_are_observable_not_hook_runtime(tmp_path: Path) 
     assert status["surfaces"]["dashboard"]["observable"] is True
     assert status["surfaces"]["dashboard"]["operable"] is False
     assert status["surfaces"]["dashboard"]["events"] == []
+    assert status["surfaces"]["tui"]["surface_kind"] == "ui"
+    assert status["surfaces"]["tui"]["observable"] is True
+    assert status["surfaces"]["tui"]["operable"] is False
 
 
 def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
