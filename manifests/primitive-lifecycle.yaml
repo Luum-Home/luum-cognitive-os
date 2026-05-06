@@ -1613,6 +1613,10 @@ primitives:
   repair_message: Invoke the suggested skill, add SKILL_BYPASS with reason, or use the explicit env override documented in ADR-188.
   false_positive_tests:
   - tests/contracts/test_skill_invocation_gate.py
+  promotion_evidence:
+    boring_reliability_command: scripts/cos-boring-reliability --profile core
+    boring_reliability_artifact: docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md
+    rationale: ADR-188 introduces a blocking guard to prevent high-confidence skill-router contracts from being silently bypassed; the hook has contract tests for pass, warn, block, annotation, and env override behavior.
 - id: hooks/plan-claim-validator.sh
   kind: hook
   owner_adr: ADR-126
