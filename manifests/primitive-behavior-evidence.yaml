@@ -2,6 +2,22 @@ schema_version: primitive-behavior-evidence.v1
 purpose: Explicit behavior evidence mapping for primitives whose proof should not
   rely only on text-reference heuristics.
 evidence:
+- primitive: hooks/cosd-auth-guard.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/unit/test_cosd_auth_guard.py
+  - tests/integration/test_cosd_auth_guard_hook.py
+  - tests/contracts/test_cosd_auth_primitives.py
+  rationale: ADR-194 hook primitive blocks unsafe cosd remote API launches and unreviewed cosd auth/control-plane edits.
+- primitive: rules/cosd-secure-api.md
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/contracts/test_cosd_auth_primitives.py
+  rationale: ADR-194 rule primitive documents cosd remote bind and bearer-token policy.
 - primitive: hooks/session-init.sh
   harnesses:
   - claude
