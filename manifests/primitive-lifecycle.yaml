@@ -7810,12 +7810,12 @@ primitives:
   false_positive_tests:
   - tests/unit/test_delete_intent.py
 - id: manifests/primitive-scope-classification.yaml
-  kind: governance-primitive
+  kind: manifest
   owner_adr: ADR-019
   lifecycle_state: blocking
   maturity: blocking
   distribution: core
-  governance_class: meta-governance
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - claude
@@ -7838,5 +7838,10 @@ primitives:
   sunset_criteria: Only retire when a superseding scope taxonomy manifest and ADR are accepted and all
     verification tests migrate.
   docs_claim_level: blocking
-  exit_behavior: contract-test-failure
+  exit_behavior: mixed
   metrics_file: none
+  repair_message: Scope classification drift was blocked; restore valid os-only/project/both markers or update
+    ADR-019 and rerun scope governance tests before projecting to consumers.
+  false_positive_tests:
+  - tests/contracts/test_primitive_scope_governance.py
+  - tests/unit/test_primitive_scope_governance.py
