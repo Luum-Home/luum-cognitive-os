@@ -30,6 +30,28 @@ if printf '%s' "$COMMAND" | grep -q 'COS_ALLOW_SKILL_BYPASS=1'; then
   exit 0
 fi
 
+# ADR-214: Tool Discovery Pre-Use Gate. Before falling back to generic skill
+# suggestions, block known ad-hoc tool choices when this repository already has
+# a canonical primitive/toolchain for the task. This is deliberately wired into
+# the existing Bash gate so Bash launch paths get one cohesive skill/tool-use
+# preflight instead of another parallel hook to drift.
+if [ "${COS_ALLOW_TOOL_DISCOVERY_BYPASS:-0}" != "1" ] \
+   && ! printf '%s' "$COMMAND" | grep -q 'COS_ALLOW_TOOL_DISCOVERY_BYPASS=1' \
+   && command -v python3 >/dev/null 2>&1 \
+   && [ -f "$PROJECT_DIR/lib/tool_discovery_preuse.py" ]; then
+  TOOL_DISCOVERY_OUT=$(python3 "$PROJECT_DIR/scripts/cos-tool-discovery-preuse" \
+    --project-dir "$PROJECT_DIR" --command "$COMMAND" 2>&1)
+  TOOL_DISCOVERY_RC=$?
+  if [ "$TOOL_DISCOVERY_RC" -eq 2 ]; then
+    echo "TOOL DISCOVERY PRE-USE GATE: BLOCK" >&2
+    echo "$TOOL_DISCOVERY_OUT" >&2
+    echo "Override only with explicit operator intent: prefix command with COS_ALLOW_TOOL_DISCOVERY_BYPASS=1 and document why." >&2
+    exit 2
+  elif [ -n "$TOOL_DISCOVERY_OUT" ] && printf '%s' "$TOOL_DISCOVERY_OUT" | grep -q 'tool-discovery-preuse: warn'; then
+    echo "$TOOL_DISCOVERY_OUT" >&2
+  fi
+fi
+
 # Dependency/package manager mutations must go through /deps-update. This is
 # the concrete high-ROI bypass class discovered during the hook-wiring audit:
 # direct brew/pip/uv/npm/go upgrade commands skip dependency audit, engram

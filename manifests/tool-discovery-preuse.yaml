@@ -1,0 +1,49 @@
+schema_version: tool-discovery-preuse/v1
+status: active
+owner: platform-safety
+purpose: >
+  Block ad-hoc external tool choices when Cognitive OS already has a canonical
+  primitive/toolchain for the task.
+
+rules:
+  - id: license-audit-ad-hoc
+    class: block
+    intent: cross-stack license/security audit
+    canonical:
+      - scripts/agentic-tool-license-matrix.sh
+      - scripts/cos license audit --json
+      - scripts/cos-deps-install.sh --dry-run
+    reason: >
+      License/dependency/tool adoption must use COS-owned primitives so license
+      policy, supply-chain posture, and evidence artifacts are recorded.
+    command_patterns:
+      - '\bpip-licenses\b'
+      - '\bgo-licenses\b'
+      - '\blicense-checker\b'
+      - '\bnpm-license-crawler\b'
+      - '\byarn\s+licenses\b'
+    allow_if_contains:
+      - "scripts/agentic-tool-license-matrix.sh"
+      - "scripts/cos license audit"
+      - "scripts/cos-deps-install.sh"
+      - "COS_ALLOW_TOOL_DISCOVERY_BYPASS=1"
+
+  - id: external-repo-analysis-ad-hoc
+    class: warn
+    intent: external repo/tool investigation
+    canonical:
+      - /repo-scout
+      - /repo-forensics
+      - scripts/agentic-tool-license-matrix.sh
+    reason: >
+      Repo/tool investigation should start from repo-scout/repo-forensics so
+      license, adoption class, and closure evidence are recorded.
+    command_patterns:
+      - '\bgh\s+repo\s+(view|clone)\b'
+      - '\bgit\s+clone\s+https://github.com/'
+      - '\bcurl\s+.*api.github.com/repos/'
+    allow_if_contains:
+      - "repo-scout"
+      - "repo-forensics"
+      - "agentic-tool-license-matrix"
+      - "COS_ALLOW_TOOL_DISCOVERY_BYPASS=1"
