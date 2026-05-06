@@ -22,6 +22,7 @@ import yaml
 import scripts.cos_adoption_profile as adoption_profile
 from lib.skill_router import (
     SkillRouter,
+    _detect_skill_md_paths,
     _load_routing_from_frontmatter,
     _parse_frontmatter,
     _parse_routing_patterns_block,
@@ -32,7 +33,6 @@ pytestmark = pytest.mark.contract
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 SKILL_ROOTS = (
     PROJECT_ROOT / "skills",
-    PROJECT_ROOT / ".cognitive-os" / "skills",
 )
 MANIFEST_PATH = PROJECT_ROOT / "manifests" / "skill-routing-coverage.yaml"
 
@@ -48,8 +48,17 @@ def _manifest_skill_set(key: str) -> set[str]:
     return {str(row["skill"]) for row in rows}
 
 
+def _is_repository_skill_path(skill_md: Path) -> bool:
+    """Return true for source-owned skills, not local runtime projections."""
+    try:
+        rel = skill_md.relative_to(PROJECT_ROOT)
+    except ValueError:
+        return False
+    return rel.parts[:1] == ("skills",) or rel.parts[:1] == ("packages",)
+
+
 def _skills_on_disk() -> set[str]:
-    """Return active skill directory names from canonical skill roots."""
+    """Return active repository skill directory names."""
     names: set[str] = set()
     for root in SKILL_ROOTS:
         if not root.is_dir():
@@ -70,7 +79,17 @@ def _skill_md_paths() -> list[Path]:
 
 def _routed_on_disk() -> set[str]:
     """Return primary routed skills that exist in the covered skill roots."""
-    return _skills_on_disk() & SkillRouter().get_primary_routing_skills()
+    return _skills_on_disk() & _repository_primary_routing_skills()
+
+
+def _repository_primary_routing_skills() -> set[str]:
+    """Return primary router entries minus local runtime-projected skills."""
+    runtime_names = {
+        name
+        for name, path in _detect_skill_md_paths(PROJECT_ROOT).items()
+        if not _is_repository_skill_path(path)
+    }
+    return SkillRouter().get_primary_routing_skills() - runtime_names
 
 
 def _skill_paths_for_category(category: str) -> list[Path]:
@@ -78,17 +97,12 @@ def _skill_paths_for_category(category: str) -> list[Path]:
     if category == "canonical_skills":
         return sorted((PROJECT_ROOT / "skills").glob("*/SKILL.md"))
     if category == "runtime_projection_skills":
-        return sorted(
-            path
-            for path in (PROJECT_ROOT / ".cognitive-os" / "skills").glob("*/SKILL.md")
-            if "auto-generated" not in path.parts
-        )
+        # Runtime projections are local/gitignored install state. Contract
+        # ratchets must be stable in a dirty workstation with projected skills.
+        return []
     if category == "auto_generated_skills":
-        return sorted(
-            (PROJECT_ROOT / ".cognitive-os" / "skills" / "auto-generated").glob(
-                "*/SKILL.md"
-            )
-        )
+        # Auto-generated runtime projections are likewise excluded.
+        return []
     if category == "package_bundled_skills":
         paths: list[Path] = []
         for package_skills in sorted((PROJECT_ROOT / "packages").glob("*/skills")):
@@ -327,7 +341,7 @@ def test_all_frontmatter_routing_patterns_compile_and_load() -> None:
 def test_primary_router_entries_point_to_disk_or_declared_meta_commands() -> None:
     """Primary router entries must not silently drift away from real skills."""
     disk_skills = _skills_on_disk()
-    routed_skills = SkillRouter().get_primary_routing_skills()
+    routed_skills = _repository_primary_routing_skills()
     orphan_allowlist = _manifest_skill_set("primary_router_orphan_allowlist")
 
     unexpected_orphans = sorted(
@@ -354,7 +368,7 @@ def test_skill_router_disk_coverage_ratchet() -> None:
     - implicitly in a category pending_routing bucket (counted, not enumerated)
     """
     disk_skills = _skills_on_disk()
-    routed_skills = SkillRouter().get_primary_routing_skills()
+    routed_skills = _repository_primary_routing_skills()
     manifest = _coverage_manifest()
     baseline = manifest["baseline"]
     unrouted_allowlist = _manifest_skill_set("unrouted_skill_allowlist")

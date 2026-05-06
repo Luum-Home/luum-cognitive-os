@@ -102,6 +102,9 @@ def test_new_skills_require_routing_metadata() -> None:
     offenders: list[str] = []
 
     for skill_name, skill_md in sorted(_detect_skill_md_paths(PROJECT_ROOT).items()):
+        rel = skill_md.relative_to(PROJECT_ROOT)
+        if rel.parts[:2] == (".cognitive-os", "skills"):
+            continue
         if skill_name in allowlisted:
             continue
         text = skill_md.read_text(encoding="utf-8", errors="replace")
