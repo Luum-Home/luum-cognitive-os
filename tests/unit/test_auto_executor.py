@@ -58,7 +58,7 @@ class TestCheckAndActivate:
         m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
-            with patch.object(m, "_is_valkey_reachable", return_value=False):
+            with patch("lib.orchestrator_mode_activator._is_valkey_reachable", return_value=False):
                 result = m.AutoExecutor.check_and_activate()
         assert result["mode"] == "fire_and_forget"
         assert result["valkey_available"] is False
@@ -68,7 +68,7 @@ class TestCheckAndActivate:
         m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
-            with patch.object(m, "_is_valkey_reachable", return_value=True):
+            with patch("lib.orchestrator_mode_activator._is_valkey_reachable", return_value=True):
                 result = m.AutoExecutor.check_and_activate()
         assert result["mode"] == "connected"
         assert result["valkey_available"] is True
@@ -78,7 +78,7 @@ class TestCheckAndActivate:
         m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
-            with patch.object(m, "_is_valkey_reachable", return_value=True):
+            with patch("lib.orchestrator_mode_activator._is_valkey_reachable", return_value=True):
                 result = m.AutoExecutor.check_and_activate()
         assert result["auto_activated"] is True
 
@@ -86,7 +86,7 @@ class TestCheckAndActivate:
         """auto_activated=False when ORCHESTRATOR_MODE was already 'executor'."""
         m = _import_module()
         with patch.dict(os.environ, {"ORCHESTRATOR_MODE": "executor"}):
-            with patch.object(m, "_is_valkey_reachable", return_value=True):
+            with patch("lib.orchestrator_mode_activator._is_valkey_reachable", return_value=True):
                 result = m.AutoExecutor.check_and_activate()
         assert result["auto_activated"] is False
 
@@ -100,14 +100,14 @@ class TestCheckAndActivate:
         m = _import_module()
         env = {k: v for k, v in os.environ.items() if k != "ORCHESTRATOR_MODE"}
         with patch.dict(os.environ, env, clear=True):
-            with patch.object(m, "_is_valkey_reachable", return_value=False):
+            with patch("lib.orchestrator_mode_activator._is_valkey_reachable", return_value=False):
                 result = m.AutoExecutor.check_and_activate()
         assert result["auto_activated"] is False
 
     def test_message_present(self):
         """Result dict always contains a non-empty message."""
         m = _import_module()
-        with patch.object(m, "_is_valkey_reachable", return_value=False):
+        with patch("lib.orchestrator_mode_activator._is_valkey_reachable", return_value=False):
             result = m.AutoExecutor.check_and_activate()
         assert result.get("message")
 
@@ -195,7 +195,7 @@ class TestGracefulDegradation:
         mode ends up as 'connected' not 'fire_and_forget'.
         """
         m = _import_module()
-        with patch.object(m, "_is_valkey_reachable", side_effect=Exception("network error")):
+        with patch("lib.orchestrator_mode_activator._is_valkey_reachable", side_effect=Exception("network error")):
             # Should not propagate the exception — falls back gracefully
             try:
                 result = m.AutoExecutor.check_and_activate()

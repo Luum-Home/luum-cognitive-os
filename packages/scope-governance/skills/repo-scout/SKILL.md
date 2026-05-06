@@ -15,6 +15,15 @@ metadata:
 audience: both
 summary_line: Scout external git repositories for tech radar classification (bulk mode, markdown artifacts, adoption signals).
 
+routing_patterns:
+  - pattern: 'https?://github\.com/[\w.\-]+/[\w.\-]+'
+    confidence: 0.75
+  - pattern: '\brepo[- ]?scout\b'
+    confidence: 0.95
+  - pattern: '\b(evalua[rt]\w*|evaluate)\s+(this|the|ese?|este?)?\s*repo'
+    confidence: 0.85
+  - pattern: '\btech\s*radar\b'
+    confidence: 0.80
 platforms: ["claude-code"]
 prerequisites: []
 ---

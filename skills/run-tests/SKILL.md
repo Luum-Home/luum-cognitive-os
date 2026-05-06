@@ -9,6 +9,10 @@ triggers: ["/run-tests", "/test", "/tests"]
 platforms: ["claude-code"]
 prerequisites: []
 routing_patterns:
+  - pattern: '\b(run|corr[eé]\w*|ejecut[áa]\w*)\s+(the|los|las|all)?\s*test'
+    confidence: 0.95
+  - pattern: '\bpytest\b'
+    confidence: 0.86
   - pattern: '\brun\s+tests?\b'
     confidence: 0.94
   - pattern: '\btest\s+(suite|framework)\b'
