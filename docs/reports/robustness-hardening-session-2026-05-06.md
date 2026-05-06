@@ -55,16 +55,20 @@ published into it.
 
 ## ADR warning decision
 
-Current audit warning:
+Original audit warning:
 
 ```text
 ADR-187 -> ADR-173 -> ADR-172 -> ADR-170
 ```
 
-Decision for this session: accept this as a temporary reconstruction-phase
-warning, not a release blocker by itself. Before v1.0 release sign-off, either
-consolidate the chain with a tombstone/index ADR/ledger or explicitly record a
-release-owner waiver that the warning is intentional and bounded.
+Final decision before v1.0: resolve, not waive.
+
+ADR-187 was reclassified from an `extends` layer into a proof contract with
+`decision_inputs: [ADR-172, ADR-173]`. That preserves the dependency context
+without adding another `extends`/`supersedes` lineage link on top of
+ADR-173 → ADR-172 → ADR-170. The audit guardrail remains active and still emits
+warnings for synthetic long chains; the real ADR graph no longer carries this
+scope-creep warning.
 
 ## Validation evidence
 

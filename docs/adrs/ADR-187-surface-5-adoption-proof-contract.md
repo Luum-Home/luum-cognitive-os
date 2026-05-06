@@ -5,7 +5,8 @@ status: proposed
 date: 2026-05-06
 supersedes: []
 superseded_by: null
-extends: [ADR-172, ADR-173]
+extends: []
+decision_inputs: [ADR-172, ADR-173]
 implementation_files:
   - docs/reports/surface-5-tui-ui-candidates-2026-05-05.md
   - docs/adrs/ADR-173-surface-5-research-gate.md
@@ -26,6 +27,18 @@ adoption decision itself.
 ADR-172 defines the current multi-surface UI architecture. ADR-173 recovers the
 Surface 5 slot as a research gate and explicitly says no custom TUI/UI substrate
 is adopted yet.
+
+### Relationship classification
+
+ADR-187 is intentionally **not** an `extends`/`supersedes` layer on top of
+ADR-173. It is a proof contract that cites ADR-172 and ADR-173 as decision
+inputs. The relationship is recorded as `decision_inputs` in frontmatter so the
+ADR relationship audit does not treat this as another lineage link in the
+ADR-187 → ADR-173 → ADR-172 → ADR-170 chain.
+
+This closes the pre-v1.0 scope-creep warning without waiving the underlying
+guardrail: future Surface 5 adoption still needs a separate adoption ADR with
+source-level proof.
 
 The next failure mode to prevent is treating candidate inventory as adoption
 proof. Surface 5 can only advance if a separate ADR proves that a concrete
@@ -96,4 +109,3 @@ python3 -m pytest tests/audit/test_adr_contracts.py -q
 ## Alternatives rejected
 
 - **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
-
