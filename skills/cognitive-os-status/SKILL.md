@@ -7,6 +7,14 @@ audience: both
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcognitive[- ]?os\s+status\b'
+    confidence: 0.96
+  - pattern: '\b(os|system)\s+health\s+check\b'
+    confidence: 0.86
+  - pattern: '\b(status|health)\s+(of|for)\s+(cognitive[- ]?os|agentic primitives)\b'
+    confidence: 0.84
+
 ---
 
 # /cognitive-os-status

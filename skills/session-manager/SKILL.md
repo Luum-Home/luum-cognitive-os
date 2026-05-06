@@ -7,6 +7,14 @@ effort: haiku
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsession\s+manager\b'
+    confidence: 0.96
+  - pattern: '\bmanage\s+(concurrent\s+)?sessions\b'
+    confidence: 0.90
+  - pattern: '\b(list|inspect|clean\s+up)\s+sessions\b'
+    confidence: 0.84
+
 ---
 
 # Session Manager
