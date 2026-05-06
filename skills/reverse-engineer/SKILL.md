@@ -25,6 +25,8 @@ routing_patterns:
     confidence: 0.88
   - pattern: '\bunderstand\s+(internal\s+)?(apis?|configuration|architecture)\b'
     confidence: 0.78
+  - pattern: '\bunderstand\s+(the\s+)?(internal\s+)?(config|configuration)\s+schema\b'
+    confidence: 0.82
 
 ---
 
