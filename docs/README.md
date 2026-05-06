@@ -17,6 +17,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-191: COS Binary Release Pipeline](adrs/ADR-191-cos-binary-release-pipeline.md) — GoReleaser, checksums, release workflow, and Homebrew tap handoff for standalone `cos` distribution.
 - [ADR-192: Surface 5 Bubble Tea Adoption](adrs/ADR-192-surface-5-adopt-bubbletea.md) — source-level proof and adoption boundary for the native Go TUI substrate.
 - [ADR-193: cosd Local Network API](adrs/ADR-193-cosd-local-network-api.md) — localhost HTTP transport over the ADR-184 file-queue arbiter.
+- [ADR-194: cosd Secure Remote API Guardrails](adrs/ADR-194-cosd-secure-remote-api.md) — bearer-token and remote-bind safety boundary for `cosd` API transports.
 - [cosd Standalone Service Templates](../infra/cosd/README.md) — systemd and Kubernetes templates for daemon/service drills.
 - [Profile-Aware Skill Routing and Lazy Context Loading](architecture/profile-aware-skill-routing.md)
 - [Cross-Session Coordination Ledger](architecture/cross-session-coordination-ledger.md) — shared claim, ADR ownership, and worktree-intake contract for parallel IDE/session agents.
