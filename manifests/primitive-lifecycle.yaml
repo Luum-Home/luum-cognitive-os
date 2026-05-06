@@ -7849,14 +7849,14 @@ primitives:
   kind: script
   owner_adr: ADR-189
   lifecycle_state: candidate
-  maturity: observe
+  maturity: advisory
   distribution: core
   governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - claude
   - codex
-  - shell-ci
+  - shell
   projection_targets:
   - docs/reports/primitive-harness-coverage-latest.json
   - docs/reports/primitive-harness-coverage-latest.md
@@ -7896,6 +7896,6 @@ primitives:
   rollback_or_repair_command: Remove the skill and keep ADR-189/script as the direct operator path.
   sunset_criteria: Archive if harness coverage becomes built into cos-status or ACC with equivalent skill
     routing documentation.
-  docs_claim_level: advisory
-  exit_behavior: skill-procedure
+  docs_claim_level: observe
+  exit_behavior: exit_0
   metrics_file: none

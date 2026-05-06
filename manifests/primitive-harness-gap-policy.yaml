@@ -1,0 +1,73 @@
+schema_version: primitive-harness-gap-policy.v1
+purpose: Classify primitive harness coverage gaps so SCOPE intent is not confused with equal IDE implementation.
+policies:
+  - id: acceptable-claude-only
+    severity: advisory
+    status: aligned
+    rationale: Harness exposes a Claude-only lifecycle event with no current Codex equivalent; document rather than block.
+  - id: codex-adapter-needed
+    severity: medium
+    status: partial
+    rationale: Scope says portable, but Codex lacks an equivalent adapter or wiring.
+  - id: structural-only-ok
+    severity: advisory
+    status: aligned
+    rationale: Rules, skills, and templates are context/structure surfaces; native hook wiring is not expected.
+  - id: shell-command-only
+    severity: advisory
+    status: aligned
+    rationale: Command surfaces are projected through shell/CI rather than IDE lifecycle hooks.
+  - id: must-fix-parity
+    severity: high
+    status: partial
+    rationale: Runtime safety primitive claims portability but lacks required Claude/Codex parity.
+  - id: on-demand-command-only
+    severity: advisory
+    status: aligned
+    rationale: Script is an on-demand command/maintainer executable; IDE lifecycle hook wiring is not expected.
+  - id: projectable-needs-driver
+    severity: medium
+    status: partial
+    rationale: Project-scoped command is not yet projected by a consumer harness/profile.
+  - id: behavior-proof-needed
+    severity: medium
+    status: partial
+    rationale: Primitive is projected/wired but needs explicit behavior evidence mapping.
+  - id: unclassified
+    severity: medium
+    status: partial
+    rationale: Gap has not yet been triaged.
+rules:
+  - policy: acceptable-claude-only
+    family: hooks
+    primitives:
+      - hooks/pre-compaction-flush.sh
+      - hooks/subagent-context-injector.sh
+      - hooks/task-created.sh
+      - hooks/teammate-idle.sh
+  - policy: structural-only-ok
+    families: [rules, skills, templates]
+    scopes: [project, both]
+  - policy: shell-command-only
+    family: scripts
+    harness: shell-ci
+    scopes: [project, both]
+  - policy: codex-adapter-needed
+    family: hooks
+    missing_harness: codex
+    scopes: [project, both]
+  - policy: must-fix-parity
+    family: hooks
+    role_patterns: [runtime-safety, memory-lifecycle]
+    missing_harness_any: [claude, codex]
+    scopes: [project, both]
+  - policy: behavior-proof-needed
+    family: hooks
+    gap_contains: behavior proof
+  - policy: on-demand-command-only
+    family: scripts
+    scopes: [both]
+    missing_harness_any: [claude, codex]
+  - policy: projectable-needs-driver
+    family: scripts
+    scopes: [project]

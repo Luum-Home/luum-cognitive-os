@@ -112,11 +112,19 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 3,
         "script": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md"
@@ -137,7 +145,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -152,7 +160,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -161,7 +169,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 15,
+        "doc": 17,
         "hook": 2,
         "script": 5,
         "test": 7
@@ -186,6 +194,14 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -301,7 +317,7 @@
         "wrapper_for:scripts/hook-timing-wrapper.sh",
         "test_consumers:7",
         "hook_consumers:2",
-        "doc_consumers:15",
+        "doc_consumers:17",
         "config_consumers:3",
         "script_consumers:5"
       ],
@@ -317,7 +333,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 32,
+      "total_consumers": 34,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -326,7 +342,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 7,
+        "doc": 9,
         "hook": 1,
         "script": 4,
         "test": 2
@@ -343,6 +359,14 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -397,7 +421,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:1",
         "script_consumers:4"
       ],
@@ -413,7 +437,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 15,
+      "total_consumers": 17,
       "wrapper_for": null
     },
     {
@@ -422,7 +446,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 7,
+        "doc": 9,
         "script": 15,
         "test": 4
       },
@@ -434,6 +458,14 @@
         {
           "family": "config",
           "path": "manifests/runtime-hardcoding-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -543,7 +575,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:4",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:2",
         "script_consumers:15"
       ],
@@ -559,7 +591,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 28,
+      "total_consumers": 30,
       "wrapper_for": null
     },
     {
@@ -568,7 +600,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 1,
-        "doc": 35,
+        "doc": 36,
         "test": 2
       },
       "consumers": [
@@ -583,6 +615,10 @@
         {
           "family": "doc",
           "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -730,7 +766,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
         "test_consumers:2",
-        "doc_consumers:35",
+        "doc_consumers:36",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -747,7 +783,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 38,
+      "total_consumers": 39,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -756,7 +792,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 7,
+        "doc": 9,
         "script": 1,
         "test": 1
       },
@@ -772,6 +808,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -813,7 +857,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:3",
         "script_consumers:1"
       ],
@@ -829,7 +873,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 12,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -837,10 +881,18 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-100-resource-governed-test-execution.md"
@@ -854,7 +906,7 @@
       "evidence": [
         "wrapper_for:scripts/detect_runner_capacity.py",
         "test_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -868,7 +920,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 4,
       "wrapper_for": "scripts/detect_runner_capacity.py"
     },
     {
@@ -877,7 +929,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 6,
+        "doc": 8,
         "hook": 1,
         "script": 1,
         "test": 2
@@ -890,6 +942,14 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -932,7 +992,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -948,7 +1008,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 11,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -956,12 +1016,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "hook": 1,
         "script": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-089-multi-session-git-coordination.md"
@@ -991,7 +1055,7 @@
       "evidence": [
         "test_consumers:2",
         "hook_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -1006,7 +1070,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {
@@ -1015,7 +1079,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 2,
-        "doc": 10,
+        "doc": 11,
         "script": 1,
         "skill": 1,
         "test": 1
@@ -1028,6 +1092,10 @@
         {
           "family": "config",
           "path": "manifests/session-coordination-contract.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1087,7 +1155,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:2",
         "script_consumers:1"
       ],
@@ -1107,7 +1175,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 15,
+      "total_consumers": 16,
       "wrapper_for": null
     },
     {
@@ -1115,12 +1183,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "hook": 4,
         "script": 2,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/concurrency-safety-core-consumer-contract.md"
@@ -1166,7 +1238,7 @@
       "evidence": [
         "test_consumers:3",
         "hook_consumers:4",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "script_consumers:2"
       ],
       "install_surface": null,
@@ -1181,7 +1253,50 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 11,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-readiness-script-overrides.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agentic-mastery-license-weight-dx-matrix.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "override_rationale",
+        "doc_consumers:2",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": "License matrix helper is maintainer/research evidence, not a default agent tool.",
+      "path": "scripts/agentic-tool-license-matrix.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "override",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -1199,46 +1314,13 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/agentic-mastery-license-weight-dx-matrix.md"
+          "path": "docs/acc/latest.md"
         }
       ],
       "distribution": null,
       "evidence": [
         "override_rationale",
         "doc_consumers:1",
-        "config_consumers:1"
-      ],
-      "install_surface": null,
-      "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
-      "override_rationale": "License matrix helper is maintainer/research evidence, not a default agent tool.",
-      "path": "scripts/agentic-tool-license-matrix.sh",
-      "protected_install_surface": false,
-      "role": "maintainer-tool",
-      "role_source": "override",
-      "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 2,
-      "wrapper_for": null
-    },
-    {
-      "confidence": "high",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
-      "consumer_families": {
-        "config": 1
-      },
-      "consumers": [
-        {
-          "family": "config",
-          "path": "manifests/primitive-readiness-script-overrides.yaml"
-        }
-      ],
-      "distribution": null,
-      "evidence": [
-        "override_rationale",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -1253,7 +1335,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -1261,11 +1343,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/agentic-mastery-license-weight-dx-matrix.md"
@@ -1286,7 +1372,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -1301,7 +1387,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": null
     },
     {
@@ -1309,9 +1395,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2
+        "doc": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-076-skill-frontmatter-alignment.md"
@@ -1323,7 +1413,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -1337,7 +1427,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -1822,12 +1912,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "hook": 2,
         "script": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/concurrency-safety-core-consumer-contract.md"
@@ -1861,7 +1955,7 @@
       "evidence": [
         "test_consumers:3",
         "hook_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -1876,7 +1970,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -1999,10 +2093,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
+        "doc": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/adr-frontmatter-schema.md"
@@ -2015,7 +2113,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2029,7 +2127,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -2076,7 +2174,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 11,
+        "doc": 12,
         "script": 1,
         "test": 6
       },
@@ -2084,6 +2182,10 @@
         {
           "family": "config",
           "path": ".claude/settings.local.json"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2162,7 +2264,7 @@
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:6",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:1",
         "script_consumers:1"
       ],
@@ -2178,7 +2280,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 19,
+      "total_consumers": 20,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -2224,9 +2326,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 1,
         "rule": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -2234,6 +2341,7 @@
       ],
       "distribution": null,
       "evidence": [
+        "doc_consumers:1",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -2248,7 +2356,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -2256,9 +2364,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1
+        "doc": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
@@ -2266,7 +2378,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:1"
+        "doc_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2280,7 +2392,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -2288,10 +2400,14 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 4,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/bootstrap-portability.md"
@@ -2313,7 +2429,7 @@
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2327,7 +2443,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 4,
+      "total_consumers": 5,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -2423,9 +2539,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1
+        "doc": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/measurements/snapshot-chaos-runbook.md"
@@ -2433,7 +2553,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:1"
+        "doc_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2447,7 +2567,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -2455,9 +2575,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1
+        "doc": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/measurements/snapshot-chaos-runbook.md"
@@ -2465,7 +2589,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:1"
+        "doc_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2479,7 +2603,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -2487,9 +2611,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1
+        "doc": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/measurements/snapshot-chaos-runbook.md"
@@ -2497,7 +2625,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:1"
+        "doc_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -2511,39 +2639,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 1,
-      "wrapper_for": null
-    },
-    {
-      "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
-      "consumer_families": {
-        "test": 1
-      },
-      "consumers": [
-        {
-          "family": "test",
-          "path": "tests/behavior/test_check_upstream_changes.py"
-        }
-      ],
-      "distribution": null,
-      "evidence": [
-        "test_consumers:1"
-      ],
-      "install_surface": null,
-      "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
-      "override_rationale": null,
-      "path": "scripts/check-upstream-changes.sh",
-      "protected_install_surface": false,
-      "role": "maintainer-tool",
-      "role_source": "usage:repo",
-      "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -2557,11 +2653,11 @@
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/architecture/path-portability-and-privacy.md"
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "test",
-          "path": "tests/unit/test_check_absolute_paths.py"
+          "path": "tests/behavior/test_check_upstream_changes.py"
         }
       ],
       "distribution": null,
@@ -2575,7 +2671,7 @@
       "lifecycle_state": null,
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": null,
-      "path": "scripts/check_absolute_paths.py",
+      "path": "scripts/check-upstream-changes.sh",
       "protected_install_surface": false,
       "role": "maintainer-tool",
       "role_source": "usage:repo",
@@ -2589,10 +2685,57 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/path-portability-and-privacy.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_check_absolute_paths.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:2"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/check_absolute_paths.py",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "usage:repo",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 3,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
         "rule": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -2605,6 +2748,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -2619,7 +2763,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -2627,10 +2771,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 1,
         "rule": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -2644,6 +2793,7 @@
       "evidence": [
         "wrapper_for:scripts/apply-efficiency-profile.sh",
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -2658,7 +2808,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": "scripts/apply-efficiency-profile.sh"
     },
     {
@@ -2667,12 +2817,16 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 1
+        "doc": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-readiness-script-overrides.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2682,7 +2836,7 @@
       "distribution": null,
       "evidence": [
         "override_rationale",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -2697,7 +2851,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -2705,10 +2859,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 1,
         "rule": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -2721,6 +2880,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -2735,7 +2895,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -2814,7 +2974,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "script": 1,
         "test": 1
@@ -2823,6 +2983,10 @@
         {
           "family": "doc",
           "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -2860,7 +3024,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "rule_consumers:1",
         "script_consumers:1"
       ],
@@ -2876,7 +3040,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 9,
+      "total_consumers": 10,
       "wrapper_for": null
     },
     {
@@ -2884,10 +3048,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "doc": 1,
         "rule": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "rule",
           "path": "rules/python-naming.md"
@@ -2900,6 +3069,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
+        "doc_consumers:1",
         "rule_consumers:1"
       ],
       "install_surface": null,
@@ -2914,40 +3084,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
-      "wrapper_for": null
-    },
-    {
-      "confidence": "high",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
-      "consumer_families": {
-        "config": 1
-      },
-      "consumers": [
-        {
-          "family": "config",
-          "path": "manifests/primitive-readiness-script-overrides.yaml"
-        }
-      ],
-      "distribution": null,
-      "evidence": [
-        "override_rationale",
-        "config_consumers:1"
-      ],
-      "install_surface": null,
-      "install_surface_rationale": null,
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
-      "override_rationale": "CI environment setup helper; not agent-facing runtime primitive.",
-      "path": "scripts/ci-setup.sh",
-      "protected_install_surface": false,
-      "role": "maintainer-tool",
-      "role_source": "override",
-      "skill_consumers": 0,
-      "supported_harnesses": [],
-      "total_consumers": 1,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -2965,13 +3102,56 @@
         },
         {
           "family": "doc",
-          "path": "docs/architecture/cross-platform-ci.md"
+          "path": "docs/acc/latest.md"
         }
       ],
       "distribution": null,
       "evidence": [
         "override_rationale",
         "doc_consumers:1",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": "CI environment setup helper; not agent-facing runtime primitive.",
+      "path": "scripts/ci-setup.sh",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "override",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-readiness-script-overrides.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cross-platform-ci.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "override_rationale",
+        "doc_consumers:2",
         "config_consumers:1"
       ],
       "install_surface": null,
@@ -2986,7 +3166,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -2994,11 +3174,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "script": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
@@ -3023,7 +3207,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -3038,7 +3222,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 5,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {
@@ -3046,12 +3230,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 5,
+        "doc": 6,
         "hook": 4,
         "script": 1,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -3109,7 +3297,7 @@
       "evidence": [
         "test_consumers:3",
         "hook_consumers:4",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -3124,7 +3312,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 13,
+      "total_consumers": 14,
       "wrapper_for": null
     },
     {
@@ -3132,9 +3320,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2
+        "doc": 3
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-099-pre-agent-snapshot-copy-on-untracked.md"
@@ -3146,7 +3338,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -3160,7 +3352,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -3168,12 +3360,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 4,
+        "doc": 5,
         "hook": 1,
         "script": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
@@ -3207,7 +3403,7 @@
       "evidence": [
         "test_consumers:1",
         "hook_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -3222,7 +3418,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -3230,11 +3426,15 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 5,
+        "doc": 6,
         "script": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-149-primitive-duplication-audit.md"
@@ -3272,7 +3472,7 @@
       "evidence": [
         "wrapper_for:scripts/_lib/settings-driver.sh",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -3287,7 +3487,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 8,
+      "total_consumers": 9,
       "wrapper_for": "scripts/_lib/settings-driver.sh"
     },
     {
@@ -3296,13 +3496,17 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 2,
+        "doc": 3,
         "rule": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-readiness-script-overrides.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3329,7 +3533,7 @@
       "evidence": [
         "override_rationale",
         "wrapper_for:scripts/apply-efficiency-profile.sh",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "rule_consumers:3",
         "config_consumers:1"
       ],
@@ -3345,7 +3549,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": "scripts/apply-efficiency-profile.sh"
     },
     {
@@ -27687,7 +27891,7 @@
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
         "config": 5,
-        "doc": 13,
+        "doc": 14,
         "rule": 1,
         "script": 3,
         "test": 3
@@ -27720,6 +27924,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -27800,7 +28008,7 @@
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-bootstrap.sh",
         "test_consumers:3",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "rule_consumers:1",
         "config_consumers:5",
         "script_consumers:3"
@@ -27819,7 +28027,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 25,
+      "total_consumers": 26,
       "wrapper_for": "scripts/cos-bootstrap.sh"
     },
     {

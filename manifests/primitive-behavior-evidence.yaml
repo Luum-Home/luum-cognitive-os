@@ -1,0 +1,29 @@
+schema_version: primitive-behavior-evidence.v1
+purpose: Explicit behavior evidence mapping for primitives whose proof should not rely only on text-reference heuristics.
+evidence:
+  - primitive: hooks/session-init.sh
+    harnesses: [claude, codex]
+    tests:
+      - tests/behavior/test_session_isolation.py
+      - tests/e2e/test_session_startup_smoke.py
+  - primitive: hooks/pre-compaction-flush.sh
+    harnesses: [claude]
+    tests:
+      - tests/contracts/test_memory_lifecycle_portability.py
+  - primitive: hooks/concurrent-write-guard-codex-proxy.sh
+    harnesses: [codex]
+    tests:
+      - tests/red_team/portability/test_concurrent-write-guard-codex-proxy.py
+  - primitive: rules/RULES-COMPACT.md
+    harnesses: [claude, codex, cursor, vscode-copilot, opencode, cline, aider]
+    tests:
+      - tests/behavior/test_consumer_project_projection.py
+  - primitive: scripts/cos-status.sh
+    harnesses: [shell-ci, claude, codex]
+    tests:
+      - tests/behavior/test_cos_status.py
+      - tests/unit/test_project_shell_ci.py
+patterns:
+  - pattern: tests/**
+    behavior_proven: true
+    rationale: Test files are behavior proof artifacts, not runtime primitives requiring separate proof.
