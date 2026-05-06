@@ -52,6 +52,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/architecture/boring-reliability-control-plane.md",  # control-plane architecture, not an active plan
     "docs/architecture/dx-cloud-flow-bootstrap-plan.md",  # architecture bootstrap plan linked from docs index
     "docs/architecture/harness-implementation-roadmap.md",  # architecture roadmap for harness rollout
+    "docs/architecture/surface-5-and-secure-cosd-roadmap.md",  # architecture roadmap companion for Surface 5 and secure cosd ADRs
     "docs/architecture/multi-ide-harness-implementation-plan.md",  # architecture plan linked from harness ADR batch
     "docs/architecture/primitive-duplication-audit-implementation-plan.md",  # ADR-149 implementation companion
     "docs/architecture/primitive-readiness-continuity-plan.md",  # primitive readiness architecture companion

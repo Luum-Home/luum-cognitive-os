@@ -255,3 +255,7 @@ Codex directive parsing, Git-state promotion, and event-bus trust filtering.
 - [ADR-081: Codex Harness Adapter](ADR-081-codex-harness-adapter.md)
 - [ADR-112: Codex Governed Tool Layer](ADR-112-codex-governed-tool-layer.md)
 - [ADR-189: Surface Implementation Coverage for Agentic Primitives](ADR-189-harness-implementation-coverage.md)
+
+## Alternatives rejected
+
+- Keep action receipts as ad hoc hook logs only; rejected because Codex directives, Git promotion, and event-bus consumers need one durable receipt vocabulary.
