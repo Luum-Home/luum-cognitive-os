@@ -21,8 +21,8 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version-file: cmd/cos/go.mod
-      - name: Validate Go CLI
-        run: go test ./cmd/cos/...
+      - name: Validate release lane
+        run: make test-laptop
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
