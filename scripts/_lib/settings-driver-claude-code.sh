@@ -246,8 +246,8 @@ cc_driver_emit() {
     "hooks/inject-phase-context.sh"         "false" \
     "hooks/agent-working-dir-inject.sh"     "false" \
     "hooks/query-tailored-context-inject.sh" "false" \
-    "hooks/pre-agent-snapshot.sh"           "false" \
     "hooks/agent-prelaunch.sh"              "false" \
+    "hooks/pre-agent-snapshot.sh"           "false" \
     "hooks/error-pattern-detector.sh"       "false" \
     "hooks/prompt-quality-llm.sh"           "false" \
     "hooks/token-budget-monitor.sh"         "false" \
