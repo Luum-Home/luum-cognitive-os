@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Compatibility wrapper for ADR-202 private-content audit.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$("$SCRIPT_DIR/cos-root" project)"
+exec python3 "$SCRIPT_DIR/private_content_audit.py" --project-dir "$PROJECT_ROOT" "$@"
