@@ -23,6 +23,7 @@ import scripts.cos_adoption_profile as adoption_profile
 from lib.skill_router import (
     SkillRouter,
     _load_routing_from_frontmatter,
+    _parse_frontmatter,
     _parse_routing_patterns_block,
 )
 
@@ -70,6 +71,71 @@ def _skill_md_paths() -> list[Path]:
 def _routed_on_disk() -> set[str]:
     """Return primary routed skills that exist in the covered skill roots."""
     return _skills_on_disk() & SkillRouter().get_primary_routing_skills()
+
+
+def _skill_paths_for_category(category: str) -> list[Path]:
+    """Return SKILL.md paths for one v2 coverage category."""
+    if category == "canonical_skills":
+        return sorted((PROJECT_ROOT / "skills").glob("*/SKILL.md"))
+    if category == "runtime_projection_skills":
+        return sorted(
+            path
+            for path in (PROJECT_ROOT / ".cognitive-os" / "skills").glob("*/SKILL.md")
+            if "auto-generated" not in path.parts
+        )
+    if category == "auto_generated_skills":
+        return sorted(
+            (PROJECT_ROOT / ".cognitive-os" / "skills" / "auto-generated").glob(
+                "*/SKILL.md"
+            )
+        )
+    if category == "package_bundled_skills":
+        paths: list[Path] = []
+        for package_skills in sorted((PROJECT_ROOT / "packages").glob("*/skills")):
+            paths.extend(sorted(package_skills.glob("*/SKILL.md")))
+        return paths
+    raise AssertionError(f"unknown skill routing category: {category}")
+
+
+def _percent(part: int, whole: int) -> float:
+    """Return a one-decimal manifest percentage."""
+    return round((part / whole) * 100, 1) if whole else 0.0
+
+
+def _category_stats(category: str) -> dict[str, int | float]:
+    """Measure one v2 coverage category directly from disk."""
+    paths = _skill_paths_for_category(category)
+    routed = 0
+    disabled = 0
+    name_mismatch = 0
+    eligible_routed = 0
+
+    for skill_md in paths:
+        frontmatter = _parse_frontmatter(
+            skill_md.read_text(encoding="utf-8", errors="replace")
+        )
+        frontmatter_name = str(frontmatter.get("name") or skill_md.parent.name).strip()
+        is_disabled = frontmatter.get("disable-model-invocation") is True
+        is_name_mismatch = frontmatter_name != skill_md.parent.name
+        has_patterns = _parse_routing_patterns_block(skill_md) is not None
+
+        routed += int(has_patterns)
+        disabled += int(is_disabled)
+        name_mismatch += int(is_name_mismatch)
+        eligible_routed += int(has_patterns and not is_disabled and not is_name_mismatch)
+
+    universe = len(paths)
+    eligible = universe - disabled - name_mismatch
+    return {
+        "universe_size": universe,
+        "routed_count": routed,
+        "routed_percent": _percent(routed, universe),
+        "disabled_count": disabled,
+        "name_mismatch_count": name_mismatch,
+        "eligible_for_routing": eligible,
+        "eligible_routed_percent": _percent(eligible_routed, eligible),
+        "pending_count": eligible - eligible_routed,
+    }
 
 
 def test_skill_routing_manifest_schema_is_exhaustive() -> None:
@@ -150,6 +216,45 @@ def test_profile_mapping_references_real_projection_and_adoption_profiles() -> N
     assert mapping["strict"][0] in projection_profiles
     assert set(mapping["strict"][1].split("+")).issubset(lifecycle_profiles)
     assert mapping["lab"][1] in lifecycle_profiles
+
+
+def test_manifest_category_metrics_match_current_disk_state() -> None:
+    """v2 coverage metrics must be measured per semantic universe, not inferred.
+
+    This catches the failure mode where a green invariant test validates a
+    stale or semantically-mixed baseline. Each category is re-counted directly
+    from SKILL.md files before the manifest's aggregate numbers are trusted.
+    """
+    manifest = _coverage_manifest()
+    pending_keys = {
+        "canonical_skills": "canonical_pending_routing",
+        "package_bundled_skills": "package_bundled_pending_routing",
+        "runtime_projection_skills": "runtime_projection_pending_routing",
+    }
+
+    for category, declared in manifest["coverage_scope"].items():
+        measured = _category_stats(category)
+        for metric in (
+            "universe_size",
+            "routed_count",
+            "routed_percent",
+            "disabled_count",
+            "name_mismatch_count",
+            "eligible_for_routing",
+            "eligible_routed_percent",
+        ):
+            assert declared[metric] == measured[metric], (
+                f"{category}.{metric} drifted: manifest={declared[metric]!r} "
+                f"measured={measured[metric]!r}"
+            )
+
+        if declared["routing_required"]:
+            pending_key = pending_keys[category]
+            assert manifest[pending_key]["count"] == measured["pending_count"], (
+                f"{pending_key}.count drifted: "
+                f"manifest={manifest[pending_key]['count']!r} "
+                f"measured={measured['pending_count']!r}"
+            )
 
 
 def test_manifest_baseline_matches_current_floor_exactly() -> None:
