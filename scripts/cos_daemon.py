@@ -20,6 +20,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+import cos_service_control_plane as service_control_plane  # noqa: E402
+
 from lib.intent_arbiter import (  # noqa: E402
     atomic_write_json,
     pid_path,
@@ -214,6 +216,12 @@ def make_handler(project_dir: Path, *, token: str | None = None, transport: str 
                     return
                 self._send(200, status(project_dir))
                 return
+            if parsed.path == "/tasks":
+                if not self._authorized():
+                    self._reject_unauthorized(parsed.path)
+                    return
+                self._send(200, service_control_plane.queue_drain(project_dir))
+                return
             self._send(404, {"ok": False, "status": "not-found", "reason": f"unknown endpoint: {parsed.path}"})
 
         def do_POST(self) -> None:
@@ -259,6 +267,52 @@ def make_handler(project_dir: Path, *, token: str | None = None, transport: str 
                         "status": payload.get("status", "submitted"),
                         "intent_id": payload.get("intent", {}).get("id") if isinstance(payload.get("intent"), dict) else None,
                         "processed_count": processed_count,
+                    })
+                    self._send(200, payload)
+                    return
+                if parsed.path == "/tasks/submit":
+                    body = _read_json_body(self)
+                    kind = str(body.get("kind") or "")
+                    if kind == "provider" and body.get("dry_run") is not True:
+                        raise ValueError("provider tasks over cosd require dry_run=true and approval_policy=propose-only")
+                    payload = service_control_plane.submit_task(
+                        project_dir,
+                        kind=kind,
+                        command=str(body.get("command")) if body.get("command") is not None else None,
+                        prompt=str(body.get("prompt")) if body.get("prompt") is not None else None,
+                        task_id=str(body.get("task_id")) if body.get("task_id") else None,
+                        requested_by=str(body.get("requested_by") or "cosd-api"),
+                        executor_id=str(body.get("executor") or "local-command"),
+                        dry_run=body.get("dry_run") is True,
+                    )
+                    append_api_audit(project_dir, {
+                        "event": "cosd.api.request",
+                        "transport": transport,
+                        "endpoint": parsed.path,
+                        "method": "POST",
+                        "status": payload.get("status", "submitted"),
+                        "task_id": payload.get("task", {}).get("task_id") if isinstance(payload.get("task"), dict) else None,
+                        "task_kind": kind,
+                    })
+                    self._send(200, payload)
+                    return
+                if parsed.path == "/tasks/run-once":
+                    body = _read_json_body(self)
+                    if body.get("allow_provider_call") is True:
+                        raise ValueError("cosd task API does not allow provider calls; run host provider adapters explicitly")
+                    payload = service_control_plane.worker_run_once(
+                        project_dir,
+                        ttl_seconds=int(body.get("ttl_seconds") or 300),
+                        worker_id=str(body.get("worker_id") or "cosd-api-worker"),
+                        allow_provider_call=False,
+                    )
+                    append_api_audit(project_dir, {
+                        "event": "cosd.api.request",
+                        "transport": transport,
+                        "endpoint": parsed.path,
+                        "method": "POST",
+                        "status": payload.get("status"),
+                        "task_id": payload.get("task_id"),
                     })
                     self._send(200, payload)
                     return
