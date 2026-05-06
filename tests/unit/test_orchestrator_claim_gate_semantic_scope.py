@@ -50,3 +50,28 @@ def test_done_count_line_is_still_verified(tmp_path: Path) -> None:
     )
     assert not result.ok
     assert any("done" in finding.message for finding in result.findings)
+
+
+def test_aggregate_missing_claim_requires_per_item_evidence(tmp_path: Path) -> None:
+    init_repo(tmp_path)
+    result = orchestrator_claim_gate.evaluate(
+        tmp_path,
+        "check",
+        text="Audit result: 16 NOT_FOUND. They probably are not on disk.",
+    )
+    assert not result.ok
+    assert any("per-item evidence" in finding.message for finding in result.findings)
+
+
+def test_aggregate_missing_claim_passes_with_each_item_verified(tmp_path: Path) -> None:
+    init_repo(tmp_path)
+    result = orchestrator_claim_gate.evaluate(
+        tmp_path,
+        "check",
+        text="""Audit result: 3 missing skills.
+- `alpha` checked with `test -e skills/alpha/SKILL.md` -> missing
+- `beta` checked with `test -e skills/beta/SKILL.md` -> missing
+- `gamma` checked with `test -e skills/gamma/SKILL.md` -> missing
+""",
+    )
+    assert result.ok
