@@ -16,7 +16,6 @@ implementation_files:
 tier: maintainer
 tags: [concurrency, worktree, governance, session-safety, postmortem-2026-05-05]
 ---
-
 # ADR-182: Branch Ownership Lock — Single-Writer Surface for Concurrent Orchestrators
 
 ## Status
@@ -200,7 +199,7 @@ read-only findings to the session that owns the mutation.
   machines. Cross-machine concurrency is out of scope here and would be
   addressed by the manager-of-managers daemon (ADR-184).
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **`flock` on `.git/refs/heads/<branch>`**: too coarse, would block
   read-only `git status`. Rejected.
@@ -238,3 +237,10 @@ commit), the implementation is broken and ADR-182 must be revisited.
   and intent claims.
 - `docs/architecture/agent-message-bus.md` — auditor-to-operator directed
   findings and acknowledgement.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

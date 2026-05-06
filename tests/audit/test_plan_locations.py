@@ -64,6 +64,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/architecture/expansion-hardening-plan.md",  # expansion-hardening architecture plan linked from ADR work
     "docs/architecture/plans/",  # runtime contract plan docs are linked from product entrypoints
     "docs/reports/pending-plans-audit-2026-04-30.md",  # audit report, not active plan
+    "docs/reports/task-and-plan-reconciliation-2026-05-05.md",  # reconciliation report, not active plan
     # docs/archive/plans/ contains files other than token-optimization-masterplan.md
     # that were NOT listed in ADR-082's migration table.  They remain in place.
     "docs/archive/plans/",   # directory prefix — any file under here is exempt

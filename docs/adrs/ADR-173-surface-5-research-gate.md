@@ -12,7 +12,6 @@ implementation_files:
 tier: maintainer
 tags: [ui, surface-5, research-gate, governance, multi-surface]
 ---
-
 # ADR-173: Surface 5 Research Gate — No Custom TUI/UI Adoption Without Source-Level Proof
 
 ## Status
@@ -82,3 +81,8 @@ python3 -m pytest \
   tests/audit/test_adr_locations.py \
   -q
 ```
+
+## Alternatives rejected
+
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
+

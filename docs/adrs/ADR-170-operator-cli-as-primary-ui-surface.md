@@ -18,7 +18,6 @@ implementation_files:
   - docs/architecture/cognitive-prosthesis.md
 tier: maintainer
 ---
-
 # ADR-170: Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists
 
 ## Status
@@ -103,7 +102,7 @@ This decision **does not** prevent a future UI. It declares the **default** is C
 - **No graphical demo.** A pitch that depends on a screen-share of moving parts has to use terminal output. Reduces visual appeal in some sales contexts. Mitigated by the strength of the markdown artefacts (case study, audits, ADRs).
 - **Higher onboarding bar for non-CLI users.** A buyer expecting Notion/Linear/Jira-style UI gets terminal output. The runbook ([`docs/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md)) is the first softener; the CLI surface itself is the second.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Path B: pivot to Phoenix for the governance UI.** Rejected because Phoenix is trace-shaped and does not model lifecycle, doctrine, demotion, audit_class, or federation triggers. Phoenix continues to be the LLM-trace UI per ADR-058; it does not become the governance UI.
 - **Path D: build a custom Cognitive OS web UI.** Rejected because (a) `dashboard/` was already demoted in ADR-169, (b) the doctrine of net-new-surface-without-demotion would block this anyway, (c) the OSS landscape (Phoenix, Langfuse, Helicone, AgentOps) does not have a model for what COS models, so building a fitting UI would be a multi-sprint product effort that requires Shape B per ADR-132.
@@ -156,3 +155,10 @@ The acceptance criteria of ADR-170 (CLI usability, markdown report cadence,
 no buyer-required graphical UI) carry forward into the falsifiable claim of
 ADR-172. The two ADRs do not contradict; ADR-172 is the more general
 restatement.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
