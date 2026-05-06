@@ -8,6 +8,14 @@ audience: project
 triggers: ["/run-tests", "/test", "/tests"]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\brun\s+tests?\b'
+    confidence: 0.94
+  - pattern: '\btest\s+(suite|framework)\b'
+    confidence: 0.82
+  - pattern: '\bauto[- ]?detect\s+(project\s+)?test\s+framework\b'
+    confidence: 0.90
+
 ---
 
 # /run-tests
