@@ -16,7 +16,8 @@ operator pain point.
 
 ## Decision
 
-Add `retention_mode` to each `manifests/state-retention.yaml` surface:
+Add `retention_mode` to each `manifests/state-retention.yaml` surface. The legacy `reaper` field remains as the intended trigger/location metadata; `retention_mode` is the enforcement selector used by automatic execute paths.
+
 
 - `observe`: audit only; no automatic mutation.
 - `repair-safe`: automatic archive-first cleanup is allowed from session-end.
