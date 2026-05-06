@@ -1,7 +1,7 @@
 {
   "branch": "codex/preserve-local-wip-20260502",
   "created_at": "2026-05-02T12:02:42-03:00",
-  "created_by": "2144218+MatiasNAmendola@users.noreply.github.com",
+  "created_by": "maintainer",
   "source_branch": "main",
   "source_head": "340309b42fbea40e91474377df392451a991c2d6",
   "reason": "Broadest local WIP preserve snapshot taken immediately before pushing all session work to main; encompasses ADR-106 through ADR-115, all new hooks/lib/scripts, test suites, and OS config changes from the 2026-05-02 agentic safety sprint.",
