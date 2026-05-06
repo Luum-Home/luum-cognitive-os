@@ -1,0 +1,39 @@
+schema_version: primitive-scope-overrides.v1
+purpose: Explicit fallback scope classification for legacy script surfaces that predate header enforcement. Header markers remain preferred.
+rules:
+  - pattern: .codex/skills/**/SKILL.md
+    scope: both
+    rationale: Repo-local Codex skill projection mirrors source skills for cross-harness agent use.
+  - pattern: scripts/_lib/**
+    scope: os-only
+    rationale: Internal maintainer/runtime helper library; not a consumer-facing primitive by itself.
+  - pattern: scripts/chaos/**
+    scope: os-only
+    rationale: Chaos drills are SO validation surfaces.
+  - pattern: scripts/shellcheck-baseline.txt
+    scope: os-only
+    rationale: Maintainer lint baseline artifact.
+  - pattern: scripts/cos-status.sh
+    scope: both
+    rationale: Projected command and diagnostic skill for consumer projects.
+  - pattern: scripts/cos
+    scope: both
+    rationale: Projected command wrapper for consumer projects.
+  - pattern: scripts/cos_init.py
+    scope: both
+    rationale: Installer/project bootstrap surface.
+  - pattern: scripts/cos-init.sh
+    scope: both
+    rationale: Installer/project bootstrap surface.
+  - pattern: scripts/project_shell_ci.py
+    scope: both
+    rationale: Shell-CI projection surface.
+  - pattern: scripts/*.sh
+    scope: os-only
+    rationale: Legacy shell scripts are maintainer-only unless header or exact override says otherwise.
+  - pattern: scripts/*.py
+    scope: os-only
+    rationale: Legacy Python scripts are maintainer-only unless header or exact override says otherwise.
+  - pattern: scripts/*
+    scope: os-only
+    rationale: Legacy extensionless scripts are maintainer-only unless header or exact override says otherwise.
