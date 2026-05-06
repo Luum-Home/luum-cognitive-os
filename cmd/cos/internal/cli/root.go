@@ -44,6 +44,7 @@ Commands:
   update      Update installed packages
   map         Show system knowledge graph
   perf        Show performance dashboard
+  tui         Open the read-only Surface 5 operator console
   version     Show OS and package versions
   release     Create a new release
   status      Show release status of all packages
