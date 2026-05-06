@@ -36,6 +36,7 @@ DEFAULT_WEIGHTS = {
     "hook": 3,
     "skill": 2,
     "rule": 2,
+    "template": 1,
     "doc_claim": 2,
     "primitive_family": 3,
     "proof_drill": 2,
@@ -53,6 +54,7 @@ READINESS_FILES = {
     "hooks": "docs/reports/primitive-readiness-ledger-hooks-latest.json",
     "skills": "docs/reports/primitive-readiness-ledger-skills-latest.json",
     "rules": "docs/reports/primitive-readiness-ledger-rules-latest.json",
+    "templates": "docs/reports/primitive-readiness-ledger-templates-latest.json",
 }
 DEFAULT_PROJECTION_HARNESSES = ("claude", "codex")
 DEFAULT_PROJECTION_PROFILES = ("default", "full")
@@ -288,6 +290,8 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("family_readiness_hooks", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "hooks"]),
         ("family_readiness_skills", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "skills"]),
         ("family_readiness_rules", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "rules"]),
+        ("family_readiness_templates", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "templates"]),
+        ("harness_coverage_refresh", ["python3", "scripts/primitive_harness_coverage.py", "--project-dir", "."]),
         ("docs_execution", ["python3", "scripts/docs_execution_audit.py", "--project-dir", "."]),
         ("primitive_duplication", ["python3", "scripts/primitive_duplication_audit.py", "--project-root", "."]),
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
@@ -817,6 +821,62 @@ def load_primitive_fitness_ledger(root: Path) -> tuple[AdapterStatus, list[Capab
         },
     ), capabilities, findings
 
+def load_harness_coverage(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "primitive-harness-coverage-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", "docs/reports/primitive-harness-coverage-latest.json", error="missing harness coverage report"), [], []
+    data = read_json(path)
+    rows = data.get("items", []) if isinstance(data, dict) else []
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    policy_counts: dict[str, int] = {}
+    for row in rows:
+        primitive = str(row.get("primitive", ""))
+        if not primitive:
+            continue
+        family = str(row.get("family", "unknown"))
+        policy = row.get("gap_policy")
+        gap_status = str(row.get("gap_status") or ("partial" if row.get("gap") else "aligned"))
+        if gap_status not in MAPPING_STATUSES:
+            gap_status = "partial"
+        if policy:
+            policy_counts[str(policy)] = policy_counts.get(str(policy), 0) + 1
+        evidence = [f"harness_coverage:{row.get('coverage', 'none')}"]
+        if row.get("scope"):
+            evidence.append(f"scope:{row['scope']}")
+        if row.get("gap"):
+            evidence.append(f"gap:{str(row['gap'])[:160]}")
+        if policy:
+            evidence.append(f"gap_policy:{policy}")
+        capabilities.append(Capability(
+            id=f"harness_coverage:{primitive}",
+            kind="harness_coverage",
+            source={"path": str(path.relative_to(root)), "primitive": primitive, "family": family},
+            risk="medium" if row.get("gap_severity") in {"medium", "high"} else "low",
+            signature={"scope": row.get("scope"), "coverage": row.get("coverage"), "gap_policy": policy},
+            represented_by=[{"kind": "harness_coverage", "id": primitive, "source": primitive, "role": "harness-implementation"}],
+            mapping_status=gap_status,
+            confidence=0.86 if gap_status == "aligned" else 0.7,
+            consumer_accessibility="projected-consumer-surface" if row.get("coverage") not in {"none", None} else "so-local-only",
+            lifecycle_status="real",
+            evidence=evidence[:12],
+            weight=1,
+        ))
+        if row.get("gap") and gap_status != "aligned":
+            findings.append(Finding(
+                f"harness_coverage:{primitive}",
+                str(row.get("gap_severity") or "medium"),
+                gap_status,
+                "Harness implementation coverage gap",
+                evidence[:8],
+                "classify the gap policy or add the missing harness projection/proof",
+            ))
+    summary = data.get("summary", {}) if isinstance(data.get("summary"), dict) else {}
+    summary = dict(summary)
+    summary["gap_policies"] = dict(sorted(policy_counts.items()))
+    return AdapterStatus("ok", str(path.relative_to(root)), summary=summary), capabilities, findings
+
+
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
@@ -1086,6 +1146,9 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     fitness_status, fitness_capabilities, fitness_findings = load_primitive_fitness_ledger(root)
     capabilities.extend(fitness_capabilities)
     findings.extend(fitness_findings)
+    harness_coverage_status, harness_coverage_capabilities, harness_coverage_findings = load_harness_coverage(root)
+    capabilities.extend(harness_coverage_capabilities)
+    findings.extend(harness_coverage_findings)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
     adapters = {
@@ -1097,6 +1160,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "consumer_projection": projection_status,
         "proof_drill_evidence": proof_status,
         "primitive_fitness_ledger": fitness_status,
+        "harness_coverage": harness_coverage_status,
         **readiness_adapters,
         **existing_adapters,
     }
