@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # safe-worktree-remove.sh — shared helper for safe git worktree removal.
 #
 # Per ADR-129. Replaces the pattern:

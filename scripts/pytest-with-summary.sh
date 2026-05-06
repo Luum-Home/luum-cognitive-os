@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ROLE: reporting transport for pytest; persists summaries, failures, inventories, JUnit, and run history.
 # CANONICAL: invoked by cos-test focused|cluster|broad; direct use is a fallback for custom pytest args.
 # pytest-with-summary.sh — Run pytest and persist analyzable local artifacts.

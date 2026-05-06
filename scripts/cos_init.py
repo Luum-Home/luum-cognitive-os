@@ -92,7 +92,7 @@ DEFAULT_HOOKS = (
 ).split()
 
 DEFAULT_SKILLS = (
-    "compose-prompt exhaustive-prompt agent-dashboard auto-refine "
+    "compose-prompt exhaustive-prompt cos-status auto-refine "
     "verification-before-completion plan-feature session-backlog resource-governor "
 ).split()
 
