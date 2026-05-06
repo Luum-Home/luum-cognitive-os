@@ -219,6 +219,9 @@ case "$SUBCMD" in
   work)
     if [ "${2:-}" = "ownership" ]; then
       shift 2
+      if [ "${1:-}" = "--paths" ]; then
+        shift
+      fi
       exec python3 "$SCRIPT_DIR/cos_work_inventory.py" --project-dir "$PROJECT_ROOT" --all --paths "$@"
     fi
     echo "cos: unknown work subcommand '${2:-}'. Try: cos work ownership PATH [PATH...]" >&2

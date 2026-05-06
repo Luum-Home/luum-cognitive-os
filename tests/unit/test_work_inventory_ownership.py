@@ -109,6 +109,7 @@ def test_path_ownership_fails_closed_on_dirty_linked_worktree(tmp_path: Path) ->
     assert ownership["status"] == "active_or_unknown"
     assert ownership["operator_review_required"] is True
     assert ownership["dirty_worktrees"][0]["path"] == str(linked.resolve())
+    assert ownership["edit_lock"]["state"] in {"free", "unknown"}
     assert "Do not clean/drop/merge automatically" in ownership["action"]
 
 
@@ -126,3 +127,30 @@ def test_path_ownership_reports_stash_temp_branch_as_preservation_not_liveness(t
     assert ownership["status"] == "preserved_copy_only"
     assert ownership["preserve_branches"] == ["codex/stash-license-review-test"]
     assert "does not prove the original agent is inactive" in ownership["action"]
+
+
+def test_path_ownership_includes_stash_agent_heartbeat(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    metrics = project / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True)
+    (metrics / "agent-heartbeat.jsonl").write_text(
+        json.dumps(
+            {
+                "agent_id": "toolu_01ABC",
+                "alive": False,
+                "event_type": "agent_end",
+                "ts": 1234,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (project / "owned.txt").write_text("stash me\n", encoding="utf-8")
+    git(project, "stash", "push", "-m", "auto-pre-agent-toolu_01ABC")
+
+    payload = run_inventory(project, "--paths", "owned.txt")
+
+    stash = payload["path_ownership"][0]["stashes"][0]
+    assert stash["agent_id"] == "toolu_01ABC"
+    assert stash["agent_heartbeat"]["seen"] is True
+    assert stash["agent_heartbeat"]["alive"] is False
