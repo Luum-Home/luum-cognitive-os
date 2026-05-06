@@ -1,0 +1,47 @@
+schema_version: adr-routing-coverage.v1
+purpose: >
+  ADR tag coverage ratchet for AdrRouter (ADR-181).
+  Tracks which ADRs have frontmatter `tags:` populated (enables keyword matching)
+  vs. which rely on title/context-paragraph fallback only.
+  Lower target than skill/rule routers (≥75%) since ADRs change infrequently
+  and back-filling tags is low-priority.
+
+baseline:
+  captured_on: '2026-05-05'
+  adrs_dir: docs/adrs
+  total_non_tombstone: 180
+  with_tags: 43
+  coverage_percent: 23.9
+  target_min_percent: 75.0
+  meets_target: false
+  note: >
+    Baseline captured at ADR-181 introduction. Most ADRs 001–168 lack tags.
+    Tag back-fill is backlog work; the router degrades gracefully by using
+    title/context keywords for untagged ADRs. Expect coverage to grow as
+    new ADRs include tags (ADR-172+ trend).
+
+  # ADRs 172, 174-bis, 175-181 already have tags — newer ADRs lead the way.
+  well_tagged_range_example: "ADR-172..ADR-181"
+
+coverage_improvement_plan:
+  priority: low
+  rationale: >
+    ADRs are read-only once accepted. Back-filling tags is cosmetic
+    improvement to routing precision, not a correctness fix. Each new ADR
+    SHOULD include tags. No enforcement hook — advisory only.
+  target_date: rolling
+  incremental_goal_percent: 5  # +5% per sprint until 75%
+
+router_config:
+  min_confidence_threshold: 0.85
+  max_suggestions: 3
+  latency_budget_ms: 250
+  skipped_statuses:
+    - superseded
+    - deprecated
+    - tombstone
+
+notes:
+  - "Tag-based matching is shallow — ADRs without good tags get poor suggestions. Tag quality varies."
+  - "Confidence 0.85 may be too strict in the first 30 days — calibrate after production metrics accumulate."
+  - "No deduplication of ADR series (e.g. ADR-043/tombstone and a successor may both appear)."

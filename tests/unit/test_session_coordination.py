@@ -52,7 +52,7 @@ def test_release_claim_allows_next_session(tmp_path: Path) -> None:
 def test_adr_tombstone_findings_block_active_adr_file(tmp_path: Path) -> None:
     adrs = tmp_path / "docs" / "adrs"
     adrs.mkdir(parents=True)
-    (adrs / "ADR-171-reject-paperclip-integration.md").write_text("# ADR-171: Reject Paperclip\n", encoding="utf-8")
+    (adrs / "ADR-171-reject-integration.md").write_text("# ADR-171: Reject Integration\n", encoding="utf-8")
 
     findings = adr_tombstone_findings(tmp_path, number=171, session_id="session-b")
 

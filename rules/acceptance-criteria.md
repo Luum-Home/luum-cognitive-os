@@ -1,5 +1,16 @@
 <!-- SCOPE: both -->
 <!-- TIER: 0 -->
+---
+enforcement: agent-instruction
+trigger_priority: high
+routing_patterns:
+  - pattern: "\\bacceptance criteria\\b"
+    confidence: 0.95
+  - pattern: "\\bmust have criteria\\b"
+    confidence: 0.88
+  - pattern: "\\bverify command\\b"
+    confidence: 0.82
+---
 # Mandatory Acceptance Criteria
 
 ## Purpose

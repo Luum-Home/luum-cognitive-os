@@ -17,17 +17,17 @@ runtime_state:
 claim_kinds:
   task:
     blocks_duplicate_subject: true
-    example: "paperclip-disposition"
+    example: "integration-disposition"
   adr-number:
     blocks_duplicate_subject: true
     normalized_subject: "ADR-###"
     example: "ADR-171"
   path:
     blocks_duplicate_subject: true
-    example: "docs/adrs/ADR-171-reject-paperclip-integration.md"
+    example: "docs/adrs/ADR-171-reject-integration.md"
   policy:
     blocks_duplicate_subject: true
-    example: "paperclip-disposition"
+    example: "integration-disposition"
   skill:
     blocks_duplicate_subject: true
     example: "adr-tombstone"
