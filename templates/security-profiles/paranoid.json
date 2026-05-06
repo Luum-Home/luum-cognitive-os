@@ -333,11 +333,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-agent-snapshot.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-prelaunch.sh\""
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-prelaunch.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-agent-snapshot.sh\""
           },
           {
             "type": "command",
