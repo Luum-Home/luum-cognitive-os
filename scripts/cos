@@ -13,6 +13,7 @@
 #   cos subagent preflight             -> scripts/subagent_launch_preflight.py
 #   cos private-content audit          -> scripts/private_content_audit.py
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
+#   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
@@ -130,6 +131,17 @@ case "$SUBCMD" in
     echo "cos: unknown reward-signal subcommand '${2:-}'. Try: cos reward-signal audit [--json|--strict]" >&2
     exit 1
     ;;
+  performance-ledger)
+    if [ "${2:-}" = "compile" ] || [ -z "${2:-}" ] || [[ "${2:-}" == --* ]]; then
+      shift
+      if [ "${1:-}" = "compile" ]; then
+        shift
+      fi
+      exec "$SCRIPT_DIR/cos-performance-ledger" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown performance-ledger subcommand '${2:-}'. Try: cos performance-ledger compile [--json]" >&2
+    exit 1
+    ;;
   state)
     if [ "${2:-}" = "retention" ]; then
       shift 2
@@ -167,6 +179,7 @@ Usage:
                                          Check subagent capability contract before launch
   cos private-content audit [--json]      Audit ADR-202 private-content classifications
   cos reward-signal audit [--json]        Audit ADR-204 reward signal quality
+  cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
   cos state retention [--json|--strict]   Audit declared mutable state retention
   cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
   cos init [dir]                         Install Cognitive OS into a project

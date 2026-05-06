@@ -42,9 +42,9 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 ## Phase 3 — Performance Ledger and Maintainer proposal loop (ADR-201)
 
-- [ ] Add SQLite-backed Performance Ledger.
-- [ ] Export audit JSONL and latest report artifacts.
-- [ ] Enforce signal-quality quarantine before rollups.
+- [x] Add SQLite-backed Performance Ledger.
+- [x] Export audit JSONL and latest report artifacts.
+- [x] Enforce signal-quality quarantine before rollups.
 - [ ] Add deterministic proposal id deduplication.
 - [ ] Add `PromoteFromTelemetry` proposal generation.
 - [ ] Add dry-run Maintainer runner with lock, cooldown, budget, and ADR-164 mutation boundary.
