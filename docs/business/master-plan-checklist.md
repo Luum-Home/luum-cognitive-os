@@ -226,6 +226,8 @@
   - [ ] Slice 2b justified elevations, transition receipts, export/projection guard, service/headless smoke, and provenance/redaction checks.
 - [ ] Wire ADR-203 subagent preflight into harness-native/Agent launch paths that programmatically select subagent type before parallel fan-out.
 - [ ] Implement ADR-204 reward-signal quality boundary so dirty trust scores and corrupt skill-feedback rows cannot drive maintainer/router/skill lifecycle decisions.
+  - [x] Add reward-signal contract, validator, audit CLI, route smoke, and tests proving `skill: matias` and default trust score 75 without evidence are quarantined from rollups.
+  - [ ] Feed ADR-204 quality counts into ADR-201 Performance Ledger and block `PromoteFromTelemetry` consumption above corrupt-ratio policy.
 - [ ] Implement ADR-205 run flight recorder and cross-stream trace joiner before treating service-mode observability as complete.
 - [ ] Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.
 - [ ] Implement ADR-207 skill performance ledger and lifecycle closure before claiming skill self-improvement.
