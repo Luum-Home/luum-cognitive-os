@@ -265,6 +265,28 @@ class ProgressMarker(CanonicalEvent):
 
 
 @dataclass
+class InboundSignal(CanonicalEvent):
+    """Control-plane signal delivered to a harness adapter from the agent bus.
+
+    This closes the ADR-185/agent-bus inbound side for harnesses that only emit
+    outbound telemetry: adapters can now surface filesystem fallback controls,
+    clarification answers, and interrupt sentinels as canonical events.
+    """
+
+    event_type: ClassVar[str] = "inbound_signal"
+
+    signal_id: str = ""
+    agent_id: Optional[str] = None
+    session_id: Optional[str] = None
+    signal_type: str = ""
+    command: Optional[str] = None
+    answers: List[str] = field(default_factory=list)
+    round: Optional[int] = None
+    source_path: str = ""
+    ts: float = 0.0
+
+
+@dataclass
 class ParseError(CanonicalEvent):
     """Emitted when a line does not match any known pattern in a passive adapter.
 
@@ -322,6 +344,22 @@ class HarnessAdapter(ABC):
         :class:`TokenUsage`).
         """
 
+    def parse_inbound_signals(
+        self,
+        *,
+        agent_id: Optional[str] = None,
+        session_id: Optional[str] = None,
+    ) -> List[CanonicalEvent]:
+        """Return pending inbound agent-bus signals for this adapter context.
+
+        File fallback is intentionally first-class: ``control.jsonl``,
+        ``answer.jsonl``, and the dedicated ``interrupt`` sentinel under
+        ``.cognitive-os/agent-bus/{id}/`` are visible even when Valkey is off.
+        """
+        return read_inbound_signals(
+            self.project_dir, agent_id=agent_id, session_id=session_id
+        )
+
     def emit_canonical(
         self,
         event: CanonicalEvent,
@@ -348,6 +386,105 @@ class HarnessAdapter(ABC):
 def now_epoch() -> float:
     """Monotonic-friendly wall-clock timestamp used across adapters."""
     return time.time()
+
+
+def _read_jsonl(path: Path) -> List[Dict[str, Any]]:
+    if not path.exists():
+        return []
+    rows: List[Dict[str, Any]] = []
+    try:
+        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+            if not line.strip():
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(row, dict):
+                rows.append(row)
+    except OSError:
+        return []
+    return rows
+
+
+def _signal_id(source: Path, row: Dict[str, Any]) -> str:
+    import hashlib
+
+    raw = json.dumps({"source": str(source), "row": row}, sort_keys=True, default=str)
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+
+
+def read_inbound_signals(
+    project_dir: Path,
+    *,
+    agent_id: Optional[str] = None,
+    session_id: Optional[str] = None,
+) -> List[CanonicalEvent]:
+    """Read pending file-fallback inbound signals for an agent/session.
+
+    The function is side-effect free. Runtime hooks or agent loops decide whether
+    a returned ``stop``/``interrupt`` event should block or terminate execution.
+    """
+    targets = [str(v) for v in (agent_id, session_id) if v]
+    if not targets:
+        return []
+
+    base = project_dir / ".cognitive-os" / "agent-bus"
+    out: List[CanonicalEvent] = []
+    seen: set[str] = set()
+    for target in targets:
+        agent_dir = base / target
+        if not agent_dir.exists():
+            continue
+
+        interrupt = agent_dir / "interrupt"
+        if interrupt.exists():
+            try:
+                row = json.loads(interrupt.read_text(encoding="utf-8"))
+                if not isinstance(row, dict):
+                    row = {"body": row}
+            except Exception:
+                row = {}
+            sid = _signal_id(interrupt, row)
+            if sid not in seen:
+                seen.add(sid)
+                out.append(
+                    InboundSignal(
+                        signal_id=sid,
+                        agent_id=agent_id,
+                        session_id=session_id,
+                        signal_type="interrupt",
+                        command=str(row.get("command") or "stop"),
+                        source_path=str(interrupt),
+                        ts=float(row.get("timestamp_epoch") or now_epoch()),
+                    )
+                )
+
+        for suffix, signal_type in (("control", "control"), ("answer", "answer")):
+            path = agent_dir / f"{suffix}.jsonl"
+            for row in _read_jsonl(path):
+                sid = _signal_id(path, row)
+                if sid in seen:
+                    continue
+                seen.add(sid)
+                out.append(
+                    InboundSignal(
+                        signal_id=sid,
+                        agent_id=agent_id,
+                        session_id=session_id,
+                        signal_type=signal_type,
+                        command=row.get("command"),
+                        answers=(
+                            [str(v) for v in row.get("answers", [])]
+                            if isinstance(row.get("answers"), list)
+                            else []
+                        ),
+                        round=int(row["round"]) if str(row.get("round", "")).isdigit() else None,
+                        source_path=str(path),
+                        ts=float(row.get("timestamp_epoch") or now_epoch()),
+                    )
+                )
+    return out
 
 
 # ---------------------------------------------------------------------------
