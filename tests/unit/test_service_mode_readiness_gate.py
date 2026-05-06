@@ -25,6 +25,7 @@ def test_readiness_gate_fails_when_private_content_manifest_missing(tmp_path):
 def test_readiness_gate_fails_when_trace_joiner_missing(tmp_path):
     _copy_manifest("private-content.yaml", tmp_path)
     _copy_manifest("reward-signal-contract.yaml", tmp_path)
+    _copy_manifest("cross-stack-secret-audit.yaml", tmp_path)
 
     report = build_readiness_report(tmp_path)
 
@@ -34,9 +35,36 @@ def test_readiness_gate_fails_when_trace_joiner_missing(tmp_path):
     assert "latest run trace report missing" in trace_gate["summary"]
 
 
+def test_readiness_gate_fails_when_secret_audit_manifest_missing(tmp_path):
+    _copy_manifest("private-content.yaml", tmp_path)
+    _copy_manifest("reward-signal-contract.yaml", tmp_path)
+
+    report = build_readiness_report(tmp_path)
+
+    secret_gate = next(gate for gate in report["gates"] if gate["id"] == "release-secret-audit")
+    assert report["status"] == "red"
+    assert secret_gate["status"] == "red"
+    assert "secret audit manifest missing" in secret_gate["summary"]
+
+
+def test_readiness_gate_fails_when_secret_audit_has_sensitive_surface(tmp_path):
+    _copy_manifest("private-content.yaml", tmp_path)
+    _copy_manifest("reward-signal-contract.yaml", tmp_path)
+    _copy_manifest("cross-stack-secret-audit.yaml", tmp_path)
+    (tmp_path / ".env").write_text("SECRET=value\n", encoding="utf-8")
+
+    report = build_readiness_report(tmp_path)
+
+    secret_gate = next(gate for gate in report["gates"] if gate["id"] == "release-secret-audit")
+    assert report["status"] == "red"
+    assert secret_gate["status"] == "red"
+    assert secret_gate["evidence"]["status"] == "warn"
+
+
 def test_readiness_gate_accepts_core_substrates_but_keeps_experiment_red(tmp_path):
     _copy_manifest("private-content.yaml", tmp_path)
     _copy_manifest("reward-signal-contract.yaml", tmp_path)
+    _copy_manifest("cross-stack-secret-audit.yaml", tmp_path)
     scripts = tmp_path / "scripts"
     scripts.mkdir()
     shutil.copy(REPO / "scripts" / "cos-maintainer-agent", scripts / "cos-maintainer-agent")
@@ -73,5 +101,6 @@ def test_readiness_gate_accepts_core_substrates_but_keeps_experiment_red(tmp_pat
     assert next(g for g in report["gates"] if g["id"] == "run-flight-recorder")["status"] == "green"
     assert next(g for g in report["gates"] if g["id"] == "performance-ledger")["status"] == "green"
     assert next(g for g in report["gates"] if g["id"] == "reward-signals")["status"] == "green"
+    assert next(g for g in report["gates"] if g["id"] == "release-secret-audit")["status"] == "green"
     assert next(g for g in report["gates"] if g["id"] == "maintainer-experiment-contract")["status"] == "red"
     assert report["status"] == "red"
