@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import sys
 from collections import Counter
@@ -89,7 +88,6 @@ _TIER_C_PATTERNS: list[re.Pattern] = [re.compile(p, re.IGNORECASE) for p in [
     r"onboarding",
     r"advisory",
     r"audit[_-]?weekly",
-    r"paperclip",
     r"parry",
     r"aguara",
     r"phoenix",

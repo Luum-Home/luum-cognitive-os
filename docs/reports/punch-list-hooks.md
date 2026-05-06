@@ -43,7 +43,6 @@
 | `hooks/mlflow-sync.sh` | registered=False, excluded=True, category=CONDITIONAL: syncs metrics to MLflow at session end; only active when mlflow package is installed | DOCUMENT: add @on-demand marker with mlflow guard |
 | `hooks/orchestrator-mode-detect.sh` | registered=False, excluded=True, category=CONDITIONAL: sourced by other hooks, not registered independently | DOCUMENT: add @on-demand marker; it is a sourced library, not a standalone hook |
 | `hooks/package-sync.sh` | registered=False, excluded=True, category=CONDITIONAL: triggered by CI or developer, not by Claude hooks | DOCUMENT: add @on-demand/@manual-trigger marker |
-| `hooks/paperclip-sync.sh` | registered=False, excluded=True, category=CONDITIONAL: syncs to Paperclip; only active when Paperclip service is running | DOCUMENT: add @on-demand marker with Paperclip guard |
 | `hooks/parry-scan.sh` | registered=False, excluded=True, category=CONDITIONAL: Parry security integration | DOCUMENT: add @on-demand marker with Parry guard |
 | `hooks/pattern-check.sh` | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired | WIRE: register in PreToolUse Edit\|Write, or PRUNE |
 | `hooks/post-agent-verify.sh` | registered=False, excluded=True, category=FUTURE: superseded by completion-gate.sh | PRUNE: superseded; archive to docs/archive/hooks/ |

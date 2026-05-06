@@ -192,23 +192,23 @@ def langfuse_pg_container(docker_available):
 
 
 # ---------------------------------------------------------------------------
-# PostgreSQL — paperclip credentials (paperclip / paperclip / paperclip db)
 # ---------------------------------------------------------------------------
 
 @pytest.fixture(scope="session")
-def paperclip_pg_container(docker_available):
-    """Session-scoped Postgres 17 container for Paperclip tests."""
+def postgres_minimal_container():
+    """Minimal postgres container without langfuse-specific credentials.
+
+    Use for tests that need a generic postgres without the langfuse fixture's
+    pre-set username/password/dbname. Distinct from `postgres_container`
+    above which provisions langfuse-specific defaults.
+    """
     try:
         from testcontainers.postgres import PostgresContainer
     except ImportError:
         pytest.skip("testcontainers not installed")
 
-    # Paperclip uses a different user/db — must be a separate container.
     container = PostgresContainer(
         image="postgres:17-alpine",
-        username="paperclip",
-        password="paperclip",
-        dbname="paperclip",
     )
     with container:
         yield container

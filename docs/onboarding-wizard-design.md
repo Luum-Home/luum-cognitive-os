@@ -302,7 +302,6 @@ Toggle features on/off. Organized into categories with smart defaults based on P
 | Agent Teams | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in env | Claude Code experimental flag |
 | Agent Bus | `AGENT_BUS_ENABLED=true` | Valkey Docker service |
 | Agent KPIs | `rules/agent-kpis.md` loaded | Skill metrics, error learning |
-| Squad protocol | `rules/squad-protocol.md` loaded | Agent KPIs, Paperclip |
 | Agent customization | `.cognitive-os/customizations/` directory | Agent definitions |
 
 ---
@@ -353,7 +352,6 @@ Only shown if Docker was detected in Phase 1.
   [ ] Bifrost               High-performance AI gateway
   [ ] NeMo Guardrails       Content safety and PII detection
   [ ] Valkey                Agent Bus communication (Redis-compatible)
-  [ ] Paperclip             Governance and compliance dashboard
   [ ] Jupyter               Notebook environment for data analysis
   [ ] Opik                  LLM tracing backend (alternative to Langfuse)
   [ ] Cognee                Knowledge graph and RAG engine
@@ -369,7 +367,6 @@ Only shown if Docker was detected in Phase 1.
 | Bifrost | default | (standalone) | 8081 |
 | NeMo Guardrails | default | (standalone) | 8000 |
 | Valkey | default | (standalone) | 6379 |
-| Paperclip | default | paperclip-pg | 3200 |
 | Jupyter | default | (standalone) | 8888 |
 | Opik | observability | opik-mysql, opik-frontend | 5173 |
 | Cognee | memory | (standalone) | 8003 |

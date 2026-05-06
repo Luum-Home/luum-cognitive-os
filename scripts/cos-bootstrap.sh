@@ -14,8 +14,8 @@
 #   --help                             Show this help message
 #
 # Profiles:
-#   minimal   Paperclip only (1 container)
-#   standard  Paperclip + Valkey
+#   minimal   Valkey only (1 container)
+#   standard  Valkey
 #   full      All services including ADR-060-gated optional containers:
 #               --profile guardrails  → nemo-guardrails
 #               --profile jupyter     → jupyter
@@ -63,8 +63,8 @@ USAGE
 OPTIONS
   --profile minimal|standard|full
       Service profile to start (default: standard)
-      minimal:  Paperclip only
-      standard: Paperclip + Valkey (recommended)
+      minimal:  Valkey only
+      standard: Valkey (recommended)
       full:     All services — activates compose profiles guardrails
                 (nemo-guardrails), jupyter, and memory (cognee + memu-pg)
                 in addition to the standard base services.
@@ -263,17 +263,12 @@ step "Docker services (profile: ${PROFILE})"
 # ADR-058 (2026-04-24): former observability stack removed — observability is now Phoenix
 # via `uv run phoenix serve` (pip path, no Docker). The minimal/standard
 # profiles are therefore thin; `full` still brings up the remaining Docker
-# services (paperclip, nemo-guardrails, jupyter, etc.).
 get_services_for_profile() {
   case "${PROFILE}" in
-    minimal)
-      echo "paperclip-pg paperclip"
-      ;;
-    standard)
-      echo "paperclip-pg paperclip valkey"
+    minimal|standard)
+      echo "valkey"
       ;;
     full)
-      # All default services — let compose handle it
       echo ""
       ;;
     *)
@@ -331,15 +326,12 @@ fi
 step "Health checks"
 
 if [[ "${DRY_RUN}" == "true" ]]; then
-  info "Would check health of: Paperclip (http://localhost:3200)"
   done_step
 else
   if ! check_docker; then
     warn "Docker not available — skipping health checks."
     done_step
   else
-    paperclip_port="${PAPERCLIP_PORT:-3200}"
-    wait_for_health "Paperclip" "http://localhost:${paperclip_port}/api/health" 120
     done_step
   fi
 fi
@@ -423,9 +415,6 @@ echo "║  Profile: ${PROFILE}$(printf '%*s' $((49 - ${#PROFILE})) '')║"
 echo "╠══════════════════════════════════════════════════════════╣"
 echo "║  Services & Ports:                                       ║"
 echo "║    Phoenix UI:   http://localhost:6006 (uv run phoenix serve) ║"
-if [[ "${PROFILE}" == "standard" || "${PROFILE}" == "full" ]]; then
-echo "║    Paperclip:    http://localhost:3200                   ║"
-fi
 if [[ "${PROFILE}" == "full" ]]; then
 echo "║    Jupyter:      http://localhost:8888                   ║"
 echo "║    NeMo Guard.:  http://localhost:8000                   ║"

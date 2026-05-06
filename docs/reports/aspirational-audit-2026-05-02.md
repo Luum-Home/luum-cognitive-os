@@ -36,7 +36,6 @@
 | `hooks/_lib/hook-pipe.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/killswitch_check.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/normalize-stdin.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
-| `hooks/_lib/paperclip-notify.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/portable.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/push-collision-check.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/register-bg.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
@@ -145,7 +144,6 @@
 | `hooks/orchestrator-claim-gate.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
 | `hooks/orchestrator-mode-detect.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: sourced library helper; not registered independently, sourced by other hooks on demand — @on-demand | whitelisted exclusion: MANUAL_TRIGGER: sourced library helper; not registered independently, sourced by other hooks on demand — @on-demand |
 | `hooks/package-sync.sh` | METADATA | registered=False, excluded=True, category=MANUAL_TRIGGER: syncs package dependencies; triggered by CI or developer on demand, not by Claude hooks — @manual-trigger | whitelisted exclusion: MANUAL_TRIGGER: syncs package dependencies; triggered by CI or developer on demand, not by Claude hooks — @manual-trigger |
-| `hooks/paperclip-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running | planned but not wired: CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running |
 | `hooks/parry-scan.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: Parry security integration | planned but not wired: CONDITIONAL: Parry security integration |
 | `hooks/pattern-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit|Write — not yet wired | planned but not wired: FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired |
 | `hooks/plan-claim-validator.sh` | ON_DEMAND | fire_count_7d=0, registered=True, has_test=True | registered + covered by test — legit sleeper (fires when triggered) |
@@ -357,7 +355,6 @@
 | `lib/orchestrator_mode_activator.py` | REAL | callers=1, size_bytes=4271 | imported by 1 non-test caller(s) |
 | `lib/orchestrator_verify.py` | REAL | callers=4, size_bytes=20149 | imported by 4 non-test caller(s) |
 | `lib/outcome_metrics.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=2091 | covered by test — legit sleeper (imported by test only) |
-| `lib/paperclip_client.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=20387 | covered by test — legit sleeper (imported by test only) |
 | `lib/paths.py` | REAL | callers=1, size_bytes=7957 | imported by 1 non-test caller(s) |
 | `lib/pattern_detector.py` | ON_DEMAND | callers=0, has_test=True, size_bytes=26908 | covered by test — legit sleeper (imported by test only) |
 | `lib/peer_card.py` | REAL | callers=1, size_bytes=22809 | imported by 1 non-test caller(s) |
@@ -505,7 +502,6 @@
 | `scripts/cos-merge-queue-bench.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=2980 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-merge-queue-worker.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=14776 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-merge-queue.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=4456 | covered by test — legit sleeper (test proves it works when called) |
-| `scripts/cos-paperclip-local.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=9914 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-postgres-local.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=12036 | covered by test — legit sleeper (test proves it works when called) |
 | `scripts/cos-project-registry-prune.sh` | ON_DEMAND | callers=0, on_demand_marker=True, size_bytes=4391 | @on-demand marker — legit rarely-invoked script |
 | `scripts/cos-registry.sh` | ON_DEMAND | callers=0, has_test=True, size_bytes=8761 | covered by test — legit sleeper (test proves it works when called) |
@@ -736,7 +732,6 @@
 | `skills/nemo-guardrails/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/ops-runbook/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/optimize-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/paperclip-dashboard/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/pattern-audit/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/peer-card/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/pentest-self/SKILL.md` | ON_DEMAND | invocations_30d=0, referenced_in_docs=True, on_demand_marker=True | @on-demand marker — legit periodic/manual skill |

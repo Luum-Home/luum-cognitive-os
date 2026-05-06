@@ -127,7 +127,6 @@ origins:
   - remote-chat
   - rest-api
   - webhook
-  - paperclip
   - github
   - scheduler
   - automation

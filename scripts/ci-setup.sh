@@ -12,11 +12,7 @@
 #     install util-linux via Homebrew and symlink flock into /opt/homebrew/bin
 #     (which is already on PATH for Homebrew-managed shells).
 #
-#   Part 2 — Paperclip build stub
-#     3 tests in tests/unit/test_reverse_engineer.py::TestPaperclipIntegration
-#     check Path("/tmp/paperclip-build").exists().  Paperclip is an internal
 #     Luum service (local dashboard on :3200) — its source is NOT a public repo.
-#     We materialise a minimal TypeScript stub at /tmp/paperclip-build that
 #     satisfies the assertions (config schema via Zod, env vars, Dockerfile).
 #     /tmp/ is ephemeral: re-run this script after a reboot or on each fresh CI
 #     runner.  Do NOT commit the stub to the repository.
@@ -73,70 +69,5 @@ else
     fi
 fi
 
-# ── Part 2: Paperclip build stub ─────────────────────────────────────────────
-PAPERCLIP_DIR="/tmp/paperclip-build"
-info "Checking Paperclip build stub at $PAPERCLIP_DIR..."
 
-if [[ -d "$PAPERCLIP_DIR" ]]; then
-    info "Paperclip stub already present."
-else
-    info "Creating minimal Paperclip stub at $PAPERCLIP_DIR..."
-    mkdir -p "$PAPERCLIP_DIR/src"
-
-    # Satisfies test_paperclip_config_schemas_found (Zod schema) AND
-    # test_paperclip_env_vars_found (process.env references).
-    cat > "$PAPERCLIP_DIR/src/config.ts" <<'TSEOF'
-import { z } from "zod";
-
-// Stub: Paperclip CI build fixture for reverse-engineer tests
-// NOTE: This is NOT the real Paperclip source. It is a minimal stub that
-// allows test_reverse_engineer.py::TestPaperclipIntegration to run.
-// The real Paperclip service lives at http://localhost:3200 (internal Luum tool).
-
-export const AppConfigSchema = z.object({
-  port: z.number().default(3200),
-  host: z.string().default("localhost"),
-  dbUrl: z.string(),
-  apiKey: z.string(),
-});
-
-export type AppConfig = z.infer<typeof AppConfigSchema>;
-
-export function loadConfig(): AppConfig {
-  return {
-    port: parseInt(process.env.PORT || "3200"),
-    host: process.env.HOST || "localhost",
-    dbUrl: process.env.DATABASE_URL || "postgres://localhost/paperclip",
-    apiKey: process.env.API_KEY || "",
-  };
-}
-TSEOF
-
-    # Satisfies test_paperclip_docker_setup_found (base_image present).
-    cat > "$PAPERCLIP_DIR/Dockerfile" <<'DFEOF'
-FROM node:20-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --only=production
-
-COPY . .
-RUN npm run build
-
-EXPOSE 3200
-
-CMD ["node", "dist/index.js"]
-DFEOF
-
-    info "Paperclip stub created."
-fi
-
-# ── Summary ──────────────────────────────────────────────────────────────────
-echo ""
-info "Done. Verify:"
-info "  which flock          -> $(command -v flock 2>/dev/null || echo 'NOT FOUND — open a new shell')"
-info "  ls /tmp/paperclip-build -> $(ls /tmp/paperclip-build 2>/dev/null | tr '\n' ' ' || echo 'missing')"
-echo ""
-info "Expected un-blocked tests: 10 (7 flock + 3 paperclip)."
 info "Run: uv run pytest tests/unit/test_session_lifecycle.py tests/unit/test_reverse_engineer.py -v"

@@ -150,7 +150,7 @@ if [ -n "$expected_services" ]; then
     # Check if this service (or a container matching it) is running
     is_running=false
     if [ -n "$running_services" ]; then
-      # Match service name or name containing the service key (e.g., paperclip-pg matches paperclip)
+      # Match service name or name containing the service key.
       if echo "$running_services" | grep -qi "$svc_name"; then
         is_running=true
       fi

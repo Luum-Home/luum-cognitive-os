@@ -36,7 +36,6 @@ and writes audit/evidence.
    `auth_probe`, cost disclosure, output redaction, and artifact bundle.
 4. **Docker/cosd integration** — Docker worker can request bridge execution
    without mounting credential stores.
-5. **Remote ingress integration** — Telegram/Paperclip/GitHub/REST can enqueue
    tasks that eventually use the bridge only through queue/approval gates.
 
 ## Deny-by-default rules

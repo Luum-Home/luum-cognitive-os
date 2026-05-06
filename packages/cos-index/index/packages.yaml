@@ -129,12 +129,8 @@ packages:
     description: "MCP server exposing Cognitive OS knowledge to any MCP-compatible editor (VS Code, Cursor, Windsurf)"
     tags: [mcp, server, integration, memory, tools]
 
-  - name: "@luum/paperclip-integration"
     repo: "Luum-Home/luum-cognitive-os"
-    path: "packages/paperclip-integration"
     version: "1.1.0"
-    description: "Paperclip governance dashboard integration — session metrics sync on Stop"
-    tags: [paperclip, governance, dashboard, metrics, sync]
 
   - name: "@luum/privacy-mode"
     repo: "Luum-Home/luum-cognitive-os"

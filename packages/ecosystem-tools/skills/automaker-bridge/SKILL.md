@@ -11,6 +11,11 @@ model: sonnet
 audience: os-dev
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bautomaker[- ]?bridge\b'
+    confidence: 0.95
+  - pattern: '\bautomaker\s+(config|setup|integration)\b'
+    confidence: 0.8
 ---
 
 # AutoMaker Bridge
@@ -30,7 +35,6 @@ COS hooks fire automatically (.cognitive-os/ exists):
   - SessionStart: health check, metrics rotation
   - PreToolUse:   completeness check, phase context
   - PostToolUse:  error learning, auto-repair, trust score
-  - Stop:         session summary, KPI trigger, Paperclip sync
        |
        v
 Agent completes task under COS governance
@@ -79,7 +83,6 @@ Create `.automaker/cognitive-os.json` in the project root. This file tells any A
     "quality_gates": ["build", "test", "lint"],
     "metrics_sync": {
       "enabled": true,
-      "paperclip_url": "http://localhost:3456"
     }
   }
 }
@@ -95,8 +98,6 @@ Create `.automaker/cognitive-os.json` in the project root. This file tells any A
 | `phase_gate` | Enforce phase-based Definition of Done before task completion |
 | `auto_repair` | Enable MAPE-K auto-repair loop on errors |
 | `quality_gates` | Array of gate names that must pass before a task is marked done |
-| `metrics_sync.enabled` | Sync COS metrics to Paperclip dashboard |
-| `metrics_sync.paperclip_url` | Paperclip instance URL for metrics ingestion |
 
 ### Step 3: Create AutoMaker Agent Profile
 
@@ -193,4 +194,3 @@ automaker:
 - AutoMaker is v0.x software. Pin the Docker image tag in production rather than using `:latest`.
 - Both AutoMaker and COS use git worktrees for isolation. They use separate base directories and do not conflict: AutoMaker manages its own worktrees, COS repair-worktree uses `.cognitive-os/worktrees/`.
 - AutoMaker's REST API runs on port 3008 internally (3007 in headless web mode). The Kanban UI is served on port 4200.
-- If Paperclip is also running, metrics flow: COS hooks -> JSONL files -> Paperclip dashboard. The bridge config's `metrics_sync` section controls this.

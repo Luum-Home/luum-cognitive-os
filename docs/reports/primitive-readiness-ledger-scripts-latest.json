@@ -23,8 +23,7 @@
           "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
-          "family": "script",
-          "path": "scripts/cos-paperclip-local.sh"
+          "family": "script"
         },
         {
           "family": "script",
@@ -3552,8 +3551,7 @@
           "path": "docs/adrs/ADR-042-valkey-local-daemon.md"
         },
         {
-          "family": "doc",
-          "path": "docs/adrs/ADR-043-paperclip-local-daemon.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -4904,8 +4902,7 @@
           "path": "docs/package-manager-design.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -5136,8 +5133,7 @@
           "path": "hooks/_lib/artifact-status.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/_lib/paperclip-notify.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -5268,8 +5264,7 @@
           "path": "hooks/package-sync.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -5364,28 +5359,22 @@
           "path": "packages/consequence-system/hooks/consequence-evaluator.sh"
         },
         {
-          "family": "hook",
-          "path": "packages/paperclip-integration/hooks/paperclip-agent-status.sh"
+          "family": "hook"
         },
         {
-          "family": "hook",
-          "path": "packages/paperclip-integration/hooks/paperclip-cost-stream.sh"
+          "family": "hook"
         },
         {
-          "family": "hook",
-          "path": "packages/paperclip-integration/hooks/paperclip-sdd-sync.sh"
+          "family": "hook"
         },
         {
-          "family": "hook",
-          "path": "packages/paperclip-integration/hooks/paperclip-squad-sync.sh"
+          "family": "hook"
         },
         {
-          "family": "hook",
-          "path": "packages/paperclip-integration/hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
-          "family": "hook",
-          "path": "packages/paperclip-integration/hooks/paperclip-task-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -5920,8 +5909,7 @@
           "path": "scripts/cos-operational-status"
         },
         {
-          "family": "script",
-          "path": "scripts/cos-paperclip-local.sh"
+          "family": "script"
         },
         {
           "family": "script",
@@ -6532,8 +6520,7 @@
           "path": "packages/ecosystem-tools/skills/strands-evals-integration/SKILL.md"
         },
         {
-          "family": "skill",
-          "path": "packages/paperclip-integration/skills/paperclip-dashboard/SKILL.md"
+          "family": "skill"
         },
         {
           "family": "skill",
@@ -6972,8 +6959,7 @@
           "path": "tests/behavior/test_model_routing_discipline.py"
         },
         {
-          "family": "test",
-          "path": "tests/behavior/test_paperclip_integration_complete.py"
+          "family": "test"
         },
         {
           "family": "test",
@@ -7308,8 +7294,7 @@
           "path": "tests/integration/test_orchestrator_capabilities_live.py"
         },
         {
-          "family": "test",
-          "path": "tests/integration/test_paperclip_local_daemon.py"
+          "family": "test"
         },
         {
           "family": "test",
@@ -7796,8 +7781,7 @@
           "path": "tests/unit/test_outcome_metrics.py"
         },
         {
-          "family": "test",
-          "path": "tests/unit/test_paperclip_client.py"
+          "family": "test"
         },
         {
           "family": "test",
@@ -12357,12 +12341,10 @@
       },
       "consumers": [
         {
-          "family": "doc",
-          "path": "docs/adrs/ADR-043-paperclip-local-daemon.md"
+          "family": "doc"
         },
         {
-          "family": "test",
-          "path": "tests/integration/test_paperclip_local_daemon.py"
+          "family": "test"
         }
       ],
       "distribution": null,
@@ -12376,7 +12358,6 @@
       "lifecycle_state": null,
       "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
       "override_rationale": null,
-      "path": "scripts/cos-paperclip-local.sh",
       "protected_install_surface": false,
       "role": "maintainer-tool",
       "role_source": "heuristic:self-evolution",
@@ -12395,8 +12376,7 @@
       },
       "consumers": [
         {
-          "family": "doc",
-          "path": "docs/adrs/ADR-043-paperclip-local-daemon.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -14465,8 +14445,7 @@
           "path": "docs/adrs/ADR-042-valkey-local-daemon.md"
         },
         {
-          "family": "doc",
-          "path": "docs/adrs/ADR-043-paperclip-local-daemon.md"
+          "family": "doc"
         },
         {
           "family": "doc",

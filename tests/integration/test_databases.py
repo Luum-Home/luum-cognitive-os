@@ -3,7 +3,6 @@
 
 Tests real containers for each data store used by the platform:
   - langfuse-pg:         PostgreSQL 17 (Langfuse metadata)
-  - paperclip-pg:        PostgreSQL 17 (Paperclip metadata)
   - opik-mysql:          MySQL 8.4 (Opik metadata)
   - langfuse-valkey:     Valkey 8 (Redis-compatible cache for Langfuse)
   - langfuse-clickhouse: ClickHouse (Langfuse analytics/OLAP)
@@ -32,8 +31,8 @@ import pytest
 tc_available = True
 RUN_DATABASE_CONTAINERS = os.environ.get("COS_RUN_DATABASE_CONTAINERS") == "1"
 try:
-    from testcontainers.postgres import PostgresContainer
-    from testcontainers.core.container import DockerContainer
+    import testcontainers.postgres  # noqa: F401
+    import testcontainers.core.container  # noqa: F401
 except ImportError:
     tc_available = False
 
@@ -183,98 +182,7 @@ class TestLangfusePostgres:
 
 
 # ===================================================================
-# 2. paperclip-pg  (PostgreSQL 17)
-# ===================================================================
-class TestPaperclipPostgres:
-    """Validate PostgreSQL for the Paperclip service.
-
-    Mirrors the paperclip-pg service from docker-compose:
-      image: postgres:17-alpine
-      POSTGRES_USER=paperclip, POSTGRES_PASSWORD=paperclip, POSTGRES_DB=paperclip
-
-    Uses the session-scoped ``paperclip_pg_container`` fixture from conftest.py.
-    """
-
-    @pytest.fixture()
-    def connection(self, paperclip_pg_container):
-        """Return a psycopg2 connection, rolled back after each test."""
-        import psycopg2
-
-        container = paperclip_pg_container
-        host = container.get_container_host_ip()
-        port = int(container.get_exposed_port(5432))
-        conn = psycopg2.connect(
-            host=host, port=port,
-            user="paperclip", password="paperclip", dbname="paperclip",
-        )
-        conn.autocommit = False
-        yield conn
-        conn.rollback()
-        conn.close()
-
-    def test_container_starts(self, paperclip_pg_container):
-        """Container must be running and exposing a mapped port."""
-        assert paperclip_pg_container.get_container_host_ip() is not None
-        assert paperclip_pg_container.get_exposed_port(5432) is not None
-
-    def test_select_one(self, connection):
-        """Basic SELECT 1 proves the wire protocol works."""
-        cur = connection.cursor()
-        cur.execute("SELECT 1")
-        assert cur.fetchone()[0] == 1
-
-    def test_server_version(self, connection):
-        """Server must report PostgreSQL 17.x."""
-        cur = connection.cursor()
-        cur.execute("SHOW server_version")
-        version = cur.fetchone()[0]
-        assert version.startswith("17"), f"Expected PG 17, got {version}"
-
-    def test_create_table_insert_query(self, connection):
-        """Full DDL + DML cycle: CREATE TABLE, INSERT, SELECT, verify rows."""
-        cur = connection.cursor()
-        cur.execute(
-            """
-            CREATE TABLE IF NOT EXISTS paperclip_test (
-                id SERIAL PRIMARY KEY,
-                doc_id TEXT NOT NULL,
-                chunk_index INT NOT NULL,
-                embedding_dim INT DEFAULT 768,
-                created_at TIMESTAMPTZ DEFAULT NOW()
-            )
-            """
-        )
-        cur.execute(
-            "INSERT INTO paperclip_test (doc_id, chunk_index) VALUES (%s, %s) RETURNING id",
-            ("doc-abc", 0),
-        )
-        row_id = cur.fetchone()[0]
-        assert row_id is not None
-
-        cur.execute(
-            "SELECT doc_id, chunk_index, embedding_dim FROM paperclip_test WHERE id = %s",
-            (row_id,),
-        )
-        row = cur.fetchone()
-        assert row[0] == "doc-abc"
-        assert row[1] == 0
-        assert row[2] == 768
-
-    def test_database_name(self, connection):
-        """Connected database must be 'paperclip'."""
-        cur = connection.cursor()
-        cur.execute("SELECT current_database()")
-        assert cur.fetchone()[0] == "paperclip"
-
-    def test_current_user(self, connection):
-        """Connected user must be 'paperclip'."""
-        cur = connection.cursor()
-        cur.execute("SELECT current_user")
-        assert cur.fetchone()[0] == "paperclip"
-
-
-# ===================================================================
-# 3. opik-mysql  (MySQL 8.4)
+# 2. opik-mysql  (MySQL 8.4)
 # ===================================================================
 class TestOpikMySQL:
     """Validate MySQL for the Opik observability service.

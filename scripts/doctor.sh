@@ -127,7 +127,6 @@ if has_cmd docker; then
     warn_msg "Docker installed but not running"
   fi
 else
-  warn_msg "Docker not installed (optional, only needed for paperclip/jupyter/etc.)"
 fi
 
 # ── 5. Claude Code ─────────────────────────────────────────────────

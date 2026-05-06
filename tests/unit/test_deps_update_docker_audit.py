@@ -58,17 +58,17 @@ exit 1
 def test_floating_tag_digest_mismatch_is_actionable_review_candidate(tmp_path: Path) -> None:
     result = _run_deps_update_with_fake_docker(
         tmp_path,
-        "services:\n  paperclip:\n    image: reeoss/paperclipai-paperclip:latest\n",
+        "services:\n  app:\n    image: example/app:latest\n",
         """#!/usr/bin/env bash
 if [ "$1" = "inspect" ]; then
-  echo 'reeoss/paperclipai-paperclip@sha256:old'
+  echo 'example/app@sha256:old'
   exit 0
 fi
 if [ "$1" = "buildx" ] && [ "$2" = "version" ]; then
   exit 0
 fi
 if [ "$1" = "buildx" ] && [ "$2" = "imagetools" ] && [ "$3" = "inspect" ]; then
-  echo 'Name:      docker.io/reeoss/paperclipai-paperclip:latest'
+  echo 'Name:      docker.io/example/app:latest'
   echo 'Digest:    sha256:new'
   exit 0
 fi

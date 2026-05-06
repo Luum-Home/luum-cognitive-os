@@ -92,7 +92,6 @@ KNOWN_ORPHANS = {
     "metrics-rotation.sh",
     "notify.sh",
     "package-sync.sh",
-    "paperclip-sync.sh",
     "pre-cleanup-snapshot.sh",
     "pre-commit-gate.sh",
     "private-mode-gate.sh",

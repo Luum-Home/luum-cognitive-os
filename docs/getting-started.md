@@ -146,7 +146,6 @@ This single command:
 |---------|----------|----------|
 | `minimal` | Langfuse stack (6 containers) | Low resource usage, observability only |
 | `standard` | Langfuse + LiteLLM (default) | Recommended — cost control + observability |
-| `full` | All services | Complete stack including Paperclip, Jupyter |
 
 ```bash
 bash scripts/cos-bootstrap.sh --profile minimal   # lightweight
@@ -163,10 +162,15 @@ Services started by the standard profile:
 
 Additional services available in the `full` profile:
 - **NeMo Guardrails** (port 8088): Content safety
-- **Paperclip** (port 3200): Governance dashboard
 - **Jupyter** (port 8888): GPU/compute sandbox
 
 These are optional. Cognitive OS works without them — they add observability and cost control.
+
+For the current UI doctrine, see [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md).
+The four supported surfaces are: Surface 1 (always-on CLI), Surface 2 Phoenix
+(`uv sync --extra observability && uv run phoenix serve`), Surface 3 Engram Cloud
+(opt-in, BYOK per ADR-139), and Surface 4 any markdown reader pointed at `docs/`.
+None of the surfaces are required for the governance layer to function.
 
 #### Updating an existing installation
 
