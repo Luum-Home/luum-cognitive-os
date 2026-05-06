@@ -49,3 +49,15 @@ ACCEPTANCE CRITERIA:
 5. `scripts/install-goreleaser.sh --check --snapshot-smoke` runs a no-publish snapshot release smoke.
 6. `cd cmd/cos && go test ./...` passes.
 ```
+
+## Alternatives rejected
+
+- Keep the placeholder Homebrew formula as the release path; rejected because it cannot produce verified checksums, archives, or a reproducible GitHub release.
+
+## Verification
+
+```bash
+cd cmd/cos && go test ./...
+bash scripts/install-goreleaser.sh --check
+bash scripts/install-goreleaser.sh --check --snapshot-smoke
+```

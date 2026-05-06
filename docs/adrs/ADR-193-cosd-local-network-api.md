@@ -54,3 +54,15 @@ ACCEPTANCE CRITERIA:
 3. API submissions produce the same result files as CLI submissions.
 4. Tests cover the local TCP HTTP and Unix socket API paths.
 ```
+
+## Alternatives rejected
+
+- Expose the file queue directly to every client; rejected because clients need a stable local transport without writing queue files themselves.
+
+## Verification
+
+```bash
+python3 -m py_compile scripts/cos_daemon.py
+bash -n scripts/cosd
+python3 -m pytest tests/integration/test_cosd_daemon.py -q
+```

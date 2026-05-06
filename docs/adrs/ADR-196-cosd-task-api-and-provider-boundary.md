@@ -73,3 +73,15 @@ ACCEPTANCE CRITERIA:
 6. Protected task writes append cosd API audit rows.
 7. Tests cover local task submission, execution, and provider-boundary rejection.
 ```
+
+## Alternatives rejected
+
+- Let `/tasks/run-once` perform provider calls directly; rejected because the provider boundary must remain opt-in, dry-run-only, and externally governed.
+
+## Verification
+
+```bash
+python3 -m py_compile scripts/cos_daemon.py
+bash -n scripts/cosd
+python3 -m pytest tests/integration/test_cosd_daemon.py -q
+```

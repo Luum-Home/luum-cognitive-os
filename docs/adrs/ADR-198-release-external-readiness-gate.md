@@ -53,3 +53,14 @@ ACCEPTANCE CRITERIA:
 4. The script emits JSON with booleans and reasons without printing secret values.
 5. A real release preflight requires `make test-laptop` to pass before tagging/running GoReleaser.
 ```
+
+## Alternatives rejected
+
+- Let operators tag and run GoReleaser without a separate external readiness gate; rejected because tap access, secret presence, tag collisions, and `make test-laptop` must be proven before publication.
+
+## Verification
+
+```bash
+bash -n scripts/cos-release-external-readiness
+python3 -m pytest tests/contracts/test_release_external_readiness.py -q
+```
