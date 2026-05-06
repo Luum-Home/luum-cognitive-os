@@ -188,7 +188,9 @@ if [ "$ACTION" = "push" ]; then
   [ "${COS_MERGE_TO_MAIN:-0}" = "1" ] && exit 0
   echo "[direct-main-guard] BLOCK: direct push from $BRANCH bypasses ADR-116 merge queue." >&2
   echo "Land through scripts/cos-merge-queue.sh + scripts/cos-merge-queue-worker.sh or scripts/merge-to-main.sh." >&2
-  echo "Emergency operator bypass: COS_ALLOW_DIRECT_PUSH=1." >&2
+  echo "Emergency operator bypass requires BOTH:" >&2
+  echo "  COS_ALLOW_DIRECT_PUSH=1" >&2
+  echo "  COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'" >&2
   exit 2
 fi
 if [ "${COS_ALLOW_DIRECT_MAIN:-0}" = "1" ]; then
@@ -200,7 +202,7 @@ case "$actor" in
   agent|subagent|autonomous|worker)
     echo "[direct-main-guard] BLOCK: autonomous/session agents may not commit directly to $BRANCH." >&2
     echo "Use a session branch and land through the ADR-116 merge queue / protected remote path." >&2
-    echo "Bypass only for explicit operator emergencies: COS_ALLOW_DIRECT_MAIN=1." >&2
+    echo "Bypass requires BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for explicit operator emergencies." >&2
     exit 2
     ;;
 esac
@@ -209,7 +211,7 @@ case "$POLICY" in
   allow) exit 0 ;;
   block)
     echo "[direct-main-guard] BLOCK: operator direct commit to $BRANCH is disabled by COS_OPERATOR_MAIN_POLICY=block." >&2
-    echo "Use a session branch and merge queue, or set COS_ALLOW_DIRECT_MAIN=1 for a one-off emergency." >&2
+    echo "Use a session branch and merge queue, or set BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for a one-off emergency." >&2
     exit 2
     ;;
   warn|*)
