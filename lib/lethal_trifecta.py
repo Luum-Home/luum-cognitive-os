@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import asdict, dataclass, field
+from pathlib import PurePosixPath
 from typing import Any, Iterable, Mapping
 
 _PRIVATE_PATTERNS = [
@@ -30,6 +31,13 @@ _EXTERNAL_ACTION_PATTERNS = [
     r"\b(http\s+post|webhook|send\s+(email|mail|message)|slack|gmail|calendar)\b",
     r"\b(kubectl\s+apply|terraform\s+apply|aws\s+|gcloud\s+|az\s+)\b",
 ]
+
+
+_RESEARCH_DOC_WRITE_PREFIXES = (
+    PurePosixPath("docs/research"),
+    PurePosixPath("docs/reports"),
+    PurePosixPath("docs/adrs"),
+)
 
 _EXTERNAL_TOOL_NAMES = {
     "web",
@@ -69,6 +77,27 @@ class TrifectaDecision:
         return row
 
 
+def _normalized_parts(path: str) -> tuple[str, ...]:
+    normalized = path.replace("\\", "/")
+    return tuple(part for part in PurePosixPath(normalized).parts if part not in {"", "."})
+
+
+def _is_under_doc_research_exemption(file_path: Any) -> bool:
+    if not isinstance(file_path, str) or not file_path.strip():
+        return False
+    parts = _normalized_parts(file_path.strip())
+    for prefix in _RESEARCH_DOC_WRITE_PREFIXES:
+        prefix_parts = prefix.parts
+        for index in range(0, len(parts) - len(prefix_parts) + 1):
+            if parts[index : index + len(prefix_parts)] == prefix_parts:
+                return True
+    return False
+
+
+def _is_exempt_research_write(tool_name: str, merged: Mapping[str, Any]) -> bool:
+    return tool_name.lower() == "write" and _is_under_doc_research_exemption(merged.get("file_path"))
+
+
 def _flatten(value: Any) -> str:
     if value is None:
         return ""
@@ -93,6 +122,9 @@ def classify_action(payload: Mapping[str, Any] | None) -> TrifectaDecision:
     merged = {**payload, **dict(tool_input)}
     text = _flatten(merged)
     tags = {str(tag).lower() for tag in merged.get("risk_tags", []) or []}
+
+    if _is_exempt_research_write(tool_name, merged):
+        return TrifectaDecision(False, False, False, "allow", "debug", 0, [])
 
     private_hits = _matches(_PRIVATE_PATTERNS, text)
     untrusted_hits = _matches(_UNTRUSTED_PATTERNS, text)
