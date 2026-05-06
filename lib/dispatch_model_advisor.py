@@ -559,5 +559,119 @@ def main(argv: Optional[List[str]] = None) -> None:  # noqa: UP007
     print(advice, file=sys.stderr)
 
 
+# ---------------------------------------------------------------------------
+# ADR-069 4-dimension risk scoring (added by ADR-175)
+# ---------------------------------------------------------------------------
+#
+# Score 1-3 per dimension; sum >= 5 recommends opus.  Dimensions:
+#   1. AC clarity        — vague AC scores high (more risk).
+#   2. Blast radius      — wider impact scores high.
+#   3. Reversibility     — irreversible work scores high.
+#   4. Decision count    — more architectural decisions scores high.
+#
+# This recommendation is *advisory*: it logs to
+# .cognitive-os/metrics/model-recommendations.jsonl so the orchestrator
+# can choose to override sonnet→opus when threshold is met.
+
+_ADR069_THRESHOLD: int = 5
+
+
+def score_task_risk(description: str, blast_radius_files: int = 1) -> dict:
+    """Score a task on the 4 ADR-069 dimensions, 1-3 each.
+
+    Args:
+        description: free-form task description.
+        blast_radius_files: estimated number of files touched (caller-supplied).
+
+    Returns: dict with per-dimension scores, total, and recommendation.
+    """
+    desc = (description or "").lower()
+
+    # 1. AC clarity (3 = vague, 1 = crisp).
+    if any(k in desc for k in (
+        "typo", "trivial", "one-line", "single line", "exact",
+        "specific", "expected output",
+    )):
+        ac_clarity = 1
+    elif any(k in desc for k in ("explore", "investigate", "research", "figure out", "understand")):
+        ac_clarity = 3
+    elif any(k in desc for k in ("create", "implement", "fix", "verify")) and any(
+        k in desc for k in ("test", "should produce", "must")
+    ):
+        ac_clarity = 1
+    else:
+        ac_clarity = 2
+
+    # 2. Blast radius (3 = >=20 files, 2 = 4-19, 1 = <=3).
+    if blast_radius_files >= 20:
+        blast = 3
+    elif blast_radius_files >= 4:
+        blast = 2
+    else:
+        blast = 1
+
+    # 3. Reversibility (3 = irreversible, 1 = trivially undoable).
+    if any(k in desc for k in (
+        "migration", "delete", "drop", "schema change", "production",
+        "release", "publish", "deploy", "irreversible",
+    )):
+        reversibility = 3
+    elif any(k in desc for k in ("refactor", "rename", "extract", "move file")):
+        reversibility = 2
+    else:
+        reversibility = 1
+
+    # 4. Decision count (3 = many architectural decisions).
+    if any(k in desc for k in (
+        "architecture", "adr", "design decision", "tradeoff", "trade-off",
+        "choose between", "select pattern", "evaluate alternatives",
+    )):
+        decisions = 3
+    elif any(k in desc for k in ("design", "propose", "compare", "evaluate")):
+        decisions = 2
+    else:
+        decisions = 1
+
+    total = ac_clarity + blast + reversibility + decisions
+    recommended = "opus" if total >= _ADR069_THRESHOLD else "sonnet"
+
+    return {
+        "ac_clarity": ac_clarity,
+        "blast_radius": blast,
+        "reversibility": reversibility,
+        "decision_count": decisions,
+        "total": total,
+        "threshold": _ADR069_THRESHOLD,
+        "recommended_model": recommended,
+    }
+
+
+def log_risk_recommendation(
+    description: str,
+    risk: dict,
+    metrics_path: Optional[Path] = None,
+) -> Optional[Path]:
+    """Append a risk recommendation to the metrics JSONL.
+
+    Returns the path written to (or ``None`` if disabled).
+    """
+    if os.environ.get("DISABLE_HOOK_RESEARCH_QUALITY_VALIDATOR") == "1":
+        return None
+
+    if metrics_path is None:
+        metrics_path = (
+            project_root() / ".cognitive-os" / "metrics" / "model-recommendations.jsonl"
+        )
+    metrics_path.parent.mkdir(parents=True, exist_ok=True)
+    record = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "description": description[:200],
+        "risk": risk,
+    }
+    with metrics_path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(record) + "\n")
+    return metrics_path
+
+
 if __name__ == "__main__":
     main()

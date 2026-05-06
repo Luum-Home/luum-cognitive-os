@@ -154,6 +154,25 @@ SKILL_NAME=$(echo "$SKILL_SLUG" | sed 's/-/ /g' | head -c 80)
 # Escape task description for YAML (replace quotes, newlines)
 TASK_DESC_ESCAPED=$(echo "$TASK_DESCRIPTION" | head -c 200 | tr '\n' ' ' | sed 's/"/\\"/g')
 
+# --- Derive routing_patterns (ADR-174-bis Part A) ---
+# Lightweight call: <200ms budget. Falls back to empty block on any error.
+ROUTING_PATTERNS_YAML=""
+if command -v python3 &>/dev/null; then
+  ROUTING_PATTERNS_YAML=$(
+    python3 -m lib.routing_pattern_deriver \
+      --skill-name "$SKILL_SLUG" \
+      --description "$TASK_DESC_ESCAPED" \
+      --format yaml 2>/dev/null
+  ) || ROUTING_PATTERNS_YAML=""
+fi
+
+# Build the full frontmatter block (routing_patterns injected when available)
+if [ -n "$ROUTING_PATTERNS_YAML" ]; then
+  FRONTMATTER_ROUTING=$'\n'"${ROUTING_PATTERNS_YAML}"
+else
+  FRONTMATTER_ROUTING=""
+fi
+
 cat > "$SKILL_PATH/SKILL.md" << SKILLEOF
 ---
 name: ${SKILL_SLUG}
@@ -163,6 +182,8 @@ generated-from: "${TASK_DESC_ESCAPED}"
 generated-at: ${TIMESTAMP}
 version: 0.1.0
 last-updated: ${DATESTAMP}
+lifecycle_state: sandbox
+distribution: lab${FRONTMATTER_ROUTING}
 ---
 
 # ${SKILL_NAME}

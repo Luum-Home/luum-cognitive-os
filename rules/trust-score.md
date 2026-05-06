@@ -1,5 +1,18 @@
 <!-- SCOPE: both -->
 <!-- TIER: 0 -->
+---
+enforcement: hybrid
+trigger_priority: high
+routing_patterns:
+  - pattern: "\\btrust report\\b"
+    confidence: 0.95
+  - pattern: "\\b(uncertainty|honest doubt)\\b"
+    confidence: 0.85
+  - pattern: "\\b(evidence|verify what)\\b"
+    confidence: 0.80
+  - pattern: "\\bconfidence (score|level|gate)\\b"
+    confidence: 0.82
+---
 # Trust Score Protocol
 
 ## Purpose

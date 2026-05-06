@@ -1,0 +1,71 @@
+# Provider Profiles — ADR-178
+# Credential-slot pattern ported from HKUDS/OpenHarness (MIT).
+# Loaded by lib/provider_profile.py. Backward-compatible: if absent, lib/providers/
+# module-level REGISTRY continues to work unchanged.
+#
+# auth_slots format:
+#   "ENV:<VAR>"  — resolved from environment variable at runtime
+#   "<literal>"  — used as-is (avoid for secrets; prefer ENV: form)
+#
+# model_aliases:  opus/sonnet/haiku -> provider-native model name
+
+provider_profiles:
+
+  - name: claude_sdk
+    provider_kind: anthropic
+    auth_slots:
+      api_key: "ENV:ANTHROPIC_API_KEY"
+    model_aliases:
+      opus:   "claude-opus-4-5"
+      sonnet: "claude-sonnet-4-6"
+      haiku:  "claude-haiku-4-5"
+    context_window: 200000
+    enabled: true
+
+  - name: qwen
+    provider_kind: alibaba_qwen
+    auth_slots:
+      api_key:  "ENV:ALIBABA_QWEN_API_KEY"
+      base_url: "ENV:ALIBABA_QWEN_BASE_URL"
+    model_aliases:
+      opus:   "qwen3.6-plus"
+      sonnet: "qwen3-coder-plus"
+      haiku:  "qwen3-coder-plus"
+    context_window: 1000000
+    base_url: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+    enabled: true
+
+  - name: openrouter
+    provider_kind: openrouter
+    auth_slots:
+      api_key: "ENV:OPENROUTER_API_KEY"
+    model_aliases:
+      opus:   "anthropic/claude-opus-4-5"
+      sonnet: "anthropic/claude-sonnet-4-6"
+      haiku:  "anthropic/claude-haiku-4-5"
+    context_window: 200000
+    base_url: "https://openrouter.ai/api/v1"
+    enabled: true
+
+  - name: openai
+    provider_kind: openai
+    auth_slots:
+      api_key: "ENV:OPENAI_API_KEY"
+      org_id:  "ENV:OPENAI_ORG"
+    model_aliases:
+      opus:   "gpt-5.4"
+      sonnet: "gpt-5.4"
+      haiku:  "gpt-4o-mini"
+    context_window: 128000
+    enabled: true
+
+  - name: gemini
+    provider_kind: google_gemini
+    auth_slots:
+      api_key: "ENV:GEMINI_API_KEY"
+    model_aliases:
+      opus:   "gemini-2.0-flash-thinking-exp"
+      sonnet: "gemini-2.0-flash-exp"
+      haiku:  "gemini-2.0-flash-exp"
+    context_window: 1000000
+    enabled: true
