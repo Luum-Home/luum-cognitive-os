@@ -28,6 +28,33 @@ rules:
       - "scripts/cos-deps-install.sh"
       - "COS_ALLOW_TOOL_DISCOVERY_BYPASS=1"
 
+
+  - id: trivy-ad-hoc-secondary-scan
+    class: block
+    intent: Trivy secondary license/security scan
+    canonical:
+      - scripts/cos license audit --json
+      - bash scripts/install-trivy.sh
+      - bash scripts/license-audit-trivy.sh
+      - bash scripts/license-audit-syft-grype.sh
+    reason: >
+      ADR-212 allows Trivy only as a guarded local/manual secondary scanner.
+      Raw Trivy install or baseline commands bypass denied-version checks,
+      canonical output paths, and the Syft+Grype primary audit path.
+    command_patterns:
+      - '\bbrew\s+install\s+trivy\b'
+      - '\bgo\s+install\s+github\.com/aquasecurity/trivy'
+      - '\bcurl\b.*\btrivy\b.*\binstall\.sh\b'
+      - '\btrivy\s+fs\b'
+      - '\btrivy\s+repo\b'
+      - '\btrivy\s+image\b'
+    allow_if_contains:
+      - "scripts/install-trivy.sh"
+      - "scripts/license-audit-trivy.sh"
+      - "scripts/license-audit-syft-grype.sh"
+      - "scripts/cos license audit"
+      - "COS_ALLOW_TOOL_DISCOVERY_BYPASS=1"
+
   - id: external-repo-analysis-ad-hoc
     class: warn
     intent: external repo/tool investigation

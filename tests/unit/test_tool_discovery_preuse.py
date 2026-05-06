@@ -31,3 +31,21 @@ def test_warns_on_raw_github_clone_without_repo_scout(project_root: Path) -> Non
 
     assert report["status"] == "warn"
     assert report["findings"][0]["rule_id"] == "external-repo-analysis-ad-hoc"
+
+
+def test_blocks_raw_trivy_install_or_baseline(project_root: Path) -> None:
+    install_report = evaluate_command("brew install trivy && trivy fs --scanners license .", project_root)
+    scan_report = evaluate_command("trivy fs --scanners license --format json .", project_root)
+
+    assert install_report["status"] == "block"
+    assert install_report["findings"][0]["rule_id"] == "trivy-ad-hoc-secondary-scan"
+    assert scan_report["status"] == "block"
+    assert scan_report["findings"][0]["rule_id"] == "trivy-ad-hoc-secondary-scan"
+
+
+def test_allows_canonical_trivy_wrappers(project_root: Path) -> None:
+    install_report = evaluate_command("bash scripts/install-trivy.sh", project_root)
+    scan_report = evaluate_command("bash scripts/license-audit-trivy.sh", project_root)
+
+    assert install_report["status"] == "pass"
+    assert scan_report["status"] == "pass"
