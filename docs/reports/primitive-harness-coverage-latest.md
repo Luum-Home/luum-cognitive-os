@@ -3,9 +3,9 @@
 Scope declares intent; harness coverage proves effective implementation per IDE/harness.
 
 Total primitives: 858
-Gaps: 580
+Gaps: 491
 Unclassified gaps: 0
-Gaps by status: {'aligned': 387, 'partial': 193}
+Gaps by status: {'aligned': 387, 'partial': 104}
 Projected/wired by harness: {'claude': 318, 'codex': 245, 'cursor': 183, 'vscode-copilot': 183, 'opencode': 183, 'qwen-code': 183, 'kimi-code': 183, 'shell-ci': 15, 'gemini-cli': 183, 'warp': 183, 'amp-code': 183, 'jetbrains-junie': 183, 'qoder': 183, 'factory-droid': 183, 'cline': 183, 'continue-dev': 183, 'kilo-code': 183, 'zed-ai': 183, 'augment-code': 183, 'goose': 183, 'aider': 183}
 Wired hooks by harness: {'claude': 148, 'codex': 75, 'cursor': 0, 'vscode-copilot': 0, 'opencode': 0, 'qwen-code': 0, 'kimi-code': 0, 'shell-ci': 0, 'gemini-cli': 0, 'warp': 0, 'amp-code': 0, 'jetbrains-junie': 0, 'qoder': 0, 'factory-droid': 0, 'cline': 0, 'continue-dev': 0, 'kilo-code': 0, 'zed-ai': 0, 'augment-code': 0, 'goose': 0, 'aider': 0}
 
@@ -42,16 +42,16 @@ Wired hooks by harness: {'claude': 148, 'codex': 75, 'cursor': 0, 'vscode-copilo
 | `hooks/_lib/timing.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | hook-helper-library | installed<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/_lib/tuning.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | hook-helper-library | installed | installed | installed |
 | `hooks/_lib/validation-lock.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | hook-helper-library | installed | installed | installed |
-| `hooks/aci-observation-capture.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/aci-observation-capture.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/adaptive-bypass.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/adr-detector.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/adr-relevance-suggest.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/adr-section-validator.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/agent-bash-cwd-enforcer.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/adr-relevance-suggest.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/adr-section-validator.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/agent-bash-cwd-enforcer.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/agent-bus-monitor.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/agent-checkpoint.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/agent-message-inbox-context.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/agent-message-inbox-guard.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/agent-message-inbox-context.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/agent-message-inbox-guard.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/agent-output-verifier.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/agent-prelaunch.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/agent-quota-advisor.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
@@ -61,26 +61,26 @@ Wired hooks by harness: {'claude': 148, 'codex': 75, 'cursor': 0, 'vscode-copilo
 | `hooks/agnix-lint.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/aguara-scan.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/architecture-compliance.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
-| `hooks/aspirational-audit-weekly.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/aspirational-audit-weekly.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/assumption-tracker.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/audit-id-enricher.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | wired:PostToolUse | installed |
+| `hooks/audit-id-enricher.sh` | hooks | both | claude+codex |  |  | wired:PostToolUse<br>proven | wired:PostToolUse<br>proven | installed<br>proven |
 | `hooks/auto-checkpoint.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/auto-refine.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/auto-repair-dispatcher.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/auto-rollback-trigger.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/auto-skill-generator.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/auto-skill-generator.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/auto-verify.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/background-agent-reminder.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/blast-radius.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/branch-ownership-lock.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/branch-ownership-release.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
+| `hooks/branch-ownership-lock.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/branch-ownership-release.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
 | `hooks/claim-validator.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/clarification-gate.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/clarification-interceptor.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/code-review-on-commit.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/cognitive-os-health.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/completeness-check-llm.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/completeness-check.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | installed | installed |
+| `hooks/completeness-check.sh` | hooks | os-only | claude |  |  | wired:PreToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/completion-gate.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/concurrent-write-guard-codex-proxy.sh` | hooks | both | codex | scope=both but missing projected/wired support for: claude | codex-adapter | installed<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
 | `hooks/concurrent-write-guard.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse<br>proven | installed<br>proven | installed<br>proven |
@@ -89,75 +89,75 @@ Wired hooks by harness: {'claude': 148, 'codex': 75, 'cursor': 0, 'vscode-copilo
 | `hooks/confidentiality-enforcer.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/consequence-evaluator.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/content-policy.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/context-budget-meter.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
+| `hooks/context-budget-meter.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
 | `hooks/context-diet.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/context-watchdog.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/contextual-rule-loader.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/conversation-capture.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/cos-executor-daemon-launcher.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/cos-executor-daemon-launcher.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/cos-executor-heartbeat.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/cosd-intent-submit.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/crash-recovery.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/cross-session-coordination-guard.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/cross-session-event-emit.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse,PreToolUse,Stop | wired:Stop | installed |
-| `hooks/cross-session-peer-context.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/dangerous-env-flag-detector.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/dequeue-notify.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/crash-recovery.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/cross-session-coordination-guard.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/cross-session-event-emit.sh` | hooks | both | claude+codex |  |  | wired:PostToolUse,PreToolUse,Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/cross-session-peer-context.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/dangerous-env-flag-detector.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/dequeue-notify.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/destructive-git-blocker.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
-| `hooks/destructive-rm-blocker.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/direct-main-guard.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/dispatch-gate.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | installed | installed |
+| `hooks/destructive-rm-blocker.sh` | hooks | project | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/direct-main-guard.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/dispatch-gate.sh` | hooks | os-only | claude |  |  | wired:PreToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/doc-sync-detector.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/docker-drift-detector.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/docker-drift-detector.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/dod-gate.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/dry-run-preview.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/ecosystem-check.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/edit-lock-drain-parked.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/edit-lock-pre-tool.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/edit-lock-process-negotiations.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/edit-lock-session-end.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
+| `hooks/edit-lock-process-negotiations.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/edit-lock-session-end.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
 | `hooks/engram-auto-import.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/engram-auto-sync.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/engram-crystallize-on-session-end.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/engram-daemon-launcher.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/engram-obsidian-export-on-stop.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
+| `hooks/engram-crystallize-on-session-end.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/engram-daemon-launcher.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/engram-obsidian-export-on-stop.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
 | `hooks/engram-reinforce-on-access.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/epic-task-detector.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/error-learning.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | wired:PostToolUse | installed |
+| `hooks/error-learning.sh` | hooks | both | claude+codex |  |  | wired:PostToolUse<br>proven | wired:PostToolUse<br>proven | installed<br>proven |
 | `hooks/error-pattern-detector.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/error-pipeline.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | wired:PostToolUse | installed |
-| `hooks/git-commit-scope-guard.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/git-context-capture.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
+| `hooks/error-pipeline.sh` | hooks | both | claude+codex |  |  | wired:PostToolUse<br>proven | wired:PostToolUse<br>proven | installed<br>proven |
+| `hooks/git-commit-scope-guard.sh` | hooks | project | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/git-context-capture.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
 | `hooks/global-verify.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/guardrails-validator.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
-| `hooks/hook-header-validator.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/host-tool-doctor.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/hook-header-validator.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/host-tool-doctor.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/idle-service-cleanup.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/infra-health.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/infra-health.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/infra-intent-detector.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/inject-phase-context.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/jupyter-sandbox.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
-| `hooks/kpi-trigger.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
+| `hooks/kpi-trigger.sh` | hooks | os-only | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
 | `hooks/large-file-advisor.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/lethal-trifecta-gate.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | installed | installed |
-| `hooks/mcp-scan.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/memory-prefetch.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
+| `hooks/lethal-trifecta-gate.sh` | hooks | os-only | claude |  |  | wired:PreToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/mcp-scan.sh` | hooks | project | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/memory-prefetch.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
 | `hooks/memu-sync.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/metrics-calibrator-trigger.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/metrics-rotation.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/mlflow-sync.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/native-agent-heartbeat.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse,PreToolUse | installed | installed |
-| `hooks/network-egress-guard.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/native-agent-heartbeat.sh` | hooks | os-only | claude |  |  | wired:PostToolUse,PreToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/network-egress-guard.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/notify.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
 | `hooks/orchestrator-claim-gate.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/orchestrator-decision-trace.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/orchestrator-mode-detect.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/orchestrator-skill-invocation-gate.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/orchestrator-skill-invocation-gate.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/package-sync.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/parry-scan.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `hooks/pattern-check.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/plan-claim-validator.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse<br>proven | installed<br>proven | installed<br>proven |
-| `hooks/post-agent-snapshot-restore.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/post-agent-snapshot-restore.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/post-agent-verify.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/post-git-orphan-notifier.sh` | hooks | both | claude+codex |  |  | wired:PostToolUse<br>proven | wired:PostToolUse<br>proven | installed<br>proven |
 | `hooks/pre-agent-snapshot.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
@@ -168,68 +168,68 @@ Wired hooks by harness: {'claude': 148, 'codex': 75, 'cursor': 0, 'vscode-copilo
 | `hooks/predev-completeness-check.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/private-mode-gate.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/private-mode-metrics-gate.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/profile-drift-autoapply.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/profile-drift-autoapply.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/project-docs-convention.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/promotion-proposer-weekly.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/promotion-proposer-weekly.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/prompt-quality-llm.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/protected-config-write-guard.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/query-tailored-context-inject.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/rate-limit-detector.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/rate-limit-drain.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | wired:PostToolUse | installed |
-| `hooks/rate-limit-precheck.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/rate-limit-detector.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/rate-limit-drain.sh` | hooks | project | claude+codex |  |  | wired:PostToolUse<br>proven | wired:PostToolUse<br>proven | installed<br>proven |
+| `hooks/rate-limit-precheck.sh` | hooks | project | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/rate-limit-protection.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/rate-limiter.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/reaper-daemon-launcher.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/rate-limiter.sh` | hooks | project | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/reaper-daemon-launcher.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/reaper-heartbeat.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/recap-sync.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/registration-check.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/reinvention-check.sh` | hooks | project | claude | projected/wired but no direct behavior proof reference detected | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/release-guard.sh` | hooks | project | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/release-guard.sh` | hooks | project | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/research-quality-validator.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/resource-check.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/result-truncator.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | wired:PostToolUse | installed |
-| `hooks/review-spawner.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/rule-frontmatter-validator.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/rule-md-routing-validator.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/rule-router-prompt-suggest.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
+| `hooks/result-truncator.sh` | hooks | both | claude+codex |  |  | wired:PostToolUse<br>proven | wired:PostToolUse<br>proven | installed<br>proven |
+| `hooks/review-spawner.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/rule-frontmatter-validator.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/rule-md-routing-validator.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/rule-router-prompt-suggest.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
 | `hooks/scope-creep-detector.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/scope-marker-portability-gate.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/scope-proportionality.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/secret-detector.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
-| `hooks/self-install.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/self-knowledge-refresh.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/self-install.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/self-knowledge-refresh.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/semgrep-scan.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
-| `hooks/session-changelog.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/session-cleanup.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/session-end-reap.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/session-heartbeat.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse,UserPromptSubmit | wired:UserPromptSubmit | installed |
+| `hooks/session-changelog.sh` | hooks | os-only | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/session-cleanup.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/session-end-reap.sh` | hooks | os-only | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/session-heartbeat.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse,UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
 | `hooks/session-hygiene.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/session-init.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/session-knowledge-extractor.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/session-learning.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/session-resume.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/session-sanity.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/session-start-stash-reapply.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/session-start-worktree-nudge.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/session-startup-protocol.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/session-learning.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/session-resume.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/session-sanity.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/session-start-stash-reapply.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/session-start-worktree-nudge.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/session-startup-protocol.sh` | hooks | both | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/session-state-save.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/session-summary-reminder.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/session-watchdog-launcher.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/session-wrapup-trigger.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
+| `hooks/session-summary-reminder.sh` | hooks | both | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/session-watchdog-launcher.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/session-wrapup-trigger.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
 | `hooks/singularity-check.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/skill-failure-monitor.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/skill-feedback-tracker.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/skill-failure-monitor.sh` | hooks | os-only | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/skill-feedback-tracker.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/skill-frontmatter-validator.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/skill-invocation-logger.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/skill-md-routing-validator.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | installed | installed |
+| `hooks/skill-invocation-logger.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/skill-md-routing-validator.sh` | hooks | os-only | claude |  |  | wired:PreToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/skill-post-execution-analysis.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/skill-router-bash-gate.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
-| `hooks/skill-router-prompt-suggest.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/skill-synthesis-scanner.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:Stop | wired:Stop | installed |
-| `hooks/skill-tracker.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/skill-usage-tracker.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
-| `hooks/stash-budget-warn.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/state-heartbeat.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/skill-router-bash-gate.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
+| `hooks/skill-router-prompt-suggest.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/skill-synthesis-scanner.sh` | hooks | os-only | claude+codex |  |  | wired:Stop<br>proven | wired:Stop<br>proven | installed<br>proven |
+| `hooks/skill-tracker.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/skill-usage-tracker.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
+| `hooks/stash-budget-warn.sh` | hooks | os-only | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/state-heartbeat.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/subagent-context-injector.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | acceptable-claude-only | wired:SubagentStart | installed | installed |
 | `hooks/surface-fix-detector.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
 | `hooks/symlink-mutation-guard.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
@@ -243,15 +243,15 @@ Wired hooks by harness: {'claude': 148, 'codex': 75, 'cursor': 0, 'vscode-copilo
 | `hooks/token-budget-monitor.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PreToolUse | installed | installed |
 | `hooks/tool-discovery-trigger.sh` | hooks | os-only | none |  |  | installed | installed | installed |
 | `hooks/tool-loop-detector.sh` | hooks | both | none | scope=both but missing projected/wired support for: claude, codex | codex-adapter-needed | installed | installed | installed |
-| `hooks/tool-sequence-capture.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/tool-sequence-capture.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/trust-score-validator.sh` | hooks | both | claude | scope=both but missing projected/wired support for: codex | codex-adapter-needed | wired:PostToolUse | installed | installed |
-| `hooks/untracked-work-preservation-guard.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PreToolUse | wired:PreToolUse | installed |
+| `hooks/untracked-work-preservation-guard.sh` | hooks | both | claude+codex |  |  | wired:PreToolUse<br>proven | wired:PreToolUse<br>proven | installed<br>proven |
 | `hooks/usage-health-check.sh` | hooks | os-only | none |  |  | installed | installed | installed |
-| `hooks/user-prompt-capture.sh` | hooks | both | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:UserPromptSubmit | wired:UserPromptSubmit | installed |
-| `hooks/validation-lock-cleanup.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
-| `hooks/validator-soak-weekly.sh` | hooks | os-only | claude+codex | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:SessionStart | wired:SessionStart | installed |
+| `hooks/user-prompt-capture.sh` | hooks | both | claude+codex |  |  | wired:UserPromptSubmit<br>proven | wired:UserPromptSubmit<br>proven | installed<br>proven |
+| `hooks/validation-lock-cleanup.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
+| `hooks/validator-soak-weekly.sh` | hooks | os-only | claude+codex |  |  | wired:SessionStart<br>proven | wired:SessionStart<br>proven | installed<br>proven |
 | `hooks/valkey-ensure.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
-| `hooks/work-queue-sync.sh` | hooks | os-only | claude | projected/wired but no direct behavior proof reference detected | behavior-proof-needed | wired:PostToolUse | installed | installed |
+| `hooks/work-queue-sync.sh` | hooks | os-only | claude |  |  | wired:PostToolUse<br>proven | installed<br>proven | installed<br>proven |
 | `hooks/worktree-submodule-fix.sh` | hooks | project | none | scope=project but no harness projection detected | codex-adapter-needed | installed | installed | installed |
 | `rules/ROADMAP.md` | rules | os-only | none |  |  | installed | installed | installed |
 | `rules/RULES-COMPACT.md` | rules | both | aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+vscode-copilot+warp+zed-ai |  |  | projected<br>proven | projected<br>proven | installed<br>proven |
