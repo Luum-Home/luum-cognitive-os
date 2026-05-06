@@ -157,6 +157,33 @@ class TestSecretDetectorUpdatedInput:
         assert isinstance(data["additionalContext"], str)
         assert len(data["additionalContext"]) > 0
 
+
+    def test_redacts_anthropic_key(self, tmp_path: Path) -> None:
+        """Anthropic API keys must be redacted before Bash execution."""
+        token = "sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789_FAKEKEYFORTEST0"
+        payload = _pre_payload("Bash", {"command": f"echo {token} && echo done"})
+        result = _run(payload, env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)})
+        assert result.returncode == 0
+        data = json.loads(result.stdout.strip())
+        updated_cmd = data["hookSpecificOutput"]["updatedInput"]["command"]
+        assert token not in updated_cmd
+        assert "[REDACTED]" in updated_cmd
+        assert "echo done" in updated_cmd
+
+    def test_redacts_slack_webhook_url(self, tmp_path: Path) -> None:
+        """Slack incoming webhook URLs must be redacted before persistence."""
+        webhook = "https://hooks.slack.com/services/T00000000/B00000000/abcdefghijklmnopqrstuvwxyz"
+        payload = _pre_payload(
+            "Write",
+            {"file_path": str(tmp_path / "note.md"), "content": f"webhook={webhook}\n"},
+        )
+        result = _run(payload, env_extra={"CLAUDE_PROJECT_DIR": str(tmp_path)})
+        assert result.returncode == 0
+        data = json.loads(result.stdout.strip())
+        updated_content = data["hookSpecificOutput"]["updatedInput"]["content"]
+        assert webhook not in updated_content
+        assert "[REDACTED]" in updated_content
+
     def test_no_secret_no_output(self, tmp_path: Path) -> None:
         """A clean command must produce no stdout (silent allow). Emitting
         an empty hookSpecificOutput would spam Claude with noise."""

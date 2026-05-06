@@ -140,7 +140,7 @@ else:
             fi
         done
 
-        VIOLATION_COUNT=$(echo "$PYTHON_OUTPUT" | grep -c '{' 2>/dev/null || echo "1")
+        VIOLATION_COUNT=$(printf '%s\n' "$PYTHON_OUTPUT" | awk '/^\{/ { count++ } END { print count ? count : 1 }')
         METRICS_DIR="${COGNITIVE_OS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
         mkdir -p "$METRICS_DIR"
         echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"file\":\"$FILE_PATH\",\"violations\":$VIOLATION_COUNT,\"action\":\"warn\",\"downgrade_reason\":\"operator_absolute_path_gitignored_destination\"}" >> "$METRICS_DIR/confidentiality-enforcer.jsonl"
@@ -159,7 +159,7 @@ else:
     done
 
     # Count violations
-    VIOLATION_COUNT=$(echo "$PYTHON_OUTPUT" | grep -c '{' 2>/dev/null || echo "1")
+    VIOLATION_COUNT=$(printf '%s\n' "$PYTHON_OUTPUT" | awk '/^\{/ { count++ } END { print count ? count : 1 }')
 
     # Log to metrics
     METRICS_DIR="${COGNITIVE_OS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
