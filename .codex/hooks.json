@@ -164,6 +164,10 @@
           "type": "command",
           "command": "bash \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/_lib/hook-timing-wrapper.sh\" UserPromptSubmit \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/skill-router-prompt-suggest.sh\"",
           "async": true
+        },
+        {
+          "type": "command",
+          "command": "bash \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/_lib/hook-timing-wrapper.sh\" UserPromptSubmit \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/hooks/concurrent-write-guard-codex-proxy.sh\""
         }
       ]
     }
