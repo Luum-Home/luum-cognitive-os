@@ -17,6 +17,8 @@ implementation_files:
   - .cognitive-os/coordination/agent-messages.jsonl # runtime artifact
   - packages/agent-lifecycle/lib/harness_adapter/base.py # companion inbound_signal event
   - packages/agent-lifecycle/lib/harness_adapter/dispatch.py # companion inbound signal dispatch
+  - lib/agent_control_policy.py              # portable stop/pause/resume policy
+  - hooks/agent-control-inbound-guard.sh     # hook-boundary enforcement for non-owned processes
 tier: maintainer
 tags: [concurrency, governance, agent-coordination, postmortem-2026-05-05, companion-ADR-182-183-184]
 ---
@@ -210,7 +212,7 @@ The companion event is `event_type: "inbound_signal"` and is emitted by `package
 - `agent_id` / `session_id` when the adapter can infer the target;
 - `source_path` for the fallback artifact that produced the signal.
 
-This keeps ADR-185's store-and-forward directive queue separate from mid-flight control, while giving both paths a shared canonical-event surface.
+This keeps ADR-185's store-and-forward directive queue separate from mid-flight control, while giving both paths a shared canonical-event surface. Runtimes with a child process handle can enforce controls directly. Hook-capable runtimes without a process handle use `agent-control-inbound-guard.sh`, which blocks on latest `stop` or unresolved `pause` and allows execution again after a newer `resume`. Runtimes without hooks should call `lib.agent_control_policy.evaluate_control()` before each action.
 
 ## Consequences
 
