@@ -13,6 +13,7 @@
 #   cos subagent preflight             -> scripts/subagent_launch_preflight.py
 #   cos private-content audit          -> scripts/private_content_audit.py
 #   cos private-content check-projection -> scripts/private_content_audit.py --check-projection
+#   cos dependency adoption-gate        -> scripts/cos-dependency-adoption-gate
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos observe run                    -> scripts/cos-run-trace
@@ -140,6 +141,14 @@ case "$SUBCMD" in
     echo "cos: unknown reward-signal subcommand '${2:-}'. Try: cos reward-signal audit [--json|--strict]" >&2
     exit 1
     ;;
+  dependency)
+    if [ "${2:-}" = "adoption-gate" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-dependency-adoption-gate" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown dependency subcommand '${2:-}'. Try: cos dependency adoption-gate [--staged|--audit|--json]" >&2
+    exit 1
+    ;;
   observe)
     if [ "${2:-}" = "run" ]; then
       shift 2
@@ -218,6 +227,8 @@ Usage:
   cos private-content check-projection PATH [--destination cloud|local] [--json]
                                          Block unsafe private-content export/projection
   cos reward-signal audit [--json]        Audit ADR-204 reward signal quality
+  cos dependency adoption-gate [--staged|--audit|--json]
+                                         Enforce ADR-208 pre-adoption evidence for dependency changes
   cos observe run [--session-id ID|--run-id ID] [--json]
                                          Join metric streams into ADR-205 run trace
   cos service readiness [--json]         Aggregate ADR-211 service-mode readiness gates

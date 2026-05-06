@@ -54,15 +54,22 @@ closure contract passes.
 
 ## Implementation slices
 
-1. Add `manifests/imported-pattern-closures.yaml`.
-2. Add `scripts/cos-imported-pattern-closure-audit`.
-3. Seed historical Hermes-derived patterns with current closure status.
-4. Block promotion claims when closure is missing.
-5. Feed missing closure into ADR-201 maintainer proposals.
+0. [x] Add a dependency-adoption gate so staged dependency manifest additions require `/repo-scout`, `/repo-forensics`, or equivalent adoption evidence before commit.
+1. [ ] Add `manifests/imported-pattern-closures.yaml`.
+2. [ ] Add `scripts/cos-imported-pattern-closure-audit`.
+3. [ ] Seed historical Hermes-derived patterns with current closure status.
+4. [ ] Block promotion claims when closure is missing.
+5. [ ] Feed missing closure into ADR-201 maintainer proposals.
+
+The dependency gate is the first consumer loop: it wires the existing research
+skills into the actual adoption path instead of relying on an operator to
+remember them. It deliberately does not claim full closure-audit coverage yet.
 
 ## Acceptance criteria
 
 ```bash
+python3 -m pytest tests/unit/test_dependency_adoption_gate.py tests/behavior/test_dependency_adoption_gate_cli.py -q
+scripts/cos dependency adoption-gate --audit --json
 python3 -m pytest tests/unit/test_imported_pattern_closure.py -q
 scripts/cos-imported-pattern-closure-audit --json
 ```
