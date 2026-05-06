@@ -6,6 +6,10 @@
 # Creates a working-tree snapshot before every Agent tool launch so that
 # post-agent-verify.sh can restore out-of-scope writes without guessing.
 #
+# ORDERING INVARIANT (ADR-213): this hook must run after blocking Agent
+# preflight hooks such as agent-prelaunch.sh. It mutates git stash; if a later
+# preflight blocks and PostToolUse never fires, WIP can be hidden in stash.
+#
 # Snapshot strategy (ADR-099 — default):
 #   1. Untracked files → copied to .cognitive-os/snapshots/<snapshot-id>/
 #      They are NOT removed from the working tree.
