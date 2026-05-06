@@ -58,6 +58,41 @@ def make_repo(tmp_path: Path) -> Path:
     (root / "manifests" / "shell-ci-projection.yaml").write_text(
         yaml.safe_dump({"commands": [{"path": "scripts/cos-status.sh"}]})
     )
+    (root / "manifests" / "harness-projection.yaml").write_text(
+        yaml.safe_dump({"harnesses": [
+            {"id": "claude", "status": "implemented"},
+            {"id": "codex", "status": "implemented"},
+            {"id": "shell-ci", "status": "implemented"},
+            {"id": "cursor", "status": "implemented"},
+        ]})
+    )
+    (root / "manifests" / "primitive-harness-gap-policy.yaml").write_text(
+        yaml.safe_dump({
+            "policies": [
+                {"id": "acceptable-claude-only", "severity": "advisory", "status": "aligned"},
+                {"id": "codex-adapter-needed", "severity": "medium", "status": "partial"},
+                {"id": "structural-only-ok", "severity": "advisory", "status": "aligned"},
+                {"id": "shell-command-only", "severity": "advisory", "status": "aligned"},
+                {"id": "unclassified", "severity": "medium", "status": "partial"},
+            ],
+            "rules": [
+                {"policy": "acceptable-claude-only", "family": "hooks", "primitives": ["hooks/pre-compaction-flush.sh"]},
+                {"policy": "codex-adapter-needed", "family": "hooks", "primitives": ["hooks/concurrent-write-guard-codex-proxy.sh"]},
+                {"policy": "structural-only-ok", "families": ["rules", "skills", "templates"], "scopes": ["both", "project"]},
+                {"policy": "shell-command-only", "family": "scripts", "harness": "shell-ci", "scopes": ["both", "project"]},
+                {"policy": "codex-adapter-needed", "family": "hooks", "missing_harness": "codex", "scopes": ["both", "project"]},
+            ],
+        })
+    )
+    (root / "manifests" / "primitive-behavior-evidence.yaml").write_text(
+        yaml.safe_dump({"evidence": [
+            {"primitive": "hooks/session-init.sh", "tests": ["tests/test_session_init.py"]},
+            {"primitive": "hooks/pre-compaction-flush.sh", "tests": ["tests/test_session_init.py"]},
+            {"primitive": "hooks/concurrent-write-guard-codex-proxy.sh", "tests": ["tests/test_session_init.py"]},
+            {"primitive": "rules/RULES-COMPACT.md", "tests": ["tests/test_session_init.py"]},
+            {"primitive": "scripts/cos-status.sh", "tests": ["tests/test_session_init.py"]},
+        ]})
+    )
     return root
 
 
@@ -80,6 +115,8 @@ def test_harness_coverage_distinguishes_scope_from_runtime_wiring(tmp_path: Path
     assert precompact["harnesses"]["claude"]["events"] == ["PreCompact"]
     assert precompact["harnesses"]["codex"]["wired"] is False
     assert "scope=both" in precompact["gap"]
+    assert precompact["gap_policy"] == "acceptable-claude-only"
+    assert precompact["gap_status"] == "aligned"
 
     codex_proxy = rows["hooks/concurrent-write-guard-codex-proxy.sh"]
     assert codex_proxy["harnesses"]["claude"]["wired"] is False
@@ -92,11 +129,13 @@ def test_context_and_command_surfaces_are_not_misread_as_hook_parity(tmp_path: P
     compact = rows["rules/RULES-COMPACT.md"]
     assert compact["harnesses"]["claude"]["projected"] is True
     assert compact["harnesses"]["codex"]["projected"] is True
+    assert compact["harnesses"]["cursor"]["projected"] is True
     assert compact["harnesses"]["claude"]["wired"] is False
 
     status = rows["scripts/cos-status.sh"]
     assert status["harnesses"]["shell-ci"]["projected"] is True
     assert status["harnesses"]["shell-ci"]["commands"] == ["scripts/cos-status.sh"]
+    assert status["gap_policy"] == "shell-command-only"
     assert status["harnesses"]["claude"]["wired"] is False
 
 
@@ -115,4 +154,5 @@ def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     assert payload["state_semantics"] == ["installed", "projected", "wired", "executable", "behavior-proven"]
     assert payload["summary"]["harness_wired_hooks"]["claude"] == 2
     assert payload["summary"]["harness_wired_hooks"]["codex"] == 2
+    assert payload["summary"]["unclassified_gaps"] == 0
     assert "Primitive Harness Coverage" in (root / "docs" / "reports" / "primitive-harness-coverage-latest.md").read_text()
