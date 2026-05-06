@@ -22,6 +22,7 @@ import logging
 import os
 import signal
 import subprocess
+import threading
 import time
 from dataclasses import dataclass, field
 from enum import Enum
@@ -399,6 +400,33 @@ class ClaudeExecutor:
                             tool=tool, file=file_path, action=detail
                         )
 
+    def _signal_process_group(self, process: subprocess.Popen, sig: int) -> None:
+        """Send a signal to the subprocess group if it is still alive."""
+        try:
+            os.killpg(os.getpgid(process.pid), sig)
+        except (ProcessLookupError, OSError):
+            pass
+
+    def _apply_control_command(
+        self,
+        process: subprocess.Popen,
+        command: str,
+        state: Dict[str, Any],
+    ) -> None:
+        """Apply an orchestrator control command to the running process group."""
+        if command == "stop":
+            state["stopped"] = True
+            state["reason"] = "orchestrator stop signal"
+            _kill_process_group(process)
+            return
+        if command == "pause" and not state.get("paused", False):
+            self._signal_process_group(process, signal.SIGSTOP)
+            state["paused"] = True
+            return
+        if command == "resume" and state.get("paused", False):
+            self._signal_process_group(process, signal.SIGCONT)
+            state["paused"] = False
+
     def run(
         self,
         prompt: str,
@@ -438,6 +466,44 @@ class ClaudeExecutor:
                 start_new_session=True,
             )
 
+            control_state: Dict[str, Any] = {"stopped": False, "paused": False, "reason": ""}
+            control_stop = threading.Event()
+            control_thread: Optional[threading.Thread] = None
+
+            def _process_done() -> bool:
+                poll = getattr(process, "poll", None)
+                if callable(poll):
+                    try:
+                        return poll() is not None
+                    except Exception:
+                        return False
+                return bool(control_state.get("stopped"))
+
+            def _control_loop() -> None:
+                while not control_stop.wait(0.25):
+                    if _process_done():
+                        return
+                    publisher = self._bus_publisher
+                    if publisher is None:
+                        continue
+                    command = publisher.poll_control()
+                    if not command:
+                        continue
+                    self._apply_control_command(process, command, control_state)
+                    if command == "stop":
+                        return
+
+            if self._bus_publisher:
+                control_thread = threading.Thread(
+                    target=_control_loop, daemon=True, name=f"claude-control-{self.agent_id or 'agent'}"
+                )
+                control_thread.start()
+
+            def _stop_control_loop() -> None:
+                control_stop.set()
+                if control_thread is not None:
+                    control_thread.join(timeout=2)
+
             # Stream stdout line by line, collecting JSONL messages
             assert process.stdout is not None
             for line in process.stdout:
@@ -450,12 +516,29 @@ class ClaudeExecutor:
                 except (json.JSONDecodeError, ValueError):
                     pass
                 self._stream_to_console(line)
+                if control_state.get("stopped"):
+                    break
 
             # Wait for process to finish
             wait_timeout: Optional[int] = effective_timeout if effective_timeout > 0 else None
+            if control_state.get("stopped"):
+                _stop_control_loop()
+                duration = time.monotonic() - start_time
+                if self._bus_publisher:
+                    self._bus_publisher.report_error("Interrupted by orchestrator stop signal")
+                    self._bus_publisher.stop()
+                return ClaudeResult(
+                    success=False,
+                    result_text="Interrupted by orchestrator stop signal",
+                    duration_secs=round(duration, 2),
+                    retry_code=RetryCode.CLAUDE_CODE_ERROR,
+                    error_message=str(control_state.get("reason") or "orchestrator stop signal"),
+                    exit_code=-2,
+                )
             try:
                 process.wait(timeout=wait_timeout)
             except subprocess.TimeoutExpired:
+                _stop_control_loop()
                 _kill_process_group(process)
                 duration = time.monotonic() - start_time
                 if self._bus_publisher:
@@ -470,6 +553,21 @@ class ClaudeExecutor:
                     retry_code=RetryCode.TIMEOUT_ERROR,
                     error_message="Process timed out",
                     exit_code=-1,
+                )
+
+            _stop_control_loop()
+            if control_state.get("stopped"):
+                duration = time.monotonic() - start_time
+                if self._bus_publisher:
+                    self._bus_publisher.report_error("Interrupted by orchestrator stop signal")
+                    self._bus_publisher.stop()
+                return ClaudeResult(
+                    success=False,
+                    result_text="Interrupted by orchestrator stop signal",
+                    duration_secs=round(duration, 2),
+                    retry_code=RetryCode.CLAUDE_CODE_ERROR,
+                    error_message=str(control_state.get("reason") or "orchestrator stop signal"),
+                    exit_code=-2,
                 )
 
             stderr_output = process.stderr.read() if process.stderr else ""
@@ -545,6 +643,10 @@ class ClaudeExecutor:
 
         except Exception as e:
             duration = time.monotonic() - start_time
+            try:
+                control_stop.set()  # type: ignore[name-defined]
+            except Exception:
+                pass
             if process is not None:
                 _kill_process_group(process)
             if self._bus_publisher:
