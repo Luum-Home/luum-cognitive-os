@@ -1,1 +1,0 @@
-../packages/ecosystem-tools/lib/paperclip_client.py
