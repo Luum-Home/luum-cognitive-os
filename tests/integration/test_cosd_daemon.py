@@ -446,3 +446,78 @@ def test_cosd_allow_remote_starts_only_with_token(tmp_path: Path) -> None:
             proc.wait(timeout=5)
         except subprocess.TimeoutExpired:
             proc.kill()
+
+
+def test_cosd_task_api_submits_runs_and_guards_provider_calls(tmp_path: Path) -> None:
+    api_file = tmp_path / ".cognitive-os" / "cosd" / "runtime" / "cosd-api.json"
+    proc = subprocess.Popen(
+        ["bash", str(COSD), "--project-dir", str(tmp_path), "serve", "--host", "127.0.0.1", "--port", "0"],
+        cwd=REPO,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        deadline = time.time() + 5
+        while time.time() < deadline and not api_file.exists():
+            if proc.poll() is not None:
+                stdout, stderr = proc.communicate(timeout=1)
+                raise AssertionError(f"cosd task api exited early: {stdout} {stderr}")
+            time.sleep(0.05)
+        api = json.loads(api_file.read_text(encoding="utf-8"))
+        base_url = api["base_url"]
+
+        from urllib import request
+
+        with request.urlopen(f"{base_url}/tasks", timeout=5) as response:
+            drained = json.loads(response.read().decode("utf-8"))
+        assert drained["status"] == "drained"
+
+        submit_body = json.dumps(
+            {
+                "kind": "local-command",
+                "task_id": "api-task",
+                "command": "printf task-ok",
+                "requested_by": "test",
+            }
+        ).encode("utf-8")
+        submit_req = request.Request(f"{base_url}/tasks/submit", data=submit_body, headers={"Content-Type": "application/json"}, method="POST")
+        with request.urlopen(submit_req, timeout=5) as response:
+            submitted = json.loads(response.read().decode("utf-8"))
+        assert submitted["status"] == "submitted"
+        assert submitted["task"]["approval_policy"] == "propose-only"
+
+        run_req = request.Request(f"{base_url}/tasks/run-once", data=b"{}", headers={"Content-Type": "application/json"}, method="POST")
+        with request.urlopen(run_req, timeout=5) as response:
+            executed = json.loads(response.read().decode("utf-8"))
+        assert executed["status"] == "completed"
+        assert executed["task_id"] == "api-task"
+
+        provider_body = json.dumps(
+            {
+                "kind": "provider",
+                "task_id": "provider-task",
+                "executor": "codex-cli-host",
+                "prompt": "summarize status",
+            }
+        ).encode("utf-8")
+        provider_req = request.Request(f"{base_url}/tasks/submit", data=provider_body, headers={"Content-Type": "application/json"}, method="POST")
+        code, rejected = _read_http_error(provider_req)
+        assert code == 400
+        assert "dry_run=true" in rejected["reason"]
+
+        provider_run = request.Request(
+            f"{base_url}/tasks/run-once",
+            data=json.dumps({"allow_provider_call": True}).encode("utf-8"),
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        code, rejected = _read_http_error(provider_run)
+        assert code == 400
+        assert "does not allow provider calls" in rejected["reason"]
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
