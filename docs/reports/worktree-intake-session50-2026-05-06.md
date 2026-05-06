@@ -265,3 +265,23 @@ Six local stashes exist on the active branch. They are auto-pre-agent snapshots 
 | `??` | `tests/contracts/test_no_rejected_surface_references.py` | `other` | `NO_IMPORT_STALE_OR_NON_CRITICAL_DRIFT` | Reviewed as part of session50 intake; no evidence it improves the active branch over current commits. |
 | `??` | `tests/contracts/test_skill_router_profile_contracts.py` | `skill-routing` | `NO_ACTION_ALREADY_IN_CURRENT` | The session50 worktree content matches the active branch content. |
 | `??` | `tests/unit/test_adr_tombstone.py` | `adr-tombstone-tool` | `REJECT_OLDER_TOMBSTONE_TOOL` | The active branch has the safer tombstone tool that refuses active ADR replacement by default. |
+
+## Closure actions — 2026-05-06
+
+After the file-level matrix above was reviewed, the stale sibling worktree was closed surgically instead of imported.
+
+Actions performed:
+
+1. Created a **local, non-versioned** archival snapshot under `.cognitive-os/archives/worktree-intake/session50-2026-05-06/` containing:
+   - `README.txt` with branch/head metadata;
+   - `status-porcelain.txt` and `status-short-branch.txt`;
+   - `uncommitted.diff` with binary-safe WIP diff;
+   - `untracked-files.tgz` for untracked files;
+   - `SHA256SUMS` for integrity.
+2. Removed the stale worktree with `git worktree remove --force <workspace-parent>/luum-agent-os-session50-paperclip-purge`.
+3. Deleted the stale local branch with `git branch -D session/50c35ce9-remove-paperclip-multi-surface`.
+4. Re-ran `git worktree list --porcelain`; only the active worktree remained.
+
+Rationale: the report reviewed every status entry and found no file that should be imported wholesale. Keeping the stale worktree alive would preserve a second semantic source of truth for ADR/Paperclip disposition and make future agent intake more error-prone.
+
+Recovery path: if a specific historical hunk is needed, inspect the local archive snapshot and manually port only that hunk onto a fresh branch with current tests.
