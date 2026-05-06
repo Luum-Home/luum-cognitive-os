@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from lib.cross_stack_secret_audit import audit as secret_audit
 from lib.performance_ledger import repo_root
 from lib.reward_signal_quality import audit_stream, load_contract, summarize
 from scripts.private_content_audit import build_report as private_content_report
@@ -100,6 +101,28 @@ def check_reward_signals(project_dir: Path) -> GateStatus:
     return _green("reward-signals", "Reward signals are present and clean", reward_summary=summary)
 
 
+def check_secret_release_readiness(project_dir: Path) -> GateStatus:
+    manifest = project_dir / "manifests" / "cross-stack-secret-audit.yaml"
+    if not manifest.exists():
+        return _red("release-secret-audit", "ADR-215 secret audit manifest missing", manifest=str(manifest))
+    try:
+        report = secret_audit(project_dir, verify_live=False)
+    except Exception as exc:
+        return _red("release-secret-audit", "ADR-215 secret audit failed to run", error=str(exc))
+    if report.get("schema_version") != "cross-stack-secret-audit-report/v1":
+        return _red("release-secret-audit", "ADR-215 secret audit returned wrong schema", schema_version=report.get("schema_version"))
+    status = report.get("status")
+    if status != "pass":
+        return _red(
+            "release-secret-audit",
+            "ADR-215 release-readiness secret audit is not clean",
+            status=status,
+            finding_count=len(report.get("findings", [])),
+            findings=report.get("findings", [])[:10],
+        )
+    return _green("release-secret-audit", "ADR-215 release-readiness secret audit passes", toolchain=report.get("primary_toolchain"))
+
+
 def check_maintainer_runner(project_dir: Path) -> GateStatus:
     runner = project_dir / "scripts" / "cos-maintainer-agent"
     promoter = project_dir / "scripts" / "cos-promote-from-telemetry"
@@ -170,6 +193,7 @@ def build_readiness_report(project_dir: Path | None = None) -> dict[str, Any]:
         check_run_trace(project),
         check_performance_ledger(project),
         check_reward_signals(project),
+        check_secret_release_readiness(project),
         check_maintainer_runner(project),
         check_experiment_contract(project),
         check_mutation_boundary(project),
