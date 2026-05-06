@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: maintainer
+# SCOPE: os-only
 # PURPOSE: Prove local Engram Cloud Docker sync across COS and one consumer project.
 set -euo pipefail
 

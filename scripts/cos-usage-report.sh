@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # cos-usage-report.sh — Heatmap aggregator for COS runtime telemetry.
 #
 # Reads the four JSONL files written by lib/telemetry.py and produces a usage

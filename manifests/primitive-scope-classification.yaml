@@ -1,0 +1,75 @@
+schema_version: 1
+id: governance/scope-classification
+kind: governance-primitive
+owner_adr: ADR-019
+status: active
+purpose: Classify agentic primitives by whether they serve Cognitive OS self-construction, downstream consumer-project construction, or both.
+allowed_scopes:
+  os-only:
+    meaning: Maintainer/self-construction surface for building, validating, or operating the Cognitive OS itself.
+    consumer_projection: forbidden-by-default
+    required_evidence:
+      - scope marker or frontmatter classification
+      - absence from project-scope install output unless explicitly installing scope=all
+  project:
+    meaning: Consumer-project surface intended for repositories that implement the Cognitive OS.
+    consumer_projection: allowed
+    required_evidence:
+      - scope marker or frontmatter classification
+      - consumer-project projection proof
+      - no hard dependency on the source Cognitive OS repository path
+  both:
+    meaning: Portable surface valid in both the Cognitive OS repository and downstream consumer projects.
+    consumer_projection: allowed
+    required_evidence:
+      - scope marker or frontmatter classification
+      - consumer-project projection proof
+      - paired portability or falsification test
+      - no hard dependency on the source Cognitive OS repository path
+families:
+  hooks:
+    marker: '# SCOPE: <scope>'
+    coverage: primitive_family_readiness_ledger
+  skills:
+    marker: '<!-- SCOPE: <scope> --> plus audience frontmatter'
+    coverage: primitive_family_readiness_ledger
+  rules:
+    marker: '<!-- SCOPE: <scope> -->'
+    coverage: primitive_family_readiness_ledger
+  scripts:
+    marker: '# SCOPE: <scope>'
+    coverage: primitive_readiness_ledger
+  templates:
+    marker: '<!-- SCOPE: <scope> -->'
+    coverage: scope_contract
+semantic_contradictions:
+  - id: os-only-projected-to-project
+    description: A file declaring os-only appears in a consumer-project/default projection.
+    severity: block
+  - id: project-or-both-hardcoded-source-repo
+    description: A file declaring project or both embeds the source Cognitive OS checkout path or developer home path.
+    severity: block
+  - id: both-without-portability-proof
+    description: A changed file declaring both lacks a paired portability or falsification test.
+    severity: block
+drift_reclassification_triggers:
+  - consumer reference added or removed
+  - lifecycle distribution or lifecycle_state changed
+  - projection target added or removed
+  - supported harness list changed
+  - scope marker changed
+  - hardcoded source-repo dependency introduced or removed
+verification:
+  contract_tests:
+    - tests/contracts/test_primitive_scope_classification.py
+    - tests/contracts/test_primitive_scope_governance.py
+    - tests/contracts/test_primitive_family_readiness_ledger_contract.py
+    - tests/contracts/test_primitive_readiness_ledger_contract.py
+  unit_tests:
+    - tests/unit/test_primitive_scope_governance.py
+    - tests/unit/test_primitive_family_readiness_ledger.py
+    - tests/unit/test_primitive_readiness_ledger.py
+  integration_tests:
+    - tests/integration/test_install_scope.py
+  red_team_tests:
+    - tests/red_team/portability/test_scope-marker-portability-gate.py
