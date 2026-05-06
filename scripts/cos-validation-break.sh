@@ -14,7 +14,8 @@
 
 set -uo pipefail
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 LOCK_FILE="$PROJECT_DIR/.cognitive-os/runtime/validation-capsule.lock"
 AUDIT_DIR="$PROJECT_DIR/.cognitive-os/audit"
 AUDIT_FILE="$AUDIT_DIR/validation-breaks.jsonl"

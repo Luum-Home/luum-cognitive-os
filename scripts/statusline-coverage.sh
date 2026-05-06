@@ -15,7 +15,7 @@
 #
 #   Zsh/bash PROMPT_COMMAND (refresh every 30s with background job):
 #     _cos_coverage_refresh() {
-#       local cache="${COS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}/.cognitive-os/runtime/coverage-snapshot.json"
+#       local cache="$(scripts/cos-root project)/.cognitive-os/runtime/coverage-snapshot.json"
 #       local ts
 #       ts=$(python3 -c "import json,time; d=json.load(open('${cache}')); print(d.get('_cached_at',0))" 2>/dev/null || echo 0)
 #       if (( $(date +%s) - ts > 30 )); then
@@ -39,10 +39,8 @@
 set -uo pipefail
 
 # ── Locate project root ────────────────────────────────────────────────────────
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-}}}"
-if [ -z "$PROJECT_DIR" ]; then
-  PROJECT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 
 CACHE_FILE="${PROJECT_DIR}/.cognitive-os/runtime/coverage-snapshot.json"
 STALE_MAX="${COS_COVERAGE_STALE_MAX:-300}"
