@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Resolve ADR numbers against canonical repository state."""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+from typing import Any
+
+
+def adr_number(raw: str) -> int:
+    match = re.search(r"0*([0-9]+)", raw)
+    if not match:
+        raise argparse.ArgumentTypeError(f"not an ADR number: {raw}")
+    return int(match.group(1))
+
+
+def extract_frontmatter(text: str) -> dict[str, Any]:
+    if not text.startswith("---\n"):
+        return {}
+    parts = text.split("\n---\n", 1)
+    if len(parts) != 2:
+        return {}
+    out: dict[str, Any] = {}
+    for line in parts[0].splitlines()[1:]:
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        value = value.strip().strip('"')
+        if value in {"[]", "null"}:
+            continue
+        out[key.strip()] = value
+    return out
+
+
+def first_heading(text: str) -> str | None:
+    for line in text.splitlines():
+        if line.startswith("# "):
+            return line.removeprefix("# ").strip()
+    return None
+
+
+def prose_status(text: str) -> str | None:
+    for pattern in (r"\*\*Status\*\*:\s*([A-Za-z-]+)", r"^Status:\s*([A-Za-z-]+)"):
+        match = re.search(pattern, text, re.MULTILINE | re.IGNORECASE)
+        if match:
+            return match.group(1).strip().lower()
+    return None
+
+
+def normalize(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+
+
+def title_matches(title: str, expected: str) -> bool:
+    lhs = normalize(title)
+    rhs = normalize(expected)
+    return rhs in lhs or lhs in rhs
+
+
+def collect_adrs(project: Path) -> list[dict[str, Any]]:
+    adrs_dir = project / "docs" / "adrs"
+    rows: list[dict[str, Any]] = []
+    for path in sorted(adrs_dir.glob("ADR-*.md")):
+        match = re.match(r"ADR-0*([0-9]+)", path.name)
+        if not match:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        fm = extract_frontmatter(text)
+        heading = first_heading(text) or path.stem
+        rows.append(
+            {
+                "adr": int(match.group(1)),
+                "path": str(path.relative_to(project)),
+                "filename": path.name,
+                "status": str(fm.get("status") or prose_status(text) or "unknown").lower(),
+                "frontmatter_title": fm.get("title"),
+                "heading": heading,
+                "title": str(fm.get("title") or heading),
+            }
+        )
+    return rows
+
+
+def resolve(project: Path, number: int, expected_title: str | None) -> dict[str, Any]:
+    rows = collect_adrs(project)
+    exact = [row for row in rows if row["adr"] == number]
+    result: dict[str, Any] = {
+        "schema_version": "adr-resolve/v1",
+        "query": {"adr": number, "expected_title": expected_title},
+        "found": bool(exact),
+        "status": "missing",
+        "adr": exact[0] if exact else None,
+        "matches_expectation": None,
+        "candidate_matches": [],
+        "message": f"ADR-{number:03d} not found",
+    }
+    if exact:
+        row = exact[0]
+        result["status"] = row["status"]
+        result["message"] = f"ADR-{number:03d} resolves to {row['title']} ({row['status']})"
+        if expected_title:
+            matches = title_matches(row["title"], expected_title) or title_matches(row["heading"], expected_title)
+            result["matches_expectation"] = matches
+            if not matches:
+                result["status"] = "mismatch"
+                result["message"] = (
+                    f"ADR-{number:03d} is {row['title']} ({row['status']}), "
+                    f"not {expected_title!r}"
+                )
+    if expected_title and (not exact or result.get("matches_expectation") is False):
+        result["candidate_matches"] = [
+            row for row in rows
+            if title_matches(row["title"], expected_title) or title_matches(row["heading"], expected_title)
+        ][:10]
+    return result
+
+
+def print_text(result: dict[str, Any]) -> None:
+    adr = result.get("adr") or {}
+    print(result["message"])
+    if adr:
+        print(f"  path: {adr['path']}")
+        print(f"  status: {adr['status']}")
+        print(f"  heading: {adr['heading']}")
+    candidates = result.get("candidate_matches") or []
+    if candidates:
+        print("  candidates:")
+        for row in candidates:
+            print(f"    ADR-{row['adr']:03d}: {row['title']} ({row['status']}) — {row['path']}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("number", type=adr_number, help="ADR number, e.g. 214 or ADR-214")
+    parser.add_argument("--project-dir", default=str(Path.cwd()))
+    parser.add_argument("--expect-title", help="Fail if the ADR title/heading does not match this expected topic")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+
+    project = Path(args.project_dir).resolve()
+    result = resolve(project, args.number, args.expect_title)
+    if args.json:
+        print(json.dumps(result, indent=2, sort_keys=True))
+    else:
+        print_text(result)
+    if not result["found"]:
+        return 2
+    if result.get("matches_expectation") is False:
+        return 2
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
