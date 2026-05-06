@@ -280,3 +280,169 @@ def test_cosd_unix_socket_api_submits_and_processes_intent(tmp_path: Path) -> No
             proc.wait(timeout=5)
         except subprocess.TimeoutExpired:
             proc.kill()
+
+
+def _read_http_error(req: object) -> tuple[int, dict]:
+    from urllib import error, request
+
+    try:
+        request.urlopen(req, timeout=5)
+    except error.HTTPError as exc:
+        return exc.code, json.loads(exc.read().decode("utf-8"))
+    raise AssertionError("expected HTTPError")
+
+
+def test_cosd_remote_bind_requires_allow_remote_and_token(tmp_path: Path) -> None:
+    result = subprocess.run(
+        ["bash", str(COSD), "--project-dir", str(tmp_path), "--json", "serve", "--host", "0.0.0.0", "--port", "0"],
+        cwd=REPO,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=5,
+    )
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert "--allow-remote" in payload["reason"]
+
+    result = subprocess.run(
+        ["bash", str(COSD), "--project-dir", str(tmp_path), "--json", "serve", "--host", "0.0.0.0", "--port", "0", "--allow-remote"],
+        cwd=REPO,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=5,
+    )
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert "token" in payload["reason"]
+
+
+def test_cosd_token_auth_protects_status_and_write_endpoints(tmp_path: Path) -> None:
+    (tmp_path / "docs" / "adrs").mkdir(parents=True)
+    token_file = tmp_path / "cosd.token"
+    token_file.write_text("secret-token\n", encoding="utf-8")
+    api_file = tmp_path / ".cognitive-os" / "cosd" / "runtime" / "cosd-api.json"
+    proc = subprocess.Popen(
+        ["bash", str(COSD), "--project-dir", str(tmp_path), "serve", "--host", "127.0.0.1", "--port", "0", "--token-file", str(token_file)],
+        cwd=REPO,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        deadline = time.time() + 5
+        while time.time() < deadline and not api_file.exists():
+            if proc.poll() is not None:
+                stdout, stderr = proc.communicate(timeout=1)
+                raise AssertionError(f"cosd api exited early: {stdout} {stderr}")
+            time.sleep(0.05)
+        api = json.loads(api_file.read_text(encoding="utf-8"))
+        assert api["auth_required"] is True
+        base_url = api["base_url"]
+
+        from urllib import request
+
+        with request.urlopen(f"{base_url}/healthz", timeout=5) as response:
+            assert response.status == 200
+
+        code, unauthorized = _read_http_error(f"{base_url}/status")
+        assert code == 401
+        assert unauthorized["status"] == "unauthorized"
+
+        wrong = request.Request(f"{base_url}/status", headers={"Authorization": "Bearer wrong"})
+        code, unauthorized = _read_http_error(wrong)
+        assert code == 401
+        assert unauthorized["status"] == "unauthorized"
+
+        ok = request.Request(f"{base_url}/status", headers={"Authorization": "Bearer secret-token"})
+        with request.urlopen(ok, timeout=5) as response:
+            assert response.status == 200
+            assert json.loads(response.read().decode("utf-8"))["ok"] is True
+
+        body = json.dumps(
+            {
+                "kind": "adr-number-request",
+                "intent_id": "secure-intent",
+                "session_id": "secure-session",
+                "context": {"topic": "Secure API intent", "filename_stem": "secure-api-intent"},
+            }
+        ).encode("utf-8")
+        no_auth = request.Request(f"{base_url}/submit-intent", data=body, headers={"Content-Type": "application/json"}, method="POST")
+        code, unauthorized = _read_http_error(no_auth)
+        assert code == 401
+        assert unauthorized["status"] == "unauthorized"
+
+        authed = request.Request(
+            f"{base_url}/submit-intent",
+            data=body,
+            headers={"Content-Type": "application/json", "Authorization": "Bearer secret-token"},
+            method="POST",
+        )
+        with request.urlopen(authed, timeout=5) as response:
+            submitted = json.loads(response.read().decode("utf-8"))
+        assert submitted["status"] == "submitted"
+
+        process_req = request.Request(
+            f"{base_url}/process-once",
+            data=b"{}",
+            headers={"Content-Type": "application/json", "Authorization": "Bearer secret-token"},
+            method="POST",
+        )
+        with request.urlopen(process_req, timeout=5) as response:
+            assert json.loads(response.read().decode("utf-8"))["processed_count"] == 1
+        assert wait_result(tmp_path, "secure-intent")["decision"]["reserved_filename"] == "ADR-001-secure-api-intent.md"
+
+        audit_path = tmp_path / ".cognitive-os" / "cosd" / "api-audit.jsonl"
+        rows = [json.loads(line) for line in audit_path.read_text(encoding="utf-8").splitlines()]
+        assert any(row["status"] == "unauthorized" for row in rows)
+        assert any(row.get("intent_id") == "secure-intent" for row in rows)
+        assert "secret-token" not in audit_path.read_text(encoding="utf-8")
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+
+
+def test_cosd_allow_remote_starts_only_with_token(tmp_path: Path) -> None:
+    token_file = tmp_path / "cosd.token"
+    token_file.write_text("remote-token\n", encoding="utf-8")
+    api_file = tmp_path / ".cognitive-os" / "cosd" / "runtime" / "cosd-api.json"
+    proc = subprocess.Popen(
+        [
+            "bash",
+            str(COSD),
+            "--project-dir",
+            str(tmp_path),
+            "serve",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "0",
+            "--allow-remote",
+            "--token-file",
+            str(token_file),
+        ],
+        cwd=REPO,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        deadline = time.time() + 5
+        while time.time() < deadline and not api_file.exists():
+            if proc.poll() is not None:
+                stdout, stderr = proc.communicate(timeout=1)
+                raise AssertionError(f"cosd remote api exited early: {stdout} {stderr}")
+            time.sleep(0.05)
+        api = json.loads(api_file.read_text(encoding="utf-8"))
+        assert api["remote_allowed"] is True
+        assert api["auth_required"] is True
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
