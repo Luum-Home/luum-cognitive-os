@@ -55,6 +55,7 @@ rate-limit-state.json
 
 # ── Claude Code local settings (machine-specific, not shared) ───────────────
 .claude/settings.local.json
+.claude/*.lock
 
 # ── Environment & secrets ───────────────────────────────────────────────────
 .env

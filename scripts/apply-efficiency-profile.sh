@@ -135,7 +135,7 @@ run_claude_code_driver() {
     pre-compaction-flush.sh agent-bash-cwd-enforcer.sh rate-limiter.sh secret-detector.sh \
     lethal-trifecta-gate.sh dispatch-gate.sh clarification-gate.sh blast-radius.sh query-tailored-context-inject.sh \
     pre-agent-snapshot.sh post-agent-snapshot-restore.sh completeness-check.sh reinvention-check.sh error-pipeline.sh result-truncator.sh auto-checkpoint.sh \
-    content-policy.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh cross-session-coordination-guard.sh agent-message-inbox-guard.sh cosd-intent-submit.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
+    content-policy.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh cross-session-coordination-guard.sh agent-message-inbox-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
