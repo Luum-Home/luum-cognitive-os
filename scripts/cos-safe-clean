@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Dry-run-first cleanup primitive for untracked work.
+
+Examples:
+  scripts/cos-safe-clean --path docs/research/repo-scout --dry-run
+  scripts/cos-safe-clean --path tmp/cache --execute \
+    --classification generated-cache --reason "rebuildable cache" --approved
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import shutil
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.delete_intent import ALLOWED_CLASSIFICATIONS, emit, repo_root, safe_clean_plan
+
+
+def _delete(root: Path, rel: str) -> None:
+    path = root / rel if not Path(rel).is_absolute() else Path(rel)
+    try:
+        resolved = path.resolve()
+        resolved.relative_to(root.resolve())
+    except ValueError as exc:
+        raise RuntimeError(f"refusing to delete outside project root: {path}") from exc
+    if not path.exists() and not path.is_symlink():
+        return
+    if path.is_dir() and not path.is_symlink():
+        shutil.rmtree(path)
+    else:
+        path.unlink()
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--path", action="append", required=True, help="Path to inspect/clean; repeatable")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--dry-run", action="store_true", help="Only print the cleanup plan; default")
+    mode.add_argument("--execute", action="store_true", help="Execute after approval/classification checks pass")
+    parser.add_argument("--classification", choices=sorted(ALLOWED_CLASSIFICATIONS))
+    parser.add_argument("--reason")
+    parser.add_argument("--approved", action="store_true", help="Operator approval acknowledgement for --execute")
+    args = parser.parse_args(argv)
+
+    root = repo_root(args.project_dir)
+    intent = safe_clean_plan(root, args.path, args.classification, args.reason, args.approved)
+    payload = json.loads(emit(intent))
+    payload["mode"] = "execute" if args.execute else "dry-run"
+
+    if not args.execute:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return 0
+
+    if not intent.allowed:
+        print(json.dumps(payload, indent=2, sort_keys=True), file=sys.stderr)
+        return 2
+    if not args.approved:
+        payload["message"] = "--execute requires --approved"
+        print(json.dumps(payload, indent=2, sort_keys=True), file=sys.stderr)
+        return 2
+
+    for target in intent.targets:
+        _delete(root, target.path)
+    payload["deleted"] = [target.path for target in intent.targets]
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
