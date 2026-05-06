@@ -644,6 +644,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/branch-ownership-release.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-retention-audit.sh\""
           }
         ]
       },

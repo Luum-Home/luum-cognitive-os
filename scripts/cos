@@ -10,6 +10,8 @@
 #   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
 #   cos measure harness-profiles       -> scripts/measure_harness_profiles.py
 #   cos sprint ...                     -> scripts/cos_sprint.py
+#   cos state retention [flags]         -> scripts/state_retention_audit.py
+#   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
 #
 # This keeps the `cos` UX short (`cos status`, `cos init`) while leaving the
@@ -101,6 +103,22 @@ case "$SUBCMD" in
     shift
     exec python3 "$SCRIPT_DIR/cos_sprint.py" "$@"
     ;;
+  state)
+    if [ "${2:-}" = "retention" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/state_retention_audit.py" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown state subcommand '${2:-}'. Try: cos state retention" >&2
+    exit 1
+    ;;
+  stash)
+    if [ "${2:-}" = "cleanup" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/state_retention_audit.py" --project-dir "$PROJECT_ROOT" --surface auto-pre-agent-stashes --reap "$@"
+    fi
+    echo "cos: unknown stash subcommand '${2:-}'. Try: cos stash cleanup [--execute]" >&2
+    exit 1
+    ;;
   help|-h|--help|"")
     cat <<EOF
 cos — Cognitive OS command-line
@@ -118,6 +136,8 @@ Usage:
   cos governance roi [--json]            Estimate governance friction vs benefit
   cos governance readiness [--json]      Report architecture readiness and remaining gaps
   cos sprint <cmd>                       Run sprint orchestration commands
+  cos state retention [--json|--strict]   Audit declared mutable state retention
+  cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
   cos init [dir]                         Install Cognitive OS into a project
   cos doctor                             Check installation health
   cos list [type]                        List installed agentic primitives

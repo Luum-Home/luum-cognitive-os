@@ -168,6 +168,7 @@
 
 ## 8. Immediate Known Gaps
 
+- [x] State retention self-bite risk is documented and given a manifest-backed reaper protocol through [Session Diagnosis — State Retention Self-Bite Pattern](../reports/session-self-bite-pattern-2026-05-06.md), [ADR-199](../adrs/ADR-199-state-retention-policy-and-reaper-protocol.md), and `manifests/state-retention.yaml`.
 - [x] Fix `README.md` reference to missing `docs/benchmark-results.md`.
 - [x] Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.
 - [ ] Redesign and re-enable `.github/workflows/ci.yml`; current repository evidence is `.github/workflows/ci.yml.disabled`, so the product-core CI claim is not complete yet.

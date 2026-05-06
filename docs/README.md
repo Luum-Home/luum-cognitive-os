@@ -12,6 +12,9 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [Session Diagnosis — State Retention Self-Bite Pattern — 2026-05-06](reports/session-self-bite-pattern-2026-05-06.md) — pre-launch diagnosis of safety-state accumulation, stale stashes, claims, bus folders, and the retention protocol response.
+- [ADR-199: State Retention Policy and Reaper Protocol](adrs/ADR-199-state-retention-policy-and-reaper-protocol.md) — manifest-backed retention declaration, audit, and archive-first reaper contract for mutable COS state.
+- [State Retention Reaper Protocol Plan](../.cognitive-os/plans/architecture/state-retention-reaper-protocol.md) — implementation plan for audit, cleanup, and future reaper expansion.
 - [Standalone Ship Readiness — 2026-05-06](architecture/standalone-ship-readiness-2026-05-06.md) — current release/TUI/cosd/root-readiness matrix and validation evidence for standalone shipping.
 - [Surface 5 TUI and Secure cosd Roadmap](architecture/surface-5-and-secure-cosd-roadmap.md) — feature-grounded roadmap for a real Bubble Tea TUI and secure remote-capable `cosd`.
 - [ADR-191: COS Binary Release Pipeline](adrs/ADR-191-cos-binary-release-pipeline.md) — GoReleaser, checksums, release workflow, and Homebrew tap handoff for standalone `cos` distribution.
