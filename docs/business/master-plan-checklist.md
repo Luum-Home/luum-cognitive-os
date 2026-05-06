@@ -238,6 +238,7 @@
 - [x] Implement ADR-205 run flight recorder substrate before treating service-mode observability as complete: `lib/trace_joiner.py`, `scripts/cos-run-trace`, `cos observe run`, run-id/event-id normalization, latest run report, JSONL index, state-retention declarations, and tests proving private-content payloads stay ref-only.
 - [ ] Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.
 - [ ] Implement ADR-207 skill performance ledger and lifecycle closure before claiming skill self-improvement.
+- [x] Adopt ADR-212 cross-stack license audit toolchain: Syft+Grype primary, Trivy guarded secondary, workflow safety gate, install/run wrappers, and tests.
 - [ ] Implement ADR-208 imported-pattern closure audit so producer-only imports cannot be promoted as active loops.
   - [x] Wire the first consumer loop: dependency manifest additions now hit a pre-commit dependency-adoption gate and require staged `/repo-scout`, `/repo-forensics`, or equivalent evidence before adoption.
   - [ ] Add the full imported-pattern closure manifest/audit that proves producer, consumer, scheduler, evaluator, owner, demotion path, and contract tests before promotion claims.

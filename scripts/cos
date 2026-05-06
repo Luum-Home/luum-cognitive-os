@@ -15,6 +15,7 @@
 #   cos private-content check-projection -> scripts/private_content_audit.py --check-projection
 #   cos dependency adoption-gate        -> scripts/cos-dependency-adoption-gate
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
+#   cos license audit                   -> scripts/cos-cross-stack-license-audit
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos observe run                    -> scripts/cos-run-trace
 #   cos service readiness              -> scripts/cos-service-readiness-gate
@@ -147,6 +148,14 @@ case "$SUBCMD" in
       exec "$SCRIPT_DIR/cos-dependency-adoption-gate" --project-dir "$PROJECT_ROOT" "$@"
     fi
     echo "cos: unknown dependency subcommand '${2:-}'. Try: cos dependency adoption-gate [--staged|--audit|--json]" >&2
+    exit 1
+    ;;
+  license)
+    if [ "${2:-}" = "audit" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-cross-stack-license-audit" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown license subcommand '${2:-}'. Try: cos license audit [--json|--strict]" >&2
     exit 1
     ;;
   observe)
