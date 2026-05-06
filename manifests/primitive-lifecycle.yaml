@@ -6582,7 +6582,7 @@ primitives:
   rollback_or_repair_command: Remove hooks/cosd-auth-guard.sh from generated settings and rely on explicit operator review of cosd remote API commands.
   sunset_criteria: Demote only after cosd remote API moves behind an equivalent authenticated service gateway with matching negative tests.
   docs_claim_level: blocking
-  exit_behavior: exit-2-on-unsafe-cosd-auth-boundary
+  exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/cosd-auth-guard.jsonl
   consumer_accessibility: lifecycle-declared-core
   consumer_access_next_action: Keep as core runtime-safety guard while cosd supports local HTTP and remote bind modes.
