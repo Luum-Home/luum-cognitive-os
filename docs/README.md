@@ -224,8 +224,9 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Observability Backend Evaluation](architecture/observability-backend-evaluation-2026-04-24.md) — 2026 decision record for MLflow, Langfuse, Opik, OpenTelemetry, and other observability options
 - [Self-Improvement Maintainer Agent Gap](reports/self-improvement-maintainer-agent-gap-2026-05-06.md) — diagnosis of why telemetry does not close the loop without a permanent maintainer agent and `PromoteFromTelemetry` primitive
 - [Private Content Portability Gap](reports/private-content-portability-gap-2026-05-06.md) — diagnosis of private strategy/memory/metrics portability across Codex, Claude Code, and service hosts
-+- [Auto-Rollback Router Trigger Forensics](reports/auto-rollback-router-trigger-forensics-2026-05-06.md) — why `/auto-rollback` was suggested in a meta-discussion and the narrow router guard added
+- [Auto-Rollback Router Trigger Forensics](reports/auto-rollback-router-trigger-forensics-2026-05-06.md) — why `/auto-rollback` was suggested in a meta-discussion and the narrow router guard added
 - [Subagent Capability Contract Gap](reports/subagent-capability-contract-gap-2026-05-06.md) — diagnosis of Explore read-only launches for file-artifact research tasks and the ADR-203 guard
+- [ADR-200+ Closure Inventory](reports/adr-200-plus-closure-inventory-2026-05-06.md) — execution matrix and dependency order for implementing ADR-200 through ADR-211
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
 - [Harness Driver Parity](architecture/harness-driver-parity.md) — how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities
 - [Codex Governed Tool Layer](architecture/codex-governed-tool-layer.md) — governed fallback for Agent and Edit/Write hook chains that Codex cannot emit natively today.
@@ -778,6 +779,7 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [ADR-209: Maintainer Reconciler Experiment Contract](adrs/ADR-209-maintainer-reconciler-experiment-contract.md) — proposed experiment/canary contract for maintainer-generated changes
 - [ADR-210: Fleet-Aggregated Confidence Boundary](adrs/ADR-210-fleet-aggregated-confidence-boundary.md) — proposed privacy-preserving aggregate confidence boundary for future cloud learning
 - [ADR-211: Service-Mode Readiness Gate](adrs/ADR-211-service-mode-readiness-gate.md) — proposed launch gate for headless/cloud service claims
+- [ADR-200+ Closure Plan](../.cognitive-os/plans/architecture/adr-200-plus-closure-plan.md) — dependency-first implementation checklist for the ADR-200+ service-mode tranche
 
 ## Getting started
 
