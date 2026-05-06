@@ -78,8 +78,8 @@ Its defining properties for this decision:
 
 - **`pip install arize-phoenix`** — no Docker, no ClickHouse, no SeaweedFS.
 - **Elastic License 2.0** (since Phoenix ~v4) for the Phoenix server. Source-available
-  with a "managed service" prohibition. The `arize-phoenix-client` and
-  `arize-phoenix-otel` SDK packages we depend on remain **Apache 2.0**. We treat
+  with a "managed service" prohibition. The optional `arize-phoenix-client` / `arize-phoenix-otel` SDK packages used by the
+  observability lane remain **Apache 2.0**. We treat
   Phoenix as an **operator-installed runtime tool** (not bundled in COS releases),
   which keeps our usage within ELv2 allowed scope. (Original ADR text incorrectly
   stated Apache 2.0 for the entire Phoenix project — corrected 2026-05-06 per
@@ -126,7 +126,7 @@ Its defining properties for this decision:
 
 | Tool | Install | Weight | 2025-2026 activity | License | LLM-native | Local UI | Verdict |
 |------|---------|--------|-------------------|---------|------------|----------|---------|
-| **Arize Phoenix** | `pip install arize-phoenix` | Single Python process, ~150 MiB RAM | Weekly releases, Arize core team | ELv2 server / Apache 2.0 SDK | Yes (OTel GenAI conventions) | Yes, bundled | **Accepted — winner** |
+| **Arize Phoenix** | `pip install arize-phoenix` | Single Python process, ~150 MiB RAM | Weekly releases, Arize core team | ELv2 server / Apache-2.0 bridge/client packages | Yes (OTel GenAI conventions) | Yes, operator-installed | **Accepted — winner** |
 | Pydantic Logfire | pip + hosted tier | Python process, minimal | Active (Pydantic team) | Proprietary hosted / OSS SDK | Yes | Hosted-primary | Rejected: hosted-primary model, not self-hostable |
 | Laminar (lmnr.ai) | pip + Docker for UI | Rust backend + React, medium | Active | Apache 2.0 | Yes | Yes (Docker) | Rejected: brings Docker back |
 | OpenLLMetry / Traceloop | pip SDK only | Minimal (no UI) | Active | Apache 2.0 | Yes | No (exports to other backends) | Rejected: no UI, just an exporter — need a backend anyway |
@@ -157,7 +157,7 @@ Volumes preserved (`docker rm` NOT executed). Rollback remains cheap.
 
 | Task | Owner |
 |------|-------|
-| Add `arize-phoenix>=7.0` to `pyproject.toml` under `[project.optional-dependencies].observability` | operator |
+| Install `requirements/dependency-lanes/observability.txt` explicitly when validating Phoenix; keep it out of the core `pyproject.toml` extras / `uv.lock` | operator |
 | Create `skills/phoenix-trace-ui/SKILL.md` that runs `phoenix serve` on-demand | operator |
 | Add `phoenix:` entry to `cognitive-os.yaml` services block: `mode: pip`, `review_by: 2026-08-15` | operator (done in Phase 0 for catalog consistency) |
 | Cross-reference Phoenix in `infrastructure-service-catalog.md` services table + decision log | operator (done in Phase 0) |

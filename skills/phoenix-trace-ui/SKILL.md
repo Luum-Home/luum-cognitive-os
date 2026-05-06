@@ -26,14 +26,18 @@ routing_patterns:
 Per ADR-058 (2026-04-24) the former observability docker stack (6 containers)
 was retired. LLM trace visualisation is now provided by **Arize Phoenix** —
 a pip package with a local UI server and an OTel collector on a single port.
+The Phoenix server package (`arize-phoenix`) is licensed under Elastic License
+2.0 (ELv2), so COS treats it as an operator-installed local runtime, not a
+bundled dependency or hosted managed service. The OTel bridge package is
+Apache-2.0.
 
 This skill is available to any project that adopts the Cognitive OS, not
 just the OS repo itself (`SCOPE: both`, `audience: project`). It does not
 assume any SO-specific paths — it only relies on:
 
-- the `arize-phoenix` pip package being installed
-  (declared under `[project.optional-dependencies] observability` in
-  `pyproject.toml`);
+- the `arize-phoenix` pip package being explicitly installed from
+  `requirements/dependency-lanes/observability.txt` via
+  `bash scripts/dependency-lane.sh install observability`;
 - a free port 6006 on the local machine.
 
 ## Instructions
@@ -105,7 +109,7 @@ PHOENIX_COLLECTOR_ENDPOINT=http://phoenix.internal.example.com/v1/traces
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `ModuleNotFoundError: phoenix` | Pip extras not installed | `uv sync --extra observability` |
+| `ModuleNotFoundError: phoenix` | Observability dependency lane not installed | `bash scripts/dependency-lane.sh install observability` |
 | Port 6006 already in use | Previous Phoenix or another service holds it | `lsof -iTCP:6006 -sTCP:LISTEN` then kill the PID |
 | Traces not showing | Collector endpoint mismatch | Set `PHOENIX_COLLECTOR_ENDPOINT` OR start Phoenix before the traced code runs |
 
@@ -113,5 +117,5 @@ PHOENIX_COLLECTOR_ENDPOINT=http://phoenix.internal.example.com/v1/traces
 
 - ADR-058 — `docs/adrs/ADR-058-observability-migration-*.md`
 - `lib/record_completion.py` — `_send_otel_trace()` is the primary emitter
-- `pyproject.toml` — `arize-phoenix` / `arize-phoenix-otel` under
-  `[project.optional-dependencies] observability`
+- `requirements/dependency-lanes/observability.txt` — explicit heavy lane for
+  `arize-phoenix` / `arize-phoenix-otel`
