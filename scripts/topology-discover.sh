@@ -26,7 +26,8 @@
 
 set -uo pipefail
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 OUT_FILE="$PROJECT_DIR/.cognitive-os/topology.json"
 JSON=0
 QUIET=0

@@ -46,7 +46,8 @@ if [ "${COS_VALIDATION_CAPSULE_ACTIVE:-0}" = "1" ]; then
   exec "$@"
 fi
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$("$SCRIPT_DIR/cos-root" project)"
 cd "$REPO_ROOT"
 # COS_VALIDATION_CAPSULE_SAFE_WORKTREE_FALLBACK: keep validation usable in
 # minimal consumer repos that do not carry the COS helper library. The full COS
