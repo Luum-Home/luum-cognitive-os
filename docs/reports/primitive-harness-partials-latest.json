@@ -1,0 +1,888 @@
+{
+  "items": [
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/architecture-compliance.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/assumption-tracker.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/auto-checkpoint.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/auto-refine.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/auto-repair-dispatcher.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/auto-rollback-trigger.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/auto-verify.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/background-agent-reminder.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/blast-radius.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/claim-validator.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/clarification-gate.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/clarification-interceptor.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/code-review-on-commit.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/completeness-check-llm.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/completion-gate.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/concurrent-write-guard.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/confidence-gate-llm.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/confidence-gate.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/confidentiality-enforcer.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/consequence-evaluator.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/content-policy.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/context-diet.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/context-watchdog.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/contextual-rule-loader.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/doc-sync-detector.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/dod-gate.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/dry-run-preview.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/ecosystem-check.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/edit-lock-drain-parked.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/edit-lock-pre-tool.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/engram-reinforce-on-access.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/epic-task-detector.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/error-pattern-detector.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/global-verify.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/guardrails-validator.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/infra-intent-detector.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/inject-phase-context.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/jupyter-sandbox.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/large-file-advisor.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/notify.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/orchestrator-decision-trace.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/orchestrator-mode-detect.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/parry-scan.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/plan-claim-validator.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/post-agent-verify.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/pre-agent-snapshot.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/pre-cleanup-snapshot.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/pre-commit-gate.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/predev-completeness-check.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/private-mode-gate.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/private-mode-metrics-gate.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/project-docs-convention.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/prompt-quality-llm.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/protected-config-write-guard.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/query-tailored-context-inject.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/rate-limit-protection.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/reinvention-check.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/research-quality-validator.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/resource-check.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/scope-creep-detector.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/scope-proportionality.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/secret-detector.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/semgrep-scan.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/skill-frontmatter-validator.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/skill-post-execution-analysis.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/surface-fix-detector.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/task-completed.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/task-panel-sync.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/task-recorder.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/token-budget-monitor.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/tool-loop-detector.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/trust-score-validator.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/valkey-ensure.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/worktree-submodule-fix.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/cos-cloud-worker-bootstrap.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/cos-postgres-local.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/cos-valkey-local.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/dependency-lane.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/deps-update.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/document_feature_append.py",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-aguara.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-garak.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-mcp-scan.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-promptfoo.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-tob-skills.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/setup-git-hooks.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/sprint-test-summary.sh",
+      "scope": "project"
+    }
+  ],
+  "schema_version": "primitive-harness-partials.v1",
+  "source_schema_version": "primitive-harness-coverage.v1",
+  "summary": {
+    "by_policy": {
+      "codex-adapter-needed": 74,
+      "projectable-needs-driver": 13
+    },
+    "by_severity": {
+      "medium": 87
+    },
+    "partial_count": 87,
+    "total_gaps": 711,
+    "unclassified_gaps": 0
+  }
+}
