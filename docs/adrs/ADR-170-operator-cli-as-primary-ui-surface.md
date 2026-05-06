@@ -60,11 +60,11 @@ Concretely:
 
 ### Complementary surface — Phoenix as opt-in LLM-trace UI
 
-Because `arize-phoenix>=4.0` is already declared in `pyproject.toml` under the `observability` extra, **a graphical surface for LLM traces is one command away** without contradicting the CLI-first decision:
+Because Phoenix lives in the explicit `requirements/dependency-lanes/observability.txt` heavy lane, **a graphical surface for LLM traces is one operator install away** without contradicting the CLI-first decision:
 
 ```bash
-uv sync --extra observability     # one-time
-uv run phoenix serve              # → http://localhost:6006
+bash scripts/dependency-lane.sh install observability  # one-time
+uv run phoenix serve                              # → http://localhost:6006
 ```
 
 Phoenix renders OpenTelemetry traces, span attributes, latency, cost, and eval scores. It does **not** render lifecycle states, doctrine proposals, demotions, audit_class, federation triggers, or any other COS governance concept. That separation is the point: Phoenix is the **trace** surface; the CLI plus markdown reports remain the **governance** surface. They co-exist, neither one stands in for the other.
@@ -86,7 +86,7 @@ This decision **does not** prevent a future UI. It declares the **default** is C
 ## Border Cases
 
 - **External buyer asks for a UI demo.** The answer is: `bash scripts/cos-boring-reliability --profile core --json | jq .`, plus the markdown reports under `docs/reports/`. If the buyer's evaluation requires a web rendering, that is a Shape B trigger per ADR-132 — not an emergency build of a custom UI under Shape A.
-- **Phoenix is already in `pyproject.toml`.** Phoenix has a web UI for LLM observability (`uv run phoenix serve` on port 6006). It is OpenTelemetry-aligned and trace-shaped. It does not model COS lifecycle / doctrine / demotion. It can co-exist as an LLM-trace UI without being the COS governance UI. ADR-058 already governs Phoenix's role as the trace surface; ADR-170 does not change that.
+- **Phoenix is in the explicit observability dependency lane, not the core lock.** Phoenix has a web UI for LLM observability (`uv run phoenix serve` on port 6006). It is OpenTelemetry-aligned and trace-shaped. It does not model COS lifecycle / doctrine / demotion. It can co-exist as an LLM-trace UI without being the COS governance UI. ADR-058 already governs Phoenix's role as the trace surface; ADR-170 does not change that.
 - **Someone clones the repo and looks for a UI.** The README, `docs/getting-started.md`, and `docs/INDEX.md` all point at the CLI surfaces and the runbook for the Docker worker. The `dashboard/ARCHIVED.md` notice closes off the abandoned route. Discoverability is now operator-CLI-shaped, matching the decision.
 
 ## Consequences

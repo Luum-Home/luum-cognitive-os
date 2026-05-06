@@ -62,7 +62,7 @@ around interfaces that actually work today.
 
 ### Changed — Operator-CLI as primary UI surface (ADR-170)
 
-- Phoenix declared as a **complementary opt-in surface** for LLM traces only (`uv sync --extra observability && uv run phoenix serve`). It does not model COS lifecycle / doctrine / demotion / audit_class. CLI + markdown remains the governance surface.
+- Phoenix declared as a **complementary opt-in surface** for LLM traces only (`bash scripts/dependency-lane.sh install observability && uv run phoenix serve`). It does not model COS lifecycle / doctrine / demotion / audit_class. CLI + markdown remains the governance surface.
 - Falsifiable claim added in ADR-170: CLI usability for new operators (under 5-minute orientation), markdown report cadence (at least one per major decision cycle for 60 days), and external-buyer demand (no Shape B trigger from three independent UI-blocker citations within 6 months). Re-evaluation after one year.
 
 

@@ -40,7 +40,7 @@ require proprietary cloud to function are removed from the catalog.
 |---|---|---|---|
 | Opik | `mode: cloud`, compose broken | **Removed** (compose + yaml + env + catalog + skill + tests) | Cloud path violates principle; Phoenix covers the use case locally |
 | MemU | `mode: pip`, container dependent on langfuse-pg | `mode: pip`, container wired to self-contained `memu-pg` (Postgres 17-alpine) | Keep pip as supported path; Docker container gains local backend for integration tests |
-| Phoenix | `mode: pip`, Apache 2.0, local UI via `phoenix serve` | (unchanged) | Replaces Opik/Langfuse |
+| Phoenix | `mode: pip`, ELv2 server / Apache-2.0 OTel bridge, local UI via `phoenix serve` | (unchanged) | Replaces Opik/Langfuse |
 | Cognee | `mode: pip`, optional Docker | (unchanged) | Already pip-first |
 | NeMo Guardrails | `mode: pip`, optional Docker | (unchanged) | Already pip-first |
 | Jupyter | `mode: pip`, optional Docker | (unchanged) | Already pip-first |
