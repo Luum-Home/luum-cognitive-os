@@ -11,6 +11,7 @@ required_surface_fields:
   - max_age
   - max_count
   - reaper
+  - retention_mode
   - tombstone
   - owner_pid
   - owner_files
@@ -36,7 +37,8 @@ surfaces:
         - auto-pre-agent-toolu_
     max_age: P1H
     max_count: 2
-    reaper: manual
+    reaper: repair-before-block
+    retention_mode: repair-before-block
     tombstone: archive-ref-and-patch
     owner_pid: false
     owner_files:
@@ -61,6 +63,7 @@ surfaces:
     max_age: P24H
     max_count: 100
     reaper: session-end
+    retention_mode: repair-safe
     tombstone: compact-in-place
     owner_pid: false
     owner_files:
@@ -85,6 +88,7 @@ surfaces:
     max_age: P7D
     max_count: 250
     reaper: session-end
+    retention_mode: observe
     tombstone: compact-in-place
     owner_pid: true
     owner_files:
@@ -104,6 +108,7 @@ surfaces:
     max_age: P24H
     max_count: 100
     reaper: session-end
+    retention_mode: repair-safe
     tombstone: archive-directory
     owner_pid: false
     owner_files:
@@ -122,6 +127,7 @@ surfaces:
     max_age: P7D
     max_count: unbounded-with-rotation
     reaper: rotation
+    retention_mode: observe
     tombstone: archive-file
     owner_pid: false
     owner_files:
@@ -140,6 +146,7 @@ surfaces:
     max_age: P1H
     max_count: 25
     reaper: session-start
+    retention_mode: observe
     tombstone: drop-if-owner-dead
     owner_pid: true
     owner_files:
@@ -163,6 +170,7 @@ surfaces:
     max_age: P24H
     max_count: 5
     reaper: manual
+    retention_mode: observe
     tombstone: archive-manifest-first
     owner_pid: false
     owner_files:
