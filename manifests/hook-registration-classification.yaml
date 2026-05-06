@@ -302,3 +302,7 @@ entries:
     event payload can supply its required intent arguments yet.
   next_action: Keep out of Claude/Codex lifecycle projections until cosd v1 defines
     a typed event payload and integration lane.
+- path: hooks/agent-control-inbound-guard.sh
+  status: active
+  rationale: ADR-042 hook-boundary control primitive enforces inbound stop/pause/resume signals for harnesses that can only surface inbound_signal records between tool calls.
+  next_action: Keep registered while Valkey and filesystem control fallback remain supported; demote only after native harness control covers the same tests.
