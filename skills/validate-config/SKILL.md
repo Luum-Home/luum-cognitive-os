@@ -11,6 +11,14 @@ summary_line: "Validate all Cognitive OS configuration files — agents, squads,
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bvalidate[- ]?config\b'
+    confidence: 0.96
+  - pattern: '\bvalidate\s+(all\s+)?(cognitive[- ]?os\s+)?config(uration)?\b'
+    confidence: 0.90
+  - pattern: '\b(config|manifest)\s+validation\b'
+    confidence: 0.84
+
 ---
 
 # Schema Validation for Cognitive OS Configuration (BMAD v6 Pattern 12)

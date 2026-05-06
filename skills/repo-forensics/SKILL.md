@@ -19,6 +19,14 @@ summary_line: Deep forensic analysis of git repositories.
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\brepo(sitory)?\s+forensics\b'
+    confidence: 0.96
+  - pattern: '\bdeep\s+(repo|repository|source)\s+analysis\b'
+    confidence: 0.88
+  - pattern: '\banalyze\s+all\s+(code|dependencies|configs)\b'
+    confidence: 0.82
+
 ---
 
 ## Purpose

@@ -16,6 +16,14 @@ last-updated: 2026-03-28
 audience: project
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bscout\b'
+    confidence: 0.94
+  - pattern: '\b(pre[- ]?implementation|codebase)\s+recon(naissance)?\b'
+    confidence: 0.92
+  - pattern: '\bquick\s+(codebase\s+)?recon\b'
+    confidence: 0.88
+
 ---
 
 # Scout -- Pre-Implementation Codebase Reconnaissance

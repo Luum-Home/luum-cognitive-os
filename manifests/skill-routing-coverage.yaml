@@ -26,12 +26,12 @@ coverage_scope:
     routing_required: true
     rationale: Primary skill location, source-of-truth for the public router.
     universe_size: 162
-    routed_count: 83
-    routed_percent: 51.2
+    routed_count: 99
+    routed_percent: 61.1
     disabled_count: 9
     name_mismatch_count: 3
     eligible_for_routing: 150  # universe - disabled - name_mismatch
-    eligible_routed_percent: 54.7
+    eligible_routed_percent: 65.3
 
   package_bundled_skills:
     location: packages/*/skills/*/SKILL.md
@@ -57,12 +57,12 @@ coverage_scope:
       mirrors of canonical/package skills; some are runtime-only
       installations.
     universe_size: 154
-    routed_count: 62
-    routed_percent: 40.3
+    routed_count: 78
+    routed_percent: 50.6
     disabled_count: 9
     name_mismatch_count: 2
     eligible_for_routing: 143
-    eligible_routed_percent: 42.7
+    eligible_routed_percent: 53.8
 
   auto_generated_skills:
     location: .cognitive-os/skills/auto-generated/*/SKILL.md
@@ -128,7 +128,7 @@ exemptions:
 # ─────────────────────────────────────────────────────────────────────────
 runtime_projection_pending_routing:
   status: routing_patterns_missing
-  count: 82  # 143 eligible - 61 eligible routed = 82 pending
+  count: 66  # 143 eligible - 77 eligible routed = 66 pending
   impact:
     explicit_slash_invocation: works
     auto_routing: incomplete
@@ -145,7 +145,7 @@ runtime_projection_pending_routing:
 
 canonical_pending_routing:
   status: routing_patterns_missing
-  count: 68  # 150 eligible - 82 eligible routed = 68 pending
+  count: 52  # 150 eligible - 98 eligible routed = 52 pending
   impact: same as runtime_projection_pending_routing
 
 package_bundled_pending_routing:
@@ -232,15 +232,15 @@ baseline:
   note: |
     DEPRECATED — kept only for backward compat with existing tests.
     Use coverage_scope.<category> for accurate measurements.
-    The flat number below sums canonical + runtime-projection (excluding
-    auto-generated) and treats name_mismatch skills as "not routed" until
-    they are fixed.
-  min_routed_skill_count: 145  # 83 canonical + 62 runtime-projection
-  min_routed_skill_coverage_percent: 45.9  # 145 / (162+154) = 45.9%
+    The flat number below is a de-duplicated first-party router
+    floor across skills/ and .cognitive-os/skills/ (excluding auto-generated),
+    kept only as a legacy regression ratchet while category metrics carry truth.
+  min_routed_skill_count: 168  # current de-duplicated first-party primary router coverage
+  min_routed_skill_coverage_percent: 90.8  # 168 / 185 de-duplicated first-party skill names
   skill_roots:
     - skills/*/SKILL.md
     - .cognitive-os/skills/*/SKILL.md
-  max_unrouted_skill_count: 200  # generous; per-category limits live in coverage_scope
+  max_unrouted_skill_count: 17  # current de-duplicated first-party unrouted backlog
 
 profile_note:
   status: pending-profile-aware-ratchet

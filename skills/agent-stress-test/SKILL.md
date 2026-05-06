@@ -7,6 +7,14 @@ audience: os-dev
 version: 1.0.0
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\b(agent|cognitive)\s+stress[- ]?test\b'
+    confidence: 0.95
+  - pattern: '\b(context[- ]?induced|cognitive)\s+degradation\b'
+    confidence: 0.88
+  - pattern: '\bstress[- ]?test\s+(agents?|cognitive health)\b'
+    confidence: 0.86
+
 ---
 
 # /agent-stress-test
