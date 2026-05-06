@@ -2098,7 +2098,7 @@
         "config": 6,
         "doc": 21,
         "hook": 1,
-        "script": 7,
+        "script": 8,
         "test": 9
       },
       "consumers": [
@@ -2243,6 +2243,10 @@
           "path": "scripts/demo-portability-proof.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
           "family": "test",
           "path": "tests/behavior/test_consumer_project_projection.py"
         },
@@ -2282,7 +2286,7 @@
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "script_consumers:7",
+        "script_consumers:8",
         "test_consumers:9",
         "doc_consumers:21",
         "config_consumers:6"
@@ -2295,7 +2299,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 44
+      "total_consumers": 45
     },
     {
       "confidence": "high",
@@ -3917,7 +3921,7 @@
         "config": 1,
         "doc": 5,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -3954,6 +3958,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_cos_cli_surface_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
         },
         {
@@ -3969,7 +3977,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:2",
-        "test_consumers:3",
+        "test_consumers:4",
         "doc_consumers:5",
         "config_consumers:1"
       ],
@@ -3985,7 +3993,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -6717,7 +6725,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 8,
         "hook": 3,
         "script": 5,
@@ -6747,6 +6755,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -6847,7 +6859,7 @@
         "script_consumers:5",
         "test_consumers:5",
         "doc_consumers:8",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6857,7 +6869,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "medium",
