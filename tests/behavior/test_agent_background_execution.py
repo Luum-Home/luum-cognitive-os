@@ -127,7 +127,7 @@ class TestTimeoutConfiguration:
             pytest.skip("test_rate_limiter.py not found -- skip timing test")
 
         start = time.monotonic()
-        result = subprocess.run(
+        subprocess.run(
             [
                 "python3", "-m", "pytest",
                 str(test_file),
@@ -135,14 +135,17 @@ class TestTimeoutConfiguration:
             ],
             capture_output=True,
             text=True,
-            timeout=60,
+            # The behavior lane has a global 30s per-test timeout. Keep this
+            # nested pytest subprocess below that ceiling so pytest-timeout can
+            # report the real assertion instead of killing the whole test.
+            timeout=20,
             cwd=str(PROJECT_ROOT),
         )
         elapsed = time.monotonic() - start
 
         # The test ran (pass or fail, we just care about timing)
-        assert elapsed < 60, (
-            f"Even a single test file should finish within 60s, took {elapsed:.2f}s"
+        assert elapsed < 20, (
+            f"Even a single test file should finish within 20s, took {elapsed:.2f}s"
         )
         # Document: if even a small file takes >1s, a full suite would benefit
         # from background execution
