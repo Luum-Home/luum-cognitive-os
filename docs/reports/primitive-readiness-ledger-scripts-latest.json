@@ -3354,12 +3354,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 38,
-        "doc": 485,
+        "doc": 486,
         "hook": 79,
         "rule": 42,
-        "script": 235,
+        "script": 236,
         "skill": 59,
-        "test": 351
+        "test": 353
       },
       "consumers": [
         {
@@ -5021,6 +5021,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/multi-ide-structural-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
         },
         {
           "family": "doc",
@@ -6728,6 +6732,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_lifecycle.py"
         },
         {
@@ -7560,6 +7568,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_primitive_scope_governance.py"
         },
         {
@@ -8260,6 +8272,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_readiness_ledger.py"
         },
         {
@@ -8524,12 +8540,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:59",
-        "test_consumers:351",
+        "test_consumers:353",
         "hook_consumers:79",
-        "doc_consumers:485",
+        "doc_consumers:486",
         "rule_consumers:42",
         "config_consumers:38",
-        "script_consumers:235"
+        "script_consumers:236"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -8545,7 +8561,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1289,
+      "total_consumers": 1293,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -14637,10 +14653,10 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 14,
         "script": 5,
         "skill": 1,
-        "test": 6
+        "test": 8
       },
       "consumers": [
         {
@@ -14682,6 +14698,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/five-minute-demo.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
         },
         {
           "family": "doc",
@@ -14745,11 +14765,19 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/e2e/test_session_startup_smoke.py"
         },
         {
           "family": "test",
           "path": "tests/unit/test_cross_platform_discipline.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
         },
         {
           "family": "test",
@@ -14760,8 +14788,8 @@
       "evidence": [
         "lifecycle",
         "skill_consumers:1",
-        "test_consumers:6",
-        "doc_consumers:13",
+        "test_consumers:8",
+        "doc_consumers:14",
         "config_consumers:3",
         "script_consumers:5"
       ],
@@ -14779,7 +14807,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 28,
+      "total_consumers": 31,
       "wrapper_for": null
     },
     {
@@ -17789,7 +17817,7 @@
       "consumer_access_next_action": "prove generated consumer profile/harness projection before claiming project availability",
       "consumer_accessibility": "install-profile-managed",
       "consumer_families": {
-        "config": 6,
+        "config": 5,
         "doc": 28,
         "script": 4,
         "test": 9
@@ -17814,10 +17842,6 @@
         {
           "family": "config",
           "path": "manifests/primitive-readiness-protected-install-surfaces.yaml"
-        },
-        {
-          "family": "config",
-          "path": "manifests/runtime-hardcoding-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -17991,7 +18015,7 @@
         "wrapper_for:scripts/cos-init.sh",
         "test_consumers:9",
         "doc_consumers:28",
-        "config_consumers:6",
+        "config_consumers:5",
         "script_consumers:4"
       ],
       "install_surface": "bootstrap",
@@ -18008,7 +18032,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 47,
+      "total_consumers": 46,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -24621,6 +24645,73 @@
       "wrapper_for": null
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 1,
+        "doc": 3,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/primitive-harness-coverage/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
+        }
+      ],
+      "distribution": "core",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": "scripts/primitive_harness_coverage.py",
+      "lifecycle_state": "candidate",
+      "next_action": "keep lifecycle evidence and supported harness declarations current",
+      "override_rationale": null,
+      "path": "scripts/primitive_harness_coverage.py",
+      "protected_install_surface": false,
+      "role": "agentic-primitive",
+      "role_source": "lifecycle",
+      "skill_consumers": 1,
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell-ci"
+      ],
+      "total_consumers": 7,
+      "wrapper_for": null
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -29813,26 +29904,26 @@
   "summary": {
     "agentic_primitives_without_lifecycle": 0,
     "confidence": {
-      "high": 158,
+      "high": 159,
       "low": 8,
       "medium": 227
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
-      "lifecycle-declared-consumer-candidate": 55,
+      "lifecycle-declared-consumer-candidate": 56,
       "lifecycle-declared-maintainer": 53,
       "skill-referenced-not-projectable": 2,
       "so-local-only": 264
     },
     "low_confidence_rows": 8,
     "roles": {
-      "agentic-primitive": 120,
+      "agentic-primitive": 121,
       "driver-specific": 11,
       "lab": 23,
       "maintainer-tool": 227,
       "migration-only": 12
     },
-    "total_scripts": 393,
+    "total_scripts": 394,
     "without_consumers": 6
   },
   "target_family": "scripts"
