@@ -60,7 +60,12 @@ UI_SURFACES = {
     },
     "tui": {
         "evidence": ["scripts/cos-tui"],
-        "operable": False,
+        "operable": True,
+        "operable_primitives": [
+            "scripts/cos-tui",
+            "scripts/primitive_harness_coverage.py",
+            "scripts/primitive_harness_partials.py",
+        ],
     },
 }
 
@@ -368,7 +373,8 @@ def _state_for(root: Path, primitive: str, family: str, scope: str | None, harne
         projected = bool(ui_paths and all(path.exists() for path in ui_paths))
         wired = projected
         observable = projected
-        operable = bool(ui.get("operable", False))
+        operable_primitives = set(ui.get("operable_primitives", []) or [])
+        operable = bool(ui.get("operable", False)) and (not operable_primitives or primitive in operable_primitives)
         if projected:
             evidence.extend(str(path) for path in ui.get("evidence", []))
     else:
