@@ -59,6 +59,66 @@ def _append_receipt(root: Path, receipt: dict[str, Any]) -> Path:
     return path
 
 
+
+def _load_receipts(root: Path) -> list[dict[str, Any]]:
+    path = root / RECEIPT_PATH
+    if not path.exists():
+        return []
+    receipts: list[dict[str, Any]] = []
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        if not raw.strip():
+            continue
+        try:
+            receipt = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if receipt.get("schema_version") != RECEIPT_SCHEMA:
+            continue
+        receipts.append(receipt)
+    return receipts
+
+
+def _receipt_stats(root: Path) -> dict[str, Any]:
+    receipts = _load_receipts(root)
+    by_action: dict[str, int] = {}
+    by_outcome: dict[str, int] = {}
+    for receipt in receipts:
+        action = str(receipt.get("action") or "unknown")
+        outcome = str(receipt.get("outcome") or "unknown")
+        by_action[action] = by_action.get(action, 0) + 1
+        by_outcome[outcome] = by_outcome.get(outcome, 0) + 1
+    return {
+        "schema_version": "cos-tui-action-receipt-stats.v1",
+        "receipt_schema_version": RECEIPT_SCHEMA,
+        "path": str(RECEIPT_PATH),
+        "total": len(receipts),
+        "by_action": dict(sorted(by_action.items())),
+        "by_outcome": dict(sorted(by_outcome.items())),
+        "last_receipt": receipts[-1] if receipts else None,
+    }
+
+
+def _receipts_report(root: Path, *, json_output: bool) -> tuple[int, str]:
+    stats = _receipt_stats(root)
+    if json_output:
+        return 0, json.dumps(stats, indent=2, sort_keys=True) + "\n"
+    lines = [
+        "Cognitive OS — TUI Action Receipts",
+        "",
+        f"Receipts: {stats['path']}",
+        f"Total: {stats['total']}",
+        "",
+        "By action:",
+    ]
+    for action, count in stats["by_action"].items():
+        lines.append(f"- {action}: {count}")
+    lines.extend(["", "By outcome:"])
+    for outcome, count in stats["by_outcome"].items():
+        lines.append(f"- {outcome}: {count}")
+    if stats.get("last_receipt"):
+        lines.extend(["", f"Last action: {stats['last_receipt'].get('action')} ({stats['last_receipt'].get('outcome')})"])
+    return 0, "\n".join(lines) + "\n"
+
 def _snapshot(root: Path) -> tuple[int, str]:
     coverage_path = root / "docs" / "reports" / "primitive-harness-coverage-latest.json"
     partials_path = root / "docs" / "reports" / "primitive-harness-partials-latest.json"
@@ -145,6 +205,8 @@ def _operate(root: Path, action: str, *, confirm: bool, dry_run: bool) -> tuple[
 def main() -> int:
     parser = argparse.ArgumentParser(description="Cognitive OS operable TUI surface")
     parser.add_argument("--snapshot", action="store_true", help="Print a non-interactive snapshot and exit")
+    parser.add_argument("--receipts", action="store_true", help="Print TUI action receipt summary")
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON for receipt summaries")
     parser.add_argument("--operate", choices=sorted(WHITELISTED_ACTIONS), help="Run a whitelisted observe/report operation")
     parser.add_argument("--confirm", action="store_true", help="Required for mutating operable actions")
     parser.add_argument("--dry-run", action="store_true", help="Emit a receipt without running the operation")
@@ -153,10 +215,12 @@ def main() -> int:
     root = _root(args.project_dir)
     if args.snapshot:
         code, output = _snapshot(root)
+    elif args.receipts:
+        code, output = _receipts_report(root, json_output=args.json)
     elif args.operate:
         code, output = _operate(root, args.operate, confirm=args.confirm, dry_run=args.dry_run)
     else:
-        parser.error("use --snapshot or --operate")
+        parser.error("use --snapshot, --receipts, or --operate")
     stream = sys.stdout if code == 0 else sys.stderr
     stream.write(output)
     return code

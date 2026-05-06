@@ -94,3 +94,49 @@ def test_tui_dry_run_emits_receipt_without_running_commands(tmp_path: Path) -> N
     payload = json.loads(result.stdout)
     assert payload["outcome"] == "dry-run"
     assert not (tmp_path / "docs" / "reports" / "stub-ran.txt").exists()
+
+
+def test_tui_receipts_report_has_schema_and_counts(tmp_path: Path) -> None:
+    _write_stub_project(tmp_path)
+    subprocess.run(
+        ["python3", str(TUI), "--project-dir", str(tmp_path), "--operate", "refresh-coverage", "--dry-run"],
+        cwd=REPO,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    result = subprocess.run(
+        ["python3", str(TUI), "--project-dir", str(tmp_path), "--receipts", "--json"],
+        cwd=REPO,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["schema_version"] == "cos-tui-action-receipt-stats.v1"
+    assert payload["receipt_schema_version"] == "cos-tui-action-receipt.v1"
+    assert payload["total"] == 1
+    assert payload["by_action"] == {"refresh-coverage": 1}
+    assert payload["by_outcome"] == {"dry-run": 1}
+
+
+def test_tui_receipt_jsonl_rows_follow_schema(tmp_path: Path) -> None:
+    _write_stub_project(tmp_path)
+    subprocess.run(
+        ["python3", str(TUI), "--project-dir", str(tmp_path), "--operate", "refresh-all", "--confirm"],
+        cwd=REPO,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt_path = tmp_path / ".cognitive-os" / "metrics" / "tui-actions.jsonl"
+    for raw in receipt_path.read_text(encoding="utf-8").splitlines():
+        row = json.loads(raw)
+        assert set(["schema_version", "timestamp", "surface_kind", "surface_id", "mode", "action", "outcome", "project_dir", "commands", "whitelisted", "details"]) <= set(row)
+        assert row["schema_version"] == "cos-tui-action-receipt.v1"
+        assert row["surface_kind"] == "ui"
+        assert row["surface_id"] == "tui"
+        assert row["mode"] == "operable"
+        assert row["whitelisted"] is True
