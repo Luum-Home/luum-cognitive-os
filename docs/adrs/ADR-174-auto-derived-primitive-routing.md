@@ -249,6 +249,8 @@ Measurement: `scripts/dogfood_score.py` dimension `skill_coverage`.
 
 ## Cross-References
 
+- **Profile-aware routing note**: `docs/architecture/profile-aware-skill-routing.md` documents the profile-scoped router index, service cache invalidation, and lazy catalog contracts added after this ADR.
+
 - **ADR-133**: Auto-skill-generation — same "declare in artifact, derive at
   runtime" pattern applied to skill creation.
 - **ADR-064**: Canonical hook registry — hook self-description as the

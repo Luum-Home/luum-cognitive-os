@@ -425,6 +425,12 @@ class TestSpecificSkills:
         assert match is not None
         assert match.invoke_command == "/resume-tasks"
 
+    def test_adr_tombstone(self, router: SkillRouter):
+        match = router.best_match("ADR numbering has a hueco, create a tombstone")
+        assert match is not None
+        assert match.skill_name == "adr-tombstone"
+        assert match.invoke_command == "/adr-tombstone"
+
 
 # ---------------------------------------------------------------------------
 # Fallback handling
