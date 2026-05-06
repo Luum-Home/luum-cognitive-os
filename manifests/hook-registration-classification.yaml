@@ -292,6 +292,10 @@ entries:
   rationale: Worktree submodule repair mutates git metadata and should be explicit
     after worktree operations.
   next_action: Keep manual/admin-triggered.
+- path: hooks/cosd-auth-guard.sh
+  status: active
+  rationale: ADR-194 PreToolUse guard blocks unsafe cosd remote API launches and unreviewed cosd auth/control-plane config edits.
+  next_action: Keep projected in default Claude/Codex hook profiles while cosd exposes HTTP transports.
 - path: hooks/cosd-intent-submit.sh
   status: manual_trigger
   rationale: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle
