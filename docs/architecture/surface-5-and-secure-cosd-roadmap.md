@@ -17,6 +17,8 @@ rather than inventing a new product surface. It should be read with:
 - [ADR-190: Harness Action Receipts and VCS Event Telemetry](../adrs/ADR-190-harness-action-receipts.md)
 - [ADR-192: Surface 5 Bubble Tea Adoption](../adrs/ADR-192-surface-5-adopt-bubbletea.md)
 - [ADR-193: cosd Local Network API](../adrs/ADR-193-cosd-local-network-api.md)
+- [ADR-194: cosd Secure Remote API Guardrails](../adrs/ADR-194-cosd-secure-remote-api.md)
+- [ADR-195: Surface 5 Operable TUI Contract](../adrs/ADR-195-surface-5-operable-tui-contract.md)
 - [COS Service Runtime Boundary](cos-service-runtime-boundary.md)
 - [COS Service Control Plane Implementation Plan](service-control-plane-implementation-plan.md)
 - [Agent Message Bus](agent-message-bus.md)
@@ -77,29 +79,33 @@ The first real TUI should answer one operator question:
 - Do not expose secret values or credential store paths.
 - Do not claim hook execution parity; Surface 5 is a UI surface under ADR-189.
 
-### Proposed command contract
+### Accepted command contract
 
 ```bash
 cos tui                         # Bubble Tea interactive TUI
-cos tui --snapshot              # non-interactive summary, compatible with current scripts/cos-tui
-cos tui --operate refresh-all --confirm
-cos tui --cosd unix:///tmp/cosd.sock
+cos tui --snapshot              # deterministic non-interactive summary
 cos tui --project-dir /path/to/project
 ```
+
+The accepted ADR-195 MVP is read-only. Future forms such as `cos tui --operate
+refresh-all --confirm` or `cos tui --cosd unix:///tmp/cosd.sock` require the
+confirmation and receipt gate from ADR-195 before they become supported
+contracts.
 
 Compatibility rule: `scripts/cos-tui` remains as a shim until the Go TUI reaches
 feature parity for snapshot and whitelisted operations.
 
 ### Implementation slices
 
-1. **Read model layer**
-   - Add `cmd/cos/internal/tui/data` readers for status, coverage, reliability,
-     receipts, headless status, and `cosd` status.
-   - Readers call existing commands or read JSON artifacts; no new database.
+1. **Read model layer** — implemented for the ADR-195 MVP.
+   - `cmd/cos/internal/tui/app.go` reads release evidence, `cosd` queue state,
+     primitive coverage summaries, and TUI receipt counts from existing files.
+   - Readers use existing JSON artifacts/runtime paths; no new database.
 
-2. **Bubble Tea shell**
-   - Add tabs, keybindings, loading/error state, and deterministic render tests.
-   - Keep actions disabled unless the action declares a whitelist entry.
+2. **Bubble Tea shell** — implemented for the ADR-195 MVP.
+   - `cos tui` renders Overview, cosd, Coverage, Release, and Receipts tabs.
+   - `cos tui --snapshot` provides deterministic smoke-test output.
+   - Mutating actions stay disabled until a whitelist entry exists.
 
 3. **Action receipts**
    - Every TUI action emits `surface_kind=ui`, `surface_id=tui`, `mode=operable`
@@ -224,8 +230,8 @@ ACCEPTANCE CRITERIA:
    - It is the narrower safety-critical slice.
    - It gives the future TUI a safe local/remote contract to consume.
 
-2. **TUI read-only MVP**
-   - Build against existing commands and JSON artifacts.
+2. **TUI read-only MVP** — accepted and implemented by ADR-195.
+   - Built against existing JSON artifacts and runtime files.
    - No new mutation paths.
 
 3. **TUI operable actions**
@@ -237,6 +243,7 @@ ACCEPTANCE CRITERIA:
 ## Proposed ADR sequence
 
 - `ADR-194-cosd-secure-remote-api.md` — accepted and implemented for bearer-token auth, remote-bind refusal, and API audit rows.
-- `ADR-195-surface-5-operable-tui-contract.md`
+- `ADR-195-surface-5-operable-tui-contract.md` — accepted and implemented for the read-only Surface 5 MVP.
 
-This order puts the security boundary ahead of the UI that may consume it.
+This order put the security boundary ahead of the UI that may consume it. The
+remaining Surface 5 work is operable actions with confirmation and receipts.
