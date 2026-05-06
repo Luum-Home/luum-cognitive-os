@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# DISABLED — rename to example-prompt-hook.sh to activate.
+#
+# Example: prompt-based validation hook using PromptHookDefinition (ADR-178).
+#
+# This script demonstrates the SHELL shim equivalent of a PromptHookDefinition.
+# In a future dispatcher release, operators can replace this with a native
+# PromptHookDefinition block in cognitive-os.yaml (no shell script needed).
+#
+# cognitive-os.yaml registration (current COS — shell shim):
+#
+#   harness:
+#     hooks:
+#       PreToolUse:
+#         - command: hooks/example-prompt-hook.sh
+#
+# cognitive-os.yaml registration (future — native PromptHookDefinition per ADR-178):
+#
+#   harness:
+#     hooks:
+#       PreToolUse:
+#         - type: prompt
+#           prompt_template: |
+#             You are a safety reviewer. Inspect this tool-use event and respond
+#             with exactly one word: ALLOW or BLOCK.
+#             Event: $event_json
+#           model_hint: haiku
+#           max_tokens: 10
+#           timeout_seconds: 15
+#           block_on_failure: true
+#           matcher: PreToolUse
+#
+# This shell shim calls the Claude CLI with a one-shot prompt for the same effect.
+# Requires: ANTHROPIC_API_KEY set, `claude` CLI in PATH.
+#
+# Exit codes:
+#   0  — ALLOW (continue)
+#   1  — unexpected error (non-blocking unless operator changes exit code)
+#   2  — BLOCK (Claude Code interprets exit 2 as "block this action")
+
+set -euo pipefail
+
+if ! command -v claude &>/dev/null; then
+    echo "[prompt-hook] claude CLI not found — skipping validation" >&2
+    exit 0
+fi
+
+PAYLOAD="$(cat)"
+
+PROMPT="You are a safety reviewer for an AI coding assistant. Inspect the following
+tool-use event and respond with exactly one word: ALLOW or BLOCK.
+Do not explain. Just respond with ALLOW or BLOCK.
+
+Event payload:
+${PAYLOAD}"
+
+RESPONSE="$(echo "$PROMPT" | claude --print --no-stream 2>/dev/null || echo "ERROR")"
+
+VERDICT="$(echo "$RESPONSE" | tr '[:lower:]' '[:upper:]' | grep -oE 'ALLOW|BLOCK' | head -1 || echo "ALLOW")"
+
+echo "[prompt-hook] verdict=$VERDICT" >&2
+
+case "$VERDICT" in
+    BLOCK)
+        echo "[prompt-hook] BLOCKED by inline prompt validation" >&2
+        exit 2
+        ;;
+    ALLOW|*)
+        exit 0
+        ;;
+esac
