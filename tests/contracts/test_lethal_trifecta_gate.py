@@ -53,3 +53,23 @@ def test_gate_allows_safe_local_action(tmp_path: Path) -> None:
 
     assert result.returncode == 0
     assert result.stderr == ""
+
+
+def test_gate_allows_research_report_write_with_security_terms(tmp_path: Path) -> None:
+    result = run_gate(
+        tmp_path,
+        {
+            "tool_name": "Write",
+            "tool_input": {
+                "file_path": str(tmp_path / "docs" / "reports" / "comparative-matrix.md"),
+                "content": (
+                    "MCP tool wrapper references https://github.com/anthropics/claude-code. "
+                    "Private memory persistence research mentions Engram and mempalace. "
+                    "External action examples include curl, webhook, kubectl apply, and git push."
+                ),
+            },
+        },
+    )
+
+    assert result.returncode == 0
+    assert "LETHAL TRIFECTA GATE" not in result.stderr
