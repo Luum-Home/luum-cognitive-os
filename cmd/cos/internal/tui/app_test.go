@@ -102,3 +102,56 @@ func writeFile(t *testing.T, root, rel, content string) {
 		t.Fatal(err)
 	}
 }
+
+func TestModelQueuesCancelsAndConfirmsInteractiveAction(t *testing.T) {
+	root := t.TempDir()
+	writeFile(t, root, "scripts/cos-coverage", "#!/usr/bin/env bash\necho refreshed\n")
+	if err := os.Chmod(filepath.Join(root, "scripts", "cos-coverage"), 0755); err != nil {
+		t.Fatal(err)
+	}
+	model := NewModel(Snapshot{ProjectDir: root})
+
+	updated, cmd := model.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'r'}})
+	if cmd != nil {
+		t.Fatalf("queueing action returned command")
+	}
+	queued := updated.(Model)
+	if queued.PendingAction != "refresh-coverage" {
+		t.Fatalf("pending action = %q", queued.PendingAction)
+	}
+	if !strings.Contains(queued.View(), "press c to confirm") {
+		t.Fatalf("view did not render confirmation prompt:\n%s", queued.View())
+	}
+
+	updated, cmd = queued.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'x'}})
+	if cmd != nil {
+		t.Fatalf("cancel returned command")
+	}
+	cancelled := updated.(Model)
+	if cancelled.PendingAction != "" {
+		t.Fatalf("cancel did not clear pending action")
+	}
+
+	updated, cmd = queued.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune{'c'}})
+	running := updated.(Model)
+	if running.RunningAction != "refresh-coverage" || cmd == nil {
+		t.Fatalf("confirm did not start action: model=%#v cmd=%v", running, cmd)
+	}
+	msg := cmd()
+	finished, ok := msg.(actionFinishedMsg)
+	if !ok {
+		t.Fatalf("command message type = %T", msg)
+	}
+	if !finished.Result.OK || finished.Result.Action != "refresh-coverage" {
+		t.Fatalf("unexpected action result: %#v", finished.Result)
+	}
+
+	updated, cmd = running.Update(finished)
+	if cmd != nil {
+		t.Fatalf("finish returned command")
+	}
+	complete := updated.(Model)
+	if complete.RunningAction != "" || complete.PendingAction != "" || complete.LastActionResult == nil {
+		t.Fatalf("finish did not clear action state: %#v", complete)
+	}
+}
