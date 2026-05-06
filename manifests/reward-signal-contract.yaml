@@ -1,0 +1,64 @@
+schema_version: reward-signal-contract/v1
+adr: ADR-204
+
+policy:
+  valid_status: valid
+  quarantine_statuses:
+    - suspect
+    - corrupt
+  default_trust_score: 75
+  corrupt_ratio_block_threshold: 0.25
+
+known_subject_sources:
+  skills_dirs:
+    - skills
+    - .cognitive-os/skills
+    - .codex/skills
+
+streams:
+  skill-feedback:
+    path: .cognitive-os/metrics/skill-feedback.jsonl
+    subject_type: skill
+    subject_field: skill
+    outcome_field: success
+    required_fields:
+      - timestamp
+      - skill
+      - success
+    known_subject_source: skills_dirs
+    legacy_schema_allowed: true
+
+  skill-metrics:
+    path: .cognitive-os/metrics/skill-metrics.jsonl
+    subject_type: skill
+    subject_field: skill
+    outcome_field: success
+    required_fields:
+      - timestamp
+      - skill
+      - success
+    numeric_fields:
+      tokens:
+        min: 0
+      duration_ms:
+        min: 0
+    known_subject_source: skills_dirs
+    legacy_schema_allowed: true
+
+  trust-report:
+    path: .cognitive-os/metrics/trust-report.jsonl
+    subject_type: agent-output
+    subject_field: subject_id
+    required_fields:
+      - timestamp
+      - subject_id
+      - trust_score
+    score_field: trust_score
+    score_min: 0
+    score_max: 100
+    confidence_source_fields:
+      - confidence_source
+      - evidence_ref
+      - evidence_refs
+      - trust_report_evidence
+    legacy_schema_allowed: true
