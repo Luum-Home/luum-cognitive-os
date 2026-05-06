@@ -19,6 +19,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-215: Cross-Stack Secret Audit Toolchain](adrs/ADR-215-cross-stack-secret-audit-toolchain.md) — gitleaks + trufflehog policy, `cos secret audit`, and release-readiness secret-audit substrate.
 - [ADR-213: Agent Preflight Before Stash Snapshot](adrs/ADR-213-agent-preflight-before-stash-snapshot.md) — hook-order invariant preventing blocked Agent launches from hiding WIP in auto-pre-agent stashes.
 - [ADR-212: Cross-Stack License Audit Toolchain](adrs/ADR-212-cross-stack-license-audit-toolchain.md) — Syft+Grype primary scanner, Trivy guarded secondary scanner, and workflow safety policy for pre-launch license/security audits.
+- [Cross-Stack License Audit CLI Manual Test](manual-tests/cross-stack-license-audit-cli.md) — canonical `scripts/cos license audit --json` primitive, expected JSON contract, and test commands.
 - [ADR-200: State Retention Controller](adrs/ADR-200-state-retention-controller.md) — conservative automatic cleanup architecture with observe, repair-safe, and repair-before-block modes.
 - [Session Diagnosis — State Retention Self-Bite Pattern — 2026-05-06](reports/session-self-bite-pattern-2026-05-06.md) — pre-launch diagnosis of safety-state accumulation, stale stashes, claims, bus folders, and the retention protocol response.
 - [ADR-199: State Retention Policy and Reaper Protocol](adrs/ADR-199-state-retention-policy-and-reaper-protocol.md) — manifest-backed retention declaration, audit, and archive-first reaper contract for mutable COS state.
