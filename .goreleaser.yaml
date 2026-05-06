@@ -66,6 +66,6 @@ homebrew_casks:
     directory: Casks
     homepage: https://github.com/luum-home/luum-cognitive-os
     description: Portable AI Agent Operating System — memory, quality gates, self-healing
-    license: Apache-2.0
+    license: FSL-1.1-MIT
     binaries:
       - cos
