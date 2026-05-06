@@ -27,6 +27,7 @@
 | Security | mcp-scan | Optional | pip |
 | Testing | cosmic-ray | Optional | pip |
 | Testing | promptfoo | Optional | npm |
+| Release | GoReleaser | Optional | `bash scripts/install-goreleaser.sh --install` |
 
 ---
 
@@ -41,8 +42,21 @@ Install with Homebrew on macOS. Linux equivalents noted where applicable.
 | **gh** | GitHub CLI for PR/issue automation | `brew install gh` |
 | **Docker** | Optional infrastructure services (Langfuse, LiteLLM) | [Docker Desktop](https://docs.docker.com/get-docker/) |
 | **uv** | Fast Python package manager | `brew install uv` or `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+| **GoReleaser** | COS binary release/checksum/Homebrew tap pipeline | `bash scripts/install-goreleaser.sh --install` |
 
 ---
+
+
+## Release Tooling
+
+GoReleaser is optional for day-to-day development but required to smoke-test the binary release pipeline locally. Install and validate through the repository script, not ad-hoc shell commands:
+
+```bash
+bash scripts/install-goreleaser.sh --install
+bash scripts/install-goreleaser.sh --check --snapshot-smoke
+```
+
+The script follows the official GoReleaser install guidance: Homebrew on macOS when available, then `go install github.com/goreleaser/goreleaser/v2@latest` as fallback. It does not read or copy release credentials; publishing remains GitHub Actions/tag driven.
 
 ## 2. Go
 
