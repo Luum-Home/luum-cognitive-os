@@ -241,3 +241,10 @@ class TestControlAndAnswer:
         rows = [json.loads(line) for line in answer.read_text().splitlines() if line.strip()]
         assert rows[-1]["answers"] == ["use port 8080", "ship it"]
         assert rows[-1]["round"] == 2
+
+
+def test_run_wires_orchestrator_subscriber_directly() -> None:
+    text = ORCHESTRATOR.read_text(encoding="utf-8")
+    assert "from lib.agent_bus import OrchestratorSubscriber" in text
+    assert "orchestrator_subscriber = OrchestratorSubscriber" in text
+    assert "orchestrator_subscriber.subscribe_agent(agent_id)" in text
