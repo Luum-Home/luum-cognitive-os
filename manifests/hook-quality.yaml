@@ -534,8 +534,10 @@ hooks:
     - tests/behavior/test_file_locking.py
     - tests/chaos/test_concurrent_write_guard_exercised.py
     - tests/chaos/test_multi_ide_swarm_safety.py
+    - tests/contracts/test_primitive_harness_coverage_contract.py
     - tests/unit/test_concurrent_agent_safety_status.py
     - tests/unit/test_concurrent_write_guard_behavior.py
+    - tests/unit/test_primitive_harness_coverage.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -550,7 +552,9 @@ hooks:
     scope: both
     script: hooks/concurrent-write-guard.sh
   concurrent-write-guard-codex-proxy:
-    behavior_tests: []
+    behavior_tests:
+    - tests/contracts/test_primitive_harness_coverage_contract.py
+    - tests/unit/test_primitive_harness_coverage.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: UserPromptSubmit
@@ -1595,8 +1599,10 @@ hooks:
     - tests/behavior/test_hooks_batch1.py
     - tests/contracts/test_memory_lifecycle_docs.py
     - tests/contracts/test_memory_lifecycle_portability.py
+    - tests/contracts/test_primitive_harness_coverage_contract.py
     - tests/unit/test_anchored_summarizer.py
     - tests/unit/test_compaction_behavior.py
+    - tests/unit/test_primitive_harness_coverage.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreCompact
@@ -2212,10 +2218,12 @@ hooks:
     - tests/behavior/test_session_isolation.py
     - tests/contracts/test_harness_engineering_docs.py
     - tests/contracts/test_harness_transparency_status_docs.py
+    - tests/contracts/test_primitive_harness_coverage_contract.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_catalog_loading.py
     - tests/unit/test_cos_init_py.py
     - tests/unit/test_cross_platform_discipline.py
+    - tests/unit/test_primitive_harness_coverage.py
     - tests/unit/test_session_lifecycle.py
     - tests/unit/test_session_start_budget.py
     - tests/unit/test_singularity_suggestion.py

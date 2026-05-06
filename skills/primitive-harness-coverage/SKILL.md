@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: primitive-harness-coverage
-description: Measure effective agentic primitive implementation by harness/IDE so agents do not confuse `SCOPE: both` with equal Claude/Codex behavior.
+description: "Measure effective agentic primitive implementation by harness/IDE so agents do not confuse `SCOPE: both` with equal Claude/Codex behavior."
 triggers: ["harness coverage", "primitive harness", "Claude vs Codex primitives", "IDE primitive coverage", "scope both parity"]
 audience: both
 version: 1.0.0
