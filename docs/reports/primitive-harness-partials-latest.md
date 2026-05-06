@@ -2,10 +2,10 @@
 
 This report lists classified-but-unresolved primitive surface coverage debt. It intentionally excludes aligned gaps.
 
-Partial count: 77
-Total gaps in source report: 710
+Partial count: 64
+Total gaps in source report: 697
 Unclassified gaps: 0
-By policy: {'codex-adapter-needed': 64, 'projectable-needs-driver': 13}
+By policy: {'codex-adapter-needed': 64}
 
 ## Priority order
 
@@ -81,16 +81,3 @@ By policy: {'codex-adapter-needed': 64, 'projectable-needs-driver': 13}
 | 62 | `hooks/trust-score-validator.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 63 | `hooks/valkey-ensure.sh` | hooks | project | codex-adapter-needed | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add behavior evidence or refine policy so this is not misclassified as an adapter gap. |
 | 64 | `hooks/worktree-submodule-fix.sh` | hooks | project | codex-adapter-needed | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add behavior evidence or refine policy so this is not misclassified as an adapter gap. |
-| 65 | `scripts/cos-cloud-worker-bootstrap.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 66 | `scripts/cos-postgres-local.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 67 | `scripts/cos-valkey-local.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 68 | `scripts/dependency-lane.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 69 | `scripts/deps-update.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 70 | `scripts/document_feature_append.py` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 71 | `scripts/install-aguara.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 72 | `scripts/install-garak.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 73 | `scripts/install-mcp-scan.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 74 | `scripts/install-promptfoo.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 75 | `scripts/install-tob-skills.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 76 | `scripts/setup-git-hooks.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 77 | `scripts/sprint-test-summary.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |

@@ -639,150 +639,19 @@
       "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
       "primitive": "hooks/worktree-submodule-fix.sh",
       "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/cos-cloud-worker-bootstrap.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/cos-postgres-local.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/cos-valkey-local.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/dependency-lane.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/deps-update.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/document_feature_append.py",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/install-aguara.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/install-garak.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/install-mcp-scan.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/install-promptfoo.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/install-tob-skills.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/setup-git-hooks.sh",
-      "scope": "project"
-    },
-    {
-      "coverage": "acc-report+dashboard+tui",
-      "family": "scripts",
-      "gap": "projected/wired but no direct behavior proof reference detected",
-      "gap_policy": "projectable-needs-driver",
-      "gap_severity": "medium",
-      "next_action": "Add a consumer projection driver or demote from projectable scope.",
-      "primitive": "scripts/sprint-test-summary.sh",
-      "scope": "project"
     }
   ],
   "schema_version": "primitive-harness-partials.v1",
   "source_schema_version": "primitive-harness-coverage.v1",
   "summary": {
     "by_policy": {
-      "codex-adapter-needed": 64,
-      "projectable-needs-driver": 13
+      "codex-adapter-needed": 64
     },
     "by_severity": {
-      "medium": 77
+      "medium": 64
     },
-    "partial_count": 77,
-    "total_gaps": 710,
+    "partial_count": 64,
+    "total_gaps": 697,
     "unclassified_gaps": 0
   }
 }
