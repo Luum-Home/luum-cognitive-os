@@ -66,8 +66,13 @@ SECRET_PATTERNS=(
   "ghs_[A-Za-z0-9]{36,}"
   "ghr_[A-Za-z0-9]{36,}"
   "xox[abprs]-[A-Za-z0-9-]{10,}"
+  "https://hooks\.slack\.com/services/[A-Za-z0-9/_-]{20,}"
   "sk_live_[A-Za-z0-9]{20,}"
+  "sk-proj-[A-Za-z0-9_-]{20,}"
+  "sk-ant-[A-Za-z0-9_-]{20,}"
+  "npm_[A-Za-z0-9]{20,}"
   "sk-[A-Za-z0-9]{32,}"
+  "-----BEGIN [A-Z ]*PRIVATE KEY-----"
 )
 
 # Redact every match in $1 against every pattern, printing the redacted text
