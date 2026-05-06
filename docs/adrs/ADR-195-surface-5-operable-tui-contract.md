@@ -84,3 +84,14 @@ ACCEPTANCE CRITERIA:
 5. Tests cover snapshot readers, render output, keyboard tab navigation, quit handling, and the CLI snapshot command.
 6. `cd cmd/cos && go test ./...` passes.
 ```
+
+## Alternatives rejected
+
+- Start Surface 5 with mutating keybindings immediately; rejected because read-only observability needed a stable proof before confirmation-gated actions.
+
+## Verification
+
+```bash
+cd cmd/cos && go test ./internal/tui ./internal/cli
+python3 -m pytest tests/contracts/test_cos_tui_operable_surface_contract.py -q
+```

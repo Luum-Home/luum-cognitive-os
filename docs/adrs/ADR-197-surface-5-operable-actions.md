@@ -50,3 +50,14 @@ ACCEPTANCE CRITERIA:
 4. `inbox-ack` requires `--message-id`.
 5. Tests cover allowlist rejection, confirmation gating, receipt writing, CLI behavior, and interactive key confirmation.
 ```
+
+## Alternatives rejected
+
+- Implement a generic TUI command runner; rejected because Surface 5 actions must stay allowlisted, confirmed, and receipt-backed.
+
+## Verification
+
+```bash
+cd cmd/cos && go test ./internal/tui ./internal/cli
+python3 -m pytest tests/contracts/test_cos_tui_operable_surface_contract.py -q
+```

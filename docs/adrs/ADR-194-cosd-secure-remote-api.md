@@ -114,3 +114,7 @@ python3 -m pytest tests/integration/test_cosd_daemon.py -q
 - [ADR-161: Remote Control Plane and Provider Adapter Boundary](ADR-161-remote-control-plane-and-provider-adapter-boundary.md)
 - [ADR-193: cosd Local Network API](ADR-193-cosd-local-network-api.md)
 - [Surface 5 TUI and Secure cosd Roadmap](../architecture/surface-5-and-secure-cosd-roadmap.md)
+
+## Alternatives rejected
+
+- Allow unauthenticated remote TCP binds for operator convenience; rejected because remote exposure requires an explicit token-protected boundary.

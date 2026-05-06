@@ -57,3 +57,13 @@ ACCEPTANCE CRITERIA:
 3. `cmd/cos/internal/tui/proof_test.go` proves the minimal Bubble Tea model contract.
 4. `cd cmd/cos && go test ./...` passes.
 ```
+
+## Alternatives rejected
+
+- Build Surface 5 with another shell-only snapshot renderer; rejected because Bubble Tea is already vendored in `cmd/cos` and provides a native Go TUI event model.
+
+## Verification
+
+```bash
+cd cmd/cos && go test ./internal/tui ./internal/cli
+```
