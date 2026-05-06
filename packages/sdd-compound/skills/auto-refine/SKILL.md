@@ -10,6 +10,13 @@ summary_line: "Analyze a failed agent's output, determine root cause, and re-lau
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bauto[- ]?refine\b'
+    confidence: 0.95
+  - pattern: '\brefine\s+(failed\s+)?agent\b'
+    confidence: 0.8
+  - pattern: '\bpiter\s+refine\b'
+    confidence: 0.75
 ---
 
 # Auto-Refine Skill

@@ -20,6 +20,11 @@ summary_line: "Configure and use RAGAS for memory quality testing, retrieval eva
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bragas[- ]?integration\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+ragas\b'
+    confidence: 0.85
 ---
 
 ## Purpose

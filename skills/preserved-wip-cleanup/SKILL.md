@@ -10,6 +10,13 @@ tags: [git, cleanup, stashes, worktrees, coordination, safety]
 summary_line: "Backup preserved WIP, remove temporary blockers, and prove the inventory is clean."
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: ["git", "python3"]
+routing_patterns:
+  - pattern: '\bpreserved[- ]?wip[- ]?cleanup\b'
+    confidence: 0.95
+  - pattern: '\bcleanup\s+(wip|stash)\b'
+    confidence: 0.85
+  - pattern: '\bzombie\s+session\b'
+    confidence: 0.75
 ---
 
 # Preserved WIP Cleanup

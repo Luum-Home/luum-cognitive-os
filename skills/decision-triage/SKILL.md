@@ -11,6 +11,13 @@ tags: [triage, decisions, research, governance, operator]
 script: scripts/decision_triage.py
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdecision[- ]?triage\b'
+    confidence: 0.95
+  - pattern: '\bpending\s+(operator\s+)?decisions?\b'
+    confidence: 0.8
+  - pattern: '\btriage\s+decisions?\b'
+    confidence: 0.75
 ---
 
 # Decision Triage

@@ -11,6 +11,13 @@ summary_line: Plan/apply safe reduction of unused Cognitive OS primitive surface
 version: "1.0.0"
 platforms: ["claude-code", "codex"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bprimitive[- ]?surface[- ]?reduction\b'
+    confidence: 0.95
+  - pattern: '\breduce\s+primitive\s+surface\b'
+    confidence: 0.85
+  - pattern: '\bconservative\s+surface\s+reduction\b'
+    confidence: 0.75
 ---
 
 # Primitive Surface Reduction

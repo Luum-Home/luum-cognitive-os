@@ -11,6 +11,13 @@ summary_line: Static primitive consumer map for scripts, hooks, skills, and rule
 version: "1.0.0"
 platforms: ["claude-code", "codex"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bprimitive[- ]?usage[- ]?map\b'
+    confidence: 0.95
+  - pattern: '\bmap\s+primitive\s+usage\b'
+    confidence: 0.85
+  - pattern: '\bwhich\s+skills\s+(reference|use)\s+primitive\b'
+    confidence: 0.75
 ---
 
 # Primitive Usage Map

@@ -10,6 +10,13 @@ tags: [git, worktrees, branches, merge-queue, coordination, cleanup]
 summary_line: "Close leftover agent branches/worktrees without losing work or bypassing main landing gates."
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: ["git", "python3"]
+routing_patterns:
+  - pattern: '\bbranch[- ]?worktree[- ]?closure\b'
+    confidence: 0.95
+  - pattern: '\b(leftover|cleanup)\s+(codex|claude)\b'
+    confidence: 0.8
+  - pattern: '\b(merge|preserve|remove)\s+worktrees?\b'
+    confidence: 0.75
 ---
 
 # Branch / Worktree Closure

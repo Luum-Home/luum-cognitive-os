@@ -11,6 +11,13 @@ summary_line: "Use when about to claim work is complete, fixed, or passing, befo
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bverification[- ]?before[- ]?completion\b'
+    confidence: 0.95
+  - pattern: '\bverif\w+\s+before\s+(claim\w*|complet\w*)\b'
+    confidence: 0.85
+  - pattern: '\brun\s+verification\s+commands?\b'
+    confidence: 0.75
 ---
 
 # Verification Before Completion

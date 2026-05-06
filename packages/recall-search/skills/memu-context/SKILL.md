@@ -8,6 +8,13 @@ audience: project
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bmemu[- ]?context\b'
+    confidence: 0.95
+  - pattern: '\bmemu\s+proactive\s+memory\b'
+    confidence: 0.85
+  - pattern: '\bquery\s+memu\b'
+    confidence: 0.8
 ---
 
 # memU Context Loader

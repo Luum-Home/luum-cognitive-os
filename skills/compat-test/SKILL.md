@@ -11,6 +11,13 @@ summary_line: Smoke test suite verifying Cognitive OS works correctly with the c
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcompat[- ]?test\b'
+    confidence: 0.95
+  - pattern: '\bcompatibility\s+(test|check|smoke)\b'
+    confidence: 0.85
+  - pattern: '\bos\s+compat\b'
+    confidence: 0.75
 ---
 
 # Model Compatibility Test

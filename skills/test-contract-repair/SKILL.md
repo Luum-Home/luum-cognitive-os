@@ -7,6 +7,13 @@ version: 1.0.0
 audience: os-dev
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\btest[- ]?contract[- ]?repair\b'
+    confidence: 0.95
+  - pattern: '\brepair\s+(failing|misleading)\s+tests?\b'
+    confidence: 0.85
+  - pattern: '\btest\s+contract\s+(fix|repair)\b'
+    confidence: 0.8
 ---
 
 # Test Contract Repair
