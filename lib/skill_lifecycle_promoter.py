@@ -224,15 +224,17 @@ def build_skill_lifecycle_report(
     """Return propose-only promotion/demotion candidates from skill evidence."""
     current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     promotion_start = current - timedelta(days=promotion_window_days)
-    usage = _collect_usage(project_root, promotion_start)
+    demotion_cutoff = current - timedelta(days=demotion_window_days)
+    promotion_usage = _collect_usage(project_root, promotion_start)
+    demotion_usage = _collect_usage(project_root, demotion_cutoff)
     skills = discover_skills(project_root)
 
+    empty_usage = {"invocations": 0, "feedback": 0, "successful_feedback": 0, "last_used": None}
     promotions: list[SkillLifecycleCandidate] = []
     demotions: list[SkillLifecycleCandidate] = []
-    demotion_cutoff = current - timedelta(days=demotion_window_days)
 
     for skill_name, (skill_path, fm) in sorted(skills.items()):
-        row = usage.get(skill_name, {"invocations": 0, "feedback": 0, "successful_feedback": 0, "last_used": None})
+        row = promotion_usage.get(skill_name, empty_usage)
         feedback = int(row["feedback"])
         successful = int(row["successful_feedback"])
         success_rate = round(successful / feedback, 4) if feedback else 0.0
@@ -263,6 +265,12 @@ def build_skill_lifecycle_report(
             continue
 
         if _is_advisory_skill(project_root, skill_path, fm):
+            row = demotion_usage.get(skill_name, empty_usage)
+            feedback = int(row["feedback"])
+            successful = int(row["successful_feedback"])
+            success_rate = round(successful / feedback, 4) if feedback else 0.0
+            last_used = row["last_used"]
+            last_used_text = last_used.isoformat() if isinstance(last_used, datetime) else None
             if last_used is None or last_used < demotion_cutoff:
                 demotions.append(
                     SkillLifecycleCandidate(
