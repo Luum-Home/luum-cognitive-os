@@ -20,7 +20,6 @@ implementation_files:
 tier: maintainer
 tags: [skills, lifecycle, promotion, demotion, doctrine, dogfood, propose-only]
 ---
-
 # ADR-180: Lifecycle Promotion Activation — Concrete Proposers and Hook Wiring
 
 ## Status
@@ -179,3 +178,12 @@ bash scripts/cos-promotion-proposer --dry-run                          # exits 0
 
 Implemented and tested on 2026-05-05 with unit, integration, and contract
 test lanes plus a propose-only SHA invariant guard.
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
+## Alternatives rejected
+
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
+
