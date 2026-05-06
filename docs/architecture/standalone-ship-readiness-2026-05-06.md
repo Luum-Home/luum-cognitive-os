@@ -20,7 +20,7 @@ canonical decisions are:
 | Release pipeline binario real | 🟢/🟡 | `.goreleaser.yaml`, GitHub Actions workflow, checksums, GoReleaser install script, snapshot smoke, and non-placeholder in-repo HEAD Homebrew formula. GoReleaser now generates a Homebrew cask for the external tap. | Create the real `luum-home/homebrew-tap` repository, add `HOMEBREW_TAP_GITHUB_TOKEN`, tag `v0.1.0`, and run a real GitHub release. |
 | TUI adoption ADR + Bubble Tea real | 🟢 | `ADR-192-surface-5-adopt-bubbletea.md`, ADR-187 proof pack, direct Bubble Tea dependency, and compile-tested package at `cmd/cos/internal/tui`. | Expand the proof model into a full operator TUI if/when richer UX is required. |
 | API local/remota para `cosd` | 🟢 | `scripts/cosd serve` exposes HTTP TCP. `scripts/cosd serve-unix` exposes HTTP over a Unix domain socket. Both transports support `/healthz`, `/status`, `/submit-intent`, and `/process-once`; tests cover both. | For truly remote operation, add authentication, TLS/reverse-proxy guidance, or another secure transport. Current scope is local-first. |
-| Abstraer repo root / install root | 🟡 | `scripts/cos-root` resolves project/install roots without requiring Git. `scripts/cos` and `scripts/cos-headless-pipeline` use it. | Migrate legacy product-facing scripts that still call `git rev-parse --show-toplevel` directly, then add a regression contract. |
+| Abstraer repo root / install root | 🟢 | `scripts/cos-root` resolves project/install roots without requiring Git. Product-facing scripts no longer call `git rev-parse --show-toplevel` directly. `tests/contracts/test_script_root_portability.py` prevents regression. | Keep new scripts on `scripts/cos-root` and add explicit exceptions only for Git-specific internals if a future need appears. |
 
 ## Evidence
 
@@ -34,6 +34,7 @@ Files:
 - `Formula/cognitive-os.rb`
 - `manifests/dependencies.yaml`
 - `tests/contracts/test_standalone_distribution_contract.py`
+- `tests/contracts/test_script_root_portability.py`
 
 Validated commands:
 
@@ -98,6 +99,7 @@ Files:
 - `scripts/cos`
 - `scripts/cos-headless-pipeline`
 - `tests/contracts/test_standalone_distribution_contract.py`
+- `tests/contracts/test_script_root_portability.py`
 
 Current resolver precedence:
 
@@ -138,5 +140,4 @@ goreleaser snapshot smoke OK
    proof model is enough for the current product phase.
 5. Add auth/secure-transport design before exposing `cosd` beyond localhost or a
    local Unix socket.
-6. Migrate remaining product-facing scripts away from direct `git rev-parse
-   --show-toplevel` assumptions.
+6. Keep the root-portability contract green as scripts are added or promoted.
