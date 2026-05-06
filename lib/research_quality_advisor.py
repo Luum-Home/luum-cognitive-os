@@ -96,6 +96,7 @@ class ResearchQualityReport:
     dimensions: List[DimensionScore]
     asymmetric_rows: int
     total_rows: int
+    audit_mode: str = "mechanical"
     suggestions: List[str] = field(default_factory=list)
 
     def to_jsonable(self) -> dict:
@@ -104,6 +105,7 @@ class ResearchQualityReport:
             "overall_score": round(self.overall_score, 2),
             "asymmetric_rows": self.asymmetric_rows,
             "total_rows": self.total_rows,
+            "audit_mode": self.audit_mode,
             "dimensions": [
                 {
                     "name": d.name,
@@ -135,18 +137,28 @@ class ResearchQualityAdvisor:
       warning in the hook (default 70, per ADR-175 §threshold).
     """
 
-    SYMMETRIC_WEIGHT = 0.40
-    CONFIDENCE_WEIGHT = 0.25
-    NUMERICAL_WEIGHT = 0.20
-    FALSIFIABLE_WEIGHT = 0.15
+    MECHANICAL_WEIGHTS = {
+        "symmetric_citation": 0.45,
+        "confidence_levels": 0.15,
+        "numerical_specificity": 0.25,
+        "falsifiable_claim": 0.15,
+    }
+    GOVERNANCE_WEIGHTS = {
+        "symmetric_citation": 0.25,
+        "confidence_levels": 0.30,
+        "numerical_specificity": 0.10,
+        "falsifiable_claim": 0.35,
+    }
 
     def __init__(
         self,
         min_table_rows: int = 2,
         warn_threshold: float = 70.0,
+        audit_mode: str = "auto",
     ) -> None:
         self.min_table_rows = min_table_rows
         self.warn_threshold = warn_threshold
+        self.audit_mode = audit_mode
 
     # -- public API -------------------------------------------------------
 
@@ -154,33 +166,36 @@ class ResearchQualityAdvisor:
         """Compute the four-dimension score for ``markdown_text``."""
         text = markdown_text or ""
 
-        sym_score, asym_rows, total_rows, sym_findings = self._score_symmetric(text)
+        mode = self._resolve_audit_mode(text)
+        weights = self.GOVERNANCE_WEIGHTS if mode == "governance" else self.MECHANICAL_WEIGHTS
+
+        sym_score, asym_rows, total_rows, sym_findings = self._score_symmetric(text, mode=mode)
         conf_score, conf_findings = self._score_confidence(text)
-        num_score, num_findings = self._score_numerical(text)
+        num_score, num_findings = self._score_numerical(text, mode=mode)
         fals_score, fals_findings = self._score_falsifiable(text)
 
         dims = [
             DimensionScore(
                 name="symmetric_citation",
-                weight=self.SYMMETRIC_WEIGHT,
+                weight=weights["symmetric_citation"],
                 score=sym_score,
                 findings=sym_findings,
             ),
             DimensionScore(
                 name="confidence_levels",
-                weight=self.CONFIDENCE_WEIGHT,
+                weight=weights["confidence_levels"],
                 score=conf_score,
                 findings=conf_findings,
             ),
             DimensionScore(
                 name="numerical_specificity",
-                weight=self.NUMERICAL_WEIGHT,
+                weight=weights["numerical_specificity"],
                 score=num_score,
                 findings=num_findings,
             ),
             DimensionScore(
                 name="falsifiable_claim",
-                weight=self.FALSIFIABLE_WEIGHT,
+                weight=weights["falsifiable_claim"],
                 score=fals_score,
                 findings=fals_findings,
             ),
@@ -193,6 +208,7 @@ class ResearchQualityAdvisor:
             dimensions=dims,
             asymmetric_rows=asym_rows,
             total_rows=total_rows,
+            audit_mode=mode,
         )
         report.suggestions = self.suggest_improvements(report)
         return report
@@ -216,10 +232,16 @@ class ResearchQualityAdvisor:
             )
         num = by_name.get("numerical_specificity")
         if num and num.score < 80:
-            out.append(
-                "Surround numeric claims with the bash command that produced "
-                "them in a fenced block (```bash ... ```)."
-            )
+            if report.audit_mode == "governance" and num.score >= 60:
+                out.append(
+                    "For governance reports, cite the ADR/policy source for numeric identifiers "
+                    "or counts; command capture is required only for measured implementation claims."
+                )
+            else:
+                out.append(
+                    "Surround numeric claims with the bash command that produced "
+                    "them in a fenced block (```bash ... ```)."
+                )
         fals = by_name.get("falsifiable_claim")
         if fals and fals.score < 80:
             out.append(
@@ -229,6 +251,37 @@ class ResearchQualityAdvisor:
         return out
 
     # -- helpers ----------------------------------------------------------
+
+    def _resolve_audit_mode(self, text: str) -> str:
+        """Classify audit type so governance prose is not scored as failed mechanics.
+
+        Mechanical audits compare implementation surfaces and need symmetric
+        file:line and command evidence. Governance audits evaluate policy,
+        decision quality, boundaries, consequences, and risk; they still need
+        citations, but confidence/falsifiability carry more weight.
+        """
+        configured = (self.audit_mode or "auto").lower().strip()
+        if configured in {"mechanical", "governance"}:
+            return configured
+        lowered = text.lower()
+        governance_hits = sum(
+            1
+            for token in (
+                "governance", "policy", "decision", "adr", "risk", "boundary",
+                "consequence", "alternative", "supersedes", "accepted positioning",
+                "guardrail", "trust_report", "uncertainties",
+            )
+            if token in lowered
+        )
+        mechanical_hits = sum(
+            1
+            for token in (
+                "grep", "find ", "jq", "pytest", "file:line", "loc", "coverage",
+                "implementation", "hook", "script", "function", "class ", "api surface",
+            )
+            if token in lowered
+        )
+        return "governance" if governance_hits >= 4 and governance_hits > mechanical_hits else "mechanical"
 
     @staticmethod
     def _iter_table_rows(text: str) -> List[str]:
@@ -254,7 +307,7 @@ class ResearchQualityAdvisor:
         return rows
 
     def _score_symmetric(
-        self, text: str
+        self, text: str, *, mode: str = "mechanical"
     ) -> Tuple[float, int, int, List[str]]:
         """Score symmetric citation across all table rows."""
         rows = self._iter_table_rows(text)
@@ -264,18 +317,22 @@ class ResearchQualityAdvisor:
 
         if len(rows) < self.min_table_rows:
             # Too small to score table-level symmetry; check global symmetry
-            # instead — does the doc cite file:line at all?
+            # instead — does the doc cite file:line at all? Governance reports
+            # can pass with fewer citations when they are decision/policy audits;
+            # mechanical reports need stronger implementation evidence.
             citations = _FILE_LINE_RE.findall(text)
-            score = 100.0 if len(citations) >= 4 else 50.0 * (len(citations) / 4.0)
+            required = 2 if mode == "governance" else 4
+            score = 100.0 if len(citations) >= required else 50.0 * (len(citations) / required)
             findings: List[str] = []
             if score < 80:
                 findings.append(
-                    f"Only {len(citations)} file:line citations found (no scoreable comparison table)."
+                    f"Only {len(citations)} file:line citations found (no scoreable comparison table; mode={mode})."
                 )
             return score, 0, 0, findings
 
         asym = 0
         total = len(rows)
+        cited_rows = 0
         per_row_findings: List[str] = []
         for row in rows:
             inner = row.strip("|")
@@ -283,10 +340,10 @@ class ResearchQualityAdvisor:
             # Need at least 4 cells to even talk about symmetric comparison.
             if len(cells) < 4:
                 continue
-            # Heuristic: any cell that looks like a "verdict" cell (just a
-            # short word like CONFIRMED / IGUAL / CORRECTED) is excluded;
-            # remaining cells are evidence cells.
-            evidence_cells = [c for c in cells if len(c) > 12]
+            # Heuristic: first cell is the dimension label and last cell is
+            # usually verdict/confidence. Compare the middle evidence cells.
+            comparable = cells[1:-1] if len(cells) >= 4 else cells
+            evidence_cells = [c for c in comparable if len(c) > 12]
             if not evidence_cells:
                 continue
             cells_with_citation = sum(
@@ -295,6 +352,8 @@ class ResearchQualityAdvisor:
             cells_with_handwavy = sum(
                 1 for c in evidence_cells if _HAND_WAVY_RE.search(c)
             )
+            if cells_with_citation:
+                cited_rows += 1
             # Asymmetric if at least one evidence cell cites file:line and
             # at least one other evidence cell has no file:line citation.
             if (
@@ -306,6 +365,11 @@ class ResearchQualityAdvisor:
                     per_row_findings.append(
                         f"Row with hand-wavy phrasing on uncited side: '{row[:120]}...'"
                     )
+
+        if cited_rows == 0:
+            return 0.0, asym, total, [
+                f"0/{total} table rows include file:line citations; mechanical comparisons need implementation evidence."
+            ]
 
         # Score: 100 when no asymmetric rows, 0 when all rows are asymmetric.
         score = 100.0 * (1.0 - (asym / max(total, 1)))
@@ -359,7 +423,7 @@ class ResearchQualityAdvisor:
             )
         return score, findings
 
-    def _score_numerical(self, text: str) -> Tuple[float, List[str]]:
+    def _score_numerical(self, text: str, *, mode: str = "mechanical") -> Tuple[float, List[str]]:
         """Score whether numeric claims are backed by a captured command."""
         # Strip fenced blocks to find numbers in prose only.
         prose = _FENCED_SHELL_RE.sub("", text)
@@ -378,6 +442,10 @@ class ResearchQualityAdvisor:
             return 100.0, findings
 
         if not fenced:
+            if mode == "governance" and len(prose_numbers) <= 8:
+                return 70.0, [
+                    f"{len(prose_numbers)} numeric governance-context claims without command blocks; tolerated but cite source context."
+                ]
             return 0.0, [
                 f"{len(prose_numbers)} numeric claims in prose with no fenced command blocks at all"
             ]
