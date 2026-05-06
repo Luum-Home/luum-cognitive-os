@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
 # SCOPE: both
-"""Observe-only terminal snapshot for Cognitive OS reports."""
+"""Operable terminal surface for Cognitive OS primitive coverage reports."""
 from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+RECEIPT_SCHEMA = "cos-tui-action-receipt.v1"
+RECEIPT_PATH = Path(".cognitive-os/metrics/tui-actions.jsonl")
+WHITELISTED_ACTIONS = {
+    "refresh-coverage": [["python3", "scripts/primitive_harness_coverage.py", "--project-dir", "."]],
+    "refresh-partials": [["python3", "scripts/primitive_harness_partials.py", "--project-dir", "."]],
+    "refresh-all": [
+        ["python3", "scripts/primitive_harness_coverage.py", "--project-dir", "."],
+        ["python3", "scripts/primitive_harness_partials.py", "--project-dir", "."],
+    ],
+}
 
 
 def _root(path: str) -> Path:
@@ -16,6 +29,34 @@ def _root(path: str) -> Path:
 
 def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _now() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _receipt(root: Path, *, action: str, outcome: str, commands: list[list[str]], details: dict[str, Any] | None = None) -> dict[str, Any]:
+    return {
+        "schema_version": RECEIPT_SCHEMA,
+        "timestamp": _now(),
+        "surface_kind": "ui",
+        "surface_id": "tui",
+        "mode": "operable",
+        "action": action,
+        "outcome": outcome,
+        "project_dir": str(root),
+        "commands": commands,
+        "whitelisted": action in WHITELISTED_ACTIONS,
+        "details": details or {},
+    }
+
+
+def _append_receipt(root: Path, receipt: dict[str, Any]) -> Path:
+    path = root / RECEIPT_PATH
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(receipt, sort_keys=True) + "\n")
+    return path
 
 
 def _snapshot(root: Path) -> tuple[int, str]:
@@ -31,7 +72,7 @@ def _snapshot(root: Path) -> tuple[int, str]:
 
     lines = [
         "Cognitive OS — Primitive Surface Coverage",
-        "Mode: observe-only",
+        "Mode: operable (whitelisted actions only)",
         "",
         f"Total primitives: {summary.get('total_primitives', 0)}",
         f"Gaps: {summary.get('gaps', 0)}",
@@ -45,21 +86,77 @@ def _snapshot(root: Path) -> tuple[int, str]:
         lines.append(f"- {surface_id} ({kind}): {surface_counts[surface_id]} projected/wired")
     lines.extend([
         "",
+        "Whitelisted operations:",
+        "- refresh-coverage: regenerate primitive surface coverage report",
+        "- refresh-partials: regenerate prioritized partials report",
+        "- refresh-all: regenerate both reports in order",
+        "",
         "Reports:",
         "- docs/reports/primitive-harness-coverage-latest.json",
         "- docs/reports/primitive-harness-partials-latest.json",
+        "",
+        f"Receipts: {RECEIPT_PATH}",
     ])
     return 0, "\n".join(lines) + "\n"
 
 
+def _validate_project(root: Path) -> None:
+    if not root.exists() or not root.is_dir():
+        raise ValueError(f"project root does not exist: {root}")
+    for rel in {part for commands in WHITELISTED_ACTIONS.values() for command in commands for part in command if part.startswith("scripts/")}:
+        path = root / rel
+        if not path.is_file():
+            raise ValueError(f"required whitelisted script is missing: {rel}")
+
+
+def _operate(root: Path, action: str, *, confirm: bool, dry_run: bool) -> tuple[int, str]:
+    commands = WHITELISTED_ACTIONS.get(action)
+    if commands is None:
+        return 2, f"Unsupported TUI operation: {action}. Allowed: {', '.join(sorted(WHITELISTED_ACTIONS))}\n"
+    if not confirm and not dry_run:
+        return 2, "Refusing operable TUI action without --confirm. Use --dry-run to inspect the whitelist.\n"
+    try:
+        _validate_project(root)
+    except ValueError as exc:
+        return 2, f"TUI safety gate failed: {exc}\n"
+    if dry_run:
+        receipt = _receipt(root, action=action, outcome="dry-run", commands=commands)
+        _append_receipt(root, receipt)
+        return 0, json.dumps(receipt, indent=2, sort_keys=True) + "\n"
+
+    results: list[dict[str, Any]] = []
+    for command in commands:
+        proc = subprocess.run(command, cwd=root, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=120)
+        results.append({
+            "command": command,
+            "returncode": proc.returncode,
+            "stdout_tail": proc.stdout[-1000:],
+            "stderr_tail": proc.stderr[-1000:],
+        })
+        if proc.returncode != 0:
+            receipt = _receipt(root, action=action, outcome="failed", commands=commands, details={"results": results})
+            path = _append_receipt(root, receipt)
+            return proc.returncode or 1, f"TUI operation failed; receipt appended to {path}\n"
+    receipt = _receipt(root, action=action, outcome="success", commands=commands, details={"results": results})
+    path = _append_receipt(root, receipt)
+    return 0, f"TUI operation '{action}' completed; receipt appended to {path}\n"
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Cognitive OS observe-only TUI snapshot")
+    parser = argparse.ArgumentParser(description="Cognitive OS operable TUI surface")
     parser.add_argument("--snapshot", action="store_true", help="Print a non-interactive snapshot and exit")
+    parser.add_argument("--operate", choices=sorted(WHITELISTED_ACTIONS), help="Run a whitelisted observe/report operation")
+    parser.add_argument("--confirm", action="store_true", help="Required for mutating operable actions")
+    parser.add_argument("--dry-run", action="store_true", help="Emit a receipt without running the operation")
     parser.add_argument("--project-dir", default=".")
     args = parser.parse_args()
-    if not args.snapshot:
-        parser.error("only --snapshot is currently supported")
-    code, output = _snapshot(_root(args.project_dir))
+    root = _root(args.project_dir)
+    if args.snapshot:
+        code, output = _snapshot(root)
+    elif args.operate:
+        code, output = _operate(root, args.operate, confirm=args.confirm, dry_run=args.dry_run)
+    else:
+        parser.error("use --snapshot or --operate")
     stream = sys.stdout if code == 0 else sys.stderr
     stream.write(output)
     return code

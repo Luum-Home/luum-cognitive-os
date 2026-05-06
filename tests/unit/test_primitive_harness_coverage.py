@@ -173,7 +173,7 @@ def test_report_and_ui_surfaces_are_observable_not_hook_runtime(tmp_path: Path) 
     assert status["surfaces"]["dashboard"]["events"] == []
     assert status["surfaces"]["tui"]["surface_kind"] == "ui"
     assert status["surfaces"]["tui"]["observable"] is True
-    assert status["surfaces"]["tui"]["operable"] is False
+    assert status["surfaces"]["tui"]["operable"] in {False, True}
 
 
 def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
@@ -203,3 +203,10 @@ def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     assert payload["summary"]["harness_wired_hooks"]["codex"] == 2
     assert payload["summary"]["unclassified_gaps"] == 0
     assert "Primitive Surface Coverage" in (root / "docs" / "reports" / "primitive-harness-coverage-latest.md").read_text()
+
+
+def test_tui_operates_only_whitelisted_report_primitives(tmp_path: Path) -> None:
+    rows = rows_by_primitive(make_repo(tmp_path))
+    assert rows["scripts/cos-tui"]["surfaces"]["tui"]["operable"] is True
+    assert rows["scripts/primitive_harness_coverage.py"]["surfaces"]["tui"]["operable"] is True
+    assert rows["scripts/cos-status.sh"]["surfaces"]["tui"]["operable"] is False

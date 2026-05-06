@@ -4,7 +4,7 @@
 # Routes:
 #   cos status [flags]                 -> scripts/cos-status.sh
 #   cos coverage [flags]               -> scripts/cos-coverage
-#   cos tui --snapshot                 -> scripts/cos-tui
+#   cos tui --snapshot|--operate ACTION -> scripts/cos-tui
 #   cos primitive harness-coverage     -> scripts/primitive_harness_coverage.py
 #   cos init-check                     -> scripts/cos-doctor-harness.sh --init-check
 #   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
@@ -108,7 +108,8 @@ cos — Cognitive OS command-line
 Usage:
   cos status [--verbose|--json|--help]   Show what is active (profile, skills, hooks, rules, health)
   cos coverage [--json|--brief|--refresh] Show ACC coverage with exit code + JSON contract
-  cos tui --snapshot                     Show observe-only primitive surface snapshot
+  cos tui --snapshot                     Show primitive surface snapshot
+  cos tui --operate refresh-all --confirm Operate whitelisted report refresh with receipt
   cos primitive harness-coverage [--print-json] Generate primitive surface coverage
   cos primitive surface-coverage [--print-json] Alias for primitive harness coverage
   cos init-check                         Check the minimal harness readiness path
