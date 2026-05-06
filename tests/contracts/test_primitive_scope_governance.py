@@ -49,7 +49,7 @@ def test_scope_classification_governance_has_lifecycle_and_dedicated_adr() -> No
     rows = {item["id"]: item for item in lifecycle["primitives"]}
     row = rows.get("manifests/primitive-scope-classification.yaml")
     assert row is not None, "scope classification governance primitive must have lifecycle metadata"
-    assert row["kind"] == "governance-primitive"
+    assert row["kind"] == "manifest"
     assert row["lifecycle_state"] in {"blocking", "candidate", "sandbox"}
     assert row["owner_adr"] == manifest["owner_adr"]
     assert "tests/contracts/test_primitive_scope_governance.py" in "\n".join(row["evidence_commands"])
