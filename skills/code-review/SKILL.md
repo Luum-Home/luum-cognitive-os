@@ -20,6 +20,13 @@ summary_line: Engram-integrated code review with adversarial protocol.
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcode[- ]?review\b'
+    confidence: 0.95
+  - pattern: '\b(review|revis[áa]\w*)\s+(my\s+|el\s+|la\s+|this\s+)?code\b'
+    confidence: 0.88
+  - pattern: '\bengram[- ]?(integrated\s+)?code[- ]?review\b'
+    confidence: 0.95
 ---
 
 ## Purpose
