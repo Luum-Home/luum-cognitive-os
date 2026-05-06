@@ -48,8 +48,6 @@ Services are defined in `docker-compose.cognitive-os.yml`. Some run by default, 
 | Phoenix (pip) | LLM trace UI — replaces the former observability stack | Metrics, agent KPIs, LLM evals | **PIP** (ADR-058) |
 | litellm | LLM proxy and model routing | Model routing, cost tracking | **MIGRATED TO PIP** |
 | nemo-guardrails | NeMo Guardrails for content safety | PII detection, content filtering | **MIGRATED TO PIP** |
-| paperclip | Governance and compliance dashboard | Squad reports, governance reviews | Docker (no pip equiv) |
-| paperclip-pg | Paperclip PostgreSQL database | Required by paperclip | Docker (no pip equiv) |
 | jupyter | Jupyter notebook environment | Data analysis, experimentation | **MIGRATED TO PIP** |
 
 ### Profile: `memory`
@@ -85,7 +83,6 @@ When `smart_start: true` is set in `cognitive-os.yaml`, Docker services start au
 
 1. A skill or hook triggers (e.g., `/agent-kpis`)
 2. `lib/smart_infra.py` looks up the skill→service map
-3. If the required service (e.g., paperclip) is not running, it starts via `docker compose up -d`
 4. The system polls for healthy status (up to 120s)
 5. Once healthy, the skill proceeds normally
 6. On session exit, `idle-service-cleanup.sh` stops services past their `idle_timeout_minutes`
@@ -97,7 +94,6 @@ When `smart_start: true` is set in `cognitive-os.yaml`, Docker services start au
 | agent-kpis, observability-trace | phoenix (pip) + mlflow (pip) |
 | sdd-apply, sdd-verify, sdd-pipeline, model-routing | litellm |
 | guardrails-validator, content-policy | nemo-guardrails |
-| squad-report, paperclip-sync | paperclip |
 | memu-sync | memu |
 | cognee-search | cognee |
 | jupyter-sandbox | jupyter |
@@ -114,10 +110,8 @@ If Docker is not available or a service fails to start, the system logs a warnin
 from lib.smart_infra import ensure_service, requires_service
 
 # Explicit
-ensure_service("paperclip")
 
 # Decorator
-@requires_service("paperclip")
 def send_trace(...):
     ...
 ```
@@ -125,7 +119,6 @@ def send_trace(...):
 ### Usage in Bash Hooks
 
 ```bash
-python3 -c "from lib.smart_infra import ensure_service; ensure_service('paperclip')" 2>/dev/null || true
 ```
 
 ## Configuration
@@ -136,7 +129,6 @@ In `cognitive-os.yaml`, services are configured under `resources.infrastructure.
 resources:
   infrastructure:
     services:
-      paperclip:
         mode: on_demand
         idle_timeout_minutes: 30
       litellm:

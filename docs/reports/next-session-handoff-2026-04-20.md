@@ -19,7 +19,6 @@
 |---|------|--------|-----|
 | 5 | **ws9-test-errors classification** | 1-2h | pytest-timeout now installed; run full suite, categorize 292 errors, fix or mark xfail with reasons |
 | 6 | **ADR-039 Embeddings retry** (sentence-transformers install + tests + benchmark) | 1 session | WIP stub committed; unlocks ADR-040 |
-| 7 | **ADR-043 Paperclip local daemon** | 1 session | Mirror of ADR-042 (Valkey); pattern proven |
 | 8 | **ADR-044 PostgreSQL local daemon** | 1 session | Mirror of ADR-042 |
 
 ### P2 — Coverage + architecture maturity (~4-5 sessions)

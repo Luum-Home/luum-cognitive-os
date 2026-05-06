@@ -113,7 +113,6 @@ adrs:
 - adr_id: ADR-042-valkey-local-daemon
   closure_class: evidence-only
   reason: scripts/cos-valkey-local.sh, hooks/valkey-ensure.sh, lib/agent_bus.py local fallback, and tests/integration/test_valkey_local_daemon.py
-    exist and passed in this session. Remaining Paperclip/PostgreSQL Docker items are explicitly deferred outside Valkey scope.
 - adr_id: ADR-044-context-payload-slimming
   closure_class: evidence-only
   reason: Phase-2 repo surfaces are present (.claude/commands/, compact catalog generator, lazy catalog tests). This session

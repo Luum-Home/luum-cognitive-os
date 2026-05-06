@@ -51,4 +51,3 @@ python3 -m pytest tests/audit/test_adr_contracts.py tests/audit/test_adr_locatio
 - ADR audit/location tests pass.
 - No runtime support claim is made beyond the contract/manual proof.
 - The next implementation can target local queue/worktree allocation first,
-  without Telegram, Paperclip, GitHub, or provider credentials.

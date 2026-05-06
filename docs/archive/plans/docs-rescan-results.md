@@ -163,7 +163,6 @@ Pure knowledge, architecture, research, or strategy docs that should stay as doc
 | `docs/os-vs-project-separation.md` | Architecture/principles |
 | `docs/overview.md` | Architecture/overview |
 | `docs/package-manager-design.md` | Design doc |
-| `docs/paperclip-integration.md` | Integration architecture |
 | `docs/patterns-adopted.md` | Research/provenance catalog |
 | `docs/performance.md` | Architecture/monitoring |
 | `docs/persistence-map.md` | Reference/architecture |

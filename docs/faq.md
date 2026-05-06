@@ -25,7 +25,6 @@ Yes. The core system is language-agnostic and framework-agnostic. Run `/cognitiv
 
 ### What are the three technology layers?
 
-Bash for the 57 hooks that must run in under 100ms on every tool call with zero dependencies -- this is the kernel. Python for the 22 library modules (singularity controller, issue pipeline, webhook server, batch runner, notifications, domain router, phase timing, SDD resume, executor, impact analysis, agent bus, observability, model router, web crawler, capability levels, session state, and service clients for Cognee, Jupyter, LiteLLM, Paperclip, and NeMo Guardrails) -- the services layer. Go for the `cos-test` TUI binary -- the developer tooling layer. Each language handles exactly the layer it was designed for.
 
 ### What does "agent operating system" mean?
 
@@ -249,7 +248,6 @@ A Go binary built with Cobra (CLI), Bubbletea (TUI), and Lipgloss (styling). It 
 
 ### How do testcontainers work?
 
-Integration tests spin up real Docker containers on demand -- no mocking. The test suite starts 18 Docker services including databases (Postgres x2, MySQL, Valkey, ClickHouse), observability (Langfuse web + worker, Opik backend + frontend), governance (Paperclip), memory (Cognee, MemU), storage (SeaweedFS), compute (Jupyter), and infrastructure (LiteLLM, NeMo Guardrails, Automaker, webhook-trigger). Containers are created at test start and destroyed at test end. This provides high confidence with real infrastructure.
 
 ### What evaluation frameworks are integrated?
 
@@ -273,7 +271,6 @@ Three LLM evaluation frameworks. **DeepEval**: LLM unit testing with 60+ metrics
 
 ### What Docker services are included?
 
-18 services across 6 categories. **Observability**: Langfuse (web + worker + Postgres + Valkey + ClickHouse + SeaweedFS) for LLM tracing. **Cost control**: LiteLLM for model routing and budget enforcement. **Governance**: Paperclip (+ Postgres) for compliance dashboard. **Memory**: Cognee for knowledge graphs, MemU for proactive memory. **Compute**: Jupyter for GPU sandbox execution (ML, data, financial tasks). **Safety**: NeMo Guardrails for content safety. **Automation**: Opik (backend + MySQL + frontend) for experiment tracking, Automaker for external tool orchestration, webhook-trigger for GitHub events.
 
 ### What is the ClaudeExecutor?
 
@@ -291,9 +288,7 @@ The Agent Communication Bus (`lib/agent_bus.py`) provides bidirectional real-tim
 
 The `/gpu-sandbox` skill executes Python code in a Jupyter runtime for compute-heavy tasks -- ML model inference, data analysis, financial calculations, scientific computing. The Jupyter container runs as part of the Docker stack with persistent data volumes. Agents can offload heavy computation without consuming Claude Code's context window or risking timeout on long-running calculations.
 
-### What is Paperclip?
 
-A governance dashboard that visualizes Cognitive OS metrics. The `/paperclip-dashboard` skill displays KPIs, cost trends, skill performance, and agent health in a web UI. It runs on port 3200 with its own Postgres backend. Metrics are synced from JSONL files via the `paperclip-sync.sh` hook. It is the visual control plane for everything the OS measures.
 
 ### What is Opik?
 

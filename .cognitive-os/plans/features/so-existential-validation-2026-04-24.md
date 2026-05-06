@@ -102,7 +102,6 @@ Counts per surface: Hooks 38 CORE / 97 EXTENSION (target <40 CORE ✓), Libs 24/
   - [ ] Leave backward-compat symlink at old path for one release cycle
   - [ ] Update `scripts/apply-efficiency-profile.sh` to read from pack manifest
 - [ ] Wave 2: migrate `cos-sdd` pack (sdd-* skills + sdd_*.py libs)
-- [ ] Wave 3: migrate `cos-observability` (mlflow, langfuse, paperclip hooks + libs)
 - [ ] Remaining waves: defer to post-v1.0 if time constrained — document what was done vs deferred
 - [ ] Update `skills/CATALOG-COMPACT.md` generator to list core separately from extensions (add `[core]` / `[ext:pack-name]` tags)
 

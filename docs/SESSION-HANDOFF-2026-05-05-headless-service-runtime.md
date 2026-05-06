@@ -163,7 +163,6 @@ was not attempted because the `claude` CLI is not installed on PATH.
 | Docker inheriting host Codex account | Not supported by default | container probe `unsupported`, no CLI mounted. |
 | Host Codex provider task | Attempted but failed | CLI model/version mismatch. |
 | Host Claude Code provider task | Not available here | `claude CLI not found on PATH`. |
-| Telegram/Paperclip remote control | Not implemented in this slice | ADR-161/162 define boundary only. |
 
 ## Next implementation order
 
@@ -173,7 +172,6 @@ was not attempted because the `claude` CLI is not installed on PATH.
    to host-authenticated CLIs without mounting credential stores into containers.
 3. Add `waiting_for_human`/question protocol from ADR-162 into the queue runtime.
 4. Add worktree/branch/PR proposal adapter for feature/bugfix development flows.
-5. Add Telegram/Paperclip/GitHub as remote ingress surfaces that enqueue work and
    report status, not direct execution.
 6. Keep Docker provider smoke opt-in/cost-bearing; default CI should only run the
    skip check or local-command proof when explicitly requested.

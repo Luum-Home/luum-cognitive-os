@@ -26,7 +26,6 @@ frontmatter, are:
 | plan-feature | yes | yes |
 | session-backlog | yes | yes |
 | resource-governor | yes | yes |
-| paperclip-dashboard | yes | yes |
 
 Root cause (from `diagnosis.md`): `self-install.sh` syncs `skills/` only to
 `.cognitive-os/skills/` via the `"skills|cos|tree|"` entry in `SYNC_DIRS`. The harness does

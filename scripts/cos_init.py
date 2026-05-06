@@ -94,7 +94,6 @@ DEFAULT_HOOKS = (
 DEFAULT_SKILLS = (
     "compose-prompt exhaustive-prompt agent-dashboard auto-refine "
     "verification-before-completion plan-feature session-backlog resource-governor "
-    "paperclip-dashboard cos-status"
 ).split()
 
 # Core rules kept after efficiency-profile filtering (default tier)

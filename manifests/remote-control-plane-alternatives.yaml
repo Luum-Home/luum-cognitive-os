@@ -24,20 +24,6 @@ principles:
   - Treat Telegram, Discord, Slack, webhooks, and web UIs as untrusted ingress surfaces.
   - Keep all first implementations lab/propose-only until auth probes and redaction tests pass.
 projects:
-  - id: paperclip
-    display_name: Paperclip
-    source: local-doc
-    proof_level: local-doc
-    language: unknown
-    license: unknown
-    license_posture: review
-    classifications: [remote-control-plane, reference-only]
-    remote_ingress: [local-rest-ui]
-    provider_strategy: delegates-to-cos
-    credential_strategy: none-in-paperclip-doc
-    source_urls:
-      - docs/paperclip-integration.md
-    notes: Paperclip is documented as a localhost/UI REST sink for metrics, issues, spend, agent status, and notifications; it is not the model/provider router.
   - id: openclaw
     display_name: OpenClaw
     source: github

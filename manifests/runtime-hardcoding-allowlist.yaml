@@ -16,7 +16,6 @@ protected_runtime_paths:
 blocked_reference_patterns:
   - id: dashboard_default_skill
     zone: extensions
-    regex: "\\b(agent-dashboard|paperclip-dashboard)\\b"
     reason: "Dashboard skills are optional extension surfaces and must not silently become core runtime requirements."
   - id: experimental_squad_projection
     zone: experimental
@@ -36,10 +35,8 @@ allowlist:
     status: legacy_exception
     reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."
     remediation: "Move dashboard skills behind an explicit extension/profile selection path or replace them with core-proof defaults."
-  - id: legacy_default_skill_paperclip_dashboard
     path: scripts/cos_init.py
     pattern_id: dashboard_default_skill
-    required_text: "paperclip-dashboard"
     zone: extensions
     status: legacy_exception
     reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."

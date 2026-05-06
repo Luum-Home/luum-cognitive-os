@@ -44,14 +44,6 @@ SERVICE_CONTRACTS = (
         "local_health": ("nemo-guardrails", "http://localhost:8088/v1/rails/configs"),
     },
     {
-        "runtime_service": "paperclip",
-        "expected_mode": "on_demand",
-        "classification": "optional-extension",
-        "compose_services": ("paperclip-pg", "paperclip"),
-        "profiles": (),
-        "local_health": ("paperclip", "http://localhost:3200/api/health"),
-    },
-    {
         "runtime_service": "memu",
         "expected_mode": "pip",
         "classification": "reference-stack",

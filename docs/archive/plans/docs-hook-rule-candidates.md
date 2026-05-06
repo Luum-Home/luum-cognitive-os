@@ -130,7 +130,6 @@ Docs with no prohibition or behavioral guidance language — they are design doc
 | `docs/os-vs-project-separation.md` | Covered by `rules/os-vs-project.md` ✅ |
 | `docs/overview.md` | Product overview — human reference |
 | `docs/package-manager-design.md` | Design ADR — reference |
-| `docs/paperclip-integration.md` | Integration docs — reference |
 | `docs/patterns-adopted.md` | Pattern catalog — reference |
 | `docs/performance.md` | Performance guide — covered by `rules/performance-monitoring.md` ✅ |
 | `docs/persistence-map.md` | Persistence reference — technical |
