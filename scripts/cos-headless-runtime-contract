@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Static contract check for non-launchd headless runtime manifests."""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SYSTEMD = ROOT / "infra" / "cosd" / "systemd" / "cosd.service"
+K8S = ROOT / "infra" / "cosd" / "k8s" / "cosd-local.yaml"
+
+
+def check_systemd() -> list[str]:
+    errors: list[str] = []
+    text = SYSTEMD.read_text(encoding="utf-8") if SYSTEMD.exists() else ""
+    required = [
+        "[Unit]",
+        "[Service]",
+        "ExecStart=",
+        "Restart=on-failure",
+        "NoNewPrivileges=true",
+        "ProtectSystem=strict",
+        "ReadWritePaths=",
+        "COGNITIVE_OS_PROJECT_DIR=",
+    ]
+    for token in required:
+        if token not in text:
+            errors.append(f"systemd missing {token}")
+    if "launchctl" in text or "LaunchAgent" in text:
+        errors.append("systemd manifest must not depend on macOS launchd")
+    return errors
+
+
+def check_k8s() -> list[str]:
+    errors: list[str] = []
+    text = K8S.read_text(encoding="utf-8") if K8S.exists() else ""
+    required = [
+        "kind: ConfigMap",
+        "kind: Deployment",
+        "kind: Service",
+        "name: cosd",
+        "COGNITIVE_OS_PROJECT_DIR:",
+        "containerPort: 8765",
+        "emptyDir: {}",
+    ]
+    for token in required:
+        if token not in text:
+            errors.append(f"k8s missing {token}")
+    if "launchctl" in text or "LaunchAgent" in text:
+        errors.append("k8s manifest must not depend on macOS launchd")
+    return errors
+
+
+def main() -> int:
+    errors = check_systemd() + check_k8s()
+    payload = {
+        "ok": not errors,
+        "systemd": str(SYSTEMD),
+        "k8s": str(K8S),
+        "errors": errors,
+    }
+    print(json.dumps(payload, sort_keys=True))
+    return 0 if not errors else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
