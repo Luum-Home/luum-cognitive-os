@@ -178,6 +178,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-control-inbound-guard.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/lethal-trifecta-gate.sh\""
           }
         ]
