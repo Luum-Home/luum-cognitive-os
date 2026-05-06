@@ -31,6 +31,7 @@ def test_repository_harness_coverage_report_regenerates() -> None:
     assert payload["state_semantics"] == ["installed", "projected", "wired", "executable", "behavior-proven"]
     assert {"claude", "codex", "shell-ci", "cursor", "vscode-copilot", "opencode", "cline", "aider"} <= set(payload["harnesses"])
     assert payload["summary"].get("unclassified_gaps", 0) == 0
+    assert payload["summary"].get("gaps_by_policy", {}).get("behavior-proof-needed", 0) == 0
     assert payload["summary"]["harness_wired_hooks"]["claude"] >= payload["summary"]["harness_wired_hooks"]["codex"]
 
 
