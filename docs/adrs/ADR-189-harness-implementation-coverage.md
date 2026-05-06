@@ -134,3 +134,7 @@ bash scripts/cos status --json
 bash scripts/cos coverage --json
 bash scripts/cos primitive harness-coverage --print-json
 ```
+
+## Alternatives rejected
+
+- Treat every primitive as a hook-runtime item only; rejected because CLI, UI, report, and shell-CI surfaces would be misreported as harness gaps.
