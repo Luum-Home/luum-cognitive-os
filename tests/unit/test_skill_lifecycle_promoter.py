@@ -99,6 +99,56 @@ lifecycle_state: advisory
     assert report.demotion_candidates[0].proposed_state == "demoted"
 
 
+def test_advisory_skill_used_inside_demotion_window_is_not_demoted(tmp_path: Path) -> None:
+    _write(
+        tmp_path / "skills" / "recent-advisory" / "SKILL.md",
+        """---
+name: recent-advisory
+lifecycle_state: advisory
+---
+# Recent advisory
+""",
+    )
+    _append_jsonl(
+        tmp_path / ".cognitive-os" / "metrics" / "skill-invocations.jsonl",
+        [
+            {
+                "timestamp": "2026-03-07T12:00:00+00:00",
+                "payload": {"skill_name": "recent-advisory"},
+            }
+        ],
+    )
+
+    report = build_skill_lifecycle_report(tmp_path, now=datetime(2026, 5, 6, tzinfo=timezone.utc))
+
+    assert report.demotion_candidates == []
+
+
+def test_advisory_skill_used_outside_demotion_window_is_demoted(tmp_path: Path) -> None:
+    _write(
+        tmp_path / "skills" / "stale-advisory" / "SKILL.md",
+        """---
+name: stale-advisory
+lifecycle_state: advisory
+---
+# Stale advisory
+""",
+    )
+    _append_jsonl(
+        tmp_path / ".cognitive-os" / "metrics" / "skill-invocations.jsonl",
+        [
+            {
+                "timestamp": "2026-01-01T12:00:00+00:00",
+                "payload": {"skill_name": "stale-advisory"},
+            }
+        ],
+    )
+
+    report = build_skill_lifecycle_report(tmp_path, now=datetime(2026, 5, 6, tzinfo=timezone.utc))
+
+    assert [candidate.skill_name for candidate in report.demotion_candidates] == ["stale-advisory"]
+
+
 def test_malformed_skill_frontmatter_does_not_break_scan(tmp_path: Path) -> None:
     _write(
         tmp_path / "skills" / "bad-frontmatter" / "SKILL.md",

@@ -31,7 +31,7 @@ from scripts.cos_promotion_proposer import (  # noqa: E402  (sibling import)
     _append_metric,
 )
 
-DEFAULT_DB = PROJECT_ROOT / ".cognitive-os" / "skill-store.db"
+DEFAULT_DB = PROJECT_ROOT / ".cognitive-os" / "skill_store.db"
 DEFAULT_LIFECYCLE = PROJECT_ROOT / "manifests" / "primitive-lifecycle.yaml"
 DEFAULT_METRICS = PROJECT_ROOT / ".cognitive-os" / "metrics" / "demotion-proposals.jsonl"
 DEFAULT_OUT_ROOT = PROJECT_ROOT / "docs" / "reports" / "demotion-proposals"
