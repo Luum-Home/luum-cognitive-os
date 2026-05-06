@@ -36,6 +36,29 @@ def test_homebrew_formula_has_no_checksum_placeholder() -> None:
     assert 'bin/"cos"' in formula
 
 
+def test_homebrew_local_canary_is_documented() -> None:
+    canary = REPO / "scripts" / "cos-homebrew-local-canary"
+    assert canary.exists()
+    script = canary.read_text(encoding="utf-8")
+    assert "git -C \"$ROOT\" archive" in script
+    assert "brew tap-new" in script
+    assert "brew install --build-from-source" in script
+    assert "COS_RUN_HOMEBREW_CANARY=1" in script
+
+    readiness = (REPO / "docs" / "architecture" / "standalone-ship-readiness-2026-05-06.md").read_text(
+        encoding="utf-8"
+    )
+    release = (REPO / "docs" / "release" / "v1.0-release-criteria.md").read_text(encoding="utf-8")
+
+    for doc in (readiness, release):
+        assert "scripts/cos-homebrew-local-canary" in doc
+        assert "COS_RUN_HOMEBREW_CANARY=1" in doc
+        assert "temporary local tap" in doc
+        assert "Git HEAD source tarball" in doc
+        assert "brew install --build-from-source" in doc
+        assert "external tap" in doc
+
+
 def test_standalone_service_and_headless_artifacts_exist() -> None:
     assert (REPO / "infra" / "cosd" / "systemd" / "cosd.service").exists()
     assert (REPO / "infra" / "cosd" / "k8s" / "cosd-local.yaml").exists()

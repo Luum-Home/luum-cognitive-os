@@ -30,6 +30,7 @@ import pytest
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RELEASE_CHECK = PROJECT_ROOT / "scripts" / "cos-release-check.sh"
 CORE_SKILLS_CHECK = PROJECT_ROOT / "scripts" / "cos-core-skills-check.sh"
+HOMEBREW_CANARY = PROJECT_ROOT / "scripts" / "cos-homebrew-local-canary"
 
 
 def _run_release_check(
@@ -150,6 +151,39 @@ class TestReleaseCheckPlumbing:
         """Settings validation and hook counting should use the canary's active driver."""
         script_text = RELEASE_CHECK.read_text()
         assert 'canary_settings_driver_path "$dir"' in script_text
+
+
+    def test_homebrew_formula_has_install_smoke(self):
+        formula = PROJECT_ROOT / "Formula" / "cognitive-os.rb"
+        text = formula.read_text(encoding="utf-8")
+        assert 'head "https://github.com/luum-home/luum-cognitive-os.git", branch: "main"' in text
+        assert 'system "go", "build"' in text
+        assert 'system "#{bin}/cos", "version"' in text
+
+
+    def test_homebrew_local_canary_script_exists_and_is_opt_in(self):
+        assert HOMEBREW_CANARY.is_file(), f"{HOMEBREW_CANARY} missing"
+        assert os.access(HOMEBREW_CANARY, os.X_OK), f"{HOMEBREW_CANARY} not executable"
+        text = HOMEBREW_CANARY.read_text(encoding="utf-8")
+        assert "COS_RUN_HOMEBREW_CANARY=1" in text
+        assert "git -C \"$ROOT\" archive" in text
+        assert "brew tap-new" in text
+        assert "brew install --build-from-source" in text
+        assert "brew test cognitive-os" in text
+
+    def test_homebrew_local_canary_default_is_non_mutating_json(self):
+        result = subprocess.run(
+            [str(HOMEBREW_CANARY), "--json"],
+            cwd=PROJECT_ROOT,
+            text=True,
+            capture_output=True,
+            timeout=10,
+        )
+        assert result.returncode == 0, result.stderr
+        payload = json.loads(result.stdout)
+        assert payload["ok"] is True
+        assert payload["skipped"] is True
+        assert "--apply" in payload["reason"]
 
     def test_core_skills_check_json_parses(self):
         out = subprocess.run(

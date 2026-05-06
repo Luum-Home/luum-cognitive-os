@@ -10,7 +10,9 @@ class CognitiveOs < Formula
   depends_on "git"
 
   def install
-    system "go", "build", "-ldflags", "-s -w", "-o", bin/"cos", "./cmd/cos"
+    cd "cmd/cos" do
+      system "go", "build", "-ldflags", "-s -w", "-o", bin/"cos", "."
+    end
     prefix.install "cognitive-os.yaml" if File.exist?("cognitive-os.yaml")
     prefix.install "scripts"
     prefix.install "hooks"
