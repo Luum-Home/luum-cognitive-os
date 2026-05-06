@@ -8,6 +8,8 @@ frontmatter block (between leading --- delimiters), and reports:
   MALFORMED_YAML           — frontmatter exists but fails yaml.safe_load()
   STATUS_REALITY_MISMATCH  — status: implemented but implementation_files missing
   SUPERSEDES_BROKEN_REF    — supersedes[] lists an ADR number not found on disk
+  ADR_RELATION_CHAIN_LONG  — extends/supersedes chains exceed the scope-creep budget
+  ADR_RELATION_CYCLE       — relationship graph contains a cycle
   OK                       — frontmatter parses, files verified (or none declared)
 
 CLI flags:
@@ -57,12 +59,18 @@ CODE_MISSING_FRONTMATTER = "MISSING_FRONTMATTER"
 CODE_MALFORMED_YAML = "MALFORMED_YAML"
 CODE_STATUS_REALITY_MISMATCH = "STATUS_REALITY_MISMATCH"
 CODE_SUPERSEDES_BROKEN_REF = "SUPERSEDES_BROKEN_REF"
+CODE_ADR_RELATION_CHAIN_LONG = "ADR_RELATION_CHAIN_LONG"
+CODE_ADR_RELATION_CYCLE = "ADR_RELATION_CYCLE"
 
 # Status values that require implementation_files verification
 IMPLEMENTED_STATUSES = {"implemented"}
 
 # Valid status values
-VALID_STATUSES = {"proposed", "accepted", "implemented", "superseded", "deprecated"}
+VALID_STATUSES = {"proposed", "accepted", "implemented", "superseded", "deprecated", "tombstone"}
+
+# Relationship-chain budget: current reconstruction allows short lineage, but
+# chains longer than this need consolidation instead of another ADR-on-ADR layer.
+MAX_RELATION_CHAIN_DEPTH = 2
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -130,6 +138,105 @@ def _known_adr_numbers(files: list[Path]) -> set[int]:
             nums.add(n)
     return nums
 
+
+
+
+def _coerce_adr_ref(value: Any) -> int | None:
+    """Parse ADR references from ints, "ADR-043", or prose-ish strings."""
+    if isinstance(value, int):
+        return value
+    match = re.search(r"0*([0-9]+)", str(value))
+    return int(match.group(1)) if match else None
+
+
+def _relationship_refs(path: Path, fm: dict[str, Any] | None, body: str) -> set[int]:
+    """Return outgoing extends/supersedes/replaces refs for scope-creep analysis."""
+    refs: set[int] = set()
+    if isinstance(fm, dict):
+        for key in ("supersedes", "extends", "replaces"):
+            raw = fm.get(key) or []
+            if isinstance(raw, (str, int)):
+                raw = [raw]
+            if isinstance(raw, list):
+                for item in raw:
+                    ref = _coerce_adr_ref(item)
+                    if ref is not None:
+                        refs.add(ref)
+    for match in re.finditer(
+        r"(?i)\b(?:supersedes|extends|replaces)\s+ADR[- ]0*([0-9]+)", body
+    ):
+        refs.add(int(match.group(1)))
+    return refs
+
+
+def analyze_relationship_graph(files: list[Path]) -> list[dict[str, Any]]:
+    """Warn on ADR relationship cycles and chains that encourage scope creep."""
+    by_num: dict[int, tuple[Path, set[int]]] = {}
+    known = _known_adr_numbers(files)
+    findings: list[dict[str, Any]] = []
+
+    for path in files:
+        adr_num = _adr_number_from_filename(path)
+        if adr_num is None:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        fm_str, body = _extract_frontmatter(text)
+        fm: dict[str, Any] | None = None
+        if fm_str is not None:
+            try:
+                loaded = yaml.safe_load(fm_str) or {}
+                fm = loaded if isinstance(loaded, dict) else None
+            except yaml.YAMLError:
+                fm = None
+        refs = {ref for ref in _relationship_refs(path, fm, body) if ref in known and ref != adr_num}
+        if refs:
+            by_num[adr_num] = (path, refs)
+
+    def paths_from(start: int, path_so_far: list[int]) -> list[list[int]]:
+        if start in path_so_far:
+            return [path_so_far + [start]]
+        refs = by_num.get(start, (Path(), set()))[1]
+        if not refs:
+            return [path_so_far + [start]]
+        out: list[list[int]] = []
+        for ref in sorted(refs):
+            out.extend(paths_from(ref, path_so_far + [start]))
+        return out
+
+    emitted_cycles: set[tuple[int, ...]] = set()
+    for start, (path, _refs) in sorted(by_num.items()):
+        for chain in paths_from(start, []):
+            if len(chain) != len(set(chain)):
+                first = chain[-1]
+                idx = chain.index(first)
+                cycle = tuple(chain[idx:])
+                if cycle not in emitted_cycles:
+                    emitted_cycles.add(cycle)
+                    findings.append({
+                        "adr": start,
+                        "file": str(path.relative_to(REPO_ROOT)),
+                        "level": LEVEL_FAIL,
+                        "code": CODE_ADR_RELATION_CYCLE,
+                        "chain": [f"ADR-{n:03d}" for n in cycle],
+                        "message": "ADR extends/supersedes graph contains a cycle",
+                    })
+                continue
+            depth = len(chain) - 1
+            if depth > MAX_RELATION_CHAIN_DEPTH:
+                findings.append({
+                    "adr": start,
+                    "file": str(path.relative_to(REPO_ROOT)),
+                    "level": LEVEL_WARN,
+                    "code": CODE_ADR_RELATION_CHAIN_LONG,
+                    "chain_depth": depth,
+                    "max_chain_depth": MAX_RELATION_CHAIN_DEPTH,
+                    "chain": [f"ADR-{n:03d}" for n in chain],
+                    "message": (
+                        f"Relationship chain depth {depth} exceeds budget {MAX_RELATION_CHAIN_DEPTH}; "
+                        "consolidate with a tombstone, index ADR, or implementation ledger before adding another layer."
+                    ),
+                })
+    return findings
 
 def _verify_implementation_files(
     impl_files: list[str],
@@ -253,8 +360,9 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
     findings: list[dict[str, Any]] = []
 
     # ── Supersedes reference check ────────────────────────────────────────────
-    for ref_num in supersedes:
-        if isinstance(ref_num, int) and ref_num not in known_adrs:
+    for raw_ref in supersedes:
+        ref_num = _coerce_adr_ref(raw_ref)
+        if ref_num is not None and ref_num not in known_adrs:
             findings.append(
                 {
                     **base,
@@ -350,6 +458,10 @@ def run_audit(
         1 for f in findings if f.get("code") != CODE_MISSING_FRONTMATTER
     )
 
+    relationship_findings = analyze_relationship_graph(adr_files)
+    findings.extend(relationship_findings)
+
+    total = len(findings)
     has_failures = any(f.get("level") == LEVEL_FAIL for f in findings)
 
     if output_json:
