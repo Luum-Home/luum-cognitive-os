@@ -7840,8 +7840,62 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: mixed
   metrics_file: none
-  repair_message: Scope classification drift was blocked; restore valid os-only/project/both markers or update
-    ADR-019 and rerun scope governance tests before projecting to consumers.
+  repair_message: Scope classification drift was blocked; restore valid os-only/project/both markers or
+    update ADR-019 and rerun scope governance tests before projecting to consumers.
   false_positive_tests:
   - tests/contracts/test_primitive_scope_governance.py
   - tests/unit/test_primitive_scope_governance.py
+- id: scripts/primitive_harness_coverage.py
+  kind: script
+  owner_adr: ADR-189
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: core
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell-ci
+  projection_targets:
+  - docs/reports/primitive-harness-coverage-latest.json
+  - docs/reports/primitive-harness-coverage-latest.md
+  runtime_projection: false
+  behavior_evidence: machine-readable harness implementation coverage report separates scope intent from
+    IDE/harness execution evidence
+  evidence_commands:
+  - python3 scripts/primitive_harness_coverage.py --project-dir .
+  - python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py
+    -q
+  rollback_or_repair_command: Revert scripts/primitive_harness_coverage.py and ADR-189 report wiring,
+    then remove generated docs/reports/primitive-harness-coverage-latest.* files.
+  sunset_criteria: Replace only when a superseding ACC/harness coverage adapter emits the same state semantics
+    and contract tests migrate.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: skills/primitive-harness-coverage/SKILL.md
+  kind: skill
+  owner_adr: ADR-189
+  lifecycle_state: candidate
+  maturity: observe
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/primitive-harness-coverage/SKILL.md
+  runtime_projection: false
+  behavior_evidence: agent-facing procedure for invoking primitive harness coverage instead of inferring
+    parity from SCOPE markers
+  evidence_commands:
+  - python3 -m pytest tests/contracts/test_primitive_harness_coverage_contract.py -q
+  rollback_or_repair_command: Remove the skill and keep ADR-189/script as the direct operator path.
+  sunset_criteria: Archive if harness coverage becomes built into cos-status or ACC with equivalent skill
+    routing documentation.
+  docs_claim_level: advisory
+  exit_behavior: skill-procedure
+  metrics_file: none
