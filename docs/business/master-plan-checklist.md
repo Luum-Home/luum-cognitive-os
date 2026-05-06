@@ -91,6 +91,7 @@
 ## 5. Onboarding and Operational Simplicity
 
 - [x] Standalone ship-readiness status is captured in [Standalone Ship Readiness — 2026-05-06](../architecture/standalone-ship-readiness-2026-05-06.md), including release, Surface 5, `cosd` API, and install-root portability evidence.
+- [x] Surface 5 and secure `cosd` next-slice scope is grounded in existing SO features through [Surface 5 TUI and Secure cosd Roadmap](../architecture/surface-5-and-secure-cosd-roadmap.md).
 - [x] Standalone release plumbing is represented by [ADR-191](../adrs/ADR-191-cos-binary-release-pipeline.md), `.goreleaser.yaml`, `.github/workflows/cos-binary-release.yml`, and a non-placeholder HEAD Homebrew formula.
 - [x] Surface 5 has a sourced TUI substrate decision through [ADR-192](../adrs/ADR-192-surface-5-adopt-bubbletea.md) and a compile-tested Bubble Tea proof package.
 - [x] `cosd` has a local network API decision and implementation through [ADR-193](../adrs/ADR-193-cosd-local-network-api.md), `scripts/cos_daemon.py serve`, and API tests.
