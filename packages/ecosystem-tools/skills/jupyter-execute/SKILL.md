@@ -11,6 +11,13 @@ summary_line: "Execute code in a Jupyter kernel sandbox for data analysis, Pytho
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bjupyter[- ]?execute\b'
+    confidence: 0.95
+  - pattern: '\brun\s+(in\s+)?jupyter\b'
+    confidence: 0.85
+  - pattern: '\bjupyter\s+kernel\b'
+    confidence: 0.8
 ---
 
 # Jupyter Execute — Sandboxed Code Execution

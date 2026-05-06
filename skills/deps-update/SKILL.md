@@ -12,6 +12,13 @@ effort: haiku
 script: scripts/deps-update.sh
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdeps[- ]?update\b'
+    confidence: 0.95
+  - pattern: '\bupdate\s+(dependencies|deps)\b'
+    confidence: 0.85
+  - pattern: '\bupgrad\w*\s+dependencies\b'
+    confidence: 0.8
 ---
 
 # Deps Update

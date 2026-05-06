@@ -10,6 +10,13 @@ version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites:
   commands: [python3, jq]
+routing_patterns:
+  - pattern: '\brepair[- ]?skill\b'
+    confidence: 0.95
+  - pattern: '\bdrain\s+skill\s+repair\s+queue\b'
+    confidence: 0.85
+  - pattern: '\bdegraded\s+skills?\s+(repair|fix)\b'
+    confidence: 0.75
 ---
 
 # Repair Skill

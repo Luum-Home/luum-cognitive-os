@@ -17,6 +17,13 @@ summary_line: Scaffold DDD domain-model.md (bounded contexts + entities + langua
 model: haiku
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdomain[- ]?model\b'
+    confidence: 0.95
+  - pattern: '\bddd\s+domain\b'
+    confidence: 0.85
+  - pattern: '\bscaffold\s+domain\b'
+    confidence: 0.75
 ---
 
 # Domain Model Scaffolder

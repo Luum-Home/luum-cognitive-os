@@ -20,6 +20,13 @@ summary_line: Pull Request review skill.
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bpr[- ]?review\b'
+    confidence: 0.95
+  - pattern: '\breview\s+(a\s+)?pr\b'
+    confidence: 0.85
+  - pattern: '\bpull\s+request\s+review\b'
+    confidence: 0.8
 ---
 
 ## Purpose

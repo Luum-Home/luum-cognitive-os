@@ -16,6 +16,11 @@ summary_line: "Evaluate harness agentic primitives (hooks, rules, skills) for co
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bharness[- ]?audit\b'
+    confidence: 0.95
+  - pattern: '\baudit\s+harness\b'
+    confidence: 0.85
 ---
 
 ## Purpose

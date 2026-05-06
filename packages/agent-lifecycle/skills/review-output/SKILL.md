@@ -14,6 +14,13 @@ trigger: "review-output, review output, audit output, /review-output"
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\breview[- ]?output\b'
+    confidence: 0.95
+  - pattern: '\breview\s+agent\s+output\b'
+    confidence: 0.85
+  - pattern: '\bmanual\s+output\s+review\b'
+    confidence: 0.8
 ---
 
 # Review Output Skill

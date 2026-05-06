@@ -29,6 +29,11 @@ triggers:
   - "findings from different lenses"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdoc[- ]?review[- ]?personas?\b'
+    confidence: 0.95
+  - pattern: '\bdocumentation\s+review\s+personas?\b'
+    confidence: 0.8
 ---
 
 ## Purpose

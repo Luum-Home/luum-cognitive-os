@@ -9,6 +9,13 @@ summary_line: Read detected-stack.json and generate or update cognitive-os.yaml 
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bgenerate[- ]?config\b'
+    confidence: 0.95
+  - pattern: '\bgenerate\s+cognitive[- ]?os\.yaml\b'
+    confidence: 0.85
+  - pattern: '\bauto[- ]?generate\s+(os\s+)?config\b'
+    confidence: 0.75
 ---
 
 # Generate Config

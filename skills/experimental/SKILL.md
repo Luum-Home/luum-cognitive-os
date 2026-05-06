@@ -6,6 +6,11 @@ description: Structural namespace for experimental Cognitive OS skills that are 
 triggers: []
 user-invocable: false
 audience: os-dev
+routing_patterns:
+  - pattern: '\bexperimental\b'
+    confidence: 0.95
+  - pattern: '\bexperimental\s+skills?\b'
+    confidence: 0.85
 ---
 
 # Experimental Skills Namespace

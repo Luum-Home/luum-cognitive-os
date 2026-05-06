@@ -11,6 +11,13 @@ summary_line: "Inventory all pending work across plans, engram, tasks, todos, au
 
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsession[- ]?backlog\b'
+    confidence: 0.95
+  - pattern: '\binventor\w+\s+(pending|all)\s+work\b'
+    confidence: 0.8
+  - pattern: '\bbacklog\s+inventory\b'
+    confidence: 0.75
 ---
 
 # Session Backlog — Pending Work Inventory
