@@ -30,9 +30,9 @@ def make_repo(tmp_path: Path) -> Path:
     return project
 
 
-def run_inventory(project: Path) -> dict:
+def run_inventory(project: Path, *extra_args: str) -> dict:
     result = subprocess.run(
-        ["python3", str(SCRIPT), "--project-dir", str(project), "--all", "--json"],
+        ["python3", str(SCRIPT), "--project-dir", str(project), "--all", "--json", *extra_args],
         cwd=REPO,
         text=True,
         capture_output=True,
@@ -94,3 +94,35 @@ def test_work_inventory_reports_unknown_user_stash_provenance(tmp_path: Path) ->
     assert payload["stashes_extended"]
     assert payload["stashes_extended"][0]["provenance_tag"] == "user"
     assert payload["summary"]["stash_count"] >= 1
+
+
+def test_path_ownership_fails_closed_on_dirty_linked_worktree(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    linked = tmp_path / "linked"
+    git(project, "worktree", "add", "-b", "agent/license-switch", str(linked))
+    (linked / "owned.txt").write_text("agent dirty\n", encoding="utf-8")
+
+    payload = run_inventory(project, "--paths", "owned.txt")
+
+    ownership = payload["path_ownership"][0]
+    assert ownership["path"] == "owned.txt"
+    assert ownership["status"] == "active_or_unknown"
+    assert ownership["operator_review_required"] is True
+    assert ownership["dirty_worktrees"][0]["path"] == str(linked.resolve())
+    assert "Do not clean/drop/merge automatically" in ownership["action"]
+
+
+def test_path_ownership_reports_stash_temp_branch_as_preservation_not_liveness(tmp_path: Path) -> None:
+    project = make_repo(tmp_path)
+    git(project, "checkout", "-b", "codex/stash-license-review-test")
+    (project / "owned.txt").write_text("preserved copy\n", encoding="utf-8")
+    git(project, "add", "owned.txt")
+    git(project, "commit", "-m", "preserve test patch")
+    git(project, "checkout", "feature/ownership")
+
+    payload = run_inventory(project, "--paths", "owned.txt")
+
+    ownership = payload["path_ownership"][0]
+    assert ownership["status"] == "preserved_copy_only"
+    assert ownership["preserve_branches"] == ["codex/stash-license-review-test"]
+    assert "does not prove the original agent is inactive" in ownership["action"]
