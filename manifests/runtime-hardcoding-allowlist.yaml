@@ -16,6 +16,7 @@ protected_runtime_paths:
 blocked_reference_patterns:
   - id: dashboard_default_skill
     zone: extensions
+    regex: "agent-dashboard"
     reason: "Dashboard skills are optional extension surfaces and must not silently become core runtime requirements."
   - id: experimental_squad_projection
     zone: experimental
