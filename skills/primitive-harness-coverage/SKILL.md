@@ -52,6 +52,9 @@ Do not infer Claude/Codex parity from `SCOPE: both` alone.
    - `harnesses.<name>.events`
    - `harnesses.<name>.behavior_proven`
    - `gap`
+   - `gap_policy`
+   - `gap_status`
+   - `gap_severity`
 
 4. Explain results with this wording:
 

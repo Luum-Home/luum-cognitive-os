@@ -7899,3 +7899,78 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+- id: manifests/primitive-harness-gap-policy.yaml
+  kind: manifest
+  owner_adr: ADR-189
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: core
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - docs/reports/primitive-harness-coverage-latest.json
+  runtime_projection: false
+  behavior_evidence: gap policy manifest for ADR-189 harness coverage
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py
+    -q
+  rollback_or_repair_command: Remove or repair manifests/primitive-harness-gap-policy.yaml, then regenerate
+    primitive harness coverage.
+  sunset_criteria: Archive when the harness coverage report no longer consumes this manifest.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: manifests/primitive-behavior-evidence.yaml
+  kind: manifest
+  owner_adr: ADR-189
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: core
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - docs/reports/primitive-harness-coverage-latest.json
+  runtime_projection: false
+  behavior_evidence: explicit behavior evidence manifest for ADR-189 harness coverage
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py
+    -q
+  rollback_or_repair_command: Remove or repair manifests/primitive-behavior-evidence.yaml, then regenerate
+    primitive harness coverage.
+  sunset_criteria: Archive when the harness coverage report no longer consumes this manifest.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: manifests/primitive-scope-overrides.yaml
+  kind: manifest
+  owner_adr: ADR-189
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: core
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - docs/reports/primitive-harness-coverage-latest.json
+  runtime_projection: false
+  behavior_evidence: legacy scope override manifest for ADR-189 harness coverage
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py
+    -q
+  rollback_or_repair_command: Remove or repair manifests/primitive-scope-overrides.yaml, then regenerate
+    primitive harness coverage.
+  sunset_criteria: Archive when the harness coverage report no longer consumes this manifest.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
