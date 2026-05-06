@@ -1,5 +1,14 @@
 # Cognitive Prosthesis — Why the System Has This Shape
 
+> **Multi-surface note (2026-05-05):** The "Subtraction + maturity-driven"
+> doctrine described in this document is the rationale for adopting the
+> multi-surface UI architecture defined in
+> [ADR-172](../adrs/ADR-172-multi-surface-ui-architecture.md) instead of a
+> net-new in-tree dashboard. When candidate UI surfaces are evaluated against
+> this doctrine, they must prove they exist as real, working artefacts; otherwise
+> building them is addition without evidence of need. ADR-172 formalises that
+> outcome as four named, opt-in surfaces.
+
 > Companion to [boring-reliability-control-plane.md](boring-reliability-control-plane.md).
 > The control-plane document is the **operational doctrine**: real / measurable
 > / reversible / honest / evidence-backed. This document is the **rationale**:
