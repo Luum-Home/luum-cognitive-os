@@ -37,13 +37,14 @@ _file_fingerprint() {
 }
 
 _cache_key_for_context() {
-  local yaml_fp preamble_fp gotchas_fp session_id tool_name cache_basis
+  local yaml_fp preamble_fp gotchas_fp session_id tool_name prompt_fp cache_basis
   yaml_fp=$(_file_fingerprint "${COGNITIVE_OS_YAML:-/dev/null}")
   preamble_fp=$(_file_fingerprint "${PROJECT_DIR}/templates/agent-preamble.md")
   gotchas_fp=$(_file_fingerprint "${PROJECT_DIR}/templates/project-gotchas.md")
   session_id="${COGNITIVE_OS_SESSION_ID:-default}"
   tool_name="${1:-any}"
-  cache_basis="${yaml_fp}:${preamble_fp}:${gotchas_fp}:${session_id}:${tool_name}"
+  prompt_fp="${2:-0}"
+  cache_basis="${yaml_fp}:${preamble_fp}:${gotchas_fp}:${session_id}:${tool_name}:${prompt_fp}"
   printf '%s' "$cache_basis" \
     | shasum -a 256 2>/dev/null | cut -d' ' -f1 \
     || printf '%s' "$cache_basis" | md5 2>/dev/null \
@@ -89,6 +90,8 @@ INPUT=$(cat)
 # When invoked manually (testing without Claude Code), tool_name will be empty
 # and we'll emit to stderr for diagnostic visibility.
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // empty' 2>/dev/null || echo "")
+AGENT_PROMPT=$(echo "$INPUT" | jq -r '.tool_input.prompt // empty' 2>/dev/null || echo "")
+AGENT_PROMPT_FP=$(printf '%s' "$AGENT_PROMPT" | shasum -a 256 2>/dev/null | cut -d' ' -f1 || echo "0")
 HAS_VALID_INPUT=0
 if [[ -n "$TOOL_NAME" ]]; then
   HAS_VALID_INPUT=1
@@ -101,7 +104,7 @@ fi
 
 # ── Cache check (Strategy B) ─────────────────────────────────────────────────
 # If a valid cached context exists, emit it and exit immediately (<10ms path).
-_CACHE_KEY=$(_cache_key_for_context "$TOOL_NAME")
+_CACHE_KEY=$(_cache_key_for_context "$TOOL_NAME" "$AGENT_PROMPT_FP")
 if [[ "$HAS_VALID_INPUT" -eq 1 ]]; then
   _CACHED_OUTPUT=$(_cache_hit "$_CACHE_KEY" 2>/dev/null || true)
   if [[ -n "$_CACHED_OUTPUT" ]]; then
@@ -185,8 +188,6 @@ if [[ -d "$PROJECT_RULES_DIR" ]]; then
 fi
 
 # --- Keyword-based gotcha injection ---
-# Extract agent prompt to scan for keywords
-AGENT_PROMPT=$(echo "$INPUT" | jq -r '.tool_input.prompt // empty' 2>/dev/null)
 GOTCHAS=""
 
 if [[ -n "$AGENT_PROMPT" ]]; then
