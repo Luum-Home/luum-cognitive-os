@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# ADR-178 — propose-only advisory/blocking->demoted evaluator dispatcher.
+set -euo pipefail
+exec python3 "$(dirname "$0")/cos_demotion_proposer.py" "$@"

@@ -1,5 +1,18 @@
 <!-- SCOPE: both -->
 <!-- TIER: 2 -->
+---
+enforcement: agent-instruction
+trigger_priority: medium
+routing_patterns:
+  - pattern: "\\b(review|audit|critique)\\b"
+    confidence: 0.82
+  - pattern: "\\blooks good\\b"
+    confidence: 0.90
+  - pattern: "\\b(no issues found|nothing to flag)\\b"
+    confidence: 0.92
+  - pattern: "\\badversarial\\b"
+    confidence: 0.95
+---
 # Adversarial Review Protocol (BMAD v6 Pattern 1)
 
 ## Mandate
