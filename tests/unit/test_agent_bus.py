@@ -9,12 +9,10 @@ Run with: pytest tests/unit/test_agent_bus.py -v
 
 import json
 import os
-import tempfile
 import threading
 import time
 from pathlib import Path
-from typing import Any, Dict, List
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -306,12 +304,11 @@ class TestAgentPublisherClarification:
         mock_sub_pubsub.get_message.return_value = None
         mock_sub_client.pubsub.return_value = mock_sub_pubsub
 
-        import importlib
         mock_redis = MagicMock()
         mock_redis.Redis.from_url.side_effect = [mock_client, mock_sub_client]
 
         with patch.dict("sys.modules", {"redis": mock_redis}):
-            result = pub.ask_clarification(
+            pub.ask_clarification(
                 questions=["What port?", "Which service?"],
                 round_num=1,
                 timeout=1,
@@ -1094,3 +1091,45 @@ class TestSmartInfraIntegration:
         with patch.dict("sys.modules", {"lib.smart_infra": None}):
             result = _ensure_valkey_via_smart_infra()
             assert result is False
+
+
+def test_send_control_fallback_writes_interrupt_sentinel(tmp_path):
+    from lib.agent_bus import OrchestratorSubscriber
+
+    sub = OrchestratorSubscriber(fallback_dir=str(tmp_path))
+    sub._use_valkey = False
+    sent_via = sub.send_control("fallback-target", "stop")
+
+    assert sent_via == "fallback"
+    assert (tmp_path / "fallback-target" / "control.jsonl").exists()
+    interrupt = tmp_path / "fallback-target" / "interrupt"
+    assert interrupt.exists()
+    payload = json.loads(interrupt.read_text())
+    assert payload["command"] == "stop"
+    assert payload["type"] == "interrupt"
+
+
+def test_agent_publisher_poll_control_reads_interrupt(tmp_path):
+    from lib.agent_bus import AgentPublisher, _FileFallback
+
+    pub = AgentPublisher.__new__(AgentPublisher)
+    pub.agent_id = "agent-poll-1"
+    pub._fallback = _FileFallback(str(tmp_path))
+    pub._seen_control_ids = set()
+    pub._fallback.write_interrupt("agent-poll-1", {"command": "stop"})
+
+    assert pub.poll_control() == "stop"
+
+
+def test_agent_publisher_poll_control_drains_valkey_pending_before_files(tmp_path):
+    from lib.agent_bus import AgentPublisher, _FileFallback
+
+    pub = AgentPublisher.__new__(AgentPublisher)
+    pub.agent_id = "agent-poll-2"
+    pub._fallback = _FileFallback(str(tmp_path))
+    pub._pending_controls = ["pause", "resume"]
+    pub._seen_control_ids = set()
+    pub._lock = threading.Lock()
+
+    assert pub.poll_control() == "pause"
+    assert pub.poll_control() == "resume"

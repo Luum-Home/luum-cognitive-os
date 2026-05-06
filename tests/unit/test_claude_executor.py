@@ -6,6 +6,7 @@ command building, subprocess execution (mocked), and JSONL stream parsing.
 """
 import json
 import os
+import signal
 import subprocess
 from unittest.mock import MagicMock, patch
 
@@ -594,3 +595,27 @@ class TestSlash:
         executor.slash("/plan-feature")
         call_args = mock_run.call_args
         assert call_args[1]["prompt"] == "/plan-feature"
+
+
+class TestControlCommands:
+    def test_apply_control_stop_kills_process_group(self):
+        executor = ClaudeExecutor(claude_path="claude")
+        process = MagicMock()
+        state = {"stopped": False, "paused": False, "reason": ""}
+        with patch("claude_executor._kill_process_group") as kill:
+            executor._apply_control_command(process, "stop", state)
+        kill.assert_called_once_with(process)
+        assert state["stopped"] is True
+        assert state["reason"] == "orchestrator stop signal"
+
+    def test_apply_control_pause_and_resume_signal_process_group(self):
+        executor = ClaudeExecutor(claude_path="claude")
+        process = MagicMock()
+        process.pid = 12345
+        state = {"stopped": False, "paused": False, "reason": ""}
+        with patch("claude_executor.os.getpgid", return_value=999), patch("claude_executor.os.killpg") as killpg:
+            executor._apply_control_command(process, "pause", state)
+            executor._apply_control_command(process, "resume", state)
+        assert killpg.call_args_list[0][0] == (999, signal.SIGSTOP)
+        assert killpg.call_args_list[1][0] == (999, signal.SIGCONT)
+        assert state["paused"] is False

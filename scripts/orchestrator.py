@@ -209,6 +209,38 @@ def cmd_kill_hung(args: argparse.Namespace) -> int:
     return 0
 
 
+def _agent_bus_fallback_dir() -> Path:
+    return (
+        Path(
+            os.environ.get("COGNITIVE_OS_PROJECT_DIR")
+            or os.environ.get("CLAUDE_PROJECT_DIR")
+            or os.getcwd()
+        )
+        / ".cognitive-os"
+        / "agent-bus"
+    )
+
+
+def cmd_control(args: argparse.Namespace) -> int:
+    from lib.agent_bus import OrchestratorSubscriber
+
+    fallback_dir = _agent_bus_fallback_dir()
+    sub = OrchestratorSubscriber(fallback_dir=str(fallback_dir))
+    sent_via = sub.send_control(args.agent_id, args.command)
+    print(f"control: {args.command} -> {args.agent_id} via {sent_via}")
+    return 0
+
+
+def cmd_answer(args: argparse.Namespace) -> int:
+    from lib.agent_bus import OrchestratorSubscriber
+
+    fallback_dir = _agent_bus_fallback_dir()
+    sub = OrchestratorSubscriber(fallback_dir=str(fallback_dir))
+    sent_via = sub.answer_question(args.agent_id, args.answer, round_num=args.round)
+    print(f"answer: round {args.round} -> {args.agent_id} via {sent_via}")
+    return 0
+
+
 def cmd_run(args: argparse.Namespace) -> int:
     prompt = _read_prompt_from_args_or_stdin(args)
     if not prompt:
@@ -291,7 +323,6 @@ def cmd_run(args: argparse.Namespace) -> int:
         "error": dr.error,
     })()
     provider_used = dr.provider_used
-    providers_tried = dr.providers_tried
 
     # Stop subscriber if we started one
     if abm._subscriber and hasattr(abm._subscriber, "stop"):
@@ -362,6 +393,17 @@ def main(argv: list[str] | None = None) -> int:
     kh = sub.add_parser("kill-hung", help="Mark an agent as hung and publish stop signal.")
     kh.add_argument("agent_id")
     kh.set_defaults(func=cmd_kill_hung)
+
+    ctl = sub.add_parser("control", help="Send a live/fallback control command to an agent.")
+    ctl.add_argument("agent_id")
+    ctl.add_argument("command", choices=["stop", "pause", "resume"])
+    ctl.set_defaults(func=cmd_control)
+
+    ans = sub.add_parser("answer", help="Send a clarification answer to an agent.")
+    ans.add_argument("agent_id")
+    ans.add_argument("answer", nargs="+", help="One or more answer strings.")
+    ans.add_argument("--round", type=int, default=1, help="Clarification round number.")
+    ans.set_defaults(func=cmd_answer)
 
     # Top-level shortcuts: if no subcommand, default to `run` with remaining args.
     args, remaining = p.parse_known_args(argv)
