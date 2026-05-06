@@ -1,17 +1,17 @@
 ---
 adr: 184
 title: Manager-of-Managers Daemon — Authoritative Single-Writer for Critical Surfaces
-status: proposed
+status: accepted
 date: 2026-05-05
 supersedes: []
 superseded_by: null
 extends: [ADR-163]
 implementation_files:
   - scripts/cosd                            # existing minimal control-plane wrapper; extend for daemon mode
-  - scripts/cos_daemon.py                   # to create
-  - lib/intent_arbiter.py                   # to create
-  - hooks/cosd-intent-submit.sh             # to create
-  - tests/integration/test_cosd_daemon.py   # to create
+  - scripts/cos_daemon.py
+  - lib/intent_arbiter.py
+  - hooks/cosd-intent-submit.sh
+  - tests/integration/test_cosd_daemon.py
 tier: maintainer
 tags: [concurrency, daemon, governance, postmortem-2026-05-05, refines-ADR-163]
 ---
@@ -20,17 +20,17 @@ tags: [concurrency, daemon, governance, postmortem-2026-05-05, refines-ADR-163]
 
 ## Status
 
-**Proposed.** Long-horizon refinement of ADR-163 (cos-instance-installer).
+**Accepted.** First implementation landed as a local file-queue daemon for ADR identity arbitration. Long-horizon refinement of ADR-163 (cos-instance-installer).
 ADR-184 generalizes the daemon role from instance-provisioning into a
 **single-writer authority** for COS-critical paths, addressing the
 structural concurrency gap exposed by the
 2026-05-05 cross-session collision.
 
-This ADR is intentionally **not** part of the ADR-182/183/185 v1 critical path.
-Those ADRs are hook/library contracts that run in today's IDE-embedded session
-model. ADR-184 remains a separate daemon project: the current `scripts/cosd`
-file is only a minimal service-control-plane status wrapper, not the
-single-writer daemon described here.
+This ADR is intentionally **separate** from the ADR-182/183/185 v1 critical
+path. Those ADRs are hook/library contracts that run in today's IDE-embedded
+session model. ADR-184 now ships a local `cosd` file-queue daemon for ADR
+identity arbitration; broader registry/settings/release ownership remains
+future expansion.
 
 ## Context
 
@@ -158,17 +158,17 @@ ADR-183 mode (peer coordination only). The daemon is not required for
 routine work; it is required for the specific high-stakes surfaces it
 owns.
 
-Until ADR-184 is implemented, COS must not pretend that the daemon is enforcing
-ownership. The active protection layer is:
+ADR-184 v1 is intentionally narrow. The active protection layer is now:
 
 - ADR-182 branch ownership locks;
 - ADR-183 cross-session event visibility;
 - ADR-185 directed audit/implementation messages;
-- local guards for ADR numbering/tombstone workflows.
+- local guards for ADR numbering/tombstone workflows;
+- `cosd` arbitration for ADR number reservation and tombstone authorization.
 
-The daemon adoption work should land in its own commit series with
-source-level proof for `scripts/cosd`, `scripts/cos_daemon.py`,
-`lib/intent_arbiter.py`, and the daemon integration tests.
+The daemon does **not** yet arbitrate every critical surface listed above.
+Registry-lock, settings-regeneration, and release/version intents must be added
+as separate intent kinds with source-level proof and tests.
 
 ### Failure modes
 
