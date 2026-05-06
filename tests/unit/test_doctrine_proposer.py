@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 
 from lib.doctrine_proposer import build_doctrine_proposals, render_markdown, write_markdown
+from lib.skill_store import SkillStore
+from scripts.cos_doctrine_proposer import _skillstore_signal
 
 
 def test_proposes_doctrine_from_control_plane_evidence(tmp_path: Path) -> None:
@@ -115,3 +117,18 @@ def test_write_markdown_logs_proposal_generation(tmp_path: Path) -> None:
     assert rows[0]["source"] == "cos-doctrine-proposer"
     assert rows[0]["event_type"] == "doctrine.proposal.generated"
     assert rows[0]["payload"]["runtime_effect"] == "none"
+
+
+def test_doctrine_proposer_reads_real_skillstore_database(tmp_path: Path) -> None:
+    db_path = tmp_path / ".cognitive-os" / "skill_store.db"
+    store = SkillStore(db_path)
+    store.record_execution("observed-skill", "session-1", 3, 120, "success")
+    store.close()
+
+    signal = _skillstore_signal(tmp_path)
+
+    assert signal is not None
+    assert signal["skill_count"] == 1
+    assert signal["completions"] == 1
+    assert signal["applied"] == 1
+    assert signal["digest"]
