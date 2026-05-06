@@ -216,6 +216,7 @@ skill-post-execution-analysis.sh
 cross-session-coordination-guard.sh
 # 2026-05-05: directed auditor/operator message guard is generated via the
 # settings driver for Bash/git boundaries.
+agent-control-inbound-guard.sh
 agent-message-inbox-guard.sh
 
 # 2026-05-06: ADR-184 cosd intent submit wrapper; workflow-invoked, not projected by default.
