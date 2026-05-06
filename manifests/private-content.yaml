@@ -1,0 +1,216 @@
+schema_version: private-content/v1
+adr: ADR-202
+
+# Conservative skeleton manifest. Path classification is policy metadata; this
+# file must not cause generic audits to read secret-never-touch content.
+
+defaults:
+  unknown_private_content: local-only
+  unknown_generated_artifact: local-only
+  unknown_metrics_payload: local-only
+  unknown_memory_observation: local-only
+  unknown_export: block
+
+classes:
+  secret-never-touch:
+    may_read_content: false
+    may_project: false
+    may_export: false
+    requires_secret_specific_api: true
+  local-only:
+    may_read_content: true
+    may_project: false
+    may_export: false
+    allowed_hosts:
+      - local
+  same-user-harness:
+    may_read_content: true
+    may_project: true
+    may_export: false
+    allowed_hosts:
+      - local
+  project-private:
+    may_read_content: true
+    may_project: true
+    may_export: false
+    allowed_hosts:
+      - local
+      - project-private
+  sanitized-export:
+    may_read_content: true
+    may_project: true
+    may_export: true
+    requires_redaction: true
+    requires_provenance: true
+  public:
+    may_read_content: true
+    may_project: true
+    may_export: true
+
+secret_patterns:
+  - .env
+  - .env.*
+  - '*.pem'
+  - '*.key'
+  - '*.p12'
+  - '*.pfx'
+  - id_rsa
+  - id_ed25519
+  - secrets/**
+  - '**/secrets/**'
+  - '**/*token*'
+  - '**/*credential*'
+
+# Max-depth-one roots below .cognitive-os that existed when this conservative
+# skeleton was introduced. New roots are reported by --unknown-surfaces until a
+# reviewer classifies them explicitly.
+declared_private_roots:
+  - .cognitive-os/.hook-pipe
+  - .cognitive-os/.locks
+  - .cognitive-os/agent-bus
+  - .cognitive-os/agents
+  - .cognitive-os/archive
+  - .cognitive-os/archives
+  - .cognitive-os/artifacts
+  - .cognitive-os/cache
+  - .cognitive-os/checkpoints
+  - .cognitive-os/coordination
+  - .cognitive-os/customizations
+  - .cognitive-os/docs
+  - .cognitive-os/engram-bundles
+  - .cognitive-os/engram-import-proposals
+  - .cognitive-os/generated
+  - .cognitive-os/improvements
+  - .cognitive-os/instances
+  - .cognitive-os/locks
+  - .cognitive-os/metrics
+  - .cognitive-os/migrations
+  - .cognitive-os/pending-tasks
+  - .cognitive-os/pipeline-state
+  - .cognitive-os/plans
+  - .cognitive-os/preserve-manifests
+  - .cognitive-os/recovery
+  - .cognitive-os/reports
+  - .cognitive-os/rules
+  - .cognitive-os/runtime
+  - .cognitive-os/self-knowledge
+  - .cognitive-os/service
+  - .cognitive-os/sessions
+  - .cognitive-os/skills
+  - .cognitive-os/snapshots
+  - .cognitive-os/sprints
+  - .cognitive-os/squads
+  - .cognitive-os/strategy
+  - .cognitive-os/tasks
+  - .cognitive-os/templates
+  - .cognitive-os/tests
+  - .cognitive-os/transcripts
+  - .cognitive-os/workflows
+
+surfaces:
+  - id: cognitive-os-private-root
+    kind: private-runtime-root
+    path_globs:
+      - .cognitive-os/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: declared-by-surface
+    redaction_rule: none
+    provenance_required: false
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl
+
+  - id: strategy-private
+    kind: private-strategy
+    path_globs:
+      - .cognitive-os/strategy/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: manual
+    redaction_rule: none
+    provenance_required: false
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl
+
+  - id: local-plans
+    kind: private-plan
+    path_globs:
+      - .cognitive-os/plans/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: manual
+    redaction_rule: none
+    provenance_required: false
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl
+
+  - id: recovery-artifacts
+    kind: recovery-artifact
+    path_globs:
+      - .cognitive-os/recovery/**
+      - .cognitive-os/preserve-manifests/**
+      - .cognitive-os/archive/**
+      - .cognitive-os/archives/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: ADR-200
+    redaction_rule: none
+    provenance_required: false
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl
+
+  - id: raw-metrics
+    kind: raw-telemetry
+    path_globs:
+      - .cognitive-os/metrics/**
+      - .cognitive-os/agent-bus/**
+      - .cognitive-os/transcripts/**
+      - .cognitive-os/sessions/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: ADR-200
+    redaction_rule: aggregate-before-export
+    provenance_required: true
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl
+
+  - id: engram-local-bundles
+    kind: memory-store
+    path_globs:
+      - .cognitive-os/engram-bundles/**
+      - .cognitive-os/engram-import-proposals/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: manual
+    redaction_rule: summary-redaction-required-before-elevation
+    provenance_required: true
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl
+
+  - id: consumer-evidence-local
+    kind: consumer-evidence
+    path_globs:
+      - .cognitive-os/artifacts/**
+      - .cognitive-os/checkpoints/**
+      - .cognitive-os/reports/**
+    class: local-only
+    allowed_hosts:
+      - local
+    allowed_destinations: []
+    retention_policy: manual
+    redaction_rule: sanitized-export-required-before-sharing
+    provenance_required: true
+    operator_approval_required: true
+    audit_metric: .cognitive-os/metrics/private-content-access.jsonl

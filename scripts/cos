@@ -11,6 +11,7 @@
 #   cos measure harness-profiles       -> scripts/measure_harness_profiles.py
 #   cos sprint ...                     -> scripts/cos_sprint.py
 #   cos subagent preflight             -> scripts/subagent_launch_preflight.py
+#   cos private-content audit          -> scripts/private_content_audit.py
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
@@ -112,6 +113,14 @@ case "$SUBCMD" in
     echo "cos: unknown subagent subcommand '${2:-}'. Try: cos subagent preflight --type Explore --prompt '...'" >&2
     exit 1
     ;;
+  private-content)
+    if [ "${2:-}" = "audit" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/private_content_audit.py" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown private-content subcommand '${2:-}'. Try: cos private-content audit [--json|--strict]" >&2
+    exit 1
+    ;;
   state)
     if [ "${2:-}" = "retention" ]; then
       shift 2
@@ -147,6 +156,7 @@ Usage:
   cos sprint <cmd>                       Run sprint orchestration commands
   cos subagent preflight --type TYPE --prompt TEXT
                                          Check subagent capability contract before launch
+  cos private-content audit [--json]      Audit ADR-202 private-content classifications
   cos state retention [--json|--strict]   Audit declared mutable state retention
   cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
   cos init [dir]                         Install Cognitive OS into a project
