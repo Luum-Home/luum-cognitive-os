@@ -1,7 +1,7 @@
 # Cognitive OS — Feature Matrix
 
 > This document details all Cognitive OS capabilities.
-> All core features are free and open-source (Apache 2.0).
+> All core features are source-available under [FSL-1.1-MIT](../../LICENSE) — converts to MIT after 2 years. See [LICENSE](../../LICENSE) for terms.
 
 ---
 
@@ -21,7 +21,7 @@
 | 10 | SRE and Self-Healing | Autonomous monitoring with known-fix database | AI fixes problems while you sleep |
 | 11 | Industry Presets | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
 | 12 | Automation Workflows | End-to-end pipelines: from ticket to deployed code | Full automation from idea to production |
-| 13 | Open-Source Core | Apache 2.0 core + plugin system | Try for free, contribute, and benefit |
+| 13 | Open-Source Core | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
 
 ---
 
