@@ -7,6 +7,13 @@ audience: os
 tags: [memory, user-model, engram, adr-077]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bpeer[- ]?card\b'
+    confidence: 0.95
+  - pattern: '\buser\s+memory\s+card\b'
+    confidence: 0.8
+  - pattern: '\bpeer\s+(read|edit|forget|explain)\b'
+    confidence: 0.75
 ---
 
 # Peer Card

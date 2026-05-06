@@ -18,6 +18,11 @@ summary_line: "Export SO rules/ as a point-in-time snapshot into docs/08-estanda
 model: haiku
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\brules[- ]?export\b'
+    confidence: 0.95
+  - pattern: '\bexport\s+rules?\b'
+    confidence: 0.85
 ---
 
 ## Purpose

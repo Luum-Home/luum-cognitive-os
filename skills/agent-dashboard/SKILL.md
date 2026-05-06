@@ -7,6 +7,13 @@ scope: os
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bagent[- ]?dashboard\b'
+    confidence: 0.95
+  - pattern: '\b(agent\s+status|running\s+agents|background\s+agents)\b'
+    confidence: 0.8
+  - pattern: '\bshow\s+agents?\b'
+    confidence: 0.75
 ---
 
 # /agent-dashboard

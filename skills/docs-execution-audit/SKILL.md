@@ -11,6 +11,13 @@ summary_line: Audit what the docs say is done vs what repo evidence proves.
 version: "1.0.0"
 platforms: ["claude-code", "codex"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdocs[- ]?execution[- ]?audit\b'
+    confidence: 0.95
+  - pattern: '\bclassify\s+documentation\s+items?\b'
+    confidence: 0.8
+  - pattern: '\bdoc\s+evidence\s+audit\b'
+    confidence: 0.75
 ---
 
 # Documentation Execution Audit

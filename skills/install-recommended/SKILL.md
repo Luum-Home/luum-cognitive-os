@@ -8,6 +8,13 @@ audience: project
 triggers: ["/install-recommended", "/recommend-skills", "/stack-skills"]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\binstall[- ]?recommended\b'
+    confidence: 0.95
+  - pattern: '\brecommended\s+skills?\s+(to\s+)?install\b'
+    confidence: 0.85
+  - pattern: '\bdetect\s+stack\s+recommend\b'
+    confidence: 0.75
 ---
 
 # /install-recommended

@@ -15,6 +15,13 @@ summary_line: "\"Extract learnings and compound knowledge after completing an SD
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsdd[- ]?compound\b'
+    confidence: 0.95
+  - pattern: '\bcompound\s+knowledge\s+(after|post)\s+sdd\b'
+    confidence: 0.8
+  - pattern: '\bcrystallize\s+patterns?\b'
+    confidence: 0.75
 ---
 
 # SDD Compound — Post-Archive Learning Extraction

@@ -8,6 +8,13 @@ summary_line: "Scans a target file pair (ADR + lib, or similar) for numeric-cons
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\binvariant[- ]?check\b'
+    confidence: 0.95
+  - pattern: '\bcheck\s+invariants?\b'
+    confidence: 0.85
+  - pattern: '\bnumeric\s+invariants?\b'
+    confidence: 0.75
 ---
 
 # invariant-check

@@ -11,6 +11,13 @@ summary_line: "\"Search past Claude Code conversations using full-text search."
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\brecall[- ]?search\b'
+    confidence: 0.95
+  - pattern: '\bsearch\s+(past\s+)?conversations?\b'
+    confidence: 0.85
+  - pattern: '\bfull[- ]?text\s+search\s+transcript\b'
+    confidence: 0.75
 ---
 
 # Recall Search

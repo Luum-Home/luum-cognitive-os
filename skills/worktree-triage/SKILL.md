@@ -10,6 +10,13 @@ tags: [git, worktree, coordination, safety, triage]
 summary_line: "Compare a worktree to main and produce a safe port/validate/remove checklist."
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: ["git"]
+routing_patterns:
+  - pattern: '\bworktree[- ]?triage\b'
+    confidence: 0.95
+  - pattern: '\btriage\s+(linked\s+)?worktree\b'
+    confidence: 0.85
+  - pattern: '\bport\s+unapplied\s+work\b'
+    confidence: 0.75
 ---
 
 # Worktree Triage

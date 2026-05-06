@@ -11,6 +11,11 @@ last-updated: 2026-04-24
 summary_line: "DEPRECATED alias for /repo-scout"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\beval[- ]?repo\b'
+    confidence: 0.95
+  - pattern: '\bevaluate\s+repo\b'
+    confidence: 0.85
 ---
 
 # /eval-repo (DEPRECATED)
