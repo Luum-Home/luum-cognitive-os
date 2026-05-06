@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 97,
+  "_hook_count": 106,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -23,6 +23,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/session-init.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
+            "async": true
           },
           {
             "type": "command",
@@ -97,6 +102,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/memory-prefetch.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-peer-context.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-message-inbox-context.sh\"",
             "async": true
           },
           {
@@ -184,6 +199,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/branch-ownership-lock.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/symlink-mutation-guard.sh\""
           },
           {
@@ -244,6 +263,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-md-routing-validator.sh\"",
             "async": false
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
+            "async": true
           }
         ]
       },
@@ -289,6 +313,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/reinvention-check.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
+            "async": true
           }
         ]
       }
@@ -312,6 +341,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/post-git-orphan-notifier.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
+            "async": true
           }
         ]
       },
@@ -503,6 +537,15 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/engram-obsidian-export-on-stop.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/branch-ownership-release.sh\""
           }
         ]
       },
