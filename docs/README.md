@@ -222,6 +222,10 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Tooling Stack Rationalization](architecture/tooling-stack-rationalization.md) — how to keep external services lightweight, optional, and aligned with the product promise
 - [Infrastructure Service Catalog](architecture/infrastructure-service-catalog.md) — what each Docker/Python/cloud service is for and whether it is core, optional, or reference-only
 - [Observability Backend Evaluation](architecture/observability-backend-evaluation-2026-04-24.md) — 2026 decision record for MLflow, Langfuse, Opik, OpenTelemetry, and other observability options
+- [Self-Improvement Maintainer Agent Gap](reports/self-improvement-maintainer-agent-gap-2026-05-06.md) — diagnosis of why telemetry does not close the loop without a permanent maintainer agent and `PromoteFromTelemetry` primitive
+- [Private Content Portability Gap](reports/private-content-portability-gap-2026-05-06.md) — diagnosis of private strategy/memory/metrics portability across Codex, Claude Code, and service hosts
++- [Auto-Rollback Router Trigger Forensics](reports/auto-rollback-router-trigger-forensics-2026-05-06.md) — why `/auto-rollback` was suggested in a meta-discussion and the narrow router guard added
+- [Subagent Capability Contract Gap](reports/subagent-capability-contract-gap-2026-05-06.md) — diagnosis of Explore read-only launches for file-artifact research tasks and the ADR-203 guard
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract
 - [Harness Driver Parity](architecture/harness-driver-parity.md) — how Claude, Codex, and future harness settings projections are compared without pretending every driver has the same capabilities
 - [Codex Governed Tool Layer](architecture/codex-governed-tool-layer.md) — governed fallback for Agent and Edit/Write hook chains that Codex cannot emit natively today.
@@ -763,6 +767,17 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Blocked Tools](blocked-tools.md) — SaaS safety verdicts and blocked licenses
 - [Harness Engineering](architecture/harness-engineering.md) — Harness portability doctrine, init checks, and profile measurement
 - [Architecture Principles](architecture-principles.md) — How the durable product boundaries fit together
+- [ADR-201: Maintainer Agent and Telemetry Promotion Loop](adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md) — proposed owner-backed loop for converting COS telemetry into governed improvement proposals
+- [ADR-202: Private Content Cross-Harness Portability Boundary](adrs/ADR-202-private-content-cross-harness-portability-boundary.md) — proposed policy for private content classes, projection, redaction, and service/cloud retention
+- [ADR-203: Subagent Capability Contract and Launch Preflight](adrs/ADR-203-subagent-capability-contract-and-launch-preflight.md) — accepted manifest/preflight contract preventing read-only subagents from being launched for file-artifact tasks
+- [ADR-204: Signal Quality and Reward Integrity Boundary](adrs/ADR-204-signal-quality-and-reward-integrity-boundary.md) — proposed contract preventing dirty reward signals from driving self-improvement
+- [ADR-205: Cross-Stream Trace Joiner and Flight Recorder](adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md) — proposed run trace substrate for service-mode observability and the performance ledger
+- [ADR-206: Aspirational Claim Decommission Gate](adrs/ADR-206-aspirational-claim-decommission-gate.md) — proposed release gate for removing or demoting unbacked autonomous/self-improvement claims
+- [ADR-207: Skill Ecosystem Performance and Lifecycle Closure](adrs/ADR-207-skill-ecosystem-performance-and-lifecycle-closure.md) — proposed skill-specific ledger and lifecycle closure contract
+- [ADR-208: Imported Pattern Closure Contract](adrs/ADR-208-imported-pattern-closure-contract.md) — proposed rule that imported patterns need producer, consumer, scheduler, evaluator, and tests before promotion
+- [ADR-209: Maintainer Reconciler Experiment Contract](adrs/ADR-209-maintainer-reconciler-experiment-contract.md) — proposed experiment/canary contract for maintainer-generated changes
+- [ADR-210: Fleet-Aggregated Confidence Boundary](adrs/ADR-210-fleet-aggregated-confidence-boundary.md) — proposed privacy-preserving aggregate confidence boundary for future cloud learning
+- [ADR-211: Service-Mode Readiness Gate](adrs/ADR-211-service-mode-readiness-gate.md) — proposed launch gate for headless/cloud service claims
 
 ## Getting started
 
