@@ -86,6 +86,11 @@ func TestE2E_SkillSuggestDraftPromote(t *testing.T) {
 		t.Fatalf("expected approval error, got: %s", out)
 	}
 
+	out, code = runCos(t, projectDir, "skill", "evaluate", "repair-test-failure-checkout", "--baseline-score", "1", "--candidate-score", "3", "--evidence-command", "go test ./...")
+	if code != 0 {
+		t.Fatalf("skill evaluation failed (%d): %s", code, out)
+	}
+
 	out, code = runCos(t, projectDir, "skill", "promote", "repair-test-failure-checkout", "--approved-by", "go-test")
 	if code != 0 {
 		t.Fatalf("approved promotion failed (%d): %s", code, out)
