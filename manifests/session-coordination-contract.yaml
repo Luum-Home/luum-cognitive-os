@@ -1,0 +1,80 @@
+version: 1
+status: active
+owner: maintainer
+purpose: >
+  Make cross-IDE and cross-session intent visible before agents mutate shared
+  branches, ADR numbers, paths, policies, skills, or other agentic primitives.
+
+runtime_state:
+  claims: .cognitive-os/coordination/session-claims.json
+  worktree_intake: .cognitive-os/coordination/worktree-intake.json
+  agent_messages: .cognitive-os/coordination/agent-messages.jsonl
+  locks:
+    - .cognitive-os/coordination/session-claims.json.lock
+    - .cognitive-os/coordination/worktree-intake.json.lock
+    - .cognitive-os/coordination/agent-messages.lock
+
+claim_kinds:
+  task:
+    blocks_duplicate_subject: true
+    example: "paperclip-disposition"
+  adr-number:
+    blocks_duplicate_subject: true
+    normalized_subject: "ADR-###"
+    example: "ADR-171"
+  path:
+    blocks_duplicate_subject: true
+    example: "docs/adrs/ADR-171-reject-paperclip-integration.md"
+  policy:
+    blocks_duplicate_subject: true
+    example: "paperclip-disposition"
+  skill:
+    blocks_duplicate_subject: true
+    example: "adr-tombstone"
+  primitive:
+    blocks_duplicate_subject: true
+    example: "cross-session-coordination"
+
+guards:
+  agent_message_inbox:
+    default: warn
+    strict_env: COS_AGENT_MESSAGE_GUARD_MODE=block
+    rules:
+      - "Auditors send directed findings instead of mutating operator worktrees."
+      - "Blocking findings must be acknowledged by the target session before risky git boundaries."
+      - "Acknowledgement records status: seen, accepted, applied, rejected, or needs-clarification."
+  adr_tombstone:
+    default: block
+    rules:
+      - "Do not tombstone a number with an active non-tombstone ADR file."
+      - "Do not tombstone a number claimed by another live session."
+      - "Require explicit force flag to replace active ADR prose."
+  worktree_intake:
+    default: warn
+    strict_env: COS_SESSION_COORDINATION_MODE=block
+    rules:
+      - "Sibling worktrees require a recorded read-only/import/ignore intake before high-risk git boundaries."
+      - "Reviewing another worktree must not mutate the active branch unless the intake policy is import-approved."
+  claims:
+    default_ttl_seconds: 86400
+    rules:
+      - "Same session may refresh its own claim."
+      - "Different sessions are blocked on same normalized claim kind+subject."
+
+tools:
+  cli:
+    - scripts/cos-session-coordination
+    - scripts/cos_session_coordination.py
+    - scripts/cos-agent-message
+    - scripts/cos_agent_message.py
+  hook:
+    - hooks/cross-session-coordination-guard.sh
+    - hooks/agent-message-inbox-guard.sh
+  library:
+    - lib/session_coordination.py
+    - lib/agent_message_bus.py
+
+acceptance_tests:
+  - tests/unit/test_session_coordination.py
+  - tests/unit/test_agent_message_bus.py
+  - tests/unit/test_adr_tombstone.py

@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
-  "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 89,
+  "_description": "Standard security profile — balanced safety and speed. Recommended for daily development.",
+  "_hook_count": 92,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -102,6 +102,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-prompt-suggest.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\"",
+            "async": true
           }
         ]
       }
@@ -185,6 +190,14 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/direct-main-guard.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-coordination-guard.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-message-inbox-guard.sh\""
           },
           {
             "type": "command",
@@ -512,5 +525,7 @@
       }
     ]
   },
-  "_skillstore_analysis_registered_in_driver": true
+  "_skillstore_analysis_registered_in_driver": true,
+  "_rule_router_prompt_suggest_registered_in_driver": true,
+  "_rule_md_routing_validator_registered_in_driver": true
 }
