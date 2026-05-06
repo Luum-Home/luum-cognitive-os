@@ -38,6 +38,19 @@ SUBJECT_CLAIM_LINE = re.compile(
     r"^\s*(archived|deleted|removed|wired|integrated|registered|done|closed|migrated|tested|verified|claimed)\b",
     re.IGNORECASE,
 )
+AGGREGATE_MISSING_CLAIM = re.compile(
+    r"\b(?P<count>\d{2,})\s+(?:items?\s+|files?\s+|skills?\s+|entries?\s+)?"
+    r"(?P<status>missing|not[_ -]?found|absent)\b|"
+    r"\b(?P<status_first>missing|not[_ -]?found|absent)\s+"
+    r"(?P<count_after>\d{2,})\s+(?:items?\s+|files?\s+|skills?\s+|entries?)\b",
+    re.IGNORECASE,
+)
+PER_ITEM_EVIDENCE_ROW = re.compile(
+    r"^\s*(?:[-*]|\d+\.|\|)\s+.*"
+    r"(?:`[^`]+`|(?:^|[\s:])(?:[./][^\s`|]+|[A-Za-z0-9_.-]+/[^\s`|]+)|"
+    r"\b(?:checked|verified|exists|missing|not[_ -]?found|ls\s+-la|test\s+-e)\b)",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -179,6 +192,51 @@ def verify_text_claims(root: Path, text: str, source: str) -> list[GateFinding]:
     return findings
 
 
+def verify_aggregate_missing_evidence(text: str, source: str) -> list[GateFinding]:
+    """Block aggregate "N missing" claims unless N per-item evidence rows exist.
+
+    This enforces the subagent-context rule that a report may not claim a
+    count of missing/not-found items from a bulk search alone. The report must
+    include enough individual evidence rows to support the aggregate count.
+    """
+    findings: list[GateFinding] = []
+    if not text.strip():
+        return findings
+
+    counts: list[int] = []
+    for match in AGGREGATE_MISSING_CLAIM.finditer(text):
+        raw = match.group("count") or match.group("count_after")
+        if not raw:
+            continue
+        count = int(raw)
+        if count >= 2:
+            counts.append(count)
+
+    if not counts:
+        return findings
+
+    evidence_rows = [
+        line for line in text.splitlines() if PER_ITEM_EVIDENCE_ROW.search(line)
+    ]
+    required = max(counts)
+    if len(evidence_rows) < required:
+        findings.append(
+            GateFinding(
+                source=source,
+                status="FAIL",
+                message=(
+                    f"aggregate missing/not-found claim requires per-item evidence: "
+                    f"claimed {required}, found {len(evidence_rows)} evidence rows"
+                ),
+                evidence=(
+                    "For any 'N missing'/'N NOT_FOUND' report, include one bullet/table "
+                    "row per item with the checked path or command evidence."
+                ),
+            )
+        )
+    return findings
+
+
 def scoped_claim_text(text: str) -> str:
     """Return only lines that intentionally carry high-stakes status claims.
 
@@ -285,6 +343,7 @@ def evaluate(root: Path, mode: str, command: str = "", text: str = "") -> GateRe
 
     if text:
         findings.extend(verify_text_claims(root, text, "agent-output"))
+        findings.extend(verify_aggregate_missing_evidence(text, "agent-output"))
 
     if mode in {"pre-commit", "pre-push"}:
         findings.extend(verify_staged_plans(root))
