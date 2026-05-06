@@ -45,6 +45,34 @@ else
     PROJECT_DIR="."
 fi
 
+is_gitignored_destination() {
+    local path="$1"
+    local project="$2"
+    if ! command -v git >/dev/null 2>&1; then
+        return 1
+    fi
+    if ! git -C "$project" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        return 1
+    fi
+    local rel_path
+    rel_path=$(python3 - "$path" "$project" <<'PYEOF' 2>/dev/null
+import os
+import sys
+
+path = os.path.abspath(sys.argv[1])
+project = os.path.abspath(sys.argv[2])
+try:
+    print(os.path.relpath(path, project))
+except ValueError:
+    print(path)
+PYEOF
+)
+    case "$rel_path" in
+        ../*|/*) return 1 ;;
+    esac
+    git -C "$project" check-ignore -q -- "$rel_path"
+}
+
 # Load confidentiality config
 CONFIG_FILE="$PROJECT_DIR/.cognitive-os/confidentiality.yaml"
 
@@ -80,6 +108,46 @@ PYEOF
 PYTHON_EXIT=$?
 
 if [ $PYTHON_EXIT -eq 1 ]; then
+    ONLY_OPERATOR_ABSOLUTE_PATHS=$(echo "$PYTHON_OUTPUT" | python3 -c '
+import json
+import sys
+
+rows = []
+for line in sys.stdin:
+    line = line.strip()
+    if not line:
+        continue
+    try:
+        rows.append(json.loads(line))
+    except Exception:
+        print("false")
+        raise SystemExit(0)
+
+if rows and all(row.get("type") == "external_path" for row in rows):
+    print("true")
+else:
+    print("false")
+')
+
+    if [ "$ONLY_OPERATOR_ABSOLUTE_PATHS" = "true" ] && is_gitignored_destination "$FILE_PATH" "$PROJECT_DIR"; then
+        echo "CONFIDENTIALITY WARNING: operator absolute path found in gitignored destination $FILE_PATH" >&2
+        echo "$PYTHON_OUTPUT" | while IFS= read -r line; do
+            if [ -n "$line" ]; then
+                VTYPE=$(echo "$line" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('type','?'))" 2>/dev/null || echo "?")
+                VTEXT=$(echo "$line" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('text','?'))" 2>/dev/null || echo "?")
+                VLINE=$(echo "$line" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('line',0))" 2>/dev/null || echo "0")
+                echo "  Line $VLINE [$VTYPE downgraded-to-warn]: $VTEXT" >&2
+            fi
+        done
+
+        VIOLATION_COUNT=$(echo "$PYTHON_OUTPUT" | grep -c '{' 2>/dev/null || echo "1")
+        METRICS_DIR="${COGNITIVE_OS_METRICS_DIR:-$PROJECT_DIR/.cognitive-os/metrics}"
+        mkdir -p "$METRICS_DIR"
+        echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"file\":\"$FILE_PATH\",\"violations\":$VIOLATION_COUNT,\"action\":\"warn\",\"downgrade_reason\":\"operator_absolute_path_gitignored_destination\"}" >> "$METRICS_DIR/confidentiality-enforcer.jsonl"
+        cache_update "$FILE_PATH" "$_CONF_RULES_HASH"
+        exit 0
+    fi
+
     echo "CONFIDENTIALITY VIOLATION: prohibited content found in $FILE_PATH" >&2
     echo "$PYTHON_OUTPUT" | while IFS= read -r line; do
         if [ -n "$line" ]; then
