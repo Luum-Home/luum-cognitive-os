@@ -37,6 +37,27 @@ var skillDraftCmd = &cobra.Command{
 	},
 }
 
+var skillEvaluateCmd = &cobra.Command{
+	Use:   "evaluate <draft-id>",
+	Short: "Record comparative evidence for a governed skill draft",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		baseline, _ := cmd.Flags().GetString("baseline-score")
+		candidate, _ := cmd.Flags().GetString("candidate-score")
+		requiredDelta, _ := cmd.Flags().GetString("required-delta")
+		evidenceCommands, _ := cmd.Flags().GetStringArray("evidence-command")
+		safetyRegressions, _ := cmd.Flags().GetStringArray("safety-regression")
+		cmdArgs := []string{"evaluate", args[0], "--baseline-score", baseline, "--candidate-score", candidate, "--required-delta", requiredDelta}
+		for _, evidence := range evidenceCommands {
+			cmdArgs = append(cmdArgs, "--evidence-command", evidence)
+		}
+		for _, regression := range safetyRegressions {
+			cmdArgs = append(cmdArgs, "--safety-regression", regression)
+		}
+		return runGovernedSkillCommand(cmdArgs...)
+	},
+}
+
 var skillInspectCmd = &cobra.Command{
 	Use:   "inspect <draft-id>",
 	Short: "Inspect a governed skill draft",
@@ -63,12 +84,21 @@ var skillPromoteCmd = &cobra.Command{
 }
 
 func init() {
+	skillEvaluateCmd.Flags().String("baseline-score", "", "Current primitive baseline score")
+	skillEvaluateCmd.Flags().String("candidate-score", "", "Candidate primitive score")
+	skillEvaluateCmd.Flags().String("required-delta", "1.0", "Required candidate improvement delta")
+	skillEvaluateCmd.Flags().StringArray("evidence-command", nil, "Evidence command supporting promotion")
+	skillEvaluateCmd.Flags().StringArray("safety-regression", nil, "Safety regression observed during evaluation")
+	skillEvaluateCmd.MarkFlagRequired("baseline-score")
+	skillEvaluateCmd.MarkFlagRequired("candidate-score")
+
 	skillPromoteCmd.Flags().StringVar(&skillApprovedBy, "approved-by", "", "Reviewer or system approving promotion")
 	skillPromoteCmd.Flags().BoolVar(&skillAutoPromote, "auto-promote", false, "Promote without reviewer approval when the project explicitly opts in")
 
 	skillCmd.AddCommand(skillSuggestCmd)
 	skillCmd.AddCommand(skillDraftCmd)
 	skillCmd.AddCommand(skillInspectCmd)
+	skillCmd.AddCommand(skillEvaluateCmd)
 	skillCmd.AddCommand(skillPromoteCmd)
 	rootCmd.AddCommand(skillCmd)
 }
