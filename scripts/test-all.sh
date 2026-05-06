@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ROLE: legacy composite pytest + bash runner.
 # CANONICAL: cos-test focused|cluster|broad; this script remains only for compatibility.
 # =============================================================================

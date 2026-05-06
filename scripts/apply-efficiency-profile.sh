@@ -192,7 +192,7 @@ esac
 echo ""
 echo "Hook summary for profile '$PROFILE' (Claude projection):"
 if [ "$PROFILE" = "core" ]; then
-  echo "  SessionStart: session-init.sh, validation-lock-cleanup.sh, session-start-stash-reapply.sh"
+  echo "  SessionStart: session-init.sh, cross-session-event-emit.sh, validation-lock-cleanup.sh, session-start-stash-reapply.sh"
 else
   echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards, dangerous-env-flag-detector.sh"
 fi

@@ -161,7 +161,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 14,
+        "doc": 15,
         "hook": 2,
         "script": 5,
         "test": 7
@@ -226,6 +226,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-186-context-budget-enforcement.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
         },
         {
           "family": "doc",
@@ -297,7 +301,7 @@
         "wrapper_for:scripts/hook-timing-wrapper.sh",
         "test_consumers:7",
         "hook_consumers:2",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:3",
         "script_consumers:5"
       ],
@@ -313,7 +317,7 @@
       "role_source": "heuristic:path",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 31,
+      "total_consumers": 32,
       "wrapper_for": "scripts/hook-timing-wrapper.sh"
     },
     {
@@ -3350,12 +3354,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 38,
-        "doc": 472,
+        "doc": 485,
         "hook": 79,
         "rule": 42,
         "script": 235,
         "skill": 59,
-        "test": 350
+        "test": 351
       },
       "consumers": [
         {
@@ -4201,6 +4205,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-186-context-budget-enforcement.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
         },
         {
           "family": "doc",
@@ -5253,6 +5261,54 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/Mibayy__token-savior-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/antonmedv__fx-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/charmbracelet__vhs-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/gepa-ai__gepa-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/getzep__graphiti-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/sxyazi__yazi-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/testcontainers__testcontainers-python-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/yorukot__superfile-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -7504,6 +7560,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_scope_governance.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_product_zones.py"
         },
         {
@@ -8464,9 +8524,9 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:59",
-        "test_consumers:350",
+        "test_consumers:351",
         "hook_consumers:79",
-        "doc_consumers:472",
+        "doc_consumers:485",
         "rule_consumers:42",
         "config_consumers:38",
         "script_consumers:235"
@@ -8485,7 +8545,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1275,
+      "total_consumers": 1289,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -17732,7 +17792,7 @@
         "config": 6,
         "doc": 28,
         "script": 4,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -17909,6 +17969,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_scope_governance.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -17925,7 +17989,7 @@
         "lifecycle",
         "protected_install_surface:bootstrap",
         "wrapper_for:scripts/cos-init.sh",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:28",
         "config_consumers:6",
         "script_consumers:4"
@@ -17944,7 +18008,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 46,
+      "total_consumers": 47,
       "wrapper_for": "scripts/cos-init.sh"
     },
     {
@@ -19605,7 +19669,7 @@
         "config": 7,
         "doc": 16,
         "hook": 1,
-        "script": 4,
+        "script": 2,
         "test": 3
       },
       "consumers": [
@@ -19707,14 +19771,6 @@
         },
         {
           "family": "script",
-          "path": "scripts/_lib/settings-driver-claude-code.sh"
-        },
-        {
-          "family": "script",
-          "path": "scripts/apply-efficiency-profile.sh"
-        },
-        {
-          "family": "script",
           "path": "scripts/cos_daemon.py"
         },
         {
@@ -19741,7 +19797,7 @@
         "hook_consumers:1",
         "doc_consumers:16",
         "config_consumers:7",
-        "script_consumers:4"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -19757,7 +19813,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 31,
+      "total_consumers": 29,
       "wrapper_for": null
     },
     {
@@ -21887,7 +21943,7 @@
       "consumer_access_next_action": "prove installation/projection into a consumer project for each supported harness",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 4,
+        "config": 3,
         "doc": 5,
         "script": 5,
         "skill": 1,
@@ -21897,10 +21953,6 @@
         {
           "family": "config",
           "path": ".claude/settings.json"
-        },
-        {
-          "family": "config",
-          "path": ".codex/hooks.json"
         },
         {
           "family": "config",
@@ -21985,7 +22037,7 @@
         "skill_consumers:1",
         "test_consumers:6",
         "doc_consumers:5",
-        "config_consumers:4",
+        "config_consumers:3",
         "script_consumers:5"
       ],
       "install_surface": null,
@@ -22002,7 +22054,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 21,
+      "total_consumers": 20,
       "wrapper_for": null
     },
     {
@@ -24373,11 +24425,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 7,
         "script": 1,
-        "test": 2
+        "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-classification.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-146-primitive-readiness-ledger.md"
@@ -24416,13 +24473,22 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_scope_governance.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_family_readiness_ledger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_scope_governance.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:2",
+        "test_consumers:4",
         "doc_consumers:7",
+        "config_consumers:1",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -24437,7 +24503,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 10,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -24619,15 +24685,19 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 7,
         "script": 1,
-        "test": 3
+        "test": 5
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-classification.yaml"
         },
         {
           "family": "doc",
@@ -24671,14 +24741,22 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_scope_governance.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_readiness_ledger.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_scope_governance.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:3",
+        "test_consumers:5",
         "doc_consumers:7",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -24693,7 +24771,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 12,
+      "total_consumers": 15,
       "wrapper_for": null
     },
     {
