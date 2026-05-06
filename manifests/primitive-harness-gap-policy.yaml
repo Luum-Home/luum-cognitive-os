@@ -21,6 +21,14 @@ policies:
     severity: advisory
     status: aligned
     rationale: Primitive is an optional governance observer that can run on demand or in selected profiles rather than every IDE lifecycle.
+  - id: acceptable-codex-limited-tool-events
+    severity: advisory
+    status: aligned
+    rationale: Codex currently has narrower native tool-event matchers than Claude; keep the primitive portable through other surfaces without claiming full lifecycle parity.
+  - id: optional-background-orchestration
+    severity: advisory
+    status: aligned
+    rationale: Background orchestration reminders are optional session ergonomics and should not block primitive portability when not wired in every harness.
   - id: claude-posttool-agent-only
     severity: advisory
     status: aligned
@@ -90,6 +98,13 @@ rules:
       - hooks/agent-qwen-bridge.sh
       - hooks/agent-working-dir-inject.sh
       - hooks/aguara-scan.sh
+      - hooks/assumption-tracker.sh
+      - hooks/auto-refine.sh
+      - hooks/auto-repair-dispatcher.sh
+      - hooks/auto-rollback-trigger.sh
+      - hooks/auto-verify.sh
+      - hooks/blast-radius.sh
+      - hooks/claim-validator.sh
   - policy: optional-env-gated-surface
     family: hooks
     primitives:
@@ -98,6 +113,14 @@ rules:
     family: hooks
     primitives:
       - hooks/adr-detector.sh
+  - policy: acceptable-codex-limited-tool-events
+    family: hooks
+    primitives:
+      - hooks/auto-checkpoint.sh
+  - policy: optional-background-orchestration
+    family: hooks
+    primitives:
+      - hooks/background-agent-reminder.sh
   - policy: claude-posttool-agent-only
     family: hooks
     primitives:

@@ -38,5 +38,5 @@ def test_primitive_harness_partial_debt_does_not_regress() -> None:
 
     assert coverage["summary"].get("unclassified_gaps", 0) == 0
     assert coverage["summary"].get("gaps_by_policy", {}).get("must-fix-parity", 0) == 0
-    assert partials["summary"].get("partial_count", 0) <= 87
-    assert partials["summary"].get("by_policy", {}).get("codex-adapter-needed", 0) <= 74
+    assert partials["summary"].get("partial_count", 0) <= 77
+    assert partials["summary"].get("by_policy", {}).get("codex-adapter-needed", 0) <= 64
