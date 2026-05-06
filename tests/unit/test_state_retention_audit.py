@@ -131,3 +131,37 @@ def test_claim_ledger_compaction_dry_run_reports_terminal_records(git_repo: Path
     assert payload["surfaces"][0]["old_terminal_count"] == 1
     assert payload["reap"][0]["removed"] == 1
     assert json.loads(claims_path.read_text(encoding="utf-8"))["claims"][0]["task_id"] == "a"
+
+
+def test_auto_safe_selects_only_repair_safe_surfaces(git_repo: Path) -> None:
+    claims_path = git_repo / ".cognitive-os" / "tasks" / "active-claims.json"
+    claims_path.parent.mkdir(parents=True)
+    old = (datetime.now(timezone.utc) - timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    claims_path.write_text(json.dumps({"claims": [{"task_id": "a", "status": "released", "released_at": old}]}) + "\n", encoding="utf-8")
+    bus_dir = git_repo / ".cognitive-os" / "agent-bus" / "old-agent"
+    bus_dir.mkdir(parents=True)
+
+    result = run_audit(git_repo, "--auto-safe", "--reap", "--json", "--no-metrics")
+    payload = parse_json(result)
+
+    surfaces = {surface["surface"] for surface in payload["surfaces"]}
+    assert surfaces == {"task-claims-ledger", "agent-bus-directories"}
+    assert {item["surface"] for item in payload["reap"]} == {"task-claims-ledger", "agent-bus-directories"}
+
+
+def test_repair_before_block_selects_only_auto_stash_surface(git_repo: Path, tmp_path: Path) -> None:
+    make_stash(git_repo, "auto-pre-agent-toolu_repair", "repair.txt", "repair\n")
+    time.sleep(1.1)
+
+    result = run_audit(
+        git_repo,
+        "--repair-before-block",
+        "--reap",
+        "--json",
+        "--no-metrics",
+        manifest=manifest_with_zero_stash_ttl(tmp_path),
+    )
+    payload = parse_json(result)
+
+    assert [surface["surface"] for surface in payload["surfaces"]] == ["auto-pre-agent-stashes"]
+    assert payload["reap"][0]["candidate_count"] == 1
