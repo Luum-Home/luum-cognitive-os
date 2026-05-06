@@ -90,7 +90,6 @@ Each wave = one minor version, ~0.5–1 session of work (pure move + test).
 | 3 | v0.15.0 | **cos-memory-engram** | 3 hooks + 5 libs | MED | engram-sync already wired; shim critical. |
 | 4 | v0.15.1 | **cos-git-safety** | 4 hooks + 1 lib (pre-commit-gate.sh symlink stays in .githooks) | LOW | Pure move; destructive-blockers stay CORE. |
 | 5 | v0.15.2 | **cos-security-tools** | 5 hooks + 4 libs + 5 install scripts | MED | Aguara/Parry/Semgrep/mcp-scan. Security profile redefined on top. |
-| 6 | v0.16.0 | **cos-observability** | 6 hooks + 7 libs + 1 script | MED | Langfuse/MLflow/Paperclip. |
 | 7 | v0.16.1 | **cos-task-bridge** | 6 hooks + 3 libs | MED | External task system; double-check ADR-024 references. |
 | 8 | v0.16.2 | **cos-infra-lifecycle** | 5 hooks + 2 libs | LOW | Docker-only. |
 | 9 | v0.17.0 | **cos-agent-coordination** | 4 hooks + 4 libs | MED | Agent-bus migration; requires dual-home during transition. |

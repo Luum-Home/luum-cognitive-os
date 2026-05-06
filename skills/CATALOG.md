@@ -11,6 +11,7 @@
 | add-hook | Add a new lifecycle hook to the OS: create script, register in settings.json, add to efficiency profile, write test | `/add-hook` | os |
 | add-rule | Add a new always-active or contextual rule: create .md file, symlink, update RULES-COMPACT.md | `/add-rule` | os |
 | add-skill | Add a new skill: create SKILL.md with frontmatter, add to CATALOG.md, write structure test | `/add-skill` | os |
+| adr-tombstone | Create neutral ADR tombstones while preserving ADR numbering integrity | `/adr-tombstone` | maintainer |
 | add-mcp | Integrate a new MCP server: register in settings.json, document in ecosystem-tools.md, add graceful degradation | `/add-mcp` | os |
 | cognitive-os-init | Initialize Cognitive OS for a project: detect stack, generate config and project-specific files | `/cognitive-os-init` | os-dev |
 | cognitive-os-test | Run the Cognitive OS automated test suite (infra, behavior, quality) | `/cognitive-os-test` | os-dev |
@@ -48,7 +49,6 @@
 | strands-evals-integration | Trace-based agent trajectory evaluation (OpenTelemetry) | `/strands-setup` | os-dev |
 | automaker-bridge | Configure AutoMaker to use Cognitive OS as its execution brain | `/automaker-bridge` | os-dev |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules | `/nemo-guardrails` | os-dev |
-| paperclip-dashboard | View Cognitive OS metrics in Paperclip dashboard | `/paperclip-dashboard` | os-dev |
 | agent-kpis | Calculate and report Cognitive OS KPIs, OKRs, health dashboard | `/agent-kpis` | both |
 | model-optimizer | Analyze skill metrics, recommend optimal model routing | `/model-optimizer` | both |
 | trust-audit | Analyze trust scores: overclaiming detection, trend analysis, review recommendations | `/trust-audit` | both |
@@ -183,10 +183,12 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 2. **Level 2** (on demand): Full SKILL.md when skill is invoked or triggered (~1-3K tokens each)
 3. **Level 3** (rare): references/ files for detailed examples (~2-5K tokens each)
 4. **Max active**: 5 skills simultaneously. Unload after 5 min inactivity.
+- **__contracts__** — Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
 - **add-hook** — Step-by-step guide for adding a new hook to the Cognitive OS
 - **add-mcp** — Step-by-step guide for integrating a new MCP server into the Cognitive OS
 - **add-rule** — Step-by-step guide for adding a new rule to the Cognitive OS
 - **add-skill** — Step-by-step guide for adding a new skill to the Cognitive OS
+- **adr-tombstone** — Create or repair neutral tombstones for removed ADR numbers; use when an ADR is deleted, purged, superseded without replacement text, or ADR numbering has gaps that must stay auditable without reus...
 - **agent-dashboard** — Show real-time status of all running background agents
 - **agent-kpis** — Calculate and report Cognitive OS KPIs and OKRs. Shows agent health, efficiency, quality metrics. Use periodically or when evaluating agent performance.
 - **agent-stress-test** — Stress-test agent cognitive health to detect context-induced degradation
@@ -196,10 +198,10 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **audit-integrity** — Symlink-aware integrity audit of hooks, libs, and skills. Resolves symlinks before classifying, preventing false ghost reports.
 - **audit-website** — Perform a comprehensive 6-category website audit (SEO, Performance, Security, Content/UX, Accessibility, Schema.org) with scored checkpoints and a structured markdown report. Each item is PASS/FAIL...
 - **auto-refine** — Analyze a failed agent's output, determine root cause, and re-launch with refined instructions. Implements the PITER Refine step.
-- **auto-rollback** — Auto-rollback failed SDD apply commits when verify-apply loop exceeds max retries
+- **auto-rollback** — Prepare a human-approved rollback plan when SDD verify-apply exceeds max retries
 - **automaker-bridge** — Configure AutoMaker to use Cognitive OS as its execution brain
 - **batch-runner** — Execute multiple SDD changes sequentially with timing, reporting, and failure handling
-- **__contracts__** — Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
+- **branch-worktree-closure** — Use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature worktrees and must decide whether to merge, preserve, or remove them safely.
 - **bump-version** — Calculate and write the new version to the VERSION file
 - **capability-snapshot** — Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss during refactors
 - **catalog-full** — Load and display the full skills catalog (skills/CATALOG.md) with invocations, sections, and audience columns. Use when the compact Level-1 catalog does not have enough detail.
@@ -213,24 +215,26 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **cognitive-os-status** — Full health check of all Cognitive OS agentic primitives
 - **cognitive-os-test** — Run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not for adopting projects.
 - **compat-test** — Smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness,...
-- **component-classifier** — Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
 - **component-reality-check** — Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
 - **compose-prompt** — Compose a sub-agent prompt from reusable templates. Use when launching sub-agents to ensure consistent instructions.
 - **compress** — Compress natural language memory files (CLAUDE.md, todos, preferences) into caveman format to save input tokens. Preserves all technical substance, code, URLs, and structure. Compressed version ove...
 - **confidence-check** — Pre-implementation confidence assessment. Before writing code, check 5 dimensions to verify readiness: no duplicates, architecture compliance, documentation verified, prior art reviewed, and root c...
 - **contract-drift** — Detect drift between HTTP calls in source code and OpenAPI/Swagger contract definitions. Scans for fetch, axios, http.*, requests, and httpx patterns, compares against the contract spec, and produc...
 - **conversation-memory** — Search and learn from past Cognitive OS sessions — the system's long-term memory
+- **coordination-status** — Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.
 - **cos-status** — Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks. Use when a user asks about OS state, installation verification...
 - **cost-predict** — Predict task cost from Cognitive OS history, phase routing, and measured model prices.
 - **coverage-enforcement** — Run Go test coverage for all services, enforce thresholds from cognitive-os.yaml, report per-package results. Service root read from project.architecture.services_root.go config.
+- **decision-triage** — Surface all pending operator decisions across research reports and ADRs. Companion to /session-backlog — counts decisions instead of tasks. Read-only inventory.
 - **deep-research** — Multi-hop research skill for deep investigation of topics. Executes structured research with configurable depth levels (quick/standard/deep/exhaustive), multi-hop reasoning chains, confidence self-...
 - **deepeval-integration** — Configure and use DeepEval for LLM unit testing, agent trajectory evaluation, and skill/hook quality assurance. Pytest-native with 60+ metrics.
-- **deps-update** — Audit and optionally upgrade project dependencies — Python, engram binary, Claude Code plugins, Docker images
+- **deps-update** — Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins) using the canonical scripts/deps-update.sh primitive
 - **detect-patterns** — Detect systemic problems in the Cognitive OS codebase: dead metadata, broken chains, phantom entries, and structural tests.
 - **detect-stack** — Scan a project root and produce detected-stack.json with detected languages, frameworks, databases, auth, cache, messaging, and services.
 - **devbox-checkpoint** — Save and restore environment state snapshots using devbox
 - **doc-review-personas** — Multi-persona adversarial review of a documentation corpus. Runs N Haiku sub-agents in parallel — each one reading the same docs with a different human-role lens (CFO, Tech Lead, Commercial, New De...
 - **doc-sync** — Synchronize documentation that became stale after code changes
+- **docs-execution-audit** — Classify documentation items as done, weak-proof, planned, proposed, stale, or unknown using repository evidence.
 - **document-feature** — Generate or update structured feature documentation using 3-layer detection (SDD spec, git diff, CLI arg). Extension (v1.1, ADR-054 Phase 2): accepts --project-dir to append to docs/05-features/fea...
 - **dod-check** — Verify Definition of Done criteria for a task at a given complexity level
 - **dogfood-score** — Measure the SO's self-build maturity as a composite 0-100 score across test health, skill coverage, hook wiring, ADR discipline, harness portability, commit activity, and doc freshness. Analog to r...
@@ -239,24 +243,27 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **eval-repo** — DEPRECATED — renamed to /repo-scout (2026-04-24). This stub preserves backward compatibility for any documentation or workflows referencing /eval-repo. New work should use /repo-scout.
 - **evaluate-plan** — Evaluate any existing plan file with a 0-50 scoring system. Proposes improvements if score is low.
 - **exhaustive-prompt** — Generate exhaustive agent prompts with scope enumeration and acceptance criteria
+- **experimental** — Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.
 - **generate-changelog** — Move [Unreleased] CHANGELOG entries into a versioned release section
 - **generate-config** — Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.
 - **gpu-sandbox** — Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data processing, financial calculations)
 - **harness-audit** — Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. Identify candidates for simplification or retirement as models improve.
+- **hook-timing** — Report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event filtering, and session scoping.
 - **impact-analysis** — Analyze change impact: imports, tests, configs, services, and SDD artifacts affected
 - **install-recommended** — Detect project stack and recommend relevant skills to install
 - **invariant-check** — Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between them, and writes pytest assertions that enforce the relationship. Trigger when a review find...
 - **issue-pipeline** — Fetch a GitHub issue, run the SDD pipeline, and open a pull request
 - **jupyter-execute** — Execute code in a Jupyter kernel sandbox for data analysis, Python snippets, and benchmarks
 - **llm-status** — Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured (with tier and model_map), kill-switches active, cascade config from cognitive-os.yaml, active envir...
+- **memory-scan** — Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.
 - **memu-context** — Query memU proactive memory for relevant context before starting work
 - **metrics-calibrator** — Analyze KPI history and auto-calibrate thresholds for meaningful alerting
 - **model-optimizer** — Analyze skill execution metrics and recommend optimal model routing
 - **nemo-guardrails** — Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. Maps the safety mesh (clarification-gate, assumption-tracker, confidence-gate, credential-management) to NeMo input/...
 - **ops-runbook** — Scaffold operations.md + admin-processes.md + monitoring.md under docs/06-backoffice/ (deploy/rollback/on-call/SLOs/alerting). Idempotent.
 - **optimize-skill** — Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras y refinando el prompt
-- **paperclip-dashboard** — View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent status, spend, org chart, notifications)
 - **pattern-audit** — Pattern/regex audit of a codebase with MANDATORY sample verification before publishing counts as severity. Prevents alarmist "N occurrences = problem" conclusions based on unverified regex hits.
+- **peer-card** — Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
 - **pentest-self** — Self-penetration testing for Cognitive OS safety mesh. Validates that prompt injection defenses, permission boundaries, secret protections, rate limiting, scope controls, and data integrity guards ...
 - **persistent-agent** — Create persistent agents that maintain their own state across sessions. Generates a skill directory with identity profile, event log, and auto-fixation checklist for continuous learning.
 - **phoenix-trace-ui** — Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker)
@@ -264,9 +271,15 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **plan-feature** — Create a feature implementation plan with evaluation scoring. Use before implementing any significant feature.
 - **planning-poker** — Multi-agent complexity estimation using planning-poker rounds — triangulate task effort, surface disagreements, and calibrate estimates against actual outcomes.
 - **pr-review** — Pull Request review skill. Gets PR diff against base branch, runs code review with engram context, checks tests/coverage/lint, and produces structured PR review output with file-level comments and ...
+- **preserved-wip-cleanup** — Archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie session registry entries after all agents stop.
+- **primitive-classifier** — Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
+- **primitive-harvester** — Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.
+- **primitive-surface-reduction** — Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.
+- **primitive-usage-map** — Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.
 - **private-mode** — Toggle private conversation mode. When active, nothing is saved to Engram, metrics, error logs, or git. Use for personal conversations, sensitive topics, or casual chat. Activate with /private, dea...
 - **project-scaffold** — Scaffold the 10-category docs/ tree adopted by Cognitive OS projects. Creates 01-contexto through 10-resumenes with starter files and TODO markers. Idempotent. See ADR-054.
 - **promptfoo-integration** — Configure Promptfoo for prompt regression testing and red teaming of skills in CI/CD pipelines.
+- **proof-drill** — Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.
 - **push-release** — Push the release commit and tags to the remote — always requires explicit confirmation
 - **queue-drain** — Periodic agent queue drain and health check
 - **radar-update** — Tech radar curation pipeline. Evaluates one or more GitHub repos via /repo-scout, then merges the results into the canonical radar docs (ecosystem-tools.md, blocked-tools.md) while preserving all h...
@@ -275,7 +288,9 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **recall-search** — Search past Claude Code conversations using full-text search. Use when Engram mem_search doesn't find what you're looking for -- recall searches raw conversation transcripts.
 - **recommend-library** — Search package registries and rank by relevance, adoption, maintenance, and license compliance
 - **red-team** — Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities
+- **redteam-harness** — Run red-team scenarios against the agent OS to detect false-done, partial-completion, and unwired-constant failure modes per ADR-105/ADR-106.
 - **release-os** — META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills
+- **repair-skill** — Drain the skill repair queue and propose regeneration or deprecation for degraded skills
 - **repair-status** — Report on auto-repair system health and statistics
 - **repo-forensics** — Deep forensic analysis of git repositories. Clones, analyzes ALL code, dependencies, architecture patterns, tools, features, API endpoints, and produces exhaustive structured reports. Optionally co...
 - **repo-scout** — Scout external git repositories for potential inclusion in the tech radar. Three-level assessment: DeepWiki summary, shallow clone analysis, deep evaluation. Supports bulk mode (--batch <file>) for...
@@ -285,6 +300,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **resume-tasks** — Check for incomplete tasks from previous sessions and offer to resume them. Use when starting a new session or after a crash.
 - **retrospective** — Weekly analysis of all squads with trend analysis and auto-reconfiguration proposals
 - **reverse-engineer** — Deep source code analysis of a dependency to understand its internal APIs, config schemas, CLI commands, environment variables, and undocumented behavior. When docs are incomplete, reading source c...
+- **review-output** — Manually trigger review of a specific past sub-agent output or the most recent N outputs. Bypasses sample-rate gate but respects the daily budget cap. Produces review findings in Engram and .cognit...
 - **risk-register** — Scaffold STRIDE-based risk-register.md under docs/03-dominio-riesgo/ with impact/likelihood matrix and 6 seed rows (one per STRIDE category). Idempotent.
 - **rules-export** — Export a snapshot of Cognitive OS rules/ (so-slo, definition-of-done, credential-management, etc.) into an adopting project's docs/08-estandares/ directory. Follows the 10-category convention (ADR-...
 - **run-tests** — Auto-detect project test framework and run tests with structured reporting
@@ -297,6 +313,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **sdd-resume** — Resume an SDD pipeline from its last completed phase with timing and state visibility
 - **secret-audit** — Scan all services for env var usage, cross-reference with definitions, report gaps
 - **security-audit** — Comprehensive security audit of Cognitive OS configuration, secrets, hooks, permissions, and infrastructure. Reports findings with severity levels.
+- **security-red-team** — Unified red-team primitive for Cognitive OS: inventories attack surface, models threats, runs deterministic abuse probes, scores security controls per primitive, and emits a mitigation backlog.
 - **self-improve** — META skill — orchestrates analyze-improvements → (human reviews) → apply-improvements. The closing piece of the self-improvement loop.
 - **self-review** — Lightweight 4-question post-implementation checklist for non-SDD work. Quick self-assessment before claiming a task is done.
 - **semgrep-scan** — Run Semgrep SAST security scanning on a path or changed files. Reports findings in adversarial review format (BLOCKER/CONCERN/SUGGESTION).
@@ -313,6 +330,7 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **squad-manager** — Evaluate squad performance and propose reconfigurations
 - **sre-agent** — SRE auto-repair agent. Monitors all project services, detects errors in logs, searches Engram for known fixes, and auto-repairs or proposes fixes. Invoke with /sre-agent or let it run autonomously ...
 - **strands-evals-integration** — Configure Strands Evals for trace-based agent trajectory evaluation using OpenTelemetry instrumentation.
+- **synthesize-skill** — Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates
 - **systematic-debugging** — Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
 - **tag-release** — Create the release commit (VERSION + CHANGELOG) and annotated git tag
 - **test-contract-repair** — Repair failing or misleading tests without greenwashing. Classify the contract, confirm history, fix runtime when needed, and strengthen structural checks into behavioral proof.
@@ -326,23 +344,4 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **vulnerability-scan** — Run LLM vulnerability probes using Garak against configured endpoints
 - **web-crawler** — Fetch and convert web pages to LLM-ready markdown using Crawl4AI. Supports single-page fetch, structured data extraction, and multi-page site crawling.
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
-- **decision-triage** — Aggregate unanswered operator decisions from research reports and ADRs into a single ranked view. Complements /session-backlog (tasks) — this counts decisions.
-- **memory-scan** — Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.
-- **coordination-status** — Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.
-- **docs-execution-audit** — Classify documentation items as done, weak-proof, planned, proposed, stale, or unknown using repository evidence.
-- **experimental** — Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.
-- **hook-timing** — Report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event filtering, and session scoping.
-- **primitive-classifier** — Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
-- **primitive-reality-check** — Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
-- **primitive-surface-reduction** — Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.
-- **primitive-usage-map** — Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.
-- **repair-skill** — Drain the skill repair queue and propose regeneration or deprecation for degraded skills
-- **review-output** — Manually trigger review of a specific past sub-agent output or the most recent N outputs. Bypasses sample-rate gate but respects the daily budget cap. Produces review findings in Engram and .cognitive-os/metrics/review-findings.jsonl.
-- **synthesize-skill** — Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates
-- **branch-worktree-closure** — Use when an agent finds leftover codex/* or claude/* branches, extra git worktrees, or open feature worktrees and must decide whether to merge, preserve, or remove them safely.
-- **peer-card** — Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
-- **preserved-wip-cleanup** — Archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie session registry entries after all agents stop.
-- **primitive-harvester** — Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.
-- **proof-drill** — Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.
-- **redteam-harness** — Run red-team scenarios against the agent OS to detect false-done, partial-completion, and unwired-constant failure modes per ADR-105/ADR-106.
 - **worktree-triage** — Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.

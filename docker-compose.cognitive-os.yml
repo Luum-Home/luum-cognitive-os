@@ -8,7 +8,6 @@
 #
 # Usage:
 #   docker-compose -f docker-compose.cognitive-os.yml up -d           # All services
-#   docker-compose -f docker-compose.cognitive-os.yml up -d paperclip # Only what you need
 #   docker-compose -f docker-compose.cognitive-os.yml down             # Shut down
 #
 # NOTE (ADR-058, 2026-04-24): the former observability trace-UI stack and
@@ -78,100 +77,8 @@ services:
     networks:
       - cognitive-os-network
 
-  # ---------------------------------------------------------------------------
-  # Paperclip PostgreSQL — Database for Paperclip agent coordination
-  #
-  # ADR-043 (2026-04-30): MIGRATED TO LOCAL DAEMON.
-  # cos-paperclip-local.sh manages a local Paperclip daemon when the binary is
-  # available. cos-postgres-local.sh (ADR-045) manages a local pg_ctl cluster
-  # on port 5433 as the Postgres backend.
-  # These containers are kept for legacy compatibility. They are NOT started
-  # by default. To use Docker explicitly:
-  #   docker compose -f docker-compose.cognitive-os.yml --profile legacy up -d paperclip paperclip-pg
-  # ---------------------------------------------------------------------------
-  paperclip-pg:
-    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28
-    container_name: cognitive-os-paperclip-pg
-    profiles:
-      - legacy
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: ${PAPERCLIP_PG_USER:-paperclip}
-      POSTGRES_PASSWORD: ${PAPERCLIP_PG_PASS:-paperclip}
-      POSTGRES_DB: ${PAPERCLIP_PG_DB:-paperclip}
-    ports:
-      - "127.0.0.1:${PAPERCLIP_PG_PORT:-5438}:5432"
-    volumes:
-      - paperclip-pg-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U paperclip -d paperclip"]
-      interval: 2s
-      timeout: 5s
-      retries: 30
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # Paperclip — Agent Coordination Platform
-  # Built from local source at ./paperclip/
-  # UI: http://localhost:3200
-  #
-  # ADR-043 (2026-04-30): demoted to profiles: [legacy]. See above.
-  # ---------------------------------------------------------------------------
-  paperclip:
-    container_name: cognitive-os-paperclip
-    image: reeoss/paperclipai-paperclip:latest@sha256:677649a2ea0571cc83ab8cff2e1d29343c0641684113b464853c4fde16809e46  # pinned 2026-05-04; mirror with ARM64 support (ghcr.io needs auth)
-    profiles:
-      - legacy
-    restart: unless-stopped
-    ports:
-      - "${PAPERCLIP_PORT:-3200}:3100"
-    environment:
-      DATABASE_URL: postgres://${PAPERCLIP_PG_USER:-paperclip}:${PAPERCLIP_PG_PASS:-paperclip}@paperclip-pg:5432/${PAPERCLIP_PG_DB:-paperclip}
-      HOST: "0.0.0.0"
-      PORT: "3100"
-      SERVE_UI: "true"
-      PAPERCLIP_DEPLOYMENT_MODE: ${PAPERCLIP_DEPLOYMENT_MODE:-authenticated}
-      PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
-      PAPERCLIP_PUBLIC_URL: ${PAPERCLIP_PUBLIC_URL:-http://localhost:3200}
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-cognitive-os-paperclip-local-dev-secret}
-      PAPERCLIP_HOME: /paperclip
-      PAPERCLIP_INSTANCE_ID: default
-      PAPERCLIP_MIGRATION_AUTO_APPLY: "true"
-      PAPERCLIP_ADMIN_EMAIL: ${PAPERCLIP_ADMIN_EMAIL:-admin@cognitive-os.local}
-      PAPERCLIP_ADMIN_PASSWORD: ${PAPERCLIP_ADMIN_PASSWORD:-changeme-not-for-production}
-      PAPERCLIP_ADMIN_NAME: ${PAPERCLIP_ADMIN_NAME:-Cognitive OS Admin}
-    volumes:
-      - paperclip-data:/paperclip
-      - ./infra/paperclip/init-config.sh:/app/init-config.sh:ro
-    entrypoint: ["/bin/sh", "/app/init-config.sh"]
-    depends_on:
-      paperclip-pg:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:3100/api/health || exit 1"]
-      interval: 15s
-      timeout: 5s
-      retries: 10
-      start_period: 60s
-    networks:
-      - cognitive-os-network
-
-  # ---------------------------------------------------------------------------
-  # memU — Proactive Memory for AI Agents (Apache 2.0)
-  # https://github.com/NevaMind-AI/memU
-  # 3-layer hierarchical memory: Resource → Item → Category
-  # MIGRATED TO PIP: pip install memu>=2.0. Container kept for reference/CI.
-  # Container was just a pip install wrapper anyway. Run: python -m memu.server
-  #
-  # ADR-060 (2026-04-24): the Docker path now ships with a self-contained
-  # `memu-pg` Postgres backend (below) so `docker compose --profile memory up`
-  # is a fully local, zero-cloud lane. Default supported path remains pip
-  # (`services.memu.mode: pip`). External DBs can still be wired via
-  # MEMU_DB_URL override.
-  # ---------------------------------------------------------------------------
   memu-pg:
-    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28 (shared with paperclip-pg)
+    image: postgres:17-alpine@sha256:6f30057d31f5861b66f3545d4821f987aacf1dd920765f0acadea0c58ff975b1  # pinned 2026-03-28
     container_name: cognitive-os-memu-pg
     restart: unless-stopped
     environment:
@@ -408,10 +315,6 @@ volumes:
     name: cognitive-os-jupyter-data
   # Former observability-stack data volumes removed 2026-04-24 per ADR-058.
   # User must run `docker volume rm` for each removed volume; see ADR-058 Phase 3.
-  paperclip-pg-data:
-    name: cognitive-os-paperclip-pg-data
-  paperclip-data:
-    name: cognitive-os-paperclip-data
   # ADR-060 (2026-04-24): former observability MySQL data volume removed with
   # the cloud-only stack. Operator can reclaim disk via:
   #   docker volume ls -q | grep -E 'cognitive-os-.*-mysql-data' | xargs -r docker volume rm

@@ -23,7 +23,6 @@ Naming convention: `packages/cos-{domain}/`. Each pack self-contained: own `cos-
 | Pack | Scope | Rationale |
 |---|---|---|
 | `cos-advisory-llm` | `*advisor*`, `*-llm.sh` evaluators, strategic-advice libs | Requires Anthropic/OpenAI API creds; not universal. (D43) |
-| `cos-observability` | mlflow, langfuse, paperclip, observability rules | Optional external services, runs without them. |
 | `cos-security-tools` | aguara, semgrep, parry, mcp-scan, secret-detector, credential, license | Bundled together because security profile opts-in as a group. |
 | `cos-sdd` | All sdd-* skills, sdd_pipeline, sdd_resume libs, SDD rules | SDD is a methodology, not every team uses it. |
 | `cos-agent-coordination` | agent-bus, squad, planning-poker, simulation-arena | Multi-agent coordination is advanced usage. |
@@ -112,7 +111,6 @@ Rather than enumerate 99 individual rows (too long to be useful), hooks are grou
 | hooks/aspirational-audit-weekly.sh, session-learning.sh, session-knowledge-extractor.sh, session-state-save.sh, session-changelog.sh, git-context-capture.sh, audit-id-enricher.sh | EXTENSION_audit-trail | packages/cos-audit-trail/hooks/ | Compliance-heavy |
 | hooks/mcp-scan.sh (already above), jupyter-sandbox.sh | EXTENSION_ecosystem-integrations | per-tool pack | Per-tool |
 | hooks/assumption-tracker.sh, claim-validator.sh, trust-score-validator.sh, confidence-gate.sh, pattern-check.sh, adaptive-bypass.sh (behavioural copy), doc-sync-detector.sh | EXTENSION_verification-audit | packages/cos-verification-audit/hooks/ | Policy-heavy audit chain |
-| hooks/auto-checkpoint.sh, conversation-capture.sh, sync-to-repo.sh, package-sync.sh, paperclip-sync.sh, reaper-heartbeat.sh | EXTENSION_misc-sync (fold into pack-of-fit) | per destination | Each ships with the feature it syncs |
 | hooks/worktree-submodule-fix.sh, background-agent-reminder.sh | EXTENSION_misc-convenience (fold) | per destination | Nice-to-haves |
 | hooks/context-diet.sh, contextual-rule-loader.sh, inject-phase-context.sh | EXTENSION_context-optimization | packages/cos-context-optimization/hooks/ | Behavioural opt-in |
 | hooks/dry-run-preview.sh, private-mode-gate.sh, private-mode-metrics-gate.sh | EXTENSION_privacy-mode | packages/cos-privacy-mode/hooks/ | Mode-specific |
@@ -142,7 +140,6 @@ Rationale: these are called by 3+ CORE hooks OR underpin `cos init`/session-star
 | `license_guard.py`, `confidentiality_scanner.py`, `threat_classifier.py`, `guardrails_validators.py` | cos-security-tools |
 | `mlflow_bridge.py`, `observability.py`, `telemetry.py`, `kpi_collector.py`, `performance_monitor.py`, `phase_timing.py`, `metric_event.py` | cos-observability |
 | `sdd_*.py` | cos-sdd |
-| `paperclip_client.py` | cos-observability / paperclip-integration |
 | `claude_executor.py`, `claude_usage_reader.py` | cos-claude-code-integration |
 | `auto_executor.py`, `auto_repair.py`, `homeostasis.py`, `symbiosis_monitor.py`, `singularity.py`, `self_improvement.py`, `learning_pipeline.py` | cos-performance-intelligence |
 | `host_monitor.py`, `smart_infra.py` | cos-infra-lifecycle |
@@ -192,7 +189,6 @@ CORE (28): always-active rules that apply to every install regardless of profile
 | trust-score.md | CORE | Universal verification |
 | split-and-resume.md | CORE | Long-task universal |
 
-Remaining 75 rules map to their owning extension pack 1:1 (e.g. `agent-communication.md` → cos-agent-coordination; `aguara-integration.md` → cos-security-tools; `observability.md` → cos-observability; `sdd/*` implicit → cos-sdd; `mlflow`, `paperclip`, `parry`, `e2b`, `tero`, `repomix`, `hcom`, `context7`, `trailofbits-skills` → cos-ecosystem-integrations; `singularity`, `self-improvement-protocol`, `performance-monitoring` → cos-performance-intelligence; `so-slo.md` → CORE (SLO catalogue must ship); etc.).
 
 **Special cases:**
 - `so-slo.md` → **CORE** (adopted ADR-028 D5, SLO catalogue is constitutional).
@@ -229,7 +225,6 @@ Remaining 107 skills → destination pack based on their trigger:
 - `sdd-*` (10) → cos-sdd
 - `*-integration`, `*-scan`, `pentest-*`, `red-team`, `semgrep-scan`, `vulnerability-scan`, `secret-audit`, `security-audit`, `audit-integrity` → cos-security-tools / cos-ecosystem-integrations
 - `agent-dashboard`, `agent-kpis`, `agent-stress-test`, `squad-manager`, `persistent-agent`, `planning-poker`, `simulation-arena`, `arena` → cos-agent-coordination
-- `paperclip-dashboard`, `mlflow`, `ragas-integration`, `opik-integration`, `deepeval-integration`, `strands-evals-integration`, `nemo-guardrails`, `promptfoo-integration` → cos-observability / cos-ecosystem-integrations
 - `self-improve`, `self-review`, `metrics-calibrator`, `model-optimizer`, `singularity`, `analyze-improvements`, `apply-improvements`, `optimize-skill`, `detect-patterns` → cos-performance-intelligence
 - `release-os`, `push-release`, `tag-release`, `validate-release`, `bump-version`, `generate-changelog` → cos-release-automation
 - `webhook-trigger`, `web-crawler`, `batch-runner`, `jupyter-execute`, `gpu-sandbox` → cos-ecosystem-integrations

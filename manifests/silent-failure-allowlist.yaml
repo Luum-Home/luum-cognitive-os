@@ -80,16 +80,6 @@ entries:
   transferability_state: documented_classification
   shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
     may re-review before owning this surface.'
-- path: hooks/_lib/paperclip-notify.sh
-  max_occurrences: 5
-  degradation_class: legacy_audited
-  rationale: Legacy silent degradation remains audited but needs manual classification
-    before promotion.
-  owner: original-maintainer
-  reviewed_on: '2026-05-03'
-  transferability_state: maintainer_cache
-  shape_b_action: 'Shape B blocker: requires second-maintainer or external review
-    before this allowlist entry can be treated as transferable.'
 - path: hooks/_lib/portable.sh
   max_occurrences: 3
   degradation_class: probe_best_effort
@@ -1150,16 +1140,6 @@ entries:
   transferability_state: maintainer_cache
   shape_b_action: 'Shape B blocker: requires second-maintainer or external review
     before this allowlist entry can be treated as transferable.'
-- path: hooks/paperclip-sync.sh
-  max_occurrences: 16
-  degradation_class: metrics_best_effort
-  rationale: Telemetry/JSONL writes are best effort and must never break the guarded
-    user action.
-  owner: original-maintainer
-  reviewed_on: '2026-05-03'
-  transferability_state: documented_classification
-  shape_b_action: 'Shape A acceptable: classification is explicit; second maintainer
-    may re-review before owning this surface.'
 - path: hooks/parry-scan.sh
   max_occurrences: 1
   degradation_class: probe_best_effort

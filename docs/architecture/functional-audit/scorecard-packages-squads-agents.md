@@ -35,8 +35,6 @@ Verified by inspecting `lib/` — 42 symlinks pointing into `../packages/<name>/
 | verification-audit | `cross_verifier.py`, `error_classifier.py`, `error_matching.py` |
 | sdd-compound | `domain_router.py` |
 | usage-monitor | `claude_usage_reader.py` |
-| paperclip-integration | (hook `paperclip-squad-sync.sh` referenced in runtime) |
-| ecosystem-tools | `paperclip_client`, `jupyter_client`, etc. referenced via `lib/singularity.py`, `lib/model_router.py`, `lib/gateway_selector.py` — but note: `paperclip_client.py`, `jupyter_client.py`, `litellm_client.py`, `webhook_trigger.py` are in `_wiring-allowlist.txt` (intentionally not yet wired) |
 
 **Standalone (files NOT symlinked into `lib/`, but own self-contained skills/rules/hooks + docs)** — 21 packages:
 - adaptive-workflow, advisor-mcp, aguara-security, auto-repair-rollback, consequence-system, cos-index, document-sync, dry-run-simulation, e2b-sandbox, engram-sync, infra-lifecycle, mantis-security, prompt-quality-gate, privacy-mode, project-audit, project-discovery, quality-gates, sdd-compound (additional skills), session-parser, skill-governance, task-management, tero-testing
@@ -71,7 +69,6 @@ These carry their own `SKILL.md`, `rules/*.md`, `hooks/*.sh` files. Several have
   1. `hooks/self-install.sh` line 39: `"squads|cos|flat|*.yaml"` — flat-symlinks `squads/*.yaml` into `.cognitive-os/squads/`.
   2. `hooks/inject-phase-context.sh` line 86: `SQUADS_DIR="$COGNITIVE_OS_DIR/squads"` — defines the path but no runtime parsing shown in the 20-line snippet.
   3. `hooks/cognitive-os-health.sh` line 70: counts `find "$AOS/squads" -name '*.yaml' | wc -l` for status display.
-- **Skill/rule references**: `rules/squad-protocol.md` describes the squad semantics. `packages/agent-coordination/skills/squad-manager/SKILL.md` and `packages/paperclip-integration/hooks/paperclip-squad-sync.sh` reference squads by concept.
 - **Referenced skill `testing-patterns`**: Each squad's `skills:` list contains `testing-patterns`. This skill is NOT present under `skills/` or `packages/*/skills/` (grep finds no directory named `testing-patterns`). Broken reference.
 
 ### Classification

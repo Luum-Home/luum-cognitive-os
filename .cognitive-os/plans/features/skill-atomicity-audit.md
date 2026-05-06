@@ -129,7 +129,6 @@ Remaining scope: Phase 1 split the top-3 fattest skills; the remaining ~95 SKILL
 | 90 | gpu-sandbox | infra-lifecycle | ATOMIC | CLEAN | COMPOSABLE | Connect to Jupyter runtime for compute-heavy tasks |
 | 91 | repair-status | infra-lifecycle | ATOMIC | CLEAN | STANDALONE | Read repair metrics + format report — single purpose |
 | 92 | sre-agent | infra-lifecycle | COMPOSITE | CLEAN | STANDALONE | Discover + collect + scan + repair + report — ordered monitoring pipeline |
-| 93 | paperclip-dashboard | paperclip-integration | COMPOSITE | CLEAN | STANDALONE | Gather metrics + push to Paperclip + format terminal output |
 | 94 | private-mode | privacy-mode | ATOMIC | CLEAN | STANDALONE | Toggle private mode flag — single behavioral state |
 | 95 | conversation-memory | recall-search | COMPOSITE | CLEAN | STANDALONE | Search + pattern mining + self-referential learning — ordered |
 | 96 | memu-context | recall-search | ATOMIC | CLEAN | COMPOSABLE | Query memU + Engram for context summary — single output |
@@ -323,7 +322,6 @@ mem_search (Engram) → conversation-memory → recall-search
 
 ### Monitoring/Observability Chain
 ```
-repair-status → sre-agent → paperclip-dashboard
 agent-kpis → resource-governor → model-optimizer
 ```
 

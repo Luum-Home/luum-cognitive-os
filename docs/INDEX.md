@@ -16,9 +16,7 @@
 | [ux-principles.md](ux-principles.md) | 7 UX principles: invisible safety, progressive disclosure, AI-as-driver, cost transparency |
 | [product-principles.md](product-principles.md) | 10 product principles: perceived value, fail fast, MVP mindset, outcomes over features, adoption friction |
 | [launch-strategy.md](launch-strategy.md) | 4-phase launch strategy: immediate, first users, iterate, grow — with success metrics |
-| [roadmap.md](roadmap.md) | Future features roadmap: multi-model, Paperclip integration, enterprise, community ecosystem |
 | [multi-model-factory.md](multi-model-factory.md) | Multi-Model AI Software Factory: 3-layer architecture (Strategic/Execution/Worker), dynamic routing, cost optimization |
-| [paperclip-integration.md](paperclip-integration.md) | Paperclip as UI layer: architecture, concept mapping, API client, sync hook, data flow |
 | [ide-compatibility.md](ide-compatibility.md) | Multi-IDE support matrix: 30 tools across 5 compatibility levels (FULL/HIGH/RULES-ONLY/MINIMAL/NONE) |
 
 ## Operational Documents
@@ -144,6 +142,26 @@ SaaS vision, commercial features, pitch, case study, and framework design docs h
 | Metrics Files | 20+ | `metrics/` |
 | Docs | 113 | `docs/` |
 | Tests | 4732 | `tests/` |
+
+## UI Architecture
+
+The operator-facing surfaces are documented in a four-surface architecture. Each artefact kind has a dedicated surface; no single UI covers everything.
+
+| Surface | Artefact kind | Activation |
+|---------|--------------|------------|
+| Surface 1 — Operator CLI (always-on) | Live operator state, governance, audit | Built in — `bash scripts/cos-boring-reliability` |
+| Surface 2 — Phoenix (opt-in) | LLM traces, latency, cost, eval scores | `uv sync --extra observability && uv run phoenix serve` |
+| Surface 3 — Engram Cloud (opt-in) | Persistent memory, decisions, cross-instance federation | BYOK setup per ADR-139; local Engram tools work without it |
+| Surface 4 — Obsidian / markdown reader (opt-in) | ADRs, doctrine docs, audit reports | Clone repo, open `docs/` in any markdown viewer |
+
+Full doctrine: [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md).
+
+### ADR highlights
+
+| ADR | Status | Summary |
+|-----|--------|---------|
+| [ADR-170](adrs/ADR-170-operator-cli-as-primary-ui-surface.md) | Superseded by ADR-172 | Operator-CLI as primary UI surface; CLI-as-primary clause survives as Surface 1 |
+| [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md) | Accepted | Multi-surface UI architecture — CLI + Phoenix + Engram Cloud + Obsidian |
 
 ## Entry Points
 

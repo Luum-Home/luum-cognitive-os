@@ -22,7 +22,6 @@
 
 | Area | Who Does It Better | Our Weakness |
 |---|---|---|
-| UI/Dashboard | Agent Zero (real-time web UI) | No proprietary UI, depend on Paperclip/terminal |
 | Plugin marketplace | Agent Zero (~40 plugins, browse UI) | cos search is CLI-only |
 | Multi-channel (Telegram, Slack, WhatsApp) | OpenClaw (20+ channels) / Pi (powers it) | Zero chat integrations |
 | Onboarding | Agent Zero (Docker pull -> works) | Complex install |
@@ -74,7 +73,6 @@ Not being replaced by another framework -- but that users don't perceive governa
 
 | Gap | Priority | Plan |
 |---|---|---|
-| UI/Dashboard | P2 | Paperclip integration or custom web UI |
 | Plugin marketplace UI | P2 | cos browse command or web frontend |
 | Onboarding simplification | P1 | cos init --quick, Docker one-liner |
 | Community | P3 | Open-source decision pending |

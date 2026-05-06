@@ -108,7 +108,6 @@ Remaining scope: 9 SKILL-CANDIDATE conversions from the original audit are still
 | 76 | `docs/os-vs-project-separation.md` | REFERENCE | — | — | 3-layer separation architecture; core ADR |
 | 77 | `docs/overview.md` | REFERENCE | — | — | OS analogy and architecture overview; introductory reference |
 | 78 | `docs/package-manager-design.md` | REFERENCE | — | — | `cos` package manager design; ADR |
-| 79 | `docs/paperclip-integration.md` | REFERENCE | — | — | Paperclip UI integration architecture; ADR |
 | 80 | `docs/patterns-adopted.md` | REFERENCE | — | — | Patterns catalog from external sources; reference |
 | 81 | `docs/performance.md` | REFERENCE | — | — | Performance monitoring "Micrometer/Actuator" analogy + architecture; references `cos perf` skill/command |
 | 82 | `docs/persistence-map.md` | REFERENCE | — | — | Map of what's in git vs local; operational reference |

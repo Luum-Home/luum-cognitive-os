@@ -2,7 +2,6 @@
 
 ## Question
 
-We need to understand how Paperclip, Agent Zero, OpenClaw, OpenCode, and the new
 minimal OpenClaw-like projects solve three problems that Cognitive OS will also
 face once it can run outside the current IDE session:
 
@@ -29,7 +28,6 @@ The repository already has the right boundary in
 - account-backed CLI usage is allowed only by invoking official CLIs as black
   boxes after an `auth_probe` says the adapter is ready.
 
-`docs/paperclip-integration.md` covers a different surface: Paperclip is the
 local UI/REST sink for metrics, issues, spend, agent status, and notifications.
 It is useful as an operator console pattern, but it is not currently the model
 provider router.
@@ -42,7 +40,6 @@ is evidence for design direction, not a claim that COS integrates with them.
 
 | Project | Language | License posture | Remote/control pattern | Provider pattern | COS takeaway |
 |---|---:|---|---|---|---|
-| Paperclip | unknown | review | localhost REST/UI | delegates to COS | Keep as operator console; do not make it credential owner. |
 | OpenClaw | TypeScript | allowed | Gateway with Telegram/Discord/Slack/WhatsApp/etc. | model config, auth profiles, OAuth/API keys | Strongest reference for local-first gateway + channel pairing + sandbox defaults. |
 | Agent Zero | Python | review | Web UI + A0 CLI Connector to host/remote URL | Web UI/provider config, Codex OAuth direction | Strong reference for explicit host connector instead of mounting whole home dirs. |
 | OpenCode current | TypeScript | allowed | TUI/CLI/web/headless HTTP server | AI SDK providers, `/connect`, custom OpenAI-compatible providers | Best executor reference: provider abstraction plus programmatic server. |
@@ -82,7 +79,6 @@ is evidence for design direction, not a claim that COS integrates with them.
 1. **Chat gateway** — Telegram/Discord/Slack/WhatsApp are convenient but must be
    treated as untrusted ingress. Channel pairing/allowlists and output DLP are
    mandatory before any write-capable action.
-2. **Web UI / REST** — Paperclip and Agent Zero show the value of observable
    state, logs, settings, and interruptions.
 3. **Headless HTTP server** — OpenCode exposes a programmatic server. This is a
    clean pattern for COS-to-executor integration when protected by explicit
@@ -100,7 +96,6 @@ architectural split that appears across the better alternatives:
 
 ```mermaid
 flowchart TD
-  A["Remote ingress adapters\nTelegram / REST / Webhook / Paperclip / GitHub"] --> B["cosd admission\nidentity, allowlist, rate limit"]
   B --> C["task queue + leases"]
   C --> D["cos-worker"]
   D --> E["executor adapters\nofficial CLI / API key / gateway / local model"]
@@ -118,11 +113,9 @@ but remote operation must go through `cosd` and its adapters.
 
 | Layer | Adapter examples | First proof | Non-negotiable gate |
 |---|---|---|---|
-| Remote ingress | `telegram-lab`, `rest-local`, `paperclip-local`, `github-comment-lab` | mocked inbound message creates queued task | allowlist, replay protection, output redaction |
 | Executor | `local-command`, `opencode-server`, `codex-cli-host`, `claude-cli-host` | dry-run or no-model command | `auth_probe`, no token scraping, redacted logs |
 | Provider gateway | `openrouter`, `litellm`, `ollama`, `lmstudio`, `vllm` | model list or no-op request where possible | explicit credential mode and cost mode |
 | Evidence | `artifact-jsonl`, `patch-bundle`, `draft-pr` | deterministic bundle on disk | no raw secrets, append-only logs |
-| Operator UI | `paperclip`, `terminal`, `chat-reply` | status readback | no autonomous merge/push/publish |
 
 ## Phased plan
 
@@ -224,7 +217,6 @@ Durable checklist: `docs/manual-tests/remote-control-plane-boundary.md`.
 1. Review this report against `manifests/remote-control-plane-alternatives.yaml`.
 2. Confirm no credential value appears in either artifact.
 3. Confirm every remote channel is classified as ingress, not as an executor.
-4. Confirm Paperclip remains an operator UI/status surface, not provider auth
    owner.
 5. Confirm OpenCode is framed as an executor candidate, not mandatory COS
    dependency.

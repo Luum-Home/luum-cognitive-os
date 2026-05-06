@@ -123,14 +123,14 @@ def _parse_review_by(raw: object) -> _dt.date:
 
 def test_sunset_policy_covers_at_least_the_known_services():
     """Sanity: the filter captures the services the catalog sunset policy
-    enumerates (paperclip, valkey, memu, automaker).
+    enumerates (valkey, memu, automaker).
 
     ADR-058 (2026-04-24): the former observability trace-UI service entry
     was retired; the sunset policy no longer needs to cover it.
     ADR-060 (2026-04-24): Opik removed per local-only policy (was mode:cloud,
     Phoenix covers observability locally)."""
     names = {name for name, _ in _services_requiring_review_by()}
-    expected_subset = {"paperclip", "valkey", "memu", "automaker"}
+    expected_subset = {"valkey", "memu", "automaker"}
     missing = expected_subset - names
     assert not missing, (
         "Sunset-policy filter lost services it should cover. "

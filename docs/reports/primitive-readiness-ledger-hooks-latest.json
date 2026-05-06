@@ -2466,8 +2466,7 @@
           "path": "hooks/package-sync.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -2851,8 +2850,7 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "hook",
@@ -2877,7 +2875,6 @@
       "lifecycle_id": null,
       "lifecycle_state": null,
       "next_action": "add lifecycle/package/projection metadata or keep SO-local",
-      "path": "hooks/_lib/paperclip-notify.sh",
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
@@ -4103,8 +4100,7 @@
           "path": "hooks/error-pipeline.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "rule",
@@ -4409,8 +4405,7 @@
           "path": "hooks/metrics-rotation.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -9959,8 +9954,7 @@
           "path": "docs/onboarding-wizard-design.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -11275,8 +11269,7 @@
           "path": "docs/hooks.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -11303,8 +11296,7 @@
           "path": "docs/vs-alternatives.md"
         },
         {
-          "family": "hook",
-          "path": "hooks/_lib/paperclip-notify.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -11941,8 +11933,7 @@
           "path": "docs/onboarding-wizard-design.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -16518,8 +16509,7 @@
           "path": "hooks/memu-sync.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -18118,8 +18108,7 @@
           "path": "docs/measurements/sessionstart-baseline.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -20050,8 +20039,7 @@
           "path": "docs/measurements/hook-timing-runbook.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -20062,8 +20050,7 @@
           "path": "docs/singularity.md"
         },
         {
-          "family": "hook",
-          "path": "hooks/_lib/paperclip-notify.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -20469,8 +20456,7 @@
           "path": "docs/hook-security-profiles.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -20508,7 +20494,6 @@
       "lifecycle_id": null,
       "lifecycle_state": null,
       "next_action": "add lifecycle/package/projection metadata or keep SO-local",
-      "path": "hooks/paperclip-sync.sh",
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
@@ -23698,8 +23683,7 @@
           "path": "docs/adrs/ADR-042-valkey-local-daemon.md"
         },
         {
-          "family": "doc",
-          "path": "docs/adrs/ADR-043-paperclip-local-daemon.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -26660,8 +26644,7 @@
           "path": "hooks/conversation-capture.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",

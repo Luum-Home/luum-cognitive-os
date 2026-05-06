@@ -2,7 +2,6 @@
 """Integration tests for remaining platform services from docker-compose.
 
 Tests platform services using testcontainers for isolated Docker-based testing.
-Covers: Paperclip, Memu, Cognee server, SeaweedFS, Automaker, NeMo Guardrails,
 and Opik Frontend.
 
 Run: python -m pytest tests/integration/test_platform_services.py -v
@@ -23,7 +22,6 @@ tc_available = True
 RUN_PLATFORM_SERVICES = os.environ.get("COS_RUN_PLATFORM_SERVICES") == "1"
 try:
     from testcontainers.core.container import DockerContainer
-    from testcontainers.core.network import Network
     import docker
 except ImportError:
     tc_available = False
@@ -94,88 +92,7 @@ def _skip_on_pull_failure(image: str):
 
 
 # ===========================================================================
-# 1. Paperclip (tuyenvd/paperclip:latest) — needs Postgres
-# ===========================================================================
-
-class TestPaperclipService:
-    """Test Paperclip bookmark/read-later service starts with Postgres dependency."""
-
-    IMAGE = "tuyenvd/paperclip:latest"
-
-    @pytest.fixture(scope="class")
-    def paperclip_stack(self, docker_available):
-        """Start Postgres + Paperclip in an isolated network."""
-        _skip_on_pull_failure(self.IMAGE)
-
-        network = Network()
-        network.create()
-
-        # Postgres dependency
-        pg = (
-            DockerContainer("postgres:16-alpine")
-            .with_env("POSTGRES_USER", "paperclip")
-            .with_env("POSTGRES_PASSWORD", "paperclip")
-            .with_env("POSTGRES_DB", "paperclip")
-            .with_network(network)
-            .with_network_aliases("paperclip-pg")
-        )
-        pg.start()
-
-        # Wait briefly for Postgres to accept connections
-        time.sleep(5)
-
-        # Paperclip application
-        paperclip = (
-            DockerContainer(self.IMAGE)
-            .with_exposed_ports(3100)
-            .with_env("DATABASE_URL", "postgres://paperclip:paperclip@paperclip-pg:5432/paperclip")
-            .with_env("HOST", "0.0.0.0")
-            .with_env("PORT", "3100")
-            .with_env("SERVE_UI", "true")
-            .with_env("PAPERCLIP_DEPLOYMENT_MODE", "authenticated")
-            .with_env("BETTER_AUTH_SECRET", "test-secret")
-            .with_env("PAPERCLIP_MIGRATION_AUTO_APPLY", "true")
-            .with_network(network)
-            .with_network_aliases("paperclip")
-        )
-        paperclip.start()
-
-        host = paperclip.get_container_host_ip()
-        port = paperclip.get_exposed_port(3100)
-
-        yield {
-            "pg": pg,
-            "paperclip": paperclip,
-            "network": network,
-            "host": host,
-            "port": port,
-            "base_url": f"http://{host}:{port}",
-        }
-
-        paperclip.stop()
-        pg.stop()
-        network.remove()
-
-    def test_paperclip_health(self, paperclip_stack):
-        """Verify Paperclip /api/health returns 200 after startup."""
-        base = paperclip_stack["base_url"]
-        resp = wait_for_http(f"{base}/api/health", timeout=90, interval=3)
-        assert resp.status == 200
-
-    def test_paperclip_serves_ui(self, paperclip_stack):
-        """Verify the UI is served at the root path when SERVE_UI=true."""
-        base = paperclip_stack["base_url"]
-        try:
-            resp = wait_for_http(f"{base}/", timeout=30, interval=3)
-            resp.read().decode("utf-8", errors="replace")
-            # UI responses are typically HTML
-            assert resp.status == 200
-        except TimeoutError:
-            pytest.skip("UI not available yet — health passed but root may redirect")
-
-
-# ===========================================================================
-# 2. Memu (python:3.13-slim + pip install memu-ai) — profile: memory
+# 1. Memu (python:3.13-slim + pip install memu-ai) — profile: memory
 # ===========================================================================
 
 class TestMemuService:
