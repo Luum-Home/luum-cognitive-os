@@ -79,3 +79,25 @@ def test_resolved_second_codex_adapter_gap_batch_is_no_longer_partial() -> None:
     for primitive in resolved:
         assert rows[primitive].get("gap_status") in {None, "aligned"}
         assert rows[primitive].get("gap_policy") != "codex-adapter-needed"
+
+
+def test_resolved_third_codex_adapter_gap_batch_is_no_longer_partial() -> None:
+    coverage = json.loads((REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
+    rows = {row["primitive"]: row for row in coverage["items"]}
+    resolved = {
+        "hooks/clarification-gate.sh",
+        "hooks/clarification-interceptor.sh",
+        "hooks/code-review-on-commit.sh",
+        "hooks/completeness-check-llm.sh",
+        "hooks/completion-gate.sh",
+        "hooks/concurrent-write-guard.sh",
+        "hooks/confidence-gate-llm.sh",
+        "hooks/confidence-gate.sh",
+        "hooks/confidentiality-enforcer.sh",
+        "hooks/consequence-evaluator.sh",
+        "hooks/content-policy.sh",
+        "hooks/context-diet.sh",
+    }
+    for primitive in resolved:
+        assert rows[primitive].get("gap_status") in {None, "aligned"}
+        assert rows[primitive].get("gap_policy") != "codex-adapter-needed"
