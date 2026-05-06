@@ -114,9 +114,15 @@ def run_json_command(root: Path, name: str, command: list[str], timeout: int = 1
     try:
         result = subprocess.run(command, cwd=root, text=True, capture_output=True, check=False, timeout=timeout)
     except (OSError, subprocess.TimeoutExpired) as exc:
-        return AdapterStatus("failed", name, " ".join(command), error=str(exc)), None
+        return AdapterStatus(
+            "failed",
+            name,
+            " ".join(command),
+            error=scrub_project_paths(str(exc), root),
+        ), None
     if result.returncode != 0:
-        return AdapterStatus("failed", name, " ".join(command), error=(result.stderr or result.stdout)[-1000:]), None
+        error = scrub_project_paths((result.stderr or result.stdout)[-1000:], root)
+        return AdapterStatus("failed", name, " ".join(command), error=error), None
     try:
         data = json.loads(result.stdout)
     except json.JSONDecodeError as exc:
