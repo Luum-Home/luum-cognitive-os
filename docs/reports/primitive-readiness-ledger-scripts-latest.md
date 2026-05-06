@@ -122,7 +122,6 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-merge-queue.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 1 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-new-adr` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 2 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-operational-status` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 1 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos-paperclip-local.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 2 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-postgres-local.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 3 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-pr-review.sh` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 2 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-preamble-budget` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 6 | keep lifecycle evidence and supported harness declarations current |

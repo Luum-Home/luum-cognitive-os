@@ -57,7 +57,6 @@ detect-stack, devbox-checkpoint, doc-sync, document-feature, dod-check, error-an
 repo-scout, evaluate-plan, exhaustive-prompt, generate-changelog, generate-config,
 gpu-sandbox, harness-audit, install-recommended, issue-pipeline, jupyter-execute,
 memu-context, metrics-calibrator, model-optimizer, nemo-guardrails, opik-integration,
-optimize-skill, paperclip-dashboard, pentest-self, persistent-agent, plan-bug, plan-feature,
 planning-poker, pr-review, private-mode, promptfoo-integration, push-release, queue-drain,
 ragas-integration, readiness-check, recall-search, recommend-library, release-os,
 repair-status, repo-forensics, research-protocol, resolve-blockers, resource-governor,

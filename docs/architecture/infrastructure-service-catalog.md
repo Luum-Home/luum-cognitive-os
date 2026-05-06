@@ -67,7 +67,6 @@ Notes: <optional 1-2 sentences on scope or trade-offs>.
 | `mlflow` | none | `pip` | Default lightweight exporter | Local outcome metrics, completion summaries, cost/session sync, and low-friction run evidence without Docker. |
 | `phoenix` | none | `pip` | Optional observability extension | Arize Phoenix LLM-native trace UI (OTel-backed, Apache 2.0). Replaces Langfuse as the self-hosted trace surface. Launched on-demand via `skills/phoenix-trace-ui/` (Phase 1 pending). See ADR-058. |
 | `nemo_guardrails` | `nemo-guardrails` | `pip` | Optional in-process guardrails extension | Jailbreak, policy, and PII guardrail runtime. Docker server exists for reference/CI, but default use should be Python API/in-process. |
-| `paperclip` | `paperclip-pg`, `paperclip` | `on_demand` | Optional governance/coordination extension | Agent coordination and governance dashboard. Valuable for advanced workflows, not part of the minimum wedge. |
 | `memu` | `memu`, `memu-pg` | `pip` (default) / local Docker with self-contained `memu-pg` backend (ADR-060 local-first) | Optional memory extension | Proactive agent memory. Default supported mode is pip. The Docker `memory` profile now ships with a self-contained Postgres backend (`memu-pg`) so the local lane is zero-cloud. |
 | `cognee` | `cognee` | `pip` | Optional memory/knowledge extension | Knowledge graph and memory retrieval. Default path should not require a running HTTP service. |
 | `valkey` | `valkey` | `on_demand` | Optional local backend | Redis-compatible bus/cache backend. Valkey is the only allowed Redis-compatible server; file fallback remains valid for single-session use. |
@@ -90,11 +89,9 @@ Decision:
 
 ### Governance And Dashboards
 
-`paperclip`, `automaker`, and `cos-dashboard` are UI or coordination extensions. They may become valuable product surfaces later, but they are not the durable kernel and should not dominate first-run docs.
 
 Decision:
 
-- Keep `paperclip.mode: on_demand` because it has a real governance/dashboard role.
 - Keep `automaker.mode: on_demand` and profile-gated.
 - Keep `cos-dashboard` profile-gated and unmanaged by default until it has a product proof path.
 - Do not make dashboard availability a default CI or self-install requirement.

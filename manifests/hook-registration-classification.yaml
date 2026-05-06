@@ -180,10 +180,6 @@ entries:
   rationale: Package dependency sync mutates repo/package state and belongs in CI/developer
     command.
   next_action: Keep manual or post-merge automation.
-- path: hooks/paperclip-sync.sh
-  status: conditional_opt_in
-  rationale: Requires Paperclip service and governance-dashboard profile.
-  next_action: Wire only when Paperclip is enabled.
 - path: hooks/parry-scan.sh
   status: conditional_opt_in
   rationale: Requires Parry scanner installation/security profile.

@@ -27,7 +27,7 @@ Total skills: 160
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 | vuln-remediation-flow | Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation. |
 
-## os-dev (36)
+## os-dev (35)
 
 | Skill | Description |
 |-------|-------------|
@@ -48,7 +48,6 @@ Total skills: 160
 | harness-audit | Evaluate harness agentic primitives (hooks, rules, skills) for continued relevance. |
 | metrics-calibrator | Analyze KPI history and auto-calibrate thresholds for meaningful alerting |
 | nemo-guardrails | Generate and configure NeMo Guardrails Colang 2.0 rules from Cognitive OS rules. |
-| paperclip-dashboard | View and sync Cognitive OS state to Paperclip dashboard (SDD projects, agent… |
 | pattern-audit | Grep/regex audit with mandatory sampling — forbids unverified severity counts. |
 | pentest-self | Self-penetration testing for Cognitive OS safety mesh. |
 | primitive-classifier | Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. |
@@ -193,6 +192,12 @@ Total skills: 160
 | Skill | Description |
 |-------|-------------|
 | session-report-executive | Generate an executive-level session report translating technical metrics into… |
+
+## maintainer (1)
+
+| Skill | Description |
+|-------|-------------|
+| adr-tombstone | Agentic primitive for creating neutral ADR tombstones while preserving ADR numbering integrity. |
 
 ## os-only (1)
 

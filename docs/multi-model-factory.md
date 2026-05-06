@@ -245,7 +245,6 @@ Higher-capability models (like Claude Opus at level 3-4) need fewer guardrails. 
 | Phase | What Changes |
 |---|---|
 | Phase 1 (Q2 2026) | LiteLLM routing active, 3+ providers validated, local models via Ollama |
-| Phase 2 (Q3 2026) | Dynamic layer selection based on task analysis, Paperclip dashboard shows model usage |
 | Phase 3 (Q4 2026) | A/B testing for skills across models, security scanning with model-appropriate analysis |
 | Phase 5 (2027+) | Fully autonomous model selection, self-optimizing routing based on historical accuracy |
 

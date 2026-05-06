@@ -132,14 +132,10 @@ Tools like `recall` (supports Claude/Codex/OpenCode/Factory) and `hcom` (support
 
 Moving beyond the CLI with visual tools and multi-repo coordination for teams working across service boundaries.
 
-### Paperclip integration (replaces custom web dashboard)
 
-Paperclip provides the visual UI layer for Cognitive OS. Instead of building a custom Next.js dashboard, Cognitive OS pushes state to the Paperclip dashboard via its REST API. SDD pipeline changes map to Paperclip "projects", SDD phases map to "issues", squads map to the org chart, and cost events feed the spend tracker. The Agent Bus pushes heartbeats so Paperclip shows live agent status. Singularity events appear in the Paperclip inbox as notifications. See `docs/paperclip-integration.md` for the full architecture.
 
-The integration layer is a thin Python client (`lib/paperclip_client.py`) plus an enhanced session-end hook (`hooks/paperclip-sync.sh`). Paperclip itself is already running in the Docker stack (`docker-compose.cognitive-os.yml`).
 
 - **Status**: In progress
-- **Dependencies**: None (Paperclip container and sync hook already exist)
 
 ### Multi-repo orchestration
 
@@ -472,7 +468,6 @@ Community contributions are welcome at every phase. Here is how to get involved.
 
 ### Phase 2: Visual & Collaborative
 
-- **Paperclip integration**: Extend `lib/paperclip_client.py` with new API endpoints. Map SDD pipeline phases to Paperclip issues. Build squad-to-org-chart sync. Connect Agent Bus heartbeats to Paperclip agent status. See `docs/paperclip-integration.md`.
 - **Multi-repo**: Propose cross-repo dependency graph formats. Test multi-worktree coordination. Design conflict detection across repos.
 - **IDE plugins**: Build VS Code extension scaffolding. Design sidebar UX for pipeline status. Implement file watchers that trigger skill suggestions.
 

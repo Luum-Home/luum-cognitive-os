@@ -3,7 +3,6 @@ RECONCILIATION STATUS: SUPERSEDED — PLAN CLOSED 2026-04-27
 Superseded by: ADR-042 (Valkey local daemon — D34 partial), plus prior phase-2 migration referenced as ADR-002
 Reconciled: 2026-04-21
 Closed: 2026-04-27 — DoD audit found all remaining items either resolved (test_service_health.py:275-296 already skips pip-mode services) or intentional won't-fix (litellm_client.py kept for backcompat; memu-sync.sh has graceful exit). See "Final DoD Audit" section at end.
-Reason: Valkey extracted to local daemon (commit 144278b); Paperclip + Langfuse-internal PostgreSQL are the remaining Docker services and are handled as on-demand. Plan goal (18+ containers → 0-2) effectively achieved.
 -->
 
 # Docker → pip Migration Plan
@@ -33,8 +32,6 @@ All services from `docker-compose.cognitive-os.yml`:
 | litellm | default | **always** | LLM gateway / multi-provider proxy |
 | bifrost | default | on_demand | High-performance AI gateway (11μs latency) |
 | nemo-guardrails | default | on_demand | AI guardrails / PII masking |
-| paperclip-pg | default | — (paperclip dep) | PostgreSQL for Paperclip |
-| paperclip | default | on_demand | Agent coordination platform (web UI) |
 | valkey | default | on_demand | Agent bus pub/sub, rate limiter queue |
 | jupyter | default | on_demand | ML compute sandbox |
 | memu | memory | on_demand | Hierarchical memory for agents |
@@ -63,8 +60,6 @@ All services from `docker-compose.cognitive-os.yml`:
 | litellm | YES → library mode | `pip install litellm` (already in requirements.txt) | ~300MB | Low | P1 |
 | bifrost | MAYBE → skip if litellm suffices | no pip package | ~100MB | Low | P3 |
 | nemo-guardrails | YES → library mode | `pip install nemoguardrails` | ~500MB | Low | P1 |
-| paperclip-pg | NO → needs web server | — | — | — | P4 |
-| paperclip | NO → needs web server | — | — | — | P4 |
 | valkey | MAYBE → file fallback exists | `pip install redis` (client only) | ~50MB | Medium | P2 |
 | jupyter | YES → local install | `pip install jupyter` | ~300MB | Low | P1 |
 | memu | YES → library mode | `pip install memu-ai` (in compose cmd) | ~100MB | Low | P1 |
@@ -152,13 +147,9 @@ Docker containers are kept in `docker-compose.cognitive-os.yml` for reference/CI
 
 ## Phase 4: Keep in Docker (or skip entirely)
 
-### paperclip + paperclip-pg (mode: on_demand)
 
 - **Verdict**: Keep in Docker if used, otherwise skip entirely
-- **Reason**: Paperclip is a web application (Node.js + PostgreSQL) for agent coordination UI. No pip equivalent.
-- **Current usage**: Only used by `paperclip-sync` and `squad-report` skills. `squad-protocol` rule references it.
 - **Recommendation**: Evaluate actual usage. If squad reports are never run, remove entirely. If needed, keep in Docker but only start on demand.
-- **RAM used**: ~400MB (paperclip + postgres)
 
 ### automaker (ui profile)
 
@@ -181,7 +172,6 @@ After completing all phases, the only Docker services needed are:
 | Service | Justification |
 |---|---|
 | **valkey** (optional) | Only needed when `AGENT_BUS_ENABLED=true` with multiple concurrent sessions. File fallback handles single-session use. |
-| **paperclip + paperclip-pg** (optional) | Only if squad coordination UI is actively used. Can be `docker compose up paperclip paperclip-pg` on demand. |
 
 **Target: 0 always-running containers.** All services run as pip libraries or local processes.
 
@@ -220,7 +210,6 @@ Phase 2 remaining cleanup (not blocking):
   - Migrate litellm_client.py callers to use litellm.completion() directly
 
 Week 3 (Phase 3, medium effort, refactoring):
-  9. Evaluate paperclip usage — remove or keep minimal
   10. Validate valkey file fallback works for standard use cases
 
 Week 4 (Phase 1, observability):

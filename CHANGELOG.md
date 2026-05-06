@@ -5,41 +5,50 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added — ADR-176: SkillStore SQLite schema adoption + post-execution analysis trigger (2026-05-05)
+
+ADR-176 adopts OpenSpace's 6-table SQLite schema verbatim (source: HKUDS/OpenSpace @ d1e367d, `skill_engine/store.py` lines 80–166) and introduces a discipline-gated post-execution analysis trigger. Key additions: `lib/skill_store.py` (SkillStore class; 6-table schema: `skill_records`, `skill_lineage_parents`, `execution_analyses`, `skill_judgments`, `skill_tool_deps`, `skill_tags`), `scripts/migrate_skill_archive_to_store.py` (idempotent migration from `skill-archive.jsonl`), and `hooks/skill-post-execution-analysis.sh` (PostToolUse Agent, async). Discipline gate (ADR-133/134) is structurally enforced: the hook's only write path to skill-related files is `docs/reports/skill-analysis-proposals/` — no code path to live `SKILL.md` exists.
+
+
+
+### Added — Multi-surface UI architecture (ADR-172)
+
+- `docs/adrs/ADR-172-multi-surface-ui-architecture.md` — accepted. Declares four UI surfaces: Surface 1 (operator CLI + markdown reports), Surface 2 (Phoenix LLM-trace UI, opt-in), Surface 3 (Engram Cloud), Surface 4 (Obsidian). CLI-as-primary from ADR-170 survives as Surface 1.
+- `docs/reports/surface-5-tui-ui-candidates-2026-05-05.md` — audit report of TUI candidates as input to a future ADR-173.
+
+### Changed — ADR-043 deprecated
+
+
+### Changed — ADR-170 superseded
+
+- `docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` — marked Superseded by ADR-172. CLI-as-primary clause survives as Surface 1 inside ADR-172.
+
+
+- Removed 6 hook entries from `cognitive-os.yaml` (SessionStart ×2, PostToolUse Agent ×3, Stop ×1)
+- Removed 6 registrations from `scripts/_lib/settings-driver-claude-code.sh`
+- Removed 6 entries from `hooks/_lib/registration-allowlist.txt`
+
 ## [0.26.0] - 2026-05-05 — "Operator-CLI Primary, Phoenix Optional, Honest API Findings"
 
 This release pivots the UI surface story away from a single web dashboard
 toward an honest operator-CLI plus markdown-reports model, with Phoenix
 declared as an opt-in trace surface. Two days of audits and live verifications
-exposed that the previous *"Paperclip is the UI"* assumption was built on a
-client contract that did not match the upstream Paperclip API. The release
 documents that finding instead of papering over it, and reframes the system
 around interfaces that actually work today.
 
 ### Changed — Operator-CLI as primary UI surface (ADR-170)
 
-- `docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md` — accepted. Declares the operator CLI (`cos-boring-reliability`, `cos-doctrine-proposer`, `cos-self-improvement-loop`, `cos-pr-review.sh`, `cos-cloud-worker-bootstrap.sh`, etc.) plus the `docs/reports/` markdown library as the primary UI surface. No web dashboard, no Paperclip-as-UI, no Phoenix-as-UI is required for the system to be operationally observable, governance-checked, or enterprise-evaluable.
 - Phoenix declared as a **complementary opt-in surface** for LLM traces only (`uv sync --extra observability && uv run phoenix serve`). It does not model COS lifecycle / doctrine / demotion / audit_class. CLI + markdown remains the governance surface.
-- Trigger for ADR-170: live verification of the wiring landed by ADR-169 surfaced that `paperclip_client.py` was written against REST endpoints that **do not exist in Paperclip** (which uses tRPC). All POST calls return 404 against a real daemon. The 50 unit tests pass because they stub HTTP. Documented in `docs/reports/paperclip-live-smoke-2026-05-05.md` and the addendum to ADR-169.
-- ADR-169 updated with an addendum naming the API-invention finding and explicitly stating ADR-170 supersedes the *"Paperclip is the UI"* clause for the active default. Dashboard demotion still holds. The 6 wired hooks remain wired (they emit honest 404 noise rather than silent failure).
 - Falsifiable claim added in ADR-170: CLI usability for new operators (under 5-minute orientation), markdown report cadence (at least one per major decision cycle for 60 days), and external-buyer demand (no Shape B trigger from three independent UI-blocker citations within 6 months). Re-evaluation after one year.
 
-### Added — Paperclip integration wiring (ADR-169)
 
-- 6 Paperclip hooks wired into `.claude/settings.json` via the canonical projection (`cognitive-os.yaml > harness.hooks`, `hooks/_lib/registration-allowlist.txt`, `scripts/_lib/settings-driver-claude-code.sh`):
-  - SessionStart (async): `paperclip-squad-sync`, `paperclip-task-sync`
-  - PostToolUse Agent (async): `paperclip-sdd-sync`, `paperclip-agent-status`, `paperclip-cost-stream`
-  - Stop (async): `paperclip-sync`
-- 5 hook symlinks created at `hooks/paperclip-*.sh` pointing at `packages/paperclip-integration/hooks/`.
-- `docs/reports/paperclip-integration-audit-2026-05-05.md` — read-only audit that produced the wiring recommendation. Captures REAL=3 / PARTIAL=4 / MISSING=1 status across the 8 documented mappings and a falsifiable claim for re-evaluation.
 
 ### Changed — Mapping #5 deferred (cos packages → skills marketplace)
 
-- `docs/paperclip-integration.md` architecture diagram no longer lists mapping #5 as active. A "Deferred mapping" callout points at the audit, names the missing `push_skills()` method, and documents reactivation conditions. The in-session `paperclip-dashboard/SKILL.md` covers skills inventory partially.
 
 ### Changed — Dashboard formally demoted (ADR-169)
 
 - `dashboard/` formally archived. `dashboard/ARCHIVED.md` is the new entry point and points at ADR-169. Files preserved on disk (not deleted) so the demotion is reversible if the falsifiable claim in the ADR fires.
-- `docs/adrs/ADR-169-dashboard-formal-demotion.md` — accepted ADR enacting the 2026-03-27 *"Paperclip is the UI, Cognitive OS is the engine"* decision that had remained as maintainer cache. Falsifiable claim documented for one-year evaluation window.
 
 ### Added — Docker worker accessibility
 

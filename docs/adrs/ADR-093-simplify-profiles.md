@@ -40,7 +40,6 @@ directory) surfaced two problems:
 The ADR-001 ghost-skill analysis already identified ten skills that deliver
 most of the immediate "vanilla value": `compose-prompt`, `exhaustive-prompt`,
 `agent-dashboard`, `auto-refine`, `verification-before-completion`,
-`plan-feature`, `session-backlog`, `resource-governor`, `paperclip-dashboard`,
 and `cos-status`. Those ten cover prompt composition, agent supervision,
 planning, verification, and status/observability — exactly the primitives an
 orchestrator needs the first time it runs the OS.

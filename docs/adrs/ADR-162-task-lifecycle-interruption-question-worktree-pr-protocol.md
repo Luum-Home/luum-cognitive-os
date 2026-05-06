@@ -23,7 +23,6 @@ tags: [task-lifecycle, interruptions, questions, worktrees, branches, pull-reque
 ## Context
 
 ADR-161 separated remote ingress from provider/executor adapters. That boundary
-protects Cognitive OS from letting Telegram, Paperclip, webhooks, GitHub
 comments, or IDE chat execute tools directly. The next missing contract is how
 work moves through the SO once it has been admitted: how tasks pause, how agents
 ask questions, how interruptions persist state, and how isolated work becomes a
@@ -111,5 +110,4 @@ python3 -m pytest tests/audit/test_adr_contracts.py tests/audit/test_adr_locatio
   actions.
 - `docs/manual-tests/task-lifecycle-worktree-pr-flow.md` records the manual proof
   checklist for this protocol.
-- Future `cosd`, queue, worker, Telegram, Paperclip, GitHub, and PR adapters can
   implement this contract incrementally without changing the vocabulary.
