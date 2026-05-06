@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hmac
 import json
 import os
 import subprocess
@@ -115,6 +116,54 @@ def loop(project_dir: Path, *, interval_seconds: float) -> int:
     return 0
 
 
+
+def api_audit_path(project_dir: Path) -> Path:
+    return project_dir.resolve() / ".cognitive-os" / "cosd" / "api-audit.jsonl"
+
+
+def append_api_audit(project_dir: Path, payload: dict[str, Any]) -> None:
+    path = api_audit_path(project_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    safe = {key: value for key, value in payload.items() if key not in {"authorization", "token", "bearer"}}
+    safe.setdefault("timestamp", utc_now_iso())
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(safe, sort_keys=True))
+        handle.write("\n")
+
+
+def is_local_bind_host(host: str) -> bool:
+    normalized = host.strip().lower()
+    return normalized in {"", "localhost", "127.0.0.1", "::1"}
+
+
+def load_api_token(token_file: str | None) -> str | None:
+    raw = token_file or os.environ.get("COSD_API_TOKEN_FILE")
+    if not raw:
+        return None
+    token = Path(raw).expanduser().read_text(encoding="utf-8").strip()
+    if not token:
+        raise ValueError("cosd token file is empty")
+    return token
+
+
+def bearer_authorized(header: str | None, token: str | None) -> bool:
+    if token is None:
+        return True
+    prefix = "Bearer "
+    if not header or not header.startswith(prefix):
+        return False
+    supplied = header[len(prefix):].strip()
+    return hmac.compare_digest(supplied, token)
+
+
+def remote_policy_guard(host: str, *, allow_remote: bool, token: str | None) -> None:
+    if is_local_bind_host(host):
+        return
+    if not allow_remote:
+        raise ValueError("refusing non-local cosd bind without --allow-remote")
+    if token is None:
+        raise ValueError("refusing remote cosd bind without --token-file or COSD_API_TOKEN_FILE")
+
 def _read_json_body(handler: BaseHTTPRequestHandler) -> dict[str, Any]:
     length = int(handler.headers.get("Content-Length") or "0")
     if length <= 0:
@@ -126,7 +175,7 @@ def _read_json_body(handler: BaseHTTPRequestHandler) -> dict[str, Any]:
     return payload
 
 
-def make_handler(project_dir: Path) -> type[BaseHTTPRequestHandler]:
+def make_handler(project_dir: Path, *, token: str | None = None, transport: str = "http") -> type[BaseHTTPRequestHandler]:
     class CosdHandler(BaseHTTPRequestHandler):
         server_version = "cosd-local-api/1"
 
@@ -141,23 +190,50 @@ def make_handler(project_dir: Path) -> type[BaseHTTPRequestHandler]:
             self.end_headers()
             self.wfile.write(body)
 
+        def _authorized(self) -> bool:
+            return bearer_authorized(self.headers.get("Authorization"), token)
+
+        def _reject_unauthorized(self, endpoint: str) -> None:
+            append_api_audit(project_dir, {
+                "event": "cosd.api.request",
+                "transport": transport,
+                "endpoint": endpoint,
+                "method": self.command,
+                "status": "unauthorized",
+            })
+            self._send(401, {"ok": False, "status": "unauthorized", "reason": "missing or invalid bearer token"})
+
         def do_GET(self) -> None:
             parsed = urlparse(self.path)
             if parsed.path == "/healthz":
                 self._send(200, {"ok": True, "status": "ok"})
                 return
             if parsed.path == "/status":
+                if not self._authorized():
+                    self._reject_unauthorized(parsed.path)
+                    return
                 self._send(200, status(project_dir))
                 return
             self._send(404, {"ok": False, "status": "not-found", "reason": f"unknown endpoint: {parsed.path}"})
 
         def do_POST(self) -> None:
             parsed = urlparse(self.path)
+            if not self._authorized():
+                self._reject_unauthorized(parsed.path)
+                return
             try:
                 if parsed.path == "/process-once":
                     body = _read_json_body(self)
                     limit = body.get("limit")
                     rows = process_once(project_dir, limit=int(limit) if limit is not None else None)
+                    append_api_audit(project_dir, {
+                        "event": "cosd.api.request",
+                        "transport": transport,
+                        "endpoint": parsed.path,
+                        "method": "POST",
+                        "status": "processed",
+                        "processed_count": len(rows),
+                    })
                     self._send(200, {"ok": True, "status": "processed", "processed_count": len(rows), "results": rows})
                     return
                 if parsed.path == "/submit-intent":
@@ -170,8 +246,20 @@ def make_handler(project_dir: Path) -> type[BaseHTTPRequestHandler]:
                         context=context,
                         intent_id=str(body.get("intent_id")) if body.get("intent_id") else None,
                     )
+                    processed_count = 0
                     if body.get("process") is True:
-                        payload["processed"] = process_once(project_dir)
+                        processed = process_once(project_dir)
+                        processed_count = len(processed)
+                        payload["processed"] = processed
+                    append_api_audit(project_dir, {
+                        "event": "cosd.api.request",
+                        "transport": transport,
+                        "endpoint": parsed.path,
+                        "method": "POST",
+                        "status": payload.get("status", "submitted"),
+                        "intent_id": payload.get("intent", {}).get("id") if isinstance(payload.get("intent"), dict) else None,
+                        "processed_count": processed_count,
+                    })
                     self._send(200, payload)
                     return
                 self._send(404, {"ok": False, "status": "not-found", "reason": f"unknown endpoint: {parsed.path}"})
@@ -181,9 +269,11 @@ def make_handler(project_dir: Path) -> type[BaseHTTPRequestHandler]:
     return CosdHandler
 
 
-def serve(project_dir: Path, *, host: str, port: int) -> int:
+def serve(project_dir: Path, *, host: str, port: int, allow_remote: bool = False, token_file: str | None = None) -> int:
     runtime_dir(project_dir).mkdir(parents=True, exist_ok=True)
-    server = ThreadingHTTPServer((host, port), make_handler(project_dir))
+    token = load_api_token(token_file)
+    remote_policy_guard(host, allow_remote=allow_remote, token=token)
+    server = ThreadingHTTPServer((host, port), make_handler(project_dir, token=token, transport="http"))
     bound_host, bound_port = server.server_address[:2]
     atomic_write_json(
         runtime_dir(project_dir) / "cosd-api.json",
@@ -193,6 +283,8 @@ def serve(project_dir: Path, *, host: str, port: int) -> int:
             "host": bound_host,
             "port": bound_port,
             "base_url": f"http://{bound_host}:{bound_port}",
+            "auth_required": token is not None,
+            "remote_allowed": allow_remote,
             "updated_at": utc_now_iso(),
         },
     )
@@ -203,7 +295,7 @@ def serve(project_dir: Path, *, host: str, port: int) -> int:
     return 0
 
 
-def serve_unix(project_dir: Path, *, socket_path: Path) -> int:
+def serve_unix(project_dir: Path, *, socket_path: Path, token_file: str | None = None) -> int:
     runtime_dir(project_dir).mkdir(parents=True, exist_ok=True)
     socket_path = socket_path.expanduser().resolve()
     socket_path.parent.mkdir(parents=True, exist_ok=True)
@@ -211,7 +303,8 @@ def serve_unix(project_dir: Path, *, socket_path: Path) -> int:
         socket_path.unlink()
     except FileNotFoundError:
         pass
-    server = UnixStreamServer(str(socket_path), make_handler(project_dir))
+    token = load_api_token(token_file)
+    server = UnixStreamServer(str(socket_path), make_handler(project_dir, token=token, transport="unix-http"))
     try:
         socket_path.chmod(0o600)
     except OSError:
@@ -222,6 +315,7 @@ def serve_unix(project_dir: Path, *, socket_path: Path) -> int:
             "schema_version": "cosd-api.v1",
             "transport": "unix-http",
             "socket_path": str(socket_path),
+            "auth_required": token is not None,
             "updated_at": utc_now_iso(),
         },
     )
@@ -268,9 +362,12 @@ def build_parser() -> argparse.ArgumentParser:
     api = subparsers.add_parser("serve")
     api.add_argument("--host", default="127.0.0.1")
     api.add_argument("--port", type=int, default=8765)
+    api.add_argument("--allow-remote", action="store_true", help="Allow non-local bind when token auth is configured")
+    api.add_argument("--token-file", help="Bearer token file for protected API endpoints")
 
     unix_api = subparsers.add_parser("serve-unix")
     unix_api.add_argument("--socket", required=True, help="Unix domain socket path for HTTP-over-UDS")
+    unix_api.add_argument("--token-file", help="Bearer token file for protected API endpoints")
     return parser
 
 
@@ -297,9 +394,9 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "loop":
             return loop(project_dir, interval_seconds=args.interval_seconds)
         elif args.command == "serve":
-            return serve(project_dir, host=args.host, port=args.port)
+            return serve(project_dir, host=args.host, port=args.port, allow_remote=args.allow_remote, token_file=args.token_file)
         elif args.command == "serve-unix":
-            return serve_unix(project_dir, socket_path=Path(args.socket))
+            return serve_unix(project_dir, socket_path=Path(args.socket), token_file=args.token_file)
         elif args.command == "process-once":
             rows = process_once(project_dir, limit=args.limit)
             payload = {"ok": True, "status": "processed", "processed_count": len(rows), "results": rows}
