@@ -11,7 +11,6 @@ cross_references:
   - hooks/skill-router-prompt-suggest.sh  # UserPromptSubmit hook that surfaces suggestions
   - dogfood-score  # skill_coverage: 24.07/100 — primary evidence for this ADR
 ---
-
 # ADR-174 — Auto-Derived Primitive Routing for Skills
 
 ## Status
@@ -211,7 +210,7 @@ logs a warning and skips that file. It never raises.
   construction time adds ~50-150ms. Acceptable for CLI usage; cache if this
   becomes a bottleneck in tests.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 ### Keep Hand-Maintained Table
 
@@ -238,6 +237,7 @@ Scan SKILL.md description fields with heuristic regex at router init.
 Rejected because description prose is not designed as regex-safe patterns;
 false-positive rate would be unacceptably high without human curation.
 
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe.
 ## Falsifiable Claim
 
 > Within 90 days of this ADR being accepted, a scheduled audit will verify
@@ -296,7 +296,14 @@ Estimated effort: 2-4h with sonnet auto-extraction.
 Add a routing stub template to the auto-skill-generation scaffold so new
 auto-generated skills ship with at least one pattern. Follow-up task.
 
-### Rules Routing (ADR-174-bis)
+### Rules Routing (ADR-174b)
 
 The same `routing_patterns:` pattern can be applied to `rules/*.md` files
 to enable rule-based auto-selection. That is a separate ADR (not this one).
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

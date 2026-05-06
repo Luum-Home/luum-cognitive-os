@@ -19,7 +19,6 @@ implementation_files:
 tier: maintainer
 tags: [adr-routing, suggestion, hooks, user-prompt-submit, relevance, agentic-primitives]
 ---
-
 # ADR-181: ADR Relevance Suggester
 
 ## Status
@@ -42,7 +41,7 @@ lower volatility (ADRs change at low frequency vs skills and rules) and a smalle
 recall requirement (only high-confidence suggestions are useful — noisy ADR
 suggestions are worse than none).
 
-This ADR completes the prevention backlog for ADR-174-bis by applying the
+This ADR completes the prevention backlog for ADR-174b by applying the
 routing pattern to ADRs with a pragmatic, lower-priority implementation.
 
 ## Decision
@@ -99,7 +98,7 @@ Implement a lightweight ADR relevance suggester with three components:
   successor may both score well on the same prompt). Operator should read all
   suggested ADRs before concluding one supersedes the other.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Full-text search** — too many false positives and too slow (<250ms budget).
 - **LLM-based ADR selector** — too expensive for an async hook on every prompt.

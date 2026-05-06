@@ -11,7 +11,7 @@ implementation_files:
   - scripts/_lib/settings-driver-claude-code.sh
 tier: maintainer
 ---
-
+# ADR-169 — Dashboard Formal Demotion
 
 ## Status
 
@@ -65,7 +65,7 @@ The `dashboard/` directory was last modified 2026-03-29 (two days after the depr
 **Negative / trade-offs.**
 
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Delete `dashboard/` outright.** Rejected: loss of architectural exploration evidence; demotion should be reversible if the falsifiable claim fires.
 
@@ -82,3 +82,10 @@ If conditions 1–3 hold for one calendar year, the demotion is judged correct a
 - [ADR-132](ADR-132-solo-swarm-vs-multi-maintainer-fork.md) — the maintainer-cache transferability frame this ADR addresses.
 - [ADR-133](ADR-133-expansion-without-monsterization.md) — lab-first promotion contract; the wiring-not-resurrection path satisfies its requirements.
 - [`docs/runbooks/run-cos-in-docker.md`](../runbooks/run-cos-in-docker.md) — the external-evaluator path that does not depend on the dashboard.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
