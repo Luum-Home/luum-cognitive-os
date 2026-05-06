@@ -20,6 +20,10 @@ summary_line: Deep forensic analysis of git repositories.
 platforms: ["claude-code"]
 prerequisites: []
 routing_patterns:
+  - pattern: 'https?://github\.com/[\w.\-]+/[\w.\-]+'
+    confidence: 0.99
+  - pattern: '\binvestig[áa]\w*\s+(this|the|ese?|este?)?\s*repo\b'
+    confidence: 0.90
   - pattern: '\brepo(sitory)?\s+forensics\b'
     confidence: 0.96
   - pattern: '\bdeep\s+(repo|repository|source)\s+analysis\b'

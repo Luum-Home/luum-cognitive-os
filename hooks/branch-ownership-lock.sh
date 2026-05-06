@@ -64,3 +64,8 @@ print(f"  held_by_worktree: {held.get('worktree')}", file=sys.stderr)
 print("  Override: COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE=1", file=sys.stderr)
 raise SystemExit(2)
 PY
+rc=$?
+if [[ "$rc" -eq 2 ]]; then
+  exit 2
+fi
+exit "$rc"

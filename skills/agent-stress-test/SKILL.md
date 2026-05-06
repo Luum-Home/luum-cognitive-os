@@ -8,6 +8,10 @@ version: 1.0.0
 platforms: ["claude-code"]
 prerequisites: []
 routing_patterns:
+  - pattern: '\bstress[- ]?test\b'
+    confidence: 0.94
+  - pattern: '\bagent[- ]?stress\b'
+    confidence: 0.90
   - pattern: '\b(agent|cognitive)\s+stress[- ]?test\b'
     confidence: 0.95
   - pattern: '\b(context[- ]?induced|cognitive)\s+degradation\b'
