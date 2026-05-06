@@ -34,13 +34,14 @@ REQUIRED_FIELDS = {
 }
 
 ENUMS = {
-    "kind": {"hook", "skill", "rule", "script", "doctor", "test", "template", "manifest"},
+    "kind": {"hook", "skill", "rule", "script", "library", "doctor", "test", "template", "manifest"},
     "lifecycle_state": {
         "candidate",
         "sandbox",
         "advisory",
         "blocking",
         "default-on",
+        "pending-sunset",
         "demoted",
         "archived",
         "deleted",
