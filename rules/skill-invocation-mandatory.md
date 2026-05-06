@@ -2,6 +2,10 @@
 <!-- TIER: 0 -->
 # Skill Invocation Mandatory at High Router Confidence (ADR-188)
 
+## Mandate
+
+High-confidence skill-router matches are mandatory orchestration contracts, not optional hints. When the router is at or above the ADR-188 threshold, the orchestrator must invoke the matching skill, invoke a strictly stronger skill, or emit an auditable bypass reason before launching bespoke work.
+
 ## Threshold
 
 When `lib/skill_router.last_suggestion(session_id)` returns a suggestion with
