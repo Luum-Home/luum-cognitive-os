@@ -292,3 +292,9 @@ entries:
   rationale: Worktree submodule repair mutates git metadata and should be explicit
     after worktree operations.
   next_action: Keep manual/admin-triggered.
+- path: hooks/cosd-intent-submit.sh
+  status: manual_trigger
+  rationale: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle
+    event payload can supply its required intent arguments yet.
+  next_action: Keep out of Claude/Codex lifecycle projections until cosd v1 defines
+    a typed event payload and integration lane.
