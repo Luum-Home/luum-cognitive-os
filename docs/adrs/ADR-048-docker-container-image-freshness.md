@@ -6,7 +6,7 @@
 
 ## Relationship to ADR-018 and local-daemon ADRs
 
-ADR-048 does not make Docker mandatory again. It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043, and ADR-045. If a service has a healthy local-daemon path, that path is preferred for developer-default usage; if Docker is used, ADR-048 prevents stale pinned-image drift.
+ADR-048 does not make Docker mandatory again. It governs the freshness and recreation contract for any Docker containers that remain as optional, fallback, CI, or reference surfaces after ADR-018 and the local-daemon decisions in ADR-042, ADR-043 (deprecated 2026-05-05 — see ADR-171), and ADR-045. If a service has a healthy local-daemon path, that path is preferred for developer-default usage; if Docker is used, ADR-048 prevents stale pinned-image drift.
 
 ## Context
 

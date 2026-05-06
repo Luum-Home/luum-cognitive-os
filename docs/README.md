@@ -11,6 +11,12 @@ The durable product promise is: make coding agents governable, verifiable, and p
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
 ## Key Documents
+
+- [Profile-Aware Skill Routing and Lazy Context Loading](architecture/profile-aware-skill-routing.md)
+- [Cross-Session Coordination Ledger](architecture/cross-session-coordination-ledger.md) — shared claim, ADR ownership, and worktree-intake contract for parallel IDE/session agents.
+- [Agent Message Bus](architecture/agent-message-bus.md) — directed auditor/operator inbox and acknowledgement channel for agents sharing a repo filesystem.
+- [Session State Forensics — 2026-05-05](reports/session-state-forensics-2026-05-05.md) — branch/worktree forensic record for the routing, Paperclip, and ADR tombstone collision session.
+- [Skill Router Primitive Routing Post-Mortem — 2026-05-05](reports/skill-router-primitive-routing-postmortem-2026-05-05.md) — root-cause analysis for disk skills that were not routeable, the global coverage ratchet, and the profile-aware follow-up.
 - [Obsidian, Documentation Graphs, and AI Agent Memory — 2026-05-05](research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md) — follow-up on using Obsidian as a human-readable graph layer for Engram-backed agent memory.
 - [Engram Obsidian Export Manual Test](manual-tests/engram-obsidian-export.md) — dry-run, write, and incremental proof path for the manual Engram → Obsidian graph export.
 - [Local Obsidian Installation](setup/obsidian-local.md) — Homebrew-managed local Obsidian install and validation for the optional Engram graph export workflow.
@@ -149,16 +155,16 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Cognitive OS Attack Surface Inventory — 2026-05-05](security/cognitive-os-attack-surface-inventory.md) — local inventory of hooks, rules, skills, scripts, manifests, security hooks, runtime flags, and high-risk surfaces.
 - [Cognitive OS Agent Security Research — 2026-05-05](security/cognitive-os-agent-security-research-2026-05-05.md) — external-source-backed red-team assessment of COS security posture, MCP/tool risks, sandboxing, exfiltration, and mitigation backlog.
 - [Cognitive OS Security Assessment Plan](../.cognitive-os/plans/research/cognitive-os-security-assessment-plan.md) — phased defender/red-team plan for assessing SO tools, agentic primitives, secret handling, and trust controls.
-- [Governed Self-Improvement Roadmap](architecture/plans/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
+- [Governed Self-Improvement Roadmap](../.cognitive-os/plans/architecture/governed-self-improvement-roadmap.md) — executable plan for detect→draft→verify→approve→promote self-improvement with tests.
 - [Primitive Fitness Evaluation Contract](architecture/primitive-fitness-evaluation-contract.md) — baseline-vs-candidate KPI/OKR fitness gate plus family ledger/ACC visibility for governed primitive self-improvement.
 - [Suite Signal Triage — 2026-04-29](testing/suite-signal-triage-2026-04-29.md) — explains and reduces broad-lane xfail/warning/skipped noise without relaxing behavior.
-- [Test Resource Governance Sprint](architecture/plans/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
+- [Test Resource Governance Sprint](../.cognitive-os/plans/architecture/test-resource-governance-sprint.md) — resource policy manifest and staged enforcement plan for safe local/CI/headless test execution.
 - [Validation Nervous System](architecture/validation-nervous-system.md) — SO-maintainer doctrine for test selection, resource policy, persistent artifacts, governance gates, and release validation.
 - [Rate Limiter Flow Control](architecture/rate-limiter-flow-control.md) — token-bucket action limiter with soft warnings, operator reserve, and diversity penalty.
-- [Startup Circuit Breaker Plan](architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-101 safe mode, storm detection, SessionStart kill switch, and recovery command.
+- [Startup Circuit Breaker Plan](../.cognitive-os/plans/architecture/startup-circuit-breaker-plan.md) — implementation plan for ADR-101 safe mode, storm detection, SessionStart kill switch, and recovery command.
 - [Competitive Reassessment: OpenClaw and Hermes Agent](business/competitive-reassessment-openclaw-hermes-2026-04.md) — current evidence-based comparison of self-improvement, memory, skills, deployment, and governance gaps.
-- [Runtime Comparison Benchmark Plan](architecture/plans/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
-- [Headless and Clustered Runtime Plan](architecture/plans/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
+- [Runtime Comparison Benchmark Plan](../.cognitive-os/plans/architecture/runtime-comparison-benchmark-plan.md) — benchmark matrix for Claude/Codex vanilla, COS-enabled harnesses, and prior-art tools across deployment surfaces.
+- [Headless and Clustered Runtime Plan](../.cognitive-os/plans/architecture/headless-clustered-runtime-plan.md) — staged path from local harness runtime to EC2/container/Kubernetes workers.
 - [Local Connected Systems Validation](manual-tests/local-connected-systems-validation.md) — proof path for dependency readiness, automatic install boundaries, MCP wiring, optional services, and persistent test summaries.
 - [Claude Code Startup Hang Regression](manual-tests/claude-code-startup-hang-regression.md) — manual proof path for the 2026-05-01 startup hang/duplicate-prompt hardening and its automated regression tests.
 - [Validation Capsule](architecture/validation-capsule.md) — scoped worktree-isolated validation wrapper that suppresses snapshot/profile mutators without using the global hook killswitch.
@@ -201,7 +207,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Skills and Rules Portability Gap](architecture/skills-rules-portability-gap.md) — why compatibility is not enough and where `.claude/` gravity still weakens real portability
 - [Skills and Rules Canonicalization Risk Analysis](architecture/skills-rules-canonicalization-risk-analysis.md) — why moving skills and rules out of `.claude/` is a contract migration, not a simple path change
 - [Why Skills and Rules Became Claude-Centered](architecture/why-skills-and-rules-became-claude-centered.md) — historical root-cause analysis of why the current `.claude/` gravity emerged in the first place
-- [Skills and Rules Canonicalization Workplan](architecture/skills-rules-canonicalization-workplan.md) — step-by-step migration plan and invariants for phases 1 through 5
+- [Skills and Rules Canonicalization Workplan](../.cognitive-os/plans/architecture/skills-rules-canonicalization-workplan.md) — step-by-step migration plan and invariants for phases 1 through 5
 - [Durable Product Master Plan](business/durable-product-master-plan.md) — how to sharpen the wedge, reduce focus drift, and make the repo less aspirational
 - [Master Plan Execution Requirements](business/master-plan-execution-requirements.md) — what must become true in code, CI, onboarding, and product structure to make the master plan real
 - [Execution Discipline](business/execution-discipline.md) — operating rules for keeping the master plan real, avoiding duplicated logic, and preserving durable memory across sessions
@@ -210,7 +216,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Conversation Reality Audit — 2026-04-30](business/conversation-reality-audit-2026-04-30.md) — investigation plan for validating real behavior, daily efficiency, DX, automagic claims, and competitive alternatives
 - [Primitive Gap Matrix — 2026-04](reports/primitive-gap-matrix-2026-04.md) — living evidence matrix for hook, skill, rule, memory, MCP, config, metrics, test, and docs gaps
 - [Primitive Coverage Tooling Research — 2026-04](architecture/primitive-coverage-tooling-research-2026-04.md) — external tooling research and architecture for coverage of agentic primitives/docs without loading whole repos into agent context.
-- [Primitive Coverage Spike Plan — 2026-04](architecture/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
+- [Primitive Coverage Spike Plan — 2026-04](../.cognitive-os/plans/research/primitive-coverage-spike-plan-2026-04.md) — executable plan for a generic primitive coverage framework with graph, rule, and CI report surfaces.
 - [Documentation Duplicate Audit](reports/docs-duplicate-latest.md) — latest duplicate-documentation baseline and prevention report
 - [Merge Readiness Report](reports/merge-readiness-master-plan-2026-04-23.md) — validation snapshot and remaining work before merging the master-plan portability branch
 - [Full Suite Validation Report](reports/full-suite-validation-2026-04-23.md) — current full-suite evidence, passing proof paths, and remaining failure families
