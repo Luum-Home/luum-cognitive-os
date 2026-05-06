@@ -50,12 +50,8 @@ shift 2
 HOOK_ARGS=("$@")
 
 # ── Resolve metrics path ─────────────────────────────────────────────────────
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-}}}"
-if [ -z "$PROJECT_DIR" ]; then
-  # Minimal fallback: walk up to find the repo root (cwd at hook invocation time
-  # is the project root per harness contract, but be defensive).
-  PROJECT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 TIMING_LOG="$METRICS_DIR/hook-timing.jsonl"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
