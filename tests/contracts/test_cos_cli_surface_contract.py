@@ -48,3 +48,18 @@ def test_cos_primitive_harness_coverage_json_exit_code_contract() -> None:
 def test_cos_primitive_surface_coverage_alias_json_exit_code_contract() -> None:
     payload = _run_json(["primitive", "surface-coverage", "--print-json"])
     assert payload["schema_version"] == "primitive-harness-coverage.v1"
+
+
+def test_cos_tui_snapshot_exit_code_contract() -> None:
+    result = subprocess.run(
+        ["bash", str(COS), "tui", "--snapshot"],
+        cwd=REPO,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=120,
+    )
+    assert result.returncode == 0, result.stderr + result.stdout
+    assert "Cognitive OS — Primitive Surface Coverage" in result.stdout
+    assert "Mode: observe-only" in result.stdout
+    assert "tui (ui)" in result.stdout

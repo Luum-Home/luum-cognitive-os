@@ -67,6 +67,9 @@ def test_repository_report_contains_required_example_rows() -> None:
         assert row["surfaces"]["cos-cli"]["surface_kind"] == "cli"
         assert row["surfaces"]["acc-report"]["surface_kind"] == "report"
         assert row["surfaces"]["dashboard"]["surface_kind"] == "ui"
+        assert row["surfaces"]["tui"]["surface_kind"] == "ui"
+        assert row["surfaces"]["tui"]["observable"] is True
+        assert row["surfaces"]["tui"]["operable"] is False
 
 
 def test_harness_coverage_primitive_has_lifecycle_and_agent_skill() -> None:
