@@ -87,3 +87,35 @@ def test_unknown_type_blocks(manifest):
     assert result.status == "block"
     assert result.classification == "unknown_subagent_type"
     assert result.write_capability is None
+
+
+def test_hook_payload_blocks_explore_file_artifact(manifest):
+    from scripts.subagent_launch_preflight import evaluate_hook_payload
+
+    result = evaluate_hook_payload(
+        {
+            "tool_name": "Agent",
+            "tool_input": {
+                "subagent_type": "Explore",
+                "prompt": "Investigate and write docs/reports/agent-output.md",
+            },
+        },
+        manifest,
+    )
+
+    assert result.status == "block"
+    assert result.hook_payload_seen is True
+    assert result.tool_name == "Agent"
+    assert result.classification == "capability_contract_mismatch"
+
+
+def test_hook_payload_without_selected_type_passes_advisory(manifest):
+    from scripts.subagent_launch_preflight import evaluate_hook_payload
+
+    result = evaluate_hook_payload(
+        {"tool_name": "Agent", "tool_input": {"prompt": "Write docs/reports/output.md"}},
+        manifest,
+    )
+
+    assert result.status == "pass"
+    assert result.classification == "no_selected_subagent_type"
