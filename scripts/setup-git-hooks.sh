@@ -189,7 +189,7 @@ _install_cos_block() {
 # unmerged work. Main/master and tag pushes are allowed.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
-_COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+_COS_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 _COS_PRE_PUSH_REFS="$(cat)"
 if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/hooks/direct-main-guard.sh" ]; then
   COS_GIT_COMMAND="git push" COS_PRE_PUSH_REFS="$_COS_PRE_PUSH_REFS" bash "$_COS_DIR/hooks/direct-main-guard.sh" >&2 || exit 2
@@ -224,7 +224,7 @@ HOOKEOF
 # Auto-updates all registered COS installations after git pull/merge.
 # Installed by: bash scripts/setup-git-hooks.sh
 # Remove with:  bash scripts/setup-git-hooks.sh --remove
-_COS_DIR="$(git rev-parse --show-toplevel 2>/dev/null)"
+_COS_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 if [ -n "$_COS_DIR" ] && [ -f "$_COS_DIR/scripts/auto-update-projects.sh" ]; then
   echo ""
   echo "[COS] Checking for projects to update..."

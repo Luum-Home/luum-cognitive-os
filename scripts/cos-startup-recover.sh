@@ -6,7 +6,8 @@
 # process appears active for this repo.
 set -euo pipefail
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 SAFE_FILE="$RUNTIME_DIR/startup-safe-mode.json"
 TTL_SECONDS="${COS_STARTUP_SAFE_MODE_TTL_SECONDS:-300}"

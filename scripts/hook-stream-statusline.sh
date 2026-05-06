@@ -34,10 +34,8 @@
 set -uo pipefail
 
 # ── Locate project root ─────────────────────────────────────────────────────
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-}}}"
-if [ -z "$PROJECT_DIR" ]; then
-  PROJECT_DIR="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
-fi
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 
 FIFO="${COS_FIFO_PATH:-$PROJECT_DIR/.cognitive-os/runtime/hook-stream.fifo}"
 

@@ -10,7 +10,8 @@
 
 set -euo pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$("$SCRIPT_DIR/cos-root" project)"
 cd "$REPO_ROOT"
 
 if [ ! -d git-hooks ]; then
