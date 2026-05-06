@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.27.1] - 2026-05-06
+
+### Fixed
+
+- `fix(validation): register cosd runtime guards` (d958d17f) — registers cosd HTTP/socket runtime guards in the validation gate so the auth + bearer-token primitives surface as audited evidence instead of being silently skipped.
+- `fix(audit): close laptop validation gaps` (d4b80a44) — closes residual gaps surfaced by the laptop-lane validation contract introduced ahead of v0.27.0; ensures the laptop release lane (`feat(release): require laptop lane before real release`) catches the cases that slipped through.
+
 ## [0.27.0] - 2026-05-06
 
 ### Added — ADR-171..187: paperclip rejection, lifecycle activation, and coordination hardening (2026-05-06)
