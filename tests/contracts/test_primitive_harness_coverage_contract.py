@@ -92,3 +92,12 @@ def test_dashboard_consumes_surface_coverage_report_in_observe_only_mode() -> No
     assert 'mode: "observe-only"' in api
     assert "Primitive Surface Coverage" in page
     assert "getPrimitiveSurfaceCoverageSummary" in page
+
+
+def test_dashboard_consumes_tui_action_receipts() -> None:
+    api = (REPO / "dashboard" / "lib" / "cos-api.ts").read_text(encoding="utf-8")
+    page = (REPO / "dashboard" / "app" / "page.tsx").read_text(encoding="utf-8")
+    assert "tui-actions.jsonl" in api
+    assert "cos-tui-action-receipt.v1" in api
+    assert "getTuiActionReceiptSummary" in page
+    assert "TUI Action Receipts" in page
