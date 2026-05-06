@@ -23,7 +23,7 @@ spec:
         - name: cosd
           image: luum-cognitive-os-worker:local
           imagePullPolicy: IfNotPresent
-          command: ["python3", "scripts/cos_daemon.py", "--project-dir", "/workspace", "serve", "--host", "0.0.0.0", "--port", "8765"]
+          command: ["python3", "scripts/cos_daemon.py", "--project-dir", "/workspace", "serve", "--host", "0.0.0.0", "--port", "8765", "--allow-remote", "--token-file", "/run/cosd/token"]
           envFrom:
             - configMapRef:
                 name: cosd-config
@@ -33,9 +33,15 @@ spec:
           volumeMounts:
             - name: workspace
               mountPath: /workspace
+            - name: cosd-api-token
+              mountPath: /run/cosd
+              readOnly: true
       volumes:
         - name: workspace
           emptyDir: {}
+        - name: cosd-api-token
+          secret:
+            secretName: cosd-api-token
 ---
 apiVersion: v1
 kind: Service
