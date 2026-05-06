@@ -13,7 +13,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 17,
         "hook": 3,
         "rule": 1,
@@ -44,6 +44,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -182,7 +186,7 @@
         "script_consumers:4",
         "test_consumers:5",
         "doc_consumers:17",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/_lib/agent-context.sh",
@@ -195,7 +199,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "medium",
@@ -1267,7 +1271,7 @@
         "doc": 52,
         "hook": 72,
         "rule": 6,
-        "script": 22,
+        "script": 23,
         "skill": 2,
         "test": 31
       },
@@ -1874,6 +1878,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_readiness_ledger.py"
         },
         {
@@ -2030,7 +2038,7 @@
         "skill_consumers:2",
         "hook_consumers:72",
         "rule_consumers:6",
-        "script_consumers:22",
+        "script_consumers:23",
         "test_consumers:31",
         "doc_consumers:52",
         "config_consumers:3"
@@ -2043,7 +2051,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 188
+      "total_consumers": 189
     },
     {
       "confidence": "medium",
@@ -3036,8 +3044,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
-        "doc": 102,
+        "config": 5,
+        "doc": 103,
         "hook": 22,
         "rule": 2,
         "script": 30,
@@ -3048,6 +3056,10 @@
         {
           "family": "config",
           "path": "manifests/kernel-contract.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -3452,6 +3464,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/musistudio__claude-code-router-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/memvid__memvid-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -4033,8 +4049,8 @@
         "rule_consumers:2",
         "script_consumers:30",
         "test_consumers:80",
-        "doc_consumers:102",
-        "config_consumers:4"
+        "doc_consumers:103",
+        "config_consumers:5"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -4044,7 +4060,7 @@
       "role": "runtime-safety",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 245
+      "total_consumers": 247
     },
     {
       "confidence": "medium",
@@ -5829,7 +5845,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 3,
+        "doc": 5,
         "script": 2,
         "test": 3
       },
@@ -5853,6 +5869,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -5892,7 +5916,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:5",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -5905,7 +5929,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -5913,7 +5937,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 23,
+        "doc": 25,
         "rule": 4,
         "script": 5,
         "test": 16
@@ -5950,6 +5974,14 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6150,7 +6182,7 @@
         "rule_consumers:4",
         "script_consumers:5",
         "test_consumers:16",
-        "doc_consumers:23",
+        "doc_consumers:25",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -6163,7 +6195,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 56
+      "total_consumers": 58
     },
     {
       "confidence": "medium",
@@ -6171,7 +6203,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 8,
+        "doc": 10,
         "script": 1,
         "skill": 1,
         "test": 1
@@ -6188,6 +6220,14 @@
         {
           "family": "doc",
           "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6235,7 +6275,7 @@
         "skill_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:8",
+        "doc_consumers:10",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -6246,7 +6286,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -6254,7 +6294,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 4,
         "script": 2,
         "test": 3
       },
@@ -6278,6 +6318,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6313,7 +6361,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -6326,7 +6374,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 12
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -6334,7 +6382,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 2,
+        "doc": 4,
         "script": 3,
         "test": 2
       },
@@ -6362,6 +6410,14 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6397,7 +6453,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -6410,7 +6466,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -6418,7 +6474,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 1,
+        "doc": 3,
         "hook": 1,
         "script": 3,
         "test": 2
@@ -6451,6 +6507,14 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6487,7 +6551,7 @@
         "hook_consumers:1",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:3",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -6500,7 +6564,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -6508,7 +6572,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 7,
+        "doc": 8,
         "rule": 1,
         "skill": 1,
         "test": 4
@@ -6525,6 +6589,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6584,7 +6652,7 @@
         "skill_consumers:1",
         "rule_consumers:1",
         "test_consumers:4",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -6595,7 +6663,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -6603,7 +6671,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 17,
+        "doc": 18,
         "rule": 1,
         "script": 5,
         "test": 3
@@ -6644,6 +6712,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6752,7 +6824,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:3",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -6765,7 +6837,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -6773,7 +6845,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "script": 2,
         "test": 4
       },
@@ -6797,6 +6869,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6836,7 +6912,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -6849,7 +6925,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -6857,7 +6933,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 3,
+        "doc": 4,
         "script": 2,
         "test": 1
       },
@@ -6885,6 +6961,10 @@
         {
           "family": "config",
           "path": "manifests/session-coordination-contract.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6916,7 +6996,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -6929,7 +7009,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -6937,7 +7017,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 4,
+        "doc": 5,
         "rule": 1,
         "test": 2
       },
@@ -6949,6 +7029,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6983,7 +7067,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -6994,7 +7078,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -7002,7 +7086,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 26,
+        "doc": 27,
         "hook": 1,
         "rule": 1,
         "script": 4,
@@ -7056,6 +7140,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7217,7 +7305,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:26",
+        "doc_consumers:27",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -7230,7 +7318,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 50
+      "total_consumers": 51
     },
     {
       "confidence": "medium",
@@ -7238,7 +7326,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 1,
+        "doc": 2,
         "hook": 1,
         "script": 3,
         "skill": 1,
@@ -7256,6 +7344,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7292,7 +7384,7 @@
         "hook_consumers:1",
         "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -7303,7 +7395,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -7368,6 +7460,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
+        "doc": 1,
         "script": 1,
         "test": 1
       },
@@ -7379,6 +7472,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "script",
@@ -7393,6 +7490,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -7403,7 +7501,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "high",
@@ -7411,7 +7509,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 3,
+        "doc": 4,
         "script": 4,
         "test": 6
       },
@@ -7439,6 +7537,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7498,7 +7600,7 @@
         "lifecycle",
         "script_consumers:4",
         "test_consumers:6",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -7511,7 +7613,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "medium",
@@ -7590,7 +7692,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 18,
+        "doc": 19,
         "rule": 2,
         "script": 2,
         "test": 3
@@ -7615,6 +7717,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7722,7 +7828,7 @@
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:18",
+        "doc_consumers:19",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -7733,7 +7839,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "medium",
@@ -7741,7 +7847,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 12,
+        "doc": 13,
         "hook": 1,
         "rule": 3,
         "skill": 2,
@@ -7767,6 +7873,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7859,7 +7969,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "test_consumers:3",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -7870,7 +7980,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 26
+      "total_consumers": 27
     },
     {
       "confidence": "high",
@@ -7878,7 +7988,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 7,
+        "doc": 8,
         "rule": 1,
         "script": 2,
         "test": 1
@@ -7919,6 +8029,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7967,7 +8081,7 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -7980,7 +8094,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -7988,7 +8102,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 22,
+        "doc": 23,
         "hook": 1,
         "rule": 2,
         "script": 2,
@@ -8026,6 +8140,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8163,7 +8281,7 @@
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:5",
-        "doc_consumers:22",
+        "doc_consumers:23",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -8176,7 +8294,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 40
+      "total_consumers": 41
     },
     {
       "confidence": "high",
@@ -8184,7 +8302,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 10,
+        "doc": 11,
         "rule": 2,
         "script": 3,
         "test": 1
@@ -8217,6 +8335,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8289,7 +8411,7 @@
         "rule_consumers:2",
         "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -8302,7 +8424,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -8310,7 +8432,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 20,
+        "doc": 21,
         "hook": 3,
         "rule": 1,
         "script": 5,
@@ -8356,6 +8478,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8509,7 +8635,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:7",
-        "doc_consumers:20",
+        "doc_consumers:21",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -8522,7 +8648,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 46
+      "total_consumers": 47
     },
     {
       "confidence": "high",
@@ -8530,7 +8656,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 38,
+        "doc": 39,
         "hook": 3,
         "rule": 5,
         "script": 6,
@@ -8561,6 +8687,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8839,7 +8969,7 @@
         "rule_consumers:5",
         "script_consumers:6",
         "test_consumers:13",
-        "doc_consumers:38",
+        "doc_consumers:39",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -8852,7 +8982,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 73
+      "total_consumers": 74
     },
     {
       "confidence": "high",
@@ -8860,7 +8990,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 17,
+        "doc": 18,
         "hook": 2,
         "rule": 1,
         "script": 3,
@@ -8906,6 +9036,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9011,7 +9145,7 @@
         "rule_consumers:1",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -9024,7 +9158,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -9032,7 +9166,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 13,
+        "doc": 14,
         "hook": 1,
         "rule": 2,
         "script": 4,
@@ -9066,6 +9200,10 @@
         {
           "family": "doc",
           "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9183,7 +9321,7 @@
         "rule_consumers:2",
         "script_consumers:4",
         "test_consumers:8",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -9196,7 +9334,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -9204,7 +9342,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 20,
+        "doc": 21,
         "hook": 2,
         "rule": 3,
         "script": 2,
@@ -9246,6 +9384,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9379,7 +9521,7 @@
         "rule_consumers:3",
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:20",
+        "doc_consumers:21",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -9392,7 +9534,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 40
+      "total_consumers": 41
     },
     {
       "confidence": "high",
@@ -9400,7 +9542,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 35,
+        "doc": 36,
         "hook": 1,
         "rule": 9,
         "script": 6,
@@ -9435,6 +9577,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9713,7 +9859,7 @@
         "rule_consumers:9",
         "script_consumers:6",
         "test_consumers:13",
-        "doc_consumers:35",
+        "doc_consumers:36",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -9726,7 +9872,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 74
+      "total_consumers": 75
     },
     {
       "confidence": "medium",
@@ -9734,7 +9880,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 4,
+        "doc": 5,
         "test": 1
       },
       "consumers": [
@@ -9749,6 +9895,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9774,7 +9924,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -9785,7 +9935,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -9793,7 +9943,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 53,
+        "doc": 54,
         "hook": 4,
         "rule": 10,
         "script": 8,
@@ -9852,6 +10002,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -10250,7 +10404,7 @@
         "rule_consumers:10",
         "script_consumers:8",
         "test_consumers:23",
-        "doc_consumers:53",
+        "doc_consumers:54",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -10263,7 +10417,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 110
+      "total_consumers": 111
     },
     {
       "confidence": "high",
@@ -10271,7 +10425,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 1,
+        "doc": 2,
         "script": 2,
         "test": 1
       },
@@ -10298,6 +10452,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/ADR-182-branch-ownership-lock.md"
         },
         {
@@ -10318,7 +10476,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -10331,7 +10489,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -10339,6 +10497,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
+        "doc": 1,
         "script": 2
       },
       "consumers": [
@@ -10363,6 +10522,10 @@
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -10375,6 +10538,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:2",
+        "doc_consumers:1",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -10387,7 +10551,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -10395,7 +10559,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 8,
-        "doc": 35,
+        "doc": 36,
         "hook": 3,
         "rule": 4,
         "script": 7,
@@ -10449,6 +10613,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -10698,7 +10866,7 @@
         "rule_consumers:4",
         "script_consumers:7",
         "test_consumers:15",
-        "doc_consumers:35",
+        "doc_consumers:36",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -10711,7 +10879,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 72
+      "total_consumers": 73
     },
     {
       "confidence": "high",
@@ -10719,7 +10887,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 37,
+        "doc": 38,
         "hook": 4,
         "rule": 10,
         "script": 7,
@@ -10765,6 +10933,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11094,7 +11266,7 @@
         "rule_consumers:10",
         "script_consumers:7",
         "test_consumers:22",
-        "doc_consumers:37",
+        "doc_consumers:38",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -11107,7 +11279,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 90
+      "total_consumers": 91
     },
     {
       "confidence": "medium",
@@ -11115,7 +11287,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 9,
+        "doc": 10,
         "rule": 1,
         "script": 2,
         "test": 2
@@ -11128,6 +11300,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11191,7 +11367,7 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -11202,7 +11378,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "medium",
@@ -11210,7 +11386,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 6,
+        "doc": 7,
         "test": 2
       },
       "consumers": [
@@ -11221,6 +11397,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11258,7 +11438,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -11269,7 +11449,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "medium",
@@ -11370,7 +11550,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 6,
+        "doc": 7,
         "script": 1,
         "test": 1
       },
@@ -11382,6 +11562,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11420,7 +11604,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -11431,7 +11615,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -11439,7 +11623,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 27,
+        "doc": 28,
         "hook": 3,
         "rule": 6,
         "script": 3,
@@ -11481,6 +11665,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11682,7 +11870,7 @@
         "rule_consumers:6",
         "script_consumers:3",
         "test_consumers:9",
-        "doc_consumers:27",
+        "doc_consumers:28",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -11695,7 +11883,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 57
+      "total_consumers": 58
     },
     {
       "confidence": "high",
@@ -11703,7 +11891,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 30,
+        "doc": 31,
         "hook": 4,
         "rule": 6,
         "script": 6,
@@ -11753,6 +11941,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11982,7 +12174,7 @@
         "rule_consumers:6",
         "script_consumers:6",
         "test_consumers:10",
-        "doc_consumers:30",
+        "doc_consumers:31",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -11995,14 +12187,14 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 66
+      "total_consumers": 67
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 6,
+        "config": 8,
         "doc": 6,
         "script": 1,
         "test": 4
@@ -12023,6 +12215,14 @@
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -12082,7 +12282,7 @@
         "script_consumers:1",
         "test_consumers:4",
         "doc_consumers:6",
-        "config_consumers:6"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -12092,15 +12292,15 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 19
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 9,
-        "doc": 22,
+        "config": 11,
+        "doc": 23,
         "hook": 1,
         "rule": 1,
         "script": 3,
@@ -12134,6 +12334,14 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -12147,6 +12355,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12305,8 +12517,8 @@
         "rule_consumers:1",
         "script_consumers:3",
         "test_consumers:10",
-        "doc_consumers:22",
-        "config_consumers:9"
+        "doc_consumers:23",
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/concurrent-write-guard.sh",
@@ -12318,7 +12530,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 47
+      "total_consumers": 50
     },
     {
       "confidence": "medium",
@@ -12326,7 +12538,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "script": 1,
         "test": 1
@@ -12339,6 +12551,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12382,7 +12598,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -12393,7 +12609,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -12401,7 +12617,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 28,
+        "doc": 29,
         "hook": 3,
         "rule": 7,
         "script": 5,
@@ -12443,6 +12659,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12664,7 +12884,7 @@
         "rule_consumers:7",
         "script_consumers:5",
         "test_consumers:10",
-        "doc_consumers:28",
+        "doc_consumers:29",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -12677,7 +12897,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 62
+      "total_consumers": 63
     },
     {
       "confidence": "high",
@@ -12685,7 +12905,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 8,
+        "doc": 9,
         "hook": 1,
         "rule": 2,
         "script": 5,
@@ -12715,6 +12935,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12796,7 +13020,7 @@
         "rule_consumers:2",
         "script_consumers:5",
         "test_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -12809,7 +13033,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -12817,7 +13041,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 16,
+        "doc": 17,
         "hook": 2,
         "rule": 3,
         "script": 2,
@@ -12859,6 +13083,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12968,7 +13196,7 @@
         "rule_consumers:3",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:16",
+        "doc_consumers:17",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -12981,7 +13209,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -12989,7 +13217,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 39,
+        "doc": 41,
         "hook": 2,
         "rule": 9,
         "script": 9,
@@ -13036,6 +13264,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13164,6 +13396,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/nearai__ironclaw-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -13370,7 +13606,7 @@
         "rule_consumers:9",
         "script_consumers:9",
         "test_consumers:19",
-        "doc_consumers:39",
+        "doc_consumers:41",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -13383,7 +13619,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 91
+      "total_consumers": 93
     },
     {
       "confidence": "high",
@@ -13391,7 +13627,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "script": 2,
         "test": 3
       },
@@ -13415,6 +13651,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13450,7 +13690,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -13463,7 +13703,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -13471,7 +13711,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 9,
+        "doc": 10,
         "test": 2
       },
       "consumers": [
@@ -13490,6 +13730,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13539,7 +13783,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:9",
+        "doc_consumers:10",
         "config_consumers:4"
       ],
       "family": "hooks",
@@ -13550,7 +13794,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -13558,7 +13802,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 13,
+        "doc": 14,
         "rule": 1,
         "script": 1,
         "test": 3
@@ -13599,6 +13843,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13679,7 +13927,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -13692,7 +13940,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "medium",
@@ -13700,7 +13948,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 7,
+        "doc": 8,
         "test": 3
       },
       "consumers": [
@@ -13719,6 +13967,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13760,7 +14012,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -13771,7 +14023,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "medium",
@@ -13868,7 +14120,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 3,
+        "doc": 4,
         "hook": 1,
         "script": 2,
         "test": 1
@@ -13908,6 +14160,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/ADR-041.md"
         },
         {
@@ -13941,7 +14197,7 @@
         "hook_consumers:1",
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -13954,7 +14210,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -14044,7 +14300,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 30,
+        "doc": 31,
         "hook": 3,
         "rule": 3,
         "script": 7,
@@ -14095,6 +14351,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14305,7 +14565,7 @@
         "rule_consumers:3",
         "script_consumers:7",
         "test_consumers:6",
-        "doc_consumers:30",
+        "doc_consumers:31",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -14318,7 +14578,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 61
+      "total_consumers": 62
     },
     {
       "confidence": "high",
@@ -14326,7 +14586,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 1,
+        "doc": 2,
         "script": 2
       },
       "consumers": [
@@ -14356,6 +14616,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/cross-session-coordination-ledger.md"
         },
         {
@@ -14371,7 +14635,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:2",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -14384,7 +14648,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -14392,7 +14656,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 1,
+        "doc": 2,
         "script": 2,
         "test": 3
       },
@@ -14416,6 +14680,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14447,7 +14715,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -14460,7 +14728,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -14468,7 +14736,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 5,
-        "doc": 2,
+        "doc": 3,
         "script": 2,
         "test": 4
       },
@@ -14492,6 +14760,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14531,7 +14803,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:4",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -14544,7 +14816,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -14552,7 +14824,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 1,
+        "doc": 2,
         "script": 3
       },
       "consumers": [
@@ -14586,6 +14858,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
@@ -14605,7 +14881,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:3",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -14619,7 +14895,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
@@ -14627,7 +14903,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 5,
+        "doc": 6,
         "script": 3,
         "test": 2
       },
@@ -14667,6 +14943,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14714,7 +14994,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -14727,7 +15007,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 19
+      "total_consumers": 20
     },
     {
       "confidence": "high",
@@ -14937,7 +15217,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 7,
-        "doc": 7,
+        "doc": 8,
         "hook": 1,
         "rule": 1,
         "script": 5,
@@ -14972,6 +15252,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15070,7 +15354,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:6",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -15083,7 +15367,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -15091,7 +15375,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 8,
-        "doc": 7,
+        "doc": 8,
         "script": 5,
         "test": 4
       },
@@ -15131,6 +15415,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15198,7 +15486,7 @@
         "lifecycle",
         "script_consumers:5",
         "test_consumers:4",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -15211,7 +15499,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -15219,7 +15507,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 18,
+        "doc": 19,
         "hook": 4,
         "rule": 4,
         "script": 5,
@@ -15262,6 +15550,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15440,7 +15732,7 @@
         "rule_consumers:4",
         "script_consumers:5",
         "test_consumers:10",
-        "doc_consumers:18",
+        "doc_consumers:19",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -15453,7 +15745,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 51
+      "total_consumers": 52
     },
     {
       "confidence": "high",
@@ -15461,7 +15753,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 12,
+        "doc": 13,
         "rule": 1,
         "script": 5,
         "test": 3
@@ -15498,6 +15790,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15590,7 +15886,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:3",
-        "doc_consumers:12",
+        "doc_consumers:13",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -15603,7 +15899,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -15611,7 +15907,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 2,
+        "doc": 3,
         "script": 3,
         "test": 1
       },
@@ -15646,6 +15942,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/ADR-048-docker-container-image-freshness.md"
         },
         {
@@ -15674,7 +15974,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -15687,7 +15987,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -15695,7 +15995,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 29,
+        "doc": 30,
         "hook": 1,
         "rule": 4,
         "script": 4,
@@ -15734,6 +16034,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-17.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -15924,7 +16228,7 @@
         "rule_consumers:4",
         "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:29",
+        "doc_consumers:30",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -15937,7 +16241,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 53
+      "total_consumers": 54
     },
     {
       "confidence": "medium",
@@ -15945,7 +16249,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 8,
+        "doc": 9,
         "rule": 1,
         "test": 3
       },
@@ -15957,6 +16261,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16011,7 +16319,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:3",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -16022,7 +16330,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -16030,7 +16338,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 3,
+        "doc": 4,
         "script": 1,
         "test": 1
       },
@@ -16046,6 +16354,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16072,7 +16384,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -16083,7 +16395,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -16091,6 +16403,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
+        "doc": 1,
         "script": 1,
         "test": 2
       },
@@ -16120,6 +16433,10 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -16137,6 +16454,7 @@
         "lifecycle",
         "script_consumers:1",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -16149,7 +16467,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -16157,7 +16475,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 6,
-        "doc": 2,
+        "doc": 3,
         "script": 3,
         "skill": 1,
         "test": 3
@@ -16186,6 +16504,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16230,7 +16552,7 @@
         "skill_consumers:1",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -16243,7 +16565,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -16251,6 +16573,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
+        "doc": 1,
         "script": 1,
         "test": 1
       },
@@ -16284,6 +16607,10 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -16297,6 +16624,7 @@
         "lifecycle",
         "script_consumers:1",
         "test_consumers:1",
+        "doc_consumers:1",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -16309,7 +16637,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -16317,6 +16645,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
+        "doc": 1,
         "hook": 1,
         "script": 2,
         "test": 2
@@ -16351,6 +16680,10 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/edit-lock-pre-tool.sh"
         },
@@ -16377,6 +16710,7 @@
         "hook_consumers:1",
         "script_consumers:2",
         "test_consumers:2",
+        "doc_consumers:1",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -16389,7 +16723,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -16575,7 +16909,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 5,
+        "doc": 6,
         "hook": 2,
         "script": 4,
         "test": 4
@@ -16612,6 +16946,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16676,7 +17014,7 @@
         "hook_consumers:2",
         "script_consumers:4",
         "test_consumers:4",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -16689,7 +17027,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "high",
@@ -16697,7 +17035,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 8,
+        "doc": 9,
         "script": 4,
         "test": 4
       },
@@ -16737,6 +17075,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-01.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16800,7 +17142,7 @@
         "lifecycle",
         "script_consumers:4",
         "test_consumers:4",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -16813,7 +17155,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -16821,7 +17163,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 5,
+        "doc": 6,
         "script": 3,
         "test": 1
       },
@@ -16849,6 +17191,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16892,7 +17238,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -16905,7 +17251,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -16913,7 +17259,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 5,
+        "doc": 6,
         "hook": 2,
         "script": 3,
         "test": 2
@@ -16942,6 +17288,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -16998,7 +17348,7 @@
         "hook_consumers:2",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -17011,7 +17361,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "medium",
@@ -17019,7 +17369,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 10,
+        "doc": 11,
         "hook": 1,
         "rule": 3,
         "test": 2
@@ -17044,6 +17394,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17115,7 +17469,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "test_consumers:2",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -17126,7 +17480,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "high",
@@ -17134,7 +17488,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 61,
+        "doc": 62,
         "hook": 11,
         "rule": 10,
         "script": 5,
@@ -17185,6 +17539,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17715,7 +18073,7 @@
         "rule_consumers:10",
         "script_consumers:5",
         "test_consumers:41",
-        "doc_consumers:61",
+        "doc_consumers:62",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -17728,7 +18086,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 141
+      "total_consumers": 142
     },
     {
       "confidence": "high",
@@ -17736,7 +18094,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 26,
+        "doc": 27,
         "rule": 3,
         "script": 5,
         "test": 8
@@ -17777,6 +18135,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -17949,7 +18311,7 @@
         "rule_consumers:3",
         "script_consumers:5",
         "test_consumers:8",
-        "doc_consumers:26",
+        "doc_consumers:27",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -17962,7 +18324,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 50
+      "total_consumers": 51
     },
     {
       "confidence": "high",
@@ -17970,7 +18332,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 21,
+        "doc": 22,
         "hook": 1,
         "rule": 1,
         "script": 5,
@@ -18012,6 +18374,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -18169,7 +18535,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:9",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -18182,7 +18548,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 46
+      "total_consumers": 47
     },
     {
       "confidence": "high",
@@ -18190,7 +18556,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 7,
+        "doc": 8,
         "script": 2,
         "test": 2
       },
@@ -18222,6 +18588,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -18273,7 +18643,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -18286,7 +18656,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 18
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -18294,7 +18664,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 11,
+        "doc": 12,
         "hook": 2,
         "rule": 4,
         "script": 3,
@@ -18332,6 +18702,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -18445,7 +18819,7 @@
         "rule_consumers:4",
         "script_consumers:3",
         "test_consumers:6",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -18458,7 +18832,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "medium",
@@ -18466,7 +18840,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 15,
+        "doc": 16,
         "hook": 2,
         "rule": 1,
         "script": 1,
@@ -18488,6 +18862,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -18576,7 +18954,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:15",
+        "doc_consumers:16",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -18587,7 +18965,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "medium",
@@ -18595,7 +18973,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 7,
+        "doc": 8,
         "rule": 1,
         "test": 1
       },
@@ -18611,6 +18989,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -18653,7 +19035,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:7",
+        "doc_consumers:8",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -18664,7 +19046,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -20863,7 +21245,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 21,
+        "doc": 22,
         "hook": 3,
         "rule": 1,
         "script": 4,
@@ -20909,6 +21291,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -21061,7 +21447,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:21",
+        "doc_consumers:22",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -21072,7 +21458,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 46
+      "total_consumers": 47
     },
     {
       "confidence": "high",
@@ -22650,7 +23036,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 10,
         "doc": 28,
         "hook": 1,
         "rule": 4,
@@ -22681,6 +23067,14 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -22911,7 +23305,7 @@
         "script_consumers:7",
         "test_consumers:13",
         "doc_consumers:28",
-        "config_consumers:8"
+        "config_consumers:10"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/pre-compaction-flush.sh",
@@ -22923,7 +23317,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 61
+      "total_consumers": 63
     },
     {
       "confidence": "high",
@@ -26765,7 +27159,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 80,
+        "doc": 81,
         "hook": 4,
         "rule": 3,
         "script": 16,
@@ -27107,6 +27501,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/smykla-skalski__klaudiush-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/rules-consolidation-plan.md"
         },
         {
@@ -27326,7 +27724,7 @@
         "rule_consumers:3",
         "script_consumers:16",
         "test_consumers:20",
-        "doc_consumers:80",
+        "doc_consumers:81",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -27339,7 +27737,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 136
+      "total_consumers": 137
     },
     {
       "confidence": "high",
@@ -28318,7 +28716,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 14,
+        "config": 15,
         "doc": 51,
         "hook": 3,
         "rule": 4,
@@ -28362,6 +28760,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -28793,7 +29195,7 @@
         "script_consumers:10",
         "test_consumers:30",
         "doc_consumers:51",
-        "config_consumers:14"
+        "config_consumers:15"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/session-init.sh",
@@ -28805,7 +29207,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 114
+      "total_consumers": 115
     },
     {
       "confidence": "medium",
@@ -31453,7 +31855,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 15,
         "rule": 1,
         "script": 3,
@@ -31479,6 +31881,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -31588,7 +31994,7 @@
         "script_consumers:3",
         "test_consumers:4",
         "doc_consumers:15",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/subagent-context-injector.sh",
@@ -31600,7 +32006,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "high",
@@ -32061,7 +32467,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 8,
         "script": 5,
         "test": 1
@@ -32086,6 +32492,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -32162,7 +32572,7 @@
         "script_consumers:5",
         "test_consumers:1",
         "doc_consumers:8",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/task-created.sh",
@@ -32174,7 +32584,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
@@ -32319,7 +32729,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 9,
         "script": 5,
         "test": 1
@@ -32344,6 +32754,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -32420,7 +32834,7 @@
         "script_consumers:5",
         "test_consumers:1",
         "doc_consumers:9",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/teammate-idle.sh",
@@ -32432,7 +32846,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "high",

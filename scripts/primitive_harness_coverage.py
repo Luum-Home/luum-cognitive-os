@@ -217,12 +217,15 @@ def _shell_ci_projection(root: Path) -> dict[str, dict[str, list[str]]]:
 
 
 def _test_index(root: Path) -> str:
+    # Keep this intentionally cheap: explicit behavior mappings carry the strong
+    # evidence, and filename/path references catch common direct tests without
+    # loading the whole test corpus into memory.
     chunks: list[str] = []
     for base in (root / "tests", root / "docs" / "manual-tests"):
         if base.exists():
             for path in base.rglob("*"):
                 if path.is_file() and path.suffix in {".py", ".md", ".bats", ".sh"}:
-                    chunks.append(relpath(root, path) + "\n" + read_text(path))
+                    chunks.append(relpath(root, path))
     return "\n".join(chunks)
 
 
@@ -325,6 +328,8 @@ def _policy_matches(rule: dict[str, Any], primitive: str, family: str, scope: st
         return False
     if rule.get("primitives") and primitive not in set(rule.get("primitives") or []):
         return False
+    if rule.get("path_prefix") and not primitive.startswith(str(rule.get("path_prefix"))):
+        return False
     missing = [name for name, state in harnesses.items() if not (state.projected or state.wired)]
     if rule.get("missing_harness") and rule.get("missing_harness") not in missing:
         return False
@@ -380,6 +385,7 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
         "gaps": sum(1 for row in rows if row.gap),
         "unclassified_gaps": sum(1 for row in rows if row.gap_policy == "unclassified"),
         "gaps_by_policy": {},
+        "gaps_by_status": {},
         "harness_projected_or_wired": {h: sum(1 for row in rows if row.harnesses[h].projected or row.harnesses[h].wired) for h in harnesses},
         "harness_wired_hooks": {h: sum(1 for row in rows if row.family == "hooks" and row.harnesses[h].wired) for h in harnesses},
     }
@@ -388,6 +394,8 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
         summary["by_scope"][str(row.scope)] = summary["by_scope"].get(str(row.scope), 0) + 1
         if row.gap_policy:
             summary["gaps_by_policy"][row.gap_policy] = summary["gaps_by_policy"].get(row.gap_policy, 0) + 1
+        if row.gap_status:
+            summary["gaps_by_status"][row.gap_status] = summary["gaps_by_status"].get(row.gap_status, 0) + 1
     return {
         "schema_version": "primitive-harness-coverage.v1",
         "purpose": "Measure effective harness/IDE implementation coverage separately from scope intent.",
@@ -413,6 +421,7 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
         f"Total primitives: {report['summary']['total_primitives']}",
         f"Gaps: {report['summary']['gaps']}",
         f"Unclassified gaps: {report['summary'].get('unclassified_gaps', 0)}",
+        f"Gaps by status: {report['summary'].get('gaps_by_status', {})}",
         f"Projected/wired by harness: {report['summary']['harness_projected_or_wired']}",
         f"Wired hooks by harness: {report['summary']['harness_wired_hooks']}",
         "",
