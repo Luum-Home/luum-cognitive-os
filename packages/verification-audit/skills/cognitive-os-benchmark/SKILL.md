@@ -11,6 +11,13 @@ audience: os-dev
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcognitive[- ]?os[- ]?benchmark\b'
+    confidence: 0.95
+  - pattern: '\bbenchmark\s+(cognitive[- ]?os|cos)\b'
+    confidence: 0.85
+  - pattern: '\bcos\s+vs\s+(bmad|baseline)\b'
+    confidence: 0.75
 ---
 
 # Cognitive OS Benchmark Skill

@@ -9,6 +9,13 @@ summary_line: Scan a project root and produce detected-stack.json with detected 
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdetect[- ]?stack\b'
+    confidence: 0.95
+  - pattern: '\bscan\s+project\s+(stack|tech)\b'
+    confidence: 0.85
+  - pattern: '\bdetected[- ]?stack\b'
+    confidence: 0.8
 ---
 
 # Detect Stack

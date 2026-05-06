@@ -20,6 +20,11 @@ summary_line: Configure Promptfoo for prompt regression testing and red teaming 
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bpromptfoo[- ]?integration\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+promptfoo\b'
+    confidence: 0.85
 ---
 
 ## Purpose

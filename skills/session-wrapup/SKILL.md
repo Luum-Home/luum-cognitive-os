@@ -16,6 +16,13 @@ routing:
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsession[- ]?wrapup\b'
+    confidence: 0.95
+  - pattern: '\bend[- ]?of[- ]?session\b'
+    confidence: 0.85
+  - pattern: '\bsession\s+close\b'
+    confidence: 0.8
 ---
 
 # Session Wrapup — End-of-Session Routine

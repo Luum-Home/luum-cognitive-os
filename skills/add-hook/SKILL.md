@@ -7,6 +7,13 @@ audience: os
 tags: [development, extension, hooks]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\badd[- ]?hook\b'
+    confidence: 0.95
+  - pattern: '\b(agregar?|a[ñn]adir|crear)\s+(un\s+)?hook\b'
+    confidence: 0.8
+  - pattern: '\bnew\s+hook\b'
+    confidence: 0.75
 ---
 
 # Add Hook

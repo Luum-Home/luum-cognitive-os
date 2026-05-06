@@ -8,6 +8,13 @@ version: 2.0.0
 summary_line: "Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals."
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bllm[- ]?status\b'
+    confidence: 0.95
+  - pattern: '\bllm\s+(dispatch|provider|state)\b'
+    confidence: 0.85
+  - pattern: '\bllm\s+(config|routing)\b'
+    confidence: 0.8
 ---
 
 # /llm-status — LLM Dispatch Transparency

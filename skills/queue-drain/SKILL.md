@@ -7,6 +7,13 @@ version: 1.0.0
 audience: os-dev
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bqueue[- ]?drain\b'
+    confidence: 0.95
+  - pattern: '\bdrain\s+(the\s+)?queue\b'
+    confidence: 0.85
+  - pattern: '\bagent\s+queue\s+(drain|health)\b'
+    confidence: 0.8
 ---
 
 # Queue Drain

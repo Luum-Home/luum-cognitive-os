@@ -11,6 +11,11 @@ summary_line: Analyze hook execution latency — full stats, live tail, per-even
 platforms: ["claude-code"]
 prerequisites: []
 tags: [observability, performance, debugging]
+routing_patterns:
+  - pattern: '\bhook[- ]?timing\b'
+    confidence: 0.95
+  - pattern: '\bhook\s+(stats|timing|performance|p50|p95|p99)\b'
+    confidence: 0.85
 ---
 
 # Hook Timing Skill

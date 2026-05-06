@@ -10,6 +10,13 @@ model: haiku
 summary_line: Scan content for memory threats (prompt injection, exfiltration, invisible Unicode).
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bmemory[- ]?scan\b'
+    confidence: 0.95
+  - pattern: '\bscan\s+(for\s+)?(prompt\s+injection|credentials?)\b'
+    confidence: 0.85
+  - pattern: '\bprompt\s+injection\s+(scan|check)\b'
+    confidence: 0.8
 ---
 
 # Memory Scan Skill

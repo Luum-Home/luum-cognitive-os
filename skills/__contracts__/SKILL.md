@@ -6,6 +6,11 @@ description: Structural namespace for shared Cognitive OS skill contracts used b
 triggers: []
 user-invocable: false
 audience: os-dev
+routing_patterns:
+  - pattern: '\b__contracts__\b'
+    confidence: 0.95
+  - pattern: '\bskill\s+contracts?\b'
+    confidence: 0.75
 ---
 
 # Contracts Namespace
