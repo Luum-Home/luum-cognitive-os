@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""CLI for ADR-212 cross-stack license audit policy."""
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.cross_stack_license_audit import audit, dumps_json, format_human  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Audit cross-stack license scanner posture and workflow safety.")
+    parser.add_argument("--project-dir", type=Path, default=ROOT)
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--strict", action="store_true", help="Exit non-zero on warn as well as block")
+    args = parser.parse_args()
+
+    report = audit(args.project_dir)
+    if args.json:
+        print(dumps_json(report))
+    else:
+        print(format_human(report))
+    if report["status"] == "block":
+        return 2
+    if args.strict and report["status"] == "warn":
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
