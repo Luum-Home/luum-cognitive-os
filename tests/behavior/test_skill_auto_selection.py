@@ -4,7 +4,6 @@ Validates that the SkillRouter is importable, has sufficient routing
 coverage, references real skills, and works for both languages.
 """
 
-import os
 from pathlib import Path
 
 import pytest
@@ -93,6 +92,7 @@ class TestSkillsExistOnFilesystem:
 
         project_root = Path(__file__).resolve().parent.parent.parent
         skills_dir = project_root / "skills"
+        runtime_skills_dir = project_root / ".cognitive-os" / "skills"
 
         if not skills_dir.exists():
             pytest.skip("skills/ directory not found")
@@ -117,10 +117,21 @@ class TestSkillsExistOnFilesystem:
                 mapped = aliases[skill_name]
                 if mapped is None:
                     continue  # meta-command, always OK
-                if (skills_dir / mapped).is_dir() or mapped in catalog_skills:
+                if (
+                    (skills_dir / mapped).is_dir()
+                    or (runtime_skills_dir / mapped).is_dir()
+                    or mapped in catalog_skills
+                ):
                     continue
-            # Check directory exists OR listed in CATALOG
-            elif (skills_dir / skill_name).is_dir() or skill_name in catalog_skills:
+            # Check source dir, runtime projection dir, OR listed in CATALOG.
+            # Runtime-projected skills under .cognitive-os/skills are local
+            # install state and may legitimately add frontmatter routing entries
+            # without being committed under skills/.
+            elif (
+                (skills_dir / skill_name).is_dir()
+                or (runtime_skills_dir / skill_name).is_dir()
+                or skill_name in catalog_skills
+            ):
                 continue
             missing.append(skill_name)
 

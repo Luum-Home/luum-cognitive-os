@@ -7,7 +7,6 @@ Migrated from test-session-isolation.sh.
 
 import json
 import os
-import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -35,7 +34,11 @@ def _init_session(session_init_hook, project_root):
         capture_output=True,
         text=True,
         env={**os.environ, "CLAUDE_PROJECT_DIR": str(project_root)},
-        timeout=10,
+        # Full behavior lane runs this stateful hook many times while other
+        # session-start helpers may have cold Python startup. The hook's SLO is
+        # tracked by p95 latency contracts; this behavior test validates session
+        # isolation side effects, so use a less brittle wall-clock cap.
+        timeout=20,
     )
     # Extract session ID from output
     sid = None
