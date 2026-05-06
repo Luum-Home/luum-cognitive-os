@@ -5,6 +5,8 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-05-06
+
 ### Added — ADR-171..187: paperclip rejection, lifecycle activation, and coordination hardening (2026-05-06)
 
 - Rejected the Paperclip/OpenSpace-style auto-apply integration surface and removed the package, hooks, docs, tests, and symlinks tied to the retired Paperclip daemon path. The accepted path keeps generated skills in sandbox until evidence and operator review promote them.
