@@ -225,6 +225,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Self-Improvement Maintainer Agent Gap](reports/self-improvement-maintainer-agent-gap-2026-05-06.md) — diagnosis of why telemetry does not close the loop without a permanent maintainer agent and `PromoteFromTelemetry` primitive
 - [Private Content Portability Gap](reports/private-content-portability-gap-2026-05-06.md) — diagnosis of private strategy/memory/metrics portability across Codex, Claude Code, and service hosts
 - [Auto-Rollback Router Trigger Forensics](reports/auto-rollback-router-trigger-forensics-2026-05-06.md) — why `/auto-rollback` was suggested in a meta-discussion and the narrow router guard added
+- [Skill Router False-Positive Cluster](reports/skill-router-false-positive-cluster-2026-05-06.md) — consolidated dogfood evidence for command-mention false positives and the generic negative-context guard
 - [Subagent Capability Contract Gap](reports/subagent-capability-contract-gap-2026-05-06.md) — diagnosis of Explore read-only launches for file-artifact research tasks and the ADR-203 guard
 - [ADR-200+ Closure Inventory](reports/adr-200-plus-closure-inventory-2026-05-06.md) — execution matrix and dependency order for implementing ADR-200 through ADR-211
 - [Driver-Specific Script Surfaces](architecture/driver-specific-script-surfaces.md) — which user-facing scripts are truly cross-harness today and which remain Claude-driver-only by contract

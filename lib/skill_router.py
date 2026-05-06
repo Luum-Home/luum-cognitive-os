@@ -76,6 +76,45 @@ def _is_auto_rollback_meta_reference(text: str) -> bool:
     return bool(_AUTO_ROLLBACK_META_CONTEXT_RE.search(text))
 
 
+_ROUTER_NEGATIVE_CONTEXT_RE = re.compile(
+    r"("
+    r"router|skill\s*router|suggest(?:ed|ion)?|sugiri[oó]|sugerencia|hint|"
+    r"dogfood\s+evidence|evidence\s+#\d+|falso\s+positivo|false\s+positive|"
+    r"mal\s+calibrad[oa]|miscalibrat\w*|badly\s+calibrated|"
+    r"ignoro|ignored?|rechaz\w*|reject\w*|"
+    r"por\s+qu[eé]|why|qu[eé]\s+dispara|what\s+triggers|"
+    r"me\s+asusta|scary|me\s+preocupa|worr(?:y|ied|ies)"
+    r")",
+    re.IGNORECASE,
+)
+
+
+def _command_or_skill_mentioned(text: str, entry: "_RoutingEntry") -> bool:
+    """Return True when *text* explicitly names the candidate route.
+
+    This intentionally checks explicit command/skill mentions, not arbitrary
+    routing patterns. The negative-context guard should reject "the router
+    suggested /phoenix-trace-ui" but must not suppress normal prompts merely
+    because they contain broad words like "research" or "debug".
+    """
+    names = {
+        entry.skill_name,
+        entry.invoke_command.lstrip("/"),
+    }
+    if entry.fallback_command:
+        names.add(entry.fallback_command.lstrip("/"))
+    for name in names:
+        escaped = re.escape(name)
+        if re.search(rf"(?<![\w/-])/?{escaped}(?![\w/-])", text, re.IGNORECASE):
+            return True
+    return False
+
+
+def _is_router_negative_context(text: str, entry: "_RoutingEntry") -> bool:
+    """Return True when a route is mentioned as critique/evidence, not intent."""
+    return bool(_ROUTER_NEGATIVE_CONTEXT_RE.search(text)) and _command_or_skill_mentioned(text, entry)
+
+
 # ---------------------------------------------------------------------------
 # URL detectors (special-cased, not pure regex on the whole message)
 # ---------------------------------------------------------------------------
@@ -1530,7 +1569,10 @@ class SkillRouter:
         matches: List[SkillMatch] = []
 
         for entry in self._routing_table:
-            if entry.skill_name == "auto-rollback" and _is_auto_rollback_meta_reference(text):
+            if (
+                (entry.skill_name == "auto-rollback" and _is_auto_rollback_meta_reference(text))
+                or _is_router_negative_context(text, entry)
+            ):
                 continue
 
             best_conf = 0.0
