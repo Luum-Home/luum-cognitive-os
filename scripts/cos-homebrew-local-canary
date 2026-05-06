@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Opt-in real local Homebrew install canary for the Cognitive OS formula.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+FORMULA="$ROOT/Formula/cognitive-os.rb"
+APPLY=0
+KEEP_INSTALLED=0
+REPLACE_EXISTING=0
+JSON=1
+
+usage() {
+  cat <<'USAGE'
+Usage: scripts/cos-homebrew-local-canary [--apply] [--keep-installed] [--replace-existing] [--json]
+
+Runs a local real Homebrew install canary for Formula/cognitive-os.rb.
+
+Default mode is non-mutating plumbing verification. To actually run Homebrew:
+
+  COS_RUN_HOMEBREW_CANARY=1 scripts/cos-homebrew-local-canary --apply
+
+Real mode:
+  1. Requires Homebrew on PATH.
+  2. Requires cognitive-os not already installed, unless --replace-existing is set.
+  3. Creates a temporary source tarball from the current Git HEAD.
+  4. Creates a temporary local tap and copies Formula/cognitive-os.rb into it.
+  5. Rewrites the temporary formula copy to install from that local tarball.
+  6. Runs: brew install --build-from-source <temporary-tap>/cognitive-os
+  7. Runs the installed bin/cos version and brew test cognitive-os.
+  8. Uninstalls cognitive-os and removes the temporary tap unless --keep-installed is set.
+
+This writes to the host Homebrew prefix. It is intentionally opt-in and should
+not run in default CI/laptop lanes.
+USAGE
+}
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --apply) APPLY=1 ;;
+    --keep-installed) KEEP_INSTALLED=1 ;;
+    --replace-existing) REPLACE_EXISTING=1 ;;
+    --json) JSON=1 ;;
+    --help|-h) usage; exit 0 ;;
+    *) echo "unknown argument: $1" >&2; usage >&2; exit 2 ;;
+  esac
+  shift
+done
+
+json_emit() {
+  python3 - "$@" <<'PY'
+from __future__ import annotations
+import json, sys
+pairs = sys.argv[1:]
+out = {}
+for pair in pairs:
+    key, _, value = pair.partition("=")
+    if value in {"true", "false"}:
+        out[key] = value == "true"
+    elif value.isdigit():
+        out[key] = int(value)
+    else:
+        out[key] = value
+print(json.dumps(out, sort_keys=True))
+PY
+}
+
+if [ ! -f "$FORMULA" ]; then
+  json_emit ok=false stage=preflight error="formula missing" formula="$FORMULA"
+  exit 1
+fi
+
+if [ "$APPLY" != "1" ]; then
+  json_emit ok=true skipped=true stage=preflight formula="$FORMULA" reason="pass --apply with COS_RUN_HOMEBREW_CANARY=1 for real brew install"
+  exit 0
+fi
+
+if [ "${COS_RUN_HOMEBREW_CANARY:-0}" != "1" ]; then
+  json_emit ok=false stage=guard error="real Homebrew canary requires COS_RUN_HOMEBREW_CANARY=1" formula="$FORMULA"
+  exit 2
+fi
+
+if ! command -v brew >/dev/null 2>&1; then
+  json_emit ok=false stage=preflight error="brew not found" formula="$FORMULA"
+  exit 3
+fi
+
+TAP_NAME="${COS_HOMEBREW_CANARY_TAP:-luum-local/cos-canary-$$}"
+TAP_FORMULA=""
+TAP_CREATED=0
+SOURCE_TARBALL=""
+
+WAS_INSTALLED=0
+if brew list --formula cognitive-os >/dev/null 2>&1; then
+  WAS_INSTALLED=1
+fi
+
+if [ "$WAS_INSTALLED" = "1" ] && [ "$REPLACE_EXISTING" != "1" ]; then
+  json_emit ok=false stage=preflight error="cognitive-os already installed; refusing non-fresh canary without --replace-existing" formula="$FORMULA"
+  exit 4
+fi
+
+cleanup() {
+  local status=$?
+  if [ "$KEEP_INSTALLED" != "1" ]; then
+    if [ "$WAS_INSTALLED" != "1" ] || [ "$REPLACE_EXISTING" = "1" ]; then
+      brew uninstall --force cognitive-os >/dev/null 2>&1 || true
+    fi
+    if [ "$TAP_CREATED" = "1" ]; then
+      brew untap --force "$TAP_NAME" >/dev/null 2>&1 || true
+    fi
+    if [ -n "$SOURCE_TARBALL" ]; then
+      rm -f "$SOURCE_TARBALL"
+    fi
+  fi
+  exit "$status"
+}
+trap cleanup EXIT INT TERM
+
+if [ "$WAS_INSTALLED" = "1" ] && [ "$REPLACE_EXISTING" = "1" ]; then
+  brew uninstall --force cognitive-os >/dev/null
+fi
+
+install_out="$(mktemp "${TMPDIR:-/tmp}/cos-homebrew-install.XXXXXX")"
+tap_out="$(mktemp "${TMPDIR:-/tmp}/cos-homebrew-tap.XXXXXX")"
+test_out="$(mktemp "${TMPDIR:-/tmp}/cos-homebrew-test.XXXXXX")"
+version_out="$(mktemp "${TMPDIR:-/tmp}/cos-homebrew-version.XXXXXX")"
+SOURCE_TARBALL="$(mktemp "${TMPDIR:-/tmp}/cos-homebrew-source.XXXXXX.tar.gz")"
+
+if ! git -C "$ROOT" archive --format=tar.gz -o "$SOURCE_TARBALL" HEAD; then
+  json_emit ok=false stage=source_archive exit_code=1 formula="$FORMULA" error="git archive HEAD failed"
+  exit 1
+fi
+SOURCE_SHA="$(shasum -a 256 "$SOURCE_TARBALL" | awk '{print $1}')"
+SOURCE_URL="file://$SOURCE_TARBALL"
+
+if ! brew tap-new "$TAP_NAME" >"$tap_out" 2>&1; then
+  tail_text="$(tail -40 "$tap_out" | tr '\n' ' ' | head -c 2000)"
+  json_emit ok=false stage=tap_new exit_code=1 formula="$FORMULA" tap="$TAP_NAME" error="$tail_text"
+  exit 1
+fi
+TAP_CREATED=1
+TAP_DIR="$(brew --repository "$TAP_NAME" 2>/dev/null || true)"
+TAP_FORMULA="$TAP_DIR/Formula/cognitive-os.rb"
+mkdir -p "$(dirname "$TAP_FORMULA")"
+cp "$FORMULA" "$TAP_FORMULA"
+python3 - "$TAP_FORMULA" "$SOURCE_URL" "$SOURCE_SHA" <<'PY'
+from __future__ import annotations
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+url = sys.argv[2]
+sha = sys.argv[3]
+text = path.read_text(encoding="utf-8")
+text = re.sub(
+    r'^\s*head\s+"[^"]+"(?:,\s*branch:\s*"[^"]+")?\s*$',
+    f'  url "{url}"\n  sha256 "{sha}"',
+    text,
+    count=1,
+    flags=re.MULTILINE,
+)
+if re.search(r'^\s*version\s+"[^"]+"\s*$', text, flags=re.MULTILINE) is None:
+    text = re.sub(
+        r'^(\s*license\s+"[^"]+"\s*)$',
+        '\\1\n  version "0.0.0-canary"',
+        text,
+        count=1,
+        flags=re.MULTILINE,
+    )
+path.write_text(text, encoding="utf-8")
+PY
+
+if ! brew install --build-from-source "$TAP_NAME/cognitive-os" >"$install_out" 2>&1; then
+  tail_text="$(tail -40 "$install_out" | tr '\n' ' ' | head -c 2000)"
+  json_emit ok=false stage=install exit_code=1 formula="$FORMULA" tap="$TAP_NAME" error="$tail_text"
+  exit 1
+fi
+
+prefix="$(brew --prefix cognitive-os 2>/dev/null || true)"
+cos_bin="$prefix/bin/cos"
+if [ ! -x "$cos_bin" ]; then
+  json_emit ok=false stage=verify formula="$FORMULA" error="installed cos binary missing" prefix="$prefix"
+  exit 1
+fi
+
+if ! "$cos_bin" version >"$version_out" 2>&1; then
+  tail_text="$(tail -20 "$version_out" | tr '\n' ' ' | head -c 1000)"
+  json_emit ok=false stage=version formula="$FORMULA" error="$tail_text" cos_bin="$cos_bin"
+  exit 1
+fi
+
+if ! brew test cognitive-os >"$test_out" 2>&1; then
+  tail_text="$(tail -40 "$test_out" | tr '\n' ' ' | head -c 2000)"
+  json_emit ok=false stage=brew_test formula="$FORMULA" error="$tail_text" cos_bin="$cos_bin"
+  exit 1
+fi
+
+version_text="$(cat "$version_out" | tr '\n' ' ' | head -c 500)"
+json_emit ok=true stage=complete formula="$FORMULA" tap="$TAP_NAME" cos_bin="$cos_bin" version="$version_text" kept_installed="$([ "$KEEP_INSTALLED" = "1" ] && echo true || echo false)"
