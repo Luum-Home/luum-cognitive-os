@@ -21,6 +21,14 @@ policies:
     severity: high
     status: partial
     rationale: Runtime safety primitive claims portability but lacks required Claude/Codex parity.
+  - id: hook-helper-library
+    severity: advisory
+    status: aligned
+    rationale: Hook helper libraries are sourced by wired hooks; direct harness event wiring is not expected.
+  - id: codex-adapter
+    severity: advisory
+    status: aligned
+    rationale: Codex-specific adapter is intentionally wired only in Codex.
   - id: on-demand-command-only
     severity: advisory
     status: aligned
@@ -38,6 +46,13 @@ policies:
     status: partial
     rationale: Gap has not yet been triaged.
 rules:
+  - policy: hook-helper-library
+    family: hooks
+    path_prefix: hooks/_lib/
+  - policy: codex-adapter
+    family: hooks
+    primitives:
+      - hooks/concurrent-write-guard-codex-proxy.sh
   - policy: acceptable-claude-only
     family: hooks
     primitives:

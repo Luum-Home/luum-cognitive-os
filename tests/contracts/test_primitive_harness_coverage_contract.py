@@ -14,6 +14,7 @@ SCRIPT = REPO / "scripts" / "primitive_harness_coverage.py"
 REPORT = REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json"
 
 
+@pytest.mark.timeout(120)
 def test_repository_harness_coverage_report_regenerates() -> None:
     result = subprocess.run(
         ["python3", str(SCRIPT), "--project-dir", str(REPO)],
@@ -28,7 +29,8 @@ def test_repository_harness_coverage_report_regenerates() -> None:
     assert payload["schema_version"] == "primitive-harness-coverage.v1"
     assert payload["summary"]["total_primitives"] > 0
     assert payload["state_semantics"] == ["installed", "projected", "wired", "executable", "behavior-proven"]
-    assert set(payload["harnesses"]) == {"claude", "codex", "shell-ci"}
+    assert {"claude", "codex", "shell-ci", "cursor", "vscode-copilot", "opencode", "cline", "aider"} <= set(payload["harnesses"])
+    assert payload["summary"].get("unclassified_gaps", 0) == 0
     assert payload["summary"]["harness_wired_hooks"]["claude"] >= payload["summary"]["harness_wired_hooks"]["codex"]
 
 

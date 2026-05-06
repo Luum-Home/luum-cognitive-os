@@ -13,7 +13,7 @@ SCRIPT = REPO_ROOT / "scripts" / "primitive_family_readiness_ledger.py"
 
 
 def test_repository_family_ledgers_cover_hooks_skills_and_rules() -> None:
-    for family in ("hooks", "skills", "rules"):
+    for family in ("hooks", "skills", "rules", "templates"):
         result = subprocess.run(
             ["python3", str(SCRIPT), "--project-dir", str(REPO_ROOT), "--target-family", family],
             cwd=REPO_ROOT,

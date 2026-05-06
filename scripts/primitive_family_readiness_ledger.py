@@ -26,11 +26,12 @@ from typing import Any
 
 REPO_IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules", ".git"}
 REPO_IGNORE_PREFIXES = ("docs/reports/", "dashboard/.next/", ".claude/plugins/")
-FAMILIES = {"hooks", "skills", "rules"}
+FAMILIES = {"hooks", "skills", "rules", "templates"}
 ROLES = {
     "hooks": {"runtime-safety", "observability", "memory-lifecycle", "driver-specific", "lab", "archive"},
     "skills": {"shared-agent-tool", "so-maintainer", "project-extension", "compatibility-wrapper", "lab", "archive"},
     "rules": {"hook-enforced", "context-only", "doctrine", "driver-specific", "lab", "archive"},
+    "templates": {"prompt-composition", "agent-preamble", "quality-gate", "recovery", "lab", "archive"},
 }
 INACTIVE_STATES = {"candidate", "demoted", "archived", "deleted"}
 CONSUMER_PATTERNS = [
@@ -96,6 +97,8 @@ def target_files(root: Path, family: str) -> list[Path]:
         files = [path for base in (root / "skills", root / ".codex" / "skills") if base.exists() for path in base.rglob("SKILL.md") if path.is_file()]
     elif family == "rules":
         files = [path for path in (root / "rules").rglob("*.md") if path.is_file()]
+    elif family == "templates":
+        files = [path for path in (root / "templates").rglob("*.md") if path.is_file()]
     else:
         raise ValueError(f"unsupported family: {family}")
     return sorted([path for path in files if not ignored(root, path)], key=lambda item: relpath(root, item))
@@ -109,6 +112,8 @@ def classify_consumer(root: Path, path: Path) -> str:
         return "skill"
     if rel.startswith("rules/"):
         return "rule"
+    if rel.startswith("templates/"):
+        return "template"
     if rel.startswith("tests/"):
         return "test"
     if rel.startswith("docs/") or rel.endswith(".md"):
@@ -195,6 +200,16 @@ def classify_role(root: Path, family: str, path: Path, lifecycle: dict[str, Any]
         if any(token in text for token in ("adr", "doctrine", "architecture", "decision", "policy")):
             return "doctrine", "heuristic:text", "medium"
         return "context-only", "default", "medium"
+    if family == "templates":
+        if any(token in text for token in ("preamble", "agent-preamble")):
+            return "agent-preamble", "heuristic:text", "medium"
+        if any(token in text for token in ("quality", "gate", "verification", "acceptance criteria")):
+            return "quality-gate", "heuristic:text", "medium"
+        if any(token in text for token in ("error", "recovery", "rollback", "repair")):
+            return "recovery", "heuristic:text", "medium"
+        if any(token in text for token in ("prompt", "compose", "context")):
+            return "prompt-composition", "heuristic:text", "medium"
+        return "prompt-composition", "default", "medium"
     raise ValueError(f"unsupported family: {family}")
 
 

@@ -128,6 +128,62 @@ def make_repo(tmp_path: Path) -> Path:
         )
 
     write_json(
+        root / "docs" / "reports" / "primitive-readiness-ledger-templates-latest.json",
+        {
+            "summary": {},
+            "items": [
+                {
+                    "path": "templates/quality.md",
+                    "family": "templates",
+                    "role": "quality-gate",
+                    "role_source": "test",
+                    "consumer_accessibility": "so-local-only",
+                    "supported_harnesses": [],
+                    "evidence": ["test"],
+                }
+            ],
+        },
+    )
+    write_json(
+        root / "docs" / "reports" / "primitive-harness-coverage-latest.json",
+        {
+            "schema_version": "primitive-harness-coverage.v1",
+            "summary": {
+                "total_primitives": 2,
+                "gaps": 1,
+                "unclassified_gaps": 0,
+                "harness_wired_hooks": {"claude": 1, "codex": 1, "shell-ci": 0},
+                "harness_projected_or_wired": {"claude": 2, "codex": 2, "shell-ci": 1},
+                "gaps_by_policy": {"shell-command-only": 1},
+            },
+            "items": [
+                {
+                    "primitive": "hooks/x",
+                    "family": "hooks",
+                    "scope": "both",
+                    "coverage": "claude+codex",
+                    "gap": None,
+                    "gap_policy": None,
+                    "gap_status": None,
+                    "gap_severity": None,
+                    "harnesses": {},
+                },
+                {
+                    "primitive": "scripts/projected.sh",
+                    "family": "scripts",
+                    "scope": "both",
+                    "coverage": "shell-ci",
+                    "gap": "scope=both but command only",
+                    "gap_policy": "shell-command-only",
+                    "gap_status": "aligned",
+                    "gap_severity": "advisory",
+                    "harnesses": {},
+                },
+            ],
+        },
+    )
+
+    write_json(
         root / "docs" / "reports" / "primitive-fitness-ledger-latest.json",
         {
             "schema_version": "primitive-fitness-ledger.v1",
@@ -190,7 +246,10 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["adapters"]["consumer_availability"]["status"] == "ok"
     assert payload["adapters"]["shell_ci_projection"]["status"] == "ok"
     assert payload["adapters"]["primitive_fitness_ledger"]["status"] == "ok"
+    assert payload["adapters"]["harness_coverage"]["status"] == "ok"
     assert any(cap["id"] == "primitive_fitness:scripts/projected.sh" for cap in payload["capabilities"])
+    assert any(cap["id"] == "harness_coverage:scripts/projected.sh" for cap in payload["capabilities"])
+    assert any(cap["id"] == "template:templates/quality.md" for cap in payload["capabilities"])
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"
     assert compact["context_diet"]["read_this_first"] == "docs/acc/latest-compact.md"
