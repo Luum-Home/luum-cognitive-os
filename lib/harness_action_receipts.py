@@ -13,6 +13,7 @@ import os
 import re
 import subprocess
 import sys
+from collections import Counter
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
@@ -29,6 +30,7 @@ VCS_EVENTS = frozenset(
         "vcs.commit",
         "vcs.branch.create",
         "vcs.push",
+        "vcs.push.blocked",
         "vcs.pr.create",
         "vcs.merge.enqueue",
         "vcs.merge.land",
@@ -43,6 +45,7 @@ ACTION_BY_EVENT = {
     "vcs.commit": "commit",
     "vcs.branch.create": "branch.create",
     "vcs.push": "push",
+    "vcs.push.blocked": "push.blocked",
     "vcs.pr.create": "pr.create",
     "vcs.merge.enqueue": "merge.enqueue",
     "vcs.merge.land": "merge.land",
@@ -88,7 +91,7 @@ class HarnessActionReceipt:
         """Return a JSON-serializable mapping, omitting empty optional values."""
         raw = asdict(self)
         if not raw["action"]:
-            raw["action"] = ACTION_BY_EVENT.get(self.event_type, self.event_type.split(".", 1)[-1])
+            raw["action"] = _event_action(self.event_type)
         return {key: value for key, value in raw.items() if value not in (None, "", [], {})}
 
 
@@ -128,12 +131,29 @@ def current_head(project_dir: Path) -> str | None:
     return proc.stdout.strip() or None
 
 
+def remote_head(project_dir: Path, remote: str, branch: str) -> str | None:
+    """Return the remote branch SHA using live remote query, then local tracking fallback."""
+    proc = _run_git(project_dir, ["ls-remote", "--heads", remote, branch])
+    if proc.returncode == 0 and proc.stdout.strip():
+        first = proc.stdout.splitlines()[0].split()
+        if first:
+            return first[0]
+    proc = _run_git(project_dir, ["rev-parse", f"refs/remotes/{remote}/{branch}"])
+    if proc.returncode == 0 and proc.stdout.strip():
+        return proc.stdout.strip()
+    return None
+
+
 def staged_files(project_dir: Path) -> list[str]:
     """Return staged file paths relative to the repository root."""
     proc = _run_git(project_dir, ["diff", "--cached", "--name-only", "--diff-filter=ACMR"])
     if proc.returncode != 0:
         return []
     return [line for line in proc.stdout.splitlines() if line.strip()]
+
+
+def _event_action(event_type: str) -> str:
+    return ACTION_BY_EVENT.get(event_type, event_type.split(".", 1)[-1])
 
 
 def validate_receipt(receipt: Mapping[str, Any]) -> None:
@@ -181,7 +201,7 @@ def make_receipt(
         source=source,
         trust=trust,
         project_dir=str(root),
-        action=ACTION_BY_EVENT.get(event_type, ""),
+        action=_event_action(event_type),
         branch=branch or current_branch(root),
         session_id=session_id or os.environ.get("COGNITIVE_OS_SESSION_ID") or os.environ.get("CODEX_SESSION_ID") or os.environ.get("CLAUDE_SESSION_ID"),
         actor=actor or os.environ.get("COS_ACTOR") or os.environ.get("COGNITIVE_OS_ACTOR"),
@@ -226,11 +246,86 @@ def promote_with_git_observation(receipt: Mapping[str, Any], project_dir: str | 
             raise ReceiptError("cannot promote vcs.branch.create: branch not observed")
         promoted["branch"] = branch
         evidence["observed_git_status"] = {"branch": branch}
+    elif event_type == "vcs.push":
+        remote = str(promoted.get("remote") or evidence.get("remote") or "origin")
+        branch = str(promoted.get("branch") or current_branch(root) or "")
+        if not branch:
+            raise ReceiptError("cannot promote vcs.push: branch not observed")
+        local_sha = str(promoted.get("commit_sha") or current_head(root) or "")
+        remote_sha = remote_head(root, remote, branch)
+        if not local_sha or not remote_sha:
+            raise ReceiptError("cannot promote vcs.push: local or remote ref not observed")
+        if local_sha != remote_sha:
+            raise ReceiptError("cannot promote vcs.push: remote ref does not match local commit")
+        promoted["branch"] = branch
+        promoted["remote"] = remote
+        promoted["commit_sha"] = local_sha
+        evidence["observed_git_status"] = {
+            "branch": branch,
+            "local_sha": local_sha,
+            "remote": remote,
+            "remote_sha": remote_sha,
+        }
     else:
         raise ReceiptError(f"no local Git promotion rule for {event_type}")
 
     promoted["trust"] = "observed"
     promoted["source"] = "local-git-observation" if promoted.get("source") == "harness-directive" else promoted["source"]
+    promoted["evidence"] = evidence
+    validate_receipt(promoted)
+    return promoted
+
+
+def promote_with_pre_push_evidence(receipt: Mapping[str, Any], pre_push_refs: str) -> dict[str, Any]:
+    """Promote a push receipt to verified when a pre-push hook observed matching refs."""
+    promoted = dict(receipt)
+    if promoted.get("event_type") != "vcs.push":
+        raise ReceiptError("pre-push evidence only applies to vcs.push receipts")
+    branch = str(promoted.get("branch") or "")
+    commit_sha = str(promoted.get("commit_sha") or "")
+    if not branch:
+        raise ReceiptError("cannot verify push: branch is required")
+    matched = False
+    parsed_refs: list[dict[str, str]] = []
+    for raw in pre_push_refs.splitlines():
+        parts = raw.split()
+        if len(parts) < 4:
+            continue
+        local_ref, local_sha, remote_ref, remote_sha = parts[:4]
+        parsed_refs.append(
+            {"local_ref": local_ref, "local_sha": local_sha, "remote_ref": remote_ref, "remote_sha": remote_sha}
+        )
+        ref_branch = remote_ref.removeprefix("refs/heads/")
+        if ref_branch == branch and (not commit_sha or local_sha == commit_sha):
+            matched = True
+            promoted["commit_sha"] = local_sha
+    if not matched:
+        raise ReceiptError("cannot verify push: pre-push refs do not match receipt branch/commit")
+    evidence = dict(promoted.get("evidence") or {})
+    evidence["pre_push"] = {"refs": parsed_refs}
+    promoted["trust"] = "verified"
+    promoted["source"] = "git-hook" if promoted.get("source") == "harness-directive" else promoted["source"]
+    promoted["governed_path"] = promoted.get("governed_path") or "pre-push"
+    promoted["evidence"] = evidence
+    validate_receipt(promoted)
+    return promoted
+
+
+def promote_with_provider_evidence(receipt: Mapping[str, Any], provider_evidence: Mapping[str, Any]) -> dict[str, Any]:
+    """Promote push/PR/merge receipts with provider API acceptance evidence."""
+    promoted = dict(receipt)
+    if not provider_evidence.get("accepted"):
+        raise ReceiptError("provider evidence must include accepted=true")
+    evidence = dict(promoted.get("evidence") or {})
+    evidence["provider_api"] = dict(provider_evidence)
+    if provider_evidence.get("remote_ref_sha"):
+        promoted["commit_sha"] = str(provider_evidence["remote_ref_sha"])
+    if provider_evidence.get("branch"):
+        promoted["branch"] = str(provider_evidence["branch"])
+    if provider_evidence.get("remote"):
+        promoted["remote"] = str(provider_evidence["remote"])
+    promoted["trust"] = "authoritative"
+    promoted["source"] = "provider-api"
     promoted["evidence"] = evidence
     validate_receipt(promoted)
     return promoted
@@ -245,6 +340,78 @@ def append_receipt(receipt: Mapping[str, Any], *, project_dir: str | Path | None
     with path.open("a", encoding="utf-8") as fh:
         fh.write(json.dumps(dict(receipt), sort_keys=True, ensure_ascii=False) + "\n")
     return path
+
+
+def load_receipts(*, project_dir: str | Path | None = None, metrics_path: str | Path | None = None) -> list[dict[str, Any]]:
+    """Load valid receipts from JSONL, skipping malformed lines."""
+    root = resolve_project_dir(str(project_dir) if project_dir else None)
+    path = Path(metrics_path).expanduser().resolve() if metrics_path else root / DEFAULT_METRICS_PATH
+    receipts: list[dict[str, Any]] = []
+    if not path.exists():
+        return receipts
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        if not raw.strip():
+            continue
+        try:
+            receipt = json.loads(raw)
+            validate_receipt(receipt)
+        except (json.JSONDecodeError, ReceiptError):
+            continue
+        receipts.append(receipt)
+    return receipts
+
+
+def receipt_stats(*, project_dir: str | Path | None = None, metrics_path: str | Path | None = None) -> dict[str, Any]:
+    """Return dashboard/report-friendly counts by trust, event, and source."""
+    receipts = load_receipts(project_dir=project_dir, metrics_path=metrics_path)
+    by_trust = Counter(str(receipt.get("trust", "unknown")) for receipt in receipts)
+    by_event_type = Counter(str(receipt.get("event_type", "unknown")) for receipt in receipts)
+    by_source = Counter(str(receipt.get("source", "unknown")) for receipt in receipts)
+    by_trust_event = Counter(
+        f"{receipt.get('trust', 'unknown')}:{receipt.get('event_type', 'unknown')}" for receipt in receipts
+    )
+    return {
+        "schema_version": "harness-action-receipt-stats.v1",
+        "total": len(receipts),
+        "by_trust": dict(sorted(by_trust.items())),
+        "by_event_type": dict(sorted(by_event_type.items())),
+        "by_source": dict(sorted(by_source.items())),
+        "by_trust_event": dict(sorted(by_trust_event.items())),
+        "authoritative": by_trust.get("authoritative", 0),
+        "verified": by_trust.get("verified", 0),
+        "observed": by_trust.get("observed", 0),
+        "advisory": by_trust.get("advisory", 0),
+    }
+
+
+def render_markdown_report(stats: Mapping[str, Any]) -> str:
+    """Render receipt stats as a compact Markdown report."""
+    lines = [
+        "# VCS Action Receipts",
+        "",
+        "| Metric | Count |",
+        "|---|---:|",
+        f"| Total receipts | {int(stats.get('total', 0))} |",
+        f"| Advisory | {int(stats.get('advisory', 0))} |",
+        f"| Observed | {int(stats.get('observed', 0))} |",
+        f"| Verified | {int(stats.get('verified', 0))} |",
+        f"| Authoritative | {int(stats.get('authoritative', 0))} |",
+        "",
+        "## By trust",
+        "",
+        "| Trust | Count |",
+        "|---|---:|",
+    ]
+    for trust, count in dict(stats.get("by_trust", {})).items():
+        lines.append(f"| `{trust}` | {count} |")
+    lines.extend(["", "## By event type", "", "| Event | Count |", "|---|---:|"])
+    for event_type, count in dict(stats.get("by_event_type", {})).items():
+        lines.append(f"| `{event_type}` | {count} |")
+    lines.extend(["", "## By source", "", "| Source | Count |", "|---|---:|"])
+    for source, count in dict(stats.get("by_source", {})).items():
+        lines.append(f"| `{source}` | {count} |")
+    lines.append("")
+    return "\n".join(lines)
 
 
 def _parse_directive_attrs(body: str) -> dict[str, str]:
@@ -307,6 +474,8 @@ def build_parser() -> argparse.ArgumentParser:
     emit.add_argument("--governed-path")
     emit.add_argument("--evidence-json", default="{}")
     emit.add_argument("--promote-git", action="store_true")
+    emit.add_argument("--pre-push-refs", default=None, help="Pre-push refs text, '-' for stdin, or @file")
+    emit.add_argument("--provider-evidence-json", default=None, help="Provider API acceptance evidence JSON")
     emit.add_argument("--append", action="store_true")
     emit.add_argument("--metrics-path")
     emit.add_argument("--json", action="store_true")
@@ -324,6 +493,17 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--append", action="store_true")
     validate.add_argument("--metrics-path")
     validate.add_argument("--json", action="store_true")
+
+    stats = sub.add_parser("stats", help="Summarize receipt metrics by trust/event/source")
+    stats.add_argument("--project-dir")
+    stats.add_argument("--metrics-path")
+    stats.add_argument("--json", action="store_true")
+
+    report = sub.add_parser("report", help="Write a Markdown receipt summary report")
+    report.add_argument("--project-dir")
+    report.add_argument("--metrics-path")
+    report.add_argument("--output", default="docs/reports/vcs-action-receipts-latest.md")
+    report.add_argument("--json", action="store_true")
     return parser
 
 
@@ -358,6 +538,10 @@ def main(argv: list[str] | None = None) -> int:
             )
             if args.promote_git:
                 receipt = promote_with_git_observation(receipt, args.project_dir)
+            if args.pre_push_refs is not None:
+                receipt = promote_with_pre_push_evidence(receipt, _read_arg(args.pre_push_refs))
+            if args.provider_evidence_json is not None:
+                receipt = promote_with_provider_evidence(receipt, json.loads(args.provider_evidence_json))
             if args.append:
                 append_receipt(receipt, project_dir=args.project_dir, metrics_path=args.metrics_path)
             print(json.dumps(receipt, indent=2 if args.json else None, sort_keys=True))
@@ -371,6 +555,21 @@ def main(argv: list[str] | None = None) -> int:
                 for receipt in receipts:
                     append_receipt(receipt, metrics_path=args.metrics_path)
             print(json.dumps(receipts, indent=2 if args.json else None, sort_keys=True))
+            return 0
+        if args.command == "stats":
+            stats = receipt_stats(project_dir=args.project_dir, metrics_path=args.metrics_path)
+            print(json.dumps(stats, indent=2 if args.json else None, sort_keys=True))
+            return 0
+        if args.command == "report":
+            stats = receipt_stats(project_dir=args.project_dir, metrics_path=args.metrics_path)
+            root = resolve_project_dir(args.project_dir)
+            output = Path(args.output)
+            if not output.is_absolute():
+                output = root / output
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(render_markdown_report(stats), encoding="utf-8")
+            payload = {"output": str(output), "stats": stats}
+            print(json.dumps(payload, indent=2 if args.json else None, sort_keys=True))
             return 0
         raw = json.loads(_read_arg(args.receipt_json))
         validate_receipt(raw)

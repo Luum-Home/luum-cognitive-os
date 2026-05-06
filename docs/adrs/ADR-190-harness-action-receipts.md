@@ -6,8 +6,11 @@ Accepted — 2026-05-06
 
 Implementation baseline — 2026-05-06: added `lib/harness_action_receipts.py`,
 `scripts/cos-action-receipt`, and `tests/unit/test_harness_action_receipts.py`
-for schema validation, Codex directive parsing, JSONL append, and local Git
-promotion to `observed` for staged files, commits, and branch observations.
+for schema validation, Codex directive parsing, JSONL append, local Git
+promotion, pre-push/provider promotion, receipt stats, Markdown reports, and
+observe-only dashboard counts. Integrated best-effort receipt emission into
+`hooks/direct-main-guard.sh`, `hooks/git-commit-scope-guard.sh`,
+`hooks/git-context-capture.sh`, and `scripts/merge-to-main.sh`.
 
 ## Context
 
@@ -188,21 +191,21 @@ Implementation remains incremental.
 
 1. Done: add `lib/harness_action_receipts.py` and `scripts/cos-action-receipt`
    to validate receipts and append `.cognitive-os/metrics/vcs-actions.jsonl`.
-2. Partially done: add local Git verification helpers for `vcs.stage`,
-   `vcs.commit`, and `vcs.branch.create` so advisory directives can be promoted
-   to `observed` when true. `vcs.push` promotion still needs pre-push or remote
-   ref evidence.
-3. Next: integrate existing primitives:
+2. Done: add local Git verification helpers for `vcs.stage`, `vcs.commit`,
+   `vcs.branch.create`, and remote-ref-backed `vcs.push` so advisory directives
+   can be promoted to `observed` when true.
+3. Done: add pre-push and provider API evidence promotion paths for `vcs.push`
+   and provider-backed receipts.
+4. Done for shell/script surfaces: integrate existing primitives:
    - `hooks/direct-main-guard.sh` emits `vcs.push.blocked` and `vcs.bypass`;
-   - `hooks/git-commit-scope-guard.sh` emits scoped/unscoped commit attempt
-     receipts;
-   - `scripts/merge-to-main.sh` and `lib/merge_queue.py` emit authoritative
-     `vcs.merge.enqueue`, `vcs.merge.land`, and `vcs.merge.fail` receipts;
-   - `hooks/git-context-capture.sh` includes receipt summaries in session audit.
-4. Add a Codex directive adapter that parses `::git-*{...}` only as advisory
-   receipts and promotes them only after verification.
-5. Expose receipt counts by action/source/trust in reports or dashboard, making
-   advisory receipts visibly distinct.
+   - `hooks/git-commit-scope-guard.sh` emits commit block/bypass receipts;
+   - `scripts/merge-to-main.sh` emits `vcs.merge.enqueue`, `vcs.merge.land`, and `vcs.merge.fail`;
+   - `hooks/git-context-capture.sh` emits observed session-end commit summaries.
+5. Done: parse Codex `::git-*{...}` only as advisory receipts and promote them
+   only after verification.
+6. Done: expose receipt counts by action/source/trust through CLI stats, a
+   Markdown report command, and observe-only dashboard cards.
+7. Next: add first-class provider adapters and direct `lib.merge_queue` API emission.
 
 ## Acceptance Criteria
 
@@ -213,8 +216,9 @@ ACCEPTANCE CRITERIA:
 3. `docs/README.md` links both documents from the documentation index.
 4. `lib/harness_action_receipts.py` validates schema, parses Codex directives, appends JSONL receipts, and promotes supported receipts from advisory to observed only after local Git evidence.
 5. `scripts/cos-action-receipt` exposes emit, parse-codex, validate, append, and JSON output modes.
-6. Unit tests cover schema validation, trust levels, Codex directive parsing, Git-state promotion, JSONL append, and CLI behavior.
+6. Unit tests cover schema validation, trust levels, Codex directive parsing, Git-state promotion, pre-push promotion, provider promotion, JSONL append, stats/report output, and CLI behavior.
 7. Runtime enforcement is unchanged: advisory receipts cannot satisfy safety gates or high-stakes claim verification.
+8. Existing Git primitives emit receipts best-effort and must never fail the guarded Git operation solely because receipt telemetry is unavailable.
 ```
 
 ## Verification
@@ -224,7 +228,7 @@ Documentation-only verification for this ADR:
 ```bash
 python3 -m pytest tests/unit/test_harness_action_receipts.py -q
 python3 -m py_compile lib/harness_action_receipts.py
-bash -n scripts/cos-action-receipt
+bash -n scripts/cos-action-receipt hooks/direct-main-guard.sh hooks/git-commit-scope-guard.sh hooks/git-context-capture.sh scripts/merge-to-main.sh
 python3 - <<'PY'
 from pathlib import Path
 for path in [

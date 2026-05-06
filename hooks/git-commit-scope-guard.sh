@@ -57,6 +57,44 @@ fi
 
 [ -z "$COMMAND" ] && exit 0
 
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
+
+_emit_commit_receipt() {
+  local outcome="$1"
+  local receipt_script="$PROJECT_DIR/scripts/cos-action-receipt"
+  [ -x "$receipt_script" ] || return 0
+  command -v python3 >/dev/null 2>&1 || return 0
+  local branch head_sha evidence_json
+  branch="$(git -C "$PROJECT_DIR" branch --show-current 2>/dev/null || true)"
+  head_sha="$(git -C "$PROJECT_DIR" rev-parse HEAD 2>/dev/null || true)"
+  evidence_json=$(
+    COS_RECEIPT_COMMAND="$COMMAND" \
+    COS_RECEIPT_OUTCOME="$outcome" \
+    python3 - <<'PY' 2>/dev/null || true
+import json
+import os
+print(json.dumps({
+    "hook": "git-commit-scope-guard",
+    "outcome": os.environ.get("COS_RECEIPT_OUTCOME", ""),
+    "command": os.environ.get("COS_RECEIPT_COMMAND", ""),
+}))
+PY
+  )
+  [ -n "$evidence_json" ] || evidence_json='{"hook":"git-commit-scope-guard"}'
+  local args
+  args=("$receipt_script" emit "vcs.commit" \
+    --provider shell-git-hook \
+    --source git-hook \
+    --trust verified \
+    --project-dir "$PROJECT_DIR" \
+    --governed-path git-commit-scope-guard \
+    --evidence-json "$evidence_json" \
+    --append)
+  [ -n "$branch" ] && args+=(--branch "$branch")
+  [ -n "$head_sha" ] && args+=(--commit-sha "$head_sha")
+  "${args[@]}" >/dev/null 2>&1 || true
+}
+
 # ── Only act on git commit invocations ───────────────────────────────────────
 
 # Match `git commit` anywhere in the command (handles pipes, &&, etc.)
@@ -67,7 +105,6 @@ fi
 # ── Emergency bypass ─────────────────────────────────────────────────────────
 
 if [ "${COS_BYPASS_COMMIT_GUARD:-}" = "1" ]; then
-  PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
   AUDIT="$PROJECT_DIR/.cognitive-os/runtime/agent-audit-trail.jsonl"
   mkdir -p "$(dirname "$AUDIT")" 2>/dev/null || true
   printf '{"ts":"%s","event":"commit-guard-bypassed","session":"%s","command":%s}\n' \
@@ -75,6 +112,7 @@ if [ "${COS_BYPASS_COMMIT_GUARD:-}" = "1" ]; then
     "${COGNITIVE_OS_SESSION_ID:-unknown}" \
     "$(printf '%s' "$COMMAND" | sed 's/"/\\"/g; s/^/"/; s/$/"/')" \
     >> "$AUDIT" 2>/dev/null || true
+  _emit_commit_receipt "commit-scope-bypass"
   exit 0
 fi
 
@@ -194,4 +232,5 @@ EMERGENCY BYPASS (logs to agent-audit-trail.jsonl):
   COS_BYPASS_COMMIT_GUARD=1 git commit -m "..."
 GUARD_ERROR
 
+_emit_commit_receipt "unscoped-commit-blocked"
 exit 2
