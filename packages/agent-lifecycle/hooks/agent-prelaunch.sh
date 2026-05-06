@@ -110,19 +110,110 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/claim_task.p
   fi
 fi
 
+
+_cos_inventory_auto_stash_only() {
+  command -v python3 >/dev/null 2>&1 || return 1
+  python3 - "$1" <<'PYEOF'
+import json, sys
+from pathlib import Path
+try:
+    payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+except Exception:
+    sys.exit(1)
+
+def is_auto(stash):
+    subject = str(stash.get("subject") or "")
+    return bool(stash.get("is_auto_pre_agent")) or "auto-pre-agent" in subject
+
+blockers = [f for f in payload.get("findings", []) if f.get("level") == "BLOCK"]
+if not blockers:
+    sys.exit(1)
+allowed_codes = {"stash-aged", "linked-worktree-stashes-present"}
+if any(f.get("code") not in allowed_codes for f in blockers):
+    sys.exit(1)
+
+all_stashes = []
+all_stashes.extend(payload.get("stashes_extended") or payload.get("stashes") or [])
+for group in payload.get("worktree_stashes", []):
+    all_stashes.extend(group.get("stashes") or [])
+blocking_stashes = [s for s in all_stashes if (s.get("level") == "BLOCK" or is_auto(s))]
+if not blocking_stashes:
+    sys.exit(1)
+if not all(is_auto(s) for s in blocking_stashes):
+    sys.exit(1)
+for risk in payload.get("race_risks", []):
+    details = "\n".join(str(d) for d in risk.get("details", []))
+    if risk.get("code") == "stale-orphan-stash" and "auto-pre-agent" not in details:
+        sys.exit(1)
+print("auto-pre-agent-only")
+PYEOF
+}
+
+_cos_print_inventory_compact() {
+  command -v python3 >/dev/null 2>&1 || { cat "$1" >&2; return 0; }
+  python3 - "$1" <<'PYEOF' >&2
+import json, sys
+from pathlib import Path
+try:
+    payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+except Exception:
+    print(Path(sys.argv[1]).read_text(encoding="utf-8")[:4000])
+    raise SystemExit(0)
+summary = payload.get("summary", {})
+print(
+    "ADR-116 preflight summary: "
+    f"blockers={summary.get('blockers', 0)} warnings={summary.get('warnings', 0)} "
+    f"stashes={summary.get('stash_count', 0)} worktree_stashes={summary.get('worktree_stash_count', 0)} "
+    f"race_risks={summary.get('race_risk_count', 0)}"
+)
+findings = payload.get("findings", [])
+if findings:
+    print("Findings:")
+    for finding in findings[:8]:
+        print(f"- {finding.get('level')} {finding.get('code')} {finding.get('subject')}: {finding.get('detail')}")
+        action = finding.get("action")
+        if action:
+            print(f"  action: {action}")
+if len(findings) > 8:
+    print(f"- ... {len(findings) - 8} more finding(s) omitted")
+risks = payload.get("race_risks", [])
+if risks:
+    print("Race risks:")
+    for risk in risks[:5]:
+        print(f"- {risk.get('code')}: {risk.get('description')}")
+        for detail in (risk.get("details") or [])[:3]:
+            print(f"  {detail}")
+print("Commands:")
+print("- Auto-stash repair: scripts/cos stash cleanup --execute")
+print("- Full JSON: python3 scripts/cos_work_inventory.py --all --strict --json")
+PYEOF
+}
+
 if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inventory.py" ] && [ "${COS_SKIP_GOVERNED_INVENTORY:-0}" != "1" ]; then
   # Work inventory is a git-backed coordination gate. Consumer/project test
   # fixtures can exercise Agent hooks before git init; those fixtures should
   # still get task claims and resource leases instead of being blocked by a
   # non-applicable repository inventory check.
   if git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    INVENTORY_TMP=$(mktemp "${TMPDIR:-/tmp}/cos-inventory.XXXXXX.json")
+    INVENTORY_ERR=$(mktemp "${TMPDIR:-/tmp}/cos-inventory.XXXXXX.err")
     set +e
-    INVENTORY_OUT=$(python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json $ALLOW_RO_ARG 2>&1)
+    python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json $ALLOW_RO_ARG >"$INVENTORY_TMP" 2>"$INVENTORY_ERR"
     INVENTORY_RC=$?
     set -e
+    if [ "$INVENTORY_RC" -ne 0 ] && [ -x "$PROJECT_DIR/scripts/state_retention_audit.py" ] && _cos_inventory_auto_stash_only "$INVENTORY_TMP" >/dev/null 2>&1; then
+      echo "ADR-199 PREFLIGHT REPAIR: stale auto-pre-agent stash residue detected; archiving and cleaning once before blocking." >&2
+      python3 "$PROJECT_DIR/scripts/state_retention_audit.py" --project-dir "$PROJECT_DIR" --repair-before-block --reap --execute --cooldown-seconds "${COS_STATE_RETENTION_PREFLIGHT_COOLDOWN_SECONDS:-300}" --no-metrics >/dev/null 2>&1 || true
+      set +e
+      python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json $ALLOW_RO_ARG >"$INVENTORY_TMP" 2>"$INVENTORY_ERR"
+      INVENTORY_RC=$?
+      set -e
+    fi
     if [ "$INVENTORY_RC" -ne 0 ]; then
       echo "ADR-116 GOVERNED PREFLIGHT BLOCK: cos_work_inventory.py --all --strict failed before Agent launch." >&2
-      echo "$INVENTORY_OUT" >&2
+      [ -s "$INVENTORY_ERR" ] && cat "$INVENTORY_ERR" >&2
+      _cos_print_inventory_compact "$INVENTORY_TMP"
+      rm -f "$INVENTORY_TMP" "$INVENTORY_ERR"
       if [ "$ACTIVE_CLAIM_ACQUIRED" -eq 1 ]; then
         python3 "$PROJECT_DIR/scripts/cos_task_claims.py" --project-dir "$PROJECT_DIR" \
           release --task-id "$TASK_ID" --session-id "$SESSION_ID" >/dev/null 2>&1 || true
@@ -131,6 +222,7 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inv
         release "$TASK_ID" --session-id "$SESSION_ID" --agent-id "$AGENT_LEDGER_ID" >/dev/null 2>&1 || true
       exit "$INVENTORY_RC"
     fi
+    rm -f "$INVENTORY_TMP" "$INVENTORY_ERR"
   fi
 fi
 
