@@ -1,16 +1,16 @@
 ---
 adr: 182
 title: Branch Ownership Lock — Single-Writer Surface for Concurrent Orchestrators
-status: proposed
+status: accepted
 date: 2026-05-05
 supersedes: []
 superseded_by: null
 extends: []
 implementation_files:
-  - hooks/branch-ownership-lock.sh           # to create
-  - lib/branch_lock.py                       # to create
-  - tests/contracts/test_branch_ownership_lock.py  # to create
-  - .cognitive-os/runtime/branch-locks/      # to create (lock dir)
+  - hooks/branch-ownership-lock.sh
+  - lib/branch_lock.py
+  - tests/contracts/test_branch_ownership_lock.py
+  - .cognitive-os/runtime/branch-locks/
   - lib/session_coordination.py              # worktree intake companion
   - lib/agent_message_bus.py                 # auditor-to-operator companion
 tier: maintainer
@@ -21,7 +21,7 @@ tags: [concurrency, worktree, governance, session-safety, postmortem-2026-05-05]
 
 ## Status
 
-**Proposed.** Filed in response to the cross-session collision incident
+**Accepted.** Implemented as the ADR-182 branch-lock hook, library, CLI wrappers, and contract tests. Filed in response to the cross-session collision incident
 documented in `docs/reports/postmortem-cross-session-collision-2026-05-05.md`.
 
 ## Context

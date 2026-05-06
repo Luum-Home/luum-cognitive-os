@@ -113,3 +113,12 @@ cos_mutation.sqlite
 
 # ADR-176: SkillStore SQLite DB (binary; not tracked)
 .cognitive-os/skill_store.db
+
+# Cognitive OS runtime coordination state (local, append-only, may contain paths)
+.cognitive-os/runtime/
+.cognitive-os/sessions/*.jsonl
+.cognitive-os/sessions/*.lock
+.cognitive-os/sessions/events-archive/
+.cognitive-os/coordination/*.jsonl
+.cognitive-os/coordination/*.lock
+.cognitive-os/coordination/agent-messages-archive/
