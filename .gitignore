@@ -110,3 +110,6 @@ cos_mutation.sqlite
 # Cognitive OS local memory exports (may contain private absolute paths)
 .engram/exports/*.jsonl
 /cos-test
+
+# ADR-176: SkillStore SQLite DB (binary; not tracked)
+.cognitive-os/skill_store.db
