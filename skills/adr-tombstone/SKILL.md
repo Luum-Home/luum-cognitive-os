@@ -6,7 +6,7 @@ version: 1.0.0
 last-updated: 2026-05-05
 user-invocable: true
 auto-generated: false
-audience: maintainer
+audience: os-dev
 tags: [adr, tombstone, governance, numbering]
 summary_line: Agentic primitive for creating neutral ADR tombstones while preserving ADR numbering integrity.
 platforms: ["claude-code", "codex"]

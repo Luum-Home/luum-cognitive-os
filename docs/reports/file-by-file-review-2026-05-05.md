@@ -17,7 +17,7 @@
   3. `docs/adrs/ADR-174-auto-derived-primitive-routing.md` — committed in session41, but session50 has `ADR-174-tombstone.md` as untracked WIP claiming the same number
   4. `.claude/settings.json` — committed in session41 (stripped to 4 lines); session50 WIP carries its own divergent delta from `2aba0fe9`
   5. `manifests/skill-routing-coverage.yaml` — 267-line file added in session41 (committed), 701-line WIP version in current working tree; session50 WIP has its own version
-- **Confirmed conflicts**: 4 (ADR-172, ADR-174/ADR-174-bis, `lib/skill_router.py`, `manifests/skill-routing-coverage.yaml`)
+- **Confirmed conflicts**: 4 (ADR-172, ADR-174/ADR-174b, `lib/skill_router.py`, `manifests/skill-routing-coverage.yaml`)
 - **Aligned changes (safe)**: 29 paperclip deletions, 4 new routing hooks from commit 1, 9 tombstone ADRs from commit 3
 
 ---
@@ -110,7 +110,7 @@ All 29 paperclip deletions are **aligned** across both session41 commits and rep
 | `lib/skill_router.py` | lib-routing | present (sha e02cd2fd, 1188 lines) | modified (sha 007487fa) — profile-alias table + `SkillRoutingIndexCache` added in commit 1 | present (sha d6515291 — same as main) | modified — additional 185-line WIP diff on top of session41 HEAD (adds `_canonical_profile`, `_skill_md_checksum`, `SkillRoutingIndexCache` class); session50 WIP has 531-line diff adding ADR-174 frontmatter routing loader | YES — two independent WIP features that touch the same file from different angles | RECONCILE | yes |
 | `docs/adrs/ADR-172-multi-surface-ui-architecture.md` | adr | absent | absent (added only in WIP, not committed) | absent | untracked — full ADR titled "Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian", status: accepted, supersedes: ADR-170 | YES — session50 WIP has `ADR-172-tombstone.md` claiming the same number as a reserved slot | RECONCILE | yes |
 | `docs/adrs/ADR-174-auto-derived-primitive-routing.md` | adr | absent | present (committed in commit 1, sha added) | absent | committed (via session41) | YES — session50 WIP has `ADR-174-tombstone.md` as untracked, treating 174 as a reserved slot; session41 already committed ADR-174 as an accepted ADR | RECONCILE | yes |
-| `docs/adrs/ADR-174-bis-prevention-followup.md` | adr | absent | absent | absent | untracked WIP only — extends ADR-174 with auto-generation and soak-driven promotion | YES — number collision with ADR-174; the "bis" suffix is non-standard | RECONCILE | yes |
+| `docs/adrs/ADR-174b-prevention-followup.md` | adr | absent | absent | absent | untracked WIP only — extends ADR-174 with auto-generation and soak-driven promotion | YES — number collision with ADR-174; the "bis" suffix is non-standard | RECONCILE | yes |
 | `manifests/skill-routing-coverage.yaml` | manifest | absent | present (committed in commit 1, 267 lines) | absent | modified — 701-line WIP version extends the committed file; session50 WIP also has an untracked version | YES — WIP version is 2.6x larger than committed; session50 parallel WIP | RECONCILE | yes |
 | `.claude/settings.json` | settings | present (sha 360a8077, full hook config ~719 lines) | modified (sha eb904ac1, stripped to 4 lines — most hooks removed) | present (same sha as main — session50 is behind main) | committed (session41 version) — also has session50 WIP delta | YES — session41 committed a drastic strip of settings.json; session50 WIP independently modifies the same file | RECONCILE | yes |
 | `docs/adrs/ADR-171-tombstone.md` | adr | absent | present (committed in commit 3) | absent | committed | YES — tombstone with title "Reserved architecture decision slot" implies ADR-171 was never written; but the operator's task description calls it a "newly committed-by-mistake" ADR, implying there was intended content | RECOVER | yes |
@@ -406,7 +406,7 @@ Post-mortem explicitly names this file as lost. The tombstone's title "Reserved 
 
 The following 9 untracked files exist only in the session41 working tree and will be lost if the worktree is cleaned or the branch is switched without staging:
 - `docs/adrs/ADR-172-multi-surface-ui-architecture.md`
-- `docs/adrs/ADR-174-bis-prevention-followup.md`
+- `docs/adrs/ADR-174b-prevention-followup.md`
 - `docs/adrs/ADR-175-research-quality-enforcement.md`
 - `docs/adrs/ADR-178-openharness-primitive-adoption.md`
 - `docs/adrs/ADR-180-lifecycle-promotion-activation.md`

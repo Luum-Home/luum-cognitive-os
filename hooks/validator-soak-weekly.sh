@@ -9,7 +9,7 @@
 #
 # Registration: SessionStart
 # Killswitch:   respected (non-critical hook)
-# ADR:          ADR-174-bis Part B
+# ADR:          ADR-174b Part B
 
 set -euo pipefail
 

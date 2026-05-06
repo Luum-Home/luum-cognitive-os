@@ -14,7 +14,6 @@ implementation_files:
 tier: maintainer
 tags: [ui, surface-5, adoption-gate, source-proof, governance]
 ---
-
 # ADR-187: Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI
 
 ## Status
@@ -89,3 +88,12 @@ adoption proof themselves:
 ## Verification
 
 A future adoption ADR is invalid if it lacks the minimum proof pack above.
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
+## Alternatives rejected
+
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
+
