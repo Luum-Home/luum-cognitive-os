@@ -161,6 +161,46 @@ _require_bypass_reason() {
   printf '%s' "$reason"
 }
 
+_emit_vcs_receipt() {
+  local event_type="$1"
+  local trust="$2"
+  local governed_path="$3"
+  local outcome="$4"
+  local receipt_script="$PROJECT_DIR/scripts/cos-action-receipt"
+  [ -x "$receipt_script" ] || return 0
+  command -v python3 >/dev/null 2>&1 || return 0
+  local head_sha evidence_json
+  head_sha="$(git -C "$PROJECT_DIR" rev-parse HEAD 2>/dev/null || true)"
+  evidence_json=$(
+    COS_RECEIPT_COMMAND="$COMMAND" \
+    COS_RECEIPT_ACTION="$ACTION" \
+    COS_RECEIPT_OUTCOME="$outcome" \
+    python3 - <<'PY' 2>/dev/null || true
+import json
+import os
+print(json.dumps({
+    "hook": "direct-main-guard",
+    "git_action": os.environ.get("COS_RECEIPT_ACTION", ""),
+    "outcome": os.environ.get("COS_RECEIPT_OUTCOME", ""),
+    "command": os.environ.get("COS_RECEIPT_COMMAND", ""),
+}))
+PY
+  )
+  [ -n "$evidence_json" ] || evidence_json='{"hook":"direct-main-guard"}'
+  local args
+  args=("$receipt_script" emit "$event_type" \
+    --provider shell-git-hook \
+    --source git-hook \
+    --trust "$trust" \
+    --project-dir "$PROJECT_DIR" \
+    --branch "$BRANCH" \
+    --governed-path "$governed_path" \
+    --evidence-json "$evidence_json" \
+    --append)
+  [ -n "$head_sha" ] && args+=(--commit-sha "$head_sha")
+  "${args[@]}" >/dev/null 2>&1 || true
+}
+
 if [ "$ACTION" = "push" ] && [ -n "${COS_PRE_PUSH_REFS:-}" ]; then
   PUSHES_MAIN=false
   while read -r _local_ref _local_sha _remote_ref _remote_sha; do
@@ -182,6 +222,7 @@ if [ "$ACTION" = "push" ]; then
   if [ "${COS_ALLOW_DIRECT_PUSH:-0}" = "1" ]; then
     if ! reason="$(_require_bypass_reason direct-push)"; then exit 2; fi
     _audit_direct_main_bypass "push" "$BRANCH" "$reason" "$actor"
+    _emit_vcs_receipt "vcs.bypass" "verified" "direct-main-guard" "direct-push-bypass"
     exit 0
   fi
   [ "${COS_MERGE_QUEUE_WORKER:-0}" = "1" ] && exit 0
@@ -191,11 +232,13 @@ if [ "$ACTION" = "push" ]; then
   echo "Emergency operator bypass requires BOTH:" >&2
   echo "  COS_ALLOW_DIRECT_PUSH=1" >&2
   echo "  COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'" >&2
+  _emit_vcs_receipt "vcs.push.blocked" "verified" "direct-main-guard" "direct-push-blocked"
   exit 2
 fi
 if [ "${COS_ALLOW_DIRECT_MAIN:-0}" = "1" ]; then
   if ! reason="$(_require_bypass_reason direct-commit)"; then exit 2; fi
   _audit_direct_main_bypass "commit" "$BRANCH" "$reason" "$actor"
+  _emit_vcs_receipt "vcs.bypass" "verified" "direct-main-guard" "direct-commit-bypass"
   exit 0
 fi
 case "$actor" in
@@ -203,6 +246,7 @@ case "$actor" in
     echo "[direct-main-guard] BLOCK: autonomous/session agents may not commit directly to $BRANCH." >&2
     echo "Use a session branch and land through the ADR-116 merge queue / protected remote path." >&2
     echo "Bypass requires BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for explicit operator emergencies." >&2
+    _emit_vcs_receipt "vcs.commit" "verified" "direct-main-guard" "direct-main-commit-blocked"
     exit 2
     ;;
 esac
