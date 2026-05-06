@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Observe-only terminal snapshot for Cognitive OS reports."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+
+def _root(path: str) -> Path:
+    return Path(path).resolve()
+
+
+def _load(path: Path) -> dict[str, Any]:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _snapshot(root: Path) -> tuple[int, str]:
+    coverage_path = root / "docs" / "reports" / "primitive-harness-coverage-latest.json"
+    partials_path = root / "docs" / "reports" / "primitive-harness-partials-latest.json"
+    if not coverage_path.exists():
+        return 2, "Primitive surface coverage report missing. Run: python3 scripts/primitive_harness_coverage.py --project-dir .\n"
+    coverage = _load(coverage_path)
+    partials = _load(partials_path) if partials_path.exists() else {"summary": {}}
+    summary = coverage.get("summary", {})
+    surface_counts = summary.get("surface_projected_or_wired") or summary.get("harness_projected_or_wired") or {}
+    surfaces = {item.get("surface_id"): item.get("surface_kind") for item in coverage.get("surfaces", [])}
+
+    lines = [
+        "Cognitive OS — Primitive Surface Coverage",
+        "Mode: observe-only",
+        "",
+        f"Total primitives: {summary.get('total_primitives', 0)}",
+        f"Gaps: {summary.get('gaps', 0)}",
+        f"Partial: {partials.get('summary', {}).get('partial_count', summary.get('gaps_by_status', {}).get('partial', 0))}",
+        f"Unclassified: {summary.get('unclassified_gaps', 0)}",
+        "",
+        "Surfaces:",
+    ]
+    for surface_id in sorted(surface_counts):
+        kind = surfaces.get(surface_id, "unknown")
+        lines.append(f"- {surface_id} ({kind}): {surface_counts[surface_id]} projected/wired")
+    lines.extend([
+        "",
+        "Reports:",
+        "- docs/reports/primitive-harness-coverage-latest.json",
+        "- docs/reports/primitive-harness-partials-latest.json",
+    ])
+    return 0, "\n".join(lines) + "\n"
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Cognitive OS observe-only TUI snapshot")
+    parser.add_argument("--snapshot", action="store_true", help="Print a non-interactive snapshot and exit")
+    parser.add_argument("--project-dir", default=".")
+    args = parser.parse_args()
+    if not args.snapshot:
+        parser.error("only --snapshot is currently supported")
+    code, output = _snapshot(_root(args.project_dir))
+    stream = sys.stdout if code == 0 else sys.stderr
+    stream.write(output)
+    return code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
