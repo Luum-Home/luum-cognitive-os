@@ -1090,7 +1090,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/adr_tombstone.py",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "blocking",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/adr_tombstone.py",
@@ -1101,7 +1101,7 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "bare_cli"
+        "shell"
       ],
       "total_consumers": 15,
       "wrapper_for": null
@@ -8638,7 +8638,7 @@
       "install_surface": null,
       "install_surface_rationale": null,
       "lifecycle_id": "scripts/cos-adr-tombstone",
-      "lifecycle_state": "candidate",
+      "lifecycle_state": "blocking",
       "next_action": "keep lifecycle evidence and supported harness declarations current",
       "override_rationale": null,
       "path": "scripts/cos-adr-tombstone",
@@ -8649,7 +8649,7 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "bare_cli"
+        "shell"
       ],
       "total_consumers": 2,
       "wrapper_for": "scripts/adr_tombstone.py"
@@ -8723,7 +8723,7 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "bare_cli"
+        "shell"
       ],
       "total_consumers": 9,
       "wrapper_for": "scripts/cos_agent_message.py"
@@ -14218,7 +14218,7 @@
       "supported_harnesses": [
         "claude",
         "codex",
-        "bare_cli"
+        "shell"
       ],
       "total_consumers": 5,
       "wrapper_for": "scripts/cos_session_coordination.py"

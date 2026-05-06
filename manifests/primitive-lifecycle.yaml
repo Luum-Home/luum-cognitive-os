@@ -7328,12 +7328,12 @@ primitives:
 - id: scripts/adr_tombstone.py
   kind: script
   owner_adr: ADR-171
-  lifecycle_state: candidate
+  lifecycle_state: blocking
   maturity: blocking
   distribution: team
-  governance_class: architecture-decision-records
+  governance_class: runtime-safety
   risk_class: blocking
-  supported_harnesses: [claude, codex, bare_cli]
+  supported_harnesses: [claude, codex, shell]
   projection_targets:
     - skills/adr-tombstone/SKILL.md
     - scripts/adr_tombstone.py
@@ -7344,17 +7344,20 @@ primitives:
   rollback_or_repair_command: Disable skills/adr-tombstone routing and use manual ADR tombstone review until the script is repaired.
   sunset_criteria: Archive only after ADR tombstone workflow is replaced by cosd intent arbitration with equivalent tests.
   docs_claim_level: blocking
-  exit_behavior: nonzero_on_invalid_tombstone
+  exit_behavior: mixed
   metrics_file: .cognitive-os/metrics/adr-tombstone.jsonl
+  repair_message: ADR tombstone blocked or failed; inspect the active ADR slot, preserve content, and rerun tests/unit/test_adr_tombstone.py before retrying.
+  false_positive_tests:
+    - tests/unit/test_adr_tombstone.py
 - id: scripts/cos-adr-tombstone
   kind: script
   owner_adr: ADR-171
-  lifecycle_state: candidate
+  lifecycle_state: blocking
   maturity: blocking
   distribution: team
-  governance_class: architecture-decision-records
+  governance_class: runtime-safety
   risk_class: blocking
-  supported_harnesses: [claude, codex, bare_cli]
+  supported_harnesses: [claude, codex, shell]
   projection_targets:
     - skills/adr-tombstone/SKILL.md
     - scripts/cos-adr-tombstone
@@ -7365,17 +7368,20 @@ primitives:
   rollback_or_repair_command: Remove wrapper from skill instructions and call scripts/adr_tombstone.py directly after repair.
   sunset_criteria: Archive if a generated cosd command supersedes the wrapper with equivalent tests.
   docs_claim_level: blocking
-  exit_behavior: delegates_to_python_exit
+  exit_behavior: mixed
   metrics_file: .cognitive-os/metrics/adr-tombstone.jsonl
+  repair_message: ADR tombstone wrapper failed; inspect scripts/adr_tombstone.py output and rerun tests/unit/test_adr_tombstone.py before retrying.
+  false_positive_tests:
+    - tests/unit/test_adr_tombstone.py
 - id: scripts/cos-agent-message
   kind: script
   owner_adr: ADR-185
   lifecycle_state: candidate
   maturity: advisory
   distribution: maintainer
-  governance_class: cross-session-coordination
+  governance_class: meta-governance
   risk_class: advisory
-  supported_harnesses: [claude, codex, bare_cli]
+  supported_harnesses: [claude, codex, shell]
   projection_targets:
     - docs/architecture/agent-message-bus.md
     - scripts/cos-agent-message
@@ -7386,7 +7392,7 @@ primitives:
   rollback_or_repair_command: Disable message-bus hooks and use append-only coordination ledger entries until repaired.
   sunset_criteria: Promote or replace when cosd provides equivalent directed findings queue.
   docs_claim_level: advisory
-  exit_behavior: nonzero_on_invalid_message_command
+  exit_behavior: mixed
   metrics_file: .cognitive-os/metrics/agent-messages.jsonl
 - id: scripts/cos-session-coordination
   kind: script
@@ -7394,9 +7400,9 @@ primitives:
   lifecycle_state: candidate
   maturity: advisory
   distribution: maintainer
-  governance_class: cross-session-coordination
+  governance_class: meta-governance
   risk_class: advisory
-  supported_harnesses: [claude, codex, bare_cli]
+  supported_harnesses: [claude, codex, shell]
   projection_targets:
     - docs/architecture/cross-session-coordination-ledger.md
     - scripts/cos-session-coordination
@@ -7407,7 +7413,7 @@ primitives:
   rollback_or_repair_command: Disable coordination guard hooks and require manual worktree-intake report until repaired.
   sunset_criteria: Promote or replace when cosd owns branch, ADR, and intent arbitration.
   docs_claim_level: advisory
-  exit_behavior: nonzero_on_invalid_coordination_command
+  exit_behavior: mixed
   metrics_file: .cognitive-os/metrics/session-coordination.jsonl
 - id: hooks/skill-router-prompt-suggest.sh
   kind: hook
@@ -7463,7 +7469,7 @@ primitives:
   lifecycle_state: blocking
   maturity: blocking
   distribution: team
-  governance_class: cross-session-coordination
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - claude
@@ -7482,6 +7488,8 @@ primitives:
   docs_claim_level: blocking
   exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/untracked-delete-blocks.jsonl
+  latency_budget_ms: 500
+  repair_message: Untracked delete was blocked; run scripts/cos-safe-clean --path <path> --dry-run and obtain explicit operator approval before deleting.
   false_positive_tests:
   - tests/unit/test_delete_intent.py
 
