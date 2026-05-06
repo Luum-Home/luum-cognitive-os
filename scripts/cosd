@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 case "${1:-status}" in
-  start|stop|status|loop|process-once|submit-intent)
+  start|stop|status|loop|process-once|submit-intent|serve|serve-unix)
     exec python3 "$SCRIPT_DIR/cos_daemon.py" "$@"
     ;;
   service-status)
