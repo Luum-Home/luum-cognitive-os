@@ -138,6 +138,15 @@ export interface PrimitiveSurfaceCoverageSummary {
   mode: "observe-only";
 }
 
+export interface VcsActionReceiptSummary {
+  total: number;
+  byTrust: Record<string, number>;
+  byEventType: Record<string, number>;
+  bySource: Record<string, number>;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
 export async function getPrimitiveSurfaceCoverageSummary(): Promise<PrimitiveSurfaceCoverageSummary> {
   const reportPath = join(COS_ROOT, "docs", "reports", "primitive-harness-coverage-latest.json");
 
@@ -165,6 +174,53 @@ export async function getPrimitiveSurfaceCoverageSummary(): Promise<PrimitiveSur
       consumesReport: false,
       mode: "observe-only",
     };
+  }
+}
+
+export async function getVcsActionReceiptSummary(): Promise<VcsActionReceiptSummary> {
+  const metricsPath = join(COS_ROOT, ".cognitive-os", "metrics", "vcs-actions.jsonl");
+  const empty = {
+    total: 0,
+    byTrust: {},
+    byEventType: {},
+    bySource: {},
+    consumesReport: false,
+    mode: "observe-only" as const,
+  };
+
+  try {
+    const content = await readFile(metricsPath, "utf-8");
+    const byTrust: Record<string, number> = {};
+    const byEventType: Record<string, number> = {};
+    const bySource: Record<string, number> = {};
+    let total = 0;
+
+    for (const line of content.split("\n")) {
+      if (!line.trim()) continue;
+      try {
+        const receipt = JSON.parse(line);
+        total += 1;
+        const trust = String(receipt.trust || "unknown");
+        const eventType = String(receipt.event_type || "unknown");
+        const source = String(receipt.source || "unknown");
+        byTrust[trust] = (byTrust[trust] || 0) + 1;
+        byEventType[eventType] = (byEventType[eventType] || 0) + 1;
+        bySource[source] = (bySource[source] || 0) + 1;
+      } catch {
+        // Ignore malformed telemetry rows; the Python report path does the same.
+      }
+    }
+
+    return {
+      total,
+      byTrust,
+      byEventType,
+      bySource,
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return empty;
   }
 }
 

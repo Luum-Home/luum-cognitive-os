@@ -131,4 +131,36 @@ printf '{"timestamp":"%s","session_id":"%s","branch":"%s","commits":%s,"files_ch
     "$TIMESTAMP" "$SESSION_ID" "$BRANCH" "$COMMITS_COUNT" "$FILES_CHANGED" \
     >> "$METRICS_DIR/session-audit.jsonl" 2>/dev/null || true
 
+RECEIPT_SCRIPT="$PROJECT_DIR/scripts/cos-action-receipt"
+if [ "$COMMITS_COUNT" -gt 0 ] 2>/dev/null && [ -x "$RECEIPT_SCRIPT" ] && command -v python3 >/dev/null 2>&1; then
+    HEAD_SHA=$(echo "$GIT_CONTEXT_JSON" | jq -r '.commit_end // ""' 2>/dev/null || echo "")
+    EVIDENCE_JSON=$(
+      COS_RECEIPT_SESSION="$SESSION_ID" \
+      COS_RECEIPT_COMMITS="$COMMITS_COUNT" \
+      COS_RECEIPT_FILES="$FILES_CHANGED" \
+      python3 - <<'PY' 2>/dev/null || true
+import json
+import os
+print(json.dumps({
+    "hook": "git-context-capture",
+    "session_id": os.environ.get("COS_RECEIPT_SESSION", ""),
+    "commits": int(os.environ.get("COS_RECEIPT_COMMITS", "0") or 0),
+    "files_changed": int(os.environ.get("COS_RECEIPT_FILES", "0") or 0),
+}))
+PY
+    )
+    [ -n "$EVIDENCE_JSON" ] || EVIDENCE_JSON='{"hook":"git-context-capture"}'
+    RECEIPT_ARGS=("$RECEIPT_SCRIPT" emit "vcs.commit" \
+      --provider shell-git-hook \
+      --source local-git-observation \
+      --trust observed \
+      --project-dir "$PROJECT_DIR" \
+      --branch "$BRANCH" \
+      --governed-path git-context-capture \
+      --evidence-json "$EVIDENCE_JSON" \
+      --append)
+    [ -n "$HEAD_SHA" ] && RECEIPT_ARGS+=(--commit-sha "$HEAD_SHA")
+    "${RECEIPT_ARGS[@]}" >/dev/null 2>&1 || true
+fi
+
 exit 0

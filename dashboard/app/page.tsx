@@ -1,13 +1,14 @@
 import { Header } from "@/components/header";
 import { StatCard } from "@/components/stat-card";
-import { getCosStatus, getPrimitiveSurfaceCoverageSummary } from "@/lib/cos-api";
+import { getCosStatus, getPrimitiveSurfaceCoverageSummary, getVcsActionReceiptSummary } from "@/lib/cos-api";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const [status, primitiveCoverage] = await Promise.all([
+  const [status, primitiveCoverage, vcsReceipts] = await Promise.all([
     getCosStatus(),
     getPrimitiveSurfaceCoverageSummary(),
+    getVcsActionReceiptSummary(),
   ]);
 
   return (
@@ -23,6 +24,8 @@ export default async function DashboardPage() {
         <StatCard label="Phase" value={status.phase} />
         <StatCard label="Primitive Surfaces" value={primitiveCoverage.totalPrimitives} />
         <StatCard label="Surface Gaps" value={primitiveCoverage.gaps} />
+        <StatCard label="VCS Receipts" value={vcsReceipts.total} />
+        <StatCard label="Authoritative VCS" value={vcsReceipts.byTrust.authoritative || 0} />
       </div>
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
@@ -69,6 +72,31 @@ export default async function DashboardPage() {
             <div className="flex justify-between">
               <dt className="text-[var(--color-text-muted)]">Unclassified gaps</dt>
               <dd>{primitiveCoverage.unclassifiedGaps}</dd>
+            </div>
+          </dl>
+        </div>
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
+          <h2 className="text-lg font-semibold">VCS Action Receipts</h2>
+          <dl className="mt-4 space-y-3 text-sm">
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Consumes metrics</dt>
+              <dd>{vcsReceipts.consumesReport ? "yes" : "no"}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Advisory</dt>
+              <dd>{vcsReceipts.byTrust.advisory || 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Observed</dt>
+              <dd>{vcsReceipts.byTrust.observed || 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Verified</dt>
+              <dd>{vcsReceipts.byTrust.verified || 0}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Authoritative</dt>
+              <dd>{vcsReceipts.byTrust.authoritative || 0}</dd>
             </div>
           </dl>
         </div>
