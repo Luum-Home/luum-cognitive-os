@@ -1,5 +1,14 @@
 # Boring Reliability Control Plane
 
+> **Multi-surface note (2026-05-05):** This document describes Surface 1 of the
+> multi-surface UI architecture defined in
+> [ADR-172](../adrs/ADR-172-multi-surface-ui-architecture.md). The operator CLI
+> tools listed here are the always-on, mandatory surface for live operator state,
+> governance, and audit. They co-exist with Surface 2 (Phoenix for LLM traces),
+> Surface 3 (Engram Cloud for cross-session memory), and Surface 4 (Obsidian /
+> markdown reader for long-form decisions) — each surface covers a distinct
+> artefact kind and none replaces the others.
+
 ## Goal
 
 Make Cognitive OS adoptable in layers and keep governance honest with small,
