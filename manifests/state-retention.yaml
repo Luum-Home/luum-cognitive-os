@@ -1,0 +1,177 @@
+schema_version: state-retention.v1
+review_date: 2026-05-06
+purpose: >
+  Registry of mutable Cognitive OS state surfaces and their retention policy.
+  Every new ledger, artifact pool, lock, or cache must declare how it is bounded,
+  who owns liveness, and which reaper path prevents self-bite accumulation.
+required_surface_fields:
+  - id
+  - kind
+  - path
+  - max_age
+  - max_count
+  - reaper
+  - tombstone
+  - owner_pid
+  - owner_files
+  - documentation
+kinds:
+  ledger: Append-only or mostly append-only records whose historical value decays.
+  artifact-pool: Runtime artifacts created generously to preserve operator work.
+  lock: Coordination state that must not outlive the owning process/session.
+  cache: Derived state that can be regenerated.
+reapers:
+  session-end: Runs from the Stop/session-end path.
+  session-start: Runs before a new session resumes work.
+  manual: Operator-triggered cleanup command.
+  auto-on-create-plus-one: Creator path also prunes older matching entries.
+  rotation: Size/count-bounded log rotation.
+surfaces:
+  - id: auto-pre-agent-stashes
+    kind: artifact-pool
+    path: git:refs/stash
+    selector:
+      subjects:
+        - auto-pre-agent-
+        - auto-pre-agent-toolu_
+    max_age: P1H
+    max_count: 2
+    reaper: manual
+    tombstone: archive-ref-and-patch
+    owner_pid: false
+    owner_files:
+      - hooks/pre-agent-snapshot.sh
+      - hooks/post-agent-snapshot-restore.sh
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/reports/session-self-bite-pattern-2026-05-06.md
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      These stashes preserve WIP before agent launches. They must be archived
+      before removal because stash indices are mutable and may contain valuable work.
+
+  - id: task-claims-ledger
+    kind: ledger
+    path: .cognitive-os/tasks/active-claims.json
+    selector:
+      terminal_statuses:
+        - released
+        - completed
+        - stale
+    max_age: P24H
+    max_count: 100
+    reaper: session-end
+    tombstone: compact-in-place
+    owner_pid: false
+    owner_files:
+      - scripts/cos_task_claims.py
+      - hooks/agent-prelaunch.sh
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      Released claims should prove recent coordination but should not grow every
+      time a blocked Agent launch releases its claim.
+
+  - id: active-tasks-ledger
+    kind: ledger
+    path: .cognitive-os/tasks/active-tasks.json
+    selector:
+      terminal_statuses:
+        - completed
+        - completed-by-watermark
+        - cancelled-zombie
+        - cancelled-stale
+    max_age: P7D
+    max_count: 250
+    reaper: session-end
+    tombstone: compact-in-place
+    owner_pid: true
+    owner_files:
+      - hooks/agent-prelaunch.sh
+      - scripts/so-reaper.sh
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/adrs/ADR-119-session-filesystem-reaper.md
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      Current and recent task records are useful; stale terminal records should
+      not make every status/read path slower.
+
+  - id: agent-bus-directories
+    kind: artifact-pool
+    path: .cognitive-os/agent-bus/*
+    max_age: P24H
+    max_count: 100
+    reaper: session-end
+    tombstone: archive-directory
+    owner_pid: false
+    owner_files:
+      - hooks/native-agent-heartbeat.sh
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/adrs/ADR-033-native-agent-heartbeat.md
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      Per-agent bus folders are useful while debugging recent agent runs but
+      should not accumulate across many sessions without an archive boundary.
+
+  - id: metrics-jsonl
+    kind: ledger
+    path: .cognitive-os/metrics/*.jsonl
+    max_age: P7D
+    max_count: unbounded-with-rotation
+    reaper: rotation
+    tombstone: archive-file
+    owner_pid: false
+    owner_files:
+      - hooks
+      - scripts
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      Metrics are append-only evidence. They need rotation rather than deletion
+      so observability remains useful without making local scans expensive.
+
+  - id: runtime-locks
+    kind: lock
+    path: .cognitive-os/runtime/*.lock*
+    max_age: P1H
+    max_count: 25
+    reaper: session-start
+    tombstone: drop-if-owner-dead
+    owner_pid: true
+    owner_files:
+      - hooks/_lib/stash-lock.sh
+      - hooks/validation-lock-cleanup.sh
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/adrs/ADR-117-stash-mutation-reversibility.md
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      Locks protect concurrency only while their owner lives. Stale locks turn
+      safety into a single-point-of-failure.
+
+  - id: preserve-worktrees
+    kind: artifact-pool
+    path: git:worktree
+    selector:
+      branch_patterns:
+        - codex/preserve-
+        - preserve/
+    max_age: P24H
+    max_count: 5
+    reaper: manual
+    tombstone: archive-manifest-first
+    owner_pid: false
+    owner_files:
+      - scripts/cos_work_inventory.py
+      - scripts/cos_cleanup_preserved_wip.py
+      - scripts/state_retention_audit.py
+    documentation:
+      - docs/adrs/ADR-129-safe-worktree-removal.md
+      - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
+    rationale: >
+      Preserved worktrees are intentional safety artifacts, but each must have
+      an intake/cleanup path before it becomes dispatch friction.
