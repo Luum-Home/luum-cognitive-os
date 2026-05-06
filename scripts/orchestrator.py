@@ -259,6 +259,7 @@ def cmd_run(args: argparse.Namespace) -> int:
     os.environ.setdefault("COGNITIVE_OS_SESSION_ID", f"orchestrator-{agent_id}")
 
     try:
+        from lib.agent_bus import OrchestratorSubscriber
         from lib.agent_bus_metrics import AgentBusMetrics
         from lib.claude_executor import ClaudeExecutor
     except ImportError as e:
@@ -268,6 +269,16 @@ def cmd_run(args: argparse.Namespace) -> int:
     # Subscribe the adapter so heartbeats from the sub-claude flow into
     # .cognitive-os/metrics/agent-heartbeat.jsonl as MetricEvents.
     abm = AgentBusMetrics()
+    orchestrator_subscriber = None
+    try:
+        orchestrator_subscriber = OrchestratorSubscriber(fallback_dir=str(_agent_bus_fallback_dir()))
+        orchestrator_subscriber.subscribe_agent(agent_id)
+        if args.verbose:
+            print(f"[orchestrator] control subscriber wired for agent_id={agent_id}", file=sys.stderr)
+    except Exception as e:
+        if args.verbose:
+            print(f"[orchestrator] direct subscriber start failed: {e}", file=sys.stderr)
+
     if valkey:
         try:
             # subscribe() registers the heartbeat callback AND calls
@@ -276,7 +287,7 @@ def cmd_run(args: argparse.Namespace) -> int:
             abm.subscribe()
         except Exception as e:
             if args.verbose:
-                print(f"[orchestrator] subscriber start failed: {e}", file=sys.stderr)
+                print(f"[orchestrator] metrics subscriber start failed: {e}", file=sys.stderr)
 
     # Launch the sub-claude. ClaudeExecutor's __init__ spawns an
     # AgentPublisher heartbeat thread when agent_id is provided.
@@ -324,7 +335,12 @@ def cmd_run(args: argparse.Namespace) -> int:
     })()
     provider_used = dr.provider_used
 
-    # Stop subscriber if we started one
+    # Stop subscribers if we started them
+    if orchestrator_subscriber and hasattr(orchestrator_subscriber, "stop"):
+        try:
+            orchestrator_subscriber.stop()
+        except Exception:
+            pass
     if abm._subscriber and hasattr(abm._subscriber, "stop"):
         try:
             abm._subscriber.stop()

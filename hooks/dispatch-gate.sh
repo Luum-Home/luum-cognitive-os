@@ -23,6 +23,61 @@ check_disabled_env "dispatch-gate"
 
 read_stdin_json
 
+
+_enqueue_blocked_agent() {
+    local block_reason="$1"
+    local detail_line="$2"
+    local queue_result
+    queue_result=$(PYTHONPATH="$_PROJECT_DIR${PYTHONPATH:+:$PYTHONPATH}" COGNITIVE_OS_PROJECT_DIR="$_PROJECT_DIR" COS_DISPATCH_STDIN="${COS_DISPATCH_STDIN:-{}}" python3 - <<'PYQUEUE' 2>/dev/null
+import json, os, re
+try:
+    from lib.queue_drainer import QueueDrainer
+    stdin_raw = os.environ.get("COS_DISPATCH_STDIN", "{}")
+    try:
+        d = json.loads(stdin_raw) if stdin_raw.strip() else {}
+    except Exception:
+        d = {}
+    tool_input = d.get("tool_input", {}) if isinstance(d, dict) else {}
+    prompt = tool_input.get("prompt", "") or tool_input.get("description", "") or tool_input.get("task", "")
+    description = (prompt[:100]) if prompt else "agent task"
+    model_match = re.search(r"model[\":\s]+([a-z]+)", prompt[:200].lower())
+    model = model_match.group(1) if model_match else "sonnet"
+    if model not in ("opus", "sonnet", "haiku"):
+        model = "sonnet"
+    queue_path = os.path.join(os.environ["COGNITIVE_OS_PROJECT_DIR"], ".cognitive-os", "tasks", "dispatch-queue.json")
+    tasks_path = os.path.join(os.environ["COGNITIVE_OS_PROJECT_DIR"], ".cognitive-os", "tasks", "active-tasks.json")
+    drainer = QueueDrainer(queue_path=queue_path, tasks_path=tasks_path)
+    agent_id = drainer.enqueue(prompt=prompt, description=description, model=model, priority=5)
+    pos = drainer.position_in_queue(agent_id)
+    total = drainer.queue_length(status="queued")
+    print(f"{agent_id}:{pos}:{total}")
+except Exception as e:
+    print(f"error:{e}")
+PYQUEUE
+) || queue_result="error:python-failed"
+    if [[ "$queue_result" == error:* ]]; then
+        cat >&2 <<EOF
+DISPATCH GATE: Agent launch blocked — ${block_reason}.
+  ${detail_line}
+  Could not enqueue: ${queue_result#error:}
+  Agent will not be retried automatically.
+EOF
+    else
+        local queue_id rest queue_pos queue_total
+        queue_id="${queue_result%%:*}"
+        rest="${queue_result#*:}"
+        queue_pos="${rest%%:*}"
+        queue_total="${rest##*:}"
+        cat >&2 <<EOF
+DISPATCH GATE: Agent launch blocked — ${block_reason}.
+  ${detail_line}
+  Agent enqueued — position ${queue_pos} of ${queue_total} in dispatch queue.
+  Queue ID: ${queue_id}
+  Will launch when the gate clears; drain with QueueDrainer.get_ready_agents().
+EOF
+    fi
+}
+
 # ─── Validation capsule: block new agents in the validating worktree ─────────
 VALIDATION_LOCK_LIB="$(dirname "$0")/_lib/validation-lock.sh"
 if [ -f "$VALIDATION_LOCK_LIB" ]; then
@@ -30,10 +85,7 @@ if [ -f "$VALIDATION_LOCK_LIB" ]; then
     source "$VALIDATION_LOCK_LIB"
     if cos_validation_lock_active "$_PROJECT_DIR"; then
         _msg=$(cos_validation_lock_message "$_PROJECT_DIR" 2>/dev/null || echo "validation capsule active")
-        _log_event() { :; }
-        echo "DISPATCH GATE: Agent launch blocked — validation capsule active." >&2
-        echo "  ${_msg}" >&2
-        echo "  Use a separate worktree or wait for validation to finish." >&2
+        COS_DISPATCH_STDIN="${_STDIN_JSON:-{}}" _enqueue_blocked_agent "validation capsule active" "${_msg}"
         exit 2
     fi
 fi
@@ -98,60 +150,7 @@ fi
 if [ "$ACTIVE" -ge "$MAX_AGENTS" ] 2>/dev/null; then
     _log_event "block"
 
-    # ── Enqueue the blocked agent into the dispatch queue ──────────────────
-    QUEUE_RESULT=$(python3 -c "
-import json, sys, os
-sys.path.insert(0, os.environ.get('CLAUDE_PROJECT_DIR', '.'))
-try:
-    from lib.queue_drainer import QueueDrainer
-    stdin_raw = '''${_STDIN_JSON:-{}}'''
-    try:
-        d = json.loads(stdin_raw) if stdin_raw.strip() else {}
-    except Exception:
-        d = {}
-    tool_input = d.get('tool_input', {})
-    prompt = tool_input.get('prompt', '') or tool_input.get('description', '')
-    description = (prompt[:100]) if prompt else 'agent task'
-
-    # Extract model from prompt if specified, default to sonnet
-    import re as _re
-    model_match = _re.search(r'model[\":\s]+([a-z]+)', prompt[:200].lower())
-    model = model_match.group(1) if model_match else 'sonnet'
-    if model not in ('opus', 'sonnet', 'haiku'):
-        model = 'sonnet'
-
-    drainer = QueueDrainer()
-    agent_id = drainer.enqueue(
-        prompt=prompt,
-        description=description,
-        model=model,
-        priority=5,
-    )
-    pos = drainer.position_in_queue(agent_id)
-    total = drainer.queue_length(status='queued')
-    print(f'{agent_id}:{pos}:{total}')
-except Exception as e:
-    print(f'error:{e}')
-" 2>/dev/null || echo "error:python-failed")
-
-    if [[ "$QUEUE_RESULT" == error:* ]]; then
-        cat >&2 <<EOF
-DISPATCH GATE: Agent launch blocked (${ACTIVE}/${MAX_AGENTS} slots in use).
-  Could not enqueue: ${QUEUE_RESULT#error:}
-  Agent will not be retried automatically.
-EOF
-    else
-        QUEUE_ID="${QUEUE_RESULT%%:*}"
-        REST="${QUEUE_RESULT#*:}"
-        QUEUE_POS="${REST%%:*}"
-        QUEUE_TOTAL="${REST##*:}"
-        cat >&2 <<EOF
-DISPATCH GATE: Agent launch blocked (${ACTIVE}/${MAX_AGENTS} slots in use).
-  Agent enqueued — position ${QUEUE_POS} of ${QUEUE_TOTAL} in dispatch queue.
-  Queue ID: ${QUEUE_ID}
-  Will launch when a slot frees up. Orchestrator: check queue on next task completion.
-EOF
-    fi
+    COS_DISPATCH_STDIN="${_STDIN_JSON:-{}}" _enqueue_blocked_agent "${ACTIVE}/${MAX_AGENTS} slots in use" "Capacity gate is full."
     exit 2
 fi
 

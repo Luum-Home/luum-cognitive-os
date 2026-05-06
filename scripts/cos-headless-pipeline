@@ -66,6 +66,7 @@ PY
 status=0
 run_step safe-mode-status bash "$SCRIPT_DIR/cos-headless-safe-mode" status || status=1
 run_step protected-publication python3 "$SCRIPT_DIR/cos_headless_publication.py" --branch "$(basename "$PROJECT_ROOT")" --actor-mode headless --publication-target patch || status=1
+run_step headless-runtime-contract "$SCRIPT_DIR/cos-headless-runtime-contract" || status=1
 
 if command -v docker >/dev/null 2>&1; then
   args=("$SCRIPT_DIR/cos-headless-service-drill")
