@@ -7,7 +7,7 @@ Consumer accessibility: so-local-only:113
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `rules/ROADMAP.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/RULES-COMPACT.md` | lab | heuristic:path | medium | so-local-only |  | 134 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/RULES-COMPACT.md` | lab | heuristic:path | medium | so-local-only |  | 138 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/acceptance-criteria.md` | driver-specific | heuristic:text | medium | so-local-only |  | 67 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/adaptive-bypass.md` | driver-specific | heuristic:text | medium | so-local-only |  | 57 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/adversarial-review.md` | driver-specific | heuristic:text | medium | so-local-only |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
