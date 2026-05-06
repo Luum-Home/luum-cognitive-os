@@ -129,11 +129,14 @@ tests/unit/test_harness_action_receipts.py
 The library validates `harness-action-receipt.v1`, parses Codex-style
 `::git-*{...}` directives as advisory receipts, appends receipts to
 `.cognitive-os/metrics/vcs-actions.jsonl`, and can promote selected VCS receipts
-to `observed` after local Git verification. The first promotion rules cover:
+after stronger evidence. Current promotion rules cover:
 
-- `vcs.stage` from `git diff --cached --name-only`;
-- `vcs.commit` from current `HEAD`;
-- `vcs.branch.create` from the current branch.
+- `vcs.stage` to `observed` from `git diff --cached --name-only`;
+- `vcs.commit` to `observed` from current `HEAD`;
+- `vcs.branch.create` to `observed` from the current branch;
+- `vcs.push` to `observed` when the local branch SHA matches the remote ref;
+- `vcs.push` to `verified` when matching pre-push refs are supplied;
+- push/PR/merge receipts to `authoritative` when provider API evidence includes `accepted=true`.
 
 The CLI can be used directly:
 
@@ -148,6 +151,9 @@ scripts/cos-action-receipt emit vcs.stage \
 scripts/cos-action-receipt parse-codex \
   --text '::git-stage{cwd="/repo"}' \
   --promote-git --append --json
+
+scripts/cos-action-receipt stats --json
+scripts/cos-action-receipt report --output docs/reports/vcs-action-receipts-latest.md --json
 ```
 
 The implementation intentionally does not change enforcement behavior. Receipts
@@ -226,7 +232,8 @@ Initial VCS events:
 | `vcs.unstage` | Files were removed from the Git index. | `observed` from index diff before/after. |
 | `vcs.commit` | A local commit was created. | `verified` from pre-commit/git hook or `observed` from `git log` delta. |
 | `vcs.branch.create` | A branch was created or switched for work isolation. | `observed` from Git refs; `verified` from `scripts/cos-session-branch.sh` when used. |
-| `vcs.push` | Refs were pushed to a remote. | `verified` from pre-push hook; `authoritative` only when remote/protected landing confirms acceptance. |
+| `vcs.push` | Refs were pushed to a remote. | `observed` from remote-ref verification, `verified` from pre-push refs, `authoritative` from provider/protected landing acceptance. |
+| `vcs.push.blocked` | A governed guard blocked a push. | `verified` from `direct-main-guard` or pre-push guard. |
 | `vcs.pr.create` | Pull/merge request was opened. | `observed` or `verified` from provider API/CLI. |
 | `vcs.merge.enqueue` | Branch was queued for landing. | `verified` from `lib.merge_queue.enqueue`. |
 | `vcs.merge.land` | Protected branch advanced through governed landing. | `authoritative` from merge queue, server hook, or provider-native merge queue. |
@@ -340,21 +347,32 @@ Capabilities:
 - validate schema;
 - parse Codex `::git-*{...}` directives as advisory receipts;
 - append to `.cognitive-os/metrics/vcs-actions.jsonl`;
-- verify Git state for `vcs.stage`, `vcs.commit`, and `vcs.branch.create`.
+- verify Git state for `vcs.stage`, `vcs.commit`, `vcs.branch.create`, and remote-ref backed `vcs.push`;
+- promote `vcs.push` with pre-push refs and provider API acceptance evidence;
+- summarize receipts by trust/event/source with `stats`;
+- render a Markdown report with `report`;
+- expose observe-only dashboard counts from `.cognitive-os/metrics/vcs-actions.jsonl`.
 
 Remaining Phase 1 hardening:
 
 - add redaction modes for public reports;
-- add richer `vcs.push` promotion from pre-push/remote ref evidence.
+- add first-class provider adapters instead of generic provider evidence JSON.
 
 ### Phase 2 — Existing primitive integration
 
-Have existing governed Git surfaces emit receipts:
+Status: implemented for the local shell/script surfaces.
 
-- `hooks/git-commit-scope-guard.sh` for blocked/allowed commit attempts;
+Existing governed Git surfaces now emit receipts best-effort:
+
+- `hooks/git-commit-scope-guard.sh` for unscoped commit blocks and bypasses;
 - `hooks/direct-main-guard.sh` for direct-main push blocks and bypasses;
-- `scripts/merge-to-main.sh` and `lib/merge_queue.py` for authoritative landing;
-- `hooks/git-context-capture.sh` for session summary linkage.
+- `scripts/merge-to-main.sh` for merge enqueue, failure, and authoritative landing;
+- `hooks/git-context-capture.sh` for session-end observed commit summaries.
+
+Remaining Phase 2 hardening:
+
+- mirror `lib.merge_queue` API events directly into receipts;
+- add post-commit/post-push hook adapters where installed by Git rather than agent harnesses.
 
 ### Phase 3 — Harness directive adapters
 
