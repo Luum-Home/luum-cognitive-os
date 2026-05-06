@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
-  "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 105,
+  "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
+  "_hook_count": 108,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -107,6 +107,11 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-prompt-suggest.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\"",
+            "async": true
           }
         ]
       }
@@ -190,6 +195,14 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/direct-main-guard.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-coordination-guard.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-message-inbox-guard.sh\""
           },
           {
             "type": "command",
@@ -582,5 +595,7 @@
       }
     ]
   },
-  "_skillstore_analysis_registered_in_driver": true
+  "_skillstore_analysis_registered_in_driver": true,
+  "_rule_router_prompt_suggest_registered_in_driver": true,
+  "_rule_md_routing_validator_registered_in_driver": true
 }
