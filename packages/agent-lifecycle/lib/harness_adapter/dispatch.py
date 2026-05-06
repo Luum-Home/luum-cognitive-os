@@ -35,7 +35,7 @@ from typing import Any, Dict, List, Optional, Sequence, Type
 
 from .aider import AiderAdapter
 from .bare_cli import BareCliAdapter
-from .base import HarnessAdapter, HeartbeatTick
+from .base import CanonicalEvent, HarnessAdapter, HeartbeatTick
 from .claude_code import ClaudeCodeAdapter
 from .codex import CodexAdapter
 
@@ -95,6 +95,36 @@ def _pick_adapter(
     return None
 
 
+def _context_ids(
+    events: Sequence[CanonicalEvent], payload: Dict[str, Any]
+) -> tuple[Optional[str], Optional[str]]:
+    """Extract best-effort agent/session identifiers for inbound delivery."""
+    agent_id: Optional[str] = None
+    session_id: Optional[str] = None
+    for evt in events:
+        if agent_id is None and hasattr(evt, "agent_id"):
+            value = getattr(evt, "agent_id")
+            if value:
+                agent_id = str(value)
+        if session_id is None and hasattr(evt, "session_id"):
+            value = getattr(evt, "session_id")
+            if value:
+                session_id = str(value)
+    if agent_id is None:
+        for key in ("agent_id", "tool_use_id", "call_id", "id"):
+            value = payload.get(key)
+            if value:
+                agent_id = str(value)
+                break
+    if session_id is None:
+        for key in ("session_id", "codex_session_id", "codex_thread_id"):
+            value = payload.get(key)
+            if value:
+                session_id = str(value)
+                break
+    return agent_id, session_id
+
+
 def dispatch_event(
     raw: Any,
     *,
@@ -122,6 +152,17 @@ def dispatch_event(
         canonical_events = adapter.parse_event(payload)
     except Exception:
         canonical_events = []
+
+    # Inbound side: after parsing outbound telemetry, surface any pending
+    # filesystem fallback control/answer/interrupt signals for this adapter
+    # context.  This keeps harness adapters bidirectional even without Valkey.
+    agent_id, session_id = _context_ids(canonical_events, payload)
+    try:
+        canonical_events = list(canonical_events) + list(
+            adapter.parse_inbound_signals(agent_id=agent_id, session_id=session_id)
+        )
+    except Exception:
+        canonical_events = list(canonical_events)
 
     emitted: List[Dict[str, Any]] = []
     output_path: Optional[str] = None
