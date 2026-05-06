@@ -99,6 +99,23 @@ Required emitters:
 - `commit-landed` — commit successful (PostToolUse same matcher)
 - `session-end` — session terminates (Stop hook)
 
+This is an **open taxonomy with a pinned v1 floor**. New event types may be
+added as coordination needs grow, but the v1 set above must not regress. The
+runtime constant `SESSION_EVENT_TAXONOMY` in `lib/session_bus.py` and the
+contract test `tests/contracts/test_cross_session_event_taxonomy.py` pin this
+floor while still allowing future producers to append new event types.
+
+Current wiring covers:
+
+- `hooks/cross-session-event-emit.sh` for `session-start`,
+  `file-write-intent`, `agent-spawn`, `commit-intent`, `commit-landed`, and
+  `session-end`;
+- `lib/branch_lock.py` for `branch-acquire` and `branch-release`;
+- `lib/agent_message_bus.py` for `agent-message-sent` and
+  `agent-message-ack`;
+- existing coordination/intake producers for `coordination-claim` and
+  `worktree-intake`.
+
 ### Peer context injection
 
 Hook `hooks/cross-session-peer-context.sh` runs at UserPromptSubmit:
