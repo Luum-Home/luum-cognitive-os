@@ -91,3 +91,41 @@ def test_recompiling_same_run_replaces_rows_not_duplicates(tmp_path):
         conn.close()
 
     assert count == 4
+
+
+def test_consumption_policy_blocks_streams_above_corrupt_ratio_threshold(tmp_path):
+    _write_fixture_metrics(tmp_path)
+
+    payload = compile_ledger(tmp_path, contract_path=CONTRACT, run_id="blocked-consumption")
+
+    policy = payload["consumption_policy"]
+    assert policy["can_consume_all"] is False
+    assert policy["blocked_streams"] == ["skill-feedback"]
+    assert policy["streams"]["skill-feedback"] == {
+        "can_consume": False,
+        "corrupt_ratio": 0.5,
+        "corrupt_ratio_block_threshold": 0.25,
+        "reason": "corrupt_ratio_above_threshold",
+    }
+    assert policy["streams"]["trust-report"]["can_consume"] is True
+
+
+def test_consumption_policy_allows_stream_at_or_below_threshold(tmp_path):
+    _write_skill(tmp_path, "docs-to-artifact")
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True)
+    (metrics / "skill-feedback.jsonl").write_text(
+        '{"timestamp":"2026-05-06T00:00:00Z","skill":"docs-to-artifact","success":true}\n'
+        '{"timestamp":"2026-05-06T00:00:01Z","skill":"docs-to-artifact","success":false}\n'
+        '{"timestamp":"2026-05-06T00:00:02Z","skill":"matias","success":false}\n',
+        encoding="utf-8",
+    )
+    contract = tmp_path / "reward-signal-contract.yaml"
+    contract.write_text(CONTRACT.read_text(encoding="utf-8").replace("corrupt_ratio_block_threshold: 0.25", "corrupt_ratio_block_threshold: 0.34"), encoding="utf-8")
+
+    payload = compile_ledger(tmp_path, contract_path=contract, streams=["skill-feedback"], run_id="allowed-consumption")
+
+    assert payload["streams"]["skill-feedback"]["corrupt"] == 1
+    assert payload["streams"]["skill-feedback"]["total"] == 3
+    assert payload["consumption_policy"]["can_consume_all"] is True
+    assert payload["consumption_policy"]["streams"]["skill-feedback"]["can_consume"] is True

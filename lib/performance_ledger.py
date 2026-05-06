@@ -38,6 +38,40 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _ratio(numerator: int, denominator: int) -> float:
+    if denominator <= 0:
+        return 0.0
+    return round(numerator / denominator, 6)
+
+
+def evaluate_consumption_policy(streams: dict[str, dict[str, int]], corrupt_ratio_block_threshold: float) -> dict[str, Any]:
+    """Evaluate whether downstream consumers may use each stream.
+
+    Streams whose corrupt ratio exceeds the policy threshold are blocked from
+    `PromoteFromTelemetry` and future Maintainer proposal generation.
+    """
+    stream_results: dict[str, dict[str, Any]] = {}
+    blocked: list[str] = []
+    for stream, summary in sorted(streams.items()):
+        total = int(summary.get("total", 0))
+        corrupt = int(summary.get("corrupt", 0))
+        corrupt_ratio = _ratio(corrupt, total)
+        can_consume = corrupt_ratio <= corrupt_ratio_block_threshold
+        if not can_consume:
+            blocked.append(stream)
+        stream_results[stream] = {
+            "can_consume": can_consume,
+            "corrupt_ratio": corrupt_ratio,
+            "corrupt_ratio_block_threshold": corrupt_ratio_block_threshold,
+            "reason": "ok" if can_consume else "corrupt_ratio_above_threshold",
+        }
+    return {
+        "can_consume_all": not blocked,
+        "blocked_streams": blocked,
+        "streams": stream_results,
+    }
+
+
 def connect(sqlite_path: Path) -> sqlite3.Connection:
     sqlite_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(sqlite_path)
@@ -177,12 +211,13 @@ def compute_rollups(conn: sqlite3.Connection, run_id: str, computed_at: str) -> 
     return rollups
 
 
-def build_summary(run_id: str, project_dir: Path, paths: LedgerPaths, results: list[SignalValidation], rollups: list[dict[str, Any]], generated_at: str) -> dict[str, Any]:
+def build_summary(run_id: str, project_dir: Path, paths: LedgerPaths, results: list[SignalValidation], rollups: list[dict[str, Any]], generated_at: str, corrupt_ratio_block_threshold: float) -> dict[str, Any]:
     by_stream: dict[str, dict[str, int]] = {}
     streams = sorted({result.stream for result in results})
     for stream in streams:
         by_stream[stream] = summarize(result for result in results if result.stream == stream)
     summary = summarize(results)
+    consumption_policy = evaluate_consumption_policy(by_stream, corrupt_ratio_block_threshold)
     return {
         "schema_version": SCHEMA_VERSION,
         "run_id": run_id,
@@ -198,6 +233,7 @@ def build_summary(run_id: str, project_dir: Path, paths: LedgerPaths, results: l
             "eligible_statuses": ["valid"],
             "quarantined_statuses": ["suspect", "corrupt"],
         },
+        "consumption_policy": consumption_policy,
     }
 
 
@@ -236,6 +272,7 @@ def compile_ledger(
         paths = LedgerPaths(sqlite_path=paths.sqlite_path, jsonl_path=paths.jsonl_path, latest_report_path=latest_report_path)
 
     contract = load_contract(contract_path)
+    corrupt_ratio_block_threshold = float((contract.get("policy", {}) or {}).get("corrupt_ratio_block_threshold", 0.25))
     selected_streams = streams or sorted((contract.get("streams", {}) or {}).keys())
     ledger_run_id = run_id or f"performance-ledger-{utc_now()}"
     observed_at = utc_now()
@@ -250,7 +287,7 @@ def compile_ledger(
         inserted = insert_signal_rows(conn, ledger_run_id, results, observed_at)
         rollups = compute_rollups(conn, ledger_run_id, observed_at)
 
-    payload = build_summary(ledger_run_id, project, paths, results, rollups, observed_at)
+    payload = build_summary(ledger_run_id, project, paths, results, rollups, observed_at, corrupt_ratio_block_threshold)
     payload["inserted_signal_rows"] = inserted
     if write:
         write_jsonl_export(paths.jsonl_path, payload)

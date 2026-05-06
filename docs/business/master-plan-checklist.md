@@ -224,6 +224,7 @@
 - [x] Headless self-improvement proposing is documented in [Headless Self-Improvement Proposer](../architecture/headless-self-improvement-proposer.md), [ADR-134](../adrs/ADR-134-headless-self-improvement-proposer.md), and [Headless Self-Improvement Proposer Plan](../../.cognitive-os/plans/architecture/headless-self-improvement-proposer-plan.md), with `scripts/cos-self-improvement-loop` converting audit findings into propose-only work items and `scripts/cos-self-improvement-discipline-gate` blocking default-surface inflation.
 - [ ] Implement the ADR-201 maintainer-agent loop: BLOCKER SQLite-backed performance ledger with signal-quality quarantine, deterministic proposal dedup, full proposal schema, ADR-164 service-mode mutation boundary, outcome-failure protocol, model-cost policy, `PromoteFromTelemetry`, scheduled dry-run maintainer agent, cross-harness/harness-agnostic proposal output, and behavior smoke proving repeated telemetry creates one bounded human-approved proposal.
   - [x] SQLite Performance Ledger substrate: `lib/performance_ledger.py`, `scripts/cos-performance-ledger`, `cos performance-ledger compile`, SQLite store, JSONL export, latest report, retention declaration, and tests proving corrupt/suspect rows do not enter eligible rollups.
+  - [x] Add corrupt-ratio consumption gate and deterministic proposal id helper: blocked streams cannot feed `PromoteFromTelemetry`, and proposal identity is stable across surface + degradation pattern + day window.
 - [ ] Implement ADR-202 private-content portability: skeleton surface manifest with conservative `local-only` defaults plus `secret-never-touch`, justified elevations, class transition receipts, private-content access audit log, unknown-surface scheduled audit, projection/export guard, service/headless smoke, and provenance/redaction checks.
   - [x] Slice 2a skeleton manifest and audit CLI: `manifests/private-content.yaml`, `scripts/private_content_audit.py`, `scripts/cos-private-content-audit`, `cos private-content audit`, unit tests, and CLI smoke classify known private roots as `local-only` and secret paths as `secret-never-touch`.
   - [ ] Slice 2b justified elevations, transition receipts, export/projection guard, service/headless smoke, and provenance/redaction checks.
@@ -231,7 +232,7 @@
 - [ ] Implement ADR-204 reward-signal quality boundary so dirty trust scores and corrupt skill-feedback rows cannot drive maintainer/router/skill lifecycle decisions.
   - [x] Add reward-signal contract, validator, audit CLI, route smoke, and tests proving `skill: matias` and default trust score 75 without evidence are quarantined from rollups.
   - [x] Feed ADR-204 quality counts into ADR-201 Performance Ledger so corrupt/suspect rows are excluded from rollups.
-  - [ ] Block `PromoteFromTelemetry` consumption above corrupt-ratio policy.
+  - [x] Block `PromoteFromTelemetry` consumption above corrupt-ratio policy via Performance Ledger `consumption_policy` and `--require-consumable` CLI gate.
 - [ ] Implement ADR-205 run flight recorder and cross-stream trace joiner before treating service-mode observability as complete.
 - [ ] Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.
 - [ ] Implement ADR-207 skill performance ledger and lifecycle closure before claiming skill self-improvement.
