@@ -292,17 +292,9 @@ entries:
   rationale: Worktree submodule repair mutates git metadata and should be explicit
     after worktree operations.
   next_action: Keep manual/admin-triggered.
-- path: hooks/cosd-auth-guard.sh
-  status: active
-  rationale: ADR-194 PreToolUse guard blocks unsafe cosd remote API launches and unreviewed cosd auth/control-plane config edits.
-  next_action: Keep projected in default Claude/Codex hook profiles while cosd exposes HTTP transports.
 - path: hooks/cosd-intent-submit.sh
   status: manual_trigger
   rationale: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle
     event payload can supply its required intent arguments yet.
   next_action: Keep out of Claude/Codex lifecycle projections until cosd v1 defines
     a typed event payload and integration lane.
-- path: hooks/agent-control-inbound-guard.sh
-  status: active
-  rationale: ADR-042 hook-boundary control primitive enforces inbound stop/pause/resume signals for harnesses that can only surface inbound_signal records between tool calls.
-  next_action: Keep registered while Valkey and filesystem control fallback remain supported; demote only after native harness control covers the same tests.
