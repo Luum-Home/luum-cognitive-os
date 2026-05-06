@@ -50,3 +50,68 @@ def test_write_markdown_stays_under_docs_proposals(tmp_path: Path) -> None:
 
     assert target.parent == tmp_path / "docs" / "proposals"
     assert target.name.startswith("doctrine-amendment-")
+
+
+def test_skill_lifecycle_evidence_generates_propose_only_doctrine(tmp_path: Path) -> None:
+    skill_file = tmp_path / ".cognitive-os" / "skills" / "auto-generated" / "triage-flaky-tests" / "SKILL.md"
+    skill_file.parent.mkdir(parents=True)
+    skill_file.write_text(
+        """---
+name: triage-flaky-tests
+auto-generated: true
+status: sandbox
+---
+# Triage flaky tests
+""",
+        encoding="utf-8",
+    )
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True)
+    (metrics / "skill-invocations.jsonl").write_text(
+        "".join(
+            json.dumps(
+                {
+                    "timestamp": "2026-05-05T12:00:00+00:00",
+                    "payload": {"skill_name": "triage-flaky-tests"},
+                }
+            )
+            + "\n"
+            for _ in range(50)
+        ),
+        encoding="utf-8",
+    )
+    (metrics / "skill-feedback.jsonl").write_text(
+        "".join(
+            json.dumps({"timestamp": "2026-05-05T12:01:00Z", "skill": "triage-flaky-tests", "success": True})
+            + "\n"
+            for _ in range(5)
+        ),
+        encoding="utf-8",
+    )
+
+    proposals = build_doctrine_proposals(
+        project_root=tmp_path,
+        boring_reliability={},
+        self_improvement_plan={},
+    )
+
+    proposal = next(item for item in proposals if item.proposal_id == "activate-skill-lifecycle-promotion-ladder")
+    assert proposal.evidence["promotion_candidates"][0]["skill_name"] == "triage-flaky-tests"
+    assert "operator" in proposal.proposed_rule
+
+
+def test_write_markdown_logs_proposal_generation(tmp_path: Path) -> None:
+    proposals = build_doctrine_proposals(
+        project_root=tmp_path,
+        boring_reliability={"false_positive_ledger": {"false_positive_events": 1}},
+        self_improvement_plan={},
+    )
+
+    target = write_markdown(tmp_path, proposals)
+
+    log_path = tmp_path / ".cognitive-os" / "metrics" / "lifecycle-promotion-proposals.jsonl"
+    assert target.exists()
+    rows = [json.loads(line) for line in log_path.read_text(encoding="utf-8").splitlines()]
+    assert rows[0]["source"] == "cos-doctrine-proposer"
+    assert rows[0]["event_type"] == "doctrine.proposal.generated"
+    assert rows[0]["payload"]["runtime_effect"] == "none"

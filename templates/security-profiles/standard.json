@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 81,
+  "_hook_count": 89,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -97,6 +97,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/concurrent-write-guard-codex-proxy.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-prompt-suggest.sh\"",
+            "async": true
           }
         ]
       }
@@ -206,6 +211,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-md-routing-validator.sh\"",
+            "async": false
           }
         ]
       },
@@ -374,6 +384,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dod-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-decision-trace.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-post-execution-analysis.sh\"",
+            "async": true
           }
         ]
       },
@@ -492,12 +512,5 @@
       }
     ]
   },
-  "_paperclip_hooks_registered_in_driver": [
-    "paperclip-sync.sh",
-    "paperclip-sdd-sync.sh",
-    "paperclip-agent-status.sh",
-    "paperclip-cost-stream.sh",
-    "paperclip-squad-sync.sh",
-    "paperclip-task-sync.sh"
-  ]
+  "_skillstore_analysis_registered_in_driver": true
 }

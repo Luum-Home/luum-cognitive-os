@@ -1,0 +1,440 @@
+schema_version: skill-routing-coverage.v1
+purpose: SkillRouter coverage ratchet and explicit exceptions for skills that exist
+  on disk but are not yet routeable.
+baseline:
+  captured_on: '2026-05-05'
+  min_routed_skill_count: 82
+  min_routed_skill_coverage_percent: 44.0
+  scope: global-full-surface
+  skill_roots:
+  - skills/*/SKILL.md
+  - .cognitive-os/skills/*/SKILL.md
+profile_note:
+  status: pending-profile-aware-ratchet
+  canonical_mapping:
+    lean:
+    - default
+    - core
+    standard:
+    - default+team-extensions
+    - core+team
+    strict:
+    - full
+    - core+team+maintainer
+    lab:
+    - opt-in
+    - lab
+primary_router_orphan_allowlist:
+- skill: sdd-new
+  routing_class: meta-command
+  rationale: Intentional command handled by an orchestration pipeline rather than
+    a SKILL.md directory.
+unrouted_skill_allowlist:
+- skill: __contracts__
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: add-hook
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: add-mcp
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: add-rule
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: agent-dashboard
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: analyze-improvements
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: apply-improvements
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: auto-refine
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: automaker-bridge
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: branch-worktree-closure
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: bump-version
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: catalog-full
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: caveman
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: caveman-compress
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: caveman-es
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cognee-integration
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cognee-search
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cognitive-os-benchmark
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: compat-test
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: component-classifier
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: configure-quality-gates
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: coordination-status
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cos-docker-setup
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cos-install
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cos-quickstart
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cos-setup
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cos-status
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: cost-predictor
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: decision-triage
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: deepeval-integration
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: deps-update
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: detect-patterns
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: detect-stack
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: doc-review-personas
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: docs-execution-audit
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: dogfood-check
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: dogfood-score
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: domain-model
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: ecosystem-eval
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: eval-repo
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: evaluate-plan
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: evaluate-tool
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: experimental
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: generate-changelog
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: generate-config
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: harness-audit
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: hook-timing
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: install-recommended
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: invariant-check
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: jupyter-execute
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: llm-status
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: memory-scan
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: memu-context
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: metrics-calibrator
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: nemo-guardrails
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: ops-runbook
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: pattern-audit
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: peer-card
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: phoenix-trace-ui
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: pr-review
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: preserved-wip-cleanup
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: primitive-harvester
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: primitive-surface-reduction
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: primitive-usage-map
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: project-scaffold
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: promptfoo-integration
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: proof-drill
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: propose-improvements
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: push-release
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: queue-drain
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: radar-update
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: ragas-integration
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: recall-search
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: redteam-harness
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: register-component
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: release-plan
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: repair-skill
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: research-protocol
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: review-output
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: risk-register
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: rules-export
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: run-benchmark
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: scaffold-project
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: sdd-compound
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: security-red-team
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: session-backlog
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: session-report-executive
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: session-wrapup
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: smart-commit
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: so-vs-vanilla
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: squad-manager
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: strands-evals-integration
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: switch-security-profile
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: synthesize-skill
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: tag-release
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: test-agent-teams
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: test-contract-repair
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: usage-report
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: validate-release
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: verification-before-completion
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: vuln-remediation-flow
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.
+- skill: worktree-triage
+  routing_class: routing-backlog
+  rationale: Skill exists on disk but has no primary SkillRouter route yet; add routing_patterns
+    or hand-coded route, then remove this entry.

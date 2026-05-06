@@ -7,7 +7,7 @@ scoring, fallback handling, and routing table integrity.
 
 import pytest
 
-from lib.skill_router import SkillMatch, SkillRouter
+from lib.skill_router import SkillRouter
 
 pytestmark = pytest.mark.unit
 
@@ -325,6 +325,12 @@ class TestRoutingTableIntegrity:
             "red-team",  # exists as dir, not in CATALOG
             "skill-creator",  # exists as dir, not in CATALOG
             "vulnerability-scan",  # exists as dir, not in CATALOG
+            # ADR-174: frontmatter-derived entries for skills not yet in CATALOG.md
+            "component-reality-check",  # exists as dir, routing_patterns added ADR-174
+            "add-skill",               # exists as dir, routing_patterns added ADR-174
+            "audit-integrity",         # exists as dir, routing_patterns added ADR-174
+            "code-review",             # exists as dir, routing_patterns added ADR-174
+            "cognitive-os-init",       # exists as dir, routing_patterns added ADR-174
         }
         actual_missing = [s for s in missing if s not in known_aliases]
         assert actual_missing == [], (

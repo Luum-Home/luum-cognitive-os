@@ -10,6 +10,13 @@ tags: [audit, dogfooding, metrics, wiring]
 summary_line: "Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime."
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcomponent[- ]?reality[- ]?check\b'
+    confidence: 0.95
+  - pattern: '\b(real|dormant|unwired)\s+(vs\.?\s+)?(dormant|unwired|declared)\b'
+    confidence: 0.85
+  - pattern: '\b(agentic\s+)?primitives?\s+(audit|reality|classification|classify)\b'
+    confidence: 0.80
 ---
 
 # Agentic Primitive Reality Check
