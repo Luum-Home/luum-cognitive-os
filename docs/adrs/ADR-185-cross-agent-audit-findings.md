@@ -1,7 +1,7 @@
 ---
 adr: 185
 title: Cross-Agent Audit Findings Queue — Auditor → Implementer Directive Channel
-status: proposed
+status: accepted
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -12,6 +12,8 @@ implementation_files:
   - scripts/cos-agent-message                # v1 wrapper
   - hooks/agent-message-inbox-guard.sh       # v1 severity gate
   - tests/unit/test_agent_message_bus.py     # v1 tests
+  - hooks/agent-message-inbox-context.sh      # v1 UserPromptSubmit inbox context
+  - tests/unit/test_agent_message_hooks.py    # v1 hook tests
   - .cognitive-os/coordination/agent-messages.jsonl # runtime artifact
 tier: maintainer
 tags: [concurrency, governance, agent-coordination, postmortem-2026-05-05, companion-ADR-182-183-184]
@@ -21,7 +23,7 @@ tags: [concurrency, governance, agent-coordination, postmortem-2026-05-05, compa
 
 ## Status
 
-**Proposed.** Fourth architectural layer companion to ADR-182 (branch
+**Accepted.** Implemented as the directed message bus, inbox/context hooks, CLI, and tests. Fourth architectural layer companion to ADR-182 (branch
 ownership lock), ADR-183 (cross-session event log), and ADR-184
 (manager-of-managers daemon). Where the previous three address
 *conflict prevention*, *peer awareness*, and *single-writer authority*,
