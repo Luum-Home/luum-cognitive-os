@@ -342,6 +342,10 @@ class AgentBusMetrics:
         ctrl_file = ctrl_dir / "control.jsonl"
         with open(ctrl_file, "a", encoding="utf-8") as f:
             f.write(json.dumps(payload) + "\n")
+        interrupt = ctrl_dir / "interrupt"
+        tmp = ctrl_dir / ".interrupt.tmp"
+        tmp.write_text(json.dumps({**payload, "type": "interrupt"}), encoding="utf-8")
+        tmp.replace(interrupt)
         return "fallback"
 
 
