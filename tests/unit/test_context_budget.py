@@ -44,3 +44,40 @@ def test_filter_hook_output_skips_blocking_context(tmp_path: Path) -> None:
     (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  static_max_tokens: 1\n", encoding="utf-8")
     payload = {"hookSpecificOutput": {"additionalContext": "x" * 20}}
     assert filter_hook_output(tmp_path, source="test", hook_json=json.dumps(payload), session_id="s1") == ""
+
+
+def test_default_budgets_cover_all_layers(tmp_path: Path) -> None:
+    budgets = read_budget(tmp_path / "missing.yaml")
+    assert budgets == {"static": 4000, "turn": 8000, "user": 12000, "cache": 32000}
+
+
+def test_block_override_allows_but_keeps_block_verdict(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("COS_ALLOW_CONTEXT_BUDGET_OVERRUN", "1")
+    verdict = evaluate("static", 151, {"static": 100})
+    assert verdict.verdict == "BLOCK"
+    assert verdict.allowed is True
+    assert verdict.reason == "override"
+
+
+def test_warn_band_extends_through_1_5_before_block() -> None:
+    assert evaluate("static", 121, {"static": 100}).verdict == "WARN"
+    assert evaluate("static", 150, {"static": 100}).verdict == "WARN"
+    assert evaluate("static", 151, {"static": 100}).verdict == "BLOCK"
+
+
+def test_filter_hook_output_passes_non_json_and_no_context(tmp_path: Path) -> None:
+    assert filter_hook_output(tmp_path, source="test", hook_json="not-json", session_id="s1") == "not-json"
+    payload = json.dumps({"hookSpecificOutput": {"permissionDecision": "allow"}})
+    assert filter_hook_output(tmp_path, source="test", hook_json=payload, session_id="s1") == payload
+    assert not (tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl").exists()
+
+
+def test_filter_hook_output_allows_block_with_override(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("COS_ALLOW_CONTEXT_BUDGET_OVERRUN", "1")
+    (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  static_max_tokens: 1\n", encoding="utf-8")
+    payload = json.dumps({"hookSpecificOutput": {"additionalContext": "x" * 20}})
+    assert filter_hook_output(tmp_path, source="test", hook_json=payload, session_id="s1") == payload
+    row = json.loads((tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl").read_text().splitlines()[-1])
+    assert row["verdict"] == "BLOCK"
+    assert row["allowed"] is True
+    assert row["reason"] == "override"

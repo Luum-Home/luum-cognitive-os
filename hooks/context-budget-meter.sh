@@ -60,6 +60,7 @@ row = {
     "ratio_used": round(verdict.ratio_used, 4),
     "verdict": verdict.verdict,
     "allowed": verdict.allowed,
+    "reason": verdict.reason,
     "latency_ms": round(latency_ms, 3),
 }
 append_metric(project, row)
