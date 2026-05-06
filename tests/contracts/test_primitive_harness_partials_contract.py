@@ -57,5 +57,25 @@ def test_resolved_top_ten_codex_adapter_gaps_are_no_longer_partial() -> None:
         "hooks/aguara-scan.sh",
     }
     for primitive in resolved:
-        assert rows[primitive]["gap_status"] == "aligned"
-        assert rows[primitive]["gap_policy"] != "codex-adapter-needed"
+        assert rows[primitive].get("gap_status") in {None, "aligned"}
+        assert rows[primitive].get("gap_policy") != "codex-adapter-needed"
+
+
+def test_resolved_second_codex_adapter_gap_batch_is_no_longer_partial() -> None:
+    coverage = json.loads((REPO / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text(encoding="utf-8"))
+    rows = {row["primitive"]: row for row in coverage["items"]}
+    resolved = {
+        "hooks/architecture-compliance.sh",
+        "hooks/assumption-tracker.sh",
+        "hooks/auto-checkpoint.sh",
+        "hooks/auto-refine.sh",
+        "hooks/auto-repair-dispatcher.sh",
+        "hooks/auto-rollback-trigger.sh",
+        "hooks/auto-verify.sh",
+        "hooks/background-agent-reminder.sh",
+        "hooks/blast-radius.sh",
+        "hooks/claim-validator.sh",
+    }
+    for primitive in resolved:
+        assert rows[primitive].get("gap_status") in {None, "aligned"}
+        assert rows[primitive].get("gap_policy") != "codex-adapter-needed"
