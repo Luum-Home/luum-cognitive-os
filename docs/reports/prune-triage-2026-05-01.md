@@ -30,7 +30,6 @@ Impact of IMPLEMENT batch: wiring all 12 items removes them from ASPIRATIONAL an
 2. **Classification criteria**:
    - **DELETE**: Item is explicitly superseded by a registered, active replacement hook in `settings.json`. Retaining creates confusion and inflates the ASPIRATIONAL count indefinitely.
    - **IMPLEMENT**: All of — (a) hook/skill body is substantially complete (>20 lines of real logic), (b) the wiring action is a single `settings.json` entry or a 1-line `@on-demand` marker addition, (c) clear consumer exists within the current phase scope, (d) estimated effort ≤4 hours total for the batch item. Skills also require that their backing script already exists.
-   - **DEFER**: Any item that fails one or more IMPLEMENT criteria — requires external service (Valkey, MLflow, Paperclip, Aguara, Parry, NeMo, Docker), is a Phase 2/3 design concern, or needs multi-hook orchestration before it provides value.
 
 3. **Signal sources consulted**: `EXCLUDED_HOOKS.txt` categories, `.claude/settings.json` registered hooks, `hooks/` file line counts (as proxy for implementation completeness), `skills/*/SKILL.md` frontmatter, `rules/ROADMAP.md`, ADR-028, ADR-056, ADR-059 plan checkpoint, punch lists in `.cognitive-os/reports/`.
 
@@ -83,7 +82,6 @@ Impact of IMPLEMENT batch: wiring all 12 items removes them from ASPIRATIONAL an
 | 35 | `hooks/mlflow-sync.sh` | hook | DEFER | Conditional on mlflow package (24 lines). External dependency. Add @on-demand marker with mlflow guard. Not a Phase 1 concern. | Phase 2 |
 | 36 | `hooks/orchestrator-mode-detect.sh` | hook | DEFER | Sourced library (25 lines). Should not be registered independently — it is a shared helper sourced by other hooks. Add @on-demand marker to clarify intent. No registration needed. | Phase 2 (add marker) |
 | 37 | `hooks/package-sync.sh` | hook | DEFER | CI/developer-triggered (63 lines). Not a Claude event hook. Add @manual-trigger marker. No settings.json entry needed. | Phase 2 (add marker) |
-| 38 | `hooks/paperclip-sync.sh` | hook | DEFER | Conditional on Paperclip service (185 lines). External service dependency. Add @on-demand marker. | Phase 2 |
 | 39 | `hooks/parry-scan.sh` | hook | DEFER | Parry security integration (56 lines). External dependency — Parry service not confirmed active. Add @on-demand marker with Parry guard. | Phase 2 |
 | 40 | `hooks/pattern-check.sh` | hook | DEFER | PreToolUse Edit/Write (48 lines). Anti-pattern checker — low line count suggests incomplete implementation. Verify before wiring. | Phase 2 |
 | 41 | `hooks/post-agent-verify.sh` | hook | DELETE | Explicitly superseded by `completion-gate.sh` (registered at PostToolUse Agent). Both hooks serve the same purpose; completion-gate.sh is the current standard. Archive to `docs/archive/hooks/`. | 5 min |

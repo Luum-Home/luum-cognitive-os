@@ -12,6 +12,8 @@ skills:
   sha256: adfed89694d1067ae865e96a40ed66f815acffb7232ad724646e92637343defd
 - path: skills/add-skill/SKILL.md
   sha256: a4144c8f8269455a246f8211bfdad4ceadb06f17b0c6ccf3724b4df068904fef
+- path: skills/adr-tombstone/SKILL.md
+  sha256: 939c22a3300f77c956cbe3068d3b1765f409bcd4a0c620873697c59fbef917a7
 - path: skills/agent-dashboard/SKILL.md
   sha256: 88125152c3bdc92f3e1a0ffeaaea7512f39c201562e6035e9b337ebc9a07fedd
 - path: skills/agent-kpis/SKILL.md
@@ -44,12 +46,12 @@ skills:
   sha256: eb06e779df3d417d0a31149d4c7e13e1945c5cbf56ecfdc4e08e2e40d4933f60
 - path: skills/catalog-full/SKILL.md
   sha256: a999e2550dd98e869e02f150e8d0f8d18eed5630e5e737ff04f650b388cb0b77
-- path: skills/caveman/SKILL.md
-  sha256: dc5c001aae89ad01c4ec31deaeca6b33511a30938489c66b3bad2dfbfa465cfe
 - path: skills/caveman-compress/SKILL.md
   sha256: 3e08d42da2a29975cce0b1d8152b4bb1153678c8b7d5b65437c39d1fddf419ca
 - path: skills/caveman-es/SKILL.md
   sha256: 6deef017aafd7c561e98ab9f4b899d3bca0e80ba8eed93d1be63f0c36f02e492
+- path: skills/caveman/SKILL.md
+  sha256: dc5c001aae89ad01c4ec31deaeca6b33511a30938489c66b3bad2dfbfa465cfe
 - path: skills/code-review/SKILL.md
   sha256: 935f2e64b8d9197018726d34c8e81550875fbe699c5588f36c08399b0b44e29a
 - path: skills/cognee-integration/SKILL.md
@@ -159,8 +161,6 @@ skills:
 - path: skills/ops-runbook/SKILL.md
   sha256: e8e7087cea0a6a7bff0043cb1334025d7f81f23ca71a93fb00b08e8cf43350e9
 - path: skills/optimize-skill/SKILL.md
-  sha256: 160ec7deaeba9847a3cdb38f7a386703ce0805c4a4cd38503a6eafe48ee58459
-- path: skills/paperclip-dashboard/SKILL.md
   sha256: c9cb4b4b8869697ec0bef04e779ddb5b4434a9d16030512611484e26a0061706
 - path: skills/pattern-audit/SKILL.md
   sha256: 31308190f4c43ab7b0d6be16236c833085637c586ee3c8e96c03ee3e37bd171b

@@ -53,7 +53,6 @@
 | `infra-health.jsonl` | infra-health.sh | none | metrics-rotation.sh | ORPHAN |
 | `infra-usage.jsonl` | smart_infra.py | none | metrics-rotation.sh | ORPHAN |
 | `knowledge-graph.jsonl` | session-knowledge-extractor.sh | none | metrics-rotation.sh | ORPHAN |
-| `kpi-history.jsonl` | kpi-trigger.sh, session-cleanup.sh | self_improvement.py, singularity.py, paperclip-sync.sh | metrics-rotation.sh | CONSUMED |
 | `large-file-reads.jsonl` | large-file-advisor.sh, smart_reader.py | none | metrics-rotation.sh | ORPHAN |
 | `performance.jsonl` | performance_monitor.py (timing.sh), homeostasis.py, symbiosis_monitor.py | symbiosis_monitor.py, homeostasis.py | metrics-rotation.sh | CONSUMED |
 | `predev-completeness.jsonl` | predev-completeness-check.sh | none | metrics-rotation.sh | ORPHAN |

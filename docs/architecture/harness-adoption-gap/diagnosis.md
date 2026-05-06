@@ -25,7 +25,6 @@ The root cause is a **path mismatch**: the Claude Code harness exposes skills fr
 | plan-feature | yes | yes | yes |
 | session-backlog | yes | yes | yes |
 | resource-governor | yes | yes | yes |
-| paperclip-dashboard | yes | yes | yes |
 
 **Skills that ARE exposed** live at `~/.claude/skills/` (16 dirs, real files, last modified 2026-03-21):
 `go-testing`, `mcp-builder`, `pdf`, `sdd-apply`, `sdd-archive`, `sdd-design`, `sdd-explore`, `sdd-init`, `sdd-propose`, `sdd-spec`, `sdd-tasks`, `sdd-verify`, `skill-creator`, `skill-registry`, `webapp-testing`, `xlsx`

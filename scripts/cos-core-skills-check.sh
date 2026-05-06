@@ -40,13 +40,12 @@ Flags:
   --root DIR  Override project root (default: parent of this script).
   --help, -h  Show this help.
 
-The 10 core skills (per ADR-093 / ADR-001 harness-adoption-gap):
+The 9 core skills (per ADR-093 / ADR-001 harness-adoption-gap):
   compose-prompt, exhaustive-prompt, agent-dashboard, auto-refine,
   verification-before-completion, plan-feature, session-backlog,
-  resource-governor, paperclip-dashboard, cos-status (script-only).
 
 Exit codes:
-  0  all 10 skills OK
+  0  all 9 skills OK
   1  one or more skills missing/invalid
   2  invocation error
 EOF
@@ -76,7 +75,6 @@ CORE_SKILLS=(
   plan-feature
   session-backlog
   resource-governor
-  paperclip-dashboard
   cos-status
 )
 

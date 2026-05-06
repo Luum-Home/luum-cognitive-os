@@ -29,7 +29,6 @@ Migrate Docker services to pip-installed libraries in two phases:
 - LiteLLM container: disabled in favor of library mode.
 
 **Phase 3 -- Keep (3 services)**:
-- Paperclip + PostgreSQL: genuine web application, no pip equivalent.
 - Valkey: file-based fallback already exists in agent_bus.py, but kept for production deployments.
 
 **Key discovery**: `memu-ai` does not exist on PyPI; the correct package is `memu` (v2.1.4).

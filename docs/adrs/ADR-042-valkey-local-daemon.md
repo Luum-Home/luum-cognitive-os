@@ -14,7 +14,6 @@ This ADR is a continuation of ADR-018 phase 3, not a reversal of the Docker-to-p
 ## Context
 
 Three services remained bound to `docker-compose.cognitive-os.yml` as mandatory
-Docker containers: Paperclip, PostgreSQL (Langfuse-internal), and Valkey
 (general-purpose Agent Bus pub/sub). This is tracked as debt item D34.
 
 Running Docker for a single pub/sub daemon creates friction:
@@ -98,10 +97,8 @@ container.
 | Service | D34 Status |
 |---------|-----------|
 | Valkey (Agent Bus) | **RESOLVED** — local daemon via `cos-valkey-local.sh` |
-| Paperclip | OPEN — Docker only |
 | PostgreSQL (Langfuse) | OPEN — Docker only (Langfuse dependency) |
 
-Paperclip and PostgreSQL remain Docker-bound. Their extraction is deferred to a
 separate session.
 
 ---

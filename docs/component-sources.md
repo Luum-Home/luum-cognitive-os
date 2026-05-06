@@ -45,7 +45,6 @@ hardcoding a small subset; today this includes `hermes-agent`, `pi-mono`, and
 |--------|-----|---------|------------|--------|
 | Langfuse | [langfuse/langfuse](https://github.com/langfuse/langfuse) | MIT (core) | LLM observability, tracing, metrics | ACTIVE -- `docker-compose.cognitive-os.yml` |
 | LiteLLM | [BerriAI/litellm](https://github.com/BerriAI/litellm) | MIT | LLM proxy and model routing | ACTIVE -- Docker container |
-| Paperclip | N/A | N/A | Governance and compliance dashboard | ACTIVE -- Docker container |
 | ClickHouse | [ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse) | Apache-2.0 | Analytics database (Langfuse backend) | ACTIVE -- Docker dependency |
 | SeaweedFS | [seaweedfs/seaweedfs](https://github.com/seaweedfs/seaweedfs) | Apache-2.0 | Object storage (Langfuse backend) | ACTIVE -- Docker dependency |
 | Opik | [comet-ml/opik](https://github.com/comet-ml/opik) | Apache-2.0 | LLM tracing backend (observability profile) | OPTIONAL -- Docker profile `observability` |

@@ -48,7 +48,6 @@ it is not part of the supported runtime claim.
 | `full` | Local connected systems validation | Adds optional tools and explicitly starts optional/reference services when Docker is available. |
 
 Optional services must never become mandatory for default local use. Docker,
-observability backends, Paperclip, Jupyter, Cognee HTTP, Opik local, and similar
 systems are extension/reference surfaces unless a specific proof path enables
 them.
 

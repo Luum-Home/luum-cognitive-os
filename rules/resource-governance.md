@@ -41,13 +41,11 @@ After every agent completion, log to `.cognitive-os/metrics/cost-events.jsonl`:
 - Start Docker services ON DEMAND:
   - Observability (Phoenix): now a pip process, started via `uv run phoenix serve`; stopped with Ctrl+C (not Docker-managed)
   - NeMo Guardrails: start when PII detected in content, stop after 15min idle
-  - Paperclip: start when `/squad-report` or governance review, stop after 30min idle
 - Check idle containers: `docker ps --filter status=running` vs actually being called
 - Log infra events to `.cognitive-os/metrics/infra-usage.jsonl`
 
 ### Infra Event Format
 ```json
-{"timestamp":"ISO","container":"paperclip","event":"start|stop|idle_detected","reason":"on_demand|idle_timeout|manual"}
 ```
 
 ## Agent Launch Governance

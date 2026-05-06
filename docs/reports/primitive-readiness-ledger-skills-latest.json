@@ -1241,8 +1241,7 @@
           "path": "tests/integration/test_cos_skill_cli.py"
         },
         {
-          "family": "test",
-          "path": "tests/unit/test_paperclip_client.py"
+          "family": "test"
         },
         {
           "family": "test",

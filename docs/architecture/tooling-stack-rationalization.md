@@ -32,7 +32,6 @@ See [Infrastructure Service Catalog](infrastructure-service-catalog.md) for the 
 | Cognee | `pip` | Memory/knowledge graph engine. | Keep optional; default behavior should not require an HTTP service. |
 | MemU | `pip` | Memory extension. | Keep optional until a clear non-overlapping role versus Engram/Cognee is proven. |
 | NeMo Guardrails | `pip` | Guardrail policy runtime. | Keep optional and in-process by default. |
-| Paperclip | `on_demand` | Governance/compliance dashboard. | Keep as extension; not part of the minimum wedge unless backed by a visible operator workflow. |
 | AutoMaker | `on_demand` | Kanban/agent studio UI. | Keep as optional UI reference; do not let Claude-oriented UI workflows define portability. |
 | Jupyter | `pip` | Compute sandbox. | Keep optional; useful for data/ML tasks but not core agent governance. |
 | Webhook Trigger | profile-gated | GitHub event automation. | Keep as automation extension, not default local runtime. |
@@ -116,6 +115,5 @@ The next pass should evaluate each non-core tool with the same rigor:
 | Guardrails/security | NeMo, LLM Guard, Guardrails AI, Promptfoo, Aguara, Semgrep, Parry | High |
 | Evaluation | DeepEval, RAGAS, Promptfoo, outcome metrics | Medium |
 | Compute/research | Jupyter, Crawl4AI, E2B-style sandboxes | Medium |
-| Dashboards/control plane | Paperclip, dashboard surfaces, squads/organization views | Medium |
 
 The goal is not to remove powerful tools. The goal is to make power composable: default light, extension-rich, and never confusing optional infrastructure with the kernel.

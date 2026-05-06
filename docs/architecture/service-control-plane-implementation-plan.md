@@ -8,7 +8,6 @@ deliberately not a new product claim. It is a proof ladder for making the future
 ## Remote ingress and provider-adapter boundary
 
 ADR-161 adds the missing remote-operation boundary for this plan. `cosd` must
-treat Telegram, REST/webhooks, Paperclip, GitHub comments, and future chat
 surfaces as **remote ingress adapters** only: they authenticate, allowlist,
 normalize, rate-limit, and enqueue tasks. They do not own model credentials and
 do not execute tools directly.

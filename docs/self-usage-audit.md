@@ -28,8 +28,6 @@
 | self-install.sh | SessionStart | -- |
 | session-init.sh | SessionStart | -- |
 | crash-recovery.sh | SessionStart | -- |
-| paperclip-squad-sync.sh | SessionStart | async |
-| paperclip-task-sync.sh | SessionStart | async |
 | rate-limiter.sh | PreToolUse | Bash\|Agent\|Edit\|Write |
 | large-file-advisor.sh | PreToolUse | Read |
 | clarification-gate.sh | PreToolUse | Agent |
@@ -46,8 +44,6 @@
 | completion-gate.sh | PostToolUse | Agent |
 | clarification-interceptor.sh | PostToolUse | Agent |
 | agent-checkpoint.sh | PostToolUse | Agent |
-| paperclip-agent-status.sh | PostToolUse | Agent (async) |
-| paperclip-sdd-sync.sh | PostToolUse | Agent (async) |
 | session-learning.sh | Stop | -- |
 | session-cleanup.sh | Stop | -- |
 | teammate-idle.sh | TeammateIdle | -- |
@@ -164,7 +160,6 @@ These hooks exist but are NOT in settings.json. Sorted by criticality.
 | `/opik-setup`, `/cognee-setup`, `/deepeval-setup`, `/ragas-setup`, `/strands-setup`, `/promptfoo-setup` | Integration setup skills -- one-time use |
 | `/automaker-bridge` | Integration -- one-time use |
 | `/nemo-guardrails` | Configuration -- one-time use |
-| `/paperclip-dashboard` | Dashboard -- on-demand only |
 | `/harness-audit` | Maintenance -- on-demand only |
 | `/webhook-trigger` | Infrastructure -- runs independently |
 | `/gpu-sandbox`, `/jupyter-exec` | Compute sandbox -- on-demand only |
@@ -522,7 +517,6 @@ The fundamental issue is that the orchestrator is a **language model following b
 | agent-bus-monitor.sh | NO |
 | observability-trace.sh | NO |
 | task-recorder.sh | NO |
-| paperclip-sync.sh | NO |
 | adaptive-bypass.sh | NO |
 | contextual-rule-loader.sh | NO |
 | idle-service-cleanup.sh | NO |
@@ -539,11 +533,6 @@ The fundamental issue is that the orchestrator is a **language model following b
 | tool-loop-detector.sh | NO |
 | architecture-compliance.sh | NO |
 | assumption-tracker.sh | NO |
-| paperclip-agent-status.sh | YES |
-| paperclip-sdd-sync.sh | YES |
-| paperclip-squad-sync.sh | YES |
 | claim-validator.sh | YES (registered from hooks/ symlink) |
 | completion-gate.sh | YES (registered from hooks/ symlink) |
 | confidence-gate.sh | NO |
-| paperclip-cost-stream.sh | NO |
-| paperclip-task-sync.sh | YES |

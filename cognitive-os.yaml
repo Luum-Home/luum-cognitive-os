@@ -443,8 +443,6 @@ resources:
       model-routing: [litellm]        # MIGRATED Phase 2: removed bifrost, litellm runs as pip library
       guardrails-validator: [nemo-guardrails]  # MIGRATED Phase 2: runs as pip library in-process
       content-policy: [nemo-guardrails]        # MIGRATED Phase 2: runs as pip library in-process
-      paperclip-sync: [paperclip]
-      squad-report: [paperclip]
       memu-sync: [memu]               # MIGRATED Phase 2: runs as pip library
       cognee-search: [cognee]          # MIGRATED Phase 2: runs as pip library
       jupyter-sandbox: [jupyter]       # MIGRATED Phase 2: runs as pip install
@@ -462,10 +460,6 @@ resources:
         enabled: false             # ADR-060: opt-in only. Docker path: --profile guardrails
         profile: guardrails        # docker compose --profile guardrails up
         idle_timeout_minutes: 15
-      paperclip:
-        mode: on_demand
-        idle_timeout_minutes: 30
-        review_by: 2026-06-30      # Sunset policy (catalog §Sunset Policy) — optional governance extension
       bifrost:
         mode: disabled             # MIGRATED Phase 2: removed in favor of litellm pip library. Bifrost had 11us latency but litellm covers 90% of use cases.
         idle_timeout_minutes: 30
@@ -790,17 +784,6 @@ sdd:
 # Removed: dead config that nothing reads (session 2026-04-15)
 # workflows.* removed
 
-paperclip:
-  enabled: true
-  url: ${COGNITIVE_OS_PAPERCLIP_URL:-http://localhost:3200}
-  sync_on_session_end: true
-  artifacts:
-    - session_metrics
-    - repair_outcomes
-    - registry_snapshot
-    - cost_events
-    - agent_status
-    - sdd_pipeline
 
 # ADR-062 — Multi-provider agent loop configuration
 # Provider keys map to lib/providers/<name>.py modules.
@@ -1074,18 +1057,6 @@ harness:
       scope: os-only
 
 
-    # ── SessionStart (Paperclip integration, ADR-043) ────────────────────────
-    paperclip-squad-sync:
-      script: hooks/paperclip-squad-sync.sh
-      event: SessionStart
-      async: true
-      scope: os-only
-
-    paperclip-task-sync:
-      script: hooks/paperclip-task-sync.sh
-      event: SessionStart
-      async: true
-      scope: os-only
 
     # ── PreToolUse — all tools ────────────────────────────────────────────────
     protected-config-write-guard:
@@ -1672,27 +1643,6 @@ harness:
       scope: os-only
 
 
-    # ── PostToolUse — Agent (Paperclip integration, ADR-043) ─────────────────
-    paperclip-sdd-sync:
-      script: hooks/paperclip-sdd-sync.sh
-      event: PostToolUse
-      matcher: Agent
-      async: true
-      scope: os-only
-
-    paperclip-agent-status:
-      script: hooks/paperclip-agent-status.sh
-      event: PostToolUse
-      matcher: Agent
-      async: true
-      scope: os-only
-
-    paperclip-cost-stream:
-      script: hooks/paperclip-cost-stream.sh
-      event: PostToolUse
-      matcher: Agent
-      async: true
-      scope: os-only
 
     # ── Stop ──────────────────────────────────────────────────────────────────
     session-summary-reminder:
@@ -1759,12 +1709,6 @@ harness:
       scope: os-only
 
 
-    # ── Stop (Paperclip integration, ADR-043) ────────────────────────────────
-    paperclip-sync:
-      script: hooks/paperclip-sync.sh
-      event: Stop
-      async: true
-      scope: os-only
 
     # ── TeammateIdle (COS extension) ──────────────────────────────────────────
     # Codex: cognitive_os_extension — requires cos-runner (not yet implemented)

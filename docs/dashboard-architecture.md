@@ -10,15 +10,12 @@
 Accepted
 
 ### Context
-COS governance, memory, agent monitoring, and cost management features have no equivalent in existing platforms. Paperclip covers approximately 30% of needs (agent coordination) but lacks rules management, hooks monitoring, skills browsing, Engram memory exploration, KPI dashboards, cost tracking, and security scanning views. The competitive analysis confirms that UI/Dashboard is the primary gap versus alternatives like Agent Zero. Eight platforms were evaluated; none cover the COS-specific feature set.
 
 ### Decision
-Build a custom React web application that consumes the COS MCP server as its backend API. Run alongside Paperclip as a Docker service, not as a replacement.
 
 ### Consequences
 - COS-specific features get first-class UI support (rules CRUD, hooks monitoring, agent trust scores, Engram browser).
 - Maintenance burden increases; the dashboard becomes another component to test and ship.
-- Paperclip remains for agent coordination; the custom dashboard covers the remaining 70%.
 
 ---
 
@@ -204,7 +201,6 @@ COS uses **two complementary dashboards**, not one monolithic UI:
 ```
                       Browser
                      /       \
-            Paperclip          COS Dashboard
             (port 3200)        (port 3300)
                 |                    |
             Agent coord         COS-specific
@@ -216,7 +212,6 @@ COS uses **two complementary dashboards**, not one monolithic UI:
 
 ### Why Two Dashboards?
 
-| Paperclip | COS Dashboard |
 |-----------|---------------|
 | Agent coordination (heartbeats, status) | Rules/hooks/skills management |
 | Org chart of squads | Engram memory browser |
@@ -225,13 +220,10 @@ COS uses **two complementary dashboards**, not one monolithic UI:
 | Monthly spend view | Trust score gauges |
 | Already running (Docker, port 3200) | Custom-built (port 3300) |
 
-**Paperclip** handles what it does well: agent lifecycle, squad structure, and SDD issue tracking. It's an existing open-source tool — we don't rebuild what works.
 
-**COS Dashboard** covers the 70% that Paperclip can't: COS-specific governance features (rules CRUD, hooks monitoring, Engram browser, cost management, security scanning, trust scores). No existing platform covers these.
 
 ### Integration Between Dashboards
 
-- **Paperclip client** (`lib/paperclip_client.py`): COS pushes events to Paperclip (SDD phase transitions, agent status, squad changes, notifications)
 - **COS MCP server** (`mcp-server/cos_mcp.py`): COS Dashboard reads rules, metrics, tasks, memory via 8 MCP tools
 - **Shared data**: both read from the same metrics files (`.cognitive-os/metrics/`), Engram, and `active-tasks.json`
 - **No cross-dependency**: each dashboard runs independently. If one is down, the other continues.
@@ -240,9 +232,6 @@ COS uses **two complementary dashboards**, not one monolithic UI:
 
 | Task | Go to |
 |------|-------|
-| Check agent status/heartbeats | Paperclip |
-| View squad structure | Paperclip |
-| Track SDD pipeline progress | Paperclip |
 | Edit/create rules | COS Dashboard |
 | Browse skills catalog | COS Dashboard |
 | Search Engram memory | COS Dashboard |

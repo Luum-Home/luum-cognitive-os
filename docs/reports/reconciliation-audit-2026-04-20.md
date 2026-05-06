@@ -73,7 +73,6 @@ landed without the ADR being persisted in the audited location. Contradiction #4
   BLOCKERs 2/2, CONCERNs 9/9 resolved. `test-baseline-diff.sh` **deleted**; `rate-limit-protection.sh`
   reduced to 10-line shim. Commits: `d176c07, ae84bb8, e6a080a, bc7f70b, 0f72398, 5e3c188, 92cf485`.
 - **Gap**: cost-events backfill executed (#11778); process-registry callers exist but not all hooks
-  registered (paperclip-gated).
 
 ### ADR-028a (Addendum, D4/D1.C reconciliation)
 - **Proposed**: WS11 replacement via `global-verify.sh` diff capture; D1.C consumer-boundary.

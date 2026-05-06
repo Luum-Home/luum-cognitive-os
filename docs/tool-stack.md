@@ -352,7 +352,6 @@ AutoMaker is a Kanban-based dev studio that launches Claude Code sessions in git
 - SessionStart hooks fire: health check, session init, metrics rotation
 - PreToolUse hooks fire: completeness check, phase context, safety mesh
 - PostToolUse hooks fire: error learning, auto-repair, trust score, completion gate
-- Stop hooks fire: session summary, KPI trigger, Paperclip sync
 
 **Docker**: Available via `docker compose --profile ui up automaker` but is optional. AutoMaker can also run standalone.
 

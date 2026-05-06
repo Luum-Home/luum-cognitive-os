@@ -33,7 +33,6 @@ help:
 	@echo "  test-optional     Explicit optional/cost-bearing lanes."
 	@echo "  test-docker-explicit  [DEPRECATED → test-docker] Explicit Docker/testcontainers lane."
 	@echo "  test-optional-cost    [DEPRECATED → test-optional] Explicit optional/cost-bearing lanes."
-	@echo "  ci-deps           Install optional CI deps (flock + Paperclip stub) to unblock skipped tests."
 	@echo "  test-fast         [DEPRECATED → cos-test cluster --lane unit] Unit tests, parallel (-n auto). <30s."
 	@echo "  test-unit         [DEPRECATED → cos-test cluster --lane unit] Unit tests serial."
 	@echo "  test-integration  Integration tests serial (tmp state sensitive)."
