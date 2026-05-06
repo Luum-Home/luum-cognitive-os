@@ -13,7 +13,8 @@ one batch, and acknowledge directed inbox messages.
 
 ## Decision
 
-Add a small CLI-backed Surface 5 action runner behind `cos tui --operate`.
+Add a small action runner behind `cos tui --operate` and wire the same runner
+into the interactive Bubble Tea model for local operator actions.
 
 Supported actions are allowlisted:
 
@@ -23,8 +24,10 @@ Supported actions are allowlisted:
 - `inbox-ack` — runs `scripts/cos_agent_message.py ack` for an explicit
   `--message-id`.
 
-Every operable action must include `--confirm`. Without confirmation, the command
-returns a rejected result and writes no receipt. Confirmed actions append
+Every operable CLI action must include `--confirm`. Without confirmation, the
+command returns a rejected result and writes no receipt. In the interactive TUI,
+keys queue an action first and require a separate `c` confirmation key before the
+same action runner executes. Confirmed actions append
 `.cognitive-os/metrics/tui-actions.jsonl` with `schema_version`, `surface_kind`,
 `surface_id`, `mode=operable`, `whitelisted=true`, the command list, and bounded
 stdout/stderr tails.
@@ -34,8 +37,8 @@ stdout/stderr tails.
 - Surface 5 can perform useful local operator work without becoming an open
   command runner.
 - The action path is deterministic enough for CLI and package tests.
-- Future interactive keybindings must delegate to the same allowlist/confirm/
-  receipt runner instead of bypassing it.
+- Interactive keybindings delegate to the same allowlist/confirm/receipt runner
+  instead of bypassing it.
 
 ## Acceptance Criteria
 
@@ -45,5 +48,5 @@ ACCEPTANCE CRITERIA:
 2. Allowlisted actions without `--confirm` are rejected and write no receipt.
 3. Confirmed actions write a `cos-tui-action-receipt.v1` row.
 4. `inbox-ack` requires `--message-id`.
-5. Tests cover allowlist rejection, confirmation gating, receipt writing, and CLI behavior.
+5. Tests cover allowlist rejection, confirmation gating, receipt writing, CLI behavior, and interactive key confirmation.
 ```
