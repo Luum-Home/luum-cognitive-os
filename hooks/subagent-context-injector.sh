@@ -196,7 +196,6 @@ if [ -n "$context" ]; then
   if [ "$HAS_VALID_INPUT" -eq 1 ]; then
     # Claude Code: emit hookSpecificOutput JSON on stdout
     if command -v python3 >/dev/null 2>&1; then
-      context_budget_record_text "subagent-context-injector" "$context" "static"
       _CONTEXT_JSON=$(printf '%s' "$context" | python3 -c "
 import json, sys
 ctx = sys.stdin.read()
@@ -212,7 +211,6 @@ sys.stdout.write(json.dumps(out))
       _CONTEXT_JSON="$(context_budget_filter_json "subagent-context-injector" "$_CONTEXT_JSON" "static")"
       [ -n "$_CONTEXT_JSON" ] && printf '%s' "$_CONTEXT_JSON"
     else
-      context_budget_record_text "subagent-context-injector" "$context" "static"
       jq -n \
         --arg ctx "$context" \
         '{hookSpecificOutput: {hookEventName: "SubagentStart", additionalContext: $ctx, permissionDecision: "allow"}}'
