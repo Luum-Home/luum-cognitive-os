@@ -1,0 +1,87 @@
+---
+evaluated_at: 2026-05-06 06:45 UTC
+engram_id: pending
+deepwiki_url: https://deepwiki.com/aristocratos/btop
+batch: phase2-deep-tier2
+parent_radar: docs/reports/external-tools-radar-2026-05-06.md
+sister_batch: phase2-deep-tier1 (top-22)
+---
+
+## Repository Evaluation: aristocratos/btop
+
+### Classification: REJECT
+**Score**: 7.1/10 (mechanical — qualitative override applied per radar §6 governance)
+**Evaluation Level**: 2 (deep — gh API metadata + tags + workflow runs + targeted source files)
+**Theme**: dev-tools-tui  •  **Surface role**: tui-app
+
+### Summary
+A monitor of resources
+
+**Verdict rationale**: Off-theme: system resource monitor (C++). No COS surface.
+
+### Scoring Breakdown
+| Criterion | Weight | Score | Rationale |
+|-----------|--------|-------|-----------|
+| Relevance | 30% | 3/10 | resource monitor; off-theme |
+| License | 25% | 10/10 | Apache-2.0 |
+| Activity | 20% | 10/10 | last push 2026-05-01T16:05:45Z |
+| Maturity | 15% | 8/10 | 32,022★ / 1,001 forks / 5 recent tags |
+| Integration | 10% | 5/10 | tui-app |
+| **Weighted Total** | | **7.1/10** | |
+
+### Adoption Signals
+| Signal | Value | Descriptor |
+|--------|-------|------------|
+| Open issues (proxy) | 478 | high issue activity |
+| Release cadence | 5 recent tags | active release cadence |
+| CI health | last 10 runs | CI green (10/10) |
+
+### Key Findings
+- **License**: Apache-2.0
+- **Stars / activity**: 32,022★, last push 2026-05-01T16:05:45Z
+- **Default branch**: main
+- **Topics**: (none)
+- **Notes**: 
+- (none)
+
+### Integration Plan
+- **What to use**: resource monitor; off-theme
+- **Effort**: small (sub-process invocation)
+- **Blocking**: none — adopt or reject directly
+
+### Risks
+- **License compatibility**: permissive — clean
+- **Surface-5 gate** (ADR-173/187): not applicable
+- **Theme drift**: high — off-COS-theme
+- **Star-inflation flag**: no
+
+### Cross-References
+- Parent radar: `docs/reports/external-tools-radar-2026-05-06.md`
+- Sister batch (tier-1 top-22): wrote to `docs/research/repo-scout/deep/`
+- ADR-173 (research gate): `docs/adrs/ADR-173-surface-5-research-gate.md`
+- ADR-187 (proof contract): `docs/adrs/ADR-187-surface-5-adoption-proof-contract.md`
+
+### Raw Metrics
+<details>
+<summary>gh api JSON (key fields)</summary>
+
+```json
+{
+  "archived": false,
+  "created_at": "2021-05-06T18:40:21Z",
+  "default_branch": "main",
+  "description": "A monitor of resources",
+  "forks": 1001,
+  "full_name": "aristocratos/btop",
+  "homepage": null,
+  "language": "C++",
+  "license": "Apache-2.0",
+  "name": "btop",
+  "open_issues": 478,
+  "pushed_at": "2026-05-01T16:05:45Z",
+  "stars": 32022,
+  "topics": []
+}
+```
+
+</details>
