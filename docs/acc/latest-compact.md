@@ -2,25 +2,25 @@
 
 > Context diet entrypoint. Read this before opening `docs/acc/latest.json`.
 
-Generated: 2026-05-06T08:02:28Z
+Generated: 2026-05-06T08:08:45Z
 Gate: pass (reconstruction)
-ACC: 0.9320
-ACC effective: 0.9631
+ACC: 0.9598
+ACC effective: 0.9769
 Capabilities: 1725
-Findings: 195
+Findings: 106
 New debt gate: pass (0)
 Primitive fitness reports: 0
 
 ## Warnings
 
-- coverage_debt:195
+- coverage_debt:106
 
 ## Mapping Weights
 
-- aligned: 2990
+- aligned: 3079
 - missing: 0
 - overexposed: 0
-- partial: 199
+- partial: 110
 - stale: 0
 - unverified: 19
 
@@ -38,12 +38,12 @@ Primitive fitness reports: 0
 
 - `script:scripts/cos-key-learnings-capture` [partial/medium]: Candidate/projectable surface needs consumer projection proof → add harness projection proof before promotion
 - `script:scripts/security-red-team` [partial/medium]: Candidate/projectable surface needs consumer projection proof → add harness projection proof before promotion
-- `harness_coverage:hooks/aci-observation-capture.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 - `harness_coverage:hooks/adaptive-bypass.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 - `harness_coverage:hooks/adr-detector.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
-- `harness_coverage:hooks/adr-relevance-suggest.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
-- `harness_coverage:hooks/adr-section-validator.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
-- `harness_coverage:hooks/agent-bash-cwd-enforcer.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
+- `harness_coverage:hooks/agent-bus-monitor.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
+- `harness_coverage:hooks/agent-checkpoint.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
+- `harness_coverage:hooks/agent-output-verifier.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
+- `harness_coverage:hooks/agent-prelaunch.sh` [partial/medium]: Harness implementation coverage gap → classify the gap policy or add the missing harness projection/proof
 
 ## New Debt
 
