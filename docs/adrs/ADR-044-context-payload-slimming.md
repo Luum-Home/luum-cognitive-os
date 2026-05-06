@@ -3,7 +3,7 @@
 **Status**: Phase 2 RESOLVED (frontmatter migration + catalog generator) — Phase 2 slash commands BLOCKED (sandbox write-permission on `.claude/commands/`)
 **Date**: 2026-04-20 (proposed), 2026-04-21 (Phase 2 partial resolution)
 **Authors**: Agent C (startup-optimization initiative, stream 3/4)
-**Related**: ADR-043 (rule classification — Agent B, paired work), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base)
+**Related**: ADR-043 (rule classification — Agent B, paired work; deprecated 2026-05-05 — see ADR-171), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base)
 
 ## Context
 
