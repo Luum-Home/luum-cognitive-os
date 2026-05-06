@@ -122,3 +122,4 @@ cos_mutation.sqlite
 .cognitive-os/coordination/*.jsonl
 .cognitive-os/coordination/*.lock
 .cognitive-os/coordination/agent-messages-archive/
+.cognitive-os/metrics/context-budget.jsonl
