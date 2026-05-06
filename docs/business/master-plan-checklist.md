@@ -93,6 +93,7 @@
 - [x] Standalone ship-readiness status is captured in [Standalone Ship Readiness — 2026-05-06](../architecture/standalone-ship-readiness-2026-05-06.md), including release, Surface 5, `cosd` API, and install-root portability evidence.
 - [x] Surface 5 and secure `cosd` next-slice scope is grounded in existing SO features through [Surface 5 TUI and Secure cosd Roadmap](../architecture/surface-5-and-secure-cosd-roadmap.md).
 - [x] `cosd` remote exposure is guarded by [ADR-194](../adrs/ADR-194-cosd-secure-remote-api.md): non-local binds require `--allow-remote` plus bearer-token auth, and protected writes emit audit rows.
+- [x] Surface 5 has a read-only operator MVP through [ADR-195](../adrs/ADR-195-surface-5-operable-tui-contract.md), `cos tui`, and `cos tui --snapshot`.
 - [x] Standalone release plumbing is represented by [ADR-191](../adrs/ADR-191-cos-binary-release-pipeline.md), `.goreleaser.yaml`, `.github/workflows/cos-binary-release.yml`, and a non-placeholder HEAD Homebrew formula.
 - [x] Surface 5 has a sourced TUI substrate decision through [ADR-192](../adrs/ADR-192-surface-5-adopt-bubbletea.md) and a compile-tested Bubble Tea proof package.
 - [x] `cosd` has a local network API decision and implementation through [ADR-193](../adrs/ADR-193-cosd-local-network-api.md), `scripts/cos_daemon.py serve`, and API tests.
