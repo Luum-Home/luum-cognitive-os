@@ -28,10 +28,18 @@ type Snapshot struct {
 	Warnings         []string
 }
 
-// Model is a read-only Bubble Tea model for the Surface 5 operator console.
+// Model is a Bubble Tea model for the Surface 5 operator console.
 type Model struct {
+	Snapshot         Snapshot
+	Tab              int
+	PendingAction    string
+	RunningAction    string
+	LastActionResult *ActionResult
+}
+
+type actionFinishedMsg struct {
+	Result   ActionResult
 	Snapshot Snapshot
-	Tab      int
 }
 
 var tabs = []string{"Overview", "cosd", "Coverage", "Release", "Receipts"}
@@ -61,7 +69,16 @@ func (m Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch v := msg.(type) {
+	case actionFinishedMsg:
+		m.RunningAction = ""
+		m.PendingAction = ""
+		m.LastActionResult = &v.Result
+		m.Snapshot = v.Snapshot
+		return m, nil
 	case tea.KeyMsg:
+		if m.RunningAction != "" {
+			return m, nil
+		}
 		switch v.String() {
 		case "q", "ctrl+c", "esc":
 			return m, tea.Quit
@@ -69,6 +86,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.Tab = (m.Tab + 1) % len(tabs)
 		case "left", "shift+tab", "h":
 			m.Tab = (m.Tab + len(tabs) - 1) % len(tabs)
+		case "r":
+			m.PendingAction = "refresh-coverage"
+		case "p":
+			m.PendingAction = "cosd-process-once"
+		case "x":
+			m.PendingAction = ""
+		case "c":
+			if m.PendingAction == "" {
+				return m, nil
+			}
+			action := m.PendingAction
+			projectDir := m.Snapshot.ProjectDir
+			m.RunningAction = action
+			return m, runActionCmd(projectDir, action)
 		}
 	}
 	return m, nil
@@ -83,8 +114,44 @@ func (m Model) View() string {
 	b.WriteString(m.tabBar())
 	b.WriteString("\n\n")
 	b.WriteString(m.renderTab(tabs[m.Tab]))
-	b.WriteString("\n\nkeys: ←/→ switch tabs · q quit\n")
+	b.WriteString("\n")
+	b.WriteString(m.actionPanel())
+	b.WriteString("\nkeys: ←/→ tabs · r refresh coverage · p process cosd once · c confirm · x cancel · q quit\n")
 	return b.String()
+}
+
+func (m Model) actionPanel() string {
+	if m.RunningAction != "" {
+		return "\nAction: running " + m.RunningAction + "...\n"
+	}
+	var b strings.Builder
+	if m.PendingAction != "" {
+		b.WriteString("\nPending action: ")
+		b.WriteString(m.PendingAction)
+		b.WriteString(" — press c to confirm or x to cancel.\n")
+	} else {
+		b.WriteString("\nActions: r queues refresh-coverage, p queues cosd-process-once.\n")
+	}
+	if m.LastActionResult != nil {
+		b.WriteString("Last action: ")
+		b.WriteString(m.LastActionResult.Action)
+		b.WriteString(" ")
+		b.WriteString(m.LastActionResult.Outcome)
+		if m.LastActionResult.Reason != "" {
+			b.WriteString(" — ")
+			b.WriteString(m.LastActionResult.Reason)
+		}
+		b.WriteString("\n")
+	}
+	b.WriteString("Inbox ack stays on CLI: cos tui --operate inbox-ack --message-id ID --confirm.\n")
+	return b.String()
+}
+
+func runActionCmd(projectDir string, action string) tea.Cmd {
+	return func() tea.Msg {
+		result := RunAction(projectDir, action, ActionOptions{Confirm: true})
+		return actionFinishedMsg{Result: result, Snapshot: LoadSnapshot(projectDir)}
+	}
 }
 
 func (m Model) tabBar() string {
