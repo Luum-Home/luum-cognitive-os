@@ -18,6 +18,7 @@ agent-bus-monitor.sh
 agent-checkpoint.sh
 agent-output-verifier.sh
 agent-prelaunch.sh
+subagent-capability-preflight.sh
 agnix-lint.sh
 aguara-scan.sh
 architecture-compliance.sh

@@ -304,6 +304,10 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/subagent-capability-preflight.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/clarification-gate.sh\""
           },
           {

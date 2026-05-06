@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+"""Dry-run Maintainer agent runner for ADR-201.
+
+This is intentionally propose-only: it compiles telemetry, applies ADR-204
+consumption gates, and emits human-approved proposals without mutating source.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.performance_ledger import repo_root  # noqa: E402
+from lib.promote_from_telemetry import promote_from_telemetry  # noqa: E402
+
+
+def acquire_lock(path: Path) -> int:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        return os.open(str(path), os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError as exc:
+        raise RuntimeError(f"maintainer runner lock already exists: {path}") from exc
+
+
+def write_proposals(project_dir: Path, proposals: list[dict]) -> list[str]:
+    out_dir = project_dir / ".cognitive-os" / "improvements" / "proposals"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    written: list[str] = []
+    for proposal in proposals:
+        path = out_dir / f"{proposal['proposal_id']}.json"
+        if path.exists():
+            written.append(str(path))
+            continue
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        tmp.write_text(json.dumps(proposal, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        tmp.replace(path)
+        written.append(str(path))
+    return written
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Run the ADR-201 Maintainer agent in propose-only mode.")
+    parser.add_argument("--project-dir", type=Path, default=repo_root())
+    parser.add_argument("--once", action="store_true", help="Run one maintainer loop iteration")
+    parser.add_argument("--dry-run", action="store_true", help="Do not write proposal files")
+    parser.add_argument("--write-proposals", action="store_true", help="Write deduped proposal JSON files under .cognitive-os/improvements/proposals")
+    parser.add_argument("--contract", type=Path)
+    parser.add_argument("--stream", action="append")
+    parser.add_argument("--limit", type=int)
+    parser.add_argument("--run-id")
+    parser.add_argument("--day-window")
+    parser.add_argument("--json", action="store_true")
+    return parser
+
+
+def main() -> int:
+    args = build_parser().parse_args()
+    if not args.once:
+        print("cos-maintainer-agent requires --once for this slice", file=sys.stderr)
+        return 1
+    project = args.project_dir.resolve()
+    lock_path = project / ".cognitive-os" / "runtime" / "maintainer-agent.lock"
+    fd = -1
+    try:
+        fd = acquire_lock(lock_path)
+        payload = promote_from_telemetry(
+            project,
+            contract_path=args.contract,
+            streams=args.stream,
+            limit=args.limit,
+            run_id=args.run_id,
+            day_window=args.day_window,
+            write_ledger=True,
+        )
+        written: list[str] = []
+        if args.write_proposals and not args.dry_run and payload["status"] == "ok":
+            written = write_proposals(project, payload["proposals"])
+        runner_payload = {
+            "schema_version": "maintainer-agent-run/v1",
+            "status": payload["status"],
+            "mode": "propose-only",
+            "dry_run": bool(args.dry_run),
+            "model_policy": {
+                "default_model": "sonnet",
+                "opus_requires_human_approval": True,
+                "reason": "scheduled service-mode scans must be cost-bounded; architecture rewrites are proposed to humans, not auto-executed",
+            },
+            "mutation_boundary": "ADR-164 Host CLI Bridge Security Boundary; this runner writes proposals only unless --write-proposals is explicit",
+            "promotion": payload,
+            "written_proposal_paths": written,
+        }
+    except Exception as exc:
+        runner_payload = {"schema_version": "maintainer-agent-run/v1", "status": "error", "message": str(exc)}
+        code = 1
+    else:
+        code = 2 if payload["status"] == "blocked_by_signal_quality" else 0
+    finally:
+        if fd >= 0:
+            os.close(fd)
+        try:
+            lock_path.unlink()
+        except FileNotFoundError:
+            pass
+    if args.json:
+        print(json.dumps(runner_payload, indent=2, sort_keys=True))
+    else:
+        print(f"maintainer-agent: status={runner_payload['status']} proposals={runner_payload.get('promotion', {}).get('proposal_count', 0)}")
+    return code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
