@@ -7681,7 +7681,7 @@ primitives:
 - id: scripts/cos-agent-message
   kind: script
   owner_adr: ADR-185
-  lifecycle_state: candidate
+  lifecycle_state: pending-sunset
   maturity: advisory
   distribution: maintainer
   governance_class: meta-governance
@@ -7700,7 +7700,7 @@ primitives:
     -q
   rollback_or_repair_command: Disable message-bus hooks and use append-only coordination ledger entries
     until repaired.
-  sunset_criteria: Promote or replace when cosd provides equivalent directed findings queue.
+  sunset_criteria: Archive after /agent-control plus cosd directed-queue surfaces supersede auditor-to-implementer messaging with equivalent ack, gate, and replay tests.
   docs_claim_level: advisory
   exit_behavior: mixed
   metrics_file: .cognitive-os/metrics/agent-messages.jsonl
@@ -7978,3 +7978,155 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: scripts/orchestrator.py
+  kind: script
+  owner_adr: ADR-042
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: runtime-safety
+  risk_class: mutating
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - scripts/orchestrator.py
+  - packages/agent-coordination/lib/agent_bus.py
+  - lib/agent_bus_metrics.py
+  runtime_projection: false
+  behavior_evidence: Orchestrator control CLI exposes list-live, scan-stale, kill-hung, control, and answer verbs over Valkey when enabled and filesystem fallback otherwise.
+  evidence_commands:
+  - python3 -m pytest tests/integration/test_orchestrator_cli.py tests/unit/test_agent_bus.py tests/contracts/test_agent_bus_metrics.py -q
+  rollback_or_repair_command: Use direct fallback artifacts under .cognitive-os/agent-bus/<agent_id>/control.jsonl and interrupt until scripts/orchestrator.py is repaired.
+  repair_message: Rerun the orchestrator CLI tests, inspect .cognitive-os/agent-bus/<agent_id>/control.jsonl, and verify AGENT_BUS_ENABLED/Valkey settings before retrying operator control.
+  false_positive_tests:
+  - tests/integration/test_orchestrator_cli.py
+  - tests/unit/test_agent_bus.py
+  sunset_criteria: Promote after repeated live control drills across Valkey and filesystem fallback; archive only if cosd owns equivalent control/answer verbs with the same tests.
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/agent-bus/*/control.jsonl
+  consumer_accessibility: lifecycle-declared-maintainer
+  consumer_access_next_action: Keep maintainer-only until packaged as a stable /agent-control operator primitive.
+
+- id: packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt
+  kind: library
+  owner_adr: ADR-042
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/agent-coordination/lib/agent_bus.py
+  - hooks/agent-control-inbound-guard.sh
+  runtime_projection: false
+  behavior_evidence: Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides orchestrator-to-agent signaling when Valkey is disabled or unavailable.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_agent_bus.py tests/integration/test_orchestrator_cli.py -q
+  rollback_or_repair_command: Remove interrupt sentinel files and fall back to next-prompt JSONL injection until the filesystem fallback is repaired.
+  repair_message: Inspect .cognitive-os/agent-bus/<agent_id>/interrupt and control.jsonl, then rerun tests/unit/test_agent_bus.py before relying on stop/pause/resume fallback.
+  false_positive_tests:
+  - tests/unit/test_agent_bus.py
+  - tests/integration/test_orchestrator_cli.py
+  sunset_criteria: Archive only if every supported harness provides native live control with equivalent fallback and crash-replay evidence.
+  docs_claim_level: blocking
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/agent-bus/*/control.jsonl
+  consumer_accessibility: lifecycle-declared-core
+  consumer_access_next_action: Keep as core fallback while Valkey remains optional.
+
+- id: hooks/agent-control-inbound-guard.sh
+  kind: hook
+  owner_adr: ADR-042
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - hooks/agent-control-inbound-guard.sh
+  - scripts/_lib/settings-driver-claude-code.sh
+  - templates/security-profiles/standard.json
+  runtime_projection: true
+  latency_budget_ms: 500
+  behavior_evidence: PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.
+  evidence_commands:
+  - bash -n hooks/agent-control-inbound-guard.sh
+  - python3 -m pytest tests/unit/test_agent_control_policy.py tests/integration/test_agent_control_inbound_guard.py -q
+  rollback_or_repair_command: Remove hooks/agent-control-inbound-guard.sh from generated settings and rely on explicit operator review of inbound_signal artifacts.
+  repair_message: Clear or inspect .cognitive-os/agent-bus/<agent_id>/interrupt, then rerun the agent-control hook tests before continuing blocked tool use.
+  false_positive_tests:
+  - tests/unit/test_agent_control_policy.py
+  - tests/integration/test_agent_control_inbound_guard.py
+  sunset_criteria: Demote only after all supported harnesses consume inbound_signal natively with equivalent stop/pause/resume tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/agent-control-inbound.jsonl
+  consumer_accessibility: lifecycle-declared-core
+  consumer_access_next_action: Keep projected in standard/paranoid profiles for hook-boundary safety.
+
+- id: packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal
+  kind: library
+  owner_adr: ADR-033
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: core
+  governance_class: runtime-safety
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - packages/agent-lifecycle/lib/harness_adapter/base.py
+  - packages/agent-lifecycle/lib/harness_adapter/dispatch.py
+  runtime_projection: false
+  behavior_evidence: Harness adapters surface inbound_signal records from filesystem/Valkey control paths so runtime loops can apply stop, pause, resume, and clarification answers.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_harness_adapter_base.py tests/unit/test_harness_adapter_codex.py -q
+  rollback_or_repair_command: Remove inbound_signal rendering from adapter context and rely on hook-boundary enforcement until adapter parsing is repaired.
+  sunset_criteria: Promote when every supported adapter consumes inbound_signal as a first-class runtime control decision.
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/agent-bus/*/inbound_signal.jsonl
+  consumer_accessibility: lifecycle-declared-core
+  consumer_access_next_action: Document per-harness runtime behavior before promoting to blocking.
+
+- id: skills/agent-control/SKILL.md
+  kind: skill
+  owner_adr: ADR-042
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: core
+  governance_class: runtime-safety
+  risk_class: mutating
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/agent-control/SKILL.md
+  - scripts/orchestrator.py
+  runtime_projection: false
+  behavior_evidence: Operator skill routes natural-language requests like stop agent, answer agent, kill hung agent, list live agents, and scan stale agents to governed orchestrator verbs.
+  evidence_commands:
+  - python3 -m pytest tests/contracts/test_agent_control_primitive_lifecycle.py -q
+  rollback_or_repair_command: Invoke scripts/orchestrator.py control/answer/list-live directly until the skill metadata is repaired.
+  repair_message: Use scripts/orchestrator.py directly and rerun tests/contracts/test_agent_control_primitive_lifecycle.py before relying on skill routing.
+  false_positive_tests:
+  - tests/contracts/test_agent_control_primitive_lifecycle.py
+  sunset_criteria: Archive only if the skill router gains a stronger generated command registry with equivalent routing tests.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/skill-router.jsonl
+  consumer_accessibility: lifecycle-declared-core
+  consumer_access_next_action: Promote after confidence-based skill routing is exercised in maintainer sessions.
