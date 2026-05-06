@@ -12,7 +12,6 @@ import json
 import os
 import subprocess
 import sys
-import time
 from pathlib import Path
 
 import pytest
@@ -207,3 +206,38 @@ class TestKillHung:
         assert agent_id in result.stdout, (
             f"Expected agent_id in stdout. stdout={result.stdout!r}"
         )
+
+
+class TestControlAndAnswer:
+    def test_control_writes_interrupt_sentinel_without_valkey(self, tmp_path):
+        agent_id = "agent-control-1"
+        result = _run(
+            "control", agent_id, "stop",
+            env={
+                "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+                "VALKEY_URL": "redis://localhost:1",
+                "COS_AGENT_BUS_FORCE_FALLBACK": "1",
+            },
+        )
+        assert result.returncode == 0, result.stderr
+        assert "control: stop" in result.stdout
+        agent_dir = tmp_path / ".cognitive-os" / "agent-bus" / agent_id
+        assert (agent_dir / "control.jsonl").exists()
+        assert (agent_dir / "interrupt").exists()
+        assert "stop" in (agent_dir / "interrupt").read_text()
+
+    def test_answer_writes_fallback_answer_jsonl(self, tmp_path):
+        agent_id = "agent-answer-1"
+        result = _run(
+            "answer", agent_id, "use port 8080", "ship it", "--round", "2",
+            env={
+                "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+                "VALKEY_URL": "redis://localhost:1",
+                "COS_AGENT_BUS_FORCE_FALLBACK": "1",
+            },
+        )
+        assert result.returncode == 0, result.stderr
+        answer = tmp_path / ".cognitive-os" / "agent-bus" / agent_id / "answer.jsonl"
+        rows = [json.loads(line) for line in answer.read_text().splitlines() if line.strip()]
+        assert rows[-1]["answers"] == ["use port 8080", "ship it"]
+        assert rows[-1]["round"] == 2
