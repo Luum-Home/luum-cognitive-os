@@ -309,3 +309,9 @@ PYEOF
 if [ -f "$PROJECT_DIR/hooks/_lib/session-fs-reap.sh" ]; then
   bash "$PROJECT_DIR/hooks/_lib/session-fs-reap.sh" --project-dir "$PROJECT_DIR" 2>&1 | head -40
 fi
+
+
+# ── ADR-199: State retention audit/reaper dry-run summary ───────────────────
+if [ -x "$PROJECT_DIR/scripts/state_retention_audit.py" ]; then
+  python3 "$PROJECT_DIR/scripts/state_retention_audit.py" --project-dir "$PROJECT_DIR" --reap 2>&1 | head -40 || true
+fi

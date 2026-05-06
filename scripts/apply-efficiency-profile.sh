@@ -141,7 +141,7 @@ run_claude_code_driver() {
     task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh untracked-work-preservation-guard.sh branch-ownership-lock.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
-    private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
+    private-mode-metrics-gate.sh session-end-reap.sh state-retention-audit.sh skill-tracker.sh stash-budget-warn.sh \
     post-git-orphan-notifier.sh skill-router-bash-gate.sh orchestrator-skill-invocation-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh branch-ownership-release.sh \
     skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
@@ -213,7 +213,7 @@ echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
 echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, post-agent-verify.sh, assumption-tracker.sh, scope-proportionality.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, consequence-evaluator.sh, auto-skill-generator.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh, auto-verify.sh, auto-refine.sh, dod-gate.sh, skill-tracker.sh, orchestrator-decision-trace.sh (async), skill-post-execution-analysis.sh (async)"
-echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async), engram-obsidian-export-on-stop.sh (async opt-in when COS_OBSIDIAN_VAULT is set)"
+echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, state-retention-audit.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async), engram-obsidian-export-on-stop.sh (async opt-in when COS_OBSIDIAN_VAULT is set)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
 echo "  TaskCompleted: (demoted; opt-in only)"
