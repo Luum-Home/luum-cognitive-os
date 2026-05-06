@@ -120,3 +120,18 @@ class TestCodexAdapter:
 
         assert result["harness"] == "none"
         assert result["events"] == []
+
+
+def test_dispatch_emits_inbound_signal_for_codex_session(tmp_path):
+    agent_dir = tmp_path / ".cognitive-os" / "agent-bus" / "s1"
+    agent_dir.mkdir(parents=True)
+    (agent_dir / "interrupt").write_text(json.dumps({"command": "stop", "timestamp_epoch": 3.0}))
+
+    result = dispatch_event(
+        {"harness": "codex", "hook_event": "UserPromptSubmit", "session_id": "s1", "prompt": "hello"},
+        adapters=[CodexAdapter],
+        project_dir=tmp_path,
+    )
+
+    assert result["harness"] == "codex"
+    assert any(e["event_type"] == "inbound_signal" and e["command"] == "stop" for e in result["events"])

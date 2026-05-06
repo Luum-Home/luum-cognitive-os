@@ -62,3 +62,26 @@ class TestCanonicalEvents:
         """ParseError must be in the event registry."""
         assert "parse_error" in CanonicalEvent._registry
         assert CanonicalEvent._registry["parse_error"] is ParseError
+
+
+def test_read_inbound_signals_reads_control_answer_and_interrupt(tmp_path):
+    import json
+    from lib.harness_adapter.base import InboundSignal, read_inbound_signals
+
+    agent_dir = tmp_path / ".cognitive-os" / "agent-bus" / "agent-1"
+    agent_dir.mkdir(parents=True)
+    (agent_dir / "control.jsonl").write_text(
+        json.dumps({"command": "pause", "timestamp_epoch": 1.0}) + "\n"
+    )
+    (agent_dir / "answer.jsonl").write_text(
+        json.dumps({"answers": ["use port 8080"], "round": 2, "timestamp_epoch": 2.0})
+        + "\n"
+    )
+    (agent_dir / "interrupt").write_text(json.dumps({"command": "stop", "timestamp_epoch": 3.0}))
+
+    signals = read_inbound_signals(tmp_path, agent_id="agent-1")
+
+    assert all(isinstance(s, InboundSignal) for s in signals)
+    assert {s.signal_type for s in signals} == {"control", "answer", "interrupt"}
+    assert any(s.command == "stop" for s in signals)
+    assert any(s.answers == ["use port 8080"] and s.round == 2 for s in signals)
