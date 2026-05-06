@@ -22,9 +22,9 @@ improvement proposals with measurable impact.
 No later ADR-201 slice should be treated as production-ready until this phase
 compiles a validated ledger from fixture and live telemetry.
 
-- [ ] Add `lib/performance_ledger.py`.
-- [ ] Add `scripts/cos-performance-ledger`.
-- [ ] Add signal-quality validation before rollups: valid/suspect/corrupt rows,
+- [x] Add `lib/performance_ledger.py`.
+- [x] Add `scripts/cos-performance-ledger`.
+- [x] Add signal-quality validation before rollups: valid/suspect/corrupt rows,
       malformed JSON, unsourced trust-score defaults, impossible values, and
       identity corruption such as `skill: matias`.
 - [ ] Roll up skill metrics: invocations, success/failure, override rate,
@@ -35,12 +35,12 @@ compiles a validated ledger from fixture and live telemetry.
       dispatch, skill routing, state retention, repair, validation.
 - [ ] Preserve source metric references for auditability.
 - [ ] Emit harness metadata while keeping output rows/proposals harness-agnostic.
-- [ ] Store primary ledger in `.cognitive-os/ledgers/performance-ledger.sqlite`,
+- [x] Store primary ledger in `.cognitive-os/ledgers/performance-ledger.sqlite`,
       export audit rows to `.cognitive-os/metrics/performance-ledger.jsonl`, and
       generate `.cognitive-os/reports/performance-ledger-latest.json`.
 - [ ] Add deterministic proposal ids for deduplication: hash(surface +
       degradation pattern + day window).
-- [ ] Add retention policy for generated ledger artifacts.
+- [x] Add retention policy for generated ledger artifacts.
 
 ## Phase 2 — PromoteFromTelemetry primitive
 

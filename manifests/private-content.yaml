@@ -83,6 +83,7 @@ declared_private_roots:
   - .cognitive-os/improvements
   - .cognitive-os/instances
   - .cognitive-os/locks
+  - .cognitive-os/ledgers
   - .cognitive-os/metrics
   - .cognitive-os/migrations
   - .cognitive-os/pending-tasks
@@ -171,6 +172,7 @@ surfaces:
     kind: raw-telemetry
     path_globs:
       - .cognitive-os/metrics/**
+      - .cognitive-os/ledgers/**
       - .cognitive-os/agent-bus/**
       - .cognitive-os/transcripts/**
       - .cognitive-os/sessions/**

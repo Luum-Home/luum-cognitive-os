@@ -148,6 +148,43 @@ surfaces:
       Metrics are append-only evidence. They need rotation rather than deletion
       so observability remains useful without making local scans expensive.
 
+  - id: performance-ledger-artifacts
+    kind: cache
+    path: .cognitive-os/ledgers/performance-ledger.sqlite
+    max_age: P30D
+    max_count: 1
+    reaper: manual
+    retention_mode: observe
+    tombstone: regenerate-from-source-metrics
+    owner_pid: false
+    owner_files:
+      - lib/performance_ledger.py
+      - scripts/cos-performance-ledger
+    documentation:
+      - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+    rationale: >
+      The Performance Ledger SQLite store is derived from reward-signal metrics.
+      It should be bounded to a single local cache file and regenerated rather
+      than copied across hosts without ADR-202 classification and provenance.
+
+  - id: performance-ledger-latest-report
+    kind: cache
+    path: .cognitive-os/reports/performance-ledger-latest.json
+    max_age: P7D
+    max_count: 1
+    reaper: manual
+    retention_mode: observe
+    tombstone: regenerate-from-source-metrics
+    owner_pid: false
+    owner_files:
+      - lib/performance_ledger.py
+      - scripts/cos-performance-ledger
+    documentation:
+      - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+    rationale: >
+      The latest report is a derived summary for operators and service-mode
+      gates. It is intentionally replace-in-place and should not accumulate.
+
   - id: runtime-locks
     kind: lock
     path: .cognitive-os/runtime/*.lock*
