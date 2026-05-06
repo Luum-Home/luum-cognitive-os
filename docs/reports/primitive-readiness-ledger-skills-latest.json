@@ -1139,7 +1139,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 2,
+        "doc": 3,
         "test": 1
       },
       "consumers": [
@@ -1152,6 +1152,10 @@
           "path": "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+        },
+        {
           "family": "test",
           "path": "tests/unit/test_caveman_integration.py"
         }
@@ -1159,7 +1163,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1169,7 +1173,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -1177,7 +1181,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 6,
+        "doc": 7,
         "hook": 1,
         "skill": 2,
         "test": 5
@@ -1210,6 +1214,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
         },
         {
           "family": "hook",
@@ -1249,7 +1257,7 @@
         "skill_consumers:2",
         "hook_consumers:1",
         "test_consumers:5",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -1260,7 +1268,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -1268,7 +1276,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 3,
-        "doc": 17,
+        "doc": 18,
         "hook": 1,
         "rule": 3,
         "skill": 1,
@@ -1286,6 +1294,10 @@
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1418,7 +1430,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "test_consumers:9",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:3"
       ],
       "family": "skills",
@@ -1429,7 +1441,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 34
+      "total_consumers": 35
     },
     {
       "confidence": "high",
@@ -2083,7 +2095,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 4,
+        "config": 6,
         "doc": 21,
         "hook": 1,
         "script": 7,
@@ -2096,11 +2108,19 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-scope-overrides.yaml"
         },
         {
           "family": "config",
@@ -2265,7 +2285,7 @@
         "script_consumers:7",
         "test_consumers:9",
         "doc_consumers:21",
-        "config_consumers:4"
+        "config_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2275,7 +2295,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 42
+      "total_consumers": 44
     },
     {
       "confidence": "high",
@@ -3895,9 +3915,9 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 1,
-        "doc": 4,
-        "script": 1,
-        "test": 2
+        "doc": 5,
+        "script": 2,
+        "test": 3
       },
       "consumers": [
         {
@@ -3907,6 +3927,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3922,11 +3946,19 @@
         },
         {
           "family": "script",
+          "path": "scripts/acc_pipeline.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_harness_coverage.py"
         },
         {
           "family": "test",
           "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_acc_pipeline.py"
         },
         {
           "family": "test",
@@ -3936,9 +3968,9 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "script_consumers:1",
-        "test_consumers:2",
-        "doc_consumers:4",
+        "script_consumers:2",
+        "test_consumers:3",
+        "doc_consumers:5",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -3953,7 +3985,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 8
+      "total_consumers": 11
     },
     {
       "confidence": "high",

@@ -24,6 +24,7 @@ Purpose: prove that scope classification and harness implementation coverage are
    print(data['summary'])
    assert data['schema_version'] == 'primitive-harness-coverage.v1'
    assert data['summary']['harness_wired_hooks']['claude'] > data['summary']['harness_wired_hooks']['codex']
+   assert data['summary']['unclassified_gaps'] == 0
    PY
    ```
 

@@ -118,8 +118,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
-        "doc": 80,
+        "config": 6,
+        "doc": 81,
         "hook": 5,
         "rule": 2,
         "script": 12,
@@ -138,6 +138,10 @@
         {
           "family": "config",
           "path": "manifests/harness-profiles.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -437,6 +441,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/lycheeverse__lychee-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/wisc-framework-analysis.md"
         },
         {
@@ -687,8 +695,8 @@
         "rule_consumers:2",
         "script_consumers:12",
         "test_consumers:29",
-        "doc_consumers:80",
-        "config_consumers:5"
+        "doc_consumers:81",
+        "config_consumers:6"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -698,7 +706,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 138
+      "total_consumers": 140
     },
     {
       "confidence": "medium",
@@ -1009,7 +1017,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 8,
-        "doc": 23,
+        "doc": 25,
         "hook": 1,
         "rule": 4,
         "script": 5,
@@ -1047,6 +1055,14 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -1251,7 +1267,7 @@
         "rule_consumers:4",
         "script_consumers:5",
         "test_consumers:16",
-        "doc_consumers:23",
+        "doc_consumers:25",
         "config_consumers:8"
       ],
       "family": "rules",
@@ -1262,7 +1278,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 57
+      "total_consumers": 59
     },
     {
       "confidence": "medium",
@@ -2570,7 +2586,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 6,
+        "doc": 7,
         "hook": 1,
         "rule": 1,
         "test": 4
@@ -2591,6 +2607,10 @@
         {
           "family": "doc",
           "path": "docs/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/nearai__ironclaw-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -2630,7 +2650,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:4",
-        "doc_consumers:6"
+        "doc_consumers:7"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -2640,7 +2660,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "medium",
@@ -3061,7 +3081,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 47,
+        "doc": 48,
         "hook": 8,
         "rule": 2,
         "script": 3,
@@ -3119,6 +3139,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3387,7 +3411,7 @@
         "rule_consumers:2",
         "script_consumers:3",
         "test_consumers:8",
-        "doc_consumers:47",
+        "doc_consumers:48",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -3398,7 +3422,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 78
+      "total_consumers": 79
     },
     {
       "confidence": "medium",
@@ -3406,7 +3430,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 28,
+        "doc": 29,
         "hook": 2,
         "rule": 4,
         "script": 6,
@@ -3440,6 +3464,10 @@
         {
           "family": "doc",
           "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -3640,7 +3668,7 @@
         "rule_consumers:4",
         "script_consumers:6",
         "test_consumers:9",
-        "doc_consumers:28",
+        "doc_consumers:29",
         "config_consumers:6"
       ],
       "family": "rules",
@@ -3651,7 +3679,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 55
+      "total_consumers": 56
     },
     {
       "confidence": "medium",
@@ -3851,7 +3879,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 11,
-        "doc": 53,
+        "doc": 54,
         "hook": 5,
         "rule": 9,
         "script": 8,
@@ -3910,6 +3938,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4307,7 +4339,7 @@
         "rule_consumers:9",
         "script_consumers:8",
         "test_consumers:23",
-        "doc_consumers:53",
+        "doc_consumers:54",
         "config_consumers:11"
       ],
       "family": "rules",
@@ -4318,7 +4350,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 110
+      "total_consumers": 111
     },
     {
       "confidence": "medium",
@@ -4525,7 +4557,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 37,
+        "doc": 38,
         "hook": 5,
         "rule": 9,
         "script": 7,
@@ -4571,6 +4603,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -4899,7 +4935,7 @@
         "rule_consumers:9",
         "script_consumers:7",
         "test_consumers:22",
-        "doc_consumers:37",
+        "doc_consumers:38",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -4910,7 +4946,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 90
+      "total_consumers": 91
     },
     {
       "confidence": "medium",
@@ -5228,7 +5264,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 9,
-        "doc": 28,
+        "doc": 29,
         "hook": 4,
         "rule": 6,
         "script": 5,
@@ -5270,6 +5306,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -5490,7 +5530,7 @@
         "rule_consumers:6",
         "script_consumers:5",
         "test_consumers:10",
-        "doc_consumers:28",
+        "doc_consumers:29",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -5501,7 +5541,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 62
+      "total_consumers": 63
     },
     {
       "confidence": "medium",
@@ -5661,7 +5701,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 39,
+        "doc": 41,
         "hook": 3,
         "rule": 8,
         "script": 9,
@@ -5708,6 +5748,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -5836,6 +5880,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/nearai__ironclaw-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -6041,7 +6089,7 @@
         "rule_consumers:8",
         "script_consumers:9",
         "test_consumers:19",
-        "doc_consumers:39",
+        "doc_consumers:41",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -6052,7 +6100,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 91
+      "total_consumers": 93
     },
     {
       "confidence": "medium",
@@ -6510,7 +6558,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 11,
-        "doc": 30,
+        "doc": 31,
         "hook": 3,
         "rule": 2,
         "script": 7,
@@ -6561,6 +6609,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6766,7 +6818,7 @@
         "rule_consumers:2",
         "script_consumers:7",
         "test_consumers:6",
-        "doc_consumers:30",
+        "doc_consumers:31",
         "config_consumers:11"
       ],
       "family": "rules",
@@ -6777,7 +6829,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 60
+      "total_consumers": 61
     },
     {
       "confidence": "medium",
@@ -6978,7 +7030,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 19,
+        "doc": 20,
         "hook": 1,
         "rule": 1,
         "test": 1
@@ -7065,6 +7117,10 @@
           "path": "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/self-install.sh"
         },
@@ -7082,7 +7138,7 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:19",
+        "doc_consumers:20",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -7093,7 +7149,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -7536,7 +7592,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 9,
-        "doc": 22,
+        "doc": 23,
         "hook": 2,
         "rule": 4,
         "script": 6,
@@ -7582,6 +7638,10 @@
         {
           "family": "doc",
           "path": "docs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7762,7 +7822,7 @@
         "rule_consumers:4",
         "script_consumers:6",
         "test_consumers:10",
-        "doc_consumers:22",
+        "doc_consumers:23",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -7773,7 +7833,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 53
+      "total_consumers": 54
     },
     {
       "confidence": "medium",
@@ -7781,7 +7841,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 9,
-        "doc": 68,
+        "doc": 69,
         "hook": 7,
         "rule": 2,
         "script": 38,
@@ -7828,6 +7888,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8481,7 +8545,7 @@
         "rule_consumers:2",
         "script_consumers:38",
         "test_consumers:40",
-        "doc_consumers:68",
+        "doc_consumers:69",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -8492,7 +8556,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 171
+      "total_consumers": 172
     },
     {
       "confidence": "medium",
@@ -8798,7 +8862,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 61,
+        "doc": 62,
         "hook": 12,
         "rule": 9,
         "script": 5,
@@ -8849,6 +8913,10 @@
         {
           "family": "doc",
           "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9378,7 +9446,7 @@
         "rule_consumers:9",
         "script_consumers:5",
         "test_consumers:41",
-        "doc_consumers:61",
+        "doc_consumers:62",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -9389,7 +9457,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 141
+      "total_consumers": 142
     },
     {
       "confidence": "medium",
@@ -11125,7 +11193,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 7,
-        "doc": 88,
+        "doc": 89,
         "hook": 12,
         "rule": 3,
         "script": 7,
@@ -11483,6 +11551,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/BerriAI__litellm-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/runtime-env-flags.md"
         },
         {
@@ -11689,7 +11761,7 @@
         "rule_consumers:3",
         "script_consumers:7",
         "test_consumers:17",
-        "doc_consumers:88",
+        "doc_consumers:89",
         "config_consumers:7"
       ],
       "family": "rules",
@@ -11700,7 +11772,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 137
+      "total_consumers": 138
     },
     {
       "confidence": "medium",
@@ -12814,12 +12886,17 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 11,
+        "doc": 12,
         "hook": 1,
         "rule": 1,
+        "script": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md"
@@ -12873,6 +12950,10 @@
           "path": "rules/RULES-COMPACT.md"
         },
         {
+          "family": "script",
+          "path": "scripts/primitive_family_readiness_ledger.py"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         }
@@ -12881,8 +12962,9 @@
       "evidence": [
         "hook_consumers:1",
         "rule_consumers:1",
+        "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:11"
+        "doc_consumers:12"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12892,7 +12974,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
@@ -14968,7 +15050,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 8,
+        "doc": 9,
         "hook": 1,
         "rule": 3,
         "test": 2
@@ -15001,6 +15083,10 @@
         {
           "family": "doc",
           "path": "docs/patterns-adopted.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/letta-ai__letta-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -15040,7 +15126,7 @@
         "hook_consumers:1",
         "rule_consumers:3",
         "test_consumers:2",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -15051,7 +15137,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "medium",
