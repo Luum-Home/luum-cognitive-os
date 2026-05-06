@@ -119,7 +119,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 81,
+        "doc": 80,
         "hook": 5,
         "rule": 2,
         "script": 12,
@@ -218,10 +218,6 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-181-adr-relevance-suggester.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
         },
         {
           "family": "doc",
@@ -695,7 +691,7 @@
         "rule_consumers:2",
         "script_consumers:12",
         "test_consumers:29",
-        "doc_consumers:81",
+        "doc_consumers:80",
         "config_consumers:6"
       ],
       "family": "rules",
@@ -706,7 +702,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 140
+      "total_consumers": 139
     },
     {
       "confidence": "medium",
@@ -6557,8 +6553,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 11,
-        "doc": 31,
+        "config": 12,
+        "doc": 30,
         "hook": 3,
         "rule": 2,
         "script": 7,
@@ -6600,6 +6596,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -6609,10 +6609,6 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6818,8 +6814,8 @@
         "rule_consumers:2",
         "script_consumers:7",
         "test_consumers:6",
-        "doc_consumers:31",
-        "config_consumers:11"
+        "doc_consumers:30",
+        "config_consumers:12"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -8861,8 +8857,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
-        "doc": 62,
+        "config": 11,
+        "doc": 61,
         "hook": 12,
         "rule": 9,
         "script": 5,
@@ -8900,6 +8896,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -8913,10 +8913,6 @@
         {
           "family": "doc",
           "path": "docs/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9446,8 +9442,8 @@
         "rule_consumers:9",
         "script_consumers:5",
         "test_consumers:41",
-        "doc_consumers:62",
-        "config_consumers:10"
+        "doc_consumers:61",
+        "config_consumers:11"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -9945,7 +9941,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 20,
         "hook": 2,
         "rule": 1,
@@ -9972,6 +9968,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -10109,7 +10109,7 @@
         "script_consumers:3",
         "test_consumers:4",
         "doc_consumers:20",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -10119,7 +10119,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "medium",
@@ -10127,7 +10127,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 16,
+        "doc": 17,
         "hook": 3,
         "rule": 3,
         "test": 5
@@ -10148,6 +10148,10 @@
         {
           "family": "doc",
           "path": "docs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -10259,7 +10263,7 @@
         "hook_consumers:3",
         "rule_consumers:3",
         "test_consumers:5",
-        "doc_consumers:16",
+        "doc_consumers:17",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -10270,7 +10274,7 @@
       "role": "context-only",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "medium",
@@ -11192,7 +11196,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 89,
         "hook": 12,
         "rule": 3,
@@ -11224,6 +11228,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -11762,7 +11770,7 @@
         "script_consumers:7",
         "test_consumers:17",
         "doc_consumers:89",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -11772,7 +11780,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 138
+      "total_consumers": 139
     },
     {
       "confidence": "medium",
@@ -11780,7 +11788,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 14,
         "hook": 4,
         "rule": 1,
         "script": 1,
@@ -11798,6 +11806,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11894,7 +11906,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -11905,7 +11917,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
@@ -12388,7 +12400,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 25,
+        "doc": 26,
         "hook": 2,
         "rule": 4,
         "script": 1,
@@ -12403,6 +12415,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12576,7 +12592,7 @@
         "rule_consumers:4",
         "script_consumers:1",
         "test_consumers:8",
-        "doc_consumers:25",
+        "doc_consumers:26",
         "config_consumers:2"
       ],
       "family": "rules",
@@ -12587,7 +12603,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 43
+      "total_consumers": 44
     },
     {
       "confidence": "medium",
@@ -12650,7 +12666,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 14,
+        "doc": 15,
         "hook": 16,
         "rule": 1,
         "script": 4,
@@ -12676,6 +12692,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12868,7 +12888,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:11",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -12879,7 +12899,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 51
+      "total_consumers": 52
     },
     {
       "confidence": "medium",
@@ -12982,7 +13002,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 9,
-        "doc": 24,
+        "doc": 25,
         "hook": 2,
         "rule": 1,
         "script": 4,
@@ -13024,6 +13044,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13160,7 +13184,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:1",
-        "doc_consumers:24",
+        "doc_consumers:25",
         "config_consumers:9"
       ],
       "family": "rules",
@@ -13171,7 +13195,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 41
+      "total_consumers": 42
     },
     {
       "confidence": "medium",
@@ -13454,7 +13478,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 13,
+        "doc": 14,
         "hook": 3,
         "rule": 1,
         "script": 1,
@@ -13472,6 +13496,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13560,7 +13588,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:3"
       ],
       "family": "rules",
@@ -13571,7 +13599,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -14649,7 +14677,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 23,
+        "doc": 24,
         "hook": 3,
         "rule": 3,
         "script": 5,
@@ -14696,6 +14724,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -14873,7 +14905,7 @@
         "rule_consumers:3",
         "script_consumers:5",
         "test_consumers:7",
-        "doc_consumers:23",
+        "doc_consumers:24",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -14884,7 +14916,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 52
+      "total_consumers": 53
     },
     {
       "confidence": "medium",
@@ -15950,7 +15982,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 7,
         "hook": 2,
         "rule": 1,
@@ -15977,6 +16009,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -16054,7 +16090,7 @@
         "script_consumers:3",
         "test_consumers:2",
         "doc_consumers:7",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -16064,7 +16100,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 22
+      "total_consumers": 23
     },
     {
       "confidence": "medium",
@@ -17190,7 +17226,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 9,
+        "config": 10,
         "doc": 21,
         "hook": 2,
         "rule": 1,
@@ -17222,6 +17258,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -17400,7 +17440,7 @@
         "script_consumers:7",
         "test_consumers:7",
         "doc_consumers:21",
-        "config_consumers:9"
+        "config_consumers:10"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -17410,7 +17450,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 48
+      "total_consumers": 49
     },
     {
       "confidence": "medium",

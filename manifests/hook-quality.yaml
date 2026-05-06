@@ -418,7 +418,8 @@ hooks:
     scope: os-only
     script: hooks/branch-ownership-lock.sh
   branch-ownership-release:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_behavior_evidence_remaining_hooks.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: Stop
@@ -721,7 +722,8 @@ hooks:
     scope: os-only
     script: hooks/crash-recovery.sh
   cross-session-coordination-guard:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_behavior_evidence_remaining_hooks.py
     bypass_policy: not_required_observe_only
     criticality: lifecycle
     event: PreToolUse
@@ -791,7 +793,8 @@ hooks:
     scope: os-only
     script: hooks/cross-session-peer-context.sh
   dangerous-env-flag-detector:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_behavior_evidence_remaining_hooks.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -830,6 +833,7 @@ hooks:
     - tests/chaos/test_reset_cascade_detector.py
     - tests/chaos/test_safety_drill.py
     - tests/contracts/test_killswitch.py
+    - tests/contracts/test_p95_hook_latency.py
     - tests/unit/test_destructive_git_block.py
     - tests/unit/test_validation_lane_recommender.py
     bypass_policy: not_required_warning_only
@@ -1331,6 +1335,7 @@ hooks:
     behavior_tests:
     - tests/contracts/test_lethal_trifecta_gate.py
     - tests/unit/test_codex_guard_layer.py
+    - tests/unit/test_lethal_trifecta.py
     bypass_policy: not_required_warning_only
     criticality: security
     event: PreToolUse
@@ -1699,7 +1704,8 @@ hooks:
     scope: os-only
     script: hooks/project-docs-convention.sh
   promotion-proposer-weekly:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_behavior_evidence_remaining_hooks.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: SessionStart
@@ -2814,7 +2820,8 @@ hooks:
     scope: os-only
     script: hooks/validation-lock-cleanup.sh
   validator-soak-weekly:
-    behavior_tests: []
+    behavior_tests:
+    - tests/unit/test_behavior_evidence_remaining_hooks.py
     bypass_policy: not_required_warning_only
     criticality: quality
     event: SessionStart

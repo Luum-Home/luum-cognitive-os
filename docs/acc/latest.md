@@ -1,17 +1,17 @@
 # Agent Capability Coverage — Latest
 
-Generated: 2026-05-06T08:08:45Z
+Generated: 2026-05-06T08:21:41Z
 Phase: reconstruction
 Gate: pass
 
 ## Summary
 
-- ACC: 0.9598
-- ACC effective: 0.9769
+- ACC: 0.9620
+- ACC effective: 0.9780
 - Total weight: 3208
 - Capabilities: 1725
-- Findings: 106
-- Mapping weights: {'aligned': 3079, 'missing': 0, 'overexposed': 0, 'partial': 110, 'stale': 0, 'unverified': 19}
+- Findings: 99
+- Mapping weights: {'aligned': 3086, 'missing': 0, 'overexposed': 0, 'partial': 103, 'stale': 0, 'unverified': 19}
 - Primitive fitness reports: 0
 - New debt gate: pass (0)
 
@@ -21,7 +21,7 @@ Gate: pass
 |---|---|---|---|
 | consumer_availability | ok | `manifests/primitive-consumer-availability.yaml` | `{"items": 88, "patterns": 6, "statuses": {"lifecycle-declared-maintainer": 3, "maintainer-only": 57, "pattern:so-local-only": 6, "shell-ci-candidate": 15, "so-local-only": 13}}` |
 | consumer_projection | ok | `consumer_projection` | `{"by_harness_profile": {"aider/default": 73, "aider/full": 373, "amp-code/default": 73, "amp-code/full": 373, "augment-code/default": 73, "augment-code/full": 373, "claude/default": 73, "claude/full": 373, "cline/default": 73, "cline/full":` |
-| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"docs/adrs/ADR-044-context-payload-slimming.md": {"done_weak_proof": 2, "proposed": 1}, "docs/adrs/ADR-045-postgres-local-daemon.md": {"done_weak_proof": 2, "planned": 2}, "docs/adrs/ADR-047-session-lifecycle-management.md": {"done_weak_pr` |
+| docs_execution_report | ok | `docs/reports/docs-execution-latest.json` | `{"documents": {"AGENTS.md": {"done_weak_proof": 1, "planned": 1}, "README.md": {"done_weak_proof": 1}, "docs/HOW-TO-USE-COS.md": {"done_weak_proof": 2, "planned": 1}, "docs/README.md": {"done_weak_proof": 16, "planned": 19, "proposed": 7}, ` |
 | harness_coverage | ok | `docs/reports/primitive-harness-coverage-latest.json` | `{"by_family": {"hooks": 238, "rules": 113, "scripts": 394, "skills": 94, "templates": 19}, "by_scope": {"both": 501, "os-only": 301, "project": 56}, "gap_policies": {"acceptable-claude-only": 4, "codex-adapter": 1, "codex-adapter-needed": 8` |
 | harness_projection | ok | `manifests/harness-projection.yaml` | `{"implemented": 21, "planned": 5, "total": 26, "unsupported": 0}` |
 | primitive_fitness_ledger | ok | `docs/reports/primitive-fitness-ledger-latest.json` | `{"families": {}, "mapping_statuses": {}, "reports": 0, "verdicts": {}}` |
@@ -131,9 +131,9 @@ Gate: pass
 - lifecycle-declared-maintainer: 1
 - maintainer-only: 57
 - profile-driver: 19
-- projected-consumer-surface: 347
+- projected-consumer-surface: 858
 - shell-ci-candidate: 15
-- so-local-only: 1284
+- so-local-only: 773
 
 ## Persistence
 
