@@ -346,6 +346,30 @@ tools:
   scope: user
   syncable: 'no'
   auth_bound: false
+- name: goreleaser
+  criticality: recommended
+  check: goreleaser --version
+  install:
+    macos:
+      manager: script
+      command: bash scripts/install-goreleaser.sh --install
+    linux:
+      manager: script
+      command: bash scripts/install-goreleaser.sh --install
+    windows_wsl:
+      manager: script
+      command: bash scripts/install-goreleaser.sh --install
+  consumed_by:
+  - .goreleaser.yaml
+  - .github/workflows/cos-binary-release.yml
+  - scripts/install-goreleaser.sh
+  category: cli
+  profiles:
+  - full
+  scope: user
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://goreleaser.com/getting-started/install/
 mcp_servers:
 - name: engram
   criticality: recommended
@@ -407,6 +431,7 @@ profiles:
     - semgrep
     - parry-guard
     - promptfoo
+    - goreleaser
     mcp_servers_recommended:
     - engram
     - aguara

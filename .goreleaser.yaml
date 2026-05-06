@@ -1,0 +1,71 @@
+version: 2
+
+project_name: cognitive-os
+
+before:
+  hooks:
+    - sh -c "cd cmd/cos && go test ./..."
+
+builds:
+  - id: cos
+    dir: cmd/cos
+    main: .
+    binary: cos
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X luum-agent-os/cmd/cos/internal/cli.Version={{ .Version }}
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: cos
+    ids:
+      - cos
+    name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}
+    files:
+      - LICENSE*
+      - README.md
+      - cognitive-os.yaml
+      - scripts/**
+      - hooks/**
+      - rules/**
+      - skills/**
+      - templates/**
+      - manifests/**
+      - docs/quickstart.md
+      - docs/getting-started.md
+
+checksum:
+  name_template: checksums.txt
+
+snapshot:
+  version_template: '{{ incpatch .Version }}-next'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+
+homebrew_casks:
+  - name: cognitive-os
+    ids:
+      - cos
+    repository:
+      owner: luum-home
+      name: homebrew-tap
+      token: '{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}'
+    directory: Casks
+    homepage: https://github.com/luum-home/luum-cognitive-os
+    description: Portable AI Agent Operating System — memory, quality gates, self-healing
+    license: Apache-2.0
+    binaries:
+      - cos
