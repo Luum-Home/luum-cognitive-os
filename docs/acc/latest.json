@@ -1661,7 +1661,6 @@
         },
         "gap_policies": {
           "acceptable-claude-only": 4,
-          "behavior-proof-needed": 89,
           "codex-adapter": 1,
           "codex-adapter-needed": 84,
           "hook-helper-library": 27,
@@ -1670,10 +1669,9 @@
           "shell-command-only": 12,
           "structural-only-ok": 176
         },
-        "gaps": 580,
+        "gaps": 491,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
-          "behavior-proof-needed": 89,
           "codex-adapter": 1,
           "codex-adapter-needed": 84,
           "hook-helper-library": 27,
@@ -1684,7 +1682,7 @@
         },
         "gaps_by_status": {
           "aligned": 387,
-          "partial": 193
+          "partial": 104
         },
         "harness_projected_or_wired": {
           "aider": 183,
@@ -38608,18 +38606,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/aci-observation-capture.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/aci-observation-capture.sh",
@@ -38628,10 +38624,10 @@
           "source": "hooks/aci-observation-capture.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -38710,18 +38706,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/adr-relevance-suggest.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/adr-relevance-suggest.sh",
@@ -38730,10 +38724,10 @@
           "source": "hooks/adr-relevance-suggest.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -38744,18 +38738,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/adr-section-validator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/adr-section-validator.sh",
@@ -38764,10 +38756,10 @@
           "source": "hooks/adr-section-validator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -38778,18 +38770,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/agent-bash-cwd-enforcer.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/agent-bash-cwd-enforcer.sh",
@@ -38798,10 +38788,10 @@
           "source": "hooks/agent-bash-cwd-enforcer.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -38880,18 +38870,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/agent-message-inbox-context.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/agent-message-inbox-context.sh",
@@ -38900,10 +38888,10 @@
           "source": "hooks/agent-message-inbox-context.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -38914,18 +38902,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/agent-message-inbox-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/agent-message-inbox-guard.sh",
@@ -38934,10 +38920,10 @@
           "source": "hooks/agent-message-inbox-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -39250,18 +39236,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/aspirational-audit-weekly.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/aspirational-audit-weekly.sh",
@@ -39270,10 +39254,10 @@
           "source": "hooks/aspirational-audit-weekly.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -39318,18 +39302,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/audit-id-enricher.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/audit-id-enricher.sh",
@@ -39338,10 +39320,10 @@
           "source": "hooks/audit-id-enricher.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -39488,18 +39470,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/auto-skill-generator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/auto-skill-generator.sh",
@@ -39508,10 +39488,10 @@
           "source": "hooks/auto-skill-generator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -39624,18 +39604,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/branch-ownership-lock.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/branch-ownership-lock.sh",
@@ -39644,10 +39622,10 @@
           "source": "hooks/branch-ownership-lock.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -39658,18 +39636,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/branch-ownership-release.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/branch-ownership-release.sh",
@@ -39678,10 +39654,10 @@
           "source": "hooks/branch-ownership-release.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -39894,18 +39870,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/completeness-check.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/completeness-check.sh",
@@ -39914,10 +39888,10 @@
           "source": "hooks/completeness-check.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -40200,18 +40174,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/context-budget-meter.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/context-budget-meter.sh",
@@ -40220,10 +40192,10 @@
           "source": "hooks/context-budget-meter.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40368,18 +40340,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/cos-executor-daemon-launcher.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/cos-executor-daemon-launcher.sh",
@@ -40388,10 +40358,10 @@
           "source": "hooks/cos-executor-daemon-launcher.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -40466,18 +40436,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/crash-recovery.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/crash-recovery.sh",
@@ -40486,10 +40454,10 @@
           "source": "hooks/crash-recovery.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40500,18 +40468,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/cross-session-coordination-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/cross-session-coordination-guard.sh",
@@ -40520,10 +40486,10 @@
           "source": "hooks/cross-session-coordination-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40534,18 +40500,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/cross-session-event-emit.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/cross-session-event-emit.sh",
@@ -40554,10 +40518,10 @@
           "source": "hooks/cross-session-event-emit.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40568,18 +40532,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/cross-session-peer-context.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/cross-session-peer-context.sh",
@@ -40588,10 +40550,10 @@
           "source": "hooks/cross-session-peer-context.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40602,18 +40564,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/dangerous-env-flag-detector.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/dangerous-env-flag-detector.sh",
@@ -40622,10 +40582,10 @@
           "source": "hooks/dangerous-env-flag-detector.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40636,18 +40596,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/dequeue-notify.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/dequeue-notify.sh",
@@ -40656,10 +40614,10 @@
           "source": "hooks/dequeue-notify.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -40702,18 +40660,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/destructive-rm-blocker.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/destructive-rm-blocker.sh",
@@ -40722,10 +40678,10 @@
           "source": "hooks/destructive-rm-blocker.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -40736,18 +40692,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/direct-main-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/direct-main-guard.sh",
@@ -40756,10 +40710,10 @@
           "source": "hooks/direct-main-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -40770,18 +40724,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/dispatch-gate.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/dispatch-gate.sh",
@@ -40790,10 +40742,10 @@
           "source": "hooks/dispatch-gate.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -40838,18 +40790,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/docker-drift-detector.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/docker-drift-detector.sh",
@@ -40858,10 +40808,10 @@
           "source": "hooks/docker-drift-detector.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -41042,18 +40992,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/edit-lock-process-negotiations.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/edit-lock-process-negotiations.sh",
@@ -41062,10 +41010,10 @@
           "source": "hooks/edit-lock-process-negotiations.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41076,18 +41024,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/edit-lock-session-end.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/edit-lock-session-end.sh",
@@ -41096,10 +41042,10 @@
           "source": "hooks/edit-lock-session-end.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41174,18 +41120,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/engram-crystallize-on-session-end.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/engram-crystallize-on-session-end.sh",
@@ -41194,10 +41138,10 @@
           "source": "hooks/engram-crystallize-on-session-end.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41208,18 +41152,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/engram-daemon-launcher.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/engram-daemon-launcher.sh",
@@ -41228,10 +41170,10 @@
           "source": "hooks/engram-daemon-launcher.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41242,18 +41184,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/engram-obsidian-export-on-stop.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/engram-obsidian-export-on-stop.sh",
@@ -41262,10 +41202,10 @@
           "source": "hooks/engram-obsidian-export-on-stop.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41344,18 +41284,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/error-learning.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/error-learning.sh",
@@ -41364,10 +41302,10 @@
           "source": "hooks/error-learning.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41412,18 +41350,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/error-pipeline.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/error-pipeline.sh",
@@ -41432,10 +41368,10 @@
           "source": "hooks/error-pipeline.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41446,18 +41382,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/git-commit-scope-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/git-commit-scope-guard.sh",
@@ -41466,10 +41400,10 @@
           "source": "hooks/git-commit-scope-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -41480,18 +41414,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/git-context-capture.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/git-context-capture.sh",
@@ -41500,10 +41432,10 @@
           "source": "hooks/git-context-capture.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41582,18 +41514,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/hook-header-validator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/hook-header-validator.sh",
@@ -41602,10 +41532,10 @@
           "source": "hooks/hook-header-validator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -41616,18 +41546,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/host-tool-doctor.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/host-tool-doctor.sh",
@@ -41636,10 +41564,10 @@
           "source": "hooks/host-tool-doctor.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -41682,18 +41610,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/infra-health.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/infra-health.sh",
@@ -41702,10 +41628,10 @@
           "source": "hooks/infra-health.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -41818,18 +41744,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/kpi-trigger.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/kpi-trigger.sh",
@@ -41838,10 +41762,10 @@
           "source": "hooks/kpi-trigger.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -41886,18 +41810,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/lethal-trifecta-gate.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/lethal-trifecta-gate.sh",
@@ -41906,10 +41828,10 @@
           "source": "hooks/lethal-trifecta-gate.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -41920,18 +41842,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/mcp-scan.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/mcp-scan.sh",
@@ -41940,10 +41860,10 @@
           "source": "hooks/mcp-scan.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -41954,18 +41874,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/memory-prefetch.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/memory-prefetch.sh",
@@ -41974,10 +41892,10 @@
           "source": "hooks/memory-prefetch.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -42116,18 +42034,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/native-agent-heartbeat.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/native-agent-heartbeat.sh",
@@ -42136,10 +42052,10 @@
           "source": "hooks/native-agent-heartbeat.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -42150,18 +42066,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/network-egress-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/network-egress-guard.sh",
@@ -42170,10 +42084,10 @@
           "source": "hooks/network-egress-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -42318,18 +42232,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/orchestrator-skill-invocation-gate.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/orchestrator-skill-invocation-gate.sh",
@@ -42338,10 +42250,10 @@
           "source": "hooks/orchestrator-skill-invocation-gate.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -42484,18 +42396,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/post-agent-snapshot-restore.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/post-agent-snapshot-restore.sh",
@@ -42504,10 +42414,10 @@
           "source": "hooks/post-agent-snapshot-restore.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -42854,18 +42764,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/profile-drift-autoapply.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/profile-drift-autoapply.sh",
@@ -42874,10 +42782,10 @@
           "source": "hooks/profile-drift-autoapply.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -42922,18 +42830,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/promotion-proposer-weekly.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/promotion-proposer-weekly.sh",
@@ -42942,10 +42848,10 @@
           "source": "hooks/promotion-proposer-weekly.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43058,18 +42964,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/rate-limit-detector.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rate-limit-detector.sh",
@@ -43078,10 +42982,10 @@
           "source": "hooks/rate-limit-detector.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43092,18 +42996,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/rate-limit-drain.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rate-limit-drain.sh",
@@ -43112,10 +43014,10 @@
           "source": "hooks/rate-limit-drain.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -43126,18 +43028,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/rate-limit-precheck.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rate-limit-precheck.sh",
@@ -43146,10 +43046,10 @@
           "source": "hooks/rate-limit-precheck.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -43194,18 +43094,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/rate-limiter.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rate-limiter.sh",
@@ -43214,10 +43112,10 @@
           "source": "hooks/rate-limiter.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -43228,18 +43126,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/reaper-daemon-launcher.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/reaper-daemon-launcher.sh",
@@ -43248,10 +43144,10 @@
           "source": "hooks/reaper-daemon-launcher.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43392,18 +43288,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:project"
       ],
       "id": "harness_coverage:hooks/release-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/release-guard.sh",
@@ -43412,10 +43306,10 @@
           "source": "hooks/release-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "project"
       },
       "source": {
@@ -43494,18 +43388,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/result-truncator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/result-truncator.sh",
@@ -43514,10 +43406,10 @@
           "source": "hooks/result-truncator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -43528,18 +43420,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/review-spawner.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/review-spawner.sh",
@@ -43548,10 +43438,10 @@
           "source": "hooks/review-spawner.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43562,18 +43452,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/rule-frontmatter-validator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rule-frontmatter-validator.sh",
@@ -43582,10 +43470,10 @@
           "source": "hooks/rule-frontmatter-validator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43596,18 +43484,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/rule-md-routing-validator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rule-md-routing-validator.sh",
@@ -43616,10 +43502,10 @@
           "source": "hooks/rule-md-routing-validator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43630,18 +43516,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/rule-router-prompt-suggest.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/rule-router-prompt-suggest.sh",
@@ -43650,10 +43534,10 @@
           "source": "hooks/rule-router-prompt-suggest.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -43798,18 +43682,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/self-install.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/self-install.sh",
@@ -43818,10 +43700,10 @@
           "source": "hooks/self-install.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43832,18 +43714,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/self-knowledge-refresh.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/self-knowledge-refresh.sh",
@@ -43852,10 +43732,10 @@
           "source": "hooks/self-knowledge-refresh.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43900,18 +43780,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/session-changelog.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-changelog.sh",
@@ -43920,10 +43798,10 @@
           "source": "hooks/session-changelog.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -43934,18 +43812,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-cleanup.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-cleanup.sh",
@@ -43954,10 +43830,10 @@
           "source": "hooks/session-cleanup.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -43968,18 +43844,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/session-end-reap.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-end-reap.sh",
@@ -43988,10 +43862,10 @@
           "source": "hooks/session-end-reap.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44002,18 +43876,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-heartbeat.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-heartbeat.sh",
@@ -44022,10 +43894,10 @@
           "source": "hooks/session-heartbeat.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44132,18 +44004,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-learning.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-learning.sh",
@@ -44152,10 +44022,10 @@
           "source": "hooks/session-learning.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44166,18 +44036,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/session-resume.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-resume.sh",
@@ -44186,10 +44054,10 @@
           "source": "hooks/session-resume.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44200,18 +44068,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-sanity.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-sanity.sh",
@@ -44220,10 +44086,10 @@
           "source": "hooks/session-sanity.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44234,18 +44100,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-start-stash-reapply.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-start-stash-reapply.sh",
@@ -44254,10 +44118,10 @@
           "source": "hooks/session-start-stash-reapply.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44268,18 +44132,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-start-worktree-nudge.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-start-worktree-nudge.sh",
@@ -44288,10 +44150,10 @@
           "source": "hooks/session-start-worktree-nudge.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44302,18 +44164,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-startup-protocol.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-startup-protocol.sh",
@@ -44322,10 +44182,10 @@
           "source": "hooks/session-startup-protocol.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44368,18 +44228,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-summary-reminder.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-summary-reminder.sh",
@@ -44388,10 +44246,10 @@
           "source": "hooks/session-summary-reminder.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44402,18 +44260,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/session-watchdog-launcher.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-watchdog-launcher.sh",
@@ -44422,10 +44278,10 @@
           "source": "hooks/session-watchdog-launcher.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44436,18 +44292,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/session-wrapup-trigger.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/session-wrapup-trigger.sh",
@@ -44456,10 +44310,10 @@
           "source": "hooks/session-wrapup-trigger.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44502,18 +44356,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-failure-monitor.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-failure-monitor.sh",
@@ -44522,10 +44374,10 @@
           "source": "hooks/skill-failure-monitor.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44536,18 +44388,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-feedback-tracker.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-feedback-tracker.sh",
@@ -44556,10 +44406,10 @@
           "source": "hooks/skill-feedback-tracker.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44604,18 +44454,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-invocation-logger.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-invocation-logger.sh",
@@ -44624,10 +44472,10 @@
           "source": "hooks/skill-invocation-logger.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44638,18 +44486,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-md-routing-validator.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-md-routing-validator.sh",
@@ -44658,10 +44504,10 @@
           "source": "hooks/skill-md-routing-validator.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44706,18 +44552,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/skill-router-bash-gate.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-router-bash-gate.sh",
@@ -44726,10 +44570,10 @@
           "source": "hooks/skill-router-bash-gate.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44740,18 +44584,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/skill-router-prompt-suggest.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-router-prompt-suggest.sh",
@@ -44760,10 +44602,10 @@
           "source": "hooks/skill-router-prompt-suggest.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -44774,18 +44616,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-synthesis-scanner.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-synthesis-scanner.sh",
@@ -44794,10 +44634,10 @@
           "source": "hooks/skill-synthesis-scanner.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44808,18 +44648,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-tracker.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-tracker.sh",
@@ -44828,10 +44666,10 @@
           "source": "hooks/skill-tracker.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44842,18 +44680,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/skill-usage-tracker.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/skill-usage-tracker.sh",
@@ -44862,10 +44698,10 @@
           "source": "hooks/skill-usage-tracker.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44876,18 +44712,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/stash-budget-warn.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/stash-budget-warn.sh",
@@ -44896,10 +44730,10 @@
           "source": "hooks/stash-budget-warn.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -44910,18 +44744,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/state-heartbeat.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/state-heartbeat.sh",
@@ -44930,10 +44762,10 @@
           "source": "hooks/state-heartbeat.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -45378,18 +45210,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/tool-sequence-capture.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/tool-sequence-capture.sh",
@@ -45398,10 +45228,10 @@
           "source": "hooks/tool-sequence-capture.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -45446,18 +45276,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/untracked-work-preservation-guard.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/untracked-work-preservation-guard.sh",
@@ -45466,10 +45294,10 @@
           "source": "hooks/untracked-work-preservation-guard.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -45512,18 +45340,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:both"
       ],
       "id": "harness_coverage:hooks/user-prompt-capture.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/user-prompt-capture.sh",
@@ -45532,10 +45358,10 @@
           "source": "hooks/user-prompt-capture.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "both"
       },
       "source": {
@@ -45546,18 +45372,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/validation-lock-cleanup.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/validation-lock-cleanup.sh",
@@ -45566,10 +45390,10 @@
           "source": "hooks/validation-lock-cleanup.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -45580,18 +45404,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/validator-soak-weekly.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/validator-soak-weekly.sh",
@@ -45600,10 +45422,10 @@
           "source": "hooks/validator-soak-weekly.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude+codex",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -45648,18 +45470,16 @@
       "weight": 1
     },
     {
-      "confidence": 0.7,
+      "confidence": 0.86,
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
+        "scope:os-only"
       ],
       "id": "harness_coverage:hooks/work-queue-sync.sh",
       "kind": "harness_coverage",
       "lifecycle_status": "real",
-      "mapping_status": "partial",
+      "mapping_status": "aligned",
       "represented_by": [
         {
           "id": "hooks/work-queue-sync.sh",
@@ -45668,10 +45488,10 @@
           "source": "hooks/work-queue-sync.sh"
         }
       ],
-      "risk": "medium",
+      "risk": "low",
       "signature": {
         "coverage": "claude",
-        "gap_policy": "behavior-proof-needed",
+        "gap_policy": null,
         "scope": "os-only"
       },
       "source": {
@@ -78852,19 +78672,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/aci-observation-capture.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/adaptive-bypass.sh",
       "evidence": [
         "harness_coverage:claude",
@@ -78891,45 +78698,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/adr-relevance-suggest.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/adr-section-validator.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/agent-bash-cwd-enforcer.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/agent-bus-monitor.sh",
       "evidence": [
         "harness_coverage:none",
@@ -78949,32 +78717,6 @@
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/agent-message-inbox-context.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/agent-message-inbox-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79073,38 +78815,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/aspirational-audit-weekly.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/assumption-tracker.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/audit-id-enricher.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79164,19 +78880,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/auto-skill-generator.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/auto-verify.sh",
       "evidence": [
         "harness_coverage:claude",
@@ -79209,32 +78912,6 @@
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/branch-ownership-lock.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/branch-ownership-release.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79300,19 +78977,6 @@
         "scope:both",
         "gap:scope=both but missing projected/wired support for: claude, codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/completeness-check.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79411,19 +79075,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/context-budget-meter.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/context-diet.sh",
       "evidence": [
         "harness_coverage:none",
@@ -79463,155 +79114,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/cos-executor-daemon-launcher.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/crash-recovery.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/cross-session-coordination-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/cross-session-event-emit.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/cross-session-peer-context.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/dangerous-env-flag-detector.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/dequeue-notify.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/destructive-rm-blocker.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/direct-main-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/dispatch-gate.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/doc-sync-detector.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:project",
         "gap:projected/wired but no direct behavior proof reference detected",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/docker-drift-detector.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79684,71 +79192,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/edit-lock-process-negotiations.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/edit-lock-session-end.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/engram-crystallize-on-session-end.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/engram-daemon-launcher.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/engram-obsidian-export-on-stop.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/engram-reinforce-on-access.sh",
       "evidence": [
         "harness_coverage:claude",
@@ -79775,64 +79218,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/error-learning.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/error-pattern-detector.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/error-pipeline.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/git-commit-scope-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/git-context-capture.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79859,45 +79250,6 @@
         "scope:project",
         "gap:scope=project but no harness projection detected",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/hook-header-validator.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/host-tool-doctor.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/infra-health.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -79944,90 +79296,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/kpi-trigger.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/large-file-advisor.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/lethal-trifecta-gate.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/mcp-scan.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/memory-prefetch.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/native-agent-heartbeat.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/network-egress-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80074,19 +79348,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/orchestrator-skill-invocation-gate.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/parry-scan.sh",
       "evidence": [
         "harness_coverage:none",
@@ -80106,19 +79367,6 @@
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/post-agent-snapshot-restore.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80217,38 +79465,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/profile-drift-autoapply.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/project-docs-convention.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/promotion-proposer-weekly.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80295,45 +79517,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/rate-limit-detector.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/rate-limit-drain.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/rate-limit-precheck.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/rate-limit-protection.sh",
       "evidence": [
         "harness_coverage:none",
@@ -80347,51 +79530,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/rate-limiter.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/reaper-daemon-launcher.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/reinvention-check.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:project",
         "gap:projected/wired but no direct behavior proof reference detected",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/release-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:project",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80418,71 +79562,6 @@
         "scope:both",
         "gap:scope=both but missing projected/wired support for: claude, codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/result-truncator.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/review-spawner.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/rule-frontmatter-validator.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/rule-md-routing-validator.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/rule-router-prompt-suggest.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80529,233 +79608,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/self-install.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/self-knowledge-refresh.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/semgrep-scan.sh",
       "evidence": [
         "harness_coverage:none",
         "scope:project",
         "gap:scope=project but no harness projection detected",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-changelog.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-cleanup.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-end-reap.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-heartbeat.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-learning.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-resume.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-sanity.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-start-stash-reapply.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-start-worktree-nudge.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-startup-protocol.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-summary-reminder.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-watchdog-launcher.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/session-wrapup-trigger.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-failure-monitor.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-feedback-tracker.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80776,129 +79634,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/skill-invocation-logger.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-md-routing-validator.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/skill-post-execution-analysis.sh",
       "evidence": [
         "harness_coverage:claude",
         "scope:both",
         "gap:scope=both but missing projected/wired support for: codex",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-router-bash-gate.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-router-prompt-suggest.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-synthesis-scanner.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-tracker.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/skill-usage-tracker.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/stash-budget-warn.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/state-heartbeat.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -80984,19 +79725,6 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/tool-sequence-capture.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/trust-score-validator.sh",
       "evidence": [
         "harness_coverage:claude",
@@ -81010,77 +79738,12 @@
       "status": "partial"
     },
     {
-      "capability_id": "harness_coverage:hooks/untracked-work-preservation-guard.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/user-prompt-capture.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:both",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/validation-lock-cleanup.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/validator-soak-weekly.sh",
-      "evidence": [
-        "harness_coverage:claude+codex",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
       "capability_id": "harness_coverage:hooks/valkey-ensure.sh",
       "evidence": [
         "harness_coverage:none",
         "scope:project",
         "gap:scope=project but no harness projection detected",
         "gap_policy:codex-adapter-needed"
-      ],
-      "message": "Harness implementation coverage gap",
-      "next_action": "classify the gap policy or add the missing harness projection/proof",
-      "severity": "medium",
-      "status": "partial"
-    },
-    {
-      "capability_id": "harness_coverage:hooks/work-queue-sync.sh",
-      "evidence": [
-        "harness_coverage:claude",
-        "scope:os-only",
-        "gap:projected/wired but no direct behavior proof reference detected",
-        "gap_policy:behavior-proof-needed"
       ],
       "message": "Harness implementation coverage gap",
       "next_action": "classify the gap policy or add the missing harness projection/proof",
@@ -81371,10 +80034,10 @@
       "minimum_effective_acc": 0.4
     },
     "warnings": [
-      "coverage_debt:195"
+      "coverage_debt:106"
     ]
   },
-  "generated_at": "2026-05-06T08:02:28Z",
+  "generated_at": "2026-05-06T08:08:45Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",
@@ -82100,20 +80763,20 @@
   },
   "schema_version": "acc.report.v1",
   "summary": {
-    "acc": 0.932,
-    "acc_effective": 0.9631,
-    "aligned_weight": 2990,
+    "acc": 0.9598,
+    "acc_effective": 0.9769,
+    "aligned_weight": 3079,
     "mapping_weight_by_status": {
-      "aligned": 2990,
+      "aligned": 3079,
       "missing": 0,
       "overexposed": 0,
-      "partial": 199,
+      "partial": 110,
       "stale": 0,
       "unverified": 19
     },
     "missing_weight": 0,
     "overexposed_weight": 0,
-    "partial_weight": 199,
+    "partial_weight": 110,
     "stale_weight": 0,
     "total_weight": 3208,
     "unverified_weight": 19
