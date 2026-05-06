@@ -1065,6 +1065,18 @@ harness:
       matcher: ""
       scope: os-only
 
+    cosd-auth-guard:
+      script: hooks/cosd-auth-guard.sh
+      event: PreToolUse
+      matcher: ""
+      scope: both
+
+    agent-control-inbound-guard:
+      script: hooks/agent-control-inbound-guard.sh
+      event: PreToolUse
+      matcher: ""
+      scope: both
+
     session-heartbeat-pre:
       script: hooks/session-heartbeat.sh
       event: PreToolUse
