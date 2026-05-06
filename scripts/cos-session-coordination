@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+python3 "$PROJECT_DIR/scripts/cos_session_coordination.py" --project-dir "$PROJECT_DIR" "$@"
