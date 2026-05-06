@@ -1,19 +1,19 @@
 # Bidirectional Agent Communication Channel — Investigation
 
 **Date**: 2026-05-05
-**Status**: research-only; no state modified
+**Status**: implementation follow-up added on 2026-05-06
 **Trigger**: Operator recalls prior discussion of a bidirectional channel; wants the current architectural state surfaced before deciding whether ADR-183/185 (just drafted) overlap, complement, or supersede.
 
 ---
 
 ## TL;DR
 
-- The **bidirectional channel is fully designed and partially implemented**: `packages/agent-coordination/lib/agent_bus.py` provides a Valkey pub/sub channel with 5 directional lanes (heartbeat, progress, question, answer, control). The **question/answer** pair is the explicit bidirectional contract.
+- The **bidirectional channel is now implemented across both transports for the critical paths**: `packages/agent-coordination/lib/agent_bus.py` provides Valkey pub/sub lanes and a file fallback. As of 2026-05-06, fallback `stop` writes both `control.jsonl` and a dedicated `interrupt` sentinel, and harness adapters surface inbound signals as canonical `inbound_signal` events.
 - The bus is **dormant by default**: `AGENT_BUS_ENABLED=false`, Valkey is `mode: on_demand` in `cognitive-os.yaml`. File-based fallback runs automatically when Valkey is absent.
 - A second communication layer (**hcom**) was researched (2026-03-28, engram #1666) and assessed as complementary — cross-terminal, not intra-session. It was never integrated.
 - ADR-116 (2026-05-02) independently proposed `lib/session_bus.py` (P1.3) as an **append-only cross-session event file** — a simpler, no-daemon sibling for multi-session visibility. Also not yet implemented.
 - **ADR-183** (cross-session event log) and **ADR-185** (audit findings queue) are the newest layer. They **complement** the prior design at a different scope (cross-session, file-only) rather than superseding it (intra-session, Valkey/pub-sub).
-- The recommendation is to **move forward with ADR-183/185** for tonight's needs. The Valkey bus question/answer flow remains a separate, dormant, higher-fidelity channel that could be activated later.
+- The recommendation is to **keep ADR-183/185 for cross-session directive flow** and use the Agent Bus for intra-session steering. The 2026-05-06 follow-up wires orchestrator CLI control/answer commands into `OrchestratorSubscriber` and gives `ClaudeExecutor` a watchdog control loop for silent subprocesses.
 - Uncertainty: the prior discussion that seeded the operator's memory likely lives in chat transcript, not in engram or any commit — engram has no direct match for "bidirectional agent communication channel" as a standalone design session.
 
 ---
@@ -62,10 +62,10 @@ Describes itself as "the first full bidirectional adapter." Scope is narrower: c
 
 | Component | File(s) | Status |
 |---|---|---|
-| `AgentBus` (Valkey pub/sub) | `packages/agent-coordination/lib/agent_bus.py` | **Live code, dormant at runtime** (`AGENT_BUS_ENABLED=false`) |
+| `AgentBus` (Valkey pub/sub + file fallback) | `packages/agent-coordination/lib/agent_bus.py` | **Live code**; Valkey optional, file fallback now includes `interrupt` sentinel |
 | `AgentPublisher` | same | Live code |
-| `OrchestratorSubscriber` | same | Live code |
-| `FallbackBus` (file-based) | same | **Active fallback** — writes to `.cognitive-os/agent-bus/` |
+| `OrchestratorSubscriber` | same | Live code; wired to `scripts/orchestrator.py control` and `scripts/orchestrator.py answer` |
+| `FallbackBus` (file-based) | same | **Active fallback** — writes JSONL plus `.cognitive-os/agent-bus/{agent_id}/interrupt` for stop |
 | `AgentBusMetrics` adapter | `lib/agent_bus_metrics.py` | Live code; bridges to MetricEvent JSONL |
 | `AgentOutputBridge` | `lib/agent_output_to_bus.py` | Live code; bridges JSONL output files → Valkey |
 | `agent-bus-monitor.sh` | `packages/skill-governance/hooks/agent-bus-monitor.sh` | Hook; checks Valkey connectivity on SessionStart |
@@ -106,11 +106,23 @@ The hcom integration and ADR-116 P1.3 (`lib/session_bus.py`) should be considere
 
 ---
 
+## 2026-05-06 Implementation Update
+
+The investigation's top three open gaps were implemented in the current follow-up slice:
+
+1. **Filesystem sentinel interrupt**: `OrchestratorSubscriber.send_control(..., "stop")` and `AgentBusMetrics.mark_hung_and_publish()` now write `.cognitive-os/agent-bus/{agent_id}/interrupt` in addition to the historical `control.jsonl` row. `AgentPublisher.poll_control()` reads Valkey-pending controls first, then the interrupt sentinel, then `control.jsonl`.
+2. **Harness adapter inbound protocol**: `packages/agent-lifecycle/lib/harness_adapter/base.py` defines canonical `InboundSignal` events. Dispatch now derives the active agent/session id and emits pending `control`, `answer`, and `interrupt` records as `event_type: "inbound_signal"`. This makes the inbound side visible to Codex, Claude Code, Aider, and bare CLI adapters through the common dispatcher.
+3. **Orchestrator wiring**: `scripts/orchestrator.py` now exposes `control` and `answer` subcommands backed by `OrchestratorSubscriber`. `ClaudeExecutor` runs a watchdog control loop while the subprocess is active, so `stop` can terminate a silent subprocess instead of waiting for the next output line. `pause` and `resume` map to `SIGSTOP`/`SIGCONT` for the child process group.
+
+Remaining limitation: only runtimes with a controllable child process can enforce `pause`/`resume` directly. Harness adapters without a process handle still surface those commands as `inbound_signal` events for the runtime loop to consume.
+
+Validation added in this slice covers fallback interrupt artifacts, Valkey-pending control draining, canonical inbound signal emission, Codex dispatch inbound visibility, orchestrator CLI control/answer commands, and `ClaudeExecutor` stop/pause/resume signal behavior.
+
 ## Uncertainty (Trust Report)
 
 - The operator's original recall of a "bidirectional agent communication channel" conversation may have occurred entirely in a chat session not captured in engram — engram returned no direct hit for that exact phrase. The Valkey bus design is the most likely artifact of that conversation, but confirmation requires session transcript search.
 - Valkey presence is read from code and config, not runtime state. The daemon was not running at investigation time (`ps aux` returned no valkey/redis process), but this investigation cannot determine whether it was ever run in production or only existed in design.
-- ADR-183 and ADR-185 were drafted today and have no implementation yet; the cross-reference table is based on their proposed schemas, not on running code.
+- ADR-183 and ADR-185 started as same-day proposals. ADR-185 is now implemented for directed message queue semantics, while `inbound_signal` is a companion harness-adapter primitive for orchestrator-to-agent control and clarification signals.
 
 ---
 
