@@ -44,7 +44,6 @@ Validate business logic, hook contracts, skill structures, and protocol complian
 | File | Tests | Description |
 |------|-------|-------------|
 | `test_hooks_batch1.py` | 15 hooks | dod-gate, secret-detector, pre-compaction-flush, auto-verify, agent-checkpoint, agent-prelaunch, architecture-compliance, completeness-check, doc-sync-detector, epic-task-detector, error-pattern-detector, infra-intent-detector, result-truncator, skill-tracker, trust-score-validator |
-| `test_hooks_batch2.py` | 14 hooks | auto-skill-generator, cognitive-os-health, conversation-capture, engram-auto-import, engram-auto-sync, memu-sync, metrics-calibrator-trigger, paperclip-sync, pre-cleanup-snapshot, session-cleanup, session-knowledge-extractor, session-resume, sync-to-repo, tool-discovery-trigger |
 | `test_hook_triggers.py` | 4 conditional hooks | Hook trigger condition evaluation |
 | `test_skills_batch1.py` | 23 skills | Structural validation (frontmatter, required sections, naming) |
 | `test_skills_batch2.py` | 21 skills | Structural validation (frontmatter, required sections, naming) |
@@ -74,7 +73,6 @@ Require Docker. Use testcontainers to spin up **17 Docker services** on demand. 
 |------|-------|----------|
 | `test_databases.py` | Database connectivity | Postgres (x2), MySQL, Valkey, ClickHouse |
 | `test_app_services.py` | Application services | Langfuse web + worker, LiteLLM, Jupyter, Opik backend |
-| `test_platform_services.py` | Platform services | Paperclip, MemU, Cognee, SeaweedFS, Automaker, NeMo, Opik frontend |
 | `test_eval_frameworks.py` | Eval frameworks | DeepEval + RAGAS import and API validation |
 | `test_e2e_flows.py` | End-to-end flows | 5 multi-service flows using `testcontainers` for isolated observability/memory/reference stacks |
 | `test_service_health.py` | Service health | Compose contract + opt-in localhost probes for reference stacks; does not start optional services |

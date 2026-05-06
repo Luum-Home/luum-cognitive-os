@@ -218,7 +218,6 @@ Before claiming Kubernetes readiness, provide:
   cluster.
 - Cognitive OS is not yet a fully unattended cloud operator until Phase 1/2
   crash recovery, lease, safe-mode, artifact, and publication gates are proven.
-- Cognitive OS should not make Docker, Kubernetes, Phoenix, Paperclip, or any
   UI/control-plane service mandatory for local default use.
 - Cognitive OS should not move non-core subsystems into central runtime paths
   merely because they are useful in the future clustered architecture.

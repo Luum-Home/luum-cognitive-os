@@ -18,7 +18,6 @@ Perform a full audit of every agentic primitive and restructure the codebase int
 
 The migration used `git mv` plus directory symlinks at original locations for backward compatibility. This pattern proved bulletproof -- not a single test needed path updates. All 1723 Python tests and 210+ Go tests passed after migration.
 
-**Package examples**: `@luum/ecosystem-tools`, `@luum/safety-mesh`, `@luum/auto-repair`, `@luum/document-sync`, `@luum/privacy-mode`, `@luum/paperclip-integration`.
 
 The plugin marketplace (`cos install`, `cos publish`, `cos search`) was designed with two modes of package creation:
 - **Generated**: COS reads a repo's structure and auto-generates adapted skills, hooks, and rules.

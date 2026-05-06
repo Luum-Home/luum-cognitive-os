@@ -21,7 +21,6 @@ A global hook killswitch was then used manually to stop mutation during debuggin
 
 1. Optional lanes outside `make test-all` were executed: `integration`, `integration-docker`, `e2e`, `smoke`, `arena`, `benchmark`, and `quality`.
 2. E2E exposed a real parser bug: wrapped SessionStart commands were parsed as wrapper paths plus arguments.
-3. Integration Docker exposed a real compose-contract bug: Paperclip was validated without its `legacy` profile.
 4. Empty reserved lanes exposed a test-runner semantics gap: pytest exit `5` was treated as release failure.
 5. Full integration and E2E validation dirtied the worktree through live flows and active session automation.
 6. A global killswitch was manually enabled to reduce mutation.

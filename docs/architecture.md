@@ -244,7 +244,6 @@ Key modules (see `lib/` for full list):
 | `model_router.py` | Dynamic multi-provider model selection and cost estimation |
 | `notifications.py` | Telegram, Slack, webhook notifications |
 | `observability.py` | Unified observability: Langfuse and Opik tracing integration |
-| `paperclip_client.py` | Client for Paperclip governance dashboard |
 | `reinvention_guard.py` | Detects and blocks redundant reimplementation of existing work |
 | `sdd_resume.py` | SDD state management and phase continuation |
 | `session_state.py` | Session state persistence with atomic writes |
@@ -298,7 +297,6 @@ Two external agent repos are included as submodules under `.claude/plugins/`:
 |  OPTIONAL       Langfuse (observability)                         |
 |  INFRA          LiteLLM (cost control)                           |
 |                 NeMo Guardrails (content safety)                 |
-|                 Paperclip (governance dashboard)                 |
 |                                                                   |
 +------------------------------------------------------------------+
 ```

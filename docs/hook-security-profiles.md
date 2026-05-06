@@ -230,7 +230,6 @@ These hooks are excluded because they serve niche use cases or require explicit 
 | `private-mode-gate.sh` | PreToolUse -- only relevant when private mode is active |
 | `private-mode-metrics-gate.sh` | PostToolUse -- only relevant when private mode is active |
 | `guardrails-validator.sh` | PostToolUse Agent -- requires GUARDRAILS_ENABLED=true + NeMo |
-| `paperclip-sync.sh` | Stop -- requires Paperclip dashboard running |
 | `memu-sync.sh` | Stop -- requires memU service running |
 | `sync-to-repo.sh` | Stop -- syncs to dedicated repo, org-specific |
 | `session-knowledge-extractor.sh` | Stop -- knowledge extraction, not security |

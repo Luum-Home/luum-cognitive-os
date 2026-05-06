@@ -82,7 +82,6 @@ Actionable gaps: 0
 | `doc:docs/adrs/ADR-040-query-tailored-context-injection.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `doc:docs/adrs/ADR-041.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `doc:docs/adrs/ADR-042-valkey-local-daemon.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/adrs/ADR-043-paperclip-local-daemon.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
 | `doc:docs/adrs/ADR-044-context-payload-slimming.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
 | `doc:docs/adrs/ADR-045-postgres-local-daemon.md` | 30 | dormant |  | missing_wired, missing_tested, runtime_not_seen, no_static_consumers |
 | `doc:docs/adrs/ADR-047-session-lifecycle-management.md` | 65 | partial |  | missing_wired, runtime_not_seen |
@@ -351,7 +350,6 @@ Actionable gaps: 0
 | `doc:docs/os-vs-project-separation.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
 | `doc:docs/overview.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `doc:docs/package-manager-design.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
-| `doc:docs/paperclip-integration.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `doc:docs/patterns-adopted.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
 | `doc:docs/patterns/README.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `doc:docs/patterns/cognitive-os-changes.md` | 45 | dormant |  | missing_wired, missing_tested, runtime_not_seen |
@@ -430,7 +428,6 @@ Actionable gaps: 0
 | `hook:hooks/_lib/hook-pipe.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/_lib/killswitch_check.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/_lib/normalize-stdin.sh` | 15 | dormant |  | missing_wired, missing_tested, missing_documented, missing_proof, runtime_not_seen, no_static_consumers |
-| `hook:hooks/_lib/paperclip-notify.sh` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
 | `hook:hooks/_lib/portable.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/_lib/register-bg.sh` | 55 | dormant |  | missing_wired, missing_documented, runtime_not_seen |
 | `hook:hooks/_lib/remediation.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
@@ -531,7 +528,6 @@ Actionable gaps: 0
 | `hook:hooks/notify.sh` | 85 | partial |  | runtime_not_seen |
 | `hook:hooks/orchestrator-mode-detect.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/package-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `hook:hooks/paperclip-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:hooks/parry-scan.sh` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
 | `hook:hooks/pattern-check.sh` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
 | `hook:hooks/pre-agent-snapshot.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
@@ -631,12 +627,6 @@ Actionable gaps: 0
 | `hook:packages/engram-sync/hooks/engram-auto-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:packages/engram-sync/hooks/memu-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:packages/infra-lifecycle/hooks/idle-service-cleanup.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `hook:packages/paperclip-integration/hooks/paperclip-agent-status.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `hook:packages/paperclip-integration/hooks/paperclip-cost-stream.sh` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
-| `hook:packages/paperclip-integration/hooks/paperclip-sdd-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `hook:packages/paperclip-integration/hooks/paperclip-squad-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `hook:packages/paperclip-integration/hooks/paperclip-sync.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `hook:packages/paperclip-integration/hooks/paperclip-task-sync.sh` | 40 | dormant |  | missing_wired, missing_tested, missing_proof, runtime_not_seen |
 | `hook:packages/prompt-quality-gate/hooks/prompt-quality.sh` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `hook:packages/quality-gates/hooks/claim-validator.sh` | 85 | partial |  | runtime_not_seen |
 | `hook:packages/quality-gates/hooks/clarification-gate.sh` | 85 | partial |  | runtime_not_seen |
@@ -866,7 +856,6 @@ Actionable gaps: 0
 | `skill:packages/infra-lifecycle/skills/gpu-sandbox/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:packages/infra-lifecycle/skills/repair-status/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:packages/infra-lifecycle/skills/sre-agent/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
-| `skill:packages/paperclip-integration/skills/paperclip-dashboard/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:packages/privacy-mode/skills/private-mode/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:packages/quality-gates/skills/confidence-check/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |
 | `skill:packages/quality-gates/skills/dod-check/SKILL.md` | 65 | partial |  | missing_wired, runtime_not_seen |

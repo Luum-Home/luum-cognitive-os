@@ -374,13 +374,8 @@ All Go source files under `cmd/cos/` and `cmd/cos-test/` are CORE. They implemen
 - skills/cognee-search/
 - lib/cognee_client.py
 
-### @luum/paperclip-integration
 
-**Type**: addon -- Paperclip governance dashboard
 **Components** (3):
-- skills/paperclip-dashboard/
-- hooks/paperclip-sync.sh
-- lib/paperclip_client.py
 
 ### @luum/nemo-guardrails
 
@@ -492,7 +487,6 @@ For each package:
 - [ ] @luum/planning (3 components)
 - [ ] @luum/ecosystem-tools (9 components)
 - [ ] @luum/cognee-integration (3 components)
-- [ ] @luum/paperclip-integration (3 components)
 - [ ] @luum/nemo-guardrails (2 components)
 - [ ] @luum/jupyter-integration (3 components)
 - [ ] @luum/memu-integration (6 components)

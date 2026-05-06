@@ -35,7 +35,6 @@
 | `hooks/_lib/file_checker.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/killswitch_check.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/normalize-stdin.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
-| `hooks/_lib/paperclip-notify.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/register-bg.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/remediation.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
 | `hooks/_lib/resolve-main-worktree.sh` | METADATA | registered=False, library=True | helper in _lib/ — sourced by other hooks, not a standalone hook |
@@ -121,7 +120,6 @@
 | `hooks/observability-trace.sh` | REAL | fire_count_7d=19, registered=True | fires actively (19 rows in hook-health.jsonl last 7d) |
 | `hooks/orchestrator-mode-detect.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently | planned but not wired: CONDITIONAL: detects ORCHESTRATOR_MODE env var; sourced by other hooks, not registered independently |
 | `hooks/package-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks | planned but not wired: CONDITIONAL: syncs package.json dependencies; triggered by CI or developer, not by Claude hooks |
-| `hooks/paperclip-sync.sh` | ASPIRATIONAL | registered=False, excluded=True, category=CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running | planned but not wired: CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running |
 | `hooks/parry-scan.sh` | REAL | fire_count_7d=28, registered=True | fires actively (28 rows in hook-health.jsonl last 7d) |
 | `hooks/pattern-check.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: checks for known anti-patterns; planned for PreToolUse Edit|Write — not yet wired | planned but not wired: FUTURE: checks for known anti-patterns; planned for PreToolUse Edit\|Write — not yet wired |
 | `hooks/post-agent-verify.sh` | ASPIRATIONAL | registered=False, excluded=True, category=FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring | planned but not wired: FUTURE: post-agent verification; superceded by completion-gate.sh in current wiring |
@@ -271,7 +269,6 @@
 | `lib/observability.py` | REAL | callers=1, size_bytes=10023 | imported by 1 non-test caller(s) |
 | `lib/orchestrator_capabilities.py` | REAL | callers=1, size_bytes=8626 | imported by 1 non-test caller(s) |
 | `lib/orchestrator_mode.py` | DORMANT | callers=0, size_bytes=4837 | no non-test callers found in hooks/, packages/, scripts/ |
-| `lib/paperclip_client.py` | DORMANT | callers=0, size_bytes=18239 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/paths.py` | REAL | callers=1, size_bytes=2133 | imported by 1 non-test caller(s) |
 | `lib/pattern_detector.py` | DORMANT | callers=0, size_bytes=26765 | no non-test callers found in hooks/, packages/, scripts/ |
 | `lib/performance_monitor.py` | REAL | callers=2, size_bytes=24958 | imported by 2 non-test caller(s) |
@@ -473,7 +470,6 @@
 | `skills/nemo-guardrails/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/opik-integration/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/optimize-skill/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
-| `skills/paperclip-dashboard/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/pentest-self/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/persistent-agent/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |
 | `skills/plan-bug/SKILL.md` | DORMANT | invocations_30d=0, referenced_in_docs=True | referenced in rules/docs but no recorded invocations in 30 days |

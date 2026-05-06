@@ -10,7 +10,7 @@ Usage:
     from lib.smart_infra import ensure_service, ensure_for_skill, stop_idle_services
 
     # Ensure a single service is running
-    ok = ensure_service("paperclip")
+    ok = ensure_service("valkey")
 
     # Ensure all services required by a skill
     results = ensure_for_skill("agent-kpis")  # {"mlflow": True}
@@ -21,7 +21,7 @@ Usage:
     # Decorator for functions that need a service
     from lib.smart_infra import requires_service
 
-    @requires_service("paperclip", "litellm")
+    @requires_service("valkey", "litellm")
     def my_function():
         ...
 
@@ -58,9 +58,6 @@ SKILL_SERVICE_MAP: Dict[str, List[str]] = {
     "content-filtering": ["nemo-guardrails"],
     "guardrails": ["nemo-guardrails"],
     "pii-detection": ["nemo-guardrails"],
-    "squad-report": ["paperclip"],
-    "governance": ["paperclip"],
-    "paperclip-sync": ["paperclip"],
     "memory-sync": ["memu"],
     "knowledge-graph": ["cognee"],
     "cognee-search": ["cognee"],
@@ -88,11 +85,6 @@ SERVICE_COMPOSE_MAP: Dict[str, Dict[str, Any]] = {
         "compose_services": ["nemo-guardrails"],
         "health_container": "cognitive-os-nemo-guardrails",
         "profile": "guardrails",  # ADR-060: opt-in only. docker compose --profile guardrails up
-    },
-    "paperclip": {
-        "compose_services": ["paperclip"],
-        "health_container": "cognitive-os-paperclip",
-        "profile": None,
     },
     "memu": {
         "compose_services": ["memu"],
@@ -664,7 +656,7 @@ def requires_service(*service_names: str):
 
     Example::
 
-        @requires_service("paperclip", "litellm")
+        @requires_service("valkey", "litellm")
         def run_observability():
             ...
     """

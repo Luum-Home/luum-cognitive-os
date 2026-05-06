@@ -187,7 +187,6 @@ Adding a scope tag to every component's frontmatter / header makes this filterab
 | hooks/_lib/common.sh | both | Shared library — universal |
 | hooks/_lib/execute-repair.sh | both | Shared library — universal |
 | hooks/_lib/normalize-stdin.sh | both | Shared library — universal |
-| hooks/_lib/paperclip-notify.sh | both | Paperclip is optional/universal |
 | hooks/_lib/remediation.sh | both | Shared library — universal |
 | hooks/_lib/safe-jsonl.sh | both | Shared library — universal |
 | hooks/_lib/semantic-search.sh | both | Shared library — universal |
@@ -251,7 +250,6 @@ Adding a scope tag to every component's frontmatter / header makes this filterab
 | hooks/notify.sh | both | Universal notifications |
 | hooks/observability-trace.sh | both | Universal observability tracing |
 | hooks/package-sync.sh | os-only | Syncs package rules into rules/ — OS package management only |
-| hooks/paperclip-sync.sh | both | Universal dashboard sync |
 | hooks/parry-scan.sh | both | Universal injection scanning |
 | hooks/pre-cleanup-snapshot.sh | os-only | Triggers capability snapshot before OS cleanup |
 | hooks/pre-commit-gate.sh | both | Universal commit gate |
@@ -357,7 +355,6 @@ Adding a scope tag to every component's frontmatter / header makes this filterab
 | skills/nemo-guardrails | both | Safety guardrails useful in any project |
 | skills/opik-integration | both | Observability useful in any project |
 | skills/optimize-skill | both | Universal skill improvement |
-| skills/paperclip-dashboard | both | Dashboard integration universal |
 | skills/pentest-self | both | Security testing useful in any project |
 | skills/persistent-agent | both | Persistent agent creation universal |
 | skills/plan-bug | both | Universal bug planning |
@@ -517,7 +514,6 @@ Note: validate-config counts as 10th os-only.
 | lib/notifications.py | both | Universal notification system |
 | lib/observability.py | both | Universal observability tracing |
 | lib/orchestrator_mode.py | both | Universal subprocess delegation |
-| lib/paperclip_client.py | both | Universal dashboard client |
 | lib/performance_monitor.py | both | Universal performance tracking |
 | lib/phase_timing.py | both | Universal phase timing |
 | lib/pipeline_executor.py | both | Universal pipeline execution |

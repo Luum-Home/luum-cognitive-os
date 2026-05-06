@@ -4,7 +4,6 @@
 
 Validate the first research/contract slice for remote Cognitive OS operation:
 chat/web/API ingress is separate from provider execution, and no credential
-ownership is assigned to Paperclip or remote channels.
 
 ## Preconditions
 
@@ -17,7 +16,6 @@ ownership is assigned to Paperclip or remote channels.
 1. Open `manifests/remote-control-plane-alternatives.yaml`.
 2. Confirm every project has `remote_ingress`, `provider_strategy`,
    `credential_strategy`, `license_posture`, and `source_urls`.
-3. Confirm `paperclip` is classified as `remote-control-plane` and
    `reference-only`, with `provider_strategy: delegates-to-cos`.
 4. Confirm `openclaw`, `agent-zero`, and `opencode-current` are present.
 5. Confirm `pinchy` is `license_posture: blocked`.

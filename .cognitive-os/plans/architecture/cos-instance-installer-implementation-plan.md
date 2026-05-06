@@ -30,7 +30,6 @@ multiple frontends:
 | 3 | Host CLI bridge security contract | implemented | contract | ADR-164 and manifest define the bridge before runtime. |
 | 4 | Host CLI bridge non-provider smoke | planned | bridge-smoke | Run harmless status/version commands through bridge. |
 | 5 | Host provider smoke | planned | provider-smoke | Cost/approval-gated Codex/Claude provider execution. |
-| 6 | Remote ingress lab | planned | remote-ingress-smoke | Telegram/Paperclip/GitHub/REST enqueue/status only. |
 | 7 | Worktree/branch/PR runtime | planned | pr-smoke | Implement ADR-162 through worktree and PR proposal. |
 | 8 | VM/EC2 instance | planned | local-smoke | Single-node service instance. |
 | 9 | Kubernetes instance | planned | docker-smoke | Worker pods with readiness/liveness and external credential boundaries. |

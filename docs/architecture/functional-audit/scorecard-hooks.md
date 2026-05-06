@@ -217,7 +217,6 @@ metrics-calibrator-trigger.sh
 metrics-rotation.sh
 notify.sh
 package-sync.sh
-paperclip-sync.sh               ← CLUSTER D
 pre-cleanup-snapshot.sh
 pre-commit-gate.sh
 private-mode-gate.sh
@@ -301,20 +300,17 @@ No action taken in this pass (read-only scope).
 removing it would require updating all those docs too, and the auto-refine loop is
 architecturally meaningful (closes the PITER Evaluate→Refine edge).
 
-### 3. `resource-check.sh` + `paperclip-sync.sh` orphans
 
 **Status**: Both classified as **ORPHAN** above. Decision options:
 
 | Hook | Option A (delete) | Option B (wire into `standard`) | Option C (wire into `full` only) |
 |---|---|---|---|
 | `resource-check.sh` | Lose budget-enforcement-in-loop for all profiles | Enforces `rules/resource-governance.md` at every agent launch | Matches other "async security" hooks (full-only) |
-| `paperclip-sync.sh` | Lose background sync to paperclip dashboard | Same as `mlflow-sync.sh` (already standard-wired at Stop) | Current de-facto state |
 
 **Recommendation**:
 - `resource-check.sh` → **Option B** at `PreToolUse Agent`. It operationalizes
   `rules/resource-governance.md`, which is listed as ALWAYS ACTIVE. An unwired
   always-active rule is a trust gap.
-- `paperclip-sync.sh` → **Option B** at `Stop` (async), mirroring `mlflow-sync.sh`.
 
 ---
 

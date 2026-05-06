@@ -840,9 +840,7 @@
     {
       "evidence": "events=unregistered; tested=True; emits_metric=True",
       "family": "hooks",
-      "name": "paperclip-sync.sh",
       "next_action": "optional package alias: document activation or remove alias",
-      "path": "hooks/paperclip-sync.sh",
       "severity": "medium",
       "status": "partial"
     },
@@ -1749,54 +1747,42 @@
     {
       "evidence": "events=unregistered; tested=True; emits_metric=False",
       "family": "hooks",
-      "name": "paperclip-agent-status.sh",
       "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
-      "path": "packages/paperclip-integration/hooks/paperclip-agent-status.sh",
       "severity": "medium",
       "status": "partial"
     },
     {
       "evidence": "events=unregistered; tested=False; emits_metric=True",
       "family": "hooks",
-      "name": "paperclip-cost-stream.sh",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": "packages/paperclip-integration/hooks/paperclip-cost-stream.sh",
       "severity": "low",
       "status": "partial"
     },
     {
       "evidence": "events=unregistered; tested=True; emits_metric=True",
       "family": "hooks",
-      "name": "paperclip-sdd-sync.sh",
       "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
-      "path": "packages/paperclip-integration/hooks/paperclip-sdd-sync.sh",
       "severity": "medium",
       "status": "partial"
     },
     {
       "evidence": "events=unregistered; tested=True; emits_metric=False",
       "family": "hooks",
-      "name": "paperclip-squad-sync.sh",
       "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
-      "path": "packages/paperclip-integration/hooks/paperclip-squad-sync.sh",
       "severity": "medium",
       "status": "partial"
     },
     {
       "evidence": "events=unregistered; tested=True; emits_metric=True",
       "family": "hooks",
-      "name": "paperclip-sync.sh",
       "next_action": "dormant but behavior-tested: activate, archive, or document optional status",
-      "path": "packages/paperclip-integration/hooks/paperclip-sync.sh",
       "severity": "medium",
       "status": "partial"
     },
     {
       "evidence": "events=unregistered; tested=False; emits_metric=False",
       "family": "hooks",
-      "name": "paperclip-task-sync.sh",
       "next_action": "demoted optional/dormant in manifests/reduction-demotions.json",
-      "path": "packages/paperclip-integration/hooks/paperclip-task-sync.sh",
       "severity": "low",
       "status": "partial"
     },
@@ -2280,9 +2266,7 @@
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
       "family": "skills",
-      "name": "paperclip-dashboard",
       "next_action": "keep; monitor regression",
-      "path": "packages/paperclip-integration/skills/paperclip-dashboard/SKILL.md",
       "severity": "low",
       "status": "proven"
     },
@@ -3378,9 +3362,7 @@
     {
       "evidence": "frontmatter=False; trigger=False; runtime_ref=True; tested=True",
       "family": "skills",
-      "name": "paperclip-dashboard",
       "next_action": "keep; monitor regression",
-      "path": "skills/paperclip-dashboard/SKILL.md",
       "severity": "low",
       "status": "proven"
     },

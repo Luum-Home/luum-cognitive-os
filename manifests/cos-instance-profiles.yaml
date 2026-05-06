@@ -76,7 +76,6 @@ profiles:
   - codex
   - claude
   - engram
-  - paperclip
   smoke_commands:
   - scripts/cos-auth-probe --provider codex --mode account-session --json
   - scripts/cos-auth-probe --provider claude --mode account-session --json

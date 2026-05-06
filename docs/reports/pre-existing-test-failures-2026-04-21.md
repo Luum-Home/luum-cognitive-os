@@ -84,7 +84,6 @@ DoD gate phase-aware logic tests — likely due to how tests mock `cognitive-os.
 - `test_agent_bus.py::TestSmartInfraIntegration::*` (3)
 - `test_auto_executor.py::TestCheckAndActivate::*` (3)
 
-Valkey integration tests — likely due to ADR-042 extraction from Docker. Need ADR-042 Phase 2 (Paperclip HALTED this session; see `docs/adrs/ADR-042-*.md`) to fully resolve.
 
 ### Dispatch / project dir resolution (3 tests)
 
@@ -168,4 +167,3 @@ Create one or more PRs addressing the groups above. Suggested batching:
 2. **PR #2** (fixture refresh): cost events + model catalog pricing sync — 30 min
 3. **PR #3** (test-updates): preamble tests + escalation wiring + efficiency profile — 1 hour
 4. **PR #4** (functional investigation): DoD gate phase + blast radius thresholds — 1-2 hours
-5. **Deferred**: agent bus / auto-executor (blocks on ADR-042 Paperclip decision + Postgres extraction)

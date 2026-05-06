@@ -20,7 +20,6 @@ CORE_SKILLS = [
     "plan-feature",
     "session-backlog",
     "resource-governor",
-    "paperclip-dashboard",
 ]
 
 
@@ -42,7 +41,7 @@ def test_core_skills_check_uses_canonical_runtime_env():
 
     assert result.returncode in {0, 1}, result.stderr
     data = json.loads(result.stdout)
-    assert data["total"] == 10
+    assert data["total"] == 9
 
 
 def test_core_skills_check_accepts_canonical_only_skill_surface(tmp_path):

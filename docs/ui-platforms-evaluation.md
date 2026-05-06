@@ -7,7 +7,6 @@
 
 | Platform | Stars | License | Type | UI Tech | COS Fit | Recommendation |
 |----------|-------|---------|------|---------|---------|---------------|
-| Paperclip | - | Compatible | Agent coordination | React | HIGH | MAINTAIN (complete 8 gaps) |
 | AnythingLLM | 57K | MIT | LLM platform | React+Vite | MEDIUM | EVALUATE (optional backend) |
 | AutoMaker | 3K | MIT | Dev automation | React 19+Vite 7 | HIGH | EVALUATE (React components) |
 | Aperant | 13.6K | AGPL-3.0 | Agent framework | React+Electron | BLOCKED | Patterns only (clean-room) |
@@ -100,7 +99,6 @@ These patterns are studied and reimplemented independently (clean-room). No code
 | Rules management (CRUD) | HIGH | Custom (no platform covers this) | Not started |
 | Hooks monitoring | HIGH | AutoMaker (terminal + events) | Not started |
 | Skills browser | HIGH | Agent Zero (plugin marketplace pattern) | Not started |
-| Agent monitoring (heartbeats) | HIGH | Paperclip + inngest hooks | Paperclip partial |
 | Cost dashboard | HIGH | Custom + Langfuse integration | Not started |
 | Memory browser (Engram) | MEDIUM | Custom | Not started |
 | Security dashboard | MEDIUM | Custom | Not started |
@@ -109,11 +107,8 @@ These patterns are studied and reimplemented independently (clean-room). No code
 
 ## Platform Deep Dives
 
-### Paperclip (MAINTAIN)
 
-Already integrated as a Docker service in `docker-compose.cognitive-os.yml`. Provides governance and compliance dashboard functionality. The 8 identified gaps relate to COS-specific features (rules, hooks, skills, Engram, KPIs, cost tracking, security, SDD pipeline) that Paperclip does not cover natively.
 
-**Verdict**: Continue using Paperclip for agent coordination. Build COS-specific features as extensions or a separate dashboard.
 
 ### AutoMaker (EVALUATE -- HIGH fit)
 
@@ -159,9 +154,7 @@ Contributed the 4-tier fault tolerance model already adopted in `rules/fault-tol
 
 ## Recommended Approach
 
-### Short-term: Complete Paperclip integration
 
-Wire the 8 gaps identified in the Paperclip audit. This gives us a working dashboard with minimal new code. Paperclip is already running as a Docker service and provides the agent coordination foundation.
 
 ### Medium-term: Extract reusable React components
 
@@ -180,12 +173,10 @@ Build a component library from MIT/Apache sources:
 
 Build a unified React web app combining:
 
-- Paperclip's agent coordination model for the backend
 - AutoMaker's Kanban + terminal UI patterns for task and log management
 - inngest's real-time streaming for live agent monitoring
 - Custom components for COS-specific features (rules CRUD, hooks monitoring, skills browser, KPIs, Engram memory browser, cost dashboard, security dashboard)
 
-The custom dashboard would run as an additional Docker service in `docker-compose.cognitive-os.yml` alongside Paperclip, not as a replacement.
 
 ## Cross-Reference
 

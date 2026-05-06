@@ -54,7 +54,6 @@ def test_remote_alternatives_manifest_contract() -> None:
 def test_core_remote_patterns_are_represented() -> None:
     by_id = {project["id"]: project for project in _manifest()["projects"]}
     expected = {
-        "paperclip",
         "openclaw",
         "nanoclaw",
         "picoclaw",

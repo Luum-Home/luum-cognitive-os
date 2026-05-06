@@ -652,7 +652,6 @@ class TestCompleteness:
         hook_scripts = get_hooks_from_settings(settings)
         missing = []
         for script in hook_scripts:
-            # Check both hooks/ and packages/*/hooks/ (Paperclip hooks live in packages)
             path = PROJECT_ROOT / "hooks" / script
             if not path.exists():
                 # Search in packages
