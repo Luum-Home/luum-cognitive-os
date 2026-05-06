@@ -461,6 +461,36 @@ class TestFallbackHandling:
 
 
 # ---------------------------------------------------------------------------
+# Safety/recovery negative context
+# ---------------------------------------------------------------------------
+
+
+class TestSafetyRecoveryNegativeContext:
+    """Safety skills must not route from meta-discussion or critique."""
+
+    def test_auto_rollback_direct_intent_still_matches(self, router: SkillRouter):
+        match = router.best_match("run auto-rollback for the failed apply")
+        assert match is not None
+        assert match.invoke_command == "/auto-rollback"
+
+    def test_auto_rollback_router_critique_does_not_match(self, router: SkillRouter):
+        message = (
+            "Ignoro la sugerencia de /auto-rollback del router — "
+            "dogfood evidence #5."
+        )
+        matches = router.match(message)
+        assert all(m.invoke_command != "/auto-rollback" for m in matches)
+
+    def test_auto_rollback_risk_question_does_not_match(self, router: SkillRouter):
+        message = (
+            "Qué dispara /auto-rollback? Me asusta que los agentes hagan cosas "
+            "y se pierda trabajo."
+        )
+        matches = router.match(message)
+        assert all(m.invoke_command != "/auto-rollback" for m in matches)
+
+
+# ---------------------------------------------------------------------------
 # Deduplication
 # ---------------------------------------------------------------------------
 
