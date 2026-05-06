@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 106,
+  "_hook_count": 107,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -137,6 +137,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-budget-meter.sh\""
           }
         ]
       }

@@ -1,17 +1,17 @@
 ---
 adr: 186
 title: Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits
-status: proposed
+status: accepted
 date: 2026-05-05
 supersedes: []
 superseded_by: null
 extends: [ADR-038]
 implementation_files:
-  - hooks/context-budget-meter.sh             # to create — last-in-chain UserPromptSubmit aggregator
-  - hooks/_lib/context_budget_lib.sh          # to create — shared accountant
-  - lib/context_budget.py                     # to create — token counter + budget reader
-  - tests/contracts/test_context_budget_enforcement.py  # to create
-  - tests/unit/test_context_budget.py         # to create
+  - hooks/context-budget-meter.sh
+  - hooks/_lib/context_budget_lib.sh
+  - lib/context_budget.py
+  - tests/contracts/test_context_budget_enforcement.py
+  - tests/unit/test_context_budget.py
   - .cognitive-os/metrics/context-budget.jsonl # runtime artifact
 tier: maintainer
 tags: [context-management, observability, governance, postmortem-2026-05-05, ADR-038-wave3]
@@ -21,7 +21,7 @@ tags: [context-management, observability, governance, postmortem-2026-05-05, ADR
 
 ## Status
 
-**Proposed.** Filed in response to today's substantial increase in
+**Accepted.** Implemented as `lib/context_budget.py`, a shared hook accountant, a UserPromptSubmit meter, and hook-level budget checks. Filed in response to today's substantial increase in
 context-injection paths (ADR-173-bis skill router suggester, ADR-179
 rule router suggester, ADR-181 ADR-relevance suggester, ADR-183 cross-
 session peer context, ADR-185 audit messages inbox). Each adds

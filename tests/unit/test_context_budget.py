@@ -1,0 +1,46 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+import pytest
+
+from lib.context_budget import count_tokens, evaluate, filter_hook_output, read_budget, record_usage
+
+pytestmark = pytest.mark.unit
+
+
+def test_count_tokens_heuristic_rounds_up() -> None:
+    assert count_tokens("") == 0
+    assert count_tokens("abcd") == 1
+    assert count_tokens("abcde") == 2
+
+
+def test_evaluate_thresholds() -> None:
+    budgets = {"static": 100}
+    assert evaluate("static", 100, budgets).verdict == "PASS"
+    assert evaluate("static", 110, budgets).verdict == "WARN"
+    assert evaluate("static", 151, budgets).verdict == "BLOCK"
+
+
+def test_read_budget_from_cognitive_os_yaml(tmp_path: Path) -> None:
+    cfg = tmp_path / "cognitive-os.yaml"
+    cfg.write_text("context_budget:\n  static_max_tokens: 123\n  turn_max_tokens: 456\n", encoding="utf-8")
+    budgets = read_budget(cfg)
+    assert budgets["static"] == 123
+    assert budgets["turn"] == 456
+    assert budgets["user"] == 12000
+
+
+def test_record_usage_appends_jsonl(tmp_path: Path) -> None:
+    row = record_usage(tmp_path, source="test", layer="static", text="hello world", session_id="s1")
+    assert row["source"] == "test"
+    log = tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl"
+    saved = json.loads(log.read_text().splitlines()[0])
+    assert saved["session_id"] == "s1"
+
+
+def test_filter_hook_output_skips_blocking_context(tmp_path: Path) -> None:
+    (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  static_max_tokens: 1\n", encoding="utf-8")
+    payload = {"hookSpecificOutput": {"additionalContext": "x" * 20}}
+    assert filter_hook_output(tmp_path, source="test", hook_json=json.dumps(payload), session_id="s1") == ""
