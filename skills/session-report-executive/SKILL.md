@@ -19,6 +19,13 @@ summary_line: Generate an executive-level session report translating technical m
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsession[- ]?report[- ]?executive\b'
+    confidence: 0.95
+  - pattern: '\bexecutive\s+(session\s+)?report\b'
+    confidence: 0.85
+  - pattern: '\bbusiness\s+language\s+report\b'
+    confidence: 0.75
 ---
 
 # Session Report — Executive View

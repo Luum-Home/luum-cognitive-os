@@ -9,6 +9,13 @@ summary_line: "Create the .claude/ directory structure, symlink rules, and gener
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bscaffold[- ]?project\b'
+    confidence: 0.95
+  - pattern: '\bcreate\s+\.claude\b'
+    confidence: 0.85
+  - pattern: '\bproject\s+scaffold\b'
+    confidence: 0.8
 ---
 
 # Scaffold Project

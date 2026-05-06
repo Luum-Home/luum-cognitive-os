@@ -10,6 +10,13 @@ tags: [meta, primitives, skills, automation, governance]
 summary_line: "Turn repeatable high-value conversation recipes into governed primitive proposals."
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: ["python3"]
+routing_patterns:
+  - pattern: '\bprimitive[- ]?harvester\b'
+    confidence: 0.95
+  - pattern: '\bclassify\s+conversation\s+(as\s+)?primitive\b'
+    confidence: 0.8
+  - pattern: '\bharvest\s+primitive\b'
+    confidence: 0.75
 ---
 
 # Primitive Harvester

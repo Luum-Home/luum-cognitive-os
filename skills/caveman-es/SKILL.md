@@ -12,6 +12,11 @@ summary_line: Modo cavernícola en español.
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcaveman[- ]?es\b'
+    confidence: 0.95
+  - pattern: '\bsimplify\s+(en\s+)?espa[ñn]ol\b'
+    confidence: 0.8
 ---
 
 Responder breve como cavernícola listo. Toda sustancia técnica queda. Solo relleno muere.

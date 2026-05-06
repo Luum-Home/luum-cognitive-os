@@ -7,6 +7,13 @@ audience: project
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bphoenix[- ]?trace[- ]?ui\b'
+    confidence: 0.95
+  - pattern: '\barize\s+phoenix\b'
+    confidence: 0.9
+  - pattern: '\bphoenix\s+(ui|trace|llm)\b'
+    confidence: 0.8
 ---
 
 # /phoenix-trace-ui

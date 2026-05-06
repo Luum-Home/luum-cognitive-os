@@ -8,6 +8,13 @@ audience: os-dev
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bmetrics[- ]?calibrat\w*\b'
+    confidence: 0.95
+  - pattern: '\bcalibrat\w*\s+(kpi|threshold|metric)\b'
+    confidence: 0.85
+  - pattern: '\bauto[- ]?calibrat\w*\s+thresholds?\b'
+    confidence: 0.8
 ---
 
 # Metrics Calibrator

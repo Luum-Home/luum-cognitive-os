@@ -21,6 +21,11 @@ summary_line: Generate and configure NeMo Guardrails Colang 2.0 rules from Cogni
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bnemo[- ]?guardrails?\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+nemo\b'
+    confidence: 0.8
 ---
 
 ## Purpose
