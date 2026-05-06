@@ -21,6 +21,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="adr-relevance-suggest"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/context_budget_lib.sh"
 
 # Always exit 0 — this hook must never block user input
 trap 'exit 0' ERR
@@ -113,7 +114,8 @@ PYEOF
 
 # Emit to stdout if there's a suggestion (Claude Code reads this)
 if [ -n "$_ROUTER_RESULT" ]; then
-  printf '%s\n' "$_ROUTER_RESULT"
+  _ROUTER_RESULT="$(context_budget_filter_json "adr-relevance-suggest" "$_ROUTER_RESULT" "static")"
+  [ -n "$_ROUTER_RESULT" ] && printf '%s\n' "$_ROUTER_RESULT"
 fi
 
 exit 0

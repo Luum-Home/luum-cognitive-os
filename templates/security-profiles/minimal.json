@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
   "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 71,
+  "_hook_count": 72,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -123,6 +123,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/context-budget-meter.sh\""
           }
         ]
       }
