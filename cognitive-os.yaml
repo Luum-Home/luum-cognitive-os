@@ -491,7 +491,7 @@ resources:
         mode: pip                  # ADR-058 (2026-04-24): Arize Phoenix LLM-native trace UI. pip install arize-phoenix>=7.0. Run: phoenix serve (UI at localhost:6006).
         # ADR-058 license correction (2026-05-06): arize-phoenix server is Elastic License 2.0 (since ~v4),
         # NOT Apache 2.0 as originally stated. Operator-installed runtime; not bundled in COS releases.
-        # Client SDKs (arize-phoenix-client, arize-phoenix-otel) we depend on are Apache 2.0.
+        # Optional OTel bridge/client packages in the observability lane are Apache 2.0.
         # If a future COS Cloud hosts Phoenix centrally for customers, an Arize commercial license is
         # required (ELv2 "managed service" prohibition). Local-only / operator-installed = within ELv2 scope.
         license: ELv2-server-Apache2-SDK

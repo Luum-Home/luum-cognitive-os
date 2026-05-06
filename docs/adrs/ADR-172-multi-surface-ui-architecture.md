@@ -76,7 +76,7 @@ without adding value.
 
 **Artefact kind**: OpenTelemetry traces - span attributes, latency, token cost,
 eval scores.
-**Activation**: `uv sync --extra observability && uv run phoenix serve` on
+**Activation**: `bash scripts/dependency-lane.sh install observability && uv run phoenix serve` on
 local port 6006.
 **Source of truth**: ADR-058 already governs Phoenix as the trace surface.
 **Why this surface**: trace flame graphs and cost/latency dashboards are
@@ -295,17 +295,15 @@ All emit structured JSON or human text. None require a web UI.
 
 ### Surface 2 — Phoenix
 
-Activation present in `pyproject.toml` at acceptance:
+Activation present in the explicit heavy dependency lane at acceptance:
 
-```toml
-[project.optional-dependencies]
-observability = [
-    "arize-phoenix>=4.0",
-    ...
-]
+```text
+# requirements/dependency-lanes/observability.txt
+arize-phoenix>=4.0
+arize-phoenix-otel>=0.6
 ```
 
-Activation command: `uv sync --extra observability && uv run phoenix serve`.
+Activation command: `bash scripts/dependency-lane.sh install observability && uv run phoenix serve`.
 
 Phoenix port at acceptance: 6006 (default). Trace data flows via OpenTelemetry
 spans emitted by `lib/dispatch.py` (ADR-049) and the LLM provider adapters.

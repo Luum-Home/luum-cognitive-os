@@ -156,9 +156,10 @@ Recorded in: `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`.
   until Phase 4 of the migration for rollback. Compose entries removed in
   Phase 3 (target 2026-06-15).
 - **Arize Phoenix** — adopted as `mode: pip`. Launched on-demand via
-  `skills/phoenix-trace-ui/` (Phase 1 pending). Wins on: Apache 2.0, no Docker,
+  `skills/phoenix-trace-ui/` (Phase 1 pending). Wins on: no Docker,
   LLM-native OTel spans, ~150 MiB single-process footprint, active maintenance,
-  ecosystem portability.
+  ecosystem portability. License posture corrected 2026-05-06: ELv2 server,
+  Apache-2.0 OTel bridge/client packages, operator-installed local runtime.
 - **MLflow** — unchanged. Remains the default lightweight outcome exporter.
 - **Opik / Helicone / OpenLIT / Laminar / Logfire / Weave / OpenLLMetry** —
   unchanged relative to the analysis above. None displaced as a result of
@@ -171,8 +172,8 @@ Recorded in: `docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md`.
 
 1. **Phase 0 — 2026-04-24 (this doc pin):** containers stopped; catalog +
    config updated; ADR-058 recorded.
-2. **Phase 1 — target 2026-05-15:** Phoenix package added to
-   `pyproject.toml` observability extras, `skills/phoenix-trace-ui/` authored.
+2. **Phase 1 — target 2026-05-15:** Phoenix dependency lane installed from
+   `requirements/dependency-lanes/observability.txt`, `skills/phoenix-trace-ui/` authored.
 3. **Phase 2 — target 2026-05-30:** `lib/record_completion.py` trace sink
    migrated from Langfuse SDK to OTel exporter (Phoenix).
 4. **Phase 3 — target 2026-06-15:** Langfuse removed from

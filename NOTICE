@@ -158,7 +158,8 @@ Arize AI (and contributors)
 Licensed under the Apache License, Version 2.0
 https://github.com/Arize-ai/phoenix
 
-This product depends on Phoenix client and OpenTelemetry SDK packages
-(Apache-2.0). The Phoenix server itself (arize-phoenix) is licensed under
-Elastic License 2.0 and is operator-installed, NOT bundled with COS
-releases. See ADR-058 for ELv2 boundary discussion.
+This product can optionally integrate with Phoenix client/OpenTelemetry bridge
+packages from the observability dependency lane (Apache-2.0). The Phoenix
+server itself (arize-phoenix) is licensed under Elastic License 2.0 and is
+operator-installed, NOT bundled with COS core releases. See ADR-058 for ELv2
+boundary discussion.
