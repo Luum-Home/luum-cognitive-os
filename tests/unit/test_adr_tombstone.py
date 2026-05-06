@@ -22,7 +22,30 @@ def test_render_tombstone_is_contract_compliant() -> None:
     assert "## Verification" in text
 
 
-def test_create_tombstone_removes_old_file_and_updates_references(tmp_path: Path) -> None:
+def test_create_tombstone_refuses_to_replace_active_adr_by_default(tmp_path: Path) -> None:
+    project = tmp_path
+    adrs = project / "docs" / "adrs"
+    adrs.mkdir(parents=True)
+    old = adrs / "ADR-007-old-system.md"
+    old.write_text("# ADR-007: Old System\n\nlegacy-token\n", encoding="utf-8")
+
+    try:
+        create_tombstone(
+            project_dir=project,
+            number=7,
+            title="Removed architecture decision",
+            reason="The old decision was removed.",
+            date="2026-05-05",
+        )
+    except ValueError as exc:
+        assert "active ADR file" in str(exc)
+    else:
+        raise AssertionError("expected active ADR replacement to be blocked")
+
+    assert old.exists()
+
+
+def test_create_tombstone_force_replaces_old_file_and_updates_references(tmp_path: Path) -> None:
     project = tmp_path
     adrs = project / "docs" / "adrs"
     adrs.mkdir(parents=True)
@@ -39,6 +62,7 @@ def test_create_tombstone_removes_old_file_and_updates_references(tmp_path: Path
         reason="The old decision was removed.",
         date="2026-05-05",
         forbidden_tokens=("legacy-token",),
+        force_replace_active=True,
     )
 
     target = project / result.path
