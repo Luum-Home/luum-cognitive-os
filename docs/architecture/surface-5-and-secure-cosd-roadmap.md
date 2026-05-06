@@ -236,7 +236,7 @@ ACCEPTANCE CRITERIA:
 
 ## Proposed ADR sequence
 
-- `ADR-194-cosd-secure-remote-api.md`
+- `ADR-194-cosd-secure-remote-api.md` — accepted and implemented for bearer-token auth, remote-bind refusal, and API audit rows.
 - `ADR-195-surface-5-operable-tui-contract.md`
 
 This order puts the security boundary ahead of the UI that may consume it.
