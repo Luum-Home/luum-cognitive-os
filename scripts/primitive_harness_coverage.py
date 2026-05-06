@@ -59,7 +59,7 @@ UI_SURFACES = {
         "operable": False,
     },
     "tui": {
-        "evidence": ["scripts/cos-tui"],
+        "evidence": ["scripts/cos-tui", "tests/contracts/test_cos_tui_operable_surface_contract.py"],
         "operable": True,
         "operable_primitives": [
             "scripts/cos-tui",
