@@ -140,7 +140,7 @@ run_claude_code_driver() {
     skill-usage-tracker.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
-    destructive-git-blocker.sh branch-ownership-lock.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
+    destructive-git-blocker.sh untracked-work-preservation-guard.sh branch-ownership-lock.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
     post-git-orphan-notifier.sh skill-router-bash-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh branch-ownership-release.sh \
@@ -200,7 +200,7 @@ echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: protected-config-write-guard.sh, session-heartbeat.sh, lethal-trifecta-gate.sh"
-echo "  PreToolUse Bash: network-egress-guard.sh, rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, branch-ownership-lock.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, skill-router-bash-gate.sh, release-guard.sh, git-commit-scope-guard.sh, direct-main-guard.sh, cross-session-coordination-guard.sh, agent-message-inbox-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
+echo "  PreToolUse Bash: network-egress-guard.sh, rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, untracked-work-preservation-guard.sh, branch-ownership-lock.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, skill-router-bash-gate.sh, release-guard.sh, git-commit-scope-guard.sh, direct-main-guard.sh, cross-session-coordination-guard.sh, agent-message-inbox-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
 echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh, skill-md-routing-validator.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh"

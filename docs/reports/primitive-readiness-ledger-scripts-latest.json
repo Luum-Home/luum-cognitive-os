@@ -3350,7 +3350,7 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 38,
-        "doc": 466,
+        "doc": 472,
         "hook": 79,
         "rule": 42,
         "script": 235,
@@ -4692,6 +4692,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/untracked-work-preservation.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/validation-capsule.md"
         },
         {
@@ -5204,7 +5208,19 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-agent-swe-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-browser-automation-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -5229,6 +5245,14 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -8442,7 +8466,7 @@
         "skill_consumers:59",
         "test_consumers:350",
         "hook_consumers:79",
-        "doc_consumers:466",
+        "doc_consumers:472",
         "rule_consumers:42",
         "config_consumers:38",
         "script_consumers:235"
@@ -8461,7 +8485,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1269,
+      "total_consumers": 1275,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -13890,10 +13914,20 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
+        "doc": 1,
         "hook": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/untracked-work-preservation.md"
+        },
         {
           "family": "hook",
           "path": "hooks/untracked-work-preservation-guard.sh"
@@ -13906,7 +13940,9 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "hook_consumers:1"
+        "hook_consumers:1",
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -13920,7 +13956,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 4,
       "wrapper_for": null
     },
     {
@@ -19567,7 +19603,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 7,
-        "doc": 15,
+        "doc": 16,
         "hook": 1,
         "script": 4,
         "test": 3
@@ -19651,6 +19687,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/untracked-work-preservation.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/host-cli-bridge-security-boundary.md"
         },
         {
@@ -19699,7 +19739,7 @@
         "lifecycle",
         "test_consumers:3",
         "hook_consumers:1",
-        "doc_consumers:15",
+        "doc_consumers:16",
         "config_consumers:7",
         "script_consumers:4"
       ],
@@ -19717,7 +19757,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 30,
+      "total_consumers": 31,
       "wrapper_for": null
     },
     {
