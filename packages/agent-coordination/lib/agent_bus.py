@@ -127,6 +127,7 @@ def _resolve_valkey_url(primary_url: str = _DEFAULT_VALKEY_URL) -> Optional[str]
     """Return the first reachable Valkey/Redis URL from a prioritised list.
 
     Resolution order (ADR-042):
+      0. If COS_AGENT_BUS_FORCE_FALLBACK=1, skip Valkey entirely.
       1. *primary_url* (from env var or default localhost:6379)
       2. Local daemon candidates: localhost:6380, localhost:6379
          — covers the case where cos-valkey-local.sh started on 6380 because
@@ -134,6 +135,9 @@ def _resolve_valkey_url(primary_url: str = _DEFAULT_VALKEY_URL) -> Optional[str]
 
     Returns the URL string if reachable, None if nothing responds.
     """
+    if os.environ.get("COS_AGENT_BUS_FORCE_FALLBACK", "").strip() == "1":
+        return None
+
     if _ping_url(primary_url):
         logger.debug("agent_bus: connected to primary Valkey URL %s", primary_url)
         return primary_url
@@ -258,6 +262,27 @@ class _FileFallback:
                     continue
         return events
 
+    def write_interrupt(self, agent_id: str, data: Dict[str, Any]) -> Path:
+        """Write/replace the filesystem sentinel used for no-Valkey interrupts."""
+        agent_dir = self.base_dir / agent_id
+        agent_dir.mkdir(parents=True, exist_ok=True)
+        path = agent_dir / "interrupt"
+        tmp = agent_dir / ".interrupt.tmp"
+        tmp.write_text(json.dumps(data, default=str), encoding="utf-8")
+        tmp.replace(path)
+        return path
+
+    def read_interrupt(self, agent_id: str) -> Optional[Dict[str, Any]]:
+        """Read the no-Valkey interrupt sentinel if present."""
+        path = self.base_dir / agent_id / "interrupt"
+        if not path.exists():
+            return None
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            return data if isinstance(data, dict) else {"type": "interrupt", "body": data}
+        except Exception:
+            return {"type": "interrupt", "command": "stop"}
+
 
 class AgentPublisher:
     """Publisher used by agents to send heartbeats, progress, and questions.
@@ -282,11 +307,15 @@ class AgentPublisher:
         self._pubsub: Any = None
         self._heartbeat_thread: Optional[threading.Thread] = None
         self._heartbeat_stop = threading.Event()
+        self._control_thread: Optional[threading.Thread] = None
+        self._control_stop = threading.Event()
+        self._pending_controls: List[str] = []
         self._lock = threading.Lock()
         self._phase = "unknown"
         self._step = ""
         self._tokens_used = 0
         self._use_valkey = False
+        self._seen_control_ids: set[str] = set()
 
         self._connect()
 
@@ -499,6 +528,94 @@ class AgentPublisher:
         logger.warning("Clarification timeout (file fallback) after %ds", timeout)
         return []
 
+    def start_control_listener(self) -> None:
+        """Subscribe to Valkey control commands for this agent when available."""
+        if not self._use_valkey or self._control_thread is not None:
+            return
+
+        self._control_stop.clear()
+
+        def _control_loop() -> None:
+            sub_client = None
+            pubsub = None
+            try:
+                import redis
+
+                sub_client = redis.Redis.from_url(
+                    self.valkey_url, socket_connect_timeout=2, decode_responses=True
+                )
+                pubsub = sub_client.pubsub()
+                pubsub.subscribe(_channel(self.agent_id, "control"))
+                while not self._control_stop.is_set():
+                    message = pubsub.get_message(
+                        ignore_subscribe_messages=True, timeout=0.5
+                    )
+                    if not message or message.get("type") != "message":
+                        continue
+                    try:
+                        data = json.loads(message.get("data", "{}"))
+                    except (json.JSONDecodeError, ValueError, TypeError):
+                        continue
+                    command = str(data.get("command") or "")
+                    if command in VALID_CONTROL_COMMANDS:
+                        with self._lock:
+                            self._pending_controls.append(command)
+            except Exception as exc:
+                logger.debug("Control listener stopped for %s: %s", self.agent_id, exc)
+            finally:
+                if pubsub is not None:
+                    try:
+                        pubsub.unsubscribe()
+                        pubsub.close()
+                    except Exception:
+                        pass
+                if sub_client is not None:
+                    try:
+                        sub_client.close()
+                    except Exception:
+                        pass
+
+        self._control_thread = threading.Thread(
+            target=_control_loop, daemon=True, name="agent-control-%s" % self.agent_id
+        )
+        self._control_thread.start()
+
+    def poll_control(self) -> Optional[str]:
+        """Return the next pending control command for this agent, if any.
+
+        The fallback path checks both ``control.jsonl`` and the dedicated
+        ``interrupt`` sentinel.  It is safe to call from a subprocess stream
+        loop; malformed rows are ignored and duplicate JSONL rows are suppressed
+        per publisher instance.
+        """
+        pending = getattr(self, "_pending_controls", [])
+        lock = getattr(self, "_lock", None)
+        if lock is not None:
+            with lock:
+                if pending:
+                    return pending.pop(0)
+        elif pending:
+            return pending.pop(0)
+
+        interrupt = self._fallback.read_interrupt(self.agent_id)
+        if interrupt is not None:
+            command = str(interrupt.get("command") or "stop")
+            if command in VALID_CONTROL_COMMANDS:
+                return command
+
+        for event in self._fallback.read_events(self.agent_id, "control"):
+            command = str(event.get("command") or "")
+            if command not in VALID_CONTROL_COMMANDS:
+                continue
+            marker = "%s:%s" % (event.get("timestamp_epoch", ""), command)
+            seen = getattr(self, "_seen_control_ids", set())
+            if marker in seen:
+                continue
+            seen.add(marker)
+            self._seen_control_ids = seen
+            return command
+        return None
+
     def report_complete(self, result_summary: str) -> None:
         """Publish a completion event.
 
@@ -540,6 +657,7 @@ class AgentPublisher:
 
     def start_heartbeat_thread(self) -> None:
         """Start a background thread that sends heartbeat every 5 seconds."""
+        self.start_control_listener()
         if self._heartbeat_thread is not None and self._heartbeat_thread.is_alive():
             return
 
@@ -562,6 +680,10 @@ class AgentPublisher:
     def stop(self) -> None:
         """Stop heartbeat thread and publish final alive=false heartbeat."""
         self._heartbeat_stop.set()
+        self._control_stop.set()
+        if self._control_thread is not None:
+            self._control_thread.join(timeout=2)
+            self._control_thread = None
         if self._heartbeat_thread is not None:
             self._heartbeat_thread.join(timeout=2)
             self._heartbeat_thread = None
@@ -774,7 +896,7 @@ class OrchestratorSubscriber:
         """
         self._callbacks["error"].append(callback)
 
-    def answer_question(self, agent_id: str, answers: List[str], round_num: int = 1) -> None:
+    def answer_question(self, agent_id: str, answers: List[str], round_num: int = 1) -> str:
         """Publish answers to an agent's questions.
 
         Args:
@@ -797,14 +919,15 @@ class OrchestratorSubscriber:
         if self._use_valkey and self._client is not None:
             try:
                 self._client.publish(channel, payload)
-                return
+                return "valkey"
             except Exception as e:
                 logger.warning("Valkey publish answer failed (%s)", e)
 
         # File fallback
         self._fallback.publish(channel, data)
+        return "fallback"
 
-    def send_control(self, agent_id: str, command: str) -> None:
+    def send_control(self, agent_id: str, command: str) -> str:
         """Send a control command to an agent.
 
         Args:
@@ -834,12 +957,15 @@ class OrchestratorSubscriber:
         if self._use_valkey and self._client is not None:
             try:
                 self._client.publish(channel, payload)
-                return
+                return "valkey"
             except Exception as e:
                 logger.warning("Valkey publish control failed (%s)", e)
 
         # File fallback
         self._fallback.publish(channel, data)
+        if command == "stop":
+            self._fallback.write_interrupt(safe_id, {**data, "type": "interrupt"})
+        return "fallback"
 
     def get_active_agents(self, timeout_s: int = HEARTBEAT_TIMEOUT_S) -> List[Dict[str, Any]]:
         """Return agents that have sent a heartbeat within the timeout.
