@@ -7325,3 +7325,83 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/validator-soak.jsonl
+- id: scripts/adr_tombstone.py
+  kind: script
+  owner_adr: ADR-171
+  lifecycle_state: candidate
+  maturity: blocking
+  distribution: team
+  governance_class: architecture-decision-records
+  risk_class: blocking
+  supported_harnesses: [claude, codex, bare_cli]
+  projection_targets:
+    - skills/adr-tombstone/SKILL.md
+    - scripts/adr_tombstone.py
+  runtime_projection: false
+  behavior_evidence: unit-tested tombstone writer refuses active ADR replacement by default
+  evidence_commands:
+    - python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q
+  rollback_or_repair_command: Disable skills/adr-tombstone routing and use manual ADR tombstone review until the script is repaired.
+  sunset_criteria: Archive only after ADR tombstone workflow is replaced by cosd intent arbitration with equivalent tests.
+  docs_claim_level: candidate
+  exit_behavior: nonzero_on_invalid_tombstone
+- id: scripts/cos-adr-tombstone
+  kind: script
+  owner_adr: ADR-171
+  lifecycle_state: candidate
+  maturity: blocking
+  distribution: team
+  governance_class: architecture-decision-records
+  risk_class: blocking
+  supported_harnesses: [claude, codex, bare_cli]
+  projection_targets:
+    - skills/adr-tombstone/SKILL.md
+    - scripts/cos-adr-tombstone
+  runtime_projection: false
+  behavior_evidence: wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests
+  evidence_commands:
+    - python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q
+  rollback_or_repair_command: Remove wrapper from skill instructions and call scripts/adr_tombstone.py directly after repair.
+  sunset_criteria: Archive if a generated cosd command supersedes the wrapper with equivalent tests.
+  docs_claim_level: candidate
+  exit_behavior: delegates_to_python_exit
+- id: scripts/cos-agent-message
+  kind: script
+  owner_adr: ADR-185
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: cross-session-coordination
+  risk_class: advisory
+  supported_harnesses: [claude, codex, bare_cli]
+  projection_targets:
+    - docs/architecture/agent-message-bus.md
+    - scripts/cos-agent-message
+  runtime_projection: false
+  behavior_evidence: unit-tested directed message CLI for auditor to implementer communication
+  evidence_commands:
+    - python3 -m pytest tests/unit/test_agent_message_bus.py tests/contracts/test_agent_message_bus_contract.py -q
+  rollback_or_repair_command: Disable message-bus hooks and use append-only coordination ledger entries until repaired.
+  sunset_criteria: Promote or replace when cosd provides equivalent directed findings queue.
+  docs_claim_level: candidate
+  exit_behavior: nonzero_on_invalid_message_command
+- id: scripts/cos-session-coordination
+  kind: script
+  owner_adr: ADR-183
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  governance_class: cross-session-coordination
+  risk_class: advisory
+  supported_harnesses: [claude, codex, bare_cli]
+  projection_targets:
+    - docs/architecture/cross-session-coordination-ledger.md
+    - scripts/cos-session-coordination
+  runtime_projection: false
+  behavior_evidence: unit-tested session claim and ADR tombstone coordination CLI
+  evidence_commands:
+    - python3 -m pytest tests/unit/test_session_coordination.py tests/contracts/test_session_coordination_contract.py -q
+  rollback_or_repair_command: Disable coordination guard hooks and require manual worktree-intake report until repaired.
+  sunset_criteria: Promote or replace when cosd owns branch, ADR, and intent arbitration.
+  docs_claim_level: candidate
+  exit_behavior: nonzero_on_invalid_coordination_command

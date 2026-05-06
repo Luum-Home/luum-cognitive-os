@@ -35,6 +35,7 @@ _lib/tuning.sh | LIBRARY: performance-tuning helpers sourced by other hooks
 pre-commit-gate.sh | GIT_HOOK: symlinked to .git/hooks/pre-commit; not a Claude hook (per rules/ROADMAP.md Section 1.8)
 
 # ── Manual-trigger / admin scripts (MANUAL_TRIGGER / ADMIN) ─────────────────
+cosd-intent-submit.sh | MANUAL_TRIGGER: ADR-184 workflow command for submitting explicit cosd intents; no lifecycle event payload can supply its required intent arguments yet
 self-install.sh | ADMIN: bootstraps settings.json registrations; run at SessionStart only for self-wiring; also called as admin one-shot
 registration-check.sh | MANUAL_TRIGGER: checks hook registration state; invoked manually or by CI
 cognitive-os-health.sh | MANUAL_TRIGGER: health-check report for the full OS; run on demand via /cos-status
