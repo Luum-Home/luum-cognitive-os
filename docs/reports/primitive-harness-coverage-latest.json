@@ -305,7 +305,7 @@
         }
       },
       "primitive": ".codex/skills/docs-to-artifact/SKILL.md",
-      "scope": null
+      "scope": "both"
     },
     {
       "coverage": "aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+vscode-copilot+warp+zed-ai",
@@ -589,7 +589,7 @@
         }
       },
       "primitive": ".codex/skills/portability-work/SKILL.md",
-      "scope": null
+      "scope": "both"
     },
     {
       "coverage": "aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+vscode-copilot+warp+zed-ai",
@@ -873,7 +873,7 @@
         }
       },
       "primitive": ".codex/skills/repo-map/SKILL.md",
-      "scope": null
+      "scope": "both"
     },
     {
       "coverage": "aider+amp-code+augment-code+claude+cline+codex+continue-dev+cursor+factory-droid+gemini-cli+goose+jetbrains-junie+kilo-code+kimi-code+opencode+qoder+qwen-code+vscode-copilot+warp+zed-ai",
@@ -1157,7 +1157,7 @@
         }
       },
       "primitive": ".codex/skills/test-matrix/SKILL.md",
-      "scope": null
+      "scope": "both"
     },
     {
       "coverage": "none",
@@ -226018,8 +226018,7 @@
       "templates": 19
     },
     "by_scope": {
-      "None": 4,
-      "both": 497,
+      "both": 501,
       "os-only": 301,
       "project": 56
     },
