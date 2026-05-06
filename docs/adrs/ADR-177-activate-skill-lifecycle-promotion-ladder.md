@@ -16,7 +16,6 @@ implementation_files:
 tier: maintainer
 tags: [skills, lifecycle, promotion, doctrine, dogfood]
 ---
-
 # ADR-177: Activate Skill Lifecycle Promotion Ladder
 
 ## Status
@@ -106,3 +105,12 @@ Manual smoke must verify:
 
 Implemented and tested on 2026-05-06 with targeted unit, behavior, and isolated
 smoke lanes.
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
+## Alternatives rejected
+
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
+

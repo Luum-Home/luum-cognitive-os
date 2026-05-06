@@ -1,5 +1,5 @@
 # SCOPE: both
-"""Validator soak evaluator — ADR-174-bis Part B propose-only trigger.
+"""Validator soak evaluator — ADR-174b Part B propose-only trigger.
 
 Reads `.cognitive-os/metrics/skill-md-routing-validator.jsonl` and decides
 whether the routing validator is ready to be promoted from advisory to blocking.
@@ -315,7 +315,7 @@ def _write_proposal(
         ## Cross-References
 
         - ADR-174: Auto-Derived Primitive Routing for Skills
-        - ADR-174-bis: Prevention Followup (Part B — this proposal)
+        - ADR-174b: Prevention Followup (Part B — this proposal)
         - `hooks/skill-md-routing-validator.sh`
         - `.cognitive-os/metrics/skill-md-routing-validator.jsonl`
     """)

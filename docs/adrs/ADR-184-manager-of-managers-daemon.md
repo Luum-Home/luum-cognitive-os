@@ -15,7 +15,6 @@ implementation_files:
 tier: maintainer
 tags: [concurrency, daemon, governance, postmortem-2026-05-05, refines-ADR-163]
 ---
-
 # ADR-184: Manager-of-Managers Daemon — Authoritative Single-Writer for Critical Surfaces
 
 ## Status
@@ -252,7 +251,7 @@ If the daemon is intentionally not running:
 - Most COS work (skills, hooks, tests, reports) does not require daemon
   arbitration; the daemon is a narrow authority over a small surface.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Add cosd responsibilities to git pre-receive hook**: only catches
   pushes; many of the contended surfaces (lock manifest regen,
@@ -299,3 +298,10 @@ required.
   unit that ADR-136 federation interconnects).
 - ADR-088 — commit_provenance (cosd commits carry their own provenance
   marker `X-COS-Origin: kind=cosd`).
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

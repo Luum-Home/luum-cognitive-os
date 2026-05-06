@@ -20,7 +20,6 @@ implementation_files:
 tier: maintainer
 tags: [concurrency, observability, governance, postmortem-2026-05-05]
 ---
-
 # ADR-183: Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators
 
 ## Status
@@ -206,7 +205,7 @@ peer-context hook only reads the live log.
 - This is *advisory*, not enforcing. ADR-182 enforces; ADR-183
   informs.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Engram pub/sub**: heavy, requires the Engram daemon to be running,
   fails open if Engram is down. Rejected as primary; Engram remains the
@@ -245,3 +244,10 @@ must be revisited.
   producer for coordination events.
 - `docs/architecture/agent-message-bus.md` — directed message producer for
   audit/implementation events.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
