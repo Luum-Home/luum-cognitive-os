@@ -45,6 +45,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Primitive Readiness Ledger Family Extension Plan](architecture/primitive-readiness-ledger-family-extension.md) — staged plan for extending readiness ledgers from scripts to hooks, skills, and rules.
 - [Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) — downstream-project projection contract and current Claude/Codex proof boundary.
 - [ADR-189: Harness Implementation Coverage for Agentic Primitives](adrs/ADR-189-harness-implementation-coverage.md) — separates `SCOPE` intent from effective Claude/Codex/Shell-CI implementation states.
+- [Harness Action Receipts](architecture/harness-action-receipts.md) — vendor-neutral receipt and trust model for Codex `::git-*` directives, Git operations, merge queues, and future harness action telemetry.
+- [ADR-190: Harness Action Receipts and VCS Event Telemetry](adrs/ADR-190-harness-action-receipts.md) — records that harness directives are advisory adapter receipts, not Cognitive OS agentic primitives or safety boundaries.
 - [Primitive Harness Coverage Manual Test](manual-tests/primitive-harness-coverage.md) — manual proof path for regenerating and inspecting per-harness primitive coverage.
 - [Consumer Project Primitive Accessibility Manual Test](manual-tests/consumer-project-primitive-accessibility.md) — manual proof path for temp-project projection and readiness-ledger accessibility checks.
 - [Agent Capability Coverage](agent-capability-coverage.md) — strategic report defining ACC as semantic system coverage for agentic primitives.
