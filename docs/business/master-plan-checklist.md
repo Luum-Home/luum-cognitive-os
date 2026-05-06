@@ -241,6 +241,7 @@
 - [x] Adopt ADR-212 cross-stack license audit toolchain: Syft+Grype primary, Trivy guarded secondary, workflow safety gate, install/run wrappers, and tests.
 - [x] Fix ADR-213 Agent hook ordering so blocking preflight runs before stash snapshot, preventing hidden WIP after blocked launches.
 - [x] Implement ADR-216 Tool Discovery Pre-Use Gate so ad-hoc license/repo tool choices are blocked or warned when COS primitives exist.
+- [x] Implement ADR-219 work ownership liveness preflight so preserved branches, stashes, linked worktrees, claims, and process activity are joined before cleanup/closure claims.
 - [ ] Implement ADR-208 imported-pattern closure audit so producer-only imports cannot be promoted as active loops.
   - [x] Wire the first consumer loop: dependency manifest additions now hit a pre-commit dependency-adoption gate and require staged `/repo-scout`, `/repo-forensics`, or equivalent evidence before adoption.
   - [ ] Add the full imported-pattern closure manifest/audit that proves producer, consumer, scheduler, evaluator, owner, demotion path, and contract tests before promotion claims.

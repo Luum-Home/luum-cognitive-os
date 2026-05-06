@@ -27,7 +27,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-DEFAULT_BRANCH_PATTERN = "codex/preserve-*"
+DEFAULT_BRANCH_PATTERN = "codex/preserve-*,codex/stash-*"
 DEFAULT_STASH_WARN_TTL = 600
 DEFAULT_STASH_BLOCK_TTL = 3600
 
@@ -137,6 +137,16 @@ def worktree_status(path: Path) -> dict[str, Any]:
     if path.exists() and is_git_repo(path):
         return collect_status(path)
     return {"is_dirty": None, "counts": {}, "entries": []}
+
+
+def _status_paths(status: dict[str, Any]) -> list[str]:
+    """Return changed paths from a ``collect_status`` payload."""
+    paths: list[str] = []
+    for entry in status.get("entries", []):
+        path = entry.get("path")
+        if isinstance(path, str) and path:
+            paths.append(path)
+    return sorted(set(paths))
 
 
 def branch_from_head_file(head_file: Path) -> str | None:
@@ -293,7 +303,12 @@ def collect_status(project: Path) -> dict[str, Any]:
 
 def list_branches(project: Path, pattern: str, base_ref: str) -> list[dict[str, Any]]:
     raw = git(project, ["for-each-ref", "--format=%(refname:short)", "refs/heads"])
-    branches = sorted(branch for branch in raw.stdout.splitlines() if fnmatch.fnmatch(branch, pattern))
+    patterns = [item.strip() for item in pattern.split(",") if item.strip()]
+    branches = sorted(
+        branch
+        for branch in raw.stdout.splitlines()
+        if any(fnmatch.fnmatch(branch, item) for item in patterns)
+    )
     rows: list[dict[str, Any]] = []
     for branch in branches:
         tip_result = git(project, ["rev-parse", branch])
@@ -386,6 +401,7 @@ def collect_worktrees(
                 "is_current_project": path == project.resolve(),
                 "dirty": status.get("is_dirty"),
                 "dirty_counts": status.get("counts", {}),
+                "dirty_files": _status_paths(status)[:200],
             }
         )
     return rows
@@ -635,6 +651,7 @@ def collect_worktrees_direct(
                 "is_current_project": True,
                 "dirty": main_status.get("is_dirty"),
                 "dirty_counts": main_status.get("counts", {}),
+                "dirty_files": _status_paths(main_status)[:200],
             }
         )
 
@@ -689,10 +706,72 @@ def collect_worktrees_direct(
                 "is_current_project": path == project.resolve(),
                 "dirty": status.get("is_dirty"),
                 "dirty_counts": status.get("counts", {}),
+                "dirty_files": _status_paths(status)[:200],
             }
         )
 
     return rows
+
+
+def process_activity_for_worktree(path: Path) -> dict[str, Any]:
+    """Return best-effort process activity for a worktree path.
+
+    This is a liveness hint, not proof of ownership. A process with cwd or open
+    files under a worktree means cleanup must fail closed; no process found does
+    not prove the WIP is safe to delete.
+    """
+    needle = str(path.resolve())
+    rows: list[dict[str, Any]] = []
+    ps_proc = subprocess.run(
+        ["ps", "-axo", "pid=,comm=,command="],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    if ps_proc.returncode == 0:
+        for line in ps_proc.stdout.splitlines():
+            if needle not in line:
+                continue
+            parts = line.strip().split(None, 2)
+            if not parts:
+                continue
+            rows.append(
+                {
+                    "source": "ps",
+                    "pid": parts[0],
+                    "command": parts[2] if len(parts) >= 3 else line.strip(),
+                }
+            )
+
+    lsof_candidates = [Path(item) / "lsof" for item in os.environ.get("PATH", "").split(os.pathsep) if item]
+    lsof_candidates.extend([Path("/usr/sbin/lsof"), Path("/usr/bin/lsof")])
+    lsof_bin = next((candidate for candidate in lsof_candidates if candidate.is_file()), None)
+    lsof_available = lsof_bin is not None
+    if lsof_bin is not None:
+        lsof_proc = subprocess.run(
+            [str(lsof_bin), "+D", needle],
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=False,
+        )
+        if lsof_proc.returncode == 0:
+            for line in lsof_proc.stdout.splitlines()[1:20]:
+                parts = line.split()
+                if len(parts) < 2:
+                    continue
+                rows.append({"source": "lsof", "pid": parts[1], "command": parts[0], "raw": line[:300]})
+
+    deduped: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+    for row in rows:
+        key = (str(row.get("source")), str(row.get("pid")), str(row.get("command")))
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(row)
+    return {"available": lsof_available or ps_proc.returncode == 0, "count": len(deduped), "processes": deduped[:20]}
 
 
 def collect_stashes_by_worktree(
@@ -787,6 +866,127 @@ def collect_claims(project: Path) -> list[dict[str, Any]]:
     if isinstance(data, dict):
         return data.get("claims", [])
     return []
+
+
+def _normalize_requested_path(project: Path, raw: str) -> str:
+    candidate = Path(raw).expanduser()
+    if candidate.is_absolute():
+        try:
+            return str(candidate.resolve().relative_to(project.resolve()))
+        except ValueError:
+            return str(candidate)
+    return str(candidate)
+
+
+def _claim_mentions_path(claim: dict[str, Any], rel_path: str) -> bool:
+    expected = claim.get("expected_files") or claim.get("files") or []
+    if not isinstance(expected, list):
+        return False
+    return any(str(item) == rel_path for item in expected)
+
+
+def _stash_mentions_path(stash: dict[str, Any], rel_path: str) -> bool:
+    files = stash.get("files") or []
+    if not isinstance(files, list):
+        return False
+    return any(str(item) == rel_path for item in files)
+
+
+def _worktree_mentions_path(worktree: dict[str, Any], rel_path: str) -> bool:
+    files = worktree.get("dirty_files") or []
+    if not isinstance(files, list):
+        return False
+    return any(str(item) == rel_path for item in files)
+
+
+def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Join WIP/liveness signals for selected paths.
+
+    The result is intentionally conservative. Dirty linked worktrees, active
+    claims, matching stashes, or live processes all require operator review.
+    A preserved branch is evidence that a copy exists, not evidence that the
+    original producer is inactive.
+    """
+    combined_worktrees: list[dict[str, Any]] = []
+    seen_worktree_paths: set[str] = set()
+    for key in ("worktrees", "worktrees_direct"):
+        for worktree in payload.get(key, []):
+            path = str(worktree.get("path") or "")
+            if not path or path in seen_worktree_paths:
+                continue
+            seen_worktree_paths.add(path)
+            combined_worktrees.append(worktree)
+
+    claims = payload.get("claims") or collect_claims(project)
+    stashes = payload.get("stashes_extended") or collect_stashes_extended(
+        project,
+        DEFAULT_STASH_WARN_TTL,
+        DEFAULT_STASH_BLOCK_TTL,
+    )
+
+    rows: list[dict[str, Any]] = []
+    for raw in paths:
+        rel_path = _normalize_requested_path(project, raw)
+        current_dirty = any(entry.get("path") == rel_path for entry in payload.get("status", {}).get("entries", []))
+        dirty_worktrees: list[dict[str, Any]] = []
+        for worktree in combined_worktrees:
+            if not _worktree_mentions_path(worktree, rel_path):
+                continue
+            activity = process_activity_for_worktree(Path(worktree["path"]))
+            dirty_worktrees.append(
+                {
+                    "path": worktree.get("path"),
+                    "branch": worktree.get("branch"),
+                    "is_current_project": worktree.get("is_current_project"),
+                    "dirty_counts": worktree.get("dirty_counts"),
+                    "process_activity": activity,
+                }
+            )
+
+        matching_claims = [claim for claim in claims if _claim_mentions_path(claim, rel_path)]
+        matching_stashes = [stash for stash in stashes if _stash_mentions_path(stash, rel_path)]
+        preserve_branches = [
+            branch["branch"]
+            for branch in payload.get("preserve_branches", [])
+            if rel_path in changed_files_between(project, payload.get("base_ref", "HEAD"), branch["branch"])
+        ]
+
+        has_noncurrent_dirty = any(not item.get("is_current_project") for item in dirty_worktrees)
+        has_live_process = any((item.get("process_activity") or {}).get("count", 0) for item in dirty_worktrees)
+        has_active_claim = any(str(claim.get("status", "active")) == "active" for claim in matching_claims)
+        has_stash = bool(matching_stashes)
+        has_preserve_copy = bool(preserve_branches)
+
+        if has_noncurrent_dirty or has_live_process or has_active_claim:
+            status = "active_or_unknown"
+            action = "Do not clean/drop/merge automatically; coordinate with the owning worktree/session or archive explicitly after liveness review."
+        elif current_dirty:
+            status = "current_wip"
+            action = "Commit, preserve, or explicitly discard current worktree WIP before claiming closure."
+        elif has_stash:
+            status = "stashed_wip"
+            action = "Inspect matching stashes and preserve/apply/drop only with operator intent."
+        elif has_preserve_copy:
+            status = "preserved_copy_only"
+            action = "A review branch copy exists, but this alone does not prove the original agent is inactive."
+        else:
+            status = "clear"
+            action = "No matching WIP signals found by this inventory."
+
+        rows.append(
+            {
+                "path": rel_path,
+                "status": status,
+                "current_dirty": current_dirty,
+                "dirty_worktrees": dirty_worktrees,
+                "claims": matching_claims,
+                "stashes": matching_stashes,
+                "preserve_branches": preserve_branches,
+                "operator_review_required": status != "clear",
+                "action": action,
+            }
+        )
+    return rows
 
 
 @dataclass
@@ -1204,6 +1404,21 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
     else:
         payload["claims"] = []
 
+    if getattr(args, "paths", None):
+        if not payload.get("worktrees_direct"):
+            payload["worktrees_direct"] = collect_worktrees_direct(project, skip_ephemeral=_skip_eph)
+            combined_worktrees = payload["worktrees"] + payload["worktrees_direct"]
+            payload["worktree_stashes"] = collect_stashes_by_worktree(
+                project, combined_worktrees, args.stash_warn_ttl, args.stash_block_ttl
+            )
+        if not payload.get("stashes_extended"):
+            payload["stashes_extended"] = collect_stashes_extended(project, args.stash_warn_ttl, args.stash_block_ttl)
+        if not payload.get("claims"):
+            payload["claims"] = collect_claims(project)
+        payload["path_ownership"] = collect_path_ownership(project, args.paths, payload)
+    else:
+        payload["path_ownership"] = []
+
     if want_race_risks:
         sessions_for_risk = payload.get("sessions") or collect_sessions(project)
         worktrees_for_risk = payload.get("worktrees_direct") or collect_worktrees_direct(project, skip_ephemeral=_skip_eph)
@@ -1236,6 +1451,7 @@ def collect_inventory(args: argparse.Namespace) -> dict[str, Any]:
         "orphan_count": len(payload["orphans"]),
         "claim_count": len(payload["claims"]),
         "race_risk_count": len(payload["race_risks"]),
+        "path_ownership_count": len(payload["path_ownership"]),
     }
     return payload
 
@@ -1333,6 +1549,25 @@ def print_text(payload: dict[str, Any]) -> None:
     elif "race_risks" in payload:
         print("\nRace risks: none detected")
 
+    path_ownership = payload.get("path_ownership", [])
+    if path_ownership:
+        print(f"\nPath ownership ({len(path_ownership)} path(s)):")
+        for item in path_ownership:
+            print(f"  {item['status']} {item['path']}")
+            if item.get("preserve_branches"):
+                print(f"    preserved_on={item['preserve_branches']}")
+            for wt in item.get("dirty_worktrees", []):
+                activity = wt.get("process_activity") or {}
+                print(
+                    f"    dirty_worktree={wt.get('path')} branch={wt.get('branch') or 'detached'} "
+                    f"processes={activity.get('count', 0)}"
+                )
+            if item.get("stashes"):
+                print(f"    matching_stashes={[s.get('ref') for s in item['stashes']]}")
+            if item.get("claims"):
+                print(f"    matching_claims={[c.get('task_id') or c.get('id') for c in item['claims']]}")
+            print(f"    action: {item['action']}")
+
     if payload["findings"]:
         print("\nFindings:")
         for finding in payload["findings"]:
@@ -1391,6 +1626,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--stashes", dest="stashes_extended", action="store_true", help="Include extended stash provenance.")
     parser.add_argument("--claims", action="store_true", help="Include active task claims.")
     parser.add_argument("--race-risks", dest="race_risks", action="store_true", help="Run race-condition heuristics.")
+    parser.add_argument(
+        "--paths",
+        nargs="+",
+        help="Join WIP ownership/liveness signals for selected paths before cleanup, merge, or closure claims.",
+    )
     parser.add_argument("--all", dest="all", action="store_true", help="Enable all P3.3 dimensions.")
 
     return parser
