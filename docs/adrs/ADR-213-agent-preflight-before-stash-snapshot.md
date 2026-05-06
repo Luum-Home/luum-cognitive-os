@@ -71,9 +71,14 @@ A unit contract test verifies this invariant for:
 ## Acceptance criteria
 
 ```bash
-python3 -m pytest tests/unit/test_agent_hook_order.py -q
+python3 -m pytest tests/unit/test_agent_hook_order.py tests/behavior/test_agent_blocked_preflight_no_stash.py -q
 python3 -m pytest tests/unit/test_codex_guard_layer.py::test_pre_agent_snapshot_runs_after_blocking_agent_gates -q
 ```
 
 Both active harness projection and generated Claude settings must prove
 `agent-prelaunch.sh` precedes `pre-agent-snapshot.sh`.
+
+The smoke test must simulate a dirty working tree plus a manual stash that makes
+`agent-prelaunch.sh` block. In the correct order, no `auto-pre-agent-*` stash is
+created and the dirty working-tree diff remains visible. A control test proves
+the old snapshot-before-preflight order would have hidden that WIP in stash.

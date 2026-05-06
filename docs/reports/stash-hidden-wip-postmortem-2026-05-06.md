@@ -74,3 +74,16 @@ created them before restore was possible.
 Any hook that mutates stash, hides WIP, deletes files, or rewrites working-tree
 state must run only after all blocking admission gates have passed, unless it
 also has explicit restore-on-block semantics.
+
+## Regression tests
+
+Added `tests/behavior/test_agent_blocked_preflight_no_stash.py` to reproduce the
+incident class end-to-end in a temporary git repo:
+
+1. create a manual stash that makes `agent-prelaunch.sh` block;
+2. create visible dirty operator WIP;
+3. run the active Agent hook window from `.claude/settings.json`;
+4. assert the preflight blocks before snapshot, no `auto-pre-agent-*` stash is
+   created, and the WIP remains visible in `git diff`;
+5. run a control with the old bad order and prove it would hide WIP in an
+   `auto-pre-agent-*` stash.

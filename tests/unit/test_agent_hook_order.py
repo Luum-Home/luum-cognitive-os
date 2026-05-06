@@ -38,3 +38,23 @@ def test_claude_settings_driver_runs_prelaunch_before_snapshot() -> None:
     prelaunch = text.index('"hooks/agent-prelaunch.sh"')
     snapshot = text.index('"hooks/pre-agent-snapshot.sh"')
     assert prelaunch < snapshot
+
+
+def test_no_json_profile_places_snapshot_before_prelaunch_when_both_exist() -> None:
+    settings_files = [
+        PROJECT_ROOT / ".claude/settings.json",
+        *sorted((PROJECT_ROOT / "templates/security-profiles").glob("*.json")),
+    ]
+    for settings_path in settings_files:
+        payload = json.loads(settings_path.read_text(encoding="utf-8"))
+        for group in payload.get("hooks", {}).get("PreToolUse", []):
+            if group.get("matcher") != "Agent":
+                continue
+            commands = [hook.get("command", "") for hook in group.get("hooks", [])]
+            has_prelaunch = any("hooks/agent-prelaunch.sh" in command for command in commands)
+            has_snapshot = any("hooks/pre-agent-snapshot.sh" in command for command in commands)
+            if has_prelaunch and has_snapshot:
+                try:
+                    _assert_prelaunch_before_snapshot(commands)
+                except AssertionError as exc:
+                    raise AssertionError(f"{settings_path} violates ADR-213 hook order") from exc
