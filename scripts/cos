@@ -16,6 +16,7 @@
 #   cos dependency adoption-gate        -> scripts/cos-dependency-adoption-gate
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos license audit                   -> scripts/cos-cross-stack-license-audit
+#   cos tool-discovery preuse        -> scripts/cos-tool-discovery-preuse
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos observe run                    -> scripts/cos-run-trace
 #   cos service readiness              -> scripts/cos-service-readiness-gate
@@ -156,6 +157,14 @@ case "$SUBCMD" in
       exec "$SCRIPT_DIR/cos-cross-stack-license-audit" --project-dir "$PROJECT_ROOT" "$@"
     fi
     echo "cos: unknown license subcommand '${2:-}'. Try: cos license audit [--json|--strict]" >&2
+    exit 1
+    ;;
+  tool-discovery)
+    if [ "${2:-}" = "preuse" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-tool-discovery-preuse" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown tool-discovery subcommand '${2:-}'. Try: cos tool-discovery preuse --command CMD [--json]" >&2
     exit 1
     ;;
   observe)

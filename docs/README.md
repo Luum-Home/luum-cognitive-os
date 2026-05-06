@@ -13,6 +13,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Key Documents
 
 - [Post-Mortem — State Retention Self-Bite and Retention Controller — 2026-05-06](reports/state-retention-controller-postmortem-2026-05-06.md) — incident analysis and corrective action for retention self-bites.
+- [ADR-216: Tool Discovery Pre-Use Gate](adrs/ADR-216-tool-discovery-pre-use-gate.md) — manifest-backed Bash gate that blocks ad-hoc tools when COS primitives already exist.
 - [ADR-213: Agent Preflight Before Stash Snapshot](adrs/ADR-213-agent-preflight-before-stash-snapshot.md) — hook-order invariant preventing blocked Agent launches from hiding WIP in auto-pre-agent stashes.
 - [ADR-212: Cross-Stack License Audit Toolchain](adrs/ADR-212-cross-stack-license-audit-toolchain.md) — Syft+Grype primary scanner, Trivy guarded secondary scanner, and workflow safety policy for pre-launch license/security audits.
 - [ADR-200: State Retention Controller](adrs/ADR-200-state-retention-controller.md) — conservative automatic cleanup architecture with observe, repair-safe, and repair-before-block modes.
@@ -34,6 +35,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Profile-Aware Skill Routing and Lazy Context Loading](architecture/profile-aware-skill-routing.md)
 - [Cross-Session Coordination Ledger](architecture/cross-session-coordination-ledger.md) — shared claim, ADR ownership, and worktree-intake contract for parallel IDE/session agents.
 - [Agent Message Bus](architecture/agent-message-bus.md) — directed auditor/operator inbox and acknowledgement channel for agents sharing a repo filesystem.
+- [Tool Discovery Pre-Use Self-Bite — 2026-05-06](reports/tool-discovery-preuse-self-bite-2026-05-06.md) — dogfood evidence and fix for model bias toward ad-hoc mainstream tools over COS primitives.
 - [Hidden WIP in Auto Pre-Agent Stash Post-Mortem — 2026-05-06](reports/stash-hidden-wip-postmortem-2026-05-06.md) — root-cause analysis for WIP hidden by snapshot-before-preflight ordering and ADR-213 fix.
 - [Cross-Stack License Audit Tools — 2026-05-06](reports/cross-stack-license-audit-tools-2026-05-06.md) — market review and implementation record for Syft+Grype primary plus Trivy guardrails.
 - [Session State Forensics — 2026-05-05](reports/session-state-forensics-2026-05-05.md) — branch/worktree forensic record for the routing, Paperclip, and ADR tombstone collision session.
