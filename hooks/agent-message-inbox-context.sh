@@ -3,6 +3,7 @@
 # ADR-185: inject pending directed agent messages on UserPromptSubmit.
 
 set -uo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/_lib/context_budget_lib.sh"
 
 if [[ "${DISABLE_HOOK_AGENT_MESSAGE_INBOX_CONTEXT:-0}" == "1" || "${DISABLE_HOOK_AGENT_MESSAGE_INBOX_CONTEXT:-}" == "true" ]]; then
   exit 0
@@ -13,7 +14,7 @@ HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COS_ROOT="$(cd "$HOOK_DIR/.." && pwd)"
 SESSION_ID="${COGNITIVE_OS_SESSION_ID:-${CODEX_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}}"
 
-python3 - "$PROJECT_DIR" "$SESSION_ID" "$COS_ROOT" <<'PY' 2>/dev/null || true
+CONTEXT_JSON="$(python3 - "$PROJECT_DIR" "$SESSION_ID" "$COS_ROOT" <<'PY' 2>/dev/null || true
 from __future__ import annotations
 
 import json
@@ -40,5 +41,10 @@ for row in rows:
 lines.append("Acknowledge with scripts/cos-agent-message ack after applying/triaging.")
 print(json.dumps({"additionalContext": "\n".join(lines)}, ensure_ascii=False))
 PY
+)"
+if [ -n "$CONTEXT_JSON" ]; then
+  CONTEXT_JSON="$(context_budget_filter_json "agent-message-inbox-context" "$CONTEXT_JSON" "static")"
+  [ -n "$CONTEXT_JSON" ] && printf '%s\n' "$CONTEXT_JSON"
+fi
 
 exit 0
