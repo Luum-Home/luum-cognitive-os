@@ -5,6 +5,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added — ADR-171..187: paperclip rejection, lifecycle activation, and coordination hardening (2026-05-06)
+
+- Rejected the Paperclip/OpenSpace-style auto-apply integration surface and removed the package, hooks, docs, tests, and symlinks tied to the retired Paperclip daemon path. The accepted path keeps generated skills in sandbox until evidence and operator review promote them.
+- Activated the skill lifecycle ladder: sandbox skills can now produce propose-only promotion artifacts, advisory/blocking primitives can produce demotion proposals, and doctrine proposals log SkillStore/dogfood/drift/aspirational input signals. Promotion and demotion flows remain non-mutating by contract.
+- Adopted SkillStore as the primary skill-evidence ledger for lifecycle decisions. The store now records exact per-execution events in `skill_execution_events`, while JSONL remains a compatibility fallback for older installs and fixtures.
+- Added lifecycle CLIs and validation surfaces: `scripts/cos-promotion-proposer`, `scripts/cos-demotion-proposer`, `scripts/migrate_skill_archive_to_store.py`, `hooks/skill-post-execution-analysis.sh`, `hooks/promotion-proposer-weekly.sh`, `tests/contracts/test_promotion_propose_only.py`, `tests/behavior/test_skill_lifecycle_promotion_ladder.py`, and `scripts/run_skill_lifecycle_promotion_smoke.py`.
+- Added cross-session coordination primitives: branch ownership locks, event bus, agent message bus, ADR relevance/routing suggesters, context-budget enforcement, and the cosd intent arbiter for ADR number/tombstone arbitration.
+
+### Fixed — lifecycle evidence windows and SkillStore path consistency (2026-05-06)
+
+- Standardised the SkillStore DB path on `.cognitive-os/skill_store.db` across hook, migration, doctrine proposer, promotion proposer, demotion proposer, and tests.
+- Fixed demotion evaluation so advisory skills used inside the demotion window are not falsely demoted because promotion-window data was reused.
+- Fixed lifecycle proposal evidence to use windowed SkillStore execution events instead of historical aggregate completions when evaluating “N invocations in M days”.
+- Hardened `cosd` intent handling so duplicate pending intent IDs are not overwritten and ADR tombstone filenames must preserve the canonical `ADR-NNN-*.md` prefix.
+
 ### Added — ADR-176: SkillStore SQLite schema adoption + post-execution analysis trigger (2026-05-05)
 
 ADR-176 adopts OpenSpace's 6-table SQLite schema verbatim (source: HKUDS/OpenSpace @ d1e367d, `skill_engine/store.py` lines 80–166) and introduces a discipline-gated post-execution analysis trigger. Key additions: `lib/skill_store.py` (SkillStore class; 6-table schema: `skill_records`, `skill_lineage_parents`, `execution_analyses`, `skill_judgments`, `skill_tool_deps`, `skill_tags`), `scripts/migrate_skill_archive_to_store.py` (idempotent migration from `skill-archive.jsonl`), and `hooks/skill-post-execution-analysis.sh` (PostToolUse Agent, async). Discipline gate (ADR-133/134) is structurally enforced: the hook's only write path to skill-related files is `docs/reports/skill-analysis-proposals/` — no code path to live `SKILL.md` exists.
