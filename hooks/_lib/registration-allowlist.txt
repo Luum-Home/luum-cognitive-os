@@ -210,3 +210,10 @@ skill-md-routing-validator.sh
 # 2026-05-05: ADR-176 skill-post-execution-analysis registered in settings-driver-claude-code.sh
 # PostToolUse Agent hook; async, discipline-gated (propose-only). Wired via driver.
 skill-post-execution-analysis.sh
+# 2026-05-05: cross-session manager ledger guard is generated via
+# settings-driver-claude-code.sh for Bash/git boundaries; text-scan cannot
+# see driver indirection in profile scripts.
+cross-session-coordination-guard.sh
+# 2026-05-05: directed auditor/operator message guard is generated via the
+# settings driver for Bash/git boundaries.
+agent-message-inbox-guard.sh
