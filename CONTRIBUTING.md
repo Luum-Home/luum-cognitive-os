@@ -119,4 +119,4 @@ High-impact contributions:
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [Apache License 2.0](LICENSE).
+By contributing, you agree your contributions will be licensed under FSL-1.1-MIT. After the 2-year change date, your contributions automatically convert to MIT along with the rest of the project.

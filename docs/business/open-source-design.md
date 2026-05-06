@@ -149,7 +149,7 @@ cognitive-os/
 +-- install.sh                   # One-command installer
 +-- uninstall.sh                 # Clean removal
 +-- README.md
-+-- LICENSE                      # Apache 2.0
++-- LICENSE                      # FSL-1.1-MIT (converts to MIT after 2 years)
 +-- CONTRIBUTING.md
 +-- docs/
     +-- getting-started.md
@@ -635,12 +635,12 @@ For an existing project, migration looks like this:
 
 **Consequences**: Configuration is version-controlled and human-readable. Hooks need a YAML parser (handled via `yq` or simple grep/sed for flat values). Environment variables can still override for CI/CD contexts.
 
-### ADR-004: Apache 2.0 License
+### ADR-004: FSL-1.1-MIT License
 
-**Status**: Proposed
+**Status**: Superseded (originally proposed Apache 2.0; switched to FSL-1.1-MIT before first public release — see `.cognitive-os/strategy/04-license-repo-and-corrections-log.md`)
 
-**Context**: The framework needs an open-source license that allows commercial use (since it will be used inside commercial projects) without copyleft obligations.
+**Context**: The framework needs a license that allows broad use while protecting against hyperscaler clones (Datadog, Dynatrace, etc.) offering the product as a managed service.
 
-**Decision**: Apache 2.0. It allows commercial use, modification, and distribution while providing patent protection.
+**Decision**: FSL-1.1-MIT (Functional Source License 1.1 with MIT Future). Source-available with no commercial hosting/SaaS restriction for 2 years, then automatically converts to MIT. Follows the Sentry-validated approach.
 
-**Consequences**: Companies can use cognitive-os internally without open-sourcing their projects. Contributors must sign off on the Apache 2.0 terms. Compatible with MIT dependencies.
+**Consequences**: Companies can use cognitive-os internally without open-sourcing their projects. Competitors cannot offer it as a hosted product for 2 years. After the change date it becomes MIT — satisfying "eventually fully open" contributors. Not OSI-approved (source-available, not open-source by OSI definition).

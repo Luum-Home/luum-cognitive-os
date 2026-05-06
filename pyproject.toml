@@ -2,6 +2,8 @@
 name = "luum-cognitive-os"
 version = "0.27.0"
 description = "Luum Cognitive OS — agent orchestration, memory, and tooling"
+# Note: FSL-1.1-MIT is source-available, not OSI-approved. Converts to MIT after 2 years.
+license = { text = "FSL-1.1-MIT" }
 requires-python = ">=3.11"
 dependencies = [
     "pyyaml>=6.0",
