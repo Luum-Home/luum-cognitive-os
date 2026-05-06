@@ -27,10 +27,13 @@ The script checks:
 - GitHub CLI authentication;
 - main repository reachability;
 - Homebrew tap repository reachability;
-- presence, but never value, of `HOMEBREW_TAP_GITHUB_TOKEN`.
+- presence, but never value, of `HOMEBREW_TAP_GITHUB_TOKEN`;
+- `make test-laptop` success through `--run-test-laptop` before a real release.
 
 The script is intentionally read-only. It does not create repositories, tags,
-secrets, or releases.
+secrets, or releases. Without `--run-test-laptop`, it reports blocked so an
+operator cannot confuse external readiness with the required release validation
+lane. The GitHub release workflow also runs `make test-laptop` before GoReleaser.
 
 ## Consequences
 
@@ -48,4 +51,5 @@ ACCEPTANCE CRITERIA:
 2. The readiness script detects an existing local or remote tag for the requested version.
 3. Missing Homebrew tap access or missing `HOMEBREW_TAP_GITHUB_TOKEN` blocks publication readiness.
 4. The script emits JSON with booleans and reasons without printing secret values.
+5. A real release preflight requires `make test-laptop` to pass before tagging/running GoReleaser.
 ```
