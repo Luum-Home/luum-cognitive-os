@@ -1,5 +1,18 @@
 <!-- SCOPE: both -->
 <!-- TIER: 0 -->
+---
+enforcement: agent-instruction
+trigger_priority: high
+routing_patterns:
+  - pattern: "\\breconstruction phase\\b"
+    confidence: 0.95
+  - pattern: "\\bphase[- ]aware\\b"
+    confidence: 0.92
+  - pattern: "\\brewrite\\s*(>|over|vs\\.?|instead of)\\s*patch\\b"
+    confidence: 0.90
+  - pattern: "\\b(rewrite|reconstruct).*(legacy|broken|stub)\\b"
+    confidence: 0.80
+---
 # Phase-Aware Agent Protocol
 
 ## Current Phase: RECONSTRUCTION

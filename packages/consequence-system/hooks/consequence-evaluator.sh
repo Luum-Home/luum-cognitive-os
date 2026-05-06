@@ -75,4 +75,33 @@ elif action.consequence.value == 'promote':
         print(f'PROMOTED: {a}', flush=True)
 " 2>/dev/null || true
 
+# ── ADR-175: research-quality streak advisory (propose-only per ADR-134) ──
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
+RQ_LOG="$PROJECT_DIR/.cognitive-os/metrics/research-quality.jsonl"
+if [ -f "$RQ_LOG" ]; then
+  python3 - "$RQ_LOG" <<'PYEOF' 2>/dev/null || true
+import json, sys
+from pathlib import Path
+log = Path(sys.argv[1])
+try:
+    lines = log.read_text(encoding="utf-8").splitlines()[-5:]
+except Exception:
+    sys.exit(0)
+scores = []
+for line in lines:
+    try:
+        scores.append(float(json.loads(line).get("overall_score", 0)))
+    except Exception:
+        pass
+if len(scores) >= 3:
+    avg = sum(scores) / len(scores)
+    if avg < 70:
+        print(
+            f"ADVISORY [research-quality-streak]: last {len(scores)} reports "
+            f"avg {avg:.1f} (<70). Audit report methodology (ADR-175).",
+            flush=True,
+        )
+PYEOF
+fi
+
 exit 0
