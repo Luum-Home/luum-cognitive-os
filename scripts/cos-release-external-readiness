@@ -6,6 +6,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project 2>/dev/null || pwd)"
 VERSION=""
 JSON=0
+RUN_TEST_LAPTOP=0
+TEST_LAPTOP_OK=0
 TAP_REPO="Luum-Home/homebrew-tap"
 MAIN_REPO="Luum-Home/luum-cognitive-os"
 while [[ $# -gt 0 ]]; do
@@ -15,6 +17,7 @@ while [[ $# -gt 0 ]]; do
     --tap-repo) TAP_REPO="$2"; shift 2 ;;
     --main-repo) MAIN_REPO="$2"; shift 2 ;;
     --json) JSON=1; shift ;;
+    --run-test-laptop) RUN_TEST_LAPTOP=1; shift ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
 done
@@ -36,6 +39,15 @@ porcelain="$(git status --porcelain=v1 2>/dev/null || true)"
 unmerged="$(git diff --name-only --diff-filter=U 2>/dev/null || true)"
 if [[ -n "$porcelain" ]]; then status="blocked"; reasons+=("working tree is not clean"); fi
 if [[ -n "$unmerged" ]]; then status="blocked"; reasons+=("working tree has unresolved conflicts"); fi
+if [[ "$RUN_TEST_LAPTOP" == 1 ]]; then
+  if make test-laptop; then
+    TEST_LAPTOP_OK=1
+  else
+    status="blocked"; reasons+=("make test-laptop failed")
+  fi
+else
+  status="blocked"; reasons+=("make test-laptop was not run; rerun with --run-test-laptop before release")
+fi
 if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then status="blocked"; reasons+=("tag $VERSION already exists locally"); fi
 if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then status="blocked"; reasons+=("tag $VERSION already exists on origin"); fi
 goreleaser_ok=1; command -v goreleaser >/dev/null 2>&1 || goreleaser_ok=0
@@ -48,12 +60,12 @@ for pair in "goreleaser:$goreleaser_ok" "gh_auth:$gh_ok" "main_repo:$main_repo_o
   if [[ "$value" != 1 ]]; then status="blocked"; reasons+=("$name is not ready"); fi
 done
 if [[ "$JSON" == 1 ]]; then
-  python3 - "$status" "$VERSION" "$MAIN_REPO" "$TAP_REPO" "$goreleaser_ok" "$gh_ok" "$main_repo_ok" "$tap_repo_ok" "$secret_ok" "$porcelain" "$unmerged" "${reasons[@]}" <<'PY'
+  python3 - "$status" "$VERSION" "$MAIN_REPO" "$TAP_REPO" "$goreleaser_ok" "$gh_ok" "$main_repo_ok" "$tap_repo_ok" "$secret_ok" "$TEST_LAPTOP_OK" "$RUN_TEST_LAPTOP" "$porcelain" "$unmerged" "${reasons[@]}" <<'PY'
 import json, sys
 status, version, main_repo, tap_repo = sys.argv[1:5]
-flags = [int(v) for v in sys.argv[5:10]]
-porcelain, unmerged = sys.argv[10:12]
-reasons = sys.argv[12:]
+flags = [int(v) for v in sys.argv[5:12]]
+porcelain, unmerged = sys.argv[12:14]
+reasons = sys.argv[14:]
 print(json.dumps({
   "ok": status == "ready",
   "status": status,
@@ -66,6 +78,8 @@ print(json.dumps({
     "main_repo": bool(flags[2]),
     "tap_repo": bool(flags[3]),
     "homebrew_token_present": bool(flags[4]),
+    "test_laptop_passed": bool(flags[5]),
+    "test_laptop_requested": bool(flags[6]),
     "working_tree_clean": not bool(porcelain),
     "unresolved_conflicts": bool(unmerged),
   },
