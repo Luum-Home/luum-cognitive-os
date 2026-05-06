@@ -138,13 +138,13 @@ run_claude_code_driver() {
     content-policy.sh doc-sync-detector.sh claim-validator.sh post-agent-verify.sh direct-main-guard.sh cross-session-coordination-guard.sh agent-message-inbox-guard.sh orchestrator-claim-gate.sh pre-commit-content-hash-dedupe.sh concurrent-write-guard.sh plan-claim-validator.sh completion-gate.sh \
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh kpi-trigger.sh teammate-idle.sh \
-    task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh \
+    task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
     post-git-orphan-notifier.sh skill-router-bash-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh \
-    skill-router-prompt-suggest.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh skill-post-execution-analysis.sh \
+    skill-router-prompt-suggest.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
 ; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
@@ -196,7 +196,7 @@ if [ "$PROFILE" = "core" ]; then
 else
   echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards, dangerous-env-flag-detector.sh"
 fi
-echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async), skill-router-prompt-suggest.sh (async)"
+echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async), skill-router-prompt-suggest.sh (async), rule-router-prompt-suggest.sh (async), adr-relevance-suggest.sh (async)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: protected-config-write-guard.sh, session-heartbeat.sh, lethal-trifecta-gate.sh"
