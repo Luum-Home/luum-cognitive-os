@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
   "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 72,
+  "_hook_count": 75,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -231,6 +231,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-commit-content-hash-dedupe.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-skill-invocation-gate.sh\""
           }
         ]
       },

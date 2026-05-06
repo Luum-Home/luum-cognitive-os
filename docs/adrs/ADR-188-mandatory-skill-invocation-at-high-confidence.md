@@ -1,7 +1,7 @@
 ---
 adr: 188
 title: Mandatory Skill Invocation at High Router Confidence
-status: proposed
+status: accepted
 date: 2026-05-06
 supersedes: []
 superseded_by: null
@@ -9,9 +9,9 @@ extends: [ADR-008, ADR-029b]
 implementation_files:
   - lib/skill_router.py
   - hooks/skill-router-prompt-suggest.sh
-  - hooks/orchestrator-skill-invocation-gate.sh   # to create
-  - rules/skill-invocation-mandatory.md           # to create
-  - tests/contracts/test_skill_invocation_gate.py # to create
+  - hooks/orchestrator-skill-invocation-gate.sh
+  - rules/skill-invocation-mandatory.md
+  - tests/contracts/test_skill_invocation_gate.py
   - .cognitive-os/metrics/skill-bypass.jsonl     # runtime artifact
 tier: maintainer
 tags: [skill-router, governance, orchestrator-discipline, postmortem-2026-05-06-repo-scout-batch]
@@ -21,7 +21,10 @@ tags: [skill-router, governance, orchestrator-discipline, postmortem-2026-05-06-
 
 ## Status
 
-**Proposed.** Filed in response to a structural orchestrator-discipline failure
+**Accepted (2026-05-06).** Implementation landed on session branch
+`session/b2624bef-adr-188-implementation` with hook registered in all three
+harness drivers (claude-code, codex, bare-cli) and contract tests covering
+all five acceptance scenarios passing. Filed in response to a structural orchestrator-discipline failure
 on 2026-05-06: the skill router suggested `/repo-scout` (confidence 0.95) for a
 batch GitHub-URL research task and emitted system-reminders 12 times across
 the session. The orchestrator ignored every suggestion, hand-rolled bespoke
@@ -173,7 +176,7 @@ user prompt.
 - Soft layer (suggestion) remains unchanged. The new hook only adds
   enforcement when bypass-without-annotation accumulates.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Hard block on first ignored suggestion**: too aggressive; operator
   exploratory work would block too easily. Rejected; three-strike pattern
@@ -206,6 +209,18 @@ ADR-188 is correct if, in a 60-day audit window after activation:
 If (1) or (2) exceed the threshold, the gate is producing friction without
 signal — revisit threshold or skill quality. If (3) does NOT increase, the
 gate isn't actually changing behavior. If (4) exceeds, optimize the hook.
+
+## Verification
+
+ADR-188 is verified by syntax, contract, and audit lanes that exercise the gate
+behavior and keep ADR structure compliant:
+
+```bash
+bash -n hooks/orchestrator-skill-invocation-gate.sh
+python3 -m pytest tests/contracts/test_skill_invocation_gate.py -q
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+make test-laptop
+```
 
 ## Cross-References
 

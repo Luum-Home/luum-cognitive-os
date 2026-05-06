@@ -142,7 +142,7 @@ run_claude_code_driver() {
     error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh untracked-work-preservation-guard.sh branch-ownership-lock.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
-    post-git-orphan-notifier.sh skill-router-bash-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
+    post-git-orphan-notifier.sh skill-router-bash-gate.sh orchestrator-skill-invocation-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh branch-ownership-release.sh \
     skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
 ; do

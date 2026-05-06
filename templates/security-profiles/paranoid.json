@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 123,
+  "_hook_count": 127,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -257,6 +257,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/pre-commit-content-hash-dedupe.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-skill-invocation-gate.sh\""
           }
         ]
       },
@@ -352,6 +356,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-skill-invocation-gate.sh\""
           }
         ]
       }
