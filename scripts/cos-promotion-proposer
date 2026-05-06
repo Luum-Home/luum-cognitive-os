@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# ADR-178 — propose-only sandbox->advisory lifecycle promoter dispatcher.
+set -euo pipefail
+exec python3 "$(dirname "$0")/cos_promotion_proposer.py" "$@"

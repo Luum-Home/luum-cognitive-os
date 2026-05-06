@@ -142,6 +142,8 @@ cc_driver_emit() {
       "hooks/validation-lock-cleanup.sh"      "false" \
       "hooks/infra-health.sh"                 "true"  \
       "hooks/aspirational-audit-weekly.sh"    "false" \
+      "hooks/promotion-proposer-weekly.sh"    "true"  \
+      "hooks/validator-soak-weekly.sh"        "true"  \
       "hooks/self-knowledge-refresh.sh"       "false" \
       "hooks/session-start-worktree-nudge.sh" "false" \
       "hooks/session-start-stash-reapply.sh"  "false" \
@@ -159,6 +161,8 @@ cc_driver_emit() {
     "hooks/memory-prefetch.sh"                    "true"  \
     "hooks/edit-lock-process-negotiations.sh"     "false" \
     "hooks/stash-budget-warn.sh"                  "true"  \
+    "hooks/rule-router-prompt-suggest.sh"         "true"  \
+    "hooks/adr-relevance-suggest.sh"              "true"  \
   )
 
   local subagent_start
@@ -282,6 +286,8 @@ cc_driver_emit() {
     "hooks/surface-fix-detector.sh"         "false" \
     "hooks/doc-sync-detector.sh"            "true"  \
     "hooks/edit-lock-drain-parked.sh"       "false" \
+    "hooks/research-quality-validator.sh"   "true"  \
+    "hooks/rule-md-routing-validator.sh"    "true"  \
   )
 
   local post_todowrite
