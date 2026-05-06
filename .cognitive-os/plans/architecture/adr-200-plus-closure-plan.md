@@ -34,8 +34,8 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 ## Phase 2 — Signal and trace substrate (ADR-204, ADR-205)
 
-- [ ] Add reward-signal quality validator and quarantine schema.
-- [ ] Add fixtures for valid, suspect, and corrupt rows.
+- [x] Add reward-signal quality validator and quarantine schema.
+- [x] Add fixtures for valid, suspect, and corrupt rows.
 - [ ] Add run-id / event-id trace schema.
 - [ ] Add flight-recorder latest report from cross-stream joins.
 - [ ] Smoke-test a headless run that emits a joined trace without dashboard dependency.
