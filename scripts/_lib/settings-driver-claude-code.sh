@@ -122,6 +122,7 @@ cc_driver_emit() {
   if [ "$PROFILE" = "core" ]; then
     session_start=$(_cc_hook_group "SessionStart" "" \
       "hooks/session-init.sh"                  "false" \
+      "hooks/cross-session-event-emit.sh"       "true"  \
       "hooks/validation-lock-cleanup.sh"      "false" \
       "hooks/session-start-stash-reapply.sh"  "false" \
     )
@@ -161,6 +162,8 @@ cc_driver_emit() {
     "hooks/memory-prefetch.sh"                    "true"  \
     "hooks/edit-lock-process-negotiations.sh"     "false" \
     "hooks/stash-budget-warn.sh"                  "true"  \
+    "hooks/cross-session-peer-context.sh"          "true"  \
+    "hooks/agent-message-inbox-context.sh"         "true"  \
     "hooks/rule-router-prompt-suggest.sh"         "true"  \
     "hooks/adr-relevance-suggest.sh"              "true"  \
   )
@@ -190,6 +193,7 @@ cc_driver_emit() {
     "hooks/rate-limiter.sh"                "false" \
     "hooks/destructive-rm-blocker.sh"      "false" \
     "hooks/destructive-git-blocker.sh"     "false" \
+    "hooks/branch-ownership-lock.sh"       "false" \
     "hooks/symlink-mutation-guard.sh"      "false" \
     "hooks/git-commit-scope-guard.sh"           "false" \
     "hooks/direct-main-guard.sh"                "false" \
@@ -220,6 +224,7 @@ cc_driver_emit() {
     "hooks/edit-lock-pre-tool.sh"            "false" \
     "hooks/concurrent-write-guard.sh"        "false" \
     "hooks/skill-md-routing-validator.sh"    "false" \
+    "hooks/cross-session-event-emit.sh"      "true"  \
   )
 
   local pre_plan_claim
@@ -245,6 +250,7 @@ cc_driver_emit() {
     "hooks/completeness-check.sh"           "false" \
     "hooks/reinvention-check.sh"            "false" \
     "hooks/native-agent-heartbeat.sh"       "false" \
+    "hooks/cross-session-event-emit.sh"      "true"  \
   )
 
   local post_all
@@ -267,6 +273,7 @@ cc_driver_emit() {
     "hooks/audit-id-enricher.sh"           "false" \
     "hooks/error-learning.sh"              "false" \
     "hooks/post-git-orphan-notifier.sh"    "false" \
+    "hooks/cross-session-event-emit.sh"     "true"  \
   )
 
   local post_bash_edit_write
@@ -348,6 +355,8 @@ cc_driver_emit() {
     "hooks/skill-failure-monitor.sh"          "false" \
     "hooks/skill-synthesis-scanner.sh"        "false" \
     "hooks/session-end-reap.sh"               "false" \
+    "hooks/cross-session-event-emit.sh"        "true"  \
+    "hooks/branch-ownership-release.sh"        "false" \
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
     "hooks/engram-obsidian-export-on-stop.sh" "true" \
