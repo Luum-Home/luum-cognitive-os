@@ -30,7 +30,7 @@ def test_session_bus_appends_and_filters_events(tmp_path: Path) -> None:
     all_events = read_events(project_dir=tmp_path)
     filtered = read_events(project_dir=tmp_path, event_type="projection_regenerated")
 
-    assert [event["event_type"] for event in all_events] == ["registry_changed", "projection_regenerated"]
+    assert [event["event_type"] for event in all_events] == ["registry-changed", "projection-regenerated"]
     assert len(filtered) == 1
     assert filtered[0]["payload"]["file"] == ".codex/hooks.json"
 

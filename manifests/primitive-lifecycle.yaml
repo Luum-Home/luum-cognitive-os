@@ -6941,3 +6941,371 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: hooks/adr-relevance-suggest.sh
+  kind: hook
+  owner_adr: ADR-181
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/adr-relevance-suggest.sh
+  runtime_projection: true
+  behavior_evidence: context-suggestion
+  evidence_commands:
+  - bash -n hooks/adr-relevance-suggest.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/adr-relevance-suggest.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/adr-relevance.jsonl
+- id: hooks/agent-message-inbox-context.sh
+  kind: hook
+  owner_adr: ADR-185
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/agent-message-inbox-context.sh
+  runtime_projection: true
+  behavior_evidence: context-injection
+  evidence_commands:
+  - bash -n hooks/agent-message-inbox-context.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/agent-message-inbox-context.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/coordination/agent-messages.jsonl
+- id: hooks/agent-message-inbox-guard.sh
+  kind: hook
+  owner_adr: ADR-185
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/agent-message-inbox-guard.sh
+  runtime_projection: true
+  behavior_evidence: runtime-guard; mode-configurable warn/block
+  evidence_commands:
+  - bash -n hooks/agent-message-inbox-guard.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/agent-message-inbox-guard.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/coordination/agent-messages.jsonl
+- id: hooks/branch-ownership-lock.sh
+  kind: hook
+  owner_adr: ADR-182
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/branch-ownership-lock.sh
+  runtime_projection: true
+  behavior_evidence: single-writer-branch-lock
+  evidence_commands:
+  - bash -n hooks/branch-ownership-lock.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/branch-ownership-lock.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/coordination/branch-locks.jsonl
+- id: hooks/branch-ownership-release.sh
+  kind: hook
+  owner_adr: ADR-182
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/branch-ownership-release.sh
+  runtime_projection: true
+  behavior_evidence: best-effort-lock-release
+  evidence_commands:
+  - bash -n hooks/branch-ownership-release.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/branch-ownership-release.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/coordination/branch-locks.jsonl
+- id: hooks/context-budget-meter.sh
+  kind: hook
+  owner_adr: ADR-186
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: context-governance
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/context-budget-meter.sh
+  runtime_projection: true
+  behavior_evidence: budget-meter-with-override
+  evidence_commands:
+  - bash -n hooks/context-budget-meter.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/context-budget-meter.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/context-budget.jsonl
+- id: hooks/cross-session-coordination-guard.sh
+  kind: hook
+  owner_adr: ADR-183
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/cross-session-coordination-guard.sh
+  runtime_projection: true
+  behavior_evidence: cross-session-conflict-guard
+  evidence_commands:
+  - bash -n hooks/cross-session-coordination-guard.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/cross-session-coordination-guard.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/sessions/events.jsonl
+- id: hooks/cross-session-event-emit.sh
+  kind: hook
+  owner_adr: ADR-183
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/cross-session-event-emit.sh
+  runtime_projection: true
+  behavior_evidence: append-only-session-event-emitter
+  evidence_commands:
+  - bash -n hooks/cross-session-event-emit.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/cross-session-event-emit.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/sessions/events.jsonl
+- id: hooks/cross-session-peer-context.sh
+  kind: hook
+  owner_adr: ADR-183
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: coordination
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/cross-session-peer-context.sh
+  runtime_projection: true
+  behavior_evidence: peer-context-injection
+  evidence_commands:
+  - bash -n hooks/cross-session-peer-context.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/cross-session-peer-context.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/sessions/events.jsonl
+- id: hooks/promotion-proposer-weekly.sh
+  kind: hook
+  owner_adr: ADR-180
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/promotion-proposer-weekly.sh
+  runtime_projection: true
+  behavior_evidence: throttled-lifecycle-promotion-proposal
+  evidence_commands:
+  - bash -n hooks/promotion-proposer-weekly.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/promotion-proposer-weekly.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-promotions.jsonl
+- id: hooks/research-quality-validator.sh
+  kind: hook
+  owner_adr: ADR-175
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: quality
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/research-quality-validator.sh
+  runtime_projection: true
+  behavior_evidence: research-artifact-quality-warning
+  evidence_commands:
+  - bash -n hooks/research-quality-validator.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/research-quality-validator.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/research-quality.jsonl
+- id: hooks/rule-md-routing-validator.sh
+  kind: hook
+  owner_adr: ADR-179
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: routing
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/rule-md-routing-validator.sh
+  runtime_projection: true
+  behavior_evidence: rule-routing-metadata-warning
+  evidence_commands:
+  - bash -n hooks/rule-md-routing-validator.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/rule-md-routing-validator.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/rule-routing-validator.jsonl
+- id: hooks/rule-router-prompt-suggest.sh
+  kind: hook
+  owner_adr: ADR-179
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: routing
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/rule-router-prompt-suggest.sh
+  runtime_projection: true
+  behavior_evidence: rule-routing-context-suggestion
+  evidence_commands:
+  - bash -n hooks/rule-router-prompt-suggest.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/rule-router-prompt-suggest.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/rule-router.jsonl
+- id: hooks/skill-md-routing-validator.sh
+  kind: hook
+  owner_adr: ADR-174
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: routing
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/skill-md-routing-validator.sh
+  runtime_projection: true
+  behavior_evidence: skill-routing-metadata-warning
+  evidence_commands:
+  - bash -n hooks/skill-md-routing-validator.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/skill-md-routing-validator.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-routing-validator.jsonl
+- id: hooks/skill-post-execution-analysis.sh
+  kind: hook
+  owner_adr: ADR-177
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: lifecycle
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/skill-post-execution-analysis.sh
+  runtime_projection: true
+  behavior_evidence: skill-post-execution-analysis
+  evidence_commands:
+  - bash -n hooks/skill-post-execution-analysis.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/skill-post-execution-analysis.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-post-execution-analysis.jsonl
+- id: hooks/validator-soak-weekly.sh
+  kind: hook
+  owner_adr: ADR-174-bis
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: validation
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/validator-soak-weekly.sh
+  runtime_projection: true
+  behavior_evidence: throttled-validator-soak-evaluation
+  evidence_commands:
+  - bash -n hooks/validator-soak-weekly.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable or demote hooks/validator-soak-weekly.sh in generated harness settings, then regenerate projections.
+  sunset_criteria: Archive when the hook is removed from runtime projection for 90 days or replaced by a native harness primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/validator-soak.jsonl
