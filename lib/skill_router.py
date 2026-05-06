@@ -1636,3 +1636,116 @@ class SkillRoutingIndexCache:
     def clear(self) -> None:
         """Drop all cached routers."""
         self._cache.clear()
+
+
+# ---------------------------------------------------------------------------
+# ADR-188: last_suggestion — orchestrator-skill-invocation-gate support
+# ---------------------------------------------------------------------------
+
+def _project_root_for_runtime() -> Path:
+    """Return the project root used for runtime artifact lookups.
+
+    Honors PROJECT_DIR env, then falls back to this file's repository.
+    """
+    import os as _os
+    p = _os.environ.get("PROJECT_DIR")
+    if p:
+        try:
+            return Path(p).resolve()
+        except Exception:
+            pass
+    return Path(__file__).resolve().parents[1]
+
+
+def last_suggestion(
+    session_id: str,
+    *,
+    project_root: Optional[Path | str] = None,
+) -> Optional[Dict[str, Any]]:
+    """Return the highest-confidence skill suggestion since the most recent
+    UserPromptSubmit event for ``session_id`` (ADR-188).
+
+    Reads, in order:
+      1. ``.cognitive-os/sessions/events.jsonl`` (ADR-183 cross-session log) to
+         locate the latest UserPromptSubmit-equivalent event for the session.
+      2. ``.cognitive-os/metrics/skill-suggestion.jsonl`` (router log) to find
+         the highest-confidence suggestion at-or-after that timestamp.
+
+    The cross-session events log uses a permissive set of event_types
+    (``user_prompt_submit``, ``user_prompt``, ``UserPromptSubmit``) since
+    different harnesses emit slightly different names. If no anchor is found
+    we treat the entire suggestion log for that session as in-scope.
+
+    Returns ``{"skill", "confidence", "prompt_hash", "timestamp"}`` or None.
+    """
+    if not session_id:
+        return None
+
+    root = Path(project_root).resolve() if project_root else _project_root_for_runtime()
+
+    events_path = root / ".cognitive-os" / "sessions" / "events.jsonl"
+    suggestions_path = root / ".cognitive-os" / "metrics" / "skill-suggestion.jsonl"
+
+    # Step 1: find anchor timestamp (latest user prompt for this session).
+    anchor_ts: Optional[str] = None
+    if events_path.exists():
+        try:
+            with events_path.open("r", encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        evt = __import__("json").loads(line)
+                    except Exception:
+                        continue
+                    if evt.get("session_id") != session_id:
+                        continue
+                    et = (evt.get("event_type") or "").lower()
+                    if et in ("user_prompt_submit", "userpromptsubmit", "user_prompt"):
+                        ts = evt.get("ts")
+                        if ts and (anchor_ts is None or ts > anchor_ts):
+                            anchor_ts = ts
+        except Exception:
+            anchor_ts = None
+
+    # Step 2: scan suggestion log for entries since anchor with same session.
+    if not suggestions_path.exists():
+        return None
+
+    best: Optional[Dict[str, Any]] = None
+    try:
+        with suggestions_path.open("r", encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    rec = __import__("json").loads(line)
+                except Exception:
+                    continue
+                if rec.get("session_id") != session_id:
+                    continue
+                if not rec.get("threshold_met"):
+                    # still consider matches: ADR-188 needs the highest-conf
+                    # suggestion regardless of soft-suggest threshold, but only
+                    # if there is a real skill name present.
+                    if not rec.get("skill_name"):
+                        continue
+                ts = rec.get("ts")
+                if anchor_ts and ts and ts < anchor_ts:
+                    continue
+                conf = float(rec.get("confidence") or 0.0)
+                if best is None or conf > float(best.get("confidence") or 0.0):
+                    best = {
+                        "skill": rec.get("skill_name"),
+                        "confidence": conf,
+                        "prompt_hash": rec.get("prompt_hash") or "",
+                        "timestamp": ts or "",
+                    }
+    except Exception:
+        return None
+
+    if best is None or not best.get("skill"):
+        return None
+    return best
