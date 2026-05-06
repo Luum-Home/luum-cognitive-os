@@ -1,0 +1,56 @@
+schema_version: cross-stack-license-audit/v1
+status: active
+owner: platform-safety
+purpose: >
+  Multi-stack license and vulnerability audit policy for dependency/tool adoption
+  and pre-launch release readiness.
+
+primary:
+  toolchain: syft-grype
+  tools:
+    - syft
+    - grype
+  required_for:
+    - pre-launch-release
+    - dependency-sweep
+    - adr-208-tool-adoption-evidence
+  output_dir: .cognitive-os/reports/license-audit
+
+secondary:
+  toolchain: trivy
+  mode: local-manual-cross-validation
+  reason: >
+    Trivy is a strong Apache-2.0 multi-stack scanner, but the 2026 supply-chain
+    incident means it is not the default CI action until provenance is reviewed.
+  denied_versions:
+    - 0.69.4
+    - 0.69.5
+    - 0.69.6
+  denied_workflow_actions:
+    - aquasecurity/trivy-action
+    - aquasecurity/setup-trivy
+  require_immutable_workflow_pin: true
+
+forensic_escalation:
+  toolchain: scancode-toolkit
+  trigger:
+    - unknown-license-in-release-candidate
+    - conflicting-sbom-results
+    - customer-legal-review
+
+commercial_tools:
+  status: customer-driven
+  examples:
+    - fossa
+    - snyk-open-source
+    - black-duck
+    - mend
+
+policy:
+  block_license_classes:
+    - blocked
+    - unknown-in-release-candidate
+  caution_license_classes:
+    - caution
+  scanner_supply_chain_is_in_scope: true
+  mutable_security_scanner_actions_blocked: true
