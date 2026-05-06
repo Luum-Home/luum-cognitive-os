@@ -23,6 +23,7 @@
 #   cos service readiness              -> scripts/cos-service-readiness-gate
 #   cos promote-from-telemetry          -> scripts/cos-promote-from-telemetry
 #   cos maintainer once                 -> scripts/cos-maintainer-agent --once
+#   cos work ownership                  -> scripts/cos_work_inventory.py --paths
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
@@ -215,6 +216,14 @@ case "$SUBCMD" in
     echo "cos: unknown maintainer subcommand '${2:-}'. Try: cos maintainer once --dry-run [--json]" >&2
     exit 1
     ;;
+  work)
+    if [ "${2:-}" = "ownership" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/cos_work_inventory.py" --project-dir "$PROJECT_ROOT" --all --paths "$@"
+    fi
+    echo "cos: unknown work subcommand '${2:-}'. Try: cos work ownership PATH [PATH...]" >&2
+    exit 1
+    ;;
   state)
     if [ "${2:-}" = "retention" ]; then
       shift 2
@@ -263,6 +272,7 @@ Usage:
   cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
   cos promote-from-telemetry [--json]    Convert consumable telemetry into bounded proposals
   cos maintainer once --dry-run [--json] Run proposer-only maintainer loop once
+  cos work ownership PATH [PATH...]      Join WIP/stash/worktree/claim/process signals for selected paths
   cos state retention [--json|--strict]   Audit declared mutable state retention
   cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
   cos init [dir]                         Install Cognitive OS into a project
