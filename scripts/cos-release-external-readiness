@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# SCOPE: os-only
+# PURPOSE: Check external prerequisites before publishing a GoReleaser/Homebrew release.
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project 2>/dev/null || pwd)"
+VERSION=""
+JSON=0
+TAP_REPO="Luum-Home/homebrew-tap"
+MAIN_REPO="Luum-Home/luum-cognitive-os"
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project-dir) PROJECT_DIR="$2"; shift 2 ;;
+    --version) VERSION="$2"; shift 2 ;;
+    --tap-repo) TAP_REPO="$2"; shift 2 ;;
+    --main-repo) MAIN_REPO="$2"; shift 2 ;;
+    --json) JSON=1; shift ;;
+    *) echo "unknown argument: $1" >&2; exit 2 ;;
+  esac
+done
+status="ready"
+reasons=()
+cd "$PROJECT_DIR"
+inside_git=0
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 && inside_git=1 || true
+if [[ "$inside_git" != 1 ]]; then status="blocked"; reasons+=("project is not a git work tree"); fi
+if [[ -z "$VERSION" ]]; then
+  if [[ -f VERSION ]]; then
+    VERSION="v$(tr -d '[:space:]' < VERSION)"
+  else
+    VERSION="v0.0.0"
+  fi
+fi
+check_ok() { [[ "$1" == "0" ]] && printf true || printf false; }
+porcelain="$(git status --porcelain=v1 2>/dev/null || true)"
+unmerged="$(git diff --name-only --diff-filter=U 2>/dev/null || true)"
+if [[ -n "$porcelain" ]]; then status="blocked"; reasons+=("working tree is not clean"); fi
+if [[ -n "$unmerged" ]]; then status="blocked"; reasons+=("working tree has unresolved conflicts"); fi
+if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then status="blocked"; reasons+=("tag $VERSION already exists locally"); fi
+if git ls-remote --exit-code --tags origin "refs/tags/$VERSION" >/dev/null 2>&1; then status="blocked"; reasons+=("tag $VERSION already exists on origin"); fi
+goreleaser_ok=1; command -v goreleaser >/dev/null 2>&1 || goreleaser_ok=0
+gh_ok=1; command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1 || gh_ok=0
+main_repo_ok=0; [[ "$gh_ok" == 1 ]] && gh repo view "$MAIN_REPO" >/dev/null 2>&1 && main_repo_ok=1 || true
+tap_repo_ok=0; [[ "$gh_ok" == 1 ]] && gh repo view "$TAP_REPO" >/dev/null 2>&1 && tap_repo_ok=1 || true
+secret_ok=0; [[ -n "${HOMEBREW_TAP_GITHUB_TOKEN:-}" ]] && secret_ok=1
+for pair in "goreleaser:$goreleaser_ok" "gh_auth:$gh_ok" "main_repo:$main_repo_ok" "tap_repo:$tap_repo_ok" "homebrew_token:$secret_ok"; do
+  name="${pair%%:*}"; value="${pair##*:}"
+  if [[ "$value" != 1 ]]; then status="blocked"; reasons+=("$name is not ready"); fi
+done
+if [[ "$JSON" == 1 ]]; then
+  python3 - "$status" "$VERSION" "$MAIN_REPO" "$TAP_REPO" "$goreleaser_ok" "$gh_ok" "$main_repo_ok" "$tap_repo_ok" "$secret_ok" "$porcelain" "$unmerged" "${reasons[@]}" <<'PY'
+import json, sys
+status, version, main_repo, tap_repo = sys.argv[1:5]
+flags = [int(v) for v in sys.argv[5:10]]
+porcelain, unmerged = sys.argv[10:12]
+reasons = sys.argv[12:]
+print(json.dumps({
+  "ok": status == "ready",
+  "status": status,
+  "version": version,
+  "main_repo": main_repo,
+  "tap_repo": tap_repo,
+  "checks": {
+    "goreleaser": bool(flags[0]),
+    "gh_auth": bool(flags[1]),
+    "main_repo": bool(flags[2]),
+    "tap_repo": bool(flags[3]),
+    "homebrew_token_present": bool(flags[4]),
+    "working_tree_clean": not bool(porcelain),
+    "unresolved_conflicts": bool(unmerged),
+  },
+  "reasons": reasons,
+}, sort_keys=True))
+PY
+else
+  echo "release-external-readiness: $status version=$VERSION"
+  for reason in "${reasons[@]}"; do echo "- $reason"; done
+fi
+[[ "$status" == "ready" ]]
