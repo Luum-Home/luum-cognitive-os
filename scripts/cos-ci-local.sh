@@ -36,7 +36,8 @@
 set -uo pipefail
 
 readonly TIER="${1:-quick}"
-readonly REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly REPO_ROOT="$("$SCRIPT_DIR/cos-root" project)"
 readonly BAIL="${COS_CI_LOCAL_BAIL:-1}"
 readonly QUIET="${COS_CI_LOCAL_QUIET:-0}"
 readonly NO_DOCKER="${COS_CI_LOCAL_NO_DOCKER:-0}"
