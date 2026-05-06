@@ -30,6 +30,14 @@ routing:
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsdd[- ]?explore\b'
+    confidence: 0.96
+  - pattern: '\bexplore\s+(idea|feasibility|before\s+implementing)\b'
+    confidence: 0.86
+  - pattern: '\bpre[- ]?development\s+exploration\b'
+    confidence: 0.84
+
 ---
 
 # SDD Explore -- Deep Feasibility Analysis

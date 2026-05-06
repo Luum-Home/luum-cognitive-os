@@ -26,6 +26,14 @@ routing:
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsdd[- ]?resume\b'
+    confidence: 0.96
+  - pattern: '\bresume\s+(the\s+)?sdd\b'
+    confidence: 0.90
+  - pattern: '\blast\s+completed\s+(sdd\s+)?phase\b'
+    confidence: 0.84
+
 ---
 
 # SDD Resume

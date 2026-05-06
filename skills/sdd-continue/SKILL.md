@@ -16,6 +16,14 @@ effort: opus
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsdd[- ]?continue\b'
+    confidence: 0.96
+  - pattern: '\bcontinue\s+(the\s+)?sdd\b'
+    confidence: 0.90
+  - pattern: '\binspect\s+sdd\s+state\b'
+    confidence: 0.84
+
 ---
 
 # Enhanced SDD Continue (BMAD v6 Pattern 6)
