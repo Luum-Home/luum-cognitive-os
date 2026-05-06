@@ -183,6 +183,7 @@ cc_driver_emit() {
   local pre_all
   pre_all=$(_cc_hook_group "PreToolUse" "" \
     "hooks/protected-config-write-guard.sh" "false" \
+    "hooks/agent-control-inbound-guard.sh" "false" \
     "hooks/session-heartbeat.sh"    "false" \
     "hooks/lethal-trifecta-gate.sh" "false" \
   )
