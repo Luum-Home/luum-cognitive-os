@@ -19,6 +19,10 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-193: cosd Local Network API](adrs/ADR-193-cosd-local-network-api.md) — localhost HTTP transport over the ADR-184 file-queue arbiter.
 - [ADR-194: cosd Secure Remote API Guardrails](adrs/ADR-194-cosd-secure-remote-api.md) — bearer-token and remote-bind safety boundary for `cosd` API transports.
 - [ADR-195: Surface 5 Operable TUI Contract](adrs/ADR-195-surface-5-operable-tui-contract.md) — read-only Bubble Tea operator console contract and future confirmation/receipt gate for actions.
+- [ADR-196: cosd Task API and Provider Boundary](adrs/ADR-196-cosd-task-api-and-provider-boundary.md) — queue-backed task endpoints and provider-call guardrails for remote-capable `cosd`.
+- [ADR-197: Surface 5 Operable Actions](adrs/ADR-197-surface-5-operable-actions.md) — allowlisted `cos tui --operate` actions with confirmation and receipts.
+- [ADR-198: Release External Readiness Gate](adrs/ADR-198-release-external-readiness-gate.md) — read-only preflight for tap/secret/tag/GitHub release prerequisites.
+- [cosd Remote Operations Boundary](architecture/cosd-remote-operations-boundary.md) — TLS/reverse-proxy deployment shape and endpoint safety classes.
 - [cosd Standalone Service Templates](../infra/cosd/README.md) — systemd and Kubernetes templates for daemon/service drills.
 - [Profile-Aware Skill Routing and Lazy Context Loading](architecture/profile-aware-skill-routing.md)
 - [Cross-Session Coordination Ledger](architecture/cross-session-coordination-ledger.md) — shared claim, ADR ownership, and worktree-intake contract for parallel IDE/session agents.
