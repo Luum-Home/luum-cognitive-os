@@ -95,7 +95,7 @@ fi
 # ── Python helper for YAML parsing and scenario execution ─────────────────────
 PYTHON="${PYTHON:-python3}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || echo "$(cd "$SCRIPT_DIR/.." && pwd)")"
+REPO_ROOT="$("$SCRIPT_DIR/cos-root" project)"
 
 # ── Create output directory ───────────────────────────────────────────────────
 mkdir -p "$OUT_DIR"

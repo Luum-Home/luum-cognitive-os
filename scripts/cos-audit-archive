@@ -3,7 +3,8 @@
 # PURPOSE: Copy old audit rows into compressed archive files without truncating source evidence.
 set -euo pipefail
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 AUDIT_FILE="${COGNITIVE_OS_AUDIT_TRAIL:-$PROJECT_DIR/.cognitive-os/runtime/agent-audit-trail.jsonl}"
 ARCHIVE_DIR="$PROJECT_DIR/.cognitive-os/audit-archive"
 RETENTION_DAYS=90

@@ -3,7 +3,8 @@
 # PURPOSE: Prove local Engram Cloud Docker sync across COS and one consumer project.
 set -euo pipefail
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 COMPOSE_FILE="$PROJECT_DIR/docker/cos-worker/docker-compose.yml"
 COMPOSE_PROJECT="cosengramcloudsmoke${$}"
 PORT="${COS_ENGRAM_CLOUD_SMOKE_PORT:-18080}"

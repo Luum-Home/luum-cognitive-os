@@ -3,7 +3,8 @@
 # PURPOSE: Enroll a project-scoped Engram Cloud sync target without leaking tokens.
 set -euo pipefail
 
-PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}}}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$("$SCRIPT_DIR/cos-root" project)"
 SERVER="${ENGRAM_CLOUD_SERVER:-http://127.0.0.1:8080}"
 PROJECT_SCOPE="${ENGRAM_PROJECT_SCOPE:-${COGNITIVE_OS_PROJECT:-}}"
 ROTATE=0
