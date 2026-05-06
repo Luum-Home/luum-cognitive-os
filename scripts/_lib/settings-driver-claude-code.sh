@@ -166,6 +166,7 @@ cc_driver_emit() {
     "hooks/agent-message-inbox-context.sh"         "true"  \
     "hooks/rule-router-prompt-suggest.sh"         "true"  \
     "hooks/adr-relevance-suggest.sh"              "true"  \
+    "hooks/context-budget-meter.sh"              "false" \
   )
 
   local subagent_start
