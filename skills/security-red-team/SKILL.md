@@ -16,6 +16,11 @@ prerequisites:
   - python3
   - PyYAML
 entry: scripts/security-red-team
+routing_patterns:
+  - pattern: '\bsecurity[- ]?red[- ]?team\b'
+    confidence: 0.95
+  - pattern: '\bred[- ]?team\s+security\b'
+    confidence: 0.85
 ---
 
 # /security-red-team

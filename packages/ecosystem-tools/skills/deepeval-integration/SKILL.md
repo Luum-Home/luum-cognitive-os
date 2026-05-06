@@ -20,6 +20,11 @@ summary_line: "Configure and use DeepEval for LLM unit testing, agent trajectory
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdeepeval[- ]?integration\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+deepeval\b'
+    confidence: 0.85
 ---
 
 ## Purpose

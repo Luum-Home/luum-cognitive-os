@@ -10,6 +10,13 @@ version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites:
   commands: [python3, jq]
+routing_patterns:
+  - pattern: '\bsynthesize[- ]?skill\b'
+    confidence: 0.95
+  - pattern: '\bskill\s+synthesis\s+queue\b'
+    confidence: 0.85
+  - pattern: '\bpromote\s+skill\s+candidate\b'
+    confidence: 0.75
 ---
 
 # Synthesize Skill

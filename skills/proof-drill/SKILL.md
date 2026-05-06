@@ -14,6 +14,13 @@ triggers:
   - prove headless
   - prueba manual
   - prueba opt-in
+routing_patterns:
+  - pattern: '\bproof[- ]?drill\b'
+    confidence: 0.95
+  - pattern: '\brun\s+proof\s+drills?\b'
+    confidence: 0.85
+  - pattern: '\bsmoke\s+check\s+(cos|self[- ]build)\b'
+    confidence: 0.75
 ---
 
 # Proof Drill

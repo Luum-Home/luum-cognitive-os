@@ -17,6 +17,11 @@ summary_line: "Detect systemic problems in the Cognitive OS codebase: dead metad
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bdetect[- ]?patterns?\b'
+    confidence: 0.95
+  - pattern: '\bpattern\s+detection\b'
+    confidence: 0.8
 ---
 
 ## Purpose

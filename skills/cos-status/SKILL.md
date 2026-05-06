@@ -9,6 +9,13 @@ summary_line: "Display current Cognitive OS state — active profile, skills exp
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcos[- ]?status\b'
+    confidence: 0.95
+  - pattern: '\bcognitive[- ]?os\s+state\b'
+    confidence: 0.85
+  - pattern: '\bos\s+(health|installation|profile)\b'
+    confidence: 0.75
 ---
 
 # /cos-status — Cognitive OS State Transparency

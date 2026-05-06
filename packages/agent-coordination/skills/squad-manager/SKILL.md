@@ -8,6 +8,13 @@ last-updated: 2026-03-22
 audience: project
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bsquad[- ]?manager\b'
+    confidence: 0.95
+  - pattern: '\bsquad\s+performance\b'
+    confidence: 0.85
+  - pattern: '\breconfigur\w+\s+squad\b'
+    confidence: 0.75
 ---
 
 # Squad Manager Skill

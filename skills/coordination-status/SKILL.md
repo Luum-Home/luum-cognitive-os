@@ -11,6 +11,13 @@ summary_line: List who is editing what across concurrent COS sessions.
 version: "1.0.0"
 platforms: ["claude-code", "codex"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcoordination[- ]?status\b'
+    confidence: 0.95
+  - pattern: '\bactive\s+(edit\s+)?locks?\b'
+    confidence: 0.8
+  - pattern: '\bmulti[- ]?session\s+lock\b'
+    confidence: 0.75
 ---
 
 # Coordination Status

@@ -16,6 +16,13 @@ prerequisites:
   - scripts/verify-archived.sh (W0)
   - tests/red_team/scenarios/*.yaml (W3, W4)
 entry: bin/cos-skill run redteam-harness
+routing_patterns:
+  - pattern: '\bredteam[- ]?harness\b'
+    confidence: 0.95
+  - pattern: '\bred[- ]?team\s+scenarios?\b'
+    confidence: 0.85
+  - pattern: '\bfalse[- ]?done\s+detection\b'
+    confidence: 0.75
 ---
 
 # /redteam-harness

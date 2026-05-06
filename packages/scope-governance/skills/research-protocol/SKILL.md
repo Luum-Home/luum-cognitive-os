@@ -18,6 +18,11 @@ summary_line: Meta-skill that teaches agents HOW to investigate any source mater
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bresearch[- ]?protocol\b'
+    confidence: 0.95
+  - pattern: '\bresearch\s+first\s+protocol\b'
+    confidence: 0.85
 ---
 
 ## Purpose

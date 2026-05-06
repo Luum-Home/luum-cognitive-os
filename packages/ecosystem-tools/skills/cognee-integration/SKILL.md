@@ -20,6 +20,13 @@ summary_line: Configure and use Cognee for knowledge graph memory.
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcognee[- ]?integration\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+cognee\b'
+    confidence: 0.8
+  - pattern: '\bset\s+up\s+cognee\b'
+    confidence: 0.75
 ---
 
 ## Purpose

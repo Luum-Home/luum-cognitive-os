@@ -20,6 +20,11 @@ summary_line: Configure Strands Evals for trace-based agent trajectory evaluatio
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bstrands[- ]?evals?[- ]?integration\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+strands\s+evals?\b'
+    confidence: 0.85
 ---
 
 ## Purpose

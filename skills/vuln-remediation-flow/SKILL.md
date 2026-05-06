@@ -19,6 +19,13 @@ framing_exercise_statement:
   hooks_fire_natively: partial
   session_lifecycle_handled: partial
   notes: Lab registration establishes the contract before worker execution; each axis remains partial until the Docker/cloud worker path runs the flow end-to-end.
+routing_patterns:
+  - pattern: '\bvuln[- ]?remediation[- ]?flow\b'
+    confidence: 0.95
+  - pattern: '\bvulnerability\s+remediation\b'
+    confidence: 0.85
+  - pattern: '\bsandboxed\s+vulnerability\s+remediation\b'
+    confidence: 0.75
 ---
 
 # Vulnerability Remediation Flow

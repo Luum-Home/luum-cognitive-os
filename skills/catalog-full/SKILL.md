@@ -11,6 +11,13 @@ summary_line: Load and display the full skills catalog (skills/CATALOG.md) with 
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcatalog[- ]?full\b'
+    confidence: 0.95
+  - pattern: '\bfull\s+skills?\s+catalog\b'
+    confidence: 0.85
+  - pattern: '\bshow\s+(full\s+)?catalog\b'
+    confidence: 0.75
 ---
 
 # Catalog Full

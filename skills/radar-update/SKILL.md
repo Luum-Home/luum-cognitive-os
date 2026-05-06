@@ -22,6 +22,11 @@ summary_line: >
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bradar[- ]?update\b'
+    confidence: 0.95
+  - pattern: '\bupdate\s+(tech\s+)?radar\b'
+    confidence: 0.85
 ---
 
 <!-- SCOPE: os-only -->

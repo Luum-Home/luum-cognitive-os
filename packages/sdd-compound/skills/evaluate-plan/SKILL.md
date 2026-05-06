@@ -10,6 +10,13 @@ summary_line: Evaluate any existing plan file with a 0-50 scoring system.
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bevaluate[- ]?plan\b'
+    confidence: 0.95
+  - pattern: '\bscore\s+(a\s+)?plan\b'
+    confidence: 0.85
+  - pattern: '\bplan\s+evaluation\b'
+    confidence: 0.8
 ---
 
 # Evaluate Plan

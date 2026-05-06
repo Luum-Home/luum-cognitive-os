@@ -12,6 +12,11 @@ model: sonnet
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bso[- ]?vs[- ]?vanilla\b'
+    confidence: 0.95
+  - pattern: '\bcognitive[- ]?os\s+vs\s+(vanilla|baseline)\b'
+    confidence: 0.85
 ---
 
 # /so-vs-vanilla — Governance Value Benchmark

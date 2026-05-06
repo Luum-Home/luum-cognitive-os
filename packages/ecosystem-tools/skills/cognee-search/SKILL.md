@@ -21,6 +21,13 @@ summary_line: Semantic knowledge graph search via Cognee — complements Engram 
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcognee[- ]?search\b'
+    confidence: 0.95
+  - pattern: '\bsearch\s+(via\s+)?cognee\b'
+    confidence: 0.85
+  - pattern: '\bcognee\s+(knowledge|graph)\b'
+    confidence: 0.75
 ---
 
 # Cognee Search
