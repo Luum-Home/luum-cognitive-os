@@ -150,7 +150,7 @@ The operator-facing surfaces are documented in a four-surface architecture. Each
 | Surface | Artefact kind | Activation |
 |---------|--------------|------------|
 | Surface 1 — Operator CLI (always-on) | Live operator state, governance, audit | Built in — `bash scripts/cos-boring-reliability` |
-| Surface 2 — Phoenix (opt-in) | LLM traces, latency, cost, eval scores | `uv sync --extra observability && uv run phoenix serve` |
+| Surface 2 — Phoenix (opt-in) | LLM traces, latency, cost, eval scores | `bash scripts/dependency-lane.sh install observability && uv run phoenix serve` |
 | Surface 3 — Engram Cloud (opt-in) | Persistent memory, decisions, cross-instance federation | BYOK setup per ADR-139; local Engram tools work without it |
 | Surface 4 — Obsidian / markdown reader (opt-in) | ADRs, doctrine docs, audit reports | Clone repo, open `docs/` in any markdown viewer |
 
