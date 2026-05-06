@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — slice 1 substrate active
 **Date**: 2026-05-06
 **Related**: ADR-212, ADR-208, ADR-203, ADR-211, ADR-145
 **Source**: Q3 tool-adoption review (cross-stack secret/credential/PII detection),
@@ -127,6 +127,18 @@ Hooks integration:
   `apply-efficiency-profile.sh` standard+full profiles.
 - Release-readiness gate (ADR-211) calls `cos secret audit --strict` as part
   of public-claim verification.
+
+
+## Implementation status — 2026-05-06
+
+Active first slice:
+
+- `manifests/cross-stack-secret-audit.yaml` declares the canonical gitleaks + trufflehog policy, sensitive local filename surfaces, placeholder allowlists, and report paths.
+- `lib/cross_stack_secret_audit.py` audits scanner availability, mutable secret-scanner GitHub Actions, sensitive local surfaces, and summarizes existing redacted scanner reports.
+- `scripts/cos-cross-stack-secret-audit` plus `scripts/cos secret audit` expose the operator command.
+- `tests/unit/test_cross_stack_secret_audit.py` and `tests/behavior/test_cross_stack_secret_audit_cli.py` cover the active substrate.
+
+Not yet active: scanner run wrappers, pre-commit integration, curated baseline, and ADR-211 hard gate consumption. Until those land, the repo is protected by a whole-repo audit command but not yet by automatic release blocking.
 
 ## Consequences
 
