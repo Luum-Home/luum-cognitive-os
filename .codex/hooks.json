@@ -198,6 +198,10 @@
         },
         {
           "type": "command",
+          "command": "bash \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/_lib/hook-timing-wrapper.sh\" PreToolUse \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/untracked-work-preservation-guard.sh\""
+        },
+        {
+          "type": "command",
           "command": "bash \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/_lib/hook-timing-wrapper.sh\" PreToolUse \"${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$PWD}}/.cognitive-os/hooks/cos/branch-ownership-lock.sh\""
         },
         {
