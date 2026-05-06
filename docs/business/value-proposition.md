@@ -120,7 +120,7 @@ claude
 
 ## Contributing
 
-Cognitive OS is open-source (Apache 2.0). Contributions are welcome:
+Cognitive OS is licensed under [FSL-1.1-MIT](../../LICENSE) — source-available, converts to MIT after 2 years. See [LICENSE](../../LICENSE) for terms. Contributions are welcome:
 
 - Report bugs and suggest features on GitHub Issues
 - Create plugins for your industry or tech stack

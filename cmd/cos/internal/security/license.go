@@ -43,6 +43,10 @@ var blockedLicenses = map[string]string{
 	"ELv2":              "Elastic License -- cannot offer as managed service",
 	"Commons-Clause":    "Cannot sell the software as a service",
 	"FSL-1.0":           "Functional Source License -- commercial restrictions",
+	// FSL-1.1 is also OUR project's own license starting 2026-05-XX. We block
+	// FSL-1.1 as a DEP license (would inherit commercial restrictions from
+	// a dep) but use it as our SELF license (we don't inherit from ourselves).
+	// See .cognitive-os/strategy/04-license-repo-and-corrections-log.md.
 	"FSL-1.1":           "Functional Source License -- commercial restrictions",
 }
 

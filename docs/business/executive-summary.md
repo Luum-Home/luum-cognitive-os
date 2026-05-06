@@ -46,7 +46,7 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 | 7 | Observability and Costs | Traces, metrics, budget caps |
 | 8 | Multi-IDE Portability | Works with 7+ tools via open standards |
 | 9 | Industry Presets | Pre-loaded best practices for fintech, healthcare, e-commerce |
-| 10 | Open-Source Core | Apache 2.0, extensible via plugins |
+| 10 | Open-Source Core | FSL-1.1-MIT (source-available, converts to MIT after 2 years), extensible via plugins |
 
 ## Proven in Production
 
