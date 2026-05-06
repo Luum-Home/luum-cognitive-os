@@ -13,6 +13,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Key Documents
 
 - [Standalone Ship Readiness — 2026-05-06](architecture/standalone-ship-readiness-2026-05-06.md) — current release/TUI/cosd/root-readiness matrix and validation evidence for standalone shipping.
+- [Surface 5 TUI and Secure cosd Roadmap](architecture/surface-5-and-secure-cosd-roadmap.md) — feature-grounded roadmap for a real Bubble Tea TUI and secure remote-capable `cosd`.
 - [ADR-191: COS Binary Release Pipeline](adrs/ADR-191-cos-binary-release-pipeline.md) — GoReleaser, checksums, release workflow, and Homebrew tap handoff for standalone `cos` distribution.
 - [ADR-192: Surface 5 Bubble Tea Adoption](adrs/ADR-192-surface-5-adopt-bubbletea.md) — source-level proof and adoption boundary for the native Go TUI substrate.
 - [ADR-193: cosd Local Network API](adrs/ADR-193-cosd-local-network-api.md) — localhost HTTP transport over the ADR-184 file-queue arbiter.
