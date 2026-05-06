@@ -119,12 +119,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 78,
+        "doc": 80,
         "hook": 5,
         "rule": 2,
         "script": 12,
         "skill": 5,
-        "test": 27
+        "test": 29
       },
       "consumers": [
         {
@@ -214,6 +214,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-181-adr-relevance-suggester.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
         },
         {
           "family": "doc",
@@ -362,6 +366,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/multi-ide-structural-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
         },
         {
           "family": "doc",
@@ -597,6 +605,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -637,6 +649,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_primitive_row_audit.py"
         },
         {
@@ -670,8 +686,8 @@
         "hook_consumers:5",
         "rule_consumers:2",
         "script_consumers:12",
-        "test_consumers:27",
-        "doc_consumers:78",
+        "test_consumers:29",
+        "doc_consumers:80",
         "config_consumers:5"
       ],
       "family": "rules",
@@ -682,7 +698,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 134
+      "total_consumers": 138
     },
     {
       "confidence": "medium",

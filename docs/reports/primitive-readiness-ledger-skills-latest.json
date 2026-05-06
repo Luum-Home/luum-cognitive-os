@@ -2084,10 +2084,10 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 4,
-        "doc": 20,
+        "doc": 21,
         "hook": 1,
         "script": 7,
-        "test": 7
+        "test": 9
       },
       "consumers": [
         {
@@ -2153,6 +2153,10 @@
         {
           "family": "doc",
           "path": "docs/manual-tests/multi-ide-structural-projection.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
         },
         {
           "family": "doc",
@@ -2232,6 +2236,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/e2e/test_session_startup_smoke.py"
         },
         {
@@ -2244,6 +2252,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_project_shell_ci.py"
         }
       ],
@@ -2251,8 +2263,8 @@
       "evidence": [
         "hook_consumers:1",
         "script_consumers:7",
-        "test_consumers:7",
-        "doc_consumers:20",
+        "test_consumers:9",
+        "doc_consumers:21",
         "config_consumers:4"
       ],
       "family": "skills",
@@ -2263,7 +2275,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 39
+      "total_consumers": 42
     },
     {
       "confidence": "high",
@@ -3876,6 +3888,72 @@
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
       "total_consumers": 4
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
+      "consumer_accessibility": "lifecycle-declared-consumer-candidate",
+      "consumer_families": {
+        "config": 1,
+        "doc": 4,
+        "script": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_coverage_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
+        }
+      ],
+      "distribution": "team",
+      "evidence": [
+        "lifecycle",
+        "script_consumers:1",
+        "test_consumers:2",
+        "doc_consumers:4",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": "skills/primitive-harness-coverage/SKILL.md",
+      "lifecycle_state": "candidate",
+      "next_action": "prove consumer project projection per supported harness before promotion",
+      "path": "skills/primitive-harness-coverage/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 8
     },
     {
       "confidence": "high",
@@ -7499,20 +7577,21 @@
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 54,
+      "high": 55,
       "medium": 39
     },
     "consumer_accessibility": {
+      "lifecycle-declared-consumer-candidate": 1,
       "repo-skill-not-projectable": 89,
       "so-local-only": 4
     },
     "roles": {
-      "compatibility-wrapper": 54,
+      "compatibility-wrapper": 55,
       "lab": 7,
       "project-extension": 16,
       "so-maintainer": 16
     },
-    "total": 93,
+    "total": 94,
     "without_consumers": 2,
     "without_lifecycle": 93
   },
