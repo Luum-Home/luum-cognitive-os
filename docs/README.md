@@ -12,6 +12,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-219: Work Ownership Liveness Preflight](adrs/ADR-219-work-ownership-liveness-preflight.md) — joined path-level WIP/stash/worktree/claim/process check before agents claim cleanup, merge, or closure safety.
 - [Post-Mortem — State Retention Self-Bite and Retention Controller — 2026-05-06](reports/state-retention-controller-postmortem-2026-05-06.md) — incident analysis and corrective action for retention self-bites.
 - [ADR-216: Tool Discovery Pre-Use Gate](adrs/ADR-216-tool-discovery-pre-use-gate.md) — manifest-backed Bash gate that blocks ad-hoc tools when COS primitives already exist.
 - [Secret / Sensitive Data Protection Effectiveness Audit — 2026-05-06](reports/secret-protection-effectiveness-audit-2026-05-06.md) — redacted whole-repo scan summary and protection-gap assessment for secrets, env files, and sensitive data.
