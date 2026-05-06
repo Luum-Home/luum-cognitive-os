@@ -54,8 +54,10 @@ the full walkthrough.
   not the adoption path.
 - **NOT an autonomous agent society** — there is no self-directed orchestration
   running without human approval.
-- **NOT a dashboard product** — dashboards are optional; governance fires
-  whether or not any UI is running.
+- **NOT a dashboard product** — governance fires whether or not any UI is
+  running. The operator-facing surface is four cooperating layers (CLI,
+  Phoenix traces, Engram Cloud memory, Obsidian/markdown reader), not a
+  single web dashboard. See [ADR-172](docs/adrs/ADR-172-multi-surface-ui-architecture.md).
 
 ## Quick Start
 
