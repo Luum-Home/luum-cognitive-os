@@ -292,9 +292,3 @@ entries:
   rationale: Worktree submodule repair mutates git metadata and should be explicit
     after worktree operations.
   next_action: Keep manual/admin-triggered.
-- path: hooks/cosd-intent-submit.sh
-  status: conditional_opt_in
-  rationale: cosd intent submission is reserved for the manager-of-managers daemon
-    path and is not a default Claude hot-path hook.
-  next_action: Register only with the cosd profile once ADR-184 daemon operation is
-    enabled.

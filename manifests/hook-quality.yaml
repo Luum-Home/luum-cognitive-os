@@ -748,6 +748,23 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: os-only
     script: hooks/cross-session-event-emit.sh
+  cross-session-event-emit-stop:
+    behavior_tests:
+    - tests/contracts/test_cross_session_event_taxonomy.py
+    - tests/unit/test_cross_session_events.py
+    bypass_policy: not_required_observe_only
+    criticality: lifecycle
+    event: Stop
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: ''
+    maturity: observe
+    max_runtime_ms: 2500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: os-only
+    script: hooks/cross-session-event-emit.sh
   cross-session-peer-context:
     behavior_tests:
     - tests/contracts/test_context_budget_enforcement.py
@@ -1435,6 +1452,38 @@ hooks:
     safe_degradation: warn_and_continue_unless_exit_2
     scope: both
     script: hooks/orchestrator-decision-trace.sh
+  orchestrator-skill-invocation-gate-agent:
+    behavior_tests:
+    - tests/contracts/test_skill_invocation_gate.py
+    bypass_policy: not_required_observe_only
+    criticality: standard
+    event: PreToolUse
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: governed
+    matcher: Agent
+    maturity: observe
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/orchestrator-skill-invocation-gate.sh
+  orchestrator-skill-invocation-gate-bash:
+    behavior_tests:
+    - tests/contracts/test_skill_invocation_gate.py
+    bypass_policy: not_required_observe_only
+    criticality: standard
+    event: PreToolUse
+    false_positive_tests: []
+    harness_tiers:
+      claude: native
+      codex: native
+    matcher: Bash
+    maturity: observe
+    max_runtime_ms: 1500
+    safe_degradation: warn_and_continue_unless_exit_2
+    scope: both
+    script: hooks/orchestrator-skill-invocation-gate.sh
   plan-claim-validator:
     behavior_tests:
     - tests/contracts/test_red_team_harness_primitives.py
