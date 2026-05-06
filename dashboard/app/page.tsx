@@ -1,11 +1,14 @@
 import { Header } from "@/components/header";
 import { StatCard } from "@/components/stat-card";
-import { getCosStatus } from "@/lib/cos-api";
+import { getCosStatus, getPrimitiveSurfaceCoverageSummary } from "@/lib/cos-api";
 
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
-  const status = await getCosStatus();
+  const [status, primitiveCoverage] = await Promise.all([
+    getCosStatus(),
+    getPrimitiveSurfaceCoverageSummary(),
+  ]);
 
   return (
     <div>
@@ -18,6 +21,8 @@ export default async function DashboardPage() {
         <StatCard label="Hooks" value={status.hooksCount} />
         <StatCard label="Skills" value={status.skillsCount} />
         <StatCard label="Phase" value={status.phase} />
+        <StatCard label="Primitive Surfaces" value={primitiveCoverage.totalPrimitives} />
+        <StatCard label="Surface Gaps" value={primitiveCoverage.gaps} />
       </div>
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
@@ -47,6 +52,23 @@ export default async function DashboardPage() {
             <div className="flex justify-between">
               <dt className="text-[var(--color-text-muted)]">Packages</dt>
               <dd>{status.packagesCount}</dd>
+            </div>
+          </dl>
+        </div>
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
+          <h2 className="text-lg font-semibold">Primitive Surface Coverage</h2>
+          <dl className="mt-4 space-y-3 text-sm">
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Consumes report</dt>
+              <dd>{primitiveCoverage.consumesReport ? "yes" : "no"}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Mode</dt>
+              <dd>{primitiveCoverage.mode}</dd>
+            </div>
+            <div className="flex justify-between">
+              <dt className="text-[var(--color-text-muted)]">Unclassified gaps</dt>
+              <dd>{primitiveCoverage.unclassifiedGaps}</dd>
             </div>
           </dl>
         </div>

@@ -123,6 +123,51 @@ export async function getSkills(): Promise<CosSkill[]> {
   return skills.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+
+// ---------------------------------------------------------------------------
+// Primitive Surface Coverage
+// ---------------------------------------------------------------------------
+
+export interface PrimitiveSurfaceCoverageSummary {
+  totalPrimitives: number;
+  gaps: number;
+  unclassifiedGaps: number;
+  surfacesByKind: Record<string, number>;
+  surfaceProjectedOrWired: Record<string, number>;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
+export async function getPrimitiveSurfaceCoverageSummary(): Promise<PrimitiveSurfaceCoverageSummary> {
+  const reportPath = join(COS_ROOT, "docs", "reports", "primitive-harness-coverage-latest.json");
+
+  try {
+    const content = await readFile(reportPath, "utf-8");
+    const report = JSON.parse(content);
+    const summary = report.summary || {};
+
+    return {
+      totalPrimitives: Number(summary.total_primitives || 0),
+      gaps: Number(summary.gaps || 0),
+      unclassifiedGaps: Number(summary.unclassified_gaps || 0),
+      surfacesByKind: summary.surfaces_by_kind || {},
+      surfaceProjectedOrWired: summary.surface_projected_or_wired || summary.harness_projected_or_wired || {},
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return {
+      totalPrimitives: 0,
+      gaps: 0,
+      unclassifiedGaps: 0,
+      surfacesByKind: {},
+      surfaceProjectedOrWired: {},
+      consumesReport: false,
+      mode: "observe-only",
+    };
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------

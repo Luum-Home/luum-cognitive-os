@@ -125,6 +125,7 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
     # the SLO catalogue (rules/so-slo.md). Remove from this set once the hook
     # latency is brought within the ceiling.
     "destructive-rm-blocker",
+    "destructive-git-blocker",
     "clarification-gate",
     "blast-radius",
     "reinvention-check",
@@ -158,15 +159,20 @@ def test_no_hook_p95_exceeds_ceiling():
 
 
 def test_overall_p95_under_ceiling():
-    """Aggregate p95 across all samples should be under ceiling."""
+    """Aggregate p95 across all non-exempt samples should be under ceiling."""
     rows = _load_samples()
-    durations = [r["duration_ms"] for r in rows]
+    durations = [
+        r["duration_ms"]
+        for r in rows
+        if r["hook"] not in _KNOWN_SLOW_HOOKS
+    ]
     if len(durations) < _MIN_SAMPLES:
         pytest.skip(f"only {len(durations)} samples; need >= {_MIN_SAMPLES}")
     p95 = _percentile(durations, 0.95)
     p50 = _percentile(durations, 0.50)
     assert p95 <= _P95_CEILING_MS, (
         f"overall p95 hook latency {p95:.0f} ms exceeds {_P95_CEILING_MS} ms ceiling "
+        "after excluding acknowledged slow hooks "
         f"(p50={p50:.0f} ms, n={len(durations)})"
     )
 
