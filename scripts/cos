@@ -23,6 +23,7 @@
 #   cos service readiness              -> scripts/cos-service-readiness-gate
 #   cos promote-from-telemetry          -> scripts/cos-promote-from-telemetry
 #   cos maintainer once                 -> scripts/cos-maintainer-agent --once
+#   cos adr resolve N                   -> scripts/cos-adr-resolve
 #   cos work ownership                  -> scripts/cos_work_inventory.py --paths
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
@@ -216,6 +217,14 @@ case "$SUBCMD" in
     echo "cos: unknown maintainer subcommand '${2:-}'. Try: cos maintainer once --dry-run [--json]" >&2
     exit 1
     ;;
+  adr)
+    if [ "${2:-}" = "resolve" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-adr-resolve" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown adr subcommand '${2:-}'. Try: cos adr resolve ADR_NUMBER [--expect-title TEXT] [--json]" >&2
+    exit 1
+    ;;
   work)
     if [ "${2:-}" = "ownership" ]; then
       shift 2
@@ -275,6 +284,7 @@ Usage:
   cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
   cos promote-from-telemetry [--json]    Convert consumable telemetry into bounded proposals
   cos maintainer once --dry-run [--json] Run proposer-only maintainer loop once
+  cos adr resolve N [--expect-title T]   Resolve ADR number against canonical docs/adrs state
   cos work ownership PATH [PATH...]      Join WIP/stash/worktree/claim/process signals for selected paths
   cos state retention [--json|--strict]   Audit declared mutable state retention
   cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
