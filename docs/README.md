@@ -17,6 +17,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Agent Message Bus](architecture/agent-message-bus.md) — directed auditor/operator inbox and acknowledgement channel for agents sharing a repo filesystem.
 - [Session State Forensics — 2026-05-05](reports/session-state-forensics-2026-05-05.md) — branch/worktree forensic record for the routing, Paperclip, and ADR tombstone collision session.
 - [Worktree Intake — session/50c35ce9 — 2026-05-06](reports/worktree-intake-session50-2026-05-06.md) — read-only review of the sibling purge worktree, local stashes, and file-level disposition against the active branch.
+- [External Tools Inventory — 2026-05-06](reports/external-tools-inventory-2026-05-06.md) — GitHub URL inventory for deciding which external tools need formal `/repo-scout --batch` source-level review.
 - [Skill Router Primitive Routing Post-Mortem — 2026-05-05](reports/skill-router-primitive-routing-postmortem-2026-05-05.md) — root-cause analysis for disk skills that were not routeable, the global coverage ratchet, and the profile-aware follow-up.
 - [Obsidian, Documentation Graphs, and AI Agent Memory — 2026-05-05](research/obsidian-doc-graph-ai-agent-memory-2026-05-05.md) — follow-up on using Obsidian as a human-readable graph layer for Engram-backed agent memory.
 - [Engram Obsidian Export Manual Test](manual-tests/engram-obsidian-export.md) — dry-run, write, and incremental proof path for the manual Engram → Obsidian graph export.
