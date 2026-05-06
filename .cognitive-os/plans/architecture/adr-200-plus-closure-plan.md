@@ -20,7 +20,7 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 - [x] Create `docs/reports/adr-200-plus-closure-inventory-2026-05-06.md`.
 - [x] Create this closure plan.
-- [ ] Keep `docs/business/master-plan-checklist.md` aligned after every slice.
+- [x] Keep `docs/business/master-plan-checklist.md` aligned after every slice in this session.
 
 ## Phase 1 — Private-content safety substrate (ADR-202)
 
@@ -30,7 +30,7 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 - [x] Add `scripts/private_content_audit.py`, `scripts/cos-private-content-audit`, and a `cos private-content audit` route.
 - [x] Unit-test classification without reading secret file contents.
 - [x] Unit-test unknown private-root detection.
-- [ ] Add behavior/projection guard before marking ADR-202 fully closed.
+- [x] Add behavior/projection guard with export checks, provenance/redaction policy, secret-never-touch block, and access audit metric.
 
 ## Phase 2 — Signal and trace substrate (ADR-204, ADR-205)
 
@@ -46,9 +46,9 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 - [x] Export audit JSONL and latest report artifacts.
 - [x] Enforce signal-quality quarantine before rollups.
 - [x] Add deterministic proposal id helper for deduplication.
-- [ ] Add `PromoteFromTelemetry` proposal generation.
-- [ ] Add dry-run Maintainer runner with lock, cooldown, budget, and ADR-164 mutation boundary.
-- [ ] Smoke-test repeated telemetry producing one bounded human-approved proposal.
+- [x] Add `PromoteFromTelemetry` proposal generation gated by ADR-204 consumption policy.
+- [x] Add dry-run Maintainer runner with lock, proposal cooldown schema, model-cost policy, and ADR-164 propose-only mutation boundary.
+- [x] Smoke-test repeated telemetry producing one bounded human-approved proposal.
 
 ## Phase 4 — Domain closures (ADR-206, ADR-207, ADR-208)
 
@@ -74,6 +74,7 @@ Use the smallest trustworthy test set per slice.
 ```bash
 python3 -m pytest tests/unit/test_private_content_portability.py -q
 python3 -m pytest tests/behavior/test_private_content_projection_guard.py -q
+python3 -m pytest tests/unit/test_subagent_launch_preflight.py tests/behavior/test_subagent_capability_preflight_hook.py -q
 python3 -m pytest tests/unit/test_performance_ledger_signal_quality.py -q
 python3 -m pytest tests/unit/test_performance_ledger.py -q
 python3 -m pytest tests/unit/test_promote_from_telemetry.py -q

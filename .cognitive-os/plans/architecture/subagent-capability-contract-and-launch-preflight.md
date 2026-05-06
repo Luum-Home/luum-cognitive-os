@@ -19,11 +19,10 @@ against selected subagent type capabilities before fan-out.
 
 ## Phase 2 — Harness launch integration
 
-- [ ] Identify every code path that launches subagents or composes Agent prompts.
-- [ ] Run the preflight before any parallel fan-out where type and prompt are
-      known.
-- [ ] Emit `subagent_capability_mismatch` telemetry rows for blocked launches.
-- [ ] Add a compact block message for operators.
+- [x] Identify the harness-native Agent launch path exposed through PreToolUse[Agent] settings/templates.
+- [x] Run the preflight before Agent fan-out when selected type and prompt are available through `hooks/subagent-capability-preflight.sh`.
+- [x] Emit `subagent-capability-preflight.jsonl` telemetry rows for pass/block launch decisions.
+- [x] Add a compact ADR-203 block message with safe alternatives and matched artifact patterns.
 
 ## Phase 3 — Telemetry promotion
 
@@ -41,7 +40,7 @@ against selected subagent type capabilities before fan-out.
 ## Validation
 
 ```bash
-python3 -m pytest tests/unit/test_subagent_launch_preflight.py -q
+python3 -m pytest tests/unit/test_subagent_launch_preflight.py tests/behavior/test_subagent_capability_preflight_hook.py -q
 scripts/cos subagent preflight --type Explore --prompt 'write research/02-real-self-improvement.md' --json
 scripts/cos subagent preflight --type Explore --prompt 'Explore read-only and return result only; parent will persist artifacts to research/02.md' --json
 ```
