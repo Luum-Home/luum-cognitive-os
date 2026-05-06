@@ -220,6 +220,11 @@ class TestConfidentialityEnforcer:
         assert "CONFIDENTIALITY WARNING" in result.stderr
         assert "downgraded-to-warn" in result.stderr
 
+        metrics_file = project_dir / ".cognitive-os/metrics/confidentiality-enforcer.jsonl"
+        rows = [json.loads(line) for line in metrics_file.read_text(encoding="utf-8").splitlines()]
+        assert rows[-1]["violations"] == 1
+        assert rows[-1]["action"] == "warn"
+
     def test_gitignored_doc_with_protected_term_still_blocks(self, run_hook, cognitive_os_env):
         """The gitignored downgrade is only for operator absolute path findings."""
         project_dir: Path = cognitive_os_env["project_dir"]
