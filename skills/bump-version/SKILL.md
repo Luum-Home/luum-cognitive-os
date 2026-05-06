@@ -65,24 +65,37 @@ Given the input:
 - **`major`**: increment major, reset minor and patch: `0.2.1 → 1.0.0`
 - **No input**: ask the user: "Current version is X.Y.Z. Bump patch, minor, or major?"
 
-### Step 3: Write VERSION
+### Step 3: Write VERSION (lockstep — both files)
+
+The OS uses TWO version files in lockstep (decided 2026-05-06):
+- `VERSION` (root) — canonical Cognitive OS version stream
+- `cmd/cos/VERSION` — Go binary build version, MUST equal root VERSION
+
+Write to BOTH:
 
 ```bash
 echo "X.Y.Z" > VERSION
+echo "X.Y.Z" > cmd/cos/VERSION
 ```
 
-Verify the write:
+Verify both:
 
 ```bash
+test "$(cat VERSION)" = "$(cat cmd/cos/VERSION)" || { echo "VERSION drift"; exit 1; }
 cat VERSION
 ```
 
-Output must equal the new version string.
+Output must equal the new version string and both files must match.
+
+Rationale: `cos` Go binary is Surface 1 of the OS (ADR-172). Streams stay
+synced unless a future ADR explicitly bifurcates (e.g. `cos-vX.Y` prefix
+tags). Until then, never let them drift.
 
 ## Safety Rules
 
 - NEVER downgrade the version (new must be > current)
 - NEVER write a non-semver string to VERSION
+- ALWAYS write VERSION + cmd/cos/VERSION in lockstep — drift is a release blocker
 - If the user provides an explicit version that is <= current, ask for confirmation before proceeding
 - Do NOT commit — that is the responsibility of `/tag-release`
 
