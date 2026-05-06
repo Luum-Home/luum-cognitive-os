@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# SCOPE: both
+set -euo pipefail
+PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-${CODEX_PROJECT_DIR:-$(pwd)}}}"
+python3 "$PROJECT_DIR/scripts/adr_tombstone.py" --project-dir "$PROJECT_DIR" "$@"
