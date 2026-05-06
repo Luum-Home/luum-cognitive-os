@@ -19,11 +19,11 @@ Usage:
 
 from __future__ import annotations
 
-import os
 import re
-from dataclasses import dataclass, field
+import sys
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 
 @dataclass(frozen=True)
@@ -65,10 +65,311 @@ _GITHUB_URL_RE = re.compile(
 
 
 # ---------------------------------------------------------------------------
+# Frontmatter-derived routing loader (ADR-174)
+# ---------------------------------------------------------------------------
+
+def _parse_frontmatter(text: str) -> Dict[str, Any]:
+    """Extract YAML frontmatter between the first two '---' lines.
+
+    Returns an empty dict if frontmatter is absent or unparseable.
+    Avoids a hard dependency on PyYAML — uses a minimal inline parser
+    sufficient for the simple key: value / list structures used in SKILL.md.
+    Falls back to PyYAML if available for full correctness.
+    """
+    lines = text.splitlines()
+    # Skip optional HTML comment (<!-- SCOPE: ... -->) before frontmatter
+    start = 0
+    for i, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped == "---":
+            start = i
+            break
+        if stripped.startswith("<!--") or stripped == "":
+            continue
+        # Non-comment, non-empty, non-dashes before first --- → no frontmatter
+        return {}
+
+    if start >= len(lines) or lines[start].strip() != "---":
+        return {}
+
+    end = None
+    for i in range(start + 1, len(lines)):
+        if lines[i].strip() == "---":
+            end = i
+            break
+
+    if end is None:
+        return {}
+
+    yaml_block = "\n".join(lines[start + 1:end])
+    try:
+        import yaml  # type: ignore[import]
+        return yaml.safe_load(yaml_block) or {}
+    except Exception:
+        pass
+
+    # Minimal fallback parser: handles flat key: value and simple lists
+    result: Dict[str, Any] = {}
+    current_key: Optional[str] = None
+    current_list: Optional[List[Any]] = None
+
+    for line in yaml_block.splitlines():
+        if not line or line.startswith("#"):
+            continue
+        # List item under current key
+        if line.startswith("  - ") or line.startswith("- "):
+            item_str = line.lstrip("- ").strip()
+            if current_list is not None:
+                # Sub-mapping item (e.g. routing_patterns entries)
+                item: Dict[str, Any] = {}
+                for part in item_str.split(","):
+                    part = part.strip()
+                    if ":" in part:
+                        k, v = part.split(":", 1)
+                        item[k.strip()] = v.strip().strip('"').strip("'")
+                current_list.append(item)
+            continue
+        if ":" in line and not line.startswith(" "):
+            key, _, value = line.partition(":")
+            key = key.strip()
+            value = value.strip()
+            if value == "" or value == "|" or value == ">":
+                # Start of block scalar or list — skip for minimal parser
+                current_key = key
+                current_list = None
+                result[key] = ""
+            else:
+                result[key] = value.strip('"').strip("'")
+                current_key = key
+                current_list = None
+        elif line.startswith("  ") and current_key:
+            # Continuation of block scalar
+            existing = result.get(current_key, "")
+            result[current_key] = (existing + " " + line.strip()).strip()
+
+    return result
+
+
+def _parse_routing_patterns_block(skill_md_path: Path) -> Optional[List[Tuple[str, float]]]:
+    """Read a SKILL.md and extract routing_patterns if present.
+
+    Returns a list of (pattern_str, confidence) or None if not defined.
+    Never raises — returns None on any parse error.
+    """
+    try:
+        text = skill_md_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return None
+
+    # Fast path: skip files that don't even mention routing_patterns
+    if "routing_patterns" not in text:
+        return None
+
+    # Use PyYAML for accurate parsing when available
+    try:
+        import yaml  # type: ignore[import]
+        lines = text.splitlines()
+        start = None
+        for i, line in enumerate(lines):
+            if line.strip() == "---":
+                start = i
+                break
+            if line.strip().startswith("<!--") or line.strip() == "":
+                continue
+            break
+        if start is None:
+            return None
+        end = None
+        for i in range(start + 1, len(lines)):
+            if lines[i].strip() == "---":
+                end = i
+                break
+        if end is None:
+            return None
+        yaml_block = "\n".join(lines[start + 1:end])
+        data = yaml.safe_load(yaml_block) or {}
+        raw = data.get("routing_patterns")
+        if not raw or not isinstance(raw, list):
+            return None
+        result = []
+        for entry in raw:
+            if isinstance(entry, dict):
+                pat = entry.get("pattern", "")
+                conf = float(entry.get("confidence", 0.80))
+                if pat:
+                    result.append((str(pat), conf))
+        return result if result else None
+    except Exception:
+        pass
+
+    # Minimal regex-based fallback for when PyYAML is unavailable
+    import re as _re
+    block_match = _re.search(
+        r"routing_patterns:\s*\n((?:[ \t]+-.*\n?)+)", text
+    )
+    if not block_match:
+        return None
+    block = block_match.group(1)
+    results = []
+    for line in block.splitlines():
+        line = line.strip().lstrip("- ").strip()
+        pat_m = _re.search(r'pattern:\s*["\']?(.+?)["\']?\s*$', line)
+        conf_m = _re.search(r'confidence:\s*([0-9.]+)', line)
+        if pat_m:
+            pat = pat_m.group(1).strip()
+            conf = float(conf_m.group(1)) if conf_m else 0.80
+            results.append((pat, conf))
+    return results if results else None
+
+
+def _skill_md_to_routing_entry(skill_md: Path) -> Optional[_RoutingEntry]:
+    """Convert a SKILL.md with routing_patterns into a _RoutingEntry.
+
+    Returns None if the file has no routing_patterns or cannot be parsed.
+    """
+    patterns_raw = _parse_routing_patterns_block(skill_md)
+    if not patterns_raw:
+        return None
+
+    # Determine skill name: prefer frontmatter 'name', fallback to directory name
+    skill_name = skill_md.parent.name
+    try:
+        text = skill_md.read_text(encoding="utf-8", errors="replace")
+        fm = _parse_frontmatter(text)
+        if fm.get("name"):
+            skill_name = str(fm["name"]).strip()
+        invoke_cmd = fm.get("invoke", f"/{skill_name}")
+    except Exception:
+        invoke_cmd = f"/{skill_name}"
+
+    try:
+        compiled = _compile(patterns_raw)
+    except re.error as exc:
+        print(
+            f"[skill_router] WARNING: bad routing pattern in {skill_md}: {exc}",
+            file=sys.stderr,
+        )
+        return None
+
+    return _RoutingEntry(
+        patterns=compiled,
+        skill_name=skill_name,
+        invoke_command=str(invoke_cmd),
+        fallback_command=None,
+        reason_template=f"Auto-routed via {skill_name} frontmatter",
+    )
+
+
+def _load_routing_from_frontmatter(skills_root: Path) -> List[_RoutingEntry]:
+    """Scan skill directories under *skills_root* and build routing entries.
+
+    Searches:
+      <skills_root>/*/SKILL.md
+      <skills_root>/packages/*/skills/*/SKILL.md
+      <skills_root>/.cognitive-os/skills/*/SKILL.md
+
+    Only skills with a ``routing_patterns:`` frontmatter block are included.
+    Skills without it are silently skipped (backward-compat; migrate via ADR-174).
+    """
+    entries: List[_RoutingEntry] = []
+    seen: Set[str] = set()  # deduplicate by skill_name
+
+    search_roots = [
+        skills_root / "skills",
+        skills_root / ".cognitive-os" / "skills",
+    ]
+    # Also search packages/*/skills/
+    packages_dir = skills_root / "packages"
+    if packages_dir.is_dir():
+        for pkg in packages_dir.iterdir():
+            pkg_skills = pkg / "skills"
+            if pkg_skills.is_dir():
+                search_roots.append(pkg_skills)
+
+    for root in search_roots:
+        if not root.is_dir():
+            continue
+        for skill_md in sorted(root.glob("*/SKILL.md")):
+            entry = _skill_md_to_routing_entry(skill_md)
+            if entry and entry.skill_name not in seen:
+                entries.append(entry)
+                seen.add(entry.skill_name)
+
+    return entries
+
+
+def _detect_skill_md_paths(project_root: Path) -> Dict[str, Path]:
+    """Return a mapping of skill_name -> SKILL.md path for all skills on disk."""
+    result: Dict[str, Path] = {}
+    search_roots = [
+        project_root / "skills",
+        project_root / ".cognitive-os" / "skills",
+    ]
+    packages_dir = project_root / "packages"
+    if packages_dir.is_dir():
+        for pkg in packages_dir.iterdir():
+            pkg_skills = pkg / "skills"
+            if pkg_skills.is_dir():
+                search_roots.append(pkg_skills)
+
+    for root in search_roots:
+        if not root.is_dir():
+            continue
+        for skill_md in root.glob("*/SKILL.md"):
+            name = skill_md.parent.name
+            if name not in result:
+                result[name] = skill_md
+    return result
+
+
+# ---------------------------------------------------------------------------
 # Routing table definition
 # ---------------------------------------------------------------------------
 
 def _build_default_routing_table() -> List[_RoutingEntry]:
+    """Build the full routing table, merging frontmatter-derived and hand-coded entries.
+
+    Strategy (ADR-174):
+      1. Load frontmatter-derived entries from SKILL.md ``routing_patterns:`` blocks.
+      2. Merge with hand-coded fallback entries (backward-compat for unmigrated skills).
+      3. Frontmatter wins on conflict (same skill_name).
+      4. Detect orphan hand-coded entries (no SKILL.md on disk) and warn to stderr.
+    """
+    # Locate project root relative to this file
+    _lib_dir = Path(__file__).resolve().parent
+    _project_root = _lib_dir.parent
+
+    # Step 1: Load frontmatter-derived entries
+    _fm_entries = _load_routing_from_frontmatter(_project_root)
+    _fm_skill_names: Set[str] = {e.skill_name for e in _fm_entries}
+
+    # Step 2: Load disk skill index for orphan detection
+    _disk_skills = _detect_skill_md_paths(_project_root)
+
+    # Step 3: Load hand-coded entries, warn on orphans, skip if frontmatter present
+    _hand_coded = _build_hand_coded_routing_table()
+    _merged: List[_RoutingEntry] = list(_fm_entries)
+    for entry in _hand_coded:
+        if entry.skill_name in _fm_skill_names:
+            # Frontmatter entry takes precedence; skip hand-coded
+            continue
+        if entry.skill_name not in _disk_skills:
+            # Orphan: hand-coded entry with no SKILL.md on disk
+            # Known orphans as of ADR-174: "context-analysis", "traceability-check"
+            # (plus any meta-commands like "sdd-new" that intentionally have no dir)
+            _META_COMMANDS = {"sdd-new"}
+            if entry.skill_name not in _META_COMMANDS:
+                print(
+                    f"[skill_router] WARNING: orphan routing entry '{entry.skill_name}' "
+                    f"— no SKILL.md found on disk. See ADR-174 migration plan.",
+                    file=sys.stderr,
+                )
+        _merged.append(entry)
+
+    return _merged
+
+
+def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
     """Build the full routing table covering all major skills."""
 
     return [
@@ -378,6 +679,21 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
             invoke_command="/sdd-explore",
             fallback_command=None,
             reason_template="SDD exploration detected",
+        ),
+
+        # --- Reverse engineering ---
+        _RoutingEntry(
+            patterns=_compile([
+                (r"\breverse[- ]?engineer\b", 0.95),
+                (r"\b(understand|comprehend|entender|comprender)\s+(the\s+|el\s+|la\s+)?(internal\s+)?(schema|structure|architecture|api|config|source|esquema|estructura|arquitectura|fuente)", 0.80),
+                (r"\b(how\s+does|c[oó]mo\s+funciona)\s+.{0,30}\s+(work|funciona)\b", 0.75),
+                (r"\b(internals?|source\s+code)\s+(of|del?|de\s+la)", 0.80),
+                (r"\bdecipher\b", 0.80),
+            ]),
+            skill_name="reverse-engineer",
+            invoke_command="/reverse-engineer",
+            fallback_command="/repo-forensics",
+            reason_template="Reverse engineering / internal schema understanding detected",
         ),
 
         # --- Documentation ---
@@ -1083,6 +1399,11 @@ class SkillRouter:
         return self._known_skills
 
     @property
+    def routing_table(self) -> List[_RoutingEntry]:
+        """The full routing table (frontmatter-derived + hand-coded fallback)."""
+        return self._routing_table
+
+    @property
     def routing_entry_count(self) -> int:
         """Number of entries in the routing table."""
         return len(self._routing_table)
@@ -1175,6 +1496,16 @@ class SkillRouter:
             if entry.fallback_command:
                 skills.add(entry.fallback_command.lstrip("/"))
         return skills
+
+    def get_primary_routing_skills(self) -> Set[str]:
+        """Return skill names that can be selected as primary router matches.
+
+        Fallback commands are intentionally excluded. They may be command
+        aliases (for example ``/sdd-verify`` or ``/cost-predict``) rather than
+        concrete skill directories, so coverage ratchets should measure primary
+        routeability separately from fallback compatibility.
+        """
+        return {entry.skill_name for entry in self._routing_table}
 
     def validate_routing_table(self) -> List[str]:
         """Check that all skills in routing table exist in CATALOG.md.
