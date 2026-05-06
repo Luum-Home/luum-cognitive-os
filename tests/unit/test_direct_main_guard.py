@@ -200,3 +200,27 @@ def test_direct_push_explicit_main_ref_blocks(tmp_path: Path) -> None:
     )
     assert proc.returncode == 2
     assert "direct push" in proc.stderr
+
+
+def test_push_block_message_lists_both_bypass_vars(tmp_path: Path) -> None:
+    """Contract: the BLOCK message must mention BOTH env vars required for bypass.
+
+    Operators following the hint should not have to fail twice (once for the
+    intent flag, again for the missing reason). Both env vars must appear in
+    one shot. See `_require_bypass_reason()` in the hook for the second-line
+    defense; this test pins the first-line UX.
+    """
+    init_repo(tmp_path, "main")
+    proc = run_hook(tmp_path, env={"COS_GIT_COMMAND": "git push origin main", "CLAUDE_TOOL_INPUT": ""})
+    assert proc.returncode == 2
+    assert "COS_ALLOW_DIRECT_PUSH=1" in proc.stderr
+    assert "COS_DIRECT_MAIN_BYPASS_REASON" in proc.stderr
+
+
+def test_agent_commit_block_message_lists_both_bypass_vars(tmp_path: Path) -> None:
+    """Same contract for agent commit-to-main BLOCK: both env vars in one hint."""
+    init_repo(tmp_path, "main")
+    proc = run_hook(tmp_path, env={"CLAUDE_AGENT_ID": "agent-test"})
+    assert proc.returncode == 2
+    assert "COS_ALLOW_DIRECT_MAIN=1" in proc.stderr
+    assert "COS_DIRECT_MAIN_BYPASS_REASON" in proc.stderr
