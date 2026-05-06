@@ -918,6 +918,12 @@ evidence:
   - tests/contracts/test_projectable_script_surface_evidence.py
   rationale: Projectable command surface has an explicit contract proving the entrypoint
     is present and parseable.
+- primitive: scripts/cos-tui
+  tests:
+  - tests/contracts/test_cos_tui_operable_surface_contract.py
+  - tests/contracts/test_cos_cli_surface_contract.py
+  rationale: Operable TUI surface has explicit whitelist, confirmation, and receipt
+    contracts.
 patterns:
 - pattern: tests/**
   behavior_proven: true
