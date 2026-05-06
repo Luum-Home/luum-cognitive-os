@@ -32,7 +32,32 @@ SCRIPT_SUFFIXES = {"", ".py", ".sh", ".js", ".mjs", ".txt"}
 IGNORE_PARTS = {"__pycache__", ".pytest_cache", ".venv", "node_modules", ".git"}
 IGNORE_PREFIXES = ("docs/reports/", ".claude/plugins/", "dashboard/.next/")
 DEFAULT_HARNESSES = ("claude", "codex", "shell-ci")
+DEFAULT_SURFACES = ("claude", "codex", "shell-ci", "cos-cli", "acc-report", "dashboard")
 STRUCTURAL_HARNESSES = {"cursor", "vscode-copilot", "opencode", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid"}
+SURFACE_KIND_BY_ID = {
+    "shell-ci": "shell-ci",
+    "cos-cli": "cli",
+    "acc-report": "report",
+    "dashboard": "ui",
+}
+CLI_COMMANDS = {
+    "scripts/cos": ["scripts/cos status --json", "scripts/cos coverage --json", "scripts/cos primitive harness-coverage --print-json"],
+    "scripts/cos-status.sh": ["scripts/cos status --json"],
+    "scripts/cos-coverage": ["scripts/cos coverage --json", "scripts/cos-coverage --json"],
+    "scripts/cos_coverage.py": ["scripts/cos coverage --json"],
+    "scripts/primitive_harness_coverage.py": ["scripts/cos primitive harness-coverage --print-json", "python3 scripts/primitive_harness_coverage.py --print-json"],
+}
+REPORT_SURFACES = {
+    "acc-report": {
+        "evidence": ["scripts/acc_pipeline.py", "docs/acc/latest.json", "docs/reports/primitive-harness-coverage-latest.json"],
+    },
+}
+UI_SURFACES = {
+    "dashboard": {
+        "evidence": ["dashboard/lib/cos-api.ts", "dashboard/app/page.tsx"],
+        "operable": False,
+    },
+}
 
 
 @dataclass(frozen=True)
@@ -45,6 +70,12 @@ class HarnessState:
     events: list[str] = field(default_factory=list)
     commands: list[str] = field(default_factory=list)
     evidence: list[str] = field(default_factory=list)
+    surface_kind: str = "ide-harness"
+    surface_id: str = ""
+    observable: bool = False
+    operable: bool = False
+    json_contract: bool = False
+    exit_code_contract: bool = False
 
 
 @dataclass(frozen=True)
@@ -53,6 +84,7 @@ class CoverageRow:
     family: str
     scope: str | None
     harnesses: dict[str, HarnessState]
+    surfaces: dict[str, HarnessState]
     coverage: str
     gap: str | None
     gap_policy: str | None = None
@@ -96,6 +128,20 @@ def _implemented_harnesses(root: Path) -> tuple[str, ...]:
     data = _load_yaml(root, "manifests/harness-projection.yaml")
     ids = [str(item.get("id")) for item in data.get("harnesses", []) if item.get("status") == "implemented" and item.get("id")]
     return tuple(ids) if ids else DEFAULT_HARNESSES
+
+
+def _implemented_surfaces(root: Path) -> tuple[str, ...]:
+    ids = list(_implemented_harnesses(root))
+    for surface_id in DEFAULT_SURFACES:
+        if surface_id not in ids:
+            ids.append(surface_id)
+    if not (root / "dashboard").exists() and "dashboard" in ids:
+        ids.remove("dashboard")
+    return tuple(ids)
+
+
+def _surface_kind(surface_id: str) -> str:
+    return SURFACE_KIND_BY_ID.get(surface_id, "ide-harness")
 
 
 def _gap_policy_manifest(root: Path) -> dict[str, Any]:
@@ -273,18 +319,57 @@ def _structural_projected(family: str, scope: str | None, harness: str) -> bool:
 
 
 def _state_for(root: Path, primitive: str, family: str, scope: str | None, harness: str, wiring: dict[str, dict[str, list[str]]], test_text: str, explicit_evidence: dict[str, Any]) -> HarnessState:
+    surface_kind = _surface_kind(harness)
     wire = wiring.get(primitive)
     structurally_projected = _structural_projected(family, scope, harness)
     installed = (root / primitive).exists()
-    projected = bool(wire) or structurally_projected
-    wired = bool(wire and wire.get("events"))
     executable = _is_executable(root, primitive)
     behavior = _behavior_proven(test_text, primitive, explicit_evidence)
     evidence: list[str] = []
-    if wire:
-        evidence.append("settings-wiring")
-    if structurally_projected:
-        evidence.append("structural-skill-rule-projection")
+    commands: list[str] = wire.get("commands", []) if wire else []
+    events: list[str] = sorted(set(wire.get("events", []))) if wire else []
+    projected = bool(wire) or structurally_projected
+    wired = bool(wire and wire.get("events"))
+    observable = False
+    operable = False
+    json_contract = False
+    exit_code_contract = False
+
+    if surface_kind == "cli":
+        commands = CLI_COMMANDS.get(primitive, [])
+        projected = bool(commands)
+        wired = False
+        observable = bool(commands)
+        operable = bool(commands)
+        json_contract = bool(commands and any("--json" in command or "--print-json" in command for command in commands))
+        exit_code_contract = bool(commands)
+        if commands:
+            evidence.append("cos-cli-route")
+    elif surface_kind == "report":
+        report = REPORT_SURFACES.get(harness, {})
+        report_paths = [root / str(path) for path in report.get("evidence", [])]
+        projected = bool(report_paths and all(path.exists() for path in report_paths[:1]))
+        wired = projected
+        observable = projected
+        json_contract = projected
+        exit_code_contract = projected
+        if projected:
+            evidence.extend(str(path) for path in report.get("evidence", []))
+    elif surface_kind == "ui":
+        ui = UI_SURFACES.get(harness, {})
+        ui_paths = [root / str(path) for path in ui.get("evidence", [])]
+        projected = bool(ui_paths and all(path.exists() for path in ui_paths))
+        wired = projected
+        observable = projected
+        operable = bool(ui.get("operable", False))
+        if projected:
+            evidence.extend(str(path) for path in ui.get("evidence", []))
+    else:
+        if wire:
+            evidence.append("settings-wiring")
+        if structurally_projected:
+            evidence.append("structural-skill-rule-projection")
+
     if behavior:
         evidence.append("test-or-manual-reference")
     return HarnessState(
@@ -293,25 +378,33 @@ def _state_for(root: Path, primitive: str, family: str, scope: str | None, harne
         wired=wired,
         executable=executable,
         behavior_proven=behavior,
-        events=sorted(set(wire.get("events", []))) if wire else [],
-        commands=wire.get("commands", []) if wire else [],
+        events=events,
+        commands=commands,
         evidence=evidence,
+        surface_kind=surface_kind,
+        surface_id=harness,
+        observable=observable,
+        operable=operable,
+        json_contract=json_contract,
+        exit_code_contract=exit_code_contract,
     )
 
 
 def _coverage_and_gap(scope: str | None, family: str, harnesses: dict[str, HarnessState]) -> tuple[str, str | None]:
     implemented = sorted(name for name, state in harnesses.items() if state.projected or state.wired)
     behavior = sorted(name for name, state in harnesses.items() if state.behavior_proven and (state.projected or state.wired))
+    ide_harnesses = {name: state for name, state in harnesses.items() if state.surface_kind == "ide-harness"}
+    command_or_report = any(state.surface_kind in {"cli", "shell-ci", "report", "ui"} and (state.projected or state.wired) for state in harnesses.values())
     coverage = "+".join(implemented) if implemented else "none"
     if scope == "both":
-        missing = [name for name in ("claude", "codex") if name in harnesses and not (harnesses[name].projected or harnesses[name].wired)]
+        missing = [name for name in ("claude", "codex") if name in ide_harnesses and not (ide_harnesses[name].projected or ide_harnesses[name].wired)]
         if missing:
             return coverage, f"scope=both but missing projected/wired support for: {', '.join(missing)}"
-        weak = [name for name in ("claude", "codex") if name in harnesses and family == "hooks" and not harnesses[name].wired]
+        weak = [name for name in ("claude", "codex") if name in ide_harnesses and family == "hooks" and not ide_harnesses[name].wired]
         if weak:
             return coverage, f"scope=both hook lacks runtime wiring for: {', '.join(weak)}"
-    if scope == "project" and not implemented:
-        return coverage, "scope=project but no harness projection detected"
+    if scope == "project" and not (implemented or command_or_report):
+        return coverage, "scope=project but no surface projection detected"
     if implemented and not behavior:
         return coverage, "projected/wired but no direct behavior proof reference detected"
     return coverage, None
@@ -361,7 +454,7 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
     explicit_evidence = _behavior_evidence(root)
     policy_manifest = _gap_policy_manifest(root)
     if harnesses is None:
-        harnesses = _implemented_harnesses(root)
+        harnesses = _implemented_surfaces(root)
     wiring_by_harness: dict[str, dict[str, dict[str, list[str]]]] = {
         "claude": _claude_wiring(root),
         "codex": _codex_wiring(root),
@@ -377,7 +470,7 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
         }
         coverage, gap = _coverage_and_gap(scope, family, states)
         gap_policy, gap_severity, gap_status = _classify_gap(policy_manifest, primitive, family, scope, states, gap)
-        rows.append(CoverageRow(primitive=primitive, family=family, scope=scope, harnesses=states, coverage=coverage, gap=gap, gap_policy=gap_policy, gap_severity=gap_severity, gap_status=gap_status))
+        rows.append(CoverageRow(primitive=primitive, family=family, scope=scope, harnesses=states, surfaces=states, coverage=coverage, gap=gap, gap_policy=gap_policy, gap_severity=gap_severity, gap_status=gap_status))
     summary = {
         "total_primitives": len(rows),
         "by_family": {},
@@ -387,8 +480,13 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
         "gaps_by_policy": {},
         "gaps_by_status": {},
         "harness_projected_or_wired": {h: sum(1 for row in rows if row.harnesses[h].projected or row.harnesses[h].wired) for h in harnesses},
-        "harness_wired_hooks": {h: sum(1 for row in rows if row.family == "hooks" and row.harnesses[h].wired) for h in harnesses},
+        "harness_wired_hooks": {h: sum(1 for row in rows if row.family == "hooks" and row.harnesses[h].wired and row.harnesses[h].surface_kind == "ide-harness") for h in harnesses},
+        "surface_projected_or_wired": {h: sum(1 for row in rows if row.harnesses[h].projected or row.harnesses[h].wired) for h in harnesses},
+        "surfaces_by_kind": {},
     }
+    for surface_id in harnesses:
+        kind = _surface_kind(surface_id)
+        summary["surfaces_by_kind"][kind] = summary["surfaces_by_kind"].get(kind, 0) + 1
     for row in rows:
         summary["by_family"][row.family] = summary["by_family"].get(row.family, 0) + 1
         summary["by_scope"][str(row.scope)] = summary["by_scope"].get(str(row.scope), 0) + 1
@@ -398,8 +496,10 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
             summary["gaps_by_status"][row.gap_status] = summary["gaps_by_status"].get(row.gap_status, 0) + 1
     return {
         "schema_version": "primitive-harness-coverage.v1",
-        "purpose": "Measure effective harness/IDE implementation coverage separately from scope intent.",
-        "state_semantics": ["installed", "projected", "wired", "executable", "behavior-proven"],
+        "purpose": "Measure effective surface implementation coverage separately from scope intent. The legacy harnesses key is preserved for compatibility.",
+        "state_semantics": ["installed", "projected", "wired", "executable", "behavior-proven", "observable", "operable", "json-contract", "exit-code-contract"],
+        "surface_kinds": ["ide-harness", "cli", "shell-ci", "ui", "service", "report"],
+        "surfaces": [{"surface_id": h, "surface_kind": _surface_kind(h)} for h in harnesses],
         "harnesses": list(harnesses),
         "summary": summary,
         "items": [_row_to_dict(row) for row in rows],
@@ -409,24 +509,26 @@ def build_report(root: Path, harnesses: tuple[str, ...] | None = None) -> dict[s
 def _row_to_dict(row: CoverageRow) -> dict[str, Any]:
     data = asdict(row)
     data["harnesses"] = {name: asdict(state) for name, state in row.harnesses.items()}
+    data["surfaces"] = {name: asdict(state) for name, state in row.surfaces.items()}
     return data
 
 
 def write_markdown(report: dict[str, Any], path: Path) -> None:
     lines = [
-        "# Primitive Harness Coverage",
+        "# Primitive Surface Coverage",
         "",
-        "Scope declares intent; harness coverage proves effective implementation per IDE/harness.",
+        "Scope declares intent; surface coverage proves effective implementation per IDE, CLI, UI, CI, service, or report surface.",
         "",
         f"Total primitives: {report['summary']['total_primitives']}",
         f"Gaps: {report['summary']['gaps']}",
         f"Unclassified gaps: {report['summary'].get('unclassified_gaps', 0)}",
         f"Gaps by status: {report['summary'].get('gaps_by_status', {})}",
-        f"Projected/wired by harness: {report['summary']['harness_projected_or_wired']}",
+        f"Projected/wired by surface: {report['summary']['surface_projected_or_wired']}",
+        f"Surfaces by kind: {report['summary']['surfaces_by_kind']}",
         f"Wired hooks by harness: {report['summary']['harness_wired_hooks']}",
         "",
-        "| Primitive | Family | Scope | Coverage | Gap | Policy | Claude | Codex | Shell CI |",
-        "|---|---|---|---|---|---|---|---|---|",
+        "| Primitive | Family | Scope | Coverage | Gap | Policy | Claude | Codex | Shell CI | COS CLI | ACC Report | Dashboard |",
+        "|---|---|---|---|---|---|---|---|---|---|---|---|",
     ]
     for row in report["items"]:
         h = row["harnesses"]
@@ -441,11 +543,19 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
                 bits.append("installed")
             else:
                 bits.append("absent")
+            if state.get("observable"):
+                bits.append("observable")
+            if state.get("operable"):
+                bits.append("operable")
+            if state.get("json_contract"):
+                bits.append("json")
+            if state.get("exit_code_contract"):
+                bits.append("exit")
             if state.get("behavior_proven"):
                 bits.append("proven")
             return "<br>".join(bits)
         lines.append(
-            f"| `{row['primitive']}` | {row['family']} | {row.get('scope') or ''} | {row['coverage']} | {row.get('gap') or ''} | {row.get('gap_policy') or ''} | {cell('claude')} | {cell('codex')} | {cell('shell-ci')} |"
+            f"| `{row['primitive']}` | {row['family']} | {row.get('scope') or ''} | {row['coverage']} | {row.get('gap') or ''} | {row.get('gap_policy') or ''} | {cell('claude')} | {cell('codex')} | {cell('shell-ci')} | {cell('cos-cli')} | {cell('acc-report')} | {cell('dashboard')} |"
         )
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")

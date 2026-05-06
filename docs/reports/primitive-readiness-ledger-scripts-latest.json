@@ -569,7 +569,8 @@
       "consumer_families": {
         "config": 1,
         "doc": 35,
-        "test": 2
+        "script": 1,
+        "test": 3
       },
       "consumers": [
         {
@@ -717,21 +718,30 @@
           "path": "docs/manual-tests/shell-ci-formal-harness.md"
         },
         {
+          "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_acc_pipeline_contract.py"
         },
         {
           "family": "test",
           "path": "tests/unit/test_acc_pipeline.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
         }
       ],
       "distribution": "maintainer",
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:35",
-        "config_consumers:1"
+        "config_consumers:1",
+        "script_consumers:1"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -747,7 +757,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 38,
+      "total_consumers": 40,
       "wrapper_for": "scripts/cos_coverage.py"
     },
     {
@@ -755,7 +765,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 7,
         "script": 1,
         "test": 1
@@ -768,6 +778,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -814,7 +828,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:7",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -829,7 +843,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 12,
+      "total_consumers": 13,
       "wrapper_for": null
     },
     {
@@ -3354,12 +3368,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 40,
-        "doc": 490,
+        "doc": 491,
         "hook": 79,
         "rule": 42,
         "script": 236,
-        "skill": 59,
-        "test": 353
+        "skill": 60,
+        "test": 354
       },
       "consumers": [
         {
@@ -4217,6 +4231,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
         },
         {
           "family": "doc",
@@ -7072,6 +7090,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/primitive-harness-coverage/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/primitive-harvester/SKILL.md"
         },
         {
@@ -7529,6 +7551,10 @@
         {
           "family": "test",
           "path": "tests/contracts/test_control_plane_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_cos_cli_surface_contract.py"
         },
         {
           "family": "test",
@@ -8563,10 +8589,10 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
-        "skill_consumers:59",
-        "test_consumers:353",
+        "skill_consumers:60",
+        "test_consumers:354",
         "hook_consumers:79",
-        "doc_consumers:490",
+        "doc_consumers:491",
         "rule_consumers:42",
         "config_consumers:40",
         "script_consumers:236"
@@ -8581,11 +8607,11 @@
       "protected_install_surface": false,
       "role": "agentic-primitive",
       "role_source": "lifecycle",
-      "skill_consumers": 59,
+      "skill_consumers": 60,
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1299,
+      "total_consumers": 1302,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -10014,18 +10040,34 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 1,
-        "script": 2,
-        "test": 4
+        "doc": 3,
+        "script": 4,
+        "test": 5
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-189-harness-implementation-coverage.md"
+        },
         {
           "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
+          "family": "doc",
+          "path": "docs/manual-tests/primitive-harness-coverage.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
           "family": "script",
           "path": "scripts/cos_coverage.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
         },
         {
           "family": "script",
@@ -10046,13 +10088,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_coverage_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:4",
-        "doc_consumers:1",
-        "script_consumers:2"
+        "test_consumers:5",
+        "doc_consumers:3",
+        "script_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -10066,7 +10112,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 12,
       "wrapper_for": null
     },
     {
@@ -14682,7 +14728,7 @@
       "consumer_families": {
         "config": 5,
         "doc": 14,
-        "script": 5,
+        "script": 6,
         "skill": 1,
         "test": 8
       },
@@ -14784,6 +14830,10 @@
           "path": "scripts/demo-portability-proof.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
           "family": "skill",
           "path": "skills/cos-status/SKILL.md"
         },
@@ -14827,7 +14877,7 @@
         "test_consumers:8",
         "doc_consumers:14",
         "config_consumers:5",
-        "script_consumers:5"
+        "script_consumers:6"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -14843,7 +14893,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 33,
+      "total_consumers": 34,
       "wrapper_for": null
     },
     {
@@ -16810,8 +16860,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "doc": 2,
-        "script": 3,
-        "test": 4
+        "script": 4,
+        "test": 5
       },
       "consumers": [
         {
@@ -16832,6 +16882,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/primitive_harness_coverage.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/statusline-coverage.sh"
         },
         {
@@ -16849,13 +16903,17 @@
         {
           "family": "test",
           "path": "tests/unit/test_cos_coverage_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_harness_coverage.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:2",
-        "script_consumers:3"
+        "script_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -16869,7 +16927,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 9,
+      "total_consumers": 11,
       "wrapper_for": null
     },
     {
@@ -17561,7 +17619,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "script": 1
       },
       "consumers": [
@@ -17570,13 +17628,17 @@
           "path": "manifests/hook-quality.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
           "family": "script",
           "path": "scripts/cos-friction-report"
         }
       ],
       "distribution": null,
       "evidence": [
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -17591,7 +17653,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 3,
       "wrapper_for": null
     },
     {
@@ -20833,7 +20895,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 14,
         "script": 3,
         "test": 4
@@ -20858,6 +20920,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -20957,7 +21023,7 @@
         "wrapper_for:scripts/setup.sh",
         "test_consumers:4",
         "doc_consumers:14",
-        "config_consumers:7",
+        "config_consumers:8",
         "script_consumers:3"
       ],
       "install_surface": null,
@@ -20972,7 +21038,7 @@
       "role_source": "usage:repo",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 28,
+      "total_consumers": 29,
       "wrapper_for": "scripts/setup.sh"
     },
     {
@@ -24427,7 +24493,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 4,
         "script": 1,
         "test": 1
@@ -24436,6 +24502,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "doc",
@@ -24466,7 +24536,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:4",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -24481,7 +24551,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 7,
+      "total_consumers": 8,
       "wrapper_for": null
     },
     {
@@ -24691,7 +24761,7 @@
       "consumer_families": {
         "config": 2,
         "doc": 3,
-        "script": 1,
+        "script": 2,
         "skill": 1,
         "test": 2
       },
@@ -24721,6 +24791,10 @@
           "path": "scripts/acc_pipeline.py"
         },
         {
+          "family": "script",
+          "path": "scripts/cos"
+        },
+        {
           "family": "skill",
           "path": "skills/primitive-harness-coverage/SKILL.md"
         },
@@ -24736,11 +24810,12 @@
       "distribution": "core",
       "evidence": [
         "lifecycle",
+        "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:3",
         "config_consumers:2",
-        "script_consumers:1"
+        "script_consumers:2"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -24758,8 +24833,8 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 9,
-      "wrapper_for": null
+      "total_consumers": 10,
+      "wrapper_for": "scripts/cos-status.sh"
     },
     {
       "confidence": "medium",
@@ -27393,7 +27468,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 1,
         "script": 1
       },
@@ -27405,6 +27480,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
           "family": "config",
@@ -27427,7 +27506,7 @@
       "evidence": [
         "override_rationale",
         "doc_consumers:1",
-        "config_consumers:4",
+        "config_consumers:5",
         "script_consumers:1"
       ],
       "install_surface": null,
@@ -27442,7 +27521,7 @@
       "role_source": "override",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 6,
+      "total_consumers": 7,
       "wrapper_for": null
     },
     {

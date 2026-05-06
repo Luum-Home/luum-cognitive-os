@@ -7,7 +7,7 @@ Consumer accessibility: so-local-only:113
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
 | `rules/ROADMAP.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/RULES-COMPACT.md` | lab | heuristic:path | medium | so-local-only |  | 140 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/RULES-COMPACT.md` | lab | heuristic:path | medium | so-local-only |  | 139 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/acceptance-criteria.md` | driver-specific | heuristic:text | medium | so-local-only |  | 67 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/adaptive-bypass.md` | driver-specific | heuristic:text | medium | so-local-only |  | 59 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/adversarial-review.md` | driver-specific | heuristic:text | medium | so-local-only |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
@@ -62,8 +62,8 @@ Consumer accessibility: so-local-only:113
 | `rules/hcom-integration.md` | driver-specific | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/hook-security-profiles.md` | driver-specific | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/impact-analysis.md` | driver-specific | heuristic:text | medium | so-local-only |  | 19 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/infra-health.md` | lab | heuristic:path | medium | so-local-only |  | 37 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/infra-intent.md` | context-only | default | medium | so-local-only |  | 30 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/infra-health.md` | lab | heuristic:path | medium | so-local-only |  | 38 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/infra-intent.md` | context-only | default | medium | so-local-only |  | 31 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/lane-taxonomy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/license-policy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 34 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/llm-dispatch.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 45 | add lifecycle/package/projection metadata or keep SO-local |
@@ -71,22 +71,22 @@ Consumer accessibility: so-local-only:113
 | `rules/model-directive.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/model-routing.md` | driver-specific | heuristic:text | medium | so-local-only |  | 59 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/non-blocking-retry.md` | driver-specific | heuristic:text | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 138 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/orchestrator-mode.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 25 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/observability.md` | driver-specific | heuristic:text | medium | so-local-only |  | 139 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/orchestrator-mode.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 26 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/orchestrator-prompt-compose.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/parry-integration.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/pentesting-readiness.md` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/performance-monitoring.md` | context-only | default | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/phase-aware-agents.md` | driver-specific | heuristic:text | medium | so-local-only |  | 37 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/pre-commit-gate.md` | driver-specific | heuristic:text | medium | so-local-only |  | 43 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/pre-commit-gate.md` | driver-specific | heuristic:text | medium | so-local-only |  | 44 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/pre-dev-readiness-gate.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/private-mode.md` | driver-specific | heuristic:text | medium | so-local-only |  | 51 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/private-mode.md` | driver-specific | heuristic:text | medium | so-local-only |  | 52 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/prompt-composition.md` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/prompt-quality.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 41 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/prompt-quality.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 42 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/python-naming.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/queue-advisor.md` | driver-specific | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/queue-drain.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 28 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/rate-limit-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/rate-limit-protection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 24 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/rate-limiting.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 26 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/reinvention-prevention.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/repomix-integration.md` | driver-specific | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
@@ -97,7 +97,7 @@ Consumer accessibility: so-local-only:113
 | `rules/result-management.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/sandbox-sampling.md` | lab | heuristic:path | medium | so-local-only |  | 20 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/scope-creep-detection.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 12 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/scope-proportionality.md` | lab | heuristic:path | medium | so-local-only |  | 52 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/scope-proportionality.md` | lab | heuristic:path | medium | so-local-only |  | 53 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/scout-pattern.md` | lab | heuristic:path | medium | so-local-only |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/security-scanning.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/self-improvement-protocol.md` | driver-specific | heuristic:text | medium | so-local-only |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
@@ -109,7 +109,7 @@ Consumer accessibility: so-local-only:113
 | `rules/so-slo.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/split-and-resume.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/squad-protocol.md` | driver-specific | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/startup-protocol.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/startup-protocol.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 23 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/step-files.md` | driver-specific | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/supply-chain-defense.md` | context-only | default | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/task-dag.md` | context-only | default | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
@@ -117,5 +117,5 @@ Consumer accessibility: so-local-only:113
 | `rules/token-economy.md` | driver-specific | heuristic:text | medium | so-local-only |  | 35 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/trailofbits-skills.md` | driver-specific | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/trust-score.md` | driver-specific | heuristic:text | medium | so-local-only |  | 135 | add lifecycle/package/projection metadata or keep SO-local |
-| `rules/user-prompt-capture.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 48 | add lifecycle/package/projection metadata or keep SO-local |
+| `rules/user-prompt-capture.md` | hook-enforced | heuristic:text | medium | so-local-only |  | 49 | add lifecycle/package/projection metadata or keep SO-local |
 | `rules/workload-scheduling.md` | driver-specific | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |

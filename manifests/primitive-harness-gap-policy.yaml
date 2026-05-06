@@ -41,6 +41,10 @@ policies:
     severity: medium
     status: partial
     rationale: Primitive is projected/wired but needs explicit behavior evidence mapping.
+  - id: os-internal-observability-surface
+    severity: advisory
+    status: aligned
+    rationale: OS-internal primitives can be observable through ACC/dashboard without per-IDE lifecycle projection; family audits remain the behavior guard.
   - id: unclassified
     severity: medium
     status: partial
@@ -62,7 +66,7 @@ rules:
       - hooks/teammate-idle.sh
   - policy: structural-only-ok
     families: [rules, skills, templates]
-    scopes: [project, both]
+    scopes: [os-only, project, both]
   - policy: shell-command-only
     family: scripts
     harness: shell-ci
@@ -76,12 +80,16 @@ rules:
     role_patterns: [runtime-safety, memory-lifecycle]
     missing_harness_any: [claude, codex]
     scopes: [project, both]
+  - policy: os-internal-observability-surface
+    family: hooks
+    scopes: [os-only]
+    gap_contains: behavior proof
   - policy: behavior-proof-needed
     family: hooks
     gap_contains: behavior proof
   - policy: on-demand-command-only
     family: scripts
-    scopes: [both]
+    scopes: [os-only, both]
     missing_harness_any: [claude, codex]
   - policy: projectable-needs-driver
     family: scripts
