@@ -205,6 +205,7 @@ cc_driver_emit() {
     "hooks/pre-commit-content-hash-dedupe.sh"  "false" \
     "hooks/scope-marker-portability-gate.sh"    "false" \
     "hooks/skill-router-bash-gate.sh"           "false" \
+    "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/release-guard.sh"                 "false" \
   )
 
@@ -252,6 +253,7 @@ cc_driver_emit() {
     "hooks/completeness-check.sh"           "false" \
     "hooks/reinvention-check.sh"            "false" \
     "hooks/native-agent-heartbeat.sh"       "false" \
+    "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/cross-session-event-emit.sh"      "true"  \
   )
 
