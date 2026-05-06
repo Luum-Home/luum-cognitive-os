@@ -25,8 +25,13 @@ reapers:
   session-end: Runs from the Stop/session-end path.
   session-start: Runs before a new session resumes work.
   manual: Operator-triggered cleanup command.
+  repair-before-block: Runs only when a blocking preflight can be safely repaired before failing.
   auto-on-create-plus-one: Creator path also prunes older matching entries.
   rotation: Size/count-bounded log rotation.
+retention_modes:
+  observe: Audit-only; never selected by automatic execute paths.
+  repair-safe: Mature archive-first cleanup allowed in session-end auto-safe mode.
+  repair-before-block: Mature archive-first cleanup allowed once before an otherwise blocking preflight.
 surfaces:
   - id: auto-pre-agent-stashes
     kind: artifact-pool
@@ -51,6 +56,8 @@ surfaces:
     rationale: >
       These stashes preserve WIP before agent launches. They must be archived
       before removal because stash indices are mutable and may contain valuable work.
+      The reaper field names the trigger point; retention_mode controls whether
+      the controller may execute it automatically.
 
   - id: task-claims-ledger
     kind: ledger
@@ -100,7 +107,8 @@ surfaces:
       - docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md
     rationale: >
       Current and recent task records are useful; stale terminal records should
-      not make every status/read path slower.
+      not make every status/read path slower. This remains observe until owner_pid
+      liveness and task archival semantics are separately proven.
 
   - id: agent-bus-directories
     kind: artifact-pool

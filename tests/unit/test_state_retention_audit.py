@@ -165,3 +165,42 @@ def test_repair_before_block_selects_only_auto_stash_surface(git_repo: Path, tmp
 
     assert [surface["surface"] for surface in payload["surfaces"]] == ["auto-pre-agent-stashes"]
     assert payload["reap"][0]["candidate_count"] == 1
+
+
+def test_auto_safe_execute_sets_cooldown_and_skips_second_run(git_repo: Path) -> None:
+    claims_path = git_repo / ".cognitive-os" / "tasks" / "active-claims.json"
+    claims_path.parent.mkdir(parents=True)
+    old = (datetime.now(timezone.utc) - timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    claims_path.write_text(json.dumps({"claims": [{"task_id": "cool", "status": "released", "released_at": old}]}) + "\n", encoding="utf-8")
+
+    first = run_audit(
+        git_repo,
+        "--auto-safe",
+        "--reap",
+        "--execute",
+        "--json",
+        "--no-metrics",
+        "--cooldown-seconds",
+        "300",
+    )
+    first_payload = parse_json(first)
+    assert first_payload["cooldown_skipped"] is False
+    assert any(item["surface"] == "task-claims-ledger" and item["removed"] == 1 for item in first_payload["reap"])
+
+    # Re-add eligible terminal state immediately. Cooldown must prevent an
+    # automatic repair storm from repeatedly mutating state in the same window.
+    claims_path.write_text(json.dumps({"claims": [{"task_id": "cool2", "status": "released", "released_at": old}]}) + "\n", encoding="utf-8")
+    second = run_audit(
+        git_repo,
+        "--auto-safe",
+        "--reap",
+        "--execute",
+        "--json",
+        "--no-metrics",
+        "--cooldown-seconds",
+        "300",
+    )
+    second_payload = parse_json(second)
+    assert second_payload["cooldown_skipped"] is True
+    assert second_payload["reap"] == []
+    assert json.loads(claims_path.read_text(encoding="utf-8"))["claims"][0]["task_id"] == "cool2"
