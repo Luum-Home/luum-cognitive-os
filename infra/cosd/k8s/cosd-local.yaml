@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cosd-config
+data:
+  COGNITIVE_OS_PROJECT_DIR: /workspace
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cosd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cosd
+  template:
+    metadata:
+      labels:
+        app: cosd
+    spec:
+      containers:
+        - name: cosd
+          image: luum-cognitive-os-worker:local
+          imagePullPolicy: IfNotPresent
+          command: ["python3", "scripts/cos_daemon.py", "--project-dir", "/workspace", "serve", "--host", "0.0.0.0", "--port", "8765"]
+          envFrom:
+            - configMapRef:
+                name: cosd-config
+          ports:
+            - name: http
+              containerPort: 8765
+          volumeMounts:
+            - name: workspace
+              mountPath: /workspace
+      volumes:
+        - name: workspace
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cosd
+spec:
+  selector:
+    app: cosd
+  ports:
+    - name: http
+      port: 8765
+      targetPort: http
