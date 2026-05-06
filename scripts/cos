@@ -10,6 +10,7 @@
 #   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
 #   cos measure harness-profiles       -> scripts/measure_harness_profiles.py
 #   cos sprint ...                     -> scripts/cos_sprint.py
+#   cos subagent preflight             -> scripts/subagent_launch_preflight.py
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
@@ -103,6 +104,14 @@ case "$SUBCMD" in
     shift
     exec python3 "$SCRIPT_DIR/cos_sprint.py" "$@"
     ;;
+  subagent)
+    if [ "${2:-}" = "preflight" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/subagent_launch_preflight.py" "$@"
+    fi
+    echo "cos: unknown subagent subcommand '${2:-}'. Try: cos subagent preflight --type Explore --prompt '...'" >&2
+    exit 1
+    ;;
   state)
     if [ "${2:-}" = "retention" ]; then
       shift 2
@@ -136,6 +145,8 @@ Usage:
   cos governance roi [--json]            Estimate governance friction vs benefit
   cos governance readiness [--json]      Report architecture readiness and remaining gaps
   cos sprint <cmd>                       Run sprint orchestration commands
+  cos subagent preflight --type TYPE --prompt TEXT
+                                         Check subagent capability contract before launch
   cos state retention [--json|--strict]   Audit declared mutable state retention
   cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
   cos init [dir]                         Install Cognitive OS into a project

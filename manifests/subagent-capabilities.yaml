@@ -1,0 +1,89 @@
+# Subagent capability contract — ADR-203.
+# Purpose: preflight selected subagent types against requested output modes before launch.
+version: 1
+schema: subagent-capabilities/v1
+
+default_policy:
+  unknown_type: block
+  file_artifact_requires_write: true
+  parent_persistence_requires_explicit_phrase: true
+
+parent_persistence_markers:
+  - parent will persist
+  - parent persists
+  - parent writes
+  - parent will write
+  - orchestrator will persist
+  - orchestrator persists
+  - orchestrator writes
+  - result only
+  - result_only
+  - read-only and return result
+  - read only and return result
+  - devolvé contenido; parent persistirá
+  - parent persistirá
+  - el orquestador persistirá
+  - solo resultado
+  - sólo resultado
+
+artifact_requirement_patterns:
+  - "\\bwrite\\s+(to|file|the file)?\\b"
+  - "\\bsave\\s+(to|as)?\\b"
+  - "\\bcreate\\s+(file|docs?/|reports?/|research/|\\.cognitive-os/)"
+  - "\\bpersist\\b"
+  - "\\boutput\\s+(file|path|to)\\b"
+  - "\\bpath:\\s*\\S+"
+  - "\\b[a-zA-Z0-9_.-]+/[a-zA-Z0-9_./-]+\\.(md|json|yaml|yml|txt)\\b"
+  - "\\.cognitive-os/[a-zA-Z0-9_./-]+"
+  - "\\bdocs?/[a-zA-Z0-9_./-]+"
+  - "\\bresearch/[a-zA-Z0-9_./-]+"
+  - "\\bescrib[ií]\\w*\\s+(en|a)\\b"
+  - "\\bguard[áa]\\w*\\s+(en|como)\\b"
+  - "\\bcre[áa]\\w*\\s+(el\\s+)?(archivo|docs?/|reports?/|research/|\\.cognitive-os/)"
+  - "\\bpersist[ií]\\w*\\b"
+  - "\\bdejalo\\s+en\\b"
+
+subagent_types:
+  explore:
+    aliases: [Explore, explorer, read-only, readonly]
+    purpose: codebase search and read-only analysis
+    can_read: true
+    can_write: false
+    can_edit: false
+    can_spawn: false
+    output_modes: [result_only]
+    safe_alternatives: [general-purpose, worker]
+    parent_persistence_allowed: true
+
+  explorer:
+    aliases: [explorer-agent]
+    purpose: codebase search and read-only analysis
+    can_read: true
+    can_write: false
+    can_edit: false
+    can_spawn: false
+    output_modes: [result_only]
+    safe_alternatives: [general-purpose, worker]
+    parent_persistence_allowed: true
+
+  general-purpose:
+    aliases: [general, default, general-purpose-agent]
+    purpose: implementation, artifact writing, broad task execution
+    can_read: true
+    can_write: true
+    can_edit: true
+    can_spawn: false
+    output_modes: [result, file_artifact]
+    safe_alternatives: []
+    parent_persistence_allowed: true
+
+  worker:
+    aliases: [write-agent, implementation-agent]
+    purpose: implementation, file edits, patches, artifact production
+    can_read: true
+    can_write: true
+    can_edit: true
+    can_spawn: false
+    output_modes: [result, patch, file_artifact]
+    safe_alternatives: []
+    parent_persistence_allowed: true
