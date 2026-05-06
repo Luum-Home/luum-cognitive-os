@@ -28,20 +28,6 @@ blocked_reference_patterns:
     reason: "Agent-organization assets are experimental and must not silently become part of the protected runtime path."
 
 allowlist:
-  - id: legacy_default_skill_agent_dashboard
-    path: scripts/cos_init.py
-    pattern_id: dashboard_default_skill
-    required_text: "agent-dashboard"
-    zone: extensions
-    status: legacy_exception
-    reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."
-    remediation: "Move dashboard skills behind an explicit extension/profile selection path or replace them with core-proof defaults."
-    path: scripts/cos_init.py
-    pattern_id: dashboard_default_skill
-    zone: extensions
-    status: legacy_exception
-    reason: "The default skill set still reflects the earlier dashboard-heavy onboarding profile."
-    remediation: "Move dashboard skills behind an explicit extension/profile selection path or replace them with core-proof defaults."
   - id: self_hosting_squad_sync
     path: hooks/self-install.sh
     pattern_id: experimental_squad_projection

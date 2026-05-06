@@ -733,6 +733,7 @@ hooks:
     script: hooks/cross-session-coordination-guard.sh
   cross-session-event-emit:
     behavior_tests:
+    - tests/behavior/test_efficiency_profiles.py
     - tests/contracts/test_cross_session_event_taxonomy.py
     - tests/unit/test_cross_session_events.py
     bypass_policy: not_required_observe_only
@@ -750,6 +751,7 @@ hooks:
     script: hooks/cross-session-event-emit.sh
   cross-session-event-emit-stop:
     behavior_tests:
+    - tests/behavior/test_efficiency_profiles.py
     - tests/contracts/test_cross_session_event_taxonomy.py
     - tests/unit/test_cross_session_events.py
     bypass_policy: not_required_observe_only
