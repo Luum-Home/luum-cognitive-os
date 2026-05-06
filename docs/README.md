@@ -44,6 +44,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-146: Primitive Readiness Ledger](adrs/ADR-146-primitive-readiness-ledger.md) — accepted contract for the machine-readable script role ledger and future ratchet gates.
 - [Primitive Readiness Ledger Family Extension Plan](architecture/primitive-readiness-ledger-family-extension.md) — staged plan for extending readiness ledgers from scripts to hooks, skills, and rules.
 - [Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) — downstream-project projection contract and current Claude/Codex proof boundary.
+- [ADR-189: Harness Implementation Coverage for Agentic Primitives](adrs/ADR-189-harness-implementation-coverage.md) — separates `SCOPE` intent from effective Claude/Codex/Shell-CI implementation states.
+- [Primitive Harness Coverage Manual Test](manual-tests/primitive-harness-coverage.md) — manual proof path for regenerating and inspecting per-harness primitive coverage.
 - [Consumer Project Primitive Accessibility Manual Test](manual-tests/consumer-project-primitive-accessibility.md) — manual proof path for temp-project projection and readiness-ledger accessibility checks.
 - [Agent Capability Coverage](agent-capability-coverage.md) — strategic report defining ACC as semantic system coverage for agentic primitives.
 - [Agent Capability Coverage Pipeline](architecture/agent-capability-coverage-pipeline.md) — unified ACC orchestrator that consumes primitive readiness ledgers and existing audit tools.

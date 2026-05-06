@@ -8,7 +8,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 |---|---|---|---|---|---|---:|---|
 | `hooks/_lib/agent-context.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 38 | keep maintainer-only or add explicit export path |
 | `hooks/_lib/artifact-status.sh` | runtime-safety | default | medium | so-local-only |  | 3 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/_lib/cache.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 216 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/_lib/cache.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 217 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/circuit-breaker.sh` | observability | heuristic:text | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/common.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 188 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/context_budget_lib.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
@@ -17,7 +17,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/_lib/hook-pipe.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/killswitch_check.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 172 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/normalize-stdin.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 1 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/_lib/portable.sh` | runtime-safety | default | medium | so-local-only |  | 244 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/_lib/portable.sh` | runtime-safety | default | medium | so-local-only |  | 245 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/push-collision-check.sh` | observability | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/register-bg.sh` | observability | heuristic:text | medium | so-local-only |  | 2 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/remediation.sh` | observability | heuristic:text | medium | so-local-only |  | 59 | add lifecycle/package/projection metadata or keep SO-local |
@@ -73,8 +73,8 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/completeness-check-llm.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 10 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/completeness-check.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 57 | keep maintainer-only or add explicit export path |
 | `hooks/completion-gate.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 66 | keep maintainer-only or add explicit export path |
-| `hooks/concurrent-write-guard-codex-proxy.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/concurrent-write-guard.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 43 | keep lifecycle, tests, and harness proof current |
+| `hooks/concurrent-write-guard-codex-proxy.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/concurrent-write-guard.sh` | memory-lifecycle | lifecycle | high | projected-consumer-surface | blocking | 47 | keep lifecycle, tests, and harness proof current |
 | `hooks/confidence-gate-llm.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/confidence-gate.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 62 | keep maintainer-only or add explicit export path |
 | `hooks/confidentiality-enforcer.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | blocking | 24 | keep maintainer-only or add explicit export path |
@@ -155,7 +155,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/pre-cleanup-snapshot.sh` | observability | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/pre-commit-content-hash-dedupe.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 13 | keep maintainer-only or add explicit export path |
 | `hooks/pre-commit-gate.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 43 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/pre-compaction-flush.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 57 | keep maintainer-only or add explicit export path |
+| `hooks/pre-compaction-flush.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 61 | keep maintainer-only or add explicit export path |
 | `hooks/predev-completeness-check.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | blocking | 20 | keep maintainer-only or add explicit export path |
 | `hooks/private-mode-gate.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 16 | keep maintainer-only or add explicit export path |
 | `hooks/private-mode-metrics-gate.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 16 | keep maintainer-only or add explicit export path |
@@ -195,7 +195,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/session-end-reap.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 19 | keep maintainer-only or add explicit export path |
 | `hooks/session-heartbeat.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 21 | keep maintainer-only or add explicit export path |
 | `hooks/session-hygiene.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/session-init.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 110 | keep maintainer-only or add explicit export path |
+| `hooks/session-init.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 114 | keep maintainer-only or add explicit export path |
 | `hooks/session-knowledge-extractor.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/session-learning.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 51 | keep maintainer-only or add explicit export path |
 | `hooks/session-resume.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | advisory | 48 | keep maintainer-only or add explicit export path |
