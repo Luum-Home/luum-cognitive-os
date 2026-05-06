@@ -183,3 +183,102 @@ class TestConfidentialityEnforcer:
         )
         assert result.returncode == 0
         assert result.stdout.strip() == ""
+
+    def test_downgrades_operator_absolute_path_in_gitignored_doc_to_warn(self, run_hook, cognitive_os_env):
+        """Gitignored docs with only operator absolute paths warn instead of blocking."""
+        project_dir: Path = cognitive_os_env["project_dir"]
+        cos_dir: Path = cognitive_os_env["cos_dir"]
+
+        (cos_dir / "confidentiality.yaml").write_text("project_names: []\n")
+        (project_dir / ".gitignore").write_text("scratch/\n", encoding="utf-8")
+        scratch_dir = project_dir / "scratch"
+        scratch_dir.mkdir(parents=True, exist_ok=True)
+        target_file = scratch_dir / "note.md"
+        target_file.write_text(
+            "# Local scratch\n\n"
+            f"Temporary note references {_mac_project_path('matias', 'otro-proyecto', 'patterns')}.\n",
+            encoding="utf-8",
+        )
+
+        env = dict(cognitive_os_env["env"])
+        env["CLAUDE_PROJECT_DIR"] = str(project_dir)
+
+        stdin_payload = json.dumps({
+            "tool_name": "Write",
+            "tool_input": {"file_path": str(target_file)},
+        })
+
+        result = run_hook(
+            "confidentiality-enforcer.sh",
+            env=env,
+            stdin=stdin_payload,
+        )
+        assert result.returncode == 0, (
+            f"Expected warn/pass for gitignored operator path but got {result.returncode}.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+        assert "CONFIDENTIALITY WARNING" in result.stderr
+        assert "downgraded-to-warn" in result.stderr
+
+    def test_gitignored_doc_with_protected_term_still_blocks(self, run_hook, cognitive_os_env):
+        """The gitignored downgrade is only for operator absolute path findings."""
+        project_dir: Path = cognitive_os_env["project_dir"]
+        cos_dir: Path = cognitive_os_env["cos_dir"]
+
+        (cos_dir / "confidentiality.yaml").write_text("project_names:\n  - project-x\n")
+        (project_dir / ".gitignore").write_text("scratch/\n", encoding="utf-8")
+        scratch_dir = project_dir / "scratch"
+        scratch_dir.mkdir(parents=True, exist_ok=True)
+        target_file = scratch_dir / "note.md"
+        target_file.write_text("# Local scratch\n\nExtraído de project-x.\n", encoding="utf-8")
+
+        env = dict(cognitive_os_env["env"])
+        env["CLAUDE_PROJECT_DIR"] = str(project_dir)
+
+        stdin_payload = json.dumps({
+            "tool_name": "Write",
+            "tool_input": {"file_path": str(target_file)},
+        })
+
+        result = run_hook(
+            "confidentiality-enforcer.sh",
+            env=env,
+            stdin=stdin_payload,
+        )
+        assert result.returncode == 2, (
+            f"Expected protected term to remain blocked but got {result.returncode}.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
+
+    def test_tracked_doc_with_operator_absolute_path_still_blocks(self, run_hook, cognitive_os_env):
+        """Tracked/committable docs still block operator absolute paths."""
+        project_dir: Path = cognitive_os_env["project_dir"]
+        cos_dir: Path = cognitive_os_env["cos_dir"]
+
+        (cos_dir / "confidentiality.yaml").write_text("project_names: []\n")
+        docs_dir = project_dir / "docs"
+        docs_dir.mkdir(parents=True, exist_ok=True)
+        target_file = docs_dir / "note.md"
+        target_file.write_text(
+            "# Public doc\n\n"
+            f"Reference {_mac_project_path('matias', 'otro-proyecto', 'patterns')}.\n",
+            encoding="utf-8",
+        )
+
+        env = dict(cognitive_os_env["env"])
+        env["CLAUDE_PROJECT_DIR"] = str(project_dir)
+
+        stdin_payload = json.dumps({
+            "tool_name": "Write",
+            "tool_input": {"file_path": str(target_file)},
+        })
+
+        result = run_hook(
+            "confidentiality-enforcer.sh",
+            env=env,
+            stdin=stdin_payload,
+        )
+        assert result.returncode == 2, (
+            f"Expected tracked doc operator path to block but got {result.returncode}.\n"
+            f"stdout: {result.stdout}\nstderr: {result.stderr}"
+        )
