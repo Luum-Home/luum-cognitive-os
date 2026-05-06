@@ -12,7 +12,7 @@ Close the next primitive surface coverage cut by making partial harness debt ins
 - The first priority bucket is `must-fix-parity`; no current rows use it in this cut.
 - The next priority bucket is `codex-adapter-needed`; the first twenty codex-adapter-needed rows were resolved by either reclassifying no-equivalent Codex Agent events as aligned or documenting optional governance/observer behavior.
 - `tui` becomes a real `surface_id=ui` only after `cos tui --snapshot` exists, exits 0, and consumes the same primitive surface reports.
-- The TUI is observe-only in this cut. It does not mutate primitives and does not claim runtime hook execution.
+- The TUI can become operable only through whitelisted report-refresh actions, explicit `--confirm`, and append-only action receipts. It must not accept arbitrary shell commands.
 
 ## Implemented
 
@@ -20,14 +20,19 @@ Close the next primitive surface coverage cut by making partial harness debt ins
   - `scripts/primitive_harness_partials.py`
   - `docs/reports/primitive-harness-partials-latest.json`
   - `docs/reports/primitive-harness-partials-latest.md`
-- Added observe-only TUI:
+- Added operable TUI with safety gates:
   - `scripts/cos-tui`
   - `cos tui --snapshot`
+  - `cos tui --operate refresh-coverage --confirm`
+  - `cos tui --operate refresh-partials --confirm`
+  - `cos tui --operate refresh-all --confirm`
+  - `cos tui --operate <action> --dry-run`
 - Extended primitive surface coverage:
   - `surface_id=tui`
   - `surface_kind=ui`
   - `observable=true`
-  - `operable=false`
+  - `operable=true` only for whitelisted report-refresh primitives
+  - receipts append to `.cognitive-os/metrics/tui-actions.jsonl`
 - Resolved the first twenty codex-adapter-needed rows from the previous reports. First batch:
   - `hooks/adaptive-bypass.sh`
   - `hooks/adr-detector.sh`
@@ -60,6 +65,7 @@ Close the next primitive surface coverage cut by making partial harness debt ins
 - `partial_count = 64`
 - `codex-adapter-needed = 64`
 - `projectable-needs-driver = 0`
+- `tui` is operable for whitelisted report refresh actions and remains non-operable for arbitrary primitive execution.
 - `tui` is present as a UI surface only because the runtime snapshot contract exists.
 
 ## Verification
@@ -68,18 +74,20 @@ Close the next primitive surface coverage cut by making partial harness debt ins
 python3 scripts/primitive_harness_coverage.py --project-dir .
 python3 scripts/primitive_harness_partials.py --project-dir .
 bash scripts/cos tui --snapshot
+bash scripts/cos tui --operate refresh-all --confirm
 python3 -m pytest \
   tests/unit/test_primitive_harness_coverage.py \
   tests/contracts/test_primitive_harness_coverage_contract.py \
   tests/contracts/test_primitive_harness_partials_contract.py \
   tests/contracts/test_primitive_harness_partial_ratchets.py \
   tests/contracts/test_projectable_script_surface_evidence.py \
-  tests/contracts/test_cos_cli_surface_contract.py -q
+  tests/contracts/test_cos_cli_surface_contract.py \
+  tests/contracts/test_cos_tui_operable_surface_contract.py -q
 python3 scripts/acc_pipeline.py --project-dir . --fail-new --brief
 ```
 
 ## Next Steps
 
 - Continue resolving the remaining 64 `codex-adapter-needed` rows by adding true adapters where Codex has an equivalent event and adding aligned no-equivalent policies where it does not.
-- Add an operable TUI mode only after commands have safety gates, audit receipts, and explicit tests.
+- Consider additional TUI operations only after each action has a whitelist entry, `--confirm`, audit receipts, and explicit tests.
 - Keep `must-fix-parity = 0` and `unclassified_gaps = 0` as ratchets.
