@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Resolve Cognitive OS project/install roots without requiring a Git checkout.
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+install_root="$(cd "$script_dir/.." && pwd)"
+project_root="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-}}}"
+
+if [ -z "$project_root" ]; then
+  if [ -f "$PWD/cognitive-os.yaml" ] || [ -d "$PWD/.cognitive-os" ]; then
+    project_root="$PWD"
+  else
+    project_root="$install_root"
+  fi
+fi
+
+mode="${1:-project}"
+case "$mode" in
+  project|--project)
+    printf '%s\n' "$(cd "$project_root" && pwd)"
+    ;;
+  install|--install)
+    printf '%s\n' "$install_root"
+    ;;
+  json|--json)
+    python3 - <<PY
+import json
+print(json.dumps({"project_root": "$project_root", "install_root": "$install_root"}, sort_keys=True))
+PY
+    ;;
+  *)
+    echo "usage: scripts/cos-root [project|install|json]" >&2
+    exit 2
+    ;;
+esac
