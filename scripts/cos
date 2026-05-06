@@ -3,6 +3,8 @@
 #
 # Routes:
 #   cos status [flags]                 -> scripts/cos-status.sh
+#   cos coverage [flags]               -> scripts/cos-coverage
+#   cos primitive harness-coverage     -> scripts/primitive_harness_coverage.py
 #   cos init-check                     -> scripts/cos-doctor-harness.sh --init-check
 #   cos doctor harness [flags]         -> scripts/cos-doctor-harness.sh
 #   cos measure harness-profiles       -> scripts/measure_harness_profiles.py
@@ -23,6 +25,18 @@ case "$SUBCMD" in
   status)
     shift
     exec bash "$SCRIPT_DIR/cos-status.sh" "$@"
+    ;;
+  coverage)
+    shift
+    exec bash "$SCRIPT_DIR/cos-coverage" "$@"
+    ;;
+  primitive)
+    if [ "${2:-}" = "harness-coverage" ] || [ "${2:-}" = "surface-coverage" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/primitive_harness_coverage.py" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown primitive subcommand '${2:-}'. Try: cos primitive {harness-coverage|surface-coverage}" >&2
+    exit 1
     ;;
   init-check)
     shift
@@ -88,6 +102,9 @@ cos — Cognitive OS command-line
 
 Usage:
   cos status [--verbose|--json|--help]   Show what is active (profile, skills, hooks, rules, health)
+  cos coverage [--json|--brief|--refresh] Show ACC coverage with exit code + JSON contract
+  cos primitive harness-coverage [--print-json] Generate primitive surface coverage
+  cos primitive surface-coverage [--print-json] Alias for primitive harness coverage
   cos init-check                         Check the minimal harness readiness path
   cos doctor harness [--json]            Check active harness projection and minimal profile
   cos measure harness-profiles [--json]  Compare minimal vs full harness surface
@@ -107,6 +124,8 @@ Routed to bin/cognitive-os.sh: init, doctor, list, install, uninstall, search,
 sources, update, version.
 
 Routed to scripts/cos-status.sh: status.
+Routed to scripts/cos-coverage: coverage.
+Routed to scripts/primitive_harness_coverage.py: primitive harness-coverage, primitive surface-coverage.
 EOF
     exit 0
     ;;
