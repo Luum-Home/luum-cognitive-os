@@ -5212,8 +5212,7 @@
           "path": "docs/onboarding-wizard-design.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -8825,8 +8824,7 @@
           "path": "hooks/memu-sync.sh"
         },
         {
-          "family": "hook",
-          "path": "hooks/paperclip-sync.sh"
+          "family": "hook"
         },
         {
           "family": "hook",
@@ -9676,8 +9674,7 @@
           "path": "docs/measurements/sessionstart-baseline.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -14822,8 +14819,7 @@
           "path": "docs/onboarding-wizard-design.md"
         },
         {
-          "family": "doc",
-          "path": "docs/paperclip-integration.md"
+          "family": "doc"
         },
         {
           "family": "doc",
@@ -14898,8 +14894,7 @@
           "path": "tests/behavior/test_claude_md_diet.py"
         },
         {
-          "family": "test",
-          "path": "tests/behavior/test_paperclip_integration_complete.py"
+          "family": "test"
         },
         {
           "family": "test",

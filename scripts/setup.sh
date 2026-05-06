@@ -260,7 +260,6 @@ if [ "$PROFILE" = "--full" ]; then
       warn "Docker is installed but not running. Start Docker Desktop to use infrastructure services."
     fi
   else
-    warn "Docker not installed. Optional Docker services (paperclip, jupyter, etc.) will not be available."
     warn "  Install from: https://docs.docker.com/get-docker/"
   fi
 fi

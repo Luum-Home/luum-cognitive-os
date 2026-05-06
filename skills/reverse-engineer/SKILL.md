@@ -24,7 +24,6 @@ prerequisites: []
 
 Reading documentation saves hours. Reading source code saves days.
 
-When documentation is incomplete, outdated, or simply wrong (like Paperclip's
 undocumented config schema), reverse engineering the actual source code gives you
 the EXACT answer in minutes instead of hours of trial-and-error.
 

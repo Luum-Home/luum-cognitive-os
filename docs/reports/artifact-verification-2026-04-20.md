@@ -23,7 +23,6 @@
 | `hooks/reinvention-check.sh` | commit 91cc078 | YES (1,906 B) | `bash -n` OK | YES — registered in `settings.json` PreToolUse | YES — `test_fd_invariant.py` runs it 3× | **SHIPPED** |
 | `hooks/token-budget-monitor.sh` | commit 92cf485 (renamed from rate-limit-protection) | YES (3,320 B) | `bash -n` OK | YES — registered in `settings.json` PreToolUse Bash | YES — `test_rate_limit_protection.py` via `lib/token_budget_monitor.py` | **SHIPPED** |
 | `hooks/_lib/killswitch_check.sh` | ADR-028 Phase E; commit bc7f70b | YES (3,171 B) | `bash -n` OK | **NO** — grep of `hooks/*.sh` for `source.*_lib/killswitch_check` returns 0 real hook files sourcing it | YES — `test_killswitch.py` 5 tests exercise flag logic directly | **ASPIRATIONAL** (guard library never sourced in production hooks) |
-| `hooks/_lib/register-bg.sh` | commit 0f72398 | YES (1,904 B) | `bash -n` OK | PARTIAL — `paperclip-notify.sh` uses own `_paperclip_register_bg` wrapper; `skill-usage-tracker.sh` claim to use `_register_bg` not confirmed by grep | NO — no pytest test for this helper | **PARTIAL** |
 | `rules/so-slo.md` | ADR-028 Phase E; commit bc7f70b | YES (4,791 B, 61 lines) | n/a | **NO** — not in `settings.json` includedFiles, not in `rules/RULES-COMPACT.md`, not auto-loaded | NO | **ASPIRATIONAL** (reference doc, no runtime wiring) |
 | `docs/runbooks/so-incident-runbook.md` | ADR-028 Phase E; commit bc7f70b | YES (7,228 B, 157 lines) | n/a | PARTIAL — human-operated runbook by design | NO | **PARTIAL** (by design) |
 | `tests/contracts/test_agent_bus_metrics.py` | commit d176c07 | YES | pytest collects | YES | 12 tests | **SHIPPED** |
@@ -81,7 +80,6 @@ No unintentional duplicates this round.
 - `lib/agent_bus_metrics.py` is an adapter over `agent_bus.py`, not a copy ✓
 - `rate-limit-protection` → `token-budget-monitor` rename cleanly shimmed ✓
 - hermes-agent `process_registry` is in plugin namespace, separate codebase ✓
-- `hooks/_lib/register-bg.sh` vs `paperclip-notify.sh:_paperclip_register_bg` — minor duplication smell, not blocking
 
 ## ADR Open Checklist Items Affecting Wiring
 

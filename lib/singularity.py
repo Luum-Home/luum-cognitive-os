@@ -45,7 +45,7 @@ _LIB_DIR = str(Path(__file__).resolve().parent)
 if _LIB_DIR not in sys.path:
     sys.path.insert(0, _LIB_DIR)
 
-from claude_executor import ClaudeExecutor, ClaudeResult
+from claude_executor import ClaudeExecutor
 from notifications import send_raw
 from metric_event import MetricEvent, append_event as _me_append_event
 
@@ -691,8 +691,6 @@ def _build_pipeline_prompt(event: SingularityEvent) -> str:
     if not routing or not routing[0]:
         return ""
 
-    pipeline_name = routing[0]
-
     if event.event_type == EventType.NEW_FEATURE:
         return (
             "Process GitHub issue #%d as a new feature using the SDD pipeline. "
@@ -820,39 +818,6 @@ def execute_event(
 # KNOWLEDGE phase — feed outcomes back
 # ---------------------------------------------------------------------------
 
-def _push_singularity_to_paperclip(execution: PipelineExecution) -> None:
-    """Push Singularity event result to Paperclip inbox (fire-and-forget).
-
-    Imports PaperclipClient lazily to avoid hard dependency. If Paperclip
-    is unavailable, silently does nothing.
-    """
-    try:
-        # Lazy import -- packages/ecosystem-tools/lib may not be on path
-        _pkg_lib = os.path.join(_PROJECT_ROOT, "packages", "ecosystem-tools", "lib")
-        if _pkg_lib not in sys.path:
-            sys.path.insert(0, _pkg_lib)
-        from paperclip_client import PaperclipClient  # type: ignore[import-untyped]
-
-        client = PaperclipClient()
-        if not client.is_available():
-            return
-
-        event = execution.event
-        severity = "critical" if not execution.success else "info"
-        title = "Singularity: %s %s" % (
-            execution.pipeline,
-            "FAILED" if not execution.success else "OK",
-        )
-        body = "Event: %s\nSource: %s\nDuration: %.1fs\nCost: $%.4f" % (
-            event.description[:120],
-            event.source,
-            (execution.finished_at - execution.started_at)
-            if execution.finished_at else 0.0,
-            execution.cost_usd,
-        )
-        client.push_notification(title, body, severity)
-    except Exception:
-        pass  # Fire-and-forget -- never fail the main flow
 
 
 def record_knowledge(
@@ -902,8 +867,6 @@ def record_knowledge(
                execution.result_text[:300])
         )
 
-    # Push event to Paperclip dashboard (fire-and-forget)
-    _push_singularity_to_paperclip(execution)
 
 
 # ---------------------------------------------------------------------------

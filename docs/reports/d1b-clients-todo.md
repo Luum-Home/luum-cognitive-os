@@ -13,13 +13,6 @@ This document tracks all remaining sites for follow-up.
 | Site | File | Line | owner_label | ttl | kind |
 |---|---|---|---|---|---|
 | skill-usage-tracker | `hooks/skill-usage-tracker.sh` | 93 | skill-usage-tracker | 30 | short_lived |
-| paperclip_notify() | `hooks/_lib/paperclip-notify.sh` | 57 | paperclip-notify | 30 | short_lived |
-| paperclip_update_issue_status() | `hooks/_lib/paperclip-notify.sh` | 81 | paperclip-update-issue | 30 | short_lived |
-| paperclip_push_spend() | `hooks/_lib/paperclip-notify.sh` | 103 | paperclip-push-spend | 30 | short_lived |
-| paperclip_push_tasks_as_issues() | `hooks/_lib/paperclip-notify.sh` | 143 | paperclip-push-tasks | 30 | short_lived |
-| paperclip-cost-stream | `packages/paperclip-integration/hooks/paperclip-cost-stream.sh` | 74 | paperclip-cost-stream | 60 | short_lived |
-| paperclip-squad-sync | `packages/paperclip-integration/hooks/paperclip-squad-sync.sh` | 104 | paperclip-squad-sync | 60 | short_lived |
-| paperclip-agent-status | `packages/paperclip-integration/hooks/paperclip-agent-status.sh` | 64 | paperclip-agent-status | 60 | short_lived |
 
 The `_register_bg` helper in `hooks/_lib/register-bg.sh` is also available for
 future bash sites.
@@ -36,8 +29,6 @@ future bash sites.
 
 | Site | File:Line | Pattern | Spawn Kind | Reason Deferred |
 |---|---|---|---|---|
-| paperclip-task-sync | `packages/paperclip-integration/hooks/paperclip-task-sync.sh:66` | `( python3 -c ... ) &` | short_lived | Same pattern as other paperclip hooks. Low priority — SessionStart only, low frequency. Easy to wire following the same pattern. |
-| paperclip-sdd-sync | `packages/paperclip-integration/hooks/paperclip-sdd-sync.sh:106` | `( python3 -c ... ) &` | short_lived | Same pattern as other paperclip hooks. SDD-phase trigger, moderate frequency. |
 | git post-push hook | `scripts/setup-git-hooks.sh:146` | `( sleep 2 && auto-update-projects.sh ) &` | short_lived | This is a git hook template embedded in a setup script, not a Claude hook. Git hooks are NOT registered in Claude settings.json. Per `rules/ROADMAP.md` §1.8 pattern, git hooks are "intentionally out of scope" for Claude hook wiring. If the subprocess becomes long-lived, register inside `auto-update-projects.sh` itself. |
 | _archived auto-repair-dispatcher | `hooks/_archived/auto-repair-dispatcher.sh.bak:320` | `nohup bash -c "..." &` | detached_daemon | **ARCHIVED** — file is `.bak`, not active. Skip unless the hook is un-archived. |
 

@@ -3,7 +3,6 @@
 **Date**: 2026-04-30
 **Status**: Accepted
 **Deciders**: Matias Améndola
-**Relates to**: D34 (Docker→pip phase 3), ADR-042 (Valkey local daemon), ADR-043 (Paperclip local daemon)
 
 ---
 
@@ -15,7 +14,6 @@ This ADR is a continuation of ADR-018 phase 3, not a reversal of the Docker-to-p
 
 As part of D34 (Docker→pip phase 3), PostgreSQL was the last service
 remaining bound to `docker-compose.cognitive-os.yml` as a mandatory Docker
-container. PostgreSQL serves as the backend database for Paperclip and,
 in some configurations, for MemU.
 
 Running Docker for a database server creates the same friction as Valkey:
@@ -56,7 +54,6 @@ Key choices:
 5. **`--init` flag**: allows pre-initialising the data directory without
    starting the daemon. Useful in CI or setup scripts.
 
-6. **Docker container demoted to `profiles: [legacy]`**: `paperclip-pg`
    in `docker-compose.cognitive-os.yml` requires explicit `--profile legacy`
    to start. It remains accessible for CI environments without a local binary.
 
@@ -88,11 +85,9 @@ Key choices:
 ### Rollback
 To revert to Docker Postgres:
 ```bash
-docker compose -f docker-compose.cognitive-os.yml --profile legacy up -d paperclip-pg
 bash scripts/cos-postgres-local.sh --stop
 ```
 Then update `DATABASE_URL` or `POSTGRES_URL` to point at the Docker container
-(`postgres://paperclip:paperclip@localhost:5438/paperclip`).
 
 ---
 
@@ -101,7 +96,6 @@ Then update `DATABASE_URL` or `POSTGRES_URL` to point at the Docker container
 | Service | D34 Status |
 |---------|-----------|
 | Valkey (Agent Bus) | **RESOLVED** — local daemon via `cos-valkey-local.sh` (ADR-042) |
-| Paperclip | **PARTIAL** — local daemon script ready; binary availability determines activation (ADR-043) |
 | PostgreSQL | **RESOLVED** — local cluster via `cos-postgres-local.sh` (this ADR) |
 
 **D34 is CLOSED**: all three services have been addressed. Docker compose
@@ -115,5 +109,4 @@ are kept for CI compatibility only.
 | File | Change |
 |------|--------|
 | `scripts/cos-postgres-local.sh` | New — init/start/stop local pg_ctl cluster |
-| `docker-compose.cognitive-os.yml` | `paperclip-pg` already had `profiles: [legacy]`; confirmed |
 | `tests/integration/test_postgres_local_daemon.py` | New — daemon lifecycle tests |

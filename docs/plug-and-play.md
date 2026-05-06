@@ -13,7 +13,6 @@ docker compose -f docker-compose.cognitive-os.yml up -d
 # - Langfuse (observability)        on port 3100
 # - LiteLLM (cost control)          on port 4000
 # - NeMo Guardrails (security)      on port 8088
-# - Paperclip (governance UI)       on port 3200
 ```
 
 No code changes. No framework lock-in. No vendor dependency.
@@ -113,8 +112,6 @@ services:
     networks: [cognitive-os-network]
 
   # Governance UI -- dashboard for agent performance
-  paperclip:
-    image: paperclip/dashboard:latest
     ports: ["3200:3000"]
     environment:
       LANGFUSE_URL: http://langfuse:3000
@@ -175,7 +172,6 @@ This allows application services to send LLM requests through LiteLLM for cost t
 │              └───────────────┘                   │
 │                                                  │
 │  ┌───────────────┐  ┌────────────────────────┐  │
-│  │ NeMo          │  │ Paperclip              │  │
 │  │ Guardrails    │  │ (governance dashboard) │  │
 │  │ :8088         │  │ :3200                  │  │
 │  └───────────────┘  └────────────────────────┘  │
@@ -220,7 +216,6 @@ security:
     block_prompt_injection: true
 
 governance:
-  paperclip:
     enabled: true
     port: 3200
 
@@ -421,7 +416,6 @@ Squads are optional. A solo developer gets the full Cognitive OS without definin
 | Langfuse | 3100 | Traces every LLM call. Quality scores. Cost attribution. |
 | LiteLLM | 4000 | Routes LLM calls. Enforces budgets. Model fallback chains. |
 | NeMo Guardrails | 8088 | Blocks PII leaks. Prevents prompt injection. Content filtering. |
-| Paperclip | 3200 | Dashboard for agent performance, cost, quality metrics. |
 
 ### What You DON'T Need
 

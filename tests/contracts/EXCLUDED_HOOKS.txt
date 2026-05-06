@@ -24,7 +24,6 @@ _lib/common.sh | LIBRARY: common utilities sourced by all hooks
 _lib/execute-repair.sh | LIBRARY: repair execution helpers sourced by auto-repair-dispatcher.sh
 _lib/file_checker.sh | LIBRARY: file-checking utilities sourced by other hooks
 _lib/normalize-stdin.sh | LIBRARY: stdin normalization helpers sourced by other hooks
-_lib/paperclip-notify.sh | LIBRARY: paperclip notification helpers sourced by other hooks
 _lib/remediation.sh | LIBRARY: remediation helpers sourced by auto-repair-dispatcher.sh
 _lib/safe-jsonl.sh | LIBRARY: safe JSONL write helpers sourced by other hooks
 _lib/semantic-search.sh | LIBRARY: semantic search helpers sourced by other hooks
@@ -136,7 +135,6 @@ dry-run-preview.sh | FUTURE: previews destructive operations in dry-run mode; pl
 memu-sync.sh | FUTURE: syncs memu (memory/engram) state; planned for Stop or PostToolUse — not yet wired
 metrics-calibrator-trigger.sh | FUTURE: triggers metrics-calibrator skill; planned for Stop event — not yet wired
 metrics-rotation.sh | INFRA: rotates JSONL metrics files to prevent unbounded growth; invoked by cron or manually, not on every event
-paperclip-sync.sh | CONDITIONAL: syncs governance data to Paperclip; only active when Paperclip service is running
 skill-tracker.sh | FUTURE: tracks skill invocations for model-optimizer; planned for PostToolUse Agent — not yet wired
 sync-to-repo.sh | MANUAL_TRIGGER: syncs local OS changes to the luum-agent-os repo; invoked manually by developer
 tool-loop-detector.sh | FUTURE: detects infinite tool-call loops; planned for PreToolUse — not yet wired

@@ -47,7 +47,6 @@ but it needed a sharper boundary for remote ingress and credential ownership.
 COS will separate **remote ingress** from **provider/executor adapters**.
 
 Remote ingress adapters may receive operator intent from Telegram, REST,
-Paperclip, webhooks, GitHub, or other chat/UI surfaces. They only authenticate,
 allowlist, normalize, rate-limit, and enqueue work. They do not own model
 credentials and do not execute project tools directly.
 
@@ -75,7 +74,6 @@ human-readable research report lives in
 - COS can be controlled remotely without making every chat surface a privileged
   executor.
 - Provider/account support becomes adapter-scoped and testable.
-- Paperclip can remain an operator console/status plane instead of becoming a
   credential broker.
 - OpenCode can be evaluated as an executor adapter without becoming a hard COS
   dependency.
@@ -97,7 +95,6 @@ human-readable research report lives in
 | Alternative | Why rejected |
 |---|---|
 | Clone OpenClaw's full Gateway/channel model | Too broad for COS's governance-first scope and would blur proof boundaries. |
-| Put provider API keys in Paperclip | Paperclip is documented as UI/status integration, not the credential owner. |
 | Let Telegram directly run scripts/hooks | Chat input is untrusted ingress; all work must pass queue, lease, allowlist, and redaction gates. |
 | Read existing CLI token files for convenience | Violates the no credential scraping boundary and breaks portability/security. |
 | Make OpenCode mandatory | OpenCode is a strong executor candidate, but COS must stay provider/harness agnostic. |

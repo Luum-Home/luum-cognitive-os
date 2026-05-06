@@ -17,7 +17,6 @@ This document defines the stable criteria for classifying every OS primitive (ho
 
 ### CORE — all conditions must hold
 
-1. **Zero external service dependencies.** No Docker, Valkey, MLflow, Langfuse, Aguara, Parry, NeMo, Paperclip, cognee, e2b, tero, repomix, hcom, or any API credential beyond the base Claude/Anthropic key.
 2. **Required for `cos init` or session-start to succeed.** Removing it would break the bootstrapped state invariant or the crash-recovery path.
 3. **Called by ≥3 CORE hooks OR underpins the scale-adaptive bypass rule.** Single-purpose primitives that serve only one optional workflow belong in an extension pack.
 4. **No harness-specific integration.** Code that only works with Claude Code (not portable to other harnesses) → EXTENSION unless it is the harness adapter itself.
@@ -52,7 +51,6 @@ This document defines the stable criteria for classifying every OS primitive (ho
 | Pack | `packages/` name | Primary surface | Opt-in signal |
 |---|---|---|---|
 | Advisory LLM evaluators | `cos-advisory-llm` | `*-llm.sh` hooks, `advisor_*.py` | Anthropic/OpenAI API creds present |
-| Observability | `cos-observability` | mlflow, langfuse, paperclip hooks+libs | `LANGFUSE_HOST` or `MLFLOW_TRACKING_URI` |
 | Security tools | `cos-security-tools` | aguara, semgrep, parry, mcp-scan | External security CLIs installed |
 | Spec-Driven Development | `cos-sdd` | sdd-* skills, sdd_*.py libs, SDD rules | Operator opt-in |
 | Agent coordination | `cos-agent-coordination` | agent-bus, squad, arena, planning-poker | Multi-agent workflows |

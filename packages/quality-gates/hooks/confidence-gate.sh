@@ -16,9 +16,6 @@ _HOOK_NAME="confidence-gate"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
 
-# Paperclip notification helper for safety mesh blocks (Gap 5)
-_PAPERCLIP_LIB="$(dirname "$0")/_lib/paperclip-notify.sh"
-[ -f "$_PAPERCLIP_LIB" ] && source "$_PAPERCLIP_LIB"
 
 # Auto-disabled at capability level 4
 check_capability_level "confidence-gate"
@@ -149,10 +146,6 @@ fi
 
 # Block in production/maintenance phases
 if [[ "$ACTION" == "block" ]]; then
-  # Gap 5: Notify Paperclip of safety mesh block
-  if type paperclip_notify &>/dev/null 2>&1; then
-    paperclip_notify "Safety Mesh BLOCK: Low Confidence" "Hook: confidence-gate, Phase: $PHASE, Score: ${SCORE:-0}/100" "warning"
-  fi
   exit 2
 fi
 

@@ -202,7 +202,6 @@ See [Getting Started](../getting-started.md#optional-start-infrastructure-servic
 | Langfuse | 3100 | minimal+ | Observability and tracing |
 | LiteLLM | 4000 | standard+ | Cost control and model routing |
 | NeMo Guardrails | 8088 | full | Content safety |
-| Paperclip | 3200 | full | Governance dashboard |
 | Jupyter | 8888 | full | GPU/compute sandbox |
 
 ---

@@ -33,7 +33,6 @@ This session (April 15-16) built those measurement systems. The OS is now *self-
 
 ### Phase 2: Explosion (March 28-31, 2026)
 - **March 28:** 38 commits in one day. v0.2.0 → v0.2.1. Agent Teams hooks created but never registered. SCOPE tags introduced as metadata with no consumers.
-- **March 29:** 5 releases in one day (v0.2.2 through v0.2.6). Paperclip, E2B, prompt governance, dynamic tools, dashboard scaffold. **audience: field added to 88 SKILL.md files — engram entry #1771 explicitly warns "needs follow-up to be read by code" — follow-up never happens.**
 - **March 30:** v0.3.0 — skills.sh, auto-update, auto-update-projects safety guard against self-destruction (CRITICAL fix caught in testing, not prod — lucky)
 - **March 31:** v0.3.3-v0.3.6 — namespace safety fix (CRITICAL: `rm -rf` on `.cognitive-os` symlinks could have destroyed sibling projects), SDD fast path, context diet, model catalog centralization
 

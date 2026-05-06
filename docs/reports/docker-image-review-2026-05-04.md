@@ -6,7 +6,6 @@ Reviewed the Docker follow-ups from dependency maintenance:
 
 1. `ghcr.io/automaker-org/automaker:latest` fails with `manifest unknown`.
 2. `python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d` was pulled locally during audit/apply, but compose pins must not be rewritten automatically.
-3. `reeoss/paperclipai-paperclip:latest` was still a floating tag even though the local manifest digest was known.
 4. `scripts/deps-update.sh --audit` counted digest-pinned references as possible newer digests because it compared remote config/manifest output against local repo digests.
 
 ## Decisions
@@ -15,12 +14,10 @@ Reviewed the Docker follow-ups from dependency maintenance:
 |---|---|---|
 | `ghcr.io/automaker-org/automaker:latest` | **Removed from reference compose.** | The tag is not pullable locally and upstream AutoMaker documents cloning the repo and using its source-build Docker Compose flow, not a stable public GHCR image. Keeping a broken image in `docker-compose.cognitive-os.yml` makes `--profile ui` fail before COS code is exercised. |
 | `python:3.13-slim@sha256:739e7213785e88c0f702dcdc12c0973afcbd606dbf021a589cab77d6b00b579d` | **Keep pinned digest unchanged.** | Pulling a pinned digest only populates the local Docker cache; it is not evidence that the reference compose digest should change. `deps-update.sh` intentionally never edits compose digest pins. |
-| `reeoss/paperclipai-paperclip:latest` | **Pinned to the reviewed manifest digest.** | `docker buildx imagetools inspect` reported index digest `sha256:677649a2ea0571cc83ab8cff2e1d29343c0641684113b464853c4fde16809e46`, matching the local `RepoDigests` value. The compose entry now uses `:latest@sha256:...` so the tag remains readable but execution is exact. |
 | Docker audit wording | **Changed from update-warning to classification.** | Digest-pinned refs are exact references; they are no longer reported as "may have newer digest". Floating tags with a remote mismatch are update candidates, unavailable remote digests are unverified, and pinned refs are counted separately. |
 
 ## Changed files
 
-- `docker-compose.cognitive-os.yml` — removed the broken AutoMaker service and left a comment explaining the external/manual source-build path; pinned `reeoss/paperclipai-paperclip:latest` to the reviewed manifest digest.
 - `scripts/deps-update.sh` — classifies Docker audit results as floating-tag update candidates, unverified remotes, and pinned exact references instead of treating pinned digest refs as possible updates.
 - `tests/integration/test_platform_services.py` — converted the Automaker container test to an explicit skip until a stable public image digest exists.
 - `packages/ecosystem-tools/skills/automaker-bridge/SKILL.md` — replaced the dead image reference with a source-build note.

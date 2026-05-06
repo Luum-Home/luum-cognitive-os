@@ -16,7 +16,6 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/_lib/hook-pipe.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/killswitch_check.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 166 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/normalize-stdin.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 1 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/_lib/paperclip-notify.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 5 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/portable.sh` | runtime-safety | default | medium | so-local-only |  | 228 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/push-collision-check.sh` | observability | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/_lib/register-bg.sh` | observability | heuristic:text | medium | so-local-only |  | 2 | add lifecycle/package/projection metadata or keep SO-local |
@@ -133,7 +132,6 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/orchestrator-claim-gate.sh` | observability | lifecycle | high | projected-consumer-surface | blocking | 30 | keep lifecycle, tests, and harness proof current |
 | `hooks/orchestrator-mode-detect.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/package-sync.sh` | driver-specific | heuristic:text | medium | so-local-only |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/paperclip-sync.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 17 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/parry-scan.sh` | observability | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/pattern-check.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 7 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/plan-claim-validator.sh` | observability | lifecycle | high | projected-consumer-surface | blocking | 28 | keep lifecycle, tests, and harness proof current |

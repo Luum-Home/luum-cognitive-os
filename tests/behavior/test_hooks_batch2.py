@@ -3,13 +3,12 @@
 Migrated from test-hooks-batch2.sh.
 Tests: auto-skill-generator, cognitive-os-health, conversation-capture,
        engram-auto-import, engram-auto-sync, memu-sync,
-       metrics-calibrator-trigger, paperclip-sync, pre-cleanup-snapshot,
+       metrics-calibrator-trigger, pre-cleanup-snapshot,
        session-cleanup, session-knowledge-extractor, session-resume,
        sync-to-repo, tool-discovery-trigger.
 """
 
 import json
-import os
 import subprocess
 import time
 from pathlib import Path
@@ -189,28 +188,6 @@ class TestMetricsCalibratorTrigger:
         combined = result.stdout + result.stderr
         assert "Calibration due" not in combined
 
-
-# ---------------------------------------------------------------------------
-# 8. paperclip-sync.sh
-# ---------------------------------------------------------------------------
-
-
-class TestPaperclipSync:
-
-    def test_valid_bash(self, hooks_dir):
-        result = subprocess.run(
-            ["bash", "-n", str(hooks_dir / "paperclip-sync.sh")],
-            capture_output=True,
-        )
-        assert result.returncode == 0
-
-    def test_skips_no_server(self, run_hook, cognitive_os_env):
-        env = {
-            **cognitive_os_env["env"],
-            "COGNITIVE_OS_PAPERCLIP_URL": "http://localhost:19998",
-        }
-        result = run_hook("paperclip-sync.sh", env=env)
-        assert result.returncode == 0
 
 
 # ---------------------------------------------------------------------------

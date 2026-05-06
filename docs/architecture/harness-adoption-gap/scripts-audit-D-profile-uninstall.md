@@ -204,7 +204,6 @@ is invocable via `/skill-name`).
 | `plan-feature` | Yes | Yes | Yes | `predev-completeness-check.sh` | No | Yes (PreToolUse Agent) | Reduced: lean lacks the pre-dev readiness check. Skill runs standalone fine; just no proactive gate. |
 | `session-backlog` | Yes | Yes | Yes | `session-changelog.sh`, `session-hygiene.sh`, `session-cleanup.sh` | Only `session-cleanup.sh` | Yes (all three, in Stop) | Reduced under `lean`: backlog works but is not incrementally updated by Stop hooks; only `session-cleanup.sh` fires. User must manually invoke `/session-backlog` to refresh state. |
 | `resource-governor` | Yes | Yes | Yes | `resource-check.sh` (not wired in any current profile — lives in `hooks/` but absent from generator) | No | No | No in-loop enforcement of budget limits. Skill is purely invocable; agent context is not automatically policed. This is a **pre-existing wiring gap**, not ADR-001-related. Could be argued as a bug, but outside the scope of "is ADR-001 correctly extended to the profile generator." |
-| `paperclip-dashboard` | Yes | Yes | Yes | `paperclip-sync.sh` (not in any profile's hook groups in `apply-efficiency-profile.sh`) | No | No | No automatic sync to paperclip. Dashboard works on-demand when user invokes the skill, but no background telemetry. Pre-existing, not ADR-001 scope. |
 
 ### Matrix Interpretation
 
@@ -218,7 +217,6 @@ is invocable via `/skill-name`).
   project-gotchas rule ("48/93 hooks are intentionally not wired").
 - **Pre-existing bugs surfaced but not fixed** (out of scope):
   1. `auto-refine` skill references a non-existent `auto-refine.sh` hook.
-  2. `resource-governor` and `paperclip-dashboard` companion hooks are never wired by the
      profile generator.
   3. `prompt-quality-llm.sh` and `completeness-check-llm.sh` fire in `standard` but are
      documented as LLM-evaluated advisories (ADR-022 reference in the script) — verify
@@ -273,7 +271,6 @@ grep -c "^# ── [0-9]\." scripts/uninstall.sh
 # 3. Confirm the 9 core ghost skills remain exposed post-ADR-001 (smoke check)
 for s in compose-prompt exhaustive-prompt agent-dashboard auto-refine \
          verification-before-completion plan-feature session-backlog \
-         resource-governor paperclip-dashboard; do
   [ -d ".claude/skills/$s" ] && echo "OK $s" || echo "GHOST $s"
 done
 #  Expected: 9 × "OK"
@@ -310,7 +307,6 @@ grep -cE "(claude|cognitive-os)/skills" scripts/apply-efficiency-profile.sh
    backup" path that never fires. Separate ticket; cosmetic.
 3. **Add `auto-refine.sh` hook** or remove the reference from the `auto-refine` skill —
    independent skill documentation bug, not this audit's scope.
-4. **Wire `resource-check.sh` and `paperclip-sync.sh`** into the `standard` profile (or
    decide they should be contextual-only) — policy question for the efficiency-profile
    owner.
 

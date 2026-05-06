@@ -233,7 +233,6 @@ Not detailed in session summaries; check engram when resuming.
 
 ### 21. Docker → pip migration — engram #4819
 **Status:** Phase 1+2 DONE (6 + 3 services migrated)
-**Pending:** 3 services still in docker-compose (Paperclip, PostgreSQL, Valkey)
 
 ### 22. Project-audit / Pre-dev completeness — engram #2927
 **Scope:** Audit tracking gaps

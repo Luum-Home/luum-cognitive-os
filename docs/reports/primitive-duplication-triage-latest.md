@@ -22,10 +22,8 @@ Source report: `docs/reports/primitive-duplication-latest.json`.
    - `hooks/dod-gate.sh::_load_coverage_artifact_status`
 
 2. **Local daemon shell helpers** → `scripts/_lib/`
-   - `scripts/cos-paperclip-local.sh::_daemon_alive`
    - `scripts/cos-postgres-local.sh::_daemon_alive`
    - `scripts/cos-valkey-local.sh::_daemon_alive`
-   - `scripts/cos-paperclip-local.sh::_port_in_use`
    - `scripts/cos-valkey-local.sh::_port_in_use`
 
 3. **Ledger CLI path and JSONL helpers** → `lib/`
