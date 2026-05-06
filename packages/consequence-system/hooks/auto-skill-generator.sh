@@ -154,7 +154,7 @@ SKILL_NAME=$(echo "$SKILL_SLUG" | sed 's/-/ /g' | head -c 80)
 # Escape task description for YAML (replace quotes, newlines)
 TASK_DESC_ESCAPED=$(echo "$TASK_DESCRIPTION" | head -c 200 | tr '\n' ' ' | sed 's/"/\\"/g')
 
-# --- Derive routing_patterns (ADR-174-bis Part A) ---
+# --- Derive routing_patterns (ADR-174b Part A) ---
 # Lightweight call: <200ms budget. Falls back to empty block on any error.
 ROUTING_PATTERNS_YAML=""
 if command -v python3 &>/dev/null; then

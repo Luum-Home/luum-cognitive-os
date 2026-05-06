@@ -18,7 +18,6 @@ implementation_files:
 tier: maintainer
 tags: [concurrency, governance, agent-coordination, postmortem-2026-05-05, companion-ADR-182-183-184]
 ---
-
 # ADR-185: Cross-Agent Audit Findings Queue — Auditor → Implementer Directive Channel
 
 ## Status
@@ -227,7 +226,7 @@ The JSONL is the **runtime queue**; Engram is an optional **archive**.
 - Engram remains the durable cross-session memory; this is the
   *transient queue* layer.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Use Engram alone with a strict topic_key naming convention**:
   works but loses severity gating + commit blocking. Rejected as
@@ -293,3 +292,10 @@ quality.
 - Whether to gate `Agent` tool launches (not just commits) when a
   critical finding is pending on the target scope. Proposed: yes for
   critical only; defer until soak data confirms detection works.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

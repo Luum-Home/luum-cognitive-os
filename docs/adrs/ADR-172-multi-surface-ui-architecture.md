@@ -15,7 +15,6 @@ implementation_files:
 tier: maintainer
 tags: [ui, cli, phoenix, engram-cloud, obsidian, multi-surface, governance]
 ---
-
 # ADR-172: Multi-Surface UI Architecture
 
 ## Status
@@ -206,7 +205,7 @@ not the editor of source-of-truth.
   surface has its own freshness contract; no surface claims to be the
   single source of truth for cross-surface joins.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Single canonical UI surface.** Rejected for the reasons above: each artefact
   kind has a different ideal shape, and forcing one surface produces either a
@@ -344,3 +343,10 @@ required.
   remains under `dashboard/ARCHIVED.md`).
 - No custom multi-pane UI (rejected as multi-sprint reinvention; revisitable
   via future ADR-173 if a real driver appears).
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

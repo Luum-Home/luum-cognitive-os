@@ -78,6 +78,8 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
     AllowedReference("tests/audit/test_adr_139_141_142_cloud_surfaces.py", "audit_test", "guards blocked credential defaults"),
     AllowedReference("tests/unit/test_service_control_plane_local_queue.py", "test_fixture", "secret redaction fixture"),
     AllowedReference("manifests/credential-safe-scripts.yaml", "credential_safe_runner_policy", "explicit denylist for credential-safe script runner"),
+    AllowedReference("hooks/example-prompt-hook.sh.disabled", "disabled_example", "disabled prompt hook example documents env placeholder only"),
+    AllowedReference("manifests/provider-profiles.yaml", "provider_profile_metadata", "provider profile declares env slot name, not a credential value"),
 
     # Explicit examples / benchmark / arena / tests.
     AllowedReference("docs/benchmarks/so-vs-vanilla-tasks.yaml", "fake_benchmark_secret", "fake key example"),

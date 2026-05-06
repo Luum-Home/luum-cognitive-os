@@ -292,3 +292,15 @@ entries:
   rationale: Worktree submodule repair mutates git metadata and should be explicit
     after worktree operations.
   next_action: Keep manual/admin-triggered.
+- path: hooks/cosd-intent-submit.sh
+  status: conditional_opt_in
+  rationale: cosd intent submission is reserved for the manager-of-managers daemon path and is not a default Claude hot-path hook.
+  next_action: Register only with the cosd profile once ADR-184 daemon operation is enabled.
+- path: hooks/orchestrator-decision-trace.sh
+  status: conditional_opt_in
+  rationale: Decision tracing is useful for maintainer observability but adds metrics noise and is not required for default sessions.
+  next_action: Wire in maintainer/observability profiles after retention and sampling policy is set.
+- path: hooks/skill-router-prompt-suggest.sh
+  status: conditional_opt_in
+  rationale: Skill router prompt suggestions are profile-dependent and can increase prompt context; default projection is handled by generated profile settings.
+  next_action: Keep classified until all profile projections and context-budget controls are synchronized.

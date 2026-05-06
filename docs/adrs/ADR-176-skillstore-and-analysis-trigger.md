@@ -17,7 +17,6 @@ implementation_files:
 tier: maintainer
 tags: [skill-store, sqlite, observability, post-execution-analysis, discipline-gate, openspace-adoption]
 ---
-
 # ADR-176: SkillStore SQLite Schema Adoption + Post-Execution Analysis Trigger (Discipline-Gated)
 
 ## Status
@@ -160,7 +159,7 @@ OpenSpace schema source:
 - Migration script must handle malformed JSONL entries gracefully.
 - Hook adds ~20ms startup overhead per Agent tool completion.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 | Alternative | Reason rejected |
 |---|---|
@@ -192,3 +191,10 @@ OpenSpace schema source:
 3. Add `.cognitive-os/skill_store.db` to `.gitignore`.
 4. Verify hook fires: `DISABLE_HOOK_SKILL_POST_EXECUTION_ANALYSIS=0 bash hooks/skill-post-execution-analysis.sh`.
 5. Old `skill-archive.jsonl` is retained (read-only) for 30 days, then archived to `.cognitive-os/archive/`.
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

@@ -7304,7 +7304,7 @@ primitives:
   metrics_file: .cognitive-os/metrics/skill-post-execution-analysis.jsonl
 - id: hooks/validator-soak-weekly.sh
   kind: hook
-  owner_adr: ADR-174-bis
+  owner_adr: ADR-174b
   lifecycle_state: sandbox
   maturity: advisory
   distribution: maintainer

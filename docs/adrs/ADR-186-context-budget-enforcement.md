@@ -16,7 +16,6 @@ implementation_files:
 tier: maintainer
 tags: [context-management, observability, governance, postmortem-2026-05-05, ADR-038-wave3]
 ---
-
 # ADR-186: Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits
 
 ## Status
@@ -221,7 +220,7 @@ unless `COS_ALLOW_AGENT_PREAMBLE_OVERRUN=1`.
 - The metric log adds another JSONL but mirrors the existing
   `metrics/` pattern.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 - **Hard cap with no override**: would block real work when the
   budget is mis-calibrated. Rejected; soft-block via env override is
@@ -278,3 +277,10 @@ exceeded, the meter implementation needs optimization.
 - Whether to track accumulated cost across a session and warn on
   long-session drift. Proposed: deferred; covered by Phoenix
   observability if activated (see ADR-058).
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
