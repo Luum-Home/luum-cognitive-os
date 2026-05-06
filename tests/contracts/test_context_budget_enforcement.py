@@ -59,3 +59,41 @@ def test_accounted_context_hook_skips_when_static_budget_blocks(tmp_path: Path) 
     log = tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl"
     rows = [json.loads(line) for line in log.read_text().splitlines()]
     assert rows[-1]["verdict"] == "BLOCK"
+
+
+def test_meter_block_override_allows_and_logs_override(tmp_path: Path) -> None:
+    (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  user_max_tokens: 1\n", encoding="utf-8")
+    payload = {"prompt": "x" * 20}
+    env = {
+        **os.environ,
+        "CLAUDE_PROJECT_DIR": str(tmp_path),
+        "COGNITIVE_OS_SESSION_ID": "s1",
+        "COS_ALLOW_CONTEXT_BUDGET_OVERRUN": "1",
+    }
+    res = subprocess.run(["bash", str(METER)], input=json.dumps(payload), text=True, capture_output=True, env=env, timeout=10)
+    assert res.returncode == 0
+    row = json.loads((tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl").read_text().splitlines()[-1])
+    assert row["verdict"] == "BLOCK"
+    assert row["allowed"] is True
+    assert row["reason"] == "override"
+
+
+def test_meter_warns_without_blocking(tmp_path: Path) -> None:
+    (tmp_path / "cognitive-os.yaml").write_text("context_budget:\n  user_max_tokens: 10\n", encoding="utf-8")
+    payload = {"prompt": "x" * 44}  # 11 heuristic tokens -> 1.1x
+    env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "s1"}
+    res = subprocess.run(["bash", str(METER)], input=json.dumps(payload), text=True, capture_output=True, env=env, timeout=10)
+    assert res.returncode == 0
+    assert "context-budget-meter: WARN" in res.stderr
+    row = json.loads((tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl").read_text().splitlines()[-1])
+    assert row["verdict"] == "WARN"
+    assert row["latency_ms"] >= 0
+
+
+def test_meter_handles_empty_or_malformed_input_and_still_logs(tmp_path: Path) -> None:
+    env = {**os.environ, "CLAUDE_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "s1"}
+    res = subprocess.run(["bash", str(METER)], input="not-json", text=True, capture_output=True, env=env, timeout=10)
+    assert res.returncode == 0
+    row = json.loads((tmp_path / ".cognitive-os" / "metrics" / "context-budget.jsonl").read_text().splitlines()[-1])
+    assert row["source"] == "context-budget-meter"
+    assert row["total_chars"] == 0
