@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# PURPOSE: Minimal local COS service-control-plane status wrapper.
+# PURPOSE: ADR-184 cosd daemon entrypoint plus legacy service status fallback.
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-exec python3 "$SCRIPT_DIR/cos_service_control_plane.py" cosd "$@"
 
+case "${1:-status}" in
+  start|stop|status|loop|process-once|submit-intent)
+    exec python3 "$SCRIPT_DIR/cos_daemon.py" "$@"
+    ;;
+  service-status)
+    shift
+    exec python3 "$SCRIPT_DIR/cos_service_control_plane.py" cosd status "$@"
+    ;;
+  *)
+    exec python3 "$SCRIPT_DIR/cos_daemon.py" "$@"
+    ;;
+esac
