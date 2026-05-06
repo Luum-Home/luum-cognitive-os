@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# DISABLED — rename to example-http-callback.sh to activate.
+#
+# Example: HTTP-callback hook using HttpHookDefinition (ADR-178).
+#
+# This script demonstrates the SHELL shim equivalent of an HttpHookDefinition.
+# In a future dispatcher release, operators can replace this shell wrapper with
+# a native HttpHookDefinition block in cognitive-os.yaml (no shell script needed).
+#
+# cognitive-os.yaml registration (current COS — shell shim):
+#
+#   harness:
+#     hooks:
+#       Stop:
+#         - command: hooks/example-http-callback.sh
+#
+# cognitive-os.yaml registration (future — native HttpHookDefinition per ADR-178):
+#
+#   harness:
+#     hooks:
+#       Stop:
+#         - type: http
+#           url: "${WEBHOOK_URL}"
+#           method: POST
+#           headers:
+#             Content-Type: application/json
+#             Authorization: "Bearer ${WEBHOOK_TOKEN}"
+#           timeout_ms: 5000
+#           body_template: "$payload"
+#           expected_status: [200, 201, 202, 204]
+#           block_on_failure: false
+#
+# Required env vars:
+#   WEBHOOK_URL    — target endpoint (e.g. Slack incoming webhook, PagerDuty, etc.)
+#   WEBHOOK_TOKEN  — Bearer token (optional; omit Authorization header if unused)
+#
+# The hook receives the Claude Code hook payload on stdin as JSON.
+# This script forwards it verbatim via curl.
+
+set -euo pipefail
+
+WEBHOOK_URL="${WEBHOOK_URL:-}"
+WEBHOOK_TOKEN="${WEBHOOK_TOKEN:-}"
+
+if [[ -z "$WEBHOOK_URL" ]]; then
+    echo "[http-callback] WEBHOOK_URL not set — skipping" >&2
+    exit 0
+fi
+
+PAYLOAD="$(cat)"
+
+CURL_ARGS=(
+    --silent
+    --max-time 5
+    --retry 0
+    -X POST
+    -H "Content-Type: application/json"
+    --data-raw "$PAYLOAD"
+)
+
+if [[ -n "$WEBHOOK_TOKEN" ]]; then
+    CURL_ARGS+=(-H "Authorization: Bearer $WEBHOOK_TOKEN")
+fi
+
+HTTP_STATUS="$(curl "${CURL_ARGS[@]}" -o /dev/null -w "%{http_code}" "$WEBHOOK_URL" 2>&1)"
+
+case "$HTTP_STATUS" in
+    200|201|202|204)
+        echo "[http-callback] delivered — HTTP $HTTP_STATUS" >&2
+        exit 0
+        ;;
+    *)
+        echo "[http-callback] unexpected status $HTTP_STATUS — block_on_failure=false, continuing" >&2
+        exit 0  # non-blocking by default; change to exit 1 to block
+        ;;
+esac
