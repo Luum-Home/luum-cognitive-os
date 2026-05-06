@@ -1,7 +1,7 @@
 {
   "branch": "codex/preserve-validation-capsule-wip-20260502",
   "created_at": "2026-05-02T12:52:48-03:00",
-  "created_by": "2144218+MatiasNAmendola@users.noreply.github.com",
+  "created_by": "maintainer",
   "source_branch": "main",
   "source_head": "400eb2dd8498606432e58e73cbcd4f0d2da72124",
   "reason": "Single-commit preserve of validation capsule worktree isolation WIP: ADR-109 (later renumbered ADR-113), auto-rollback hardening plan, cos-validation-capsule script changes, and associated test stubs before the validation capsule liveness feature landed in main.",

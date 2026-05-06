@@ -1,7 +1,7 @@
 {
   "branch": "codex/preserve-concurrent-safety-wip-20260502b",
   "created_at": "2026-05-02T12:52:17-03:00",
-  "created_by": "2144218+MatiasNAmendola@users.noreply.github.com",
+  "created_by": "maintainer",
   "source_branch": "main",
   "source_head": "400eb2dd8498606432e58e73cbcd4f0d2da72124",
   "reason": "Two-commit preserve of concurrent-safety work: the 'require-approval for rollback planning' governance fix and a broad archive of all concurrent-safety WIP before a root-level fix was applied.",

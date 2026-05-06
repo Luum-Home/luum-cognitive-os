@@ -1,7 +1,7 @@
 {
   "branch": "codex/preserve-core-consumer-boundary-wip-20260502",
   "created_at": "2026-05-02T13:23:58-03:00",
-  "created_by": "2144218+MatiasNAmendola@users.noreply.github.com",
+  "created_by": "maintainer",
   "source_branch": "main",
   "source_head": "b189ad7b51d5149a8d74e31b416121258691fc27",
   "reason": "Single-commit preserve of core/consumer concurrency boundary work: ADR-111, concurrency-safety-core-consumer-contract architecture doc, scenario test matrix, and claim-verification primitives — all subsequently landed in main.",
