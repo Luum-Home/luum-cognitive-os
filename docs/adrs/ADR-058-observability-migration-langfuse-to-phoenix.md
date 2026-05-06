@@ -77,8 +77,13 @@ candidate" in `docs/architecture/observability-backend-evaluation-2026-04-24.md`
 Its defining properties for this decision:
 
 - **`pip install arize-phoenix`** — no Docker, no ClickHouse, no SeaweedFS.
-- **Apache 2.0** license (versus Langfuse's MIT with enterprise features behind
-  a commercial tier — Phoenix is fully OSS).
+- **Elastic License 2.0** (since Phoenix ~v4) for the Phoenix server. Source-available
+  with a "managed service" prohibition. The `arize-phoenix-client` and
+  `arize-phoenix-otel` SDK packages we depend on remain **Apache 2.0**. We treat
+  Phoenix as an **operator-installed runtime tool** (not bundled in COS releases),
+  which keeps our usage within ELv2 allowed scope. (Original ADR text incorrectly
+  stated Apache 2.0 for the entire Phoenix project — corrected 2026-05-06 per
+  dep license audit findings; see `.cognitive-os/strategy/audit/dependencies-license-audit-2026-05-06.md`.)
 - **LLM-native**: OpenTelemetry-based, with first-class spans for prompts,
   completions, tool calls, retrieval, and embeddings.
 - **Local-first UI**: `phoenix serve` spins up a local Arrow-backed UI in seconds.
@@ -121,7 +126,7 @@ Its defining properties for this decision:
 
 | Tool | Install | Weight | 2025-2026 activity | License | LLM-native | Local UI | Verdict |
 |------|---------|--------|-------------------|---------|------------|----------|---------|
-| **Arize Phoenix** | `pip install arize-phoenix` | Single Python process, ~150 MiB RAM | Weekly releases, Arize core team | Apache 2.0 | Yes (OTel GenAI conventions) | Yes, bundled | **Accepted — winner** |
+| **Arize Phoenix** | `pip install arize-phoenix` | Single Python process, ~150 MiB RAM | Weekly releases, Arize core team | ELv2 server / Apache 2.0 SDK | Yes (OTel GenAI conventions) | Yes, bundled | **Accepted — winner** |
 | Pydantic Logfire | pip + hosted tier | Python process, minimal | Active (Pydantic team) | Proprietary hosted / OSS SDK | Yes | Hosted-primary | Rejected: hosted-primary model, not self-hostable |
 | Laminar (lmnr.ai) | pip + Docker for UI | Rust backend + React, medium | Active | Apache 2.0 | Yes | Yes (Docker) | Rejected: brings Docker back |
 | OpenLLMetry / Traceloop | pip SDK only | Minimal (no UI) | Active | Apache 2.0 | Yes | No (exports to other backends) | Rejected: no UI, just an exporter — need a backend anyway |
