@@ -1,7 +1,10 @@
 class CognitiveOs < Formula
   desc "Portable AI Agent Operating System — memory, quality gates, self-healing"
   homepage "https://github.com/luum-home/luum-cognitive-os"
-  license "Apache-2.0"
+  # FSL-1.1-MIT is not in Homebrew's SPDX index (source-available, not OSI).
+  # Converts automatically to MIT 2 years after first public release.
+  # See: https://fsl.software and LICENSE at the root of this repository.
+  license :cannot_represent
 
   head "https://github.com/luum-home/luum-cognitive-os.git", branch: "main"
 

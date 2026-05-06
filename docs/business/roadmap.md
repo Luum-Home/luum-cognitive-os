@@ -42,7 +42,7 @@ The Cognitive OS core is fully operational as a development framework:
   - Move core hooks, rules, skills, and agents to `core/`
   - Extract industry plugins (fintech, etc.)
   - Parameterize all hardcoded references
-- Create the `cognitive-os` GitHub repository (Apache 2.0 license)
+- Create the `cognitive-os` GitHub repository (FSL-1.1-MIT license)
   - Repository structure per open-source-design.md
   - CI/CD pipeline (lint, test generators, integration tests)
   - Issue templates, PR templates, CONTRIBUTING.md
