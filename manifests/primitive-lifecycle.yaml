@@ -6556,25 +6556,29 @@ primitives:
     for consumer projects.
 - id: scripts/cosd
   kind: script
-  owner_adr: ADR-091
+  owner_adr: ADR-194
   lifecycle_state: sandbox
   maturity: observe
   distribution: maintainer
   governance_class: runtime-safety
-  risk_class: advisory
+  risk_class: blocking
   supported_harnesses:
   - shell
   projection_targets:
   - scripts/cosd
-  - scripts/cos_service_control_plane.py
+  - scripts/cos_daemon.py
+  - hooks/cosd-auth-guard.sh
   runtime_projection: false
-  behavior_evidence: Minimal local cosd status wrapper for Phase 1 queue visibility; not a long-running
-    scheduler yet.
+  behavior_evidence: Local cosd daemon/API entrypoint with ADR-194 remote bind guardrails; hook primitive blocks unsafe remote launch commands before execution.
   evidence_commands:
-  - bash -n scripts/cosd
-  - python3 -m py_compile scripts/cos_service_control_plane.py
-  - python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py
+  - bash -n scripts/cosd hooks/cosd-auth-guard.sh
+  - python3 -m py_compile scripts/cos_daemon.py lib/cosd_auth_guard.py
+  - python3 -m pytest tests/integration/test_cosd_daemon.py tests/unit/test_cosd_auth_guard.py tests/integration/test_cosd_auth_guard_hook.py tests/contracts/test_cosd_auth_primitives.py
     -q
+  repair_message: Add --token-file or COSD_API_TOKEN_FILE for remote cosd binds; set COS_ALLOW_COSD_AUTH_CONFIG_WRITE=1 only after reviewing protected cosd config edits.
+  false_positive_tests:
+  - tests/unit/test_cosd_auth_guard.py
+  - tests/integration/test_cosd_auth_guard_hook.py
   rollback_or_repair_command: Remove Phase 1 service-control-plane scripts and lifecycle rows, then keep
     manifests as planned contracts only.
   sunset_criteria: Promote only after cosd becomes a real scheduler loop with leases, crash/resume evidence,
