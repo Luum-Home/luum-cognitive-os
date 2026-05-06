@@ -489,6 +489,50 @@ class TestSafetyRecoveryNegativeContext:
         matches = router.match(message)
         assert all(m.invoke_command != "/auto-rollback" for m in matches)
 
+    @pytest.mark.parametrize(
+        ("message", "blocked_command"),
+        [
+            (
+                "Skill router /systematic-debugging × 3 (0.80→0.85) sigue mal calibrado",
+                "/systematic-debugging",
+            ),
+            (
+                "Skill router /deep-research para escritura — falso positivo",
+                "/deep-research",
+            ),
+            (
+                "Ignoré la sugerencia del router /auto-refine 0.95 para síntesis",
+                "/auto-refine",
+            ),
+            (
+                "Skill router /self-improve 0.95 para Write batch — dogfood evidence",
+                "/self-improve",
+            ),
+            (
+                "Ignoré la sugerencia del router /phoenix-trace-ui (0.90) — dogfood evidence #11, sigue mal calibrado.",
+                "/phoenix-trace-ui",
+            ),
+        ],
+    )
+    def test_generic_router_negative_context_rejects_false_positive_cluster(
+        self,
+        router: SkillRouter,
+        message: str,
+        blocked_command: str,
+    ):
+        matches = router.match(message)
+        assert all(m.invoke_command != blocked_command for m in matches)
+
+    def test_direct_phoenix_trace_ui_intent_still_matches(self, router: SkillRouter):
+        match = router.best_match("start phoenix trace ui so I can inspect spans")
+        assert match is not None
+        assert match.invoke_command == "/phoenix-trace-ui"
+
+    def test_direct_auto_refine_intent_still_matches(self, router: SkillRouter):
+        match = router.best_match("run /auto-refine for the failed agent")
+        assert match is not None
+        assert match.invoke_command == "/auto-refine"
+
 
 # ---------------------------------------------------------------------------
 # Deduplication
