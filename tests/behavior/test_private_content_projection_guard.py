@@ -85,3 +85,63 @@ def test_cos_private_content_audit_wrapper_smoke(project_root):
     payload = json.loads(result.stdout)
     assert payload["schema_version"] == "private-content-audit/v1"
     assert payload["summary"] == {"block": 0, "info": 0, "warn": 0}
+
+
+@pytest.mark.behavior
+def test_private_content_projection_blocks_strategy_export_to_cloud(project_root, tmp_path):
+    result = subprocess.run(
+        [
+            "python3",
+            str(project_root / "scripts" / "private_content_audit.py"),
+            "--project-dir",
+            str(tmp_path),
+            "--manifest",
+            str(project_root / "manifests" / "private-content.yaml"),
+            "--check-projection",
+            ".cognitive-os/strategy/research/02-real-self-improvement.md",
+            "--destination",
+            "cloud",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "block"
+    assert payload["classification"]["class"] == "local-only"
+    assert "class_disallows_export" in payload["reasons"]
+    metric = tmp_path / ".cognitive-os" / "metrics" / "private-content-access.jsonl"
+    assert metric.exists()
+
+
+@pytest.mark.behavior
+def test_private_content_projection_never_reads_or_exports_secret_paths(project_root, tmp_path):
+    secret = tmp_path / ".env"
+    secret.write_text("TOKEN=do-not-read\n", encoding="utf-8")
+    result = subprocess.run(
+        [
+            str(project_root / "scripts" / "cos"),
+            "private-content",
+            "check-projection",
+            str(secret),
+            "--project-dir",
+            str(tmp_path),
+            "--manifest",
+            str(project_root / "manifests" / "private-content.yaml"),
+            "--destination",
+            "cloud",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert payload["classification"]["class"] == "secret-never-touch"
+    assert payload["classification"]["may_read_content"] is False
+    assert "secret_never_touch" in payload["reasons"]

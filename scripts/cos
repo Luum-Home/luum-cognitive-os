@@ -12,8 +12,11 @@
 #   cos sprint ...                     -> scripts/cos_sprint.py
 #   cos subagent preflight             -> scripts/subagent_launch_preflight.py
 #   cos private-content audit          -> scripts/private_content_audit.py
+#   cos private-content check-projection -> scripts/private_content_audit.py --check-projection
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
+#   cos promote-from-telemetry          -> scripts/cos-promote-from-telemetry
+#   cos maintainer once                 -> scripts/cos-maintainer-agent --once
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
 #   cos stash cleanup [flags]           -> scripts/state_retention_audit.py --surface auto-pre-agent-stashes --reap
 #   cos *                              -> bin/cognitive-os.sh (init, doctor, list, install, ...)
@@ -120,7 +123,11 @@ case "$SUBCMD" in
       shift 2
       exec python3 "$SCRIPT_DIR/private_content_audit.py" --project-dir "$PROJECT_ROOT" "$@"
     fi
-    echo "cos: unknown private-content subcommand '${2:-}'. Try: cos private-content audit [--json|--strict]" >&2
+    if [ "${2:-}" = "check-projection" ]; then
+      shift 2
+      exec python3 "$SCRIPT_DIR/private_content_audit.py" --project-dir "$PROJECT_ROOT" --check-projection "$@"
+    fi
+    echo "cos: unknown private-content subcommand '${2:-}'. Try: cos private-content {audit|check-projection PATH} [--json|--strict]" >&2
     exit 1
     ;;
   reward-signal)
@@ -140,6 +147,18 @@ case "$SUBCMD" in
       exec "$SCRIPT_DIR/cos-performance-ledger" --project-dir "$PROJECT_ROOT" "$@"
     fi
     echo "cos: unknown performance-ledger subcommand '${2:-}'. Try: cos performance-ledger compile [--json]" >&2
+    exit 1
+    ;;
+  promote-from-telemetry)
+    shift
+    exec "$SCRIPT_DIR/cos-promote-from-telemetry" --project-dir "$PROJECT_ROOT" "$@"
+    ;;
+  maintainer)
+    if [ "${2:-}" = "once" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-maintainer-agent" --project-dir "$PROJECT_ROOT" --once "$@"
+    fi
+    echo "cos: unknown maintainer subcommand '${2:-}'. Try: cos maintainer once --dry-run [--json]" >&2
     exit 1
     ;;
   state)
@@ -178,8 +197,12 @@ Usage:
   cos subagent preflight --type TYPE --prompt TEXT
                                          Check subagent capability contract before launch
   cos private-content audit [--json]      Audit ADR-202 private-content classifications
+  cos private-content check-projection PATH [--destination cloud|local] [--json]
+                                         Block unsafe private-content export/projection
   cos reward-signal audit [--json]        Audit ADR-204 reward signal quality
   cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
+  cos promote-from-telemetry [--json]    Convert consumable telemetry into bounded proposals
+  cos maintainer once --dry-run [--json] Run proposer-only maintainer loop once
   cos state retention [--json|--strict]   Audit declared mutable state retention
   cos stash cleanup [--json|--execute]    Archive-first cleanup for stale auto-pre-agent stashes
   cos init [dir]                         Install Cognitive OS into a project
