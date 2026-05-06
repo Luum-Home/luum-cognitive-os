@@ -1,0 +1,90 @@
+schema_version: rule-routing-coverage.v1
+purpose: |
+  RuleRouter coverage ratchet (ADR-179). Tracks how many agent-instruction
+  rules are routeable via frontmatter routing_patterns vs total. Hook-enforced
+  rules are intentionally excluded from this denominator — they auto-fire and
+  are not the router's responsibility.
+baseline:
+  captured_on: '2026-05-05'
+  # 5 of ~65 agent-instruction-only rules carry routing_patterns frontmatter.
+  # The ~65 figure is approximate per RULES-COMPACT.md narrative; an
+  # enforcement audit may shift specific rules between buckets.
+  min_routed_rule_count: 5
+  estimated_total_agent_instruction_rules: 65
+  min_routed_rule_coverage_percent: 7.7
+  rule_roots:
+    - rules/*.md
+    - packages/*/rules/*.md
+
+# PoC migrations completed in ADR-179 landing change.
+routed_rules:
+  - rule: acceptance-criteria
+    enforcement: agent-instruction
+    pattern_count: 3
+  - rule: trust-score
+    enforcement: hybrid
+    pattern_count: 4
+  - rule: adversarial-review
+    enforcement: agent-instruction
+    pattern_count: 4
+  - rule: definition-of-done
+    enforcement: agent-instruction
+    pattern_count: 4
+  - rule: phase-aware-agents
+    enforcement: agent-instruction
+    pattern_count: 4
+
+# Rules whose enforcement is purely hook-driven and therefore deliberately
+# excluded from the routing denominator. Listed for auditability — the router
+# checks this list against actual hook presence (rule-md-routing-validator).
+hook_enforced_excluded:
+  - anti-hallucination
+  - assumption-tracking
+  - blast-radius
+  - clarification-gate
+  - content-policy
+  - prompt-quality
+  - rate-limiting
+  - rate-limit-protection
+  - scope-creep-detection
+  - scope-proportionality
+  - consequence-system
+  - crash-recovery
+  - credential-management
+  - error-learning
+  - result-management
+  - user-prompt-capture
+  - doc-sync
+  - skill-rewrite
+  - auto-skill-generation
+  - auto-repair
+
+# Backlog: agent-instruction rules awaiting routing_patterns frontmatter.
+# This is a ratchet — entries may only be removed (when migrated), never added
+# silently. New rules added here require a comment justification.
+unrouted_rule_allowlist:
+  - rule: agent-quality
+    routing_class: routing-backlog
+    rationale: Migrate after PoC validation; patterns derivable from "agent did minimum / fix criteria".
+  - rule: responsiveness
+    routing_class: routing-backlog
+    rationale: Patterns around "no silence", "background", "long-running" — pending PoC validation.
+  - rule: agent-output-reading
+    routing_class: routing-backlog
+    rationale: Patterns around "JSONL", "result field", "raw output" — pending PoC validation.
+  - rule: model-directive
+    routing_class: routing-backlog
+    rationale: Patterns around "MODEL_DISABLED", "opus|sonnet|haiku for" — pending PoC validation.
+  - rule: repo-forensics
+    routing_class: routing-backlog
+    rationale: Patterns around "investigate repo", "analyze codebase" — pending; may overlap with skill router.
+  - rule: reverse-engineer
+    routing_class: routing-backlog
+    rationale: Patterns around "read source first", "trial and error" — pending.
+
+notes:
+  - The 50/50 hook-enforced vs agent-instruction split is per RULES-COMPACT.md
+    narrative; the ~65 estimate is approximate.
+  - Multi-rule matches (e.g. acceptance-criteria + trust-score firing
+    simultaneously) are expected and surfaced together by the router.
+  - Tie-breaking is highest-confidence-first; this heuristic is unvalidated.

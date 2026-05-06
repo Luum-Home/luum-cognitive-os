@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
-  "_description": "Paranoid security profile — maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 108,
+  "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
+  "_hook_count": 113,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -71,6 +71,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dangerous-env-flag-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/promotion-proposer-weekly.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/validator-soak-weekly.sh\"",
+            "async": true
           }
         ]
       }
@@ -111,6 +121,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\"",
             "async": true
           }
         ]
@@ -373,6 +388,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-section-validator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/research-quality-validator.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-md-routing-validator.sh\"",
+            "async": true
           }
         ]
       },

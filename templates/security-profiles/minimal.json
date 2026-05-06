@@ -1,7 +1,7 @@
 {
   "_profile": "minimal",
-  "_description": "Minimal security profile — core safety only. For exploration and single-dev sessions where speed matters.",
-  "_hook_count": 58,
+  "_description": "Minimal security profile \u2014 core safety only. For exploration and single-dev sessions where speed matters.",
+  "_hook_count": 63,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -52,6 +52,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dangerous-env-flag-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/promotion-proposer-weekly.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/validator-soak-weekly.sh\"",
+            "async": true
           }
         ]
       }
@@ -92,6 +102,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\"",
             "async": true
           }
         ]
@@ -287,6 +302,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/adr-section-validator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/research-quality-validator.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-md-routing-validator.sh\"",
+            "async": true
           }
         ]
       },

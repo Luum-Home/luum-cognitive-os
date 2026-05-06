@@ -69,6 +69,16 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/promotion-proposer-weekly.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/validator-soak-weekly.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/self-knowledge-refresh.sh\""
           },
           {
@@ -125,6 +135,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/stash-budget-warn.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/rule-router-prompt-suggest.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" UserPromptSubmit \"$CLAUDE_PROJECT_DIR/hooks/adr-relevance-suggest.sh\"",
             "async": true
           }
         ]
@@ -212,6 +232,14 @@
           },
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/cross-session-coordination-guard.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/agent-message-inbox-guard.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-claim-gate.sh\""
           },
           {
@@ -259,6 +287,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/concurrent-write-guard.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-md-routing-validator.sh\""
           }
         ]
       },
@@ -459,6 +491,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/edit-lock-drain-parked.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/research-quality-validator.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/rule-md-routing-validator.sh\"",
+            "async": true
           }
         ]
       },
@@ -586,6 +628,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-tracker.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/skill-post-execution-analysis.sh\"",
+            "async": true
           }
         ]
       },
@@ -680,7 +727,9 @@
         ]
       }
     ],
-    "TaskCompleted": []
+    "TaskCompleted": [
+
+    ]
   },
   "permissions": {
     "deny": [
