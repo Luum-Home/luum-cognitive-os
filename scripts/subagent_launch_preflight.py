@@ -35,6 +35,8 @@ class PreflightResult:
     message: str
     safe_alternatives: list[str]
     matched_patterns: list[str]
+    hook_payload_seen: bool = False
+    tool_name: str | None = None
 
     @property
     def exit_code(self) -> int:
@@ -52,6 +54,8 @@ class PreflightResult:
             "message": self.message,
             "safe_alternatives": self.safe_alternatives,
             "matched_patterns": self.matched_patterns,
+            "hook_payload_seen": self.hook_payload_seen,
+            "tool_name": self.tool_name,
         }
 
 
@@ -99,6 +103,65 @@ def has_parent_persistence(prompt: str, manifest: dict[str, Any]) -> bool:
         if str(marker).lower() in lowered:
             return True
     return False
+
+
+def pass_without_type(tool_name: str | None, message: str) -> PreflightResult:
+    return PreflightResult(
+        status="pass",
+        selected_type="",
+        canonical_type=None,
+        prompt_requires_write=False,
+        parent_persistence_declared=False,
+        write_capability=None,
+        classification="no_selected_subagent_type",
+        message=message,
+        safe_alternatives=[],
+        matched_patterns=[],
+        hook_payload_seen=True,
+        tool_name=tool_name,
+    )
+
+
+def _first_text(tool_input: dict[str, Any], keys: list[str]) -> str:
+    for key in keys:
+        value = tool_input.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+    return ""
+
+
+def _first_type(tool_input: dict[str, Any]) -> str:
+    for key in ("subagent_type", "agent_type", "type", "subagentType", "agentType"):
+        value = tool_input.get(key)
+        if isinstance(value, str) and value.strip():
+            return value
+    return ""
+
+
+def evaluate_hook_payload(payload: dict[str, Any], manifest: dict[str, Any]) -> PreflightResult:
+    tool_name = str(payload.get("tool_name") or payload.get("tool") or "")
+    if tool_name and tool_name not in {"Agent", "task", "delegate"}:
+        return pass_without_type(tool_name, "Not an Agent launch payload; subagent capability preflight skipped.")
+    tool_input = payload.get("tool_input") if isinstance(payload.get("tool_input"), dict) else {}
+    selected_type = _first_type(tool_input)
+    if not selected_type:
+        return pass_without_type(tool_name or None, "Agent launch did not expose selected subagent type; capability preflight passed advisory-only.")
+    prompt = _first_text(tool_input, ["prompt", "description", "task", "instructions", "message"] )
+    result = evaluate(selected_type, prompt, manifest)
+    return PreflightResult(
+        status=result.status,
+        selected_type=result.selected_type,
+        canonical_type=result.canonical_type,
+        prompt_requires_write=result.prompt_requires_write,
+        parent_persistence_declared=result.parent_persistence_declared,
+        write_capability=result.write_capability,
+        classification=result.classification,
+        message=result.message,
+        safe_alternatives=result.safe_alternatives,
+        matched_patterns=result.matched_patterns,
+        hook_payload_seen=True,
+        tool_name=tool_name or None,
+    )
 
 
 def evaluate(selected_type: str, prompt: str, manifest: dict[str, Any]) -> PreflightResult:
@@ -177,9 +240,10 @@ def evaluate(selected_type: str, prompt: str, manifest: dict[str, Any]) -> Prefl
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Preflight subagent type against prompt output requirements.")
-    parser.add_argument("--type", "--subagent-type", dest="subagent_type", required=True)
+    parser.add_argument("--type", "--subagent-type", dest="subagent_type")
     parser.add_argument("--prompt", default="")
     parser.add_argument("--prompt-file")
+    parser.add_argument("--hook-json-file", type=Path, help="Evaluate a native hook payload containing tool_name/tool_input")
     parser.add_argument("--manifest", type=Path, default=repo_root() / "manifests" / "subagent-capabilities.yaml")
     parser.add_argument("--json", action="store_true")
     return parser
@@ -193,7 +257,13 @@ def main(argv: list[str] | None = None) -> int:
         prompt = Path(args.prompt_file).read_text(encoding="utf-8")
     try:
         manifest = load_manifest(args.manifest)
-        result = evaluate(args.subagent_type, prompt, manifest)
+        if args.hook_json_file:
+            hook_payload = json.loads(args.hook_json_file.read_text(encoding="utf-8"))
+            result = evaluate_hook_payload(hook_payload, manifest)
+        else:
+            if not args.subagent_type:
+                raise ValueError("--type is required unless --hook-json-file is provided")
+            result = evaluate(args.subagent_type, prompt, manifest)
     except Exception as exc:
         payload = {"status": "error", "message": str(exc)}
         if args.json:

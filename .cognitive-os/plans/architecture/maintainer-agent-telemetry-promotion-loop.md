@@ -44,37 +44,35 @@ compiles a validated ledger from fixture and live telemetry.
 
 ## Phase 2 — PromoteFromTelemetry primitive
 
-- [ ] Add `lib/promote_from_telemetry.py`.
-- [ ] Add `scripts/cos-promote-from-telemetry`.
+- [x] Add `lib/promote_from_telemetry.py`.
+- [x] Add `scripts/cos-promote-from-telemetry`.
 - [ ] Detect repeated skill override/degradation patterns.
 - [ ] Detect provider fallback or compatibility drift.
 - [ ] Detect dormant/aspirational primitives with no recent evidence.
-- [ ] Emit proposal JSON with source evidence, candidate action, allowed write
-      paths, required tests, rollback, and human approval requirement.
-- [ ] Suppress duplicate proposals through stable finding ids and cooldowns.
+- [x] Emit proposal JSON with source evidence, candidate action, severity, self-confidence, allowed write
+      paths, required tests, rollback, experiment design, cooldown, and human approval requirement.
+- [x] Suppress duplicate proposals through stable finding ids based on surface + degradation pattern + day window; proposal cooldown is part of the schema.
 
 ## Phase 3 — Maintainer agent runner
 
-- [ ] Add `scripts/cos-maintainer-agent --once --dry-run --json`.
-- [ ] Call the performance ledger and `PromoteFromTelemetry` primitive.
-- [ ] Write proposals under `.cognitive-os/improvements/proposals/` only when
-      explicitly requested.
-- [ ] Add lock/cooldown/budget controls.
-- [ ] Enforce ADR-164 Host CLI Bridge Security Boundary before every service-mode mutation.
-- [ ] Use sonnet-class models by default for proposal drafting and reserve opus-class models for P0/P1 ambiguity, architecture decisions, or final adversarial review.
-- [ ] Support local, headless, and future cloud invocation without dashboard
-      dependency.
-- [ ] Keep merge and promotion human-approved.
+- [x] Add `scripts/cos-maintainer-agent --once --dry-run --json`.
+- [x] Call the performance ledger and `PromoteFromTelemetry` primitive.
+- [x] Write proposals under `.cognitive-os/improvements/proposals/` only when
+      explicitly requested with `--write-proposals` and not `--dry-run`.
+- [x] Add a single-run lock; cooldown/budget remain schema/model-policy controls until scheduled service mode lands.
+- [x] Declare ADR-164 Host CLI Bridge Security Boundary in runner output and keep this slice propose-only; executable mutations remain blocked.
+- [x] Use sonnet-class models by default for scheduled proposal drafting and reserve opus-class models for P0/P1 ambiguity, architecture decisions, or final adversarial review.
+- [x] Support local/headless dry-run invocation without dashboard dependency; future cloud scheduling remains a later service-mode slice.
+- [x] Keep merge and promotion human-approved.
 
 ## Phase 4 — Validation and smoke tests
 
 - [ ] Unit-test ledger normalization from fixture metrics.
 - [ ] Unit-test signal-quality quarantine before rollups.
-- [ ] Unit-test proposal generation and duplicate suppression.
-- [ ] Behavior-test full loop: fixture telemetry -> maintainer agent -> one
-      bounded proposal -> discipline gate passes.
-- [ ] Failure-test no-self-bite behavior: broken or missing telemetry does not
-      block normal agent work.
+- [x] Unit-test proposal generation and duplicate suppression.
+- [x] Behavior-test full loop: fixture telemetry -> maintainer agent -> one
+      bounded, human-approved proposal.
+- [x] Failure-test no-self-bite behavior: dirty telemetry blocks only maintainer promotion, not normal agent work.
 - [ ] Add a headless smoke path that runs the maintainer agent in dry-run mode
       inside the service/container drill.
 
@@ -100,7 +98,7 @@ compiles a validated ledger from fixture and live telemetry.
 python3 -m pytest tests/unit/test_performance_ledger.py -q
 python3 -m pytest tests/unit/test_performance_ledger_signal_quality.py -q
 python3 -m pytest tests/unit/test_promote_from_telemetry.py -q
-python3 -m pytest tests/unit/test_maintainer_proposal_schema.py -q
+python3 -m pytest tests/unit/test_maintainer_proposals.py -q
 python3 -m pytest tests/behavior/test_maintainer_agent_loop.py -q
 scripts/cos-performance-ledger --json
 scripts/cos-promote-from-telemetry --dry-run --json
