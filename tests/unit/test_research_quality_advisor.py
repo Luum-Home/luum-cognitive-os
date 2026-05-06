@@ -124,3 +124,57 @@ def test_to_jsonable_shape():
     assert len(blob["dimensions"]) == 4
     weights = sum(d["weight"] for d in blob["dimensions"])
     assert abs(weights - 1.0) < 1e-6
+
+
+def test_governance_audit_mode_scores_policy_reports_without_command_overfit():
+    sample = """# Governance boundary audit
+
+## Context
+
+This ADR governance review evaluates policy, boundary, risk, consequence, and alternative fit.
+
+| Decision area | Evidence | Governance reading | Confidence |
+|---|---|---|---|
+| Boundary | docs/adrs/ADR-170-operator-cli-as-primary-ui-surface.md:1-40 defines the prior UI decision | docs/adrs/ADR-172-multi-surface-ui-architecture.md:1-70 changes the accepted positioning | Confidence: HIGH |
+| Risk | docs/adrs/ADR-125-governance-tools-value-boundary.md:20-55 names false-positive governance cost | docs/adrs/ADR-188-orchestrator-skill-invocation-gate.md:1-80 requires guardrails | Confidence: MEDIUM |
+
+## Verdict
+
+Confidence: HIGH. The recommendation is to keep this as a governance decision, not a mechanical implementation audit.
+
+## Alternatives rejected
+
+- Treating this as a grep-only implementation check would miss decision intent.
+- Creating ADR 999 immediately would increase scope creep.
+
+## Uncertainties
+
+- The policy may change if the release boundary changes.
+- The numeric ADR references above are identifiers, not measured counts.
+"""
+    report = ResearchQualityAdvisor().score(sample)
+    assert report.audit_mode == "governance"
+    assert report.overall_score >= 70, report.to_jsonable()
+    weights = {d.name: d.weight for d in report.dimensions}
+    assert weights["falsifiable_claim"] > weights["numerical_specificity"]
+
+
+def test_mechanical_mode_still_penalizes_uncited_implementation_claims():
+    sample = """# Mechanical hook audit
+
+## Summary
+
+Confidence: HIGH. This implementation is complete and robust.
+
+| Surface | COS | External | Verdict |
+|---|---|---|---|
+| Hooks | many hooks approximately do the same thing | several scripts probably implement it | IGUAL |
+| Tests | lots of tests exist | some tests exist | IGUAL |
+
+## Uncertainties
+
+- Could be wrong if grep missed files.
+"""
+    report = ResearchQualityAdvisor(audit_mode="mechanical").score(sample)
+    assert report.audit_mode == "mechanical"
+    assert report.overall_score < 70, report.to_jsonable()
