@@ -131,7 +131,7 @@ def test_dispatch_metrics_evidence_warns_when_empty(tmp_path: Path) -> None:
 def test_boring_reliability_includes_demotion_loop_status(tmp_path: Path, monkeypatch) -> None:
     import scripts.cos_boring_reliability as boring
 
-    monkeypatch.setattr(boring.runtime_hook_reality, "build_report", lambda project_root: {"summary": {"status": "pass"}})
+    monkeypatch.setattr(boring.runtime_hook_reality, "build_report", lambda **kwargs: {"summary": {"status": "pass"}})
     monkeypatch.setattr(boring.cos_adoption_profile, "build_profile", lambda profile: {"status": "pass", "primitive_count": 0, "hook_count": 0, "default_visible_count": 0, "blocking_count": 0})
     monkeypatch.setattr(boring.cos_preamble_budget, "build_budget", lambda profile, root: {"status": "pass"})
     monkeypatch.setattr(boring.cos_default_visible_reducer, "build_recommendations", lambda: {"status": "pass", "recommendation_count": 0, "recommendations": []})
