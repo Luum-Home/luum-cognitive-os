@@ -62,4 +62,20 @@ __all__ = [
     "openai",
     "deepseek",
     "claude_sdk",
+    # ADR-178: optional ProviderProfile registry (loaded lazily; absent = no-op)
+    "get_provider_profiles",
 ]
+
+
+def get_provider_profiles() -> "dict":
+    """Return ProviderProfile objects loaded from manifests/provider-profiles.yaml.
+
+    Returns an empty dict if the manifest is absent or pyyaml is not installed.
+    Existing module-level REGISTRY, is_configured(), etc. are unaffected.
+    Added in ADR-178 (OpenHarness primitive adoption).
+    """
+    try:
+        from lib.provider_profile import load_profiles  # type: ignore[import]
+        return load_profiles()
+    except Exception:  # noqa: BLE001
+        return {}
