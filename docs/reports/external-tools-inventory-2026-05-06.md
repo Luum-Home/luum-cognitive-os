@@ -56,7 +56,7 @@ limitations:
 | `garagon/mcp-aguara` | security-stack.md · component-sources.md · setup/dependencies.md |
 | `garagon/tero` | component-sources.md |
 | `gentleman-programming/homebrew-tap` | research/engram-mcp-sharing-feasibility-2026-04-20.md |
-| `luum-ai/luum-agent-os` |  |
+| `luum-ai/luum-agent-os` | reports/primitive-coverage-latest.sarif |
 | `luum-home/luum-agent-os.git` | quickstart.md |
 | `luum-home/luum-cognitive-os.git` | business/value-proposition.md · getting-started.md · business/open-source-design.md |
 | `luum/safety-mesh` | package-manager-design.md · cos-package-manager.md · roadmap.md |
@@ -82,7 +82,7 @@ limitations:
 | `aaif-goose/goose` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `akavel/up` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `allinurl/goaccess` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
-| `anomalyco/opencode` | reports/multi-provider-agent-delegation-research-2026-05-05.md · reports/remote-control-plane-alternatives-2026-05-05.md · reports/surface-5-tui-ui-candidates-2 |
+| `anomalyco/opencode` | reports/multi-provider-agent-delegation-research-2026-05-05.md · reports/remote-control-plane-alternatives-2026-05-05.md · reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `anomalyco/opentui` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `antonmedv/fx` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `aristocratos/btop` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
@@ -124,7 +124,7 @@ limitations:
 | `nearai/ironclaw` | reports/remote-control-plane-alternatives-2026-05-05.md · reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `nullclaw/nullclaw` | reports/remote-control-plane-alternatives-2026-05-05.md · reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `openagen/zeroclaw` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
-| `openclaw/openclaw` | reports/multi-provider-agent-delegation-research-2026-05-05.md · reports/remote-control-plane-alternatives-2026-05-05.md · business/competitive-reassessment-ope |
+| `openclaw/openclaw` | reports/multi-provider-agent-delegation-research-2026-05-05.md · reports/remote-control-plane-alternatives-2026-05-05.md · business/competitive-reassessment-openclaw-hermes-2026-04.md |
 | `openinterpreter/open-interpreter` | reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `qhkm/zeptoclaw` | reports/remote-control-plane-alternatives-2026-05-05.md · reports/surface-5-tui-ui-candidates-2026-05-05.md |
 | `qwibitai/nanoclaw` | reports/remote-control-plane-alternatives-2026-05-05.md · reports/surface-5-tui-ui-candidates-2026-05-05.md |
@@ -243,7 +243,7 @@ limitations:
 | `gsd-build/get-shit-done` | reports/primitives-and-tools-audit-2026-05-05.md |
 | `invariantlabs/mcp-scan` | component-sources.md |
 | `jayminwest/overstory` | competitive-landscape.md |
-| `jgravelle/jcodemunch-mcp` | reports/primitive-coverage-backend-benchmark-2026-05-01.md · architecture/primitive-coverage-tooling-research-2026-04.md · architecture/primitive-coverage-backe |
+| `jgravelle/jcodemunch-mcp` | reports/primitive-coverage-backend-benchmark-2026-05-01.md · architecture/primitive-coverage-tooling-research-2026-04.md · architecture/primitive-coverage-backend-benchmark-2026-05.md |
 | `kirodotdev/Kiro` | competitive-landscape.md |
 | `kittors/CliRelay` | reports/multi-provider-agent-delegation-research-2026-05-05.md |
 | `koalaman/shellcheck-precommit` | architecture/cross-platform-ci.md |
