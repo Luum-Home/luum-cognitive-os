@@ -7343,8 +7343,9 @@ primitives:
     - python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q
   rollback_or_repair_command: Disable skills/adr-tombstone routing and use manual ADR tombstone review until the script is repaired.
   sunset_criteria: Archive only after ADR tombstone workflow is replaced by cosd intent arbitration with equivalent tests.
-  docs_claim_level: candidate
+  docs_claim_level: blocking
   exit_behavior: nonzero_on_invalid_tombstone
+  metrics_file: .cognitive-os/metrics/adr-tombstone.jsonl
 - id: scripts/cos-adr-tombstone
   kind: script
   owner_adr: ADR-171
@@ -7363,8 +7364,9 @@ primitives:
     - python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q
   rollback_or_repair_command: Remove wrapper from skill instructions and call scripts/adr_tombstone.py directly after repair.
   sunset_criteria: Archive if a generated cosd command supersedes the wrapper with equivalent tests.
-  docs_claim_level: candidate
+  docs_claim_level: blocking
   exit_behavior: delegates_to_python_exit
+  metrics_file: .cognitive-os/metrics/adr-tombstone.jsonl
 - id: scripts/cos-agent-message
   kind: script
   owner_adr: ADR-185
@@ -7383,8 +7385,9 @@ primitives:
     - python3 -m pytest tests/unit/test_agent_message_bus.py tests/contracts/test_agent_message_bus_contract.py -q
   rollback_or_repair_command: Disable message-bus hooks and use append-only coordination ledger entries until repaired.
   sunset_criteria: Promote or replace when cosd provides equivalent directed findings queue.
-  docs_claim_level: candidate
+  docs_claim_level: advisory
   exit_behavior: nonzero_on_invalid_message_command
+  metrics_file: .cognitive-os/metrics/agent-messages.jsonl
 - id: scripts/cos-session-coordination
   kind: script
   owner_adr: ADR-183
@@ -7403,5 +7406,82 @@ primitives:
     - python3 -m pytest tests/unit/test_session_coordination.py tests/contracts/test_session_coordination_contract.py -q
   rollback_or_repair_command: Disable coordination guard hooks and require manual worktree-intake report until repaired.
   sunset_criteria: Promote or replace when cosd owns branch, ADR, and intent arbitration.
-  docs_claim_level: candidate
+  docs_claim_level: advisory
   exit_behavior: nonzero_on_invalid_coordination_command
+  metrics_file: .cognitive-os/metrics/session-coordination.jsonl
+- id: hooks/skill-router-prompt-suggest.sh
+  kind: hook
+  owner_adr: ADR-174
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/skill-router-prompt-suggest.sh
+  runtime_projection: true
+  behavior_evidence: suggests canonical skill routing context without blocking prompts
+  evidence_commands:
+  - bash -n hooks/skill-router-prompt-suggest.sh
+  - python3 -m pytest tests/contracts/test_orchestrator_skill_routing.py -q
+  rollback_or_repair_command: Disable the prompt suggestion hook and rely on explicit skill invocation until repaired.
+  sunset_criteria: Archive when native harness skill routing provides equivalent prompt suggestions with tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/skill-suggestion.jsonl
+- id: hooks/orchestrator-decision-trace.sh
+  kind: hook
+  owner_adr: ADR-176
+  lifecycle_state: sandbox
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/orchestrator-decision-trace.sh
+  runtime_projection: true
+  behavior_evidence: records orchestrator adoption or rejection of skill suggestions
+  evidence_commands:
+  - bash -n hooks/orchestrator-decision-trace.sh
+  - python3 -m pytest tests/unit -q
+  rollback_or_repair_command: Disable trace hook; routing suggestions remain advisory without decision telemetry.
+  sunset_criteria: Archive when SkillStore captures equivalent decision traces directly.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/orchestrator-decision-trace.jsonl
+- id: hooks/untracked-work-preservation-guard.sh
+  kind: hook
+  owner_adr: ADR-183
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: team
+  governance_class: cross-session-coordination
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/untracked-work-preservation-guard.sh
+  runtime_projection: true
+  behavior_evidence: blocks untracked/protected artifact deletion unless explicit delete intent is approved
+  evidence_commands:
+  - bash -n hooks/untracked-work-preservation-guard.sh
+  - python3 -m pytest tests/unit/test_delete_intent.py -q
+  rollback_or_repair_command: Disable the hook in harness settings and require manual cos-safe-clean dry-runs until repaired.
+  sunset_criteria: Archive only when cosd owns cross-session artifact claims and deletion intent approval with equivalent tests.
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/untracked-delete-blocks.jsonl
+  false_positive_tests:
+  - tests/unit/test_delete_intent.py
+
