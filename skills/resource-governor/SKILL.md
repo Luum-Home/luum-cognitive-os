@@ -15,6 +15,8 @@ routing_patterns:
     confidence: 0.96
   - pattern: '\b(budget|infrastructure|agent|skill)\s+optimizer\b'
     confidence: 0.84
+  - pattern: '\boptimi[sz]e\s+resource\s+budget\b'
+    confidence: 0.86
   - pattern: '\boptimi[sz]e\s+(resources|budget|infra)\b'
     confidence: 0.86
 
