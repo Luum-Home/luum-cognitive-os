@@ -1,7 +1,7 @@
 ---
 adr: 183
 title: Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators
-status: proposed
+status: accepted
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -13,9 +13,9 @@ implementation_files:
   - lib/agent_message_bus.py                # directed message events
   - scripts/cos-session-coordination        # coordination CLI
   - scripts/cos-agent-message               # directed message CLI
-  - hooks/cross-session-event-emit.sh       # to create
-  - hooks/cross-session-peer-context.sh     # to create
-  - tests/unit/test_cross_session_events.py # to create
+  - hooks/cross-session-event-emit.sh
+  - hooks/cross-session-peer-context.sh
+  - tests/unit/test_cross_session_events.py
   - .cognitive-os/sessions/events.jsonl     # existing runtime artifact
 tier: maintainer
 tags: [concurrency, observability, governance, postmortem-2026-05-05]
@@ -25,7 +25,7 @@ tags: [concurrency, observability, governance, postmortem-2026-05-05]
 
 ## Status
 
-**Proposed.** Companion to ADR-182. ADR-182 prevents *conflicts*; ADR-183
+**Accepted.** Implemented as an extension of the existing `lib/session_bus.py` plus emit/context hooks. Companion to ADR-182. ADR-182 prevents *conflicts*; ADR-183
 provides *awareness* — even when sessions do not contend on the same
 branch, the orchestrator should know that peer sessions exist and what
 they are doing.
