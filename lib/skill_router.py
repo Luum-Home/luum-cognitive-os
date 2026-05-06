@@ -56,6 +56,26 @@ def _compile(patterns: List[Tuple[str, float]]) -> List[Tuple[re.Pattern, float]
     return [(re.compile(p, re.IGNORECASE), w) for p, w in patterns]
 
 
+_AUTO_ROLLBACK_META_CONTEXT_RE = re.compile(
+    r"("
+    r"(router|skill\s*router|agente|agent|suggest|sugiri[oó]|sugerencia|suggestion|hint)"
+    r".{0,80}(/?auto[- ]?rollback)"
+    r"|(/?auto[- ]?rollback).{0,80}"
+    r"(router|skill\s*router|agente|agent|suggest|sugiri[oó]|sugerencia|suggestion|hint)"
+    r"|("
+    r"por\s+qu[eé]|why|qu[eé]\s+dispara|what\s+triggers|me\s+asusta|scary|preocupa|worr"
+    r").{0,120}(/?auto[- ]?rollback)"
+    r"|(ignoro|ignore|ignored|rechaz|reject).{0,80}(/?auto[- ]?rollback)"
+    r")",
+    re.IGNORECASE,
+)
+
+
+def _is_auto_rollback_meta_reference(text: str) -> bool:
+    """Return True when auto-rollback is mentioned as critique/risk, not intent."""
+    return bool(_AUTO_ROLLBACK_META_CONTEXT_RE.search(text))
+
+
 # ---------------------------------------------------------------------------
 # URL detectors (special-cased, not pure regex on the whole message)
 # ---------------------------------------------------------------------------
@@ -1510,6 +1530,9 @@ class SkillRouter:
         matches: List[SkillMatch] = []
 
         for entry in self._routing_table:
+            if entry.skill_name == "auto-rollback" and _is_auto_rollback_meta_reference(text):
+                continue
+
             best_conf = 0.0
             for pattern, base_conf in entry.patterns:
                 if pattern.search(text):
