@@ -20,6 +20,7 @@ import argparse
 import fnmatch
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -774,6 +775,72 @@ def process_activity_for_worktree(path: Path) -> dict[str, Any]:
     return {"available": lsof_available or ps_proc.returncode == 0, "count": len(deduped), "processes": deduped[:20]}
 
 
+def collect_edit_lock_for_path(project: Path, rel_path: str) -> dict[str, Any]:
+    """Return edit-coop lock state for a path without mutating the lock."""
+    coop = project / "scripts" / "edit-coop.sh"
+    if not coop.exists():
+        return {"available": False, "state": "unknown", "detail": "scripts/edit-coop.sh not found"}
+    proc = subprocess.run(
+        ["bash", str(coop), "check", rel_path],
+        cwd=str(project),
+        env={**os.environ, "COGNITIVE_OS_PROJECT_DIR": str(project)},
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    output = (proc.stdout + proc.stderr).strip()
+    if "FREE" in output:
+        state = "free"
+    elif "STALE" in output:
+        state = "stale"
+    elif "OWN" in output:
+        state = "own"
+    elif "HELD" in output:
+        state = "held"
+    else:
+        state = "unknown"
+    return {"available": True, "state": state, "exit_code": proc.returncode, "detail": output}
+
+
+def _agent_id_from_stash(stash: dict[str, Any]) -> str | None:
+    subject = str(stash.get("subject") or "")
+    match = re.search(r"(toolu_[A-Za-z0-9]+|native-agent-[A-Za-z0-9_-]+)", subject)
+    return match.group(1) if match else None
+
+
+def collect_agent_heartbeat(project: Path, agent_id: str) -> dict[str, Any]:
+    """Return last heartbeat-like row for an agent id from local metrics."""
+    candidates = [
+        project / ".cognitive-os" / "metrics" / "agent-heartbeat.jsonl",
+        project / ".cognitive-os" / "metrics" / "native-agent-heartbeat.jsonl",
+    ]
+    last: dict[str, Any] | None = None
+    for path in candidates:
+        if not path.exists():
+            continue
+        try:
+            for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+                if agent_id not in line:
+                    continue
+                try:
+                    row = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                row_agent = row.get("agent_id") or (row.get("payload") or {}).get("agent_id")
+                if row_agent == agent_id:
+                    last = row
+        except OSError:
+            continue
+    if last is None:
+        return {"agent_id": agent_id, "seen": False, "alive": None, "last_event": None}
+    payload = last.get("payload") if isinstance(last.get("payload"), dict) else {}
+    alive = last.get("alive", payload.get("alive"))
+    event_type = last.get("event_type") or last.get("event")
+    ts = last.get("timestamp") or last.get("ts") or last.get("ended_at") or last.get("started_at")
+    return {"agent_id": agent_id, "seen": True, "alive": alive, "last_event": event_type, "last_timestamp": ts}
+
+
 def collect_stashes_by_worktree(
     project: Path,
     worktrees: list[dict[str, Any]],
@@ -945,6 +1012,11 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
 
         matching_claims = [claim for claim in claims if _claim_mentions_path(claim, rel_path)]
         matching_stashes = [stash for stash in stashes if _stash_mentions_path(stash, rel_path)]
+        for stash in matching_stashes:
+            agent_id = _agent_id_from_stash(stash)
+            stash["agent_id"] = agent_id
+            stash["agent_heartbeat"] = collect_agent_heartbeat(project, agent_id) if agent_id else None
+        edit_lock = collect_edit_lock_for_path(project, rel_path)
         preserve_branches = [
             branch["branch"]
             for branch in payload.get("preserve_branches", [])
@@ -954,10 +1026,11 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
         has_noncurrent_dirty = any(not item.get("is_current_project") for item in dirty_worktrees)
         has_live_process = any((item.get("process_activity") or {}).get("count", 0) for item in dirty_worktrees)
         has_active_claim = any(str(claim.get("status", "active")) == "active" for claim in matching_claims)
+        has_held_lock = edit_lock.get("state") in {"held", "own"}
         has_stash = bool(matching_stashes)
         has_preserve_copy = bool(preserve_branches)
 
-        if has_noncurrent_dirty or has_live_process or has_active_claim:
+        if has_noncurrent_dirty or has_live_process or has_active_claim or has_held_lock:
             status = "active_or_unknown"
             action = "Do not clean/drop/merge automatically; coordinate with the owning worktree/session or archive explicitly after liveness review."
         elif current_dirty:
@@ -979,6 +1052,7 @@ def collect_path_ownership(project: Path, paths: list[str], payload: dict[str, A
                 "status": status,
                 "current_dirty": current_dirty,
                 "dirty_worktrees": dirty_worktrees,
+                "edit_lock": edit_lock,
                 "claims": matching_claims,
                 "stashes": matching_stashes,
                 "preserve_branches": preserve_branches,
@@ -1562,8 +1636,23 @@ def print_text(payload: dict[str, Any]) -> None:
                     f"    dirty_worktree={wt.get('path')} branch={wt.get('branch') or 'detached'} "
                     f"processes={activity.get('count', 0)}"
                 )
+            edit_lock = item.get("edit_lock") or {}
+            if edit_lock:
+                print(f"    edit_lock={edit_lock.get('state')} :: {edit_lock.get('detail')}")
             if item.get("stashes"):
-                print(f"    matching_stashes={[s.get('ref') for s in item['stashes']]}")
+                print(
+                    "    matching_stashes="
+                    + str(
+                        [
+                            {
+                                "ref": s.get("ref"),
+                                "agent_id": s.get("agent_id"),
+                                "heartbeat": s.get("agent_heartbeat"),
+                            }
+                            for s in item["stashes"]
+                        ]
+                    )
+                )
             if item.get("claims"):
                 print(f"    matching_claims={[c.get('task_id') or c.get('id') for c in item['claims']]}")
             print(f"    action: {item['action']}")
