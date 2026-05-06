@@ -12,6 +12,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [Post-Mortem — State Retention Self-Bite and Retention Controller — 2026-05-06](reports/state-retention-controller-postmortem-2026-05-06.md) — incident analysis and corrective action for retention self-bites.
+- [ADR-200: State Retention Controller](adrs/ADR-200-state-retention-controller.md) — conservative automatic cleanup architecture with observe, repair-safe, and repair-before-block modes.
 - [Session Diagnosis — State Retention Self-Bite Pattern — 2026-05-06](reports/session-self-bite-pattern-2026-05-06.md) — pre-launch diagnosis of safety-state accumulation, stale stashes, claims, bus folders, and the retention protocol response.
 - [ADR-199: State Retention Policy and Reaper Protocol](adrs/ADR-199-state-retention-policy-and-reaper-protocol.md) — manifest-backed retention declaration, audit, and archive-first reaper contract for mutable COS state.
 - [State Retention Reaper Protocol Plan](../.cognitive-os/plans/architecture/state-retention-reaper-protocol.md) — implementation plan for audit, cleanup, and future reaper expansion.

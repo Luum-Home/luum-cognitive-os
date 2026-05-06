@@ -168,6 +168,7 @@
 
 ## 8. Immediate Known Gaps
 
+- [x] State retention automatic repair is bounded by ADR-200 through observe/repair-safe/repair-before-block modes, with smoke coverage for auto-pre-agent repair and manual-stash blocking.
 - [x] State retention self-bite risk is documented and given a manifest-backed reaper protocol through [Session Diagnosis — State Retention Self-Bite Pattern](../reports/session-self-bite-pattern-2026-05-06.md), [ADR-199](../adrs/ADR-199-state-retention-policy-and-reaper-protocol.md), and `manifests/state-retention.yaml`.
 - [x] Fix `README.md` reference to missing `docs/benchmark-results.md`.
 - [x] Fix `CONTRIBUTING.md` references from `tests/run-all-tests.sh` to `scripts/run-all-tests.sh`.

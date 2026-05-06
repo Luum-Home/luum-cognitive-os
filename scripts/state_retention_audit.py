@@ -3,7 +3,7 @@
 """Audit and safely reap bounded Cognitive OS state surfaces."""
 from __future__ import annotations
 
-import argparse, fnmatch, json, os, shutil, subprocess
+import argparse, fcntl, fnmatch, json, os, shutil, subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
@@ -11,7 +11,7 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "manifests" / "state-retention.yaml"
-REQUIRED = {"id","kind","path","max_age","max_count","reaper","tombstone","owner_pid","owner_files","documentation"}
+REQUIRED = {"id","kind","path","max_age","max_count","reaper","retention_mode","tombstone","owner_pid","owner_files","documentation"}
 TERMINAL = {"released","completed","completed-by-watermark","cancelled-zombie","cancelled-stale","stale"}
 
 def duration(v: Any) -> int | None:
@@ -201,24 +201,117 @@ def write_metrics(project: Path, payload: dict[str, Any]) -> None:
     path=project/".cognitive-os"/"metrics"/"state-retention-audit.jsonl"; path.parent.mkdir(parents=True,exist_ok=True)
     with path.open("a",encoding="utf-8") as fh: fh.write(json.dumps({"timestamp":datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),**payload},sort_keys=True)+"\n")
 
+
+SAFE_AUTO_MODES = {"repair-safe"}
+REPAIR_BEFORE_BLOCK_MODES = {"repair-before-block"}
+
+
+def retention_mode(surface: dict[str, Any]) -> str:
+    return str(surface.get("retention_mode") or "observe")
+
+
+def auto_safe_surfaces(surfaces: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [s for s in surfaces if retention_mode(s) in SAFE_AUTO_MODES]
+
+
+def repair_before_block_surfaces(surfaces: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [s for s in surfaces if retention_mode(s) in REPAIR_BEFORE_BLOCK_MODES]
+
+
+def acquire_controller_lock(project: Path):
+    lock_path = project / ".cognitive-os" / "runtime" / "state-retention.lock"
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    fh = lock_path.open("w", encoding="utf-8")
+    try:
+        fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        fh.close()
+        return None
+    return fh
+
+
+def cooldown_allows(project: Path, mode: str, cooldown_seconds: int) -> tuple[bool, int]:
+    if cooldown_seconds <= 0:
+        return True, 0
+    path = project / ".cognitive-os" / "runtime" / f"state-retention-{mode}.last-run"
+    now = int(datetime.now(timezone.utc).timestamp())
+    try:
+        previous = int(path.read_text(encoding="utf-8").strip())
+    except Exception:
+        previous = 0
+    remaining = cooldown_seconds - (now - previous)
+    if remaining > 0:
+        return False, remaining
+    return True, 0
+
+
+def mark_cooldown(project: Path, mode: str) -> None:
+    path = project / ".cognitive-os" / "runtime" / f"state-retention-{mode}.last-run"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(str(int(datetime.now(timezone.utc).timestamp())) + "\n", encoding="utf-8")
+
 def parser() -> argparse.ArgumentParser:
-    p=argparse.ArgumentParser(description=__doc__); p.add_argument("--project-dir",default=os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd()); p.add_argument("--manifest",default=str(DEFAULT_MANIFEST)); p.add_argument("--json",action="store_true"); p.add_argument("--strict",action="store_true"); p.add_argument("--reap",action="store_true"); p.add_argument("--execute",action="store_true"); p.add_argument("--surface",action="append"); p.add_argument("--no-metrics",action="store_true"); return p
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument("--project-dir",default=os.environ.get("COGNITIVE_OS_PROJECT_DIR") or os.getcwd())
+    p.add_argument("--manifest",default=str(DEFAULT_MANIFEST))
+    p.add_argument("--json",action="store_true")
+    p.add_argument("--strict",action="store_true")
+    p.add_argument("--reap",action="store_true")
+    p.add_argument("--execute",action="store_true")
+    p.add_argument("--surface",action="append")
+    p.add_argument("--no-metrics",action="store_true")
+    p.add_argument("--auto-safe",action="store_true", help="select only retention_mode=repair-safe surfaces; requires --reap for cleanup")
+    p.add_argument("--repair-before-block",action="store_true", help="select only retention_mode=repair-before-block surfaces")
+    p.add_argument("--cooldown-seconds",type=int,default=int(os.environ.get("COS_STATE_RETENTION_COOLDOWN_SECONDS","300")))
+    return p
 
 def main(argv: Sequence[str] | None=None) -> int:
-    args=parser().parse_args(argv); project=Path(args.project_dir).resolve(); manifest=load_manifest(Path(args.manifest)); mf=validate_manifest(manifest); wanted=set(args.surface or [])
-    surfaces=[s for s in manifest.get("surfaces",[]) if isinstance(s,dict) and (not wanted or s.get("id") in wanted)]
+    args=parser().parse_args(argv)
+    project=Path(args.project_dir).resolve()
+    manifest=load_manifest(Path(args.manifest))
+    mf=validate_manifest(manifest)
+    wanted=set(args.surface or [])
+    all_surfaces=[s for s in manifest.get("surfaces",[]) if isinstance(s,dict)]
+    if args.auto_safe:
+        selected=auto_safe_surfaces(all_surfaces)
+    elif args.repair_before_block:
+        selected=repair_before_block_surfaces(all_surfaces)
+    else:
+        selected=all_surfaces
+    surfaces=[s for s in selected if not wanted or s.get("id") in wanted]
+
+    lock_fh = None
+    cooldown_skipped = False
+    cooldown_remaining = 0
+    mode = "auto-safe" if args.auto_safe else "repair-before-block" if args.repair_before_block else "manual"
+    if args.reap and args.execute and mode != "manual":
+        allowed, cooldown_remaining = cooldown_allows(project, mode, args.cooldown_seconds)
+        if not allowed:
+            cooldown_skipped = True
+        else:
+            lock_fh = acquire_controller_lock(project)
+            if lock_fh is None:
+                cooldown_skipped = True
+
     audits=[audit_surface(project,s) for s in surfaces if not REQUIRED-set(s)]
     reaped=[]
-    if args.reap:
+    if args.reap and not cooldown_skipped:
         for s in surfaces:
             if not REQUIRED-set(s):
                 r=reap_surface(project,s,args.execute)
                 if r is not None: reaped.append(r)
-    count=len(mf)+sum(len(a.get("findings",[])) for a in audits); payload={"schema_version":"state-retention-audit.v1","project_dir":str(project),"execute":bool(args.execute),"manifest_findings":mf,"surfaces":audits,"reap":reaped,"summary":{"surface_count":len(audits),"finding_count":count}}
-    if not args.no_metrics: write_metrics(project,{"summary":payload["summary"],"execute":bool(args.execute)})
+        if args.execute and mode != "manual":
+            mark_cooldown(project, mode)
+    if lock_fh is not None:
+        fcntl.flock(lock_fh, fcntl.LOCK_UN)
+        lock_fh.close()
+    count=len(mf)+sum(len(a.get("findings",[])) for a in audits)
+    payload={"schema_version":"state-retention-audit.v1","project_dir":str(project),"execute":bool(args.execute),"mode":mode,"cooldown_skipped":cooldown_skipped,"cooldown_remaining_seconds":cooldown_remaining,"manifest_findings":mf,"surfaces":audits,"reap":reaped,"summary":{"surface_count":len(audits),"finding_count":count}}
+    if not args.no_metrics: write_metrics(project,{"summary":payload["summary"],"execute":bool(args.execute),"mode":mode,"cooldown_skipped":cooldown_skipped})
     if args.json: print(json.dumps(payload,indent=2,sort_keys=True))
     else:
-        print(f"State retention: surfaces={len(audits)} findings={count} execute={bool(args.execute)}")
+        print(f"State retention: surfaces={len(audits)} findings={count} execute={bool(args.execute)} mode={mode}")
+        if cooldown_skipped: print(f"- skipped: retention controller cooldown/lock active ({cooldown_remaining}s remaining)")
         for a in audits:
             if a.get("findings"): print(f"- {a['surface']}: {a['findings']}")
         for r in reaped: print(f"- reap {r['surface']}: candidates={r.get('candidate_count', r.get('removed',0))} execute={r.get('execute')}")

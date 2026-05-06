@@ -313,5 +313,5 @@ fi
 
 # ── ADR-199: State retention audit/reaper dry-run summary ───────────────────
 if [ -x "$PROJECT_DIR/scripts/state_retention_audit.py" ]; then
-  python3 "$PROJECT_DIR/scripts/state_retention_audit.py" --project-dir "$PROJECT_DIR" --reap 2>&1 | head -40 || true
+  python3 "$PROJECT_DIR/scripts/state_retention_audit.py" --project-dir "$PROJECT_DIR" --auto-safe --reap --execute 2>&1 | head -40 || true
 fi
