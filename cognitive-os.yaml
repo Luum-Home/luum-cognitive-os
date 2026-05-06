@@ -1732,3 +1732,104 @@ harness:
       event: TaskCompleted
       scope: os-only
       default_projection: false
+
+    # ── ADR-174/182/183/185/186 generated-governance hooks ───────────────────
+    promotion-proposer-weekly:
+      script: hooks/promotion-proposer-weekly.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    validator-soak-weekly:
+      script: hooks/validator-soak-weekly.sh
+      event: SessionStart
+      async: true
+      scope: os-only
+
+    cross-session-peer-context:
+      script: hooks/cross-session-peer-context.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    agent-message-inbox-context:
+      script: hooks/agent-message-inbox-context.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    rule-router-prompt-suggest:
+      script: hooks/rule-router-prompt-suggest.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    adr-relevance-suggest:
+      script: hooks/adr-relevance-suggest.sh
+      event: UserPromptSubmit
+      async: true
+      scope: os-only
+
+    context-budget-meter:
+      script: hooks/context-budget-meter.sh
+      event: UserPromptSubmit
+      scope: os-only
+
+    branch-ownership-lock:
+      script: hooks/branch-ownership-lock.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    cross-session-coordination-guard:
+      script: hooks/cross-session-coordination-guard.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    agent-message-inbox-guard:
+      script: hooks/agent-message-inbox-guard.sh
+      event: PreToolUse
+      matcher: "Bash"
+      scope: os-only
+
+    skill-md-routing-validator:
+      script: hooks/skill-md-routing-validator.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      scope: os-only
+
+    cross-session-event-emit:
+      script: hooks/cross-session-event-emit.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      async: true
+      scope: os-only
+
+    research-quality-validator:
+      script: hooks/research-quality-validator.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      async: true
+      scope: os-only
+
+    rule-md-routing-validator:
+      script: hooks/rule-md-routing-validator.sh
+      event: PostToolUse
+      matcher: "Edit|Write"
+      async: true
+      scope: os-only
+
+    skill-post-execution-analysis:
+      script: hooks/skill-post-execution-analysis.sh
+      event: PostToolUse
+      matcher: "Agent"
+      async: true
+      scope: os-only
+
+    branch-ownership-release:
+      script: hooks/branch-ownership-release.sh
+      event: Stop
+      scope: os-only
+
+

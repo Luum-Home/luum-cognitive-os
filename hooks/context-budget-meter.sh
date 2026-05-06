@@ -70,4 +70,8 @@ elif verdict.verdict == "BLOCK" and not verdict.allowed:
     print(f"context-budget-meter: BLOCK user context {used}/{verdict.budget_token_max} tokens", file=sys.stderr)
     raise SystemExit(2)
 PY
-exit $?
+rc=$?
+if [[ "$rc" -eq 2 ]]; then
+  exit 2
+fi
+exit "$rc"
