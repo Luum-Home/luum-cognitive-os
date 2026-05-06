@@ -6,6 +6,7 @@ Skills with zero recent records get demotion proposals; active skills do not.
 from __future__ import annotations
 
 import json
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -62,6 +63,26 @@ def test_evaluate_flags_zero_record_advisory(lifecycle_with_advisory: Path, stor
     assert by_name["active-skill"]["eligible"] is False
     # sandbox-skill must not appear (advisory/blocking only)
     assert "sandbox-skill" not in by_name
+
+
+def test_evaluate_uses_windowed_skillstore_events_for_demotion(
+    lifecycle_with_advisory: Path, tmp_path: Path
+):
+    db = tmp_path / "store.db"
+    store = SkillStore(db)
+    store.record_execution("active-skill", "session-x", 1, 100, "success")
+    store.close()
+    conn = sqlite3.connect(str(db))
+    conn.execute("UPDATE skill_execution_events SET timestamp = ?", ("2026-03-07T12:00:00+00:00",))
+    conn.commit()
+    conn.close()
+
+    prims = _load_lifecycle(lifecycle_with_advisory)
+    results = evaluate(prims, db, window_days=90)
+    by_name = {r["name"]: r for r in results}
+
+    assert by_name["active-skill"]["recent_records"] == 1
+    assert by_name["active-skill"]["eligible"] is False
 
 
 def test_apply_writes_demotion_proposals(

@@ -16,7 +16,7 @@ import json
 import os
 import sqlite3
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
@@ -88,8 +88,26 @@ def _fallback_parse(text: str) -> List[Dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 
-def _skill_evidence(db_path: Path, name: str) -> Dict[str, Any]:
-    """Return dict with record_count, success_rate, judge_avg.
+def _parse_time(value: str) -> datetime | None:
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _table_exists(conn: sqlite3.Connection, table_name: str) -> bool:
+    row = conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name = ?",
+        (table_name,),
+    ).fetchone()
+    return row is not None
+
+
+def _skill_evidence(db_path: Path, name: str, window_days: int = 30) -> Dict[str, Any]:
+    """Return dict with windowed record_count, success_rate, judge_avg.
 
     All values default to 0.0 / 0 if the skill is absent or DB does not exist.
     """
@@ -103,15 +121,30 @@ def _skill_evidence(db_path: Path, name: str) -> Dict[str, Any]:
     try:
         conn = sqlite3.connect(uri, uri=True)
         conn.row_factory = sqlite3.Row
-        row = conn.execute(
-            "SELECT total_completions, total_applied FROM skill_records WHERE skill_id = ?",
-            (skill_id,),
-        ).fetchone()
-        if row:
-            total = int(row["total_completions"] or 0)
-            applied = int(row["total_applied"] or 0)
+        if _table_exists(conn, "skill_execution_events"):
+            cutoff = datetime.now(timezone.utc) - timedelta(days=window_days)
+            rows = conn.execute(
+                "SELECT timestamp, applied FROM skill_execution_events WHERE skill_id = ?",
+                (skill_id,),
+            ).fetchall()
+            recent = [
+                row for row in rows
+                if (ts := _parse_time(str(row["timestamp"] or ""))) and ts >= cutoff
+            ]
+            total = len(recent)
+            applied = sum(int(row["applied"] or 0) for row in recent)
             out["record_count"] = total
             out["success_rate"] = (applied / total) if total > 0 else 0.0
+        else:
+            row = conn.execute(
+                "SELECT total_completions, total_applied FROM skill_records WHERE skill_id = ?",
+                (skill_id,),
+            ).fetchone()
+            if row:
+                total = int(row["total_completions"] or 0)
+                applied = int(row["total_applied"] or 0)
+                out["record_count"] = total
+                out["success_rate"] = (applied / total) if total > 0 else 0.0
         # Judgments: skill_judgments rows for this skill_id; skill_applied=1 = positive
         jrows = conn.execute(
             "SELECT skill_applied FROM skill_judgments WHERE skill_id = ?",
@@ -214,6 +247,7 @@ def evaluate(
     db_path: Path,
     thresholds: Dict[str, float],
     skill_filter: Optional[str] = None,
+    window_days: int = 30,
 ) -> List[Dict[str, Any]]:
     """Return list of {prim, evidence, eligible} for sandbox primitives."""
     out: List[Dict[str, Any]] = []
@@ -224,7 +258,7 @@ def evaluate(
         name = _skill_basename(str(prim.get("id", "")))
         if skill_filter and skill_filter not in (name, str(prim.get("id", ""))):
             continue
-        ev = _skill_evidence(db_path, name)
+        ev = _skill_evidence(db_path, name, window_days=window_days)
         eligible = (
             ev["record_count"] >= thresholds["records"]
             and ev["success_rate"] >= thresholds["success"]
@@ -251,6 +285,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--threshold-records", type=int, default=50)
     parser.add_argument("--threshold-success", type=float, default=0.85)
     parser.add_argument("--threshold-judge", type=float, default=0.8)
+    parser.add_argument("--window-days", type=int, default=30)
     args = parser.parse_args(argv)
 
     if args.apply_:
@@ -267,7 +302,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     primitives = _load_lifecycle(args.lifecycle)
-    results = evaluate(primitives, args.db, thresholds, skill_filter=args.skill)
+    results = evaluate(primitives, args.db, thresholds, skill_filter=args.skill, window_days=args.window_days)
 
     eligible = [r for r in results if r["eligible"]]
     today = _today_dir()
@@ -291,6 +326,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         "dry_run": args.dry_run,
         "thresholds": thresholds,
         "skill_filter": args.skill,
+        "window_days": args.window_days,
         "lifecycle_path": str(args.lifecycle),
         "db_path": str(args.db),
     }

@@ -139,6 +139,24 @@ CREATE TABLE IF NOT EXISTS skill_analysis_scores (
     recorded_at      TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_sas_skill ON skill_analysis_scores(skill_id);
+
+-- COS extension: exact per-execution evidence for lifecycle windows.
+-- skill_records remains the aggregate/lineage ledger; this table is the
+-- canonical source for "N invocations in the last M days" promotion and
+-- demotion decisions.
+CREATE TABLE IF NOT EXISTS skill_execution_events (
+    id               INTEGER PRIMARY KEY AUTOINCREMENT,
+    skill_id         TEXT NOT NULL,
+    name             TEXT NOT NULL,
+    timestamp        TEXT NOT NULL,
+    status           TEXT NOT NULL DEFAULT '',
+    applied          INTEGER NOT NULL DEFAULT 0,
+    agent_session_id TEXT NOT NULL DEFAULT '',
+    tool_count       INTEGER NOT NULL DEFAULT 0,
+    duration_ms      INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_see_skill_ts ON skill_execution_events(skill_id, timestamp);
+CREATE INDEX IF NOT EXISTS idx_see_name_ts ON skill_execution_events(name, timestamp);
 """
 
 
@@ -256,6 +274,24 @@ class SkillStore:
                     now,
                     now,
                     is_success,
+                ),
+            )
+            self._conn.execute(
+                """
+                INSERT INTO skill_execution_events (
+                    skill_id, name, timestamp, status, applied,
+                    agent_session_id, tool_count, duration_ms
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    skill_id,
+                    skill_name,
+                    now,
+                    status,
+                    is_success,
+                    agent_session_id,
+                    int(tool_count),
+                    int(duration_ms),
                 ),
             )
             self._conn.commit()

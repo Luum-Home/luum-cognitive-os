@@ -57,6 +57,7 @@ class TestSchemaCreation:
             "skill_tags",
             # COS extension
             "skill_analysis_scores",
+            "skill_execution_events",
         }
         assert expected.issubset(tables), f"Missing tables: {expected - tables}"
 
@@ -72,6 +73,7 @@ class TestSchemaCreation:
         assert "idx_sr_name" in indexes
         assert "idx_ea_task" in indexes
         assert "idx_lp_parent" in indexes
+        assert "idx_see_name_ts" in indexes
 
     def test_wal_mode(self, tmp_store: SkillStore) -> None:
         result = tmp_store._conn.execute("PRAGMA journal_mode").fetchone()
@@ -105,6 +107,28 @@ class TestRecordExecution:
         assert row[0] == "test-skill"
         assert row[1] == 1  # total_completions
         assert row[2] == 1  # total_applied (success)
+
+    def test_inserts_per_execution_event(self, tmp_store: SkillStore) -> None:
+        skill_id = tmp_store.record_execution(
+            skill_name="evented-skill",
+            agent_session_id="sess-001",
+            tool_count=5,
+            duration_ms=1200,
+            status="success",
+        )
+
+        conn = sqlite3.connect(str(tmp_store._db_path))
+        row = conn.execute(
+            """
+            SELECT skill_id, name, applied, agent_session_id, tool_count, duration_ms
+            FROM skill_execution_events
+            WHERE skill_id=?
+            """,
+            (skill_id,),
+        ).fetchone()
+        conn.close()
+
+        assert row == (skill_id, "evented-skill", 1, "sess-001", 5, 1200)
 
     def test_upserts_on_duplicate(self, tmp_store: SkillStore) -> None:
         for _ in range(3):

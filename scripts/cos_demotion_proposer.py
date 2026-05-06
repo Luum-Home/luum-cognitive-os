@@ -29,6 +29,8 @@ from scripts.cos_promotion_proposer import (  # noqa: E402  (sibling import)
     _now_iso,
     _today_dir,
     _append_metric,
+    _parse_time,
+    _table_exists,
 )
 
 DEFAULT_DB = PROJECT_ROOT / ".cognitive-os" / "skill_store.db"
@@ -38,16 +40,28 @@ DEFAULT_OUT_ROOT = PROJECT_ROOT / "docs" / "reports" / "demotion-proposals"
 
 
 def _records_in_window(db_path: Path, name: str, days: int) -> int:
-    """Return count of skill_records updates within the last `days` for skill `name`."""
+    """Return exact execution count within the last `days` for skill `name`."""
     if not db_path.exists():
         return 0
     import hashlib
 
     skill_id = hashlib.sha256(name.encode("utf-8")).hexdigest()
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
     uri = f"file:{db_path}?mode=ro"
     try:
         conn = sqlite3.connect(uri, uri=True)
+        conn.row_factory = sqlite3.Row
+        if _table_exists(conn, "skill_execution_events"):
+            rows = conn.execute(
+                "SELECT timestamp FROM skill_execution_events WHERE skill_id = ?",
+                (skill_id,),
+            ).fetchall()
+            conn.close()
+            return sum(
+                1
+                for row in rows
+                if (ts := _parse_time(str(row["timestamp"] or ""))) and ts >= cutoff
+            )
         row = conn.execute(
             "SELECT total_completions, last_updated FROM skill_records WHERE skill_id = ?",
             (skill_id,),
@@ -60,7 +74,8 @@ def _records_in_window(db_path: Path, name: str, days: int) -> int:
     last_updated = str(row[1] or "")
     if not last_updated:
         return 0
-    if last_updated < cutoff:
+    parsed = _parse_time(last_updated)
+    if not parsed or parsed < cutoff:
         return 0
     return int(row[0] or 0)
 
