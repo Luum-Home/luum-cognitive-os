@@ -225,8 +225,28 @@ if command -v cos_stash_lock_release >/dev/null 2>&1; then
 fi
 
 if [ "$APPLY_RC" -eq 0 ]; then
+  DROP_STATUS="not_attempted"
+  DROP_OUT=""
+  STASH_SUBJECT=$(git -C "$PROJECT_DIR" stash list --format='%gd %s' 2>/dev/null | awk -v ref="$STASH_REF" '$1 == ref {sub($1 " ", ""); print; exit}' || true)
+  if printf '%s' "$STASH_SUBJECT" | grep -q 'auto-pre-agent-'; then
+    DROP_LOG="${TMPDIR:-/tmp}/cos-post-agent-stash-drop.$$"
+    if git -C "$PROJECT_DIR" stash drop "$STASH_REF" >"$DROP_LOG" 2>&1; then
+      DROP_STATUS="dropped"
+    else
+      DROP_STATUS="drop_failed"
+      DROP_OUT=$(head -c 200 "$DROP_LOG" 2>/dev/null || true)
+    fi
+    rm -f "$DROP_LOG" 2>/dev/null || true
+  fi
+  DROP_EXTRA=""
+  if [ "$DROP_STATUS" != "not_attempted" ]; then
+    _drop_out_escaped=${DROP_OUT//\\/\\\\}
+    _drop_out_escaped=${_drop_out_escaped//\"/\\\"}
+    DROP_EXTRA=",\"stash_cleanup\":\"${DROP_STATUS}\""
+    [ -n "$DROP_OUT" ] && DROP_EXTRA="${DROP_EXTRA},\"stash_cleanup_error\":\"${_drop_out_escaped}\""
+  fi
   log_metric "restored" "$STASH_REF" \
-    "$([ "$FALLBACK_USED" = true ] && printf ',"fallback":true' || true)"
+    "$([ "$FALLBACK_USED" = true ] && printf ',"fallback":true' || true)${DROP_EXTRA}"
   # Remove marker — restore complete. If fallback restored a stash without an
   # exact marker, also remove any marker that names the restored stash_ref.
   [ -n "$MARKER_FILE" ] && [ -f "$MARKER_FILE" ] && rm -f "$MARKER_FILE" 2>/dev/null || true

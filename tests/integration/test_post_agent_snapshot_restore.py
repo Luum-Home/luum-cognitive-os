@@ -189,10 +189,13 @@ def test_happy_path_restore(git_repo: Path):
     post_result = _run_post_hook(git_repo, agent_id, env)
     assert post_result.returncode == 0, f"post-hook failed: {post_result.stderr}"
 
+    assert _stash_count(git_repo) == stash_count_before, "Successful auto-pre-agent restore should drop its transient stash"
+
     # Verify metrics log has a restore event
     records = _read_metrics(git_repo)
     restore_events = [r for r in records if r.get("action") == "restored"]
     assert restore_events, f"Expected 'restored' action in metrics. Records: {records}"
+    assert restore_events[-1].get("stash_cleanup") == "dropped"
 
 
 # ---------------------------------------------------------------------------
@@ -371,6 +374,7 @@ def test_deterministic_payload_id_restores_long_running_agent_without_env_id(git
     records = _read_metrics(git_repo)
     assert any(r.get("action") == "restored" for r in records), records
     assert _runtime_markers(git_repo) == []
+    assert _stash_count(git_repo) == 0
 
 
 def test_copy_only_marker_is_removed_on_post_noop(git_repo: Path):
