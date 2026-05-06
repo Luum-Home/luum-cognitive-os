@@ -15,6 +15,8 @@ implementation_files:
   - hooks/agent-message-inbox-context.sh      # v1 UserPromptSubmit inbox context
   - tests/unit/test_agent_message_hooks.py    # v1 hook tests
   - .cognitive-os/coordination/agent-messages.jsonl # runtime artifact
+  - packages/agent-lifecycle/lib/harness_adapter/base.py # companion inbound_signal event
+  - packages/agent-lifecycle/lib/harness_adapter/dispatch.py # companion inbound signal dispatch
 tier: maintainer
 tags: [concurrency, governance, agent-coordination, postmortem-2026-05-05, companion-ADR-182-183-184]
 ---
@@ -195,6 +197,20 @@ The JSONL is the **runtime queue**; Engram is an optional **archive**.
   `.cognitive-os/coordination/agent-messages-archive/<YYYY-MM>.jsonl.gz`.
 - **Operator wants a clean queue**: future maintenance tooling may archive
   acknowledged low-severity entries without deleting unresolved blockers.
+
+## Companion Inbound Signal Protocol
+
+ADR-185 remains the directed, append-only **agent-to-agent** directive queue. A 2026-05-06 follow-up adds a companion **orchestrator-to-agent** inbound signal protocol at the harness-adapter layer. It does not replace ADR-185; it gives runtime loops a canonical way to observe Agent Bus fallback controls and clarification answers.
+
+The companion event is `event_type: "inbound_signal"` and is emitted by `packages/agent-lifecycle/lib/harness_adapter/dispatch.py` after normal outbound event parsing. It carries:
+
+- `signal_type`: `control`, `answer`, or `interrupt`;
+- `command`: `stop`, `pause`, or `resume` for control signals;
+- `answers` and `round` for clarification answers;
+- `agent_id` / `session_id` when the adapter can infer the target;
+- `source_path` for the fallback artifact that produced the signal.
+
+This keeps ADR-185's store-and-forward directive queue separate from mid-flight control, while giving both paths a shared canonical-event surface.
 
 ## Consequences
 
