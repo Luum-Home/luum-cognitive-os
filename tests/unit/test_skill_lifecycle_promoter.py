@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
 from lib.skill_lifecycle_promoter import build_skill_lifecycle_report
+from lib.skill_store import SkillStore
 
 
 def _write(path: Path, text: str) -> None:
@@ -76,6 +78,53 @@ auto-generated: true
             for _ in range(50)
         ],
     )
+
+    report = build_skill_lifecycle_report(tmp_path, now=datetime(2026, 5, 6, tzinfo=timezone.utc))
+
+    assert report.promotion_candidates == []
+
+
+def test_skillstore_evidence_promotes_without_jsonl_metrics(tmp_path: Path) -> None:
+    _write(
+        tmp_path / ".cognitive-os" / "skills" / "auto-generated" / "store-backed" / "SKILL.md",
+        """---
+name: store-backed
+auto-generated: true
+status: sandbox
+---
+# Store backed
+""",
+    )
+    store = SkillStore(tmp_path / ".cognitive-os" / "skill_store.db")
+    for _ in range(50):
+        store.record_execution("store-backed", "session-1", 1, 100, "success")
+    store.close()
+
+    report = build_skill_lifecycle_report(tmp_path, now=datetime(2026, 5, 6, tzinfo=timezone.utc))
+
+    assert [candidate.skill_name for candidate in report.promotion_candidates] == ["store-backed"]
+
+
+def test_skillstore_evidence_is_windowed_for_promotion(tmp_path: Path) -> None:
+    _write(
+        tmp_path / ".cognitive-os" / "skills" / "auto-generated" / "old-store-backed" / "SKILL.md",
+        """---
+name: old-store-backed
+auto-generated: true
+status: sandbox
+---
+# Old store backed
+""",
+    )
+    db_path = tmp_path / ".cognitive-os" / "skill_store.db"
+    store = SkillStore(db_path)
+    for _ in range(50):
+        store.record_execution("old-store-backed", "session-1", 1, 100, "success")
+    store.close()
+    conn = sqlite3.connect(str(db_path))
+    conn.execute("UPDATE skill_execution_events SET timestamp = ?", ("2026-03-01T00:00:00+00:00",))
+    conn.commit()
+    conn.close()
 
     report = build_skill_lifecycle_report(tmp_path, now=datetime(2026, 5, 6, tzinfo=timezone.utc))
 

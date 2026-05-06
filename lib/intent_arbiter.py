@@ -173,6 +173,14 @@ def submit_intent(
     path = intents_dir(project_dir) / f"{intent.id}.json"
     if result_path(project_dir, intent.id).exists():
         return {"ok": True, "status": "already-decided", "intent": asdict(intent), "intent_path": str(path)}
+    if path.exists():
+        stored = read_json(path) or {}
+        return {
+            "ok": True,
+            "status": "already-submitted",
+            "intent": stored if stored else asdict(intent),
+            "intent_path": str(path),
+        }
     atomic_write_json(path, asdict(intent))
     return {"ok": True, "status": "submitted", "intent": asdict(intent), "intent_path": str(path)}
 
@@ -259,7 +267,7 @@ def decide_tombstone(project_dir: str | Path, intent: Intent) -> ArbitrationResu
         )
     aid = f"ADR-{number:03d}"
     filename = str(intent.context.get("candidate_filename") or f"{aid}-tombstone.md")
-    if not filename.startswith(aid) or not filename.endswith(".md"):
+    if not filename.startswith(f"{aid}-") or not filename.endswith(".md"):
         return ArbitrationResult(
             id=intent.id,
             status="rejected",
