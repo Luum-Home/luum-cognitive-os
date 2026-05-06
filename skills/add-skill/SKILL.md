@@ -7,6 +7,13 @@ audience: os
 tags: [development, extension, skills]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\badd[- ]?skill\b'
+    confidence: 0.95
+  - pattern: '\b(add|agregar?)\s+(a\s+|un[ao]?\s+)?skill\b'
+    confidence: 0.86
+  - pattern: '\bnuev[ao]?\s+skill\b'
+    confidence: 0.80
 ---
 
 # Add Skill

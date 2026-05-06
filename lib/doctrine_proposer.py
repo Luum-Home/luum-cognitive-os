@@ -13,6 +13,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from lib.metric_event import MetricEvent, append_event
+from lib.skill_lifecycle_promoter import build_skill_lifecycle_report
+
 
 @dataclass(frozen=True)
 class DoctrineProposal:
@@ -160,6 +163,40 @@ def build_doctrine_proposals(
             )
         )
 
+
+    skill_lifecycle = build_skill_lifecycle_report(project_root)
+    if skill_lifecycle.promotion_candidates or skill_lifecycle.demotion_candidates:
+        proposals.append(
+            DoctrineProposal(
+                proposal_id="activate-skill-lifecycle-promotion-ladder",
+                title="Activate sandbox skill lifecycle promotion ladder",
+                trigger="Skill lifecycle evidence crossed propose-only promotion or demotion thresholds",
+                evidence={
+                    "promotion_candidates": [candidate.to_dict() for candidate in skill_lifecycle.promotion_candidates],
+                    "demotion_candidates": [candidate.to_dict() for candidate in skill_lifecycle.demotion_candidates],
+                    "thresholds": skill_lifecycle.thresholds,
+                },
+                proposed_rule=(
+                    "Auto-generated or sandbox skills may auto-apply only inside sandbox. "
+                    "When SkillStore-compatible evidence crosses usage, usefulness, and "
+                    "stability thresholds, the SO may generate an advisory-promotion "
+                    "proposal, but a human operator must approve before the skill enters "
+                    "canonical routing. Stale advisory skills should likewise generate "
+                    "demotion proposals rather than staying ambient forever."
+                ),
+                non_goals=[
+                    "move any skill automatically",
+                    "edit production-grade SKILL.md files without operator approval",
+                    "count sandbox volume as canonical skill coverage",
+                ],
+                required_follow_up=[
+                    "Review each candidate and approve or reject the lifecycle transition explicitly.",
+                    "Keep proposal events in `.cognitive-os/metrics/lifecycle-promotion-proposals.jsonl`.",
+                    "Use promoted advisory/blocking skills, not raw sandbox count, for dogfood skill coverage.",
+                ],
+            )
+        )
+
     if self_improvement_plan.get("proposal_count", 0):
         proposals.append(
             DoctrineProposal(
@@ -253,10 +290,30 @@ def build_report(
     }
 
 
+def log_proposals(project_root: Path, proposals: list[DoctrineProposal]) -> None:
+    """Append proposal-generation events to the lifecycle metrics ledger."""
+    metrics_path = project_root / ".cognitive-os" / "metrics" / "lifecycle-promotion-proposals.jsonl"
+    for proposal in proposals:
+        append_event(
+            str(metrics_path),
+            MetricEvent(
+                source="cos-doctrine-proposer",
+                event_type="doctrine.proposal.generated",
+                payload={
+                    "proposal_id": proposal.proposal_id,
+                    "title": proposal.title,
+                    "trigger": proposal.trigger,
+                    "runtime_effect": "none",
+                },
+            ),
+        )
+
+
 def write_markdown(project_root: Path, proposals: list[DoctrineProposal]) -> Path:
     target_dir = project_root / "docs" / "proposals"
     target_dir.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     target = target_dir / f"doctrine-amendment-{stamp}.md"
     target.write_text(render_markdown(proposals), encoding="utf-8")
+    log_proposals(project_root, proposals)
     return target
