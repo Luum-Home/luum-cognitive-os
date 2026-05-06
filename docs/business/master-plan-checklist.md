@@ -239,6 +239,8 @@
 - [ ] Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.
 - [ ] Implement ADR-207 skill performance ledger and lifecycle closure before claiming skill self-improvement.
 - [ ] Implement ADR-208 imported-pattern closure audit so producer-only imports cannot be promoted as active loops.
+  - [x] Wire the first consumer loop: dependency manifest additions now hit a pre-commit dependency-adoption gate and require staged `/repo-scout`, `/repo-forensics`, or equivalent evidence before adoption.
+  - [ ] Add the full imported-pattern closure manifest/audit that proves producer, consumer, scheduler, evaluator, owner, demotion path, and contract tests before promotion claims.
 - [ ] Implement ADR-209 maintainer experiment contract before executable maintainer changes.
 - [ ] Keep ADR-210 fleet confidence as future/cloud-only until ADR-202 sanitized-export and provenance are enforced.
 - [x] Implement ADR-211 initial service-mode readiness gate before any standalone/cloud autonomy launch claim: `lib/service_mode_readiness.py`, `scripts/cos-service-readiness-gate`, `cos service readiness`, JSON/compact output, and tests proving missing private-content/trace/ledger gates fail red. ADR-209 executable experiment contract remains a deliberate red gate.

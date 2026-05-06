@@ -55,6 +55,8 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 - [ ] Gate public claims against current evidence and decommission unsupported claims.
 - [ ] Add skill performance lifecycle states and demotion/archive receipts.
 - [ ] Add imported-pattern closure audit proving producer, consumer, scheduler, evaluator, and tests.
+  - [x] First ADR-208 enforcement slice: `cos dependency adoption-gate` and pre-commit wiring block dependency manifest additions unless adoption evidence is staged.
+  - [ ] Full closure audit for imported patterns that are claimed active/core/self-improving.
 
 ## Phase 5 — Experiment and service launch gates (ADR-209, ADR-211)
 
