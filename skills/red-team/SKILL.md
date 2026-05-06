@@ -9,6 +9,14 @@ summary_line: "\"Red team testing for agent prompts — detects injection, jailb
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bred[- ]?team(ing)?\b'
+    confidence: 0.95
+  - pattern: '\b(prompt\s+)?(injection|jailbreak)\s+(test|probe|audit)\b'
+    confidence: 0.90
+  - pattern: '\badversarial\s+(prompt|safety)\s+(test|review)\b'
+    confidence: 0.86
+
 ---
 
 # /red-team

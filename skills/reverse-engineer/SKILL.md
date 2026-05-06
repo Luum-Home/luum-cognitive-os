@@ -18,6 +18,14 @@ summary_line: Deep source code analysis of a dependency to understand its intern
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\breverse[- ]?engineer(ing)?\b'
+    confidence: 0.96
+  - pattern: '\b(deep\s+)?source\s+code\s+analysis\s+of\s+(a\s+)?dependency\b'
+    confidence: 0.88
+  - pattern: '\bunderstand\s+(internal\s+)?(apis?|configuration|architecture)\b'
+    confidence: 0.78
+
 ---
 
 ## Purpose

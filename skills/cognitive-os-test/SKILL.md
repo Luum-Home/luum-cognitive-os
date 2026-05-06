@@ -8,6 +8,14 @@ audience: os-dev
 triggers: ["/cognitive-os-test", "/cos-test", "/os-test"]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcognitive[- ]?os\s+test(s| suite)?\b'
+    confidence: 0.96
+  - pattern: '\brun\s+(the\s+)?cos\s+tests\b'
+    confidence: 0.90
+  - pattern: '\bpersist(ed)?\s+(test\s+)?summary\b'
+    confidence: 0.78
+
 ---
 
 # Cognitive OS Test Runner

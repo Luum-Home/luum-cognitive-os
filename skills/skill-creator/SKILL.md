@@ -9,6 +9,14 @@ invoke: /skill-creator
 effort: opus
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bskill[- ]?creator\b'
+    confidence: 0.96
+  - pattern: '\bcreate\s+(a\s+)?(new\s+)?skill\b'
+    confidence: 0.90
+  - pattern: '\bagent\s+skills?\s+spec\b'
+    confidence: 0.82
+
 ---
 
 # Skill Creator with cos Packaging
