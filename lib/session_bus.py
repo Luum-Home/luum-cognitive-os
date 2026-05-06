@@ -14,6 +14,30 @@ from typing import Any, Iterator
 import fcntl
 
 
+SESSION_EVENT_TAXONOMY: frozenset[str] = frozenset(
+    {
+        "session-start",
+        "branch-acquire",
+        "branch-release",
+        "coordination-claim",
+        "worktree-intake",
+        "agent-message-sent",
+        "agent-message-ack",
+        "agent-spawn",
+        "file-write-intent",
+        "commit-intent",
+        "commit-landed",
+        "session-end",
+    }
+)
+"""ADR-183 v1 cross-session event taxonomy.
+
+This is an open taxonomy: producers may append future event types without
+breaking the bus, but tests pin the v1 set so the current wiring cannot
+silently regress.
+"""
+
+
 @dataclass(frozen=True)
 class PeerSummary:
     """Compact summary of one peer orchestrator session."""
@@ -64,6 +88,11 @@ def _session_id(default: str = "unknown") -> str:
     )
 
 
+def normalize_event_type(event_type: str) -> str:
+    """Normalize an event type to ADR-183 wire format."""
+    return event_type.strip().replace("_", "-")
+
+
 def append_event(
     event_type: str,
     payload: dict[str, Any] | None = None,
@@ -78,7 +107,7 @@ def append_event(
     event = {
         "schema_version": 1,
         "timestamp_epoch": time.time(),
-        "event_type": event_type.strip().replace("_", "-"),
+        "event_type": normalize_event_type(event_type),
         "session_id": session_id or _session_id(),
         "pid": os.getpid(),
         "project_dir": str(root),
