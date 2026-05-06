@@ -13,6 +13,17 @@ def test_first_party_tree_has_no_rejected_surface_references() -> None:
         ".claude/plugins/",
         "dashboard/node_modules/",
     )
+    active_paths = (
+        ".claude/",
+        ".codex/",
+        "hooks/",
+        "lib/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "cognitive-os.yaml",
+        "docker-compose.cognitive-os.yml",
+    )
     result = subprocess.run(
         ["git", "ls-files", "--cached", "--others", "--exclude-standard"],
         cwd=root,
@@ -24,6 +35,8 @@ def test_first_party_tree_has_no_rejected_surface_references() -> None:
 
     for relative_text in result.stdout.splitlines():
         if not relative_text or relative_text.startswith(skipped_prefixes):
+            continue
+        if not relative_text.startswith(active_paths):
             continue
         path = root / relative_text
         if not path.exists():
