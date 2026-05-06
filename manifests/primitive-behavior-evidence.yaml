@@ -940,6 +940,50 @@ evidence:
   - tests/contracts/test_cos_cli_surface_contract.py
   rationale: Operable TUI surface has explicit whitelist, confirmation, and receipt
     contracts.
+- primitive: scripts/orchestrator.py
+  harnesses:
+  - claude
+  - codex
+  - shell
+  tests:
+  - tests/integration/test_orchestrator_cli.py
+  - tests/unit/test_agent_bus.py
+  - tests/contracts/test_agent_bus_metrics.py
+  rationale: ADR-042 operator control CLI sends stop, pause, resume, answer, list-live, scan-stale, and kill-hung signals through Valkey or filesystem fallback.
+- primitive: packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt
+  harnesses:
+  - claude
+  - codex
+  - shell
+  tests:
+  - tests/unit/test_agent_bus.py
+  - tests/integration/test_orchestrator_cli.py
+  rationale: Filesystem interrupt/control fallback is the non-Valkey hard-signal path for bidirectional orchestrator-to-agent communication.
+- primitive: hooks/agent-control-inbound-guard.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/unit/test_agent_control_policy.py
+  - tests/integration/test_agent_control_inbound_guard.py
+  rationale: Hook-boundary enforcement makes inbound stop, pause, and resume signals actionable for harnesses without native child-process control.
+- primitive: packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal
+  harnesses:
+  - claude
+  - codex
+  - shell
+  tests:
+  - tests/unit/test_harness_adapter_base.py
+  - tests/unit/test_harness_adapter_codex.py
+  rationale: Harness adapter context surfaces inbound_signal records so runtime loops can consume control and clarification answers consistently.
+- primitive: skills/agent-control/SKILL.md
+  harnesses:
+  - claude
+  - codex
+  - shell
+  tests:
+  - tests/contracts/test_agent_control_primitive_lifecycle.py
+  rationale: Operator-facing agent-control skill routes natural language requests to governed orchestrator control/answer/list-live/scan-stale verbs.
 patterns:
 - pattern: tests/**
   behavior_proven: true
