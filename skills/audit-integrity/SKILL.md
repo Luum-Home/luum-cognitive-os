@@ -17,6 +17,13 @@ summary_line: "Symlink-aware integrity audit of hooks, libs, and skills."
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\baudit[- ]?integrity\b'
+    confidence: 0.95
+  - pattern: '\b(symlink|symlinks?)\s+(aware|audit|check)\b'
+    confidence: 0.85
+  - pattern: '\b(integrity|integridad)\s+(audit|check|reporte?)\b'
+    confidence: 0.80
 ---
 
 ## Purpose

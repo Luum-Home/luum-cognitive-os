@@ -52,7 +52,11 @@ def readiness_summary(root: Path) -> dict[str, Any]:
 
 
 def build_dashboard(profile: str = "core", root: Path = REPO_ROOT) -> dict[str, Any]:
-    runtime = runtime_hook_reality.build_report(project_root=root)
+    runtime = runtime_hook_reality.build_report(
+        project_root=root,
+        settings_path=root / ".claude" / "settings.json",
+        manifest_path=root / "manifests" / "primitive-lifecycle.yaml",
+    )
     adoption = cos_adoption_profile.build_profile(profile)
     preamble = cos_preamble_budget.build_budget(profile, root)
     reducer = cos_default_visible_reducer.build_recommendations()
