@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# SCOPE: os-only
+# SCOPE: both
 # ROLE: legacy three-layer shell pyramid runner (infra + behavior + optional quality).
 # CANONICAL: cos-test broad for default validation; run quality/LLM checks explicitly as optional governance.
 # Cognitive OS Full Test Suite Runner
