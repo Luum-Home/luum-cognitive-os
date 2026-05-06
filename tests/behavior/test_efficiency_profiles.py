@@ -149,8 +149,9 @@ class TestCoreProfile:
         assert result.returncode == 0, result.stderr
         settings = _load_settings(workspace / ".claude" / "settings.json")
         commands = _session_start_commands(settings)
-        assert len(commands) == 3
+        assert len(commands) == 4
         assert any("session-init.sh" in command for command in commands)
+        assert any("cross-session-event-emit.sh" in command for command in commands)
         assert any("validation-lock-cleanup.sh" in command for command in commands)
         assert any("session-start-stash-reapply.sh" in command for command in commands)
         assert not any("host-tool-doctor.sh" in command for command in commands)
