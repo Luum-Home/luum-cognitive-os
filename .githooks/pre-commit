@@ -37,6 +37,15 @@ if [ -f "$COS_ROOT/scripts/check_absolute_paths.py" ]; then
   fi
 fi
 
+# --- Gate 1c: Dependency adoption evidence (ADR-208) ---
+if [ "${COS_ALLOW_DEP_ADOPTION_BYPASS:-0}" = "1" ]; then
+  echo "WARNING: COS_ALLOW_DEP_ADOPTION_BYPASS=1 skips dependency adoption gate"
+elif [ -x "$COS_ROOT/scripts/cos-dependency-adoption-gate" ]; then
+  if ! "$COS_ROOT/scripts/cos-dependency-adoption-gate" --project-dir "$COS_ROOT" --staged; then
+    exit 1
+  fi
+fi
+
 # --- Gate 2: Python syntax + lint (ruff or py_compile) ---
 staged_py=$(git diff --cached --name-only --diff-filter=ACM -- '*.py' || true)
 if [ -n "$staged_py" ]; then
