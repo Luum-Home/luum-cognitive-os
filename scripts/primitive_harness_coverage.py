@@ -59,7 +59,8 @@ UI_SURFACES = {
         "operable": False,
     },
     "tui": {
-        "evidence": ["scripts/cos-tui", "tests/contracts/test_cos_tui_operable_surface_contract.py"],
+        "evidence": ["scripts/cos-tui"],
+        "optional_evidence": ["tests/contracts/test_cos_tui_operable_surface_contract.py"],
         "operable": True,
         "operable_primitives": [
             "scripts/cos-tui",
@@ -377,6 +378,7 @@ def _state_for(root: Path, primitive: str, family: str, scope: str | None, harne
         operable = bool(ui.get("operable", False)) and (not operable_primitives or primitive in operable_primitives)
         if projected:
             evidence.extend(str(path) for path in ui.get("evidence", []))
+            evidence.extend(str(path) for path in ui.get("optional_evidence", []) if (root / str(path)).exists())
     else:
         if wire:
             evidence.append("settings-wiring")

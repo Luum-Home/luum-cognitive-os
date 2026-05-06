@@ -6554,6 +6554,39 @@ primitives:
   consumer_accessibility: lifecycle-declared-maintainer
   consumer_access_next_action: Keep maintainer-only until packaged as an explicit service runtime command
     for consumer projects.
+- id: hooks/cosd-auth-guard.sh
+  kind: hook
+  owner_adr: ADR-194
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/cosd-auth-guard.sh
+  - scripts/_lib/settings-driver-claude-code.sh
+  - rules/cosd-secure-api.md
+  runtime_projection: true
+  latency_budget_ms: 500
+  behavior_evidence: PreToolUse hook blocks unsafe cosd remote binds and protected cosd API config edits unless explicit auth/review gates are present.
+  evidence_commands:
+  - bash -n hooks/cosd-auth-guard.sh
+  - python3 -m py_compile lib/cosd_auth_guard.py
+  - python3 -m pytest tests/unit/test_cosd_auth_guard.py tests/integration/test_cosd_auth_guard_hook.py tests/contracts/test_cosd_auth_primitives.py -q
+  repair_message: Add --token-file or COSD_API_TOKEN_FILE for remote cosd binds; set COS_ALLOW_COSD_AUTH_CONFIG_WRITE=1 only after reviewing protected cosd config edits.
+  false_positive_tests:
+  - tests/unit/test_cosd_auth_guard.py
+  - tests/integration/test_cosd_auth_guard_hook.py
+  rollback_or_repair_command: Remove hooks/cosd-auth-guard.sh from generated settings and rely on explicit operator review of cosd remote API commands.
+  sunset_criteria: Demote only after cosd remote API moves behind an equivalent authenticated service gateway with matching negative tests.
+  docs_claim_level: blocking
+  exit_behavior: exit-2-on-unsafe-cosd-auth-boundary
+  metrics_file: .cognitive-os/metrics/cosd-auth-guard.jsonl
+  consumer_accessibility: lifecycle-declared-core
+  consumer_access_next_action: Keep as core runtime-safety guard while cosd supports local HTTP and remote bind modes.
+
 - id: scripts/cosd
   kind: script
   owner_adr: ADR-194
