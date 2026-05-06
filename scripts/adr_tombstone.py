@@ -13,6 +13,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, Sequence
 
+try:
+    from lib.session_coordination import adr_tombstone_findings
+except Exception:  # pragma: no cover - script must remain importable in minimal copies
+    adr_tombstone_findings = None
+
 REQUIRED_SECTIONS = (
     "Status",
     "Context",
@@ -272,9 +277,16 @@ def create_tombstone(
     forbidden_tokens: Sequence[str] = (),
     update_links: bool = True,
     validate_forbidden_tokens: bool = False,
+    force_replace_active: bool = False,
+    session_id: str | None = None,
     dry_run: bool = False,
 ) -> TombstoneResult:
-    """Create or replace a neutral tombstone for an ADR number."""
+    """Create a neutral tombstone for an ADR number.
+
+    By default this refuses to replace active ADR files. A tombstone is a
+    reservation for a removed decision, not a way to recycle or erase a number
+    already owned by another session.
+    """
 
     project_dir = project_dir.resolve()
     adrs_dir = project_dir / "docs" / "adrs"
@@ -283,6 +295,11 @@ def create_tombstone(
     target = adrs_dir / f"{aid}-tombstone.md"
     existing = iter_adr_files(adrs_dir, number)
     old_names = [path.name for path in existing if path.name != target.name]
+    if not force_replace_active and adr_tombstone_findings is not None:
+        findings = adr_tombstone_findings(project_dir, number=number, session_id=session_id)
+        if findings:
+            rendered = "; ".join(f"{finding.message}: {finding.evidence}" for finding in findings)
+            raise ValueError(rendered)
     text = render_tombstone(number=number, title=title, reason=reason, date=date)
     issues = validate_tombstone_text(text, number=number, forbidden_tokens=forbidden_tokens)
     if issues:
@@ -326,6 +343,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--forbidden-token", action="append", default=[])
     parser.add_argument("--no-update-links", action="store_true")
     parser.add_argument("--validate-forbidden-tokens", action="store_true")
+    parser.add_argument("--force-replace-active", action="store_true", help="Allow replacing active ADR files; requires explicit operator review")
+    parser.add_argument("--session-id", default=None)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--json", action="store_true")
     return parser
@@ -345,6 +364,8 @@ def main(argv: list[str] | None = None) -> int:
             forbidden_tokens=args.forbidden_token,
             update_links=not args.no_update_links,
             validate_forbidden_tokens=args.validate_forbidden_tokens,
+            force_replace_active=args.force_replace_active,
+            session_id=args.session_id,
             dry_run=args.dry_run,
         )
     except Exception as exc:
