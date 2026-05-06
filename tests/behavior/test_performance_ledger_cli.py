@@ -63,3 +63,32 @@ def test_cos_performance_ledger_default_compile_accepts_flags(project_root, tmp_
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload["schema_version"] == "performance-ledger/v1"
+
+
+def test_cos_performance_ledger_require_consumable_exits_two_when_policy_blocks(project_root, tmp_path):
+    result = subprocess.run(
+        [
+            str(project_root / "scripts" / "cos"),
+            "performance-ledger",
+            "compile",
+            "--stream",
+            "skill-feedback",
+            "--limit",
+            "1",
+            "--sqlite-path",
+            str(tmp_path / "ledger.sqlite"),
+            "--jsonl-path",
+            str(tmp_path / "ledger.jsonl"),
+            "--latest-report-path",
+            str(tmp_path / "latest.json"),
+            "--require-consumable",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+
+    assert result.returncode == 2
+    payload = json.loads(result.stdout)
+    assert payload["consumption_policy"]["can_consume_all"] is False

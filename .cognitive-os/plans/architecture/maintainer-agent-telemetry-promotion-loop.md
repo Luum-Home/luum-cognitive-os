@@ -38,7 +38,7 @@ compiles a validated ledger from fixture and live telemetry.
 - [x] Store primary ledger in `.cognitive-os/ledgers/performance-ledger.sqlite`,
       export audit rows to `.cognitive-os/metrics/performance-ledger.jsonl`, and
       generate `.cognitive-os/reports/performance-ledger-latest.json`.
-- [ ] Add deterministic proposal ids for deduplication: hash(surface +
+- [x] Add deterministic proposal ids for deduplication: hash(surface +
       degradation pattern + day window).
 - [x] Add retention policy for generated ledger artifacts.
 

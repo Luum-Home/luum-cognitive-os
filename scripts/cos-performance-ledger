@@ -25,6 +25,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--run-id")
     parser.add_argument("--limit", type=int)
     parser.add_argument("--no-write", action="store_true", help="Compile but do not write JSONL/latest report")
+    parser.add_argument("--require-consumable", action="store_true", help="Exit 2 when any stream is blocked by consumption policy")
     parser.add_argument("--json", action="store_true")
     return parser
 
@@ -52,6 +53,8 @@ def main() -> int:
             f"eligible={summary['eligible_for_rollup']}/{summary['total']} "
             f"sqlite={payload['sqlite_path']}"
         )
+    if args.require_consumable and not payload["consumption_policy"]["can_consume_all"]:
+        return 2
     return 0
 
 
