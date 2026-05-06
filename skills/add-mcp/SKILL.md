@@ -7,6 +7,13 @@ audience: os
 tags: [development, extension, mcp, integrations]
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\badd[- ]?mcp\b'
+    confidence: 0.95
+  - pattern: '\bintegrat\w*\s+(a\s+)?mcp\s+server\b'
+    confidence: 0.85
+  - pattern: '\bnew\s+mcp\s+(server|integration)\b'
+    confidence: 0.75
 ---
 
 # Add MCP Server

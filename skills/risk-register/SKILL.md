@@ -17,6 +17,13 @@ summary_line: Scaffold STRIDE risk register with impact/likelihood matrix idempo
 model: haiku
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\brisk[- ]?register\b'
+    confidence: 0.95
+  - pattern: '\bstride\s+risk\b'
+    confidence: 0.85
+  - pattern: '\bscaffold\s+risk\b'
+    confidence: 0.75
 ---
 
 # Risk Register Scaffolder

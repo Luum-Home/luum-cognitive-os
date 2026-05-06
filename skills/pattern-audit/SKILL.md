@@ -25,6 +25,11 @@ triggers:
   - "find all"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bpattern[- ]?audit\b'
+    confidence: 0.95
+  - pattern: '\baudit\s+patterns?\b'
+    confidence: 0.85
 ---
 
 ## Purpose

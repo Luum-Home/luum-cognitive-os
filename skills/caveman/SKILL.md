@@ -12,6 +12,11 @@ summary_line: Ultra-compressed communication mode.
 version: "1.0.0"
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bcaveman\b'
+    confidence: 0.95
+  - pattern: '\bsimplify\s+prompt\b'
+    confidence: 0.75
 ---
 
 Respond terse like smart caveman. All technical substance stay. Only fluff die.

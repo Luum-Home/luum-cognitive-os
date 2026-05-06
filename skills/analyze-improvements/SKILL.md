@@ -13,6 +13,13 @@ summary_line: "Analyze KPIs, error patterns, and skill metrics to identify impro
 
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\banalyze[- ]?improvements?\b'
+    confidence: 0.95
+  - pattern: '\b(kpi|error\s+patterns?|skill\s+metrics)\s+analysis\b'
+    confidence: 0.8
+  - pattern: '\bimprovement\s+opportunities?\b'
+    confidence: 0.75
 ---
 
 # Analyze Improvements Skill

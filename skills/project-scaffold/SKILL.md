@@ -23,6 +23,11 @@ triggers:
   - 10 categories
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bproject[- ]?scaffold\b'
+    confidence: 0.95
+  - pattern: '\bscaffold\s+project\b'
+    confidence: 0.85
 ---
 
 ## Purpose

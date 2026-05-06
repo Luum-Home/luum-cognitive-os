@@ -17,6 +17,13 @@ summary_line: Scaffold deploy/rollback/on-call/monitoring runbooks idempotently 
 model: haiku
 platforms: ["claude-code"]
 prerequisites: []
+routing_patterns:
+  - pattern: '\bops[- ]?runbook\b'
+    confidence: 0.95
+  - pattern: '\bscaffold\s+ops\b'
+    confidence: 0.85
+  - pattern: '\boperations\.md\b'
+    confidence: 0.8
 ---
 
 # Ops Runbook Scaffolder
