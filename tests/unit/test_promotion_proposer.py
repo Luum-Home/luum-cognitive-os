@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -19,7 +20,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from lib.skill_store import SkillStore  # noqa: E402
-from scripts.cos_promotion_proposer import evaluate, main  # noqa: E402
+from scripts.cos_promotion_proposer import evaluate, main, _load_lifecycle  # noqa: E402
 
 
 @pytest.fixture
@@ -85,6 +86,33 @@ def test_evaluate_separates_eligible_from_ineligible(synth_store: Path, synth_li
     assert "already-advisory" not in by_name
     assert by_name["good-skill"]["eligible"] is True
     assert by_name["weak-skill"]["eligible"] is False
+
+
+def test_evaluate_uses_windowed_skillstore_events(tmp_path: Path, synth_lifecycle: Path):
+    db = tmp_path / "store.db"
+    store = SkillStore(db)
+    for _ in range(60):
+        store.record_execution("good-skill", "session-x", 1, 100, "success")
+    for _ in range(5):
+        store.record_judgment(
+            hashlib.sha256(b"good-skill").hexdigest(),
+            "judge-v1",
+            "approve",
+            0.9,
+            "looks good",
+        )
+    store.close()
+    conn = sqlite3.connect(str(db))
+    conn.execute("UPDATE skill_execution_events SET timestamp = ?", ("2026-03-01T00:00:00+00:00",))
+    conn.commit()
+    conn.close()
+
+    prims = _load_lifecycle(synth_lifecycle)
+    thresholds = {"records": 50, "success": 0.85, "judge": 0.8}
+    results = evaluate(prims, db, thresholds, skill_filter="good-skill", window_days=30)
+
+    assert results[0]["evidence"]["record_count"] == 0
+    assert results[0]["eligible"] is False
 
 
 def test_apply_writes_proposals_only_for_eligible(

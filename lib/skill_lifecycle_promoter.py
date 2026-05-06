@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import re
+import sqlite3
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -170,15 +171,17 @@ def _metric_time(row: dict[str, Any]) -> datetime | None:
     return _parse_time(row.get("timestamp") or (payload.get("timestamp") if isinstance(payload, dict) else None))
 
 
-def _collect_usage(project_root: Path, window_start: datetime) -> dict[str, dict[str, Any]]:
+def _empty_usage() -> dict[str, Any]:
+    return {"invocations": 0, "feedback": 0, "successful_feedback": 0, "last_used": None}
+
+
+def _usage_entry(usage: dict[str, dict[str, Any]], name: str) -> dict[str, Any]:
+    return usage.setdefault(name, _empty_usage())
+
+
+def _collect_jsonl_usage(project_root: Path, window_start: datetime) -> dict[str, dict[str, Any]]:
     metrics_dir = project_root / ".cognitive-os" / "metrics"
     usage: dict[str, dict[str, Any]] = {}
-
-    def entry(name: str) -> dict[str, Any]:
-        return usage.setdefault(
-            name,
-            {"invocations": 0, "feedback": 0, "successful_feedback": 0, "last_used": None},
-        )
 
     for filename in ("skill-invocations.jsonl", "skill-usage.jsonl", "skill-archive.jsonl"):
         for row in _read_jsonl(metrics_dir / filename):
@@ -186,7 +189,7 @@ def _collect_usage(project_root: Path, window_start: datetime) -> dict[str, dict
             ts = _metric_time(row)
             if not name or not ts or ts < window_start:
                 continue
-            item = entry(name)
+            item = _usage_entry(usage, name)
             item["invocations"] += 1
             if item["last_used"] is None or ts > item["last_used"]:
                 item["last_used"] = ts
@@ -201,7 +204,7 @@ def _collect_usage(project_root: Path, window_start: datetime) -> dict[str, dict
         ts = _metric_time(row)
         if not name or not ts or ts < window_start:
             continue
-        item = entry(name)
+        item = _usage_entry(usage, name)
         item["feedback"] += 1
         if row.get("success") is True:
             item["successful_feedback"] += 1
@@ -209,6 +212,71 @@ def _collect_usage(project_root: Path, window_start: datetime) -> dict[str, dict
             item["last_used"] = ts
 
     return usage
+
+
+def _skillstore_has_execution_events(conn: sqlite3.Connection) -> bool:
+    row = conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name='skill_execution_events'"
+    ).fetchone()
+    return row is not None
+
+
+def _collect_skillstore_usage(project_root: Path, window_start: datetime) -> dict[str, dict[str, Any]]:
+    """Collect exact lifecycle-window usage from SkillStore execution events."""
+
+    db_path = project_root / ".cognitive-os" / "skill_store.db"
+    if not db_path.exists():
+        return {}
+
+    usage: dict[str, dict[str, Any]] = {}
+    try:
+        conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+        conn.row_factory = sqlite3.Row
+        if not _skillstore_has_execution_events(conn):
+            conn.close()
+            return {}
+        rows = conn.execute(
+            """
+            SELECT name, timestamp, applied
+            FROM skill_execution_events
+            ORDER BY timestamp ASC
+            """
+        ).fetchall()
+        conn.close()
+    except sqlite3.Error:
+        return {}
+
+    for row in rows:
+        name = str(row["name"] or "")
+        ts = _parse_time(row["timestamp"])
+        if not name or not ts or ts < window_start:
+            continue
+        item = _usage_entry(usage, name)
+        item["invocations"] += 1
+        item["feedback"] += 1
+        if int(row["applied"] or 0) == 1:
+            item["successful_feedback"] += 1
+        if item["last_used"] is None or ts > item["last_used"]:
+            item["last_used"] = ts
+    return usage
+
+
+def _collect_usage(project_root: Path, window_start: datetime) -> dict[str, dict[str, Any]]:
+    """Collect usage with SkillStore as primary and JSONL as compatibility fallback.
+
+    SkillStore is the canonical evidence path after ADR-176/177 because it is
+    queryable and shared by the proposers. JSONL remains a per-skill fallback
+    for older fixtures and installations that have not yet populated
+    skill_execution_events.
+    """
+
+    primary = _collect_skillstore_usage(project_root, window_start)
+    fallback = _collect_jsonl_usage(project_root, window_start)
+    merged = dict(primary)
+    for name, row in fallback.items():
+        if name not in merged:
+            merged[name] = row
+    return merged
 
 
 def build_skill_lifecycle_report(
@@ -229,7 +297,7 @@ def build_skill_lifecycle_report(
     demotion_usage = _collect_usage(project_root, demotion_cutoff)
     skills = discover_skills(project_root)
 
-    empty_usage = {"invocations": 0, "feedback": 0, "successful_feedback": 0, "last_used": None}
+    empty_usage = _empty_usage()
     promotions: list[SkillLifecycleCandidate] = []
     demotions: list[SkillLifecycleCandidate] = []
 
