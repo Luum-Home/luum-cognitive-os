@@ -33,7 +33,7 @@ Close the next primitive surface coverage cut by making partial harness debt ins
   - `observable=true`
   - `operable=true` only for whitelisted report-refresh primitives
   - receipts append to `.cognitive-os/metrics/tui-actions.jsonl`
-- Resolved the first twenty codex-adapter-needed rows from the previous reports. First batch:
+- Resolved the first thirty-two codex-adapter-needed rows from the previous reports. First batch:
   - `hooks/adaptive-bypass.sh`
   - `hooks/adr-detector.sh`
   - `hooks/agent-bus-monitor.sh`
@@ -55,17 +55,31 @@ Close the next primitive surface coverage cut by making partial harness debt ins
   - `hooks/background-agent-reminder.sh`
   - `hooks/blast-radius.sh`
   - `hooks/claim-validator.sh`
+- Resolved the third codex-adapter-needed batch:
+  - `hooks/clarification-gate.sh`
+  - `hooks/clarification-interceptor.sh`
+  - `hooks/code-review-on-commit.sh`
+  - `hooks/completeness-check-llm.sh`
+  - `hooks/completion-gate.sh`
+  - `hooks/concurrent-write-guard.sh`
+  - `hooks/confidence-gate-llm.sh`
+  - `hooks/confidence-gate.sh`
+  - `hooks/confidentiality-enforcer.sh`
+  - `hooks/consequence-evaluator.sh`
+  - `hooks/content-policy.sh`
+  - `hooks/context-diet.sh`
 - Cleared the `projectable-needs-driver` bucket by adding explicit projectable script surface evidence.
 - Added ratchets for `unclassified_gaps`, `must-fix-parity`, `partial_count`, `codex-adapter-needed`, and `projectable-needs-driver`.
+- Hardened operable TUI with `cos tui --receipts --json` and dashboard-visible TUI receipt metrics.
 
 ## Result
 
 - `unclassified_gaps = 0`
 - `must-fix-parity = 0`
-- `partial_count = 64`
-- `codex-adapter-needed = 64`
+- `partial_count = 52`
+- `codex-adapter-needed = 52`
 - `projectable-needs-driver = 0`
-- `tui` is operable for whitelisted report refresh actions and remains non-operable for arbitrary primitive execution.
+- `tui` is operable for whitelisted report refresh actions, reports its action receipts, and remains non-operable for arbitrary primitive execution.
 - `tui` is present as a UI surface only because the runtime snapshot contract exists.
 
 ## Verification
@@ -75,6 +89,7 @@ python3 scripts/primitive_harness_coverage.py --project-dir .
 python3 scripts/primitive_harness_partials.py --project-dir .
 bash scripts/cos tui --snapshot
 bash scripts/cos tui --operate refresh-all --confirm
+bash scripts/cos tui --receipts --json
 python3 -m pytest \
   tests/unit/test_primitive_harness_coverage.py \
   tests/contracts/test_primitive_harness_coverage_contract.py \
@@ -88,6 +103,6 @@ python3 scripts/acc_pipeline.py --project-dir . --fail-new --brief
 
 ## Next Steps
 
-- Continue resolving the remaining 64 `codex-adapter-needed` rows by adding true adapters where Codex has an equivalent event and adding aligned no-equivalent policies where it does not.
+- Continue resolving the remaining 52 `codex-adapter-needed` rows by adding true adapters where Codex has an equivalent event and adding aligned no-equivalent policies where it does not.
 - Consider additional TUI operations only after each action has a whitelist entry, `--confirm`, audit receipts, and explicit tests.
 - Keep `must-fix-parity = 0` and `unclassified_gaps = 0` as ratchets.
