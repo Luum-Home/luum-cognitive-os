@@ -42,7 +42,7 @@ def _skillstore_signal(project_root: Path) -> dict | None:
 
     ADR-180 input signal: skillstore.
     """
-    db_path = project_root / ".cognitive-os" / "skill-store.db"
+    db_path = project_root / ".cognitive-os" / "skill_store.db"
     if not db_path.exists():
         return None
     try:
