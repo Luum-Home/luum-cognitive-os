@@ -141,3 +141,142 @@ def test_cosd_intent_submit_hook_uses_daemon_cli(tmp_path: Path) -> None:
 
     assert result.returncode == 0, result.stderr
     assert (tmp_path / ".cognitive-os" / "cosd" / "intents" / "hook-intent.json").exists()
+
+
+def test_cosd_local_http_api_submits_and_processes_intent(tmp_path: Path) -> None:
+    adrs = tmp_path / "docs" / "adrs"
+    adrs.mkdir(parents=True)
+    api_file = tmp_path / ".cognitive-os" / "cosd" / "runtime" / "cosd-api.json"
+    proc = subprocess.Popen(
+        ["bash", str(COSD), "--project-dir", str(tmp_path), "serve", "--host", "127.0.0.1", "--port", "0"],
+        cwd=REPO,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        deadline = time.time() + 5
+        while time.time() < deadline and not api_file.exists():
+            if proc.poll() is not None:
+                stdout, stderr = proc.communicate(timeout=1)
+                raise AssertionError(f"cosd api exited early: {stdout} {stderr}")
+            time.sleep(0.05)
+        assert api_file.exists(), "cosd API did not publish runtime endpoint metadata"
+        api = json.loads(api_file.read_text(encoding="utf-8"))
+        base_url = api["base_url"]
+
+        from urllib import request
+
+        with request.urlopen(f"{base_url}/healthz", timeout=5) as response:
+            assert response.status == 200
+            assert json.loads(response.read().decode("utf-8"))["status"] == "ok"
+
+        payload = json.dumps(
+            {
+                "kind": "adr-number-request",
+                "intent_id": "api-intent",
+                "session_id": "api-session",
+                "context": {"topic": "API intent", "filename_stem": "api-intent"},
+            }
+        ).encode("utf-8")
+        req = request.Request(f"{base_url}/submit-intent", data=payload, headers={"Content-Type": "application/json"}, method="POST")
+        with request.urlopen(req, timeout=5) as response:
+            submitted = json.loads(response.read().decode("utf-8"))
+        assert submitted["status"] == "submitted"
+
+        req = request.Request(f"{base_url}/process-once", data=b"{}", headers={"Content-Type": "application/json"}, method="POST")
+        with request.urlopen(req, timeout=5) as response:
+            processed = json.loads(response.read().decode("utf-8"))
+        assert processed["processed_count"] == 1
+
+        result = wait_result(tmp_path, "api-intent")
+        assert result["status"] == "granted"
+        assert result["decision"]["reserved_filename"] == "ADR-001-api-intent.md"
+    finally:
+        proc.terminate()
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+
+
+def _unix_http_json(socket_path: Path, request_text: str) -> dict:
+    import socket
+
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
+        client.settimeout(5)
+        client.connect(str(socket_path))
+        client.sendall(request_text.encode("utf-8"))
+        chunks: list[bytes] = []
+        while True:
+            chunk = client.recv(4096)
+            if not chunk:
+                break
+            chunks.append(chunk)
+    raw = b"".join(chunks).decode("utf-8")
+    _, body = raw.split("\r\n\r\n", 1)
+    return json.loads(body)
+
+
+def test_cosd_unix_socket_api_submits_and_processes_intent(tmp_path: Path) -> None:
+    (tmp_path / "docs" / "adrs").mkdir(parents=True)
+    socket_path = Path("/tmp") / f"cosd-{tmp_path.name}.sock"
+    try:
+        socket_path.unlink()
+    except FileNotFoundError:
+        pass
+    proc = subprocess.Popen(
+        ["bash", str(COSD), "--project-dir", str(tmp_path), "serve-unix", "--socket", str(socket_path)],
+        cwd=REPO,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        deadline = time.time() + 5
+        while time.time() < deadline and not socket_path.exists():
+            if proc.poll() is not None:
+                stdout, stderr = proc.communicate(timeout=1)
+                raise AssertionError(f"cosd unix api exited early: {stdout} {stderr}")
+            time.sleep(0.05)
+        assert socket_path.exists(), "cosd Unix socket was not created"
+
+        health = _unix_http_json(socket_path, "GET /healthz HTTP/1.1\r\nHost: cosd\r\nConnection: close\r\n\r\n")
+        assert health["status"] == "ok"
+
+        body = json.dumps(
+            {
+                "kind": "adr-number-request",
+                "intent_id": "unix-intent",
+                "session_id": "unix-session",
+                "context": {"topic": "Unix API intent", "filename_stem": "unix-api-intent"},
+            }
+        )
+        submitted = _unix_http_json(
+            socket_path,
+            "POST /submit-intent HTTP/1.1\r\n"
+            "Host: cosd\r\n"
+            "Content-Type: application/json\r\n"
+            f"Content-Length: {len(body.encode('utf-8'))}\r\n"
+            "Connection: close\r\n\r\n"
+            f"{body}",
+        )
+        assert submitted["status"] == "submitted"
+
+        processed = _unix_http_json(
+            socket_path,
+            "POST /process-once HTTP/1.1\r\nHost: cosd\r\nContent-Length: 2\r\nConnection: close\r\n\r\n{}",
+        )
+        assert processed["processed_count"] == 1
+        result = wait_result(tmp_path, "unix-intent")
+        assert result["decision"]["reserved_filename"] == "ADR-001-unix-api-intent.md"
+    finally:
+        proc.terminate()
+        try:
+            socket_path.unlink()
+        except FileNotFoundError:
+            pass
+        try:
+            proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.kill()
