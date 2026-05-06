@@ -752,7 +752,7 @@ def _build_hand_coded_routing_table() -> List[_RoutingEntry]:
         _RoutingEntry(
             patterns=_compile([
                 (r"\breverse[- ]?engineer\b", 0.95),
-                (r"\b(understand|comprehend|entender|comprender)\s+(the\s+|el\s+|la\s+)?(internal\s+)?(schema|structure|architecture|api|config|source|esquema|estructura|arquitectura|fuente)", 0.80),
+                (r"\b(understand|comprehend|entender|comprender)\s+(the\s+|el\s+|la\s+)?(internal\s+)?((config|configuration)\s+schema|schema|structure|architecture|api|config|source|esquema|estructura|arquitectura|fuente)", 0.80),
                 (r"\b(how\s+does|c[oó]mo\s+funciona)\s+.{0,30}\s+(work|funciona)\b", 0.75),
                 (r"\b(internals?|source\s+code)\s+(of|del?|de\s+la)", 0.80),
                 (r"\bdecipher\b", 0.80),

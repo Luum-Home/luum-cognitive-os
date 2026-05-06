@@ -1775,6 +1775,19 @@ harness:
       event: UserPromptSubmit
       scope: os-only
 
+    skill-router-prompt-suggest:
+      script: hooks/skill-router-prompt-suggest.sh
+      event: UserPromptSubmit
+      async: true
+      scope: both
+
+    orchestrator-decision-trace:
+      script: hooks/orchestrator-decision-trace.sh
+      event: PostToolUse
+      matcher: "Agent"
+      async: true
+      scope: both
+
     branch-ownership-lock:
       script: hooks/branch-ownership-lock.sh
       event: PreToolUse
@@ -1825,7 +1838,7 @@ harness:
       event: PostToolUse
       matcher: "Agent"
       async: true
-      scope: os-only
+      scope: both
 
     branch-ownership-release:
       script: hooks/branch-ownership-release.sh
