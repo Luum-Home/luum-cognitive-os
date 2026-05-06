@@ -3350,12 +3350,12 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 38,
-        "doc": 460,
-        "hook": 78,
+        "doc": 466,
+        "hook": 79,
         "rule": 42,
-        "script": 234,
+        "script": 235,
         "skill": 59,
-        "test": 349
+        "test": 350
       },
       "consumers": [
         {
@@ -5208,6 +5208,30 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-observability-eval-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-security-supply-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/wisc-framework-analysis.md"
         },
         {
@@ -5609,6 +5633,10 @@
         {
           "family": "hook",
           "path": "hooks/token-budget-monitor.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/untracked-work-preservation-guard.sh"
         },
         {
           "family": "hook",
@@ -6229,6 +6257,10 @@
         {
           "family": "script",
           "path": "scripts/cos-run-task"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-safe-clean"
         },
         {
           "family": "script",
@@ -7964,6 +7996,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_delete_intent.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_demotion_proposer.py"
         },
         {
@@ -8404,12 +8440,12 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:59",
-        "test_consumers:349",
-        "hook_consumers:78",
-        "doc_consumers:460",
+        "test_consumers:350",
+        "hook_consumers:79",
+        "doc_consumers:466",
         "rule_consumers:42",
         "config_consumers:38",
-        "script_consumers:234"
+        "script_consumers:235"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -8425,7 +8461,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1260,
+      "total_consumers": 1269,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -13847,6 +13883,44 @@
         "shell"
       ],
       "total_consumers": 7,
+      "wrapper_for": null
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "hook": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "hook",
+          "path": "hooks/untracked-work-preservation-guard.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_delete_intent.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "hook_consumers:1"
+      ],
+      "install_surface": null,
+      "install_surface_rationale": null,
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "keep out of default user surface unless promoted through lifecycle metadata",
+      "override_rationale": null,
+      "path": "scripts/cos-safe-clean",
+      "protected_install_surface": false,
+      "role": "maintainer-tool",
+      "role_source": "heuristic:self-evolution",
+      "skill_consumers": 0,
+      "supported_harnesses": [],
+      "total_consumers": 2,
       "wrapper_for": null
     },
     {
@@ -29623,24 +29697,24 @@
     "confidence": {
       "high": 158,
       "low": 8,
-      "medium": 226
+      "medium": 227
     },
     "consumer_accessibility": {
       "install-profile-managed": 19,
       "lifecycle-declared-consumer-candidate": 55,
       "lifecycle-declared-maintainer": 53,
       "skill-referenced-not-projectable": 2,
-      "so-local-only": 263
+      "so-local-only": 264
     },
     "low_confidence_rows": 8,
     "roles": {
       "agentic-primitive": 120,
       "driver-specific": 11,
       "lab": 23,
-      "maintainer-tool": 226,
+      "maintainer-tool": 227,
       "migration-only": 12
     },
-    "total_scripts": 392,
+    "total_scripts": 393,
     "without_consumers": 6
   },
   "target_family": "scripts"
