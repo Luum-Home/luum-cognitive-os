@@ -1,7 +1,7 @@
 {
   "branch": "codex/preserve-concurrent-testbed-wip-20260502",
   "created_at": "2026-05-02T13:00:19-03:00",
-  "created_by": "2144218+MatiasNAmendola@users.noreply.github.com",
+  "created_by": "maintainer",
   "source_branch": "main",
   "source_head": "4cad78d00759e08fa950803ac11b0f788ca8f667",
   "reason": "Four-commit preserve capturing: concurrent-agent safety testbed (ADR-108, testbed plan, scenario matrix, stash-leak-alarm, verify-plan-claims), validation capsule postmortem docs, validation isolation from concurrent agents, and a final archive commit.",
