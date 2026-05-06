@@ -936,7 +936,7 @@ wheels = [
 
 [[package]]
 name = "luum-cognitive-os"
-version = "0.24.0"
+version = "0.26.0"
 source = { editable = "." }
 dependencies = [
     { name = "jinja2" },
