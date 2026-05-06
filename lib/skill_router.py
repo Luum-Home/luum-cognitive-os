@@ -19,6 +19,7 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import re
 import sys
 from dataclasses import dataclass
@@ -322,11 +323,74 @@ def _detect_skill_md_paths(project_root: Path) -> Dict[str, Path]:
     return result
 
 
+_PROFILE_ALIASES: Dict[str, str] = {
+    "core": "lean",
+    "default": "lean",
+    "team": "standard",
+    "default+team-extensions": "standard",
+    "core+team": "standard",
+    "full": "strict",
+    "core+team+maintainer": "strict",
+    "opt-in": "lab",
+}
+
+
+def _canonical_profile(profile: Optional[str]) -> Optional[str]:
+    """Normalize installation/profile aliases used by COS manifests."""
+    if not profile:
+        return None
+    normalized = profile.strip().lower()
+    return _PROFILE_ALIASES.get(normalized, normalized)
+
+
+def _load_profile_projected_skills(project_root: Path, profile: Optional[str]) -> Optional[Set[str]]:
+    """Return the skill names projected for a routing profile, if declared.
+
+    The profile manifest is intentionally separate from routing patterns: it
+    answers "what should be visible in this install/runtime surface?" while
+    SKILL.md frontmatter answers "how should this skill be detected?".
+    """
+    canonical = _canonical_profile(profile)
+    if not canonical:
+        return None
+    manifest = project_root / "manifests" / "skill-routing-coverage.yaml"
+    if not manifest.exists():
+        return None
+    try:
+        import yaml  # type: ignore[import]
+        data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return None
+    profile_data = (
+        data.get("profile_routing", {})
+        .get("profiles", {})
+        .get(canonical, {})
+    )
+    projected = profile_data.get("projected_skills")
+    if not isinstance(projected, list):
+        return None
+    return {str(item) for item in projected}
+
+
+def _skill_md_checksum(project_root: Path) -> str:
+    """Return a stable checksum for all first-party SKILL.md files."""
+    digest = hashlib.sha256()
+    for name, path in sorted(_detect_skill_md_paths(project_root).items()):
+        digest.update(name.encode("utf-8"))
+        digest.update(b"\0")
+        try:
+            digest.update(path.read_bytes())
+        except OSError:
+            continue
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
 # ---------------------------------------------------------------------------
 # Routing table definition
 # ---------------------------------------------------------------------------
 
-def _build_default_routing_table() -> List[_RoutingEntry]:
+def _build_default_routing_table(project_root: Optional[Path] = None) -> List[_RoutingEntry]:
     """Build the full routing table, merging frontmatter-derived and hand-coded entries.
 
     Strategy (ADR-174):
@@ -335,9 +399,12 @@ def _build_default_routing_table() -> List[_RoutingEntry]:
       3. Frontmatter wins on conflict (same skill_name).
       4. Detect orphan hand-coded entries (no SKILL.md on disk) and warn to stderr.
     """
-    # Locate project root relative to this file
-    _lib_dir = Path(__file__).resolve().parent
-    _project_root = _lib_dir.parent
+    # Locate project root relative to this file unless a service/project runtime supplies one.
+    if project_root is None:
+        _lib_dir = Path(__file__).resolve().parent
+        _project_root = _lib_dir.parent
+    else:
+        _project_root = project_root.resolve()
 
     # Step 1: Load frontmatter-derived entries
     _fm_entries = _load_routing_from_frontmatter(_project_root)
@@ -1366,6 +1433,10 @@ def _parse_catalog(catalog_path: str) -> Set[str]:
                         name = cols[1].strip()
                         if name and not name.startswith("-"):
                             skills.add(name)
+                    continue
+                bullet_match = re.match(r"^- \*\*([^*]+)\*\*\s+—", line)
+                if bullet_match:
+                    skills.add(bullet_match.group(1).strip())
     except (OSError, IOError):
         pass
     return skills
@@ -1383,15 +1454,34 @@ class SkillRouter:
             skills in the routing table actually exist.
     """
 
-    def __init__(self, catalog_path: Optional[str] = None):
-        if catalog_path is None:
+    def __init__(
+        self,
+        catalog_path: Optional[str] = None,
+        *,
+        project_root: Optional[Path | str] = None,
+        profile: Optional[str] = None,
+    ):
+        if project_root is None:
             # Auto-detect relative to this file's location
             lib_dir = Path(__file__).resolve().parent
-            project_root = lib_dir.parent
-            catalog_path = str(project_root / "skills" / "CATALOG.md")
+            resolved_project_root = lib_dir.parent
+        else:
+            resolved_project_root = Path(project_root).resolve()
+        if catalog_path is None:
+            catalog_path = str(resolved_project_root / "skills" / "CATALOG.md")
+        self._project_root = resolved_project_root
+        self._profile = _canonical_profile(profile)
         self._catalog_path = catalog_path
         self._known_skills = _parse_catalog(catalog_path)
-        self._routing_table = _build_default_routing_table()
+        self._disk_skills = set(_detect_skill_md_paths(resolved_project_root).keys())
+        self._routing_table = _build_default_routing_table(resolved_project_root)
+        visible_skills = _load_profile_projected_skills(resolved_project_root, self._profile)
+        if visible_skills is not None:
+            self._routing_table = [
+                entry for entry in self._routing_table if entry.skill_name in visible_skills
+            ]
+            self._known_skills = self._known_skills & visible_skills if self._known_skills else visible_skills
+            self._disk_skills = self._disk_skills & visible_skills
 
     @property
     def known_skills(self) -> Set[str]:
@@ -1515,5 +1605,34 @@ class SkillRouter:
         if not self._known_skills:
             return []  # Can't validate without catalog
         routing_skills = self.get_routing_skills()
-        missing = sorted(routing_skills - self._known_skills)
+        known_or_present = self._known_skills | self._disk_skills
+        missing = sorted(routing_skills - known_or_present)
         return missing
+
+
+class SkillRoutingIndexCache:
+    """Project/profile-aware SkillRouter cache for service runtimes.
+
+    The cache key includes project root, profile, and the checksum of visible
+    SKILL.md files. Any SKILL.md edit invalidates the cached router so a
+    long-running COS service does not serve stale routing patterns.
+    """
+
+    def __init__(self) -> None:
+        self._cache: Dict[Tuple[str, Optional[str]], Tuple[str, SkillRouter]] = {}
+
+    def get_router(self, *, project_root: Path | str, profile: Optional[str] = None) -> SkillRouter:
+        root = Path(project_root).resolve()
+        canonical = _canonical_profile(profile)
+        checksum = _skill_md_checksum(root)
+        key = (str(root), canonical)
+        cached = self._cache.get(key)
+        if cached and cached[0] == checksum:
+            return cached[1]
+        router = SkillRouter(project_root=root, profile=canonical)
+        self._cache[key] = (checksum, router)
+        return router
+
+    def clear(self) -> None:
+        """Drop all cached routers."""
+        self._cache.clear()
