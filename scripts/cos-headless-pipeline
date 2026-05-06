@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# PURPOSE: Run the standalone headless validation pipeline from an install path or repo checkout.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$("$SCRIPT_DIR/cos-root" project)"
+JSON=0
+KEEP_WORKSPACE=0
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --json) JSON=1 ;;
+    --keep-workspace) KEEP_WORKSPACE=1 ;;
+    --project-dir)
+      shift
+      export COGNITIVE_OS_PROJECT_DIR="${1:?missing --project-dir value}"
+      PROJECT_ROOT="$("$SCRIPT_DIR/cos-root" project)"
+      ;;
+    -h|--help)
+      cat <<'EOF'
+Usage: scripts/cos-headless-pipeline [--json] [--keep-workspace] [--project-dir PATH]
+
+Runs the standalone headless proof pipeline:
+  1. safe-mode status
+  2. protected-publication check
+  3. Docker worker/service drill when Docker is available
+
+The pipeline resolves roots through scripts/cos-root and does not require a Git checkout.
+EOF
+      exit 0
+      ;;
+    *) echo "unknown option: $1" >&2; exit 2 ;;
+  esac
+  shift
+done
+
+run_step() {
+  local name="$1"
+  shift
+  local start end rc output
+  start="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  set +e
+  output="$({ "$@"; } 2>&1)"
+  rc=$?
+  set -e
+  end="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  if [ "$JSON" -eq 1 ]; then
+    STEP_NAME="$name" STEP_START="$start" STEP_END="$end" STEP_RC="$rc" STEP_OUTPUT="$output" python3 - <<'PY'
+import json, os
+print(json.dumps({
+    "name": os.environ["STEP_NAME"],
+    "started_at": os.environ["STEP_START"],
+    "ended_at": os.environ["STEP_END"],
+    "returncode": int(os.environ["STEP_RC"]),
+    "ok": os.environ["STEP_RC"] == "0",
+    "output_tail": os.environ["STEP_OUTPUT"][-2000:],
+}, sort_keys=True))
+PY
+  else
+    printf '[%s] rc=%s\n%s\n' "$name" "$rc" "$output"
+  fi
+  return "$rc"
+}
+
+status=0
+run_step safe-mode-status bash "$SCRIPT_DIR/cos-headless-safe-mode" status || status=1
+run_step protected-publication python3 "$SCRIPT_DIR/cos_headless_publication.py" --branch "$(basename "$PROJECT_ROOT")" --actor-mode headless --publication-target patch || status=1
+
+if command -v docker >/dev/null 2>&1; then
+  args=("$SCRIPT_DIR/cos-headless-service-drill")
+  [ "$JSON" -eq 1 ] && args+=(--json)
+  [ "$KEEP_WORKSPACE" -eq 1 ] && args+=(--keep-workspace)
+  run_step docker-service-drill bash "${args[@]}" || status=1
+else
+  if [ "$JSON" -eq 1 ]; then
+    python3 - <<'PY'
+import json
+print(json.dumps({"name": "docker-service-drill", "ok": True, "skipped": True, "reason": "docker not installed"}, sort_keys=True))
+PY
+  else
+    echo '[docker-service-drill] skipped: docker not installed'
+  fi
+fi
+
+exit "$status"
