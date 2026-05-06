@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # SCOPE: os-only
 """ADR-184 local cosd daemon for critical-surface intent arbitration."""
-
 from __future__ import annotations
 
 import argparse
@@ -10,12 +9,15 @@ import os
 import subprocess
 import sys
 import time
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from socketserver import UnixStreamServer
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-if str(REPO_ROOT) not in sys.path:
-    sys.path.insert(0, str(REPO_ROOT))
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from lib.intent_arbiter import (  # noqa: E402
     atomic_write_json,
@@ -31,53 +33,45 @@ from lib.intent_arbiter import (  # noqa: E402
 )
 
 
-def resolve_project_dir(value: str | None = None) -> Path:
-    if value:
-        return Path(value).expanduser().resolve()
-    for env_name in ("COGNITIVE_OS_PROJECT_DIR", "CLAUDE_PROJECT_DIR", "CODEX_PROJECT_DIR"):
-        env_value = os.environ.get(env_name)
-        if env_value:
-            return Path(env_value).expanduser().resolve()
+def resolve_project_dir(raw: str | None) -> Path:
+    candidates = [raw, os.environ.get("COGNITIVE_OS_PROJECT_DIR"), os.environ.get("CODEX_PROJECT_DIR"), os.environ.get("CLAUDE_PROJECT_DIR")]
+    for candidate in candidates:
+        if candidate:
+            return Path(candidate).expanduser().resolve()
     return Path.cwd().resolve()
 
 
 def emit(payload: dict[str, Any], *, json_output: bool) -> None:
     if json_output:
-        print(json.dumps(payload, sort_keys=True))
-    else:
-        state = payload.get("status") or ("ok" if payload.get("ok") else "error")
-        detail = payload.get("reason") or payload.get("pid") or payload.get("intent_queue_depth") or ""
-        print(f"{state}: {detail}")
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return
+    detail = payload.get("reason") or payload.get("pid") or payload.get("intent_queue_depth") or ""
+    print(f"cosd {payload.get('status', 'unknown')} {detail}".strip())
 
 
 def start_daemon(project_dir: Path, *, interval_seconds: float) -> dict[str, Any]:
     current = status(project_dir)
     if current["status"] == "running":
         return {**current, "ok": True, "reason": "already running"}
-    runtime_dir(project_dir).mkdir(parents=True, exist_ok=True)
     try:
         stop_path(project_dir).unlink()
     except FileNotFoundError:
         pass
-    command = [
-        sys.executable,
-        str(Path(__file__).resolve()),
-        "--project-dir",
-        str(project_dir),
-        "loop",
-        "--interval-seconds",
-        str(interval_seconds),
-    ]
+    script = Path(__file__).resolve()
     proc = subprocess.Popen(
-        command,
-        cwd=str(REPO_ROOT),
-        stdin=subprocess.DEVNULL,
+        [sys.executable, str(script), "--project-dir", str(project_dir), "loop", "--interval-seconds", str(interval_seconds)],
+        cwd=str(project_dir),
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         start_new_session=True,
     )
-    time.sleep(0.15)
+    deadline = time.time() + 5
     payload = status(project_dir)
+    while time.time() < deadline:
+        payload = status(project_dir)
+        if payload["status"] == "running":
+            break
+        time.sleep(0.05)
     if payload["status"] != "running":
         payload.update({"ok": False, "reason": f"daemon failed to start; pid={proc.pid}"})
     else:
@@ -121,6 +115,127 @@ def loop(project_dir: Path, *, interval_seconds: float) -> int:
     return 0
 
 
+def _read_json_body(handler: BaseHTTPRequestHandler) -> dict[str, Any]:
+    length = int(handler.headers.get("Content-Length") or "0")
+    if length <= 0:
+        return {}
+    raw = handler.rfile.read(length).decode("utf-8")
+    payload = json.loads(raw)
+    if not isinstance(payload, dict):
+        raise ValueError("request body must be a JSON object")
+    return payload
+
+
+def make_handler(project_dir: Path) -> type[BaseHTTPRequestHandler]:
+    class CosdHandler(BaseHTTPRequestHandler):
+        server_version = "cosd-local-api/1"
+
+        def log_message(self, fmt: str, *args: Any) -> None:
+            return
+
+        def _send(self, code: int, payload: dict[str, Any]) -> None:
+            body = json.dumps(payload, indent=2, sort_keys=True).encode("utf-8")
+            self.send_response(code)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+
+        def do_GET(self) -> None:
+            parsed = urlparse(self.path)
+            if parsed.path == "/healthz":
+                self._send(200, {"ok": True, "status": "ok"})
+                return
+            if parsed.path == "/status":
+                self._send(200, status(project_dir))
+                return
+            self._send(404, {"ok": False, "status": "not-found", "reason": f"unknown endpoint: {parsed.path}"})
+
+        def do_POST(self) -> None:
+            parsed = urlparse(self.path)
+            try:
+                if parsed.path == "/process-once":
+                    body = _read_json_body(self)
+                    limit = body.get("limit")
+                    rows = process_once(project_dir, limit=int(limit) if limit is not None else None)
+                    self._send(200, {"ok": True, "status": "processed", "processed_count": len(rows), "results": rows})
+                    return
+                if parsed.path == "/submit-intent":
+                    body = _read_json_body(self)
+                    context = body.get("context") if isinstance(body.get("context"), dict) else {}
+                    payload = submit_intent(
+                        project_dir,
+                        kind=str(body.get("kind") or ""),
+                        session_id=str(body.get("session_id") or "api"),
+                        context=context,
+                        intent_id=str(body.get("intent_id")) if body.get("intent_id") else None,
+                    )
+                    if body.get("process") is True:
+                        payload["processed"] = process_once(project_dir)
+                    self._send(200, payload)
+                    return
+                self._send(404, {"ok": False, "status": "not-found", "reason": f"unknown endpoint: {parsed.path}"})
+            except Exception as exc:
+                self._send(400, {"ok": False, "status": "error", "reason": str(exc)})
+
+    return CosdHandler
+
+
+def serve(project_dir: Path, *, host: str, port: int) -> int:
+    runtime_dir(project_dir).mkdir(parents=True, exist_ok=True)
+    server = ThreadingHTTPServer((host, port), make_handler(project_dir))
+    bound_host, bound_port = server.server_address[:2]
+    atomic_write_json(
+        runtime_dir(project_dir) / "cosd-api.json",
+        {
+            "schema_version": "cosd-api.v1",
+            "transport": "http",
+            "host": bound_host,
+            "port": bound_port,
+            "base_url": f"http://{bound_host}:{bound_port}",
+            "updated_at": utc_now_iso(),
+        },
+    )
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
+    return 0
+
+
+def serve_unix(project_dir: Path, *, socket_path: Path) -> int:
+    runtime_dir(project_dir).mkdir(parents=True, exist_ok=True)
+    socket_path = socket_path.expanduser().resolve()
+    socket_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        socket_path.unlink()
+    except FileNotFoundError:
+        pass
+    server = UnixStreamServer(str(socket_path), make_handler(project_dir))
+    try:
+        socket_path.chmod(0o600)
+    except OSError:
+        pass
+    atomic_write_json(
+        runtime_dir(project_dir) / "cosd-api.json",
+        {
+            "schema_version": "cosd-api.v1",
+            "transport": "unix-http",
+            "socket_path": str(socket_path),
+            "updated_at": utc_now_iso(),
+        },
+    )
+    try:
+        server.serve_forever()
+    finally:
+        server.server_close()
+        try:
+            socket_path.unlink()
+        except FileNotFoundError:
+            pass
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", help="Project root; defaults to cwd/env project root.")
@@ -149,6 +264,13 @@ def build_parser() -> argparse.ArgumentParser:
     submit.add_argument("--candidate-filename")
     submit.add_argument("--wait", action="store_true")
     submit.add_argument("--timeout-seconds", type=float, default=5.0)
+
+    api = subparsers.add_parser("serve")
+    api.add_argument("--host", default="127.0.0.1")
+    api.add_argument("--port", type=int, default=8765)
+
+    unix_api = subparsers.add_parser("serve-unix")
+    unix_api.add_argument("--socket", required=True, help="Unix domain socket path for HTTP-over-UDS")
     return parser
 
 
@@ -174,6 +296,10 @@ def main(argv: list[str] | None = None) -> int:
             payload = status(project_dir)
         elif args.command == "loop":
             return loop(project_dir, interval_seconds=args.interval_seconds)
+        elif args.command == "serve":
+            return serve(project_dir, host=args.host, port=args.port)
+        elif args.command == "serve-unix":
+            return serve_unix(project_dir, socket_path=Path(args.socket))
         elif args.command == "process-once":
             rows = process_once(project_dir, limit=args.limit)
             payload = {"ok": True, "status": "processed", "processed_count": len(rows), "results": rows}

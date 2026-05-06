@@ -1,0 +1,20 @@
+[Unit]
+Description=Cognitive OS local intent daemon
+Documentation=https://github.com/luum-home/luum-cognitive-os
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/.local/share/cognitive-os/project
+Environment=COGNITIVE_OS_PROJECT_DIR=%h/.local/share/cognitive-os/project
+ExecStart=/usr/local/bin/cosd --project-dir %h/.local/share/cognitive-os/project loop --interval-seconds 0.1
+ExecStop=/usr/local/bin/cosd --project-dir %h/.local/share/cognitive-os/project stop
+Restart=on-failure
+RestartSec=2
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=%h/.local/share/cognitive-os/project
+
+[Install]
+WantedBy=default.target
