@@ -147,6 +147,14 @@ export interface VcsActionReceiptSummary {
   mode: "observe-only";
 }
 
+export interface TuiActionReceiptSummary {
+  total: number;
+  byAction: Record<string, number>;
+  byOutcome: Record<string, number>;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
 export async function getPrimitiveSurfaceCoverageSummary(): Promise<PrimitiveSurfaceCoverageSummary> {
   const reportPath = join(COS_ROOT, "docs", "reports", "primitive-harness-coverage-latest.json");
 
@@ -216,6 +224,49 @@ export async function getVcsActionReceiptSummary(): Promise<VcsActionReceiptSumm
       byTrust,
       byEventType,
       bySource,
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return empty;
+  }
+}
+
+export async function getTuiActionReceiptSummary(): Promise<TuiActionReceiptSummary> {
+  const metricsPath = join(COS_ROOT, ".cognitive-os", "metrics", "tui-actions.jsonl");
+  const empty = {
+    total: 0,
+    byAction: {},
+    byOutcome: {},
+    consumesReport: false,
+    mode: "observe-only" as const,
+  };
+
+  try {
+    const content = await readFile(metricsPath, "utf-8");
+    const byAction: Record<string, number> = {};
+    const byOutcome: Record<string, number> = {};
+    let total = 0;
+
+    for (const line of content.split("\n")) {
+      if (!line.trim()) continue;
+      try {
+        const receipt = JSON.parse(line);
+        if (receipt.schema_version !== "cos-tui-action-receipt.v1") continue;
+        total += 1;
+        const action = String(receipt.action || "unknown");
+        const outcome = String(receipt.outcome || "unknown");
+        byAction[action] = (byAction[action] || 0) + 1;
+        byOutcome[outcome] = (byOutcome[outcome] || 0) + 1;
+      } catch {
+        // Ignore malformed telemetry rows; cos-tui --receipts does the same.
+      }
+    }
+
+    return {
+      total,
+      byAction,
+      byOutcome,
       consumesReport: true,
       mode: "observe-only",
     };
