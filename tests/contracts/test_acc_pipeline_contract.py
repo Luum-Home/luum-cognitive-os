@@ -36,12 +36,14 @@ def test_repository_acc_pipeline_generates_report() -> None:
     assert payload["new_debt"]["status"] == "pass"
     assert payload["new_debt"]["count"] == 0
     assert payload["persistence"]["engram"]["status"] in {"unavailable", "ok"}
-    for adapter in ("readiness:scripts", "readiness:hooks", "readiness:skills", "readiness:rules"):
+    for adapter in ("readiness:scripts", "readiness:hooks", "readiness:skills", "readiness:rules", "readiness:templates"):
         assert payload["adapters"][adapter]["status"] == "ok"
     assert payload["adapters"]["harness_projection"]["status"] == "ok"
     assert payload["adapters"]["projection_profiles"]["status"] == "ok"
     assert payload["adapters"]["consumer_availability"]["status"] == "ok"
     assert payload["adapters"]["shell_ci_projection"]["status"] == "ok"
+    assert payload["adapters"]["harness_coverage"]["status"] == "ok"
+    assert payload["adapters"]["harness_coverage"]["summary"]["unclassified_gaps"] == 0
     assert payload["adapters"]["shell_ci_projection"]["summary"]["commands"] == 15
     assert payload["adapters"]["consumer_availability"]["summary"]["statuses"]["maintainer-only"] > 0
     assert payload["adapters"]["consumer_projection"]["summary"]["by_harness_profile"]["claude/default"] > 0

@@ -1,0 +1,1160 @@
+{
+  "allowed_roles": [
+    "agent-preamble",
+    "archive",
+    "lab",
+    "prompt-composition",
+    "quality-gate",
+    "recovery"
+  ],
+  "items": [
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/adr-template.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 8,
+        "hook": 1,
+        "rule": 1,
+        "test": 3
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/HOW-TO-USE-COS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/FROZEN-BACKLOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/LESSONS-LEARNED.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/POST-MORTEM-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/sprint-2a-orphan-fate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/README.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/subagent-context-injector.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/ROADMAP.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_rules_enforcement.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_subagent_context_injector.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_qwen_agent_loop.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "test_consumers:3",
+        "doc_consumers:8"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/agent-mandatory-rules.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 13
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 23,
+        "hook": 3,
+        "rule": 5,
+        "script": 2,
+        "skill": 1,
+        "test": 19
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-028.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-028b.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-029.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-030.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-038-preamble-v2-industry-aligned.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-051-qwen-agent-loop.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-088-provenance-trailer-ppid-chain.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/agent-teams.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/FROZEN-BACKLOG.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/token-efficient-agent-messaging.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/intelligent-context-compaction.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns-adopted.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/os-vs-project.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/prompt-templates.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/completion-gate.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/inject-phase-context.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/subagent-context-injector.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/agent-output-reading.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/content-policy.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/prompt-composition.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/responsiveness.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/split-and-resume.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos_work_inventory.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/primitive_family_readiness_ledger.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/compat-test/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/shell_test_utils.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_agent_background_execution.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_agent_resilience.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_compaction_protection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_content_policy.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_self_install.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_flow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_safety.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_compaction_resilience.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_inject_phase_context_expansion.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_preamble_v2_wave1.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_preamble_v2_wave2.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_caveman_integration.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_commit_classifier.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_escalation_wiring.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_inject_phase_context_native.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_prompt_integration.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_qwen_agent_loop.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_release_analyzer.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "hook_consumers:3",
+        "rule_consumers:5",
+        "script_consumers:2",
+        "test_consumers:19",
+        "doc_consumers:23"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/agent-preamble.md",
+      "role": "agent-preamble",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 53
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 3,
+        "rule": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-069-research-first-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-070-convention-enforcement-mechanism.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/research-first-protocol.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_research_reports_format.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:2",
+        "test_consumers:1",
+        "doc_consumers:3"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/agent-research-only.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 20,
+        "hook": 1,
+        "rule": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/adr-closure-metadata.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adoption-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/cross-harness-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-driver-parity.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-engineering.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/multi-session-orchestration-audit-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/red-team-harness-proposal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/skills-rules-canonicalization-risk-analysis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/skills-rules-portability-gap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/manual-tests/proof-paths.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/cross-harness-authoring.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/self-install.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_installer.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:20",
+        "config_consumers:1"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/cross-harness-authoring.md",
+      "role": "prompt-composition",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 24
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-098-multi-agent-file-coordination.md"
+        },
+        {
+          "family": "skill",
+          "path": "skills/coordination-status/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "doc_consumers:1"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/edit-conflict-response.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 5,
+        "rule": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/os-vs-project.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/prompt-templates.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/prompt-composition.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:1",
+        "doc_consumers:5"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/error-recovery.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/prompt-templates.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_init_py.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/fintech-gates.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 3
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:1"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/generator-validator-pair.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 1
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/prompt-templates.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:2"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/go-service-context.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 7,
+        "hook": 1,
+        "rule": 1,
+        "script": 1,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-027.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-032-orchestrator-trap-preview.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-044-context-payload-slimming.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-048-docker-container-image-freshness.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-packages-squads-agents.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-adoption-gap/scripts-audit-D-profile-uninstall.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/inject-phase-context.sh"
+        },
+        {
+          "family": "rule",
+          "path": "rules/orchestrator-prompt-compose.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/compose_agent_prompt.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_integrity.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_gotcha_injection.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_init_py.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "hook_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:1",
+        "test_consumers:4",
+        "doc_consumers:7"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/project-gotchas.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 14
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/prompt-hooks/assumption-tracker-prompt.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 0
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/prompt-hooks/clarification-gate-prompt.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 0
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/prompt-hooks/prompt-quality-prompt.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 0
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {},
+      "consumers": [],
+      "distribution": null,
+      "evidence": [],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/prompt-hooks/scope-creep-prompt.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 0
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 21,
+        "rule": 2,
+        "test": 4
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "AGENTS.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-050-per-skill-routing-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-066-polyglot-language-boundaries.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/f1-cleanup.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-packages-squads-agents.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-coverage-tooling-research-2026-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/docs-hook-rule-candidates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/docs-rescan-results.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/self-optimizing-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/archive/plans/status-report-april-11.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/cos-package-manager.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/component-classification.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/os-vs-project.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/prompt-templates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/versioning-strategy.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/prompt-composition.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/skill-rewrite.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_auto_update_safety.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_completion_gate_perf.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_cos_init_py.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_routing.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:2",
+        "test_consumers:4",
+        "doc_consumers:21"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/quality-gates.md",
+      "role": "quality-gate",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 27
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 5,
+        "rule": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/component-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/os-vs-project-separation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/os-vs-project.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/prompt-templates.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/self-improvement-loop.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/prompt-composition.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/self-improvement-protocol.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "rule_consumers:2",
+        "doc_consumers:5"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/rebranding-checklist.md",
+      "role": "recovery",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 7
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2,
+        "script": 1,
+        "skill": 1
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/backfill_session_decisions.py"
+        },
+        {
+          "family": "skill",
+          "path": "skills/add-rule/SKILL.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "skill_consumers:1",
+        "script_consumers:1",
+        "doc_consumers:2"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/rule-template.md",
+      "role": "prompt-composition",
+      "role_source": "default",
+      "supported_harnesses": [],
+      "total_consumers": 4
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "doc": 2
+      },
+      "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-067-frontmatter-defense-in-depth.md"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "doc_consumers:2"
+      ],
+      "family": "templates",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "templates/skill-template.md",
+      "role": "prompt-composition",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 2
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "confidence": {
+      "medium": 19
+    },
+    "consumer_accessibility": {
+      "so-local-only": 19
+    },
+    "roles": {
+      "agent-preamble": 1,
+      "prompt-composition": 8,
+      "quality-gate": 9,
+      "recovery": 1
+    },
+    "total": 19,
+    "without_consumers": 4,
+    "without_lifecycle": 19
+  },
+  "target_family": "templates"
+}
