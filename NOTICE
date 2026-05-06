@@ -91,3 +91,72 @@ https://github.com/explodinggradients/ragas
 
 This product includes software developed by Exploding Gradients as part of the
 RAGAS project (Apache-2.0).
+
+---
+
+certifi
+The certifi authors (Mozilla CA Bundle Project)
+Licensed under the Mozilla Public License, Version 2.0
+https://github.com/certifi/python-certifi
+
+This product depends on certifi as a Python runtime dependency. Not modified;
+MPL-2.0 file-level copyleft does not impose source-disclosure obligations on
+this product. Attribution provided per MPL-2.0.
+
+---
+
+pytest-rerunfailures
+The pytest-rerunfailures contributors
+Licensed under the Mozilla Public License, Version 2.0
+https://github.com/pytest-dev/pytest-rerunfailures
+
+Test-time dependency only; not redistributed. Not modified.
+
+---
+
+tqdm
+Casper da Costa-Luis and contributors
+Dual-licensed under MPL-2.0 AND MIT (this product uses tqdm under MIT terms)
+https://github.com/tqdm/tqdm
+
+---
+
+@img/sharp-libvips (multi-platform binaries)
+libvips contributors
+Licensed under LGPL-3.0-or-later
+https://github.com/lovell/sharp
+
+This product's dashboard depends on @img/sharp-libvips-* prebuilt platform
+binaries via Next.js image optimization. Loaded dynamically at runtime;
+LGPL-3.0 dynamic-linking exception applies. Binaries are not modified.
+
+---
+
+caniuse-lite
+Browserslist project (Andrey Sitnik et al.)
+Licensed under CC-BY-4.0
+https://github.com/browserslist/caniuse-lite
+
+Browser compatibility data used by Next.js build tooling. Attribution provided
+per CC-BY-4.0 terms. Data not modified.
+
+---
+
+lightningcss (and platform-specific variants)
+Devon Govett and contributors
+Licensed under MPL-2.0
+https://github.com/parcel-bundler/lightningcss
+
+Build-time dependency of Tailwind v4. Used unmodified during dashboard build.
+
+---
+
+arize-phoenix-client / arize-phoenix-otel
+Arize AI (and contributors)
+Licensed under the Apache License, Version 2.0
+https://github.com/Arize-ai/phoenix
+
+This product depends on Phoenix client and OpenTelemetry SDK packages
+(Apache-2.0). The Phoenix server itself (arize-phoenix) is licensed under
+Elastic License 2.0 and is operator-installed, NOT bundled with COS
+releases. See ADR-058 for ELv2 boundary discussion.
