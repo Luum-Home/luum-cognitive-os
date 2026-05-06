@@ -1,4 +1,4 @@
-"""Unit tests for ADR-214 Tool Discovery Pre-Use Gate."""
+"""Unit tests for ADR-216 Tool Discovery Pre-Use Gate."""
 from __future__ import annotations
 
 from pathlib import Path
