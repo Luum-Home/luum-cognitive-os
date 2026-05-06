@@ -65,7 +65,7 @@ Notes: <optional 1-2 sentences on scope or trade-offs>.
 | Runtime service | Compose services | Mode in `cognitive-os.yaml` | Product position | Purpose |
 |-----------------|------------------|-----------------------------|------------------|---------|
 | `mlflow` | none | `pip` | Default lightweight exporter | Local outcome metrics, completion summaries, cost/session sync, and low-friction run evidence without Docker. |
-| `phoenix` | none | `pip` | Optional observability extension | Arize Phoenix LLM-native trace UI (OTel-backed, Apache 2.0). Replaces Langfuse as the self-hosted trace surface. Launched on-demand via `skills/phoenix-trace-ui/` (Phase 1 pending). See ADR-058. |
+| `phoenix` | none | `pip` | Optional observability extension | Arize Phoenix LLM-native trace UI (OTel-backed; ELv2 server, Apache-2.0 OTel bridge). Replaces Langfuse as the self-hosted trace surface. Launched on-demand via `skills/phoenix-trace-ui/` (Phase 1 pending). See ADR-058. |
 | `nemo_guardrails` | `nemo-guardrails` | `pip` | Optional in-process guardrails extension | Jailbreak, policy, and PII guardrail runtime. Docker server exists for reference/CI, but default use should be Python API/in-process. |
 | `memu` | `memu`, `memu-pg` | `pip` (default) / local Docker with self-contained `memu-pg` backend (ADR-060 local-first) | Optional memory extension | Proactive agent memory. Default supported mode is pip. The Docker `memory` profile now ships with a self-contained Postgres backend (`memu-pg`) so the local lane is zero-cloud. |
 | `cognee` | `cognee` | `pip` | Optional memory/knowledge extension | Knowledge graph and memory retrieval. Default path should not require a running HTTP service. |

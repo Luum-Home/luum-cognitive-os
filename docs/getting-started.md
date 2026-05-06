@@ -168,7 +168,7 @@ These are optional. Cognitive OS works without them — they add observability a
 
 For the current UI doctrine, see [ADR-172](adrs/ADR-172-multi-surface-ui-architecture.md).
 The four supported surfaces are: Surface 1 (always-on CLI), Surface 2 Phoenix
-(`uv sync --extra observability && uv run phoenix serve`), Surface 3 Engram Cloud
+(`bash scripts/dependency-lane.sh install observability && uv run phoenix serve`), Surface 3 Engram Cloud
 (opt-in, BYOK per ADR-139), and Surface 4 any markdown reader pointed at `docs/`.
 None of the surfaces are required for the governance layer to function.
 
