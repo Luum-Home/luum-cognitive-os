@@ -202,7 +202,6 @@ cc_driver_emit() {
     "hooks/direct-main-guard.sh"                "false" \
     "hooks/cross-session-coordination-guard.sh" "false" \
     "hooks/agent-message-inbox-guard.sh"        "false" \
-    "hooks/cosd-intent-submit.sh"              "false" \
     "hooks/orchestrator-claim-gate.sh"          "false" \
     "hooks/pre-commit-content-hash-dedupe.sh"  "false" \
     "hooks/scope-marker-portability-gate.sh"    "false" \
