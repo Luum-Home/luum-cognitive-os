@@ -251,3 +251,20 @@ model = p.get_model("sonnet")  # "gpt-5.4"
    test-suite run (CI dominated by Autopilot scans). Field definitions were read
    directly from source at commit `7873f0d`; semantic behaviour of their executor
    was not verified end-to-end.
+
+## Status
+
+Accepted.
+
+
+## Alternatives rejected
+
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
+
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+

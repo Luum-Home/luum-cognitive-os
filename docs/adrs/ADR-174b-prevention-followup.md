@@ -20,8 +20,9 @@ implementation_files:
   - tests/unit/test_auto_skill_generator_routing.py
   - tests/contracts/test_validator_promotion_trigger.py
 ---
+# ADR-174b — Prevention Followup
 
-# ADR-174-bis — Routing-Pattern Prevention Followup
+# ADR-174b — Routing-Pattern Prevention Followup
 
 ## Status
 
@@ -42,7 +43,7 @@ The audit-of-audits (2026-05-05) found 108 skills on disk without
    of the problem.
 2. **Enforcement gap**: the advisory validator cannot block future writes.
 
-ADR-174-bis closes both gaps.
+ADR-174b closes both gaps.
 
 ---
 
@@ -164,3 +165,20 @@ without any code change.  The flag is read at the top of the hook.
 - `lib/validator_soak_evaluator.py` — new, propose-only soak evaluator
 - `packages/consequence-system/hooks/auto-skill-generator.sh` — modified
 - `hooks/validator-soak-weekly.sh` — new, SessionStart, fail-open, throttled
+
+## Decision
+
+Keep this ADR as the canonical record for its filename number and preserve its implementation contract in the repository.
+
+
+## Alternatives rejected
+
+- **Leave the decision implicit** — rejected because ADR slots must remain self-describing and audit-safe after multi-agent collision recovery.
+
+
+## Verification
+
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
+
