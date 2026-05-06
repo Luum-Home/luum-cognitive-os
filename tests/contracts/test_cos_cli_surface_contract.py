@@ -61,5 +61,5 @@ def test_cos_tui_snapshot_exit_code_contract() -> None:
     )
     assert result.returncode == 0, result.stderr + result.stdout
     assert "Cognitive OS — Primitive Surface Coverage" in result.stdout
-    assert "Mode: observe-only" in result.stdout
+    assert "Mode: operable" in result.stdout
     assert "tui (ui)" in result.stdout
