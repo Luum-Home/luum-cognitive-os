@@ -105,6 +105,14 @@ rules:
       - hooks/auto-verify.sh
       - hooks/blast-radius.sh
       - hooks/claim-validator.sh
+      - hooks/clarification-gate.sh
+      - hooks/clarification-interceptor.sh
+      - hooks/completeness-check-llm.sh
+      - hooks/completion-gate.sh
+      - hooks/confidence-gate-llm.sh
+      - hooks/confidence-gate.sh
+      - hooks/consequence-evaluator.sh
+      - hooks/context-diet.sh
   - policy: optional-env-gated-surface
     family: hooks
     primitives:
@@ -113,10 +121,14 @@ rules:
     family: hooks
     primitives:
       - hooks/adr-detector.sh
+      - hooks/code-review-on-commit.sh
   - policy: acceptable-codex-limited-tool-events
     family: hooks
     primitives:
       - hooks/auto-checkpoint.sh
+      - hooks/concurrent-write-guard.sh
+      - hooks/confidentiality-enforcer.sh
+      - hooks/content-policy.sh
   - policy: optional-background-orchestration
     family: hooks
     primitives:
