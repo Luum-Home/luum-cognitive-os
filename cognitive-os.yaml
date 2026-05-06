@@ -1169,6 +1169,18 @@ harness:
       matcher: Bash
       scope: both
 
+    orchestrator-skill-invocation-gate-bash:
+      script: hooks/orchestrator-skill-invocation-gate.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
+    orchestrator-skill-invocation-gate-agent:
+      script: hooks/orchestrator-skill-invocation-gate.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: both
+
     release-guard:
       script: hooks/release-guard.sh
       event: PreToolUse
@@ -1822,6 +1834,12 @@ harness:
       script: hooks/cross-session-event-emit.sh
       event: PreToolUse
       matcher: "Edit|Write"
+      async: true
+      scope: os-only
+
+    cross-session-event-emit-stop:
+      script: hooks/cross-session-event-emit.sh
+      event: Stop
       async: true
       scope: os-only
 
