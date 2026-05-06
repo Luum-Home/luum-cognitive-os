@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 96,
+  "_hook_count": 105,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -102,6 +102,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/concurrent-write-guard-codex-proxy.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-router-prompt-suggest.sh\"",
+            "async": true
           }
         ]
       }
@@ -211,6 +216,11 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-md-routing-validator.sh\"",
+            "async": false
           }
         ]
       },
@@ -440,6 +450,16 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/dod-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-decision-trace.sh\"",
+            "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/skill-post-execution-analysis.sh\"",
+            "async": true
           }
         ]
       },
@@ -562,12 +582,5 @@
       }
     ]
   },
-  "_paperclip_hooks_registered_in_driver": [
-    "paperclip-sync.sh",
-    "paperclip-sdd-sync.sh",
-    "paperclip-agent-status.sh",
-    "paperclip-cost-stream.sh",
-    "paperclip-squad-sync.sh",
-    "paperclip-task-sync.sh"
-  ]
+  "_skillstore_analysis_registered_in_driver": true
 }

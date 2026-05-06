@@ -65,12 +65,6 @@ metrics-calibrator-trigger.sh
 metrics-rotation.sh
 notify.sh
 package-sync.sh
-paperclip-agent-status.sh
-paperclip-cost-stream.sh
-paperclip-sdd-sync.sh
-paperclip-squad-sync.sh
-paperclip-sync.sh
-paperclip-task-sync.sh
 parry-scan.sh
 pre-cleanup-snapshot.sh
 pre-commit-gate.sh
@@ -205,3 +199,14 @@ plan-claim-validator.sh
 # ADR-144 classification manifest: Codex-only proxy is intentionally absent
 # from .claude/settings.json and projected through .codex/hooks.json.
 concurrent-write-guard-codex-proxy.sh
+# 2026-05-05: skill-router observability hooks registered via settings-driver-claude-code.sh.
+# Text-scan in check-hook-registration.py cannot find them in apply-efficiency-profile.sh
+# (which delegates to the driver). Fully wired — UserPromptSubmit and PostToolUse/Agent.
+skill-router-prompt-suggest.sh
+orchestrator-decision-trace.sh
+# 2026-05-05: ADR-174 skill-md-routing-validator registered in settings-driver-claude-code.sh
+# PreToolUse Write hook; advisory-only (exit 0). Wired via driver, not directly in apply-efficiency-profile.sh.
+skill-md-routing-validator.sh
+# 2026-05-05: ADR-176 skill-post-execution-analysis registered in settings-driver-claude-code.sh
+# PostToolUse Agent hook; async, discipline-gated (propose-only). Wired via driver.
+skill-post-execution-analysis.sh

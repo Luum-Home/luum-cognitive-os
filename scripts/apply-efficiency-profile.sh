@@ -144,7 +144,8 @@ run_claude_code_driver() {
     private-mode-metrics-gate.sh session-end-reap.sh skill-tracker.sh stash-budget-warn.sh \
     post-git-orphan-notifier.sh skill-router-bash-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh \
-    paperclip-sync.sh paperclip-sdd-sync.sh paperclip-agent-status.sh paperclip-cost-stream.sh paperclip-squad-sync.sh paperclip-task-sync.sh; do
+    skill-router-prompt-suggest.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh skill-post-execution-analysis.sh \
+; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
     fi
@@ -195,13 +196,13 @@ if [ "$PROFILE" = "core" ]; then
 else
   echo "  SessionStart: self-install.sh, session-init.sh, profile-drift-autoapply.sh, reaper/session watchdogs, docker-drift-detector.sh, executor daemon, engram-daemon-launcher.sh (async), crash recovery, session resume, infra-health.sh (async), weekly/self-knowledge/startup guards, dangerous-env-flag-detector.sh"
 fi
-echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async)"
+echo "  UserPromptSubmit: user-prompt-capture.sh (async), session-wrapup-trigger.sh (async), session-heartbeat.sh, memory-prefetch.sh (async), skill-router-prompt-suggest.sh (async)"
 echo "  SubagentStart: subagent-context-injector.sh (async)"
 echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: protected-config-write-guard.sh, session-heartbeat.sh, lethal-trifecta-gate.sh"
 echo "  PreToolUse Bash: network-egress-guard.sh, rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, skill-router-bash-gate.sh, release-guard.sh, git-commit-scope-guard.sh, direct-main-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
-echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh"
+echo "  PreToolUse Edit|Write: secret-detector.sh, project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh, skill-md-routing-validator.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
@@ -211,7 +212,7 @@ echo "  PostToolUse Edit|Write: content-policy.sh, skill-frontmatter-validator.s
 echo "  PostToolUse TodoWrite: work-queue-sync.sh"
 echo "  PostToolUse Skill: skill-usage-tracker.sh (async), skill-invocation-logger.sh"
 echo "  PostToolUse mem_search|mem_get_observation: engram-reinforce-on-access.sh (async)"
-echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, post-agent-verify.sh, assumption-tracker.sh, scope-proportionality.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, consequence-evaluator.sh, auto-skill-generator.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh, auto-verify.sh, auto-refine.sh, dod-gate.sh, skill-tracker.sh"
+echo "  PostToolUse Agent: claim-validator.sh, completion-gate.sh, agent-checkpoint.sh, post-agent-verify.sh, assumption-tracker.sh, scope-proportionality.sh, trust-score-validator.sh, confidence-gate.sh, audit-id-enricher.sh, auto-rollback-trigger.sh, native-agent-heartbeat.sh, work-queue-sync.sh, skill-feedback-tracker.sh, consequence-evaluator.sh, auto-skill-generator.sh, auto-repair-dispatcher.sh (async), dequeue-notify.sh (async), state-heartbeat.sh (async), review-spawner.sh, auto-verify.sh, auto-refine.sh, dod-gate.sh, skill-tracker.sh, orchestrator-decision-trace.sh (async), skill-post-execution-analysis.sh (async)"
 echo "  Stop: session-summary-reminder.sh, session-learning.sh, session-cleanup.sh, edit-lock-session-end.sh, git-context-capture.sh, session-changelog.sh, skill-failure-monitor.sh, session-end-reap.sh, kpi-trigger.sh (async), engram-crystallize-on-session-end.sh (async), engram-obsidian-export-on-stop.sh (async opt-in when COS_OBSIDIAN_VAULT is set)"
 echo "  TeammateIdle: teammate-idle.sh"
 echo "  TaskCreated: task-created.sh"
