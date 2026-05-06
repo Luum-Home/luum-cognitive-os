@@ -1,1 +1,0 @@
-../packages/paperclip-integration/hooks/paperclip-cost-stream.sh

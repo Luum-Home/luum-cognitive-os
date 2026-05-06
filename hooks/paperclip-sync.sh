@@ -1,1 +1,0 @@
-../packages/paperclip-integration/hooks/paperclip-sync.sh
