@@ -27,12 +27,25 @@ def make_repo(tmp_path: Path) -> Path:
     (root / ".codex").mkdir(parents=True)
     (root / "manifests").mkdir(parents=True)
     (root / "tests").mkdir(parents=True)
+    (root / "dashboard" / "lib").mkdir(parents=True)
+    (root / "dashboard" / "app").mkdir(parents=True)
+    (root / "docs" / "acc").mkdir(parents=True)
+    (root / "docs" / "reports").mkdir(parents=True)
 
     (root / "hooks" / "session-init.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho init\n")
     (root / "hooks" / "pre-compaction-flush.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho flush\n")
     (root / "hooks" / "concurrent-write-guard-codex-proxy.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho codex\n")
     (root / "rules" / "RULES-COMPACT.md").write_text("<!-- SCOPE: both -->\n# Rules\n")
+    (root / "scripts" / "cos").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho cos\n")
     (root / "scripts" / "cos-status.sh").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho status\n")
+    (root / "scripts" / "cos-coverage").write_text("#!/usr/bin/env bash\n# SCOPE: both\necho coverage\n")
+    (root / "scripts" / "cos_coverage.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('{}')\n")
+    (root / "scripts" / "primitive_harness_coverage.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('{}')\n")
+    (root / "scripts" / "acc_pipeline.py").write_text("#!/usr/bin/env python3\n# SCOPE: both\nprint('{}')\n")
+    (root / "docs" / "acc" / "latest.json").write_text("{}")
+    (root / "docs" / "reports" / "primitive-harness-coverage-latest.json").write_text("{}")
+    (root / "dashboard" / "lib" / "cos-api.ts").write_text("primitive-harness-coverage-latest.json")
+    (root / "dashboard" / "app" / "page.tsx").write_text("Primitive Surface Coverage observe-only")
     (root / "skills" / "status" / "SKILL.md").write_text("<!-- SCOPE: both -->\n---\nname: status\naudience: both\n---\n")
     (root / "templates" / "prompt.md").write_text("<!-- SCOPE: project -->\n# Prompt\n")
     (root / "tests" / "test_session_init.py").write_text("def test_session_init(): assert 'hooks/session-init.sh'\n")
@@ -73,6 +86,8 @@ def make_repo(tmp_path: Path) -> Path:
                 {"id": "codex-adapter-needed", "severity": "medium", "status": "partial"},
                 {"id": "structural-only-ok", "severity": "advisory", "status": "aligned"},
                 {"id": "shell-command-only", "severity": "advisory", "status": "aligned"},
+                {"id": "on-demand-command-only", "severity": "advisory", "status": "aligned"},
+                {"id": "structural-only-ok", "severity": "advisory", "status": "aligned"},
                 {"id": "unclassified", "severity": "medium", "status": "partial"},
             ],
             "rules": [
@@ -80,6 +95,8 @@ def make_repo(tmp_path: Path) -> Path:
                 {"policy": "codex-adapter-needed", "family": "hooks", "primitives": ["hooks/concurrent-write-guard-codex-proxy.sh"]},
                 {"policy": "structural-only-ok", "families": ["rules", "skills", "templates"], "scopes": ["both", "project"]},
                 {"policy": "shell-command-only", "family": "scripts", "harness": "shell-ci", "scopes": ["both", "project"]},
+                {"policy": "on-demand-command-only", "family": "scripts", "harness": "cos-cli", "scopes": ["both", "project"]},
+                {"policy": "structural-only-ok", "family": "scripts", "harness": "acc-report", "scopes": ["both", "project"]},
                 {"policy": "codex-adapter-needed", "family": "hooks", "missing_harness": "codex", "scopes": ["both", "project"]},
             ],
         })
@@ -135,8 +152,24 @@ def test_context_and_command_surfaces_are_not_misread_as_hook_parity(tmp_path: P
     status = rows["scripts/cos-status.sh"]
     assert status["harnesses"]["shell-ci"]["projected"] is True
     assert status["harnesses"]["shell-ci"]["commands"] == ["scripts/cos-status.sh"]
+    assert status["surfaces"]["cos-cli"]["projected"] is True
+    assert status["surfaces"]["cos-cli"]["surface_kind"] == "cli"
+    assert status["surfaces"]["cos-cli"]["json_contract"] is True
+    assert status["surfaces"]["cos-cli"]["exit_code_contract"] is True
     assert status["gap_policy"] == "shell-command-only"
     assert status["harnesses"]["claude"]["wired"] is False
+
+
+def test_report_and_ui_surfaces_are_observable_not_hook_runtime(tmp_path: Path) -> None:
+    rows = rows_by_primitive(make_repo(tmp_path))
+
+    status = rows["scripts/cos-status.sh"]
+    assert status["surfaces"]["acc-report"]["surface_kind"] == "report"
+    assert status["surfaces"]["acc-report"]["json_contract"] is True
+    assert status["surfaces"]["dashboard"]["surface_kind"] == "ui"
+    assert status["surfaces"]["dashboard"]["observable"] is True
+    assert status["surfaces"]["dashboard"]["operable"] is False
+    assert status["surfaces"]["dashboard"]["events"] == []
 
 
 def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
@@ -151,8 +184,18 @@ def test_cli_writes_json_and_markdown_reports(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     payload = json.loads((root / "docs" / "reports" / "primitive-harness-coverage-latest.json").read_text())
     assert payload["schema_version"] == "primitive-harness-coverage.v1"
-    assert payload["state_semantics"] == ["installed", "projected", "wired", "executable", "behavior-proven"]
+    assert payload["state_semantics"] == [
+        "installed",
+        "projected",
+        "wired",
+        "executable",
+        "behavior-proven",
+        "observable",
+        "operable",
+        "json-contract",
+        "exit-code-contract",
+    ]
     assert payload["summary"]["harness_wired_hooks"]["claude"] == 2
     assert payload["summary"]["harness_wired_hooks"]["codex"] == 2
     assert payload["summary"]["unclassified_gaps"] == 0
-    assert "Primitive Harness Coverage" in (root / "docs" / "reports" / "primitive-harness-coverage-latest.md").read_text()
+    assert "Primitive Surface Coverage" in (root / "docs" / "reports" / "primitive-harness-coverage-latest.md").read_text()

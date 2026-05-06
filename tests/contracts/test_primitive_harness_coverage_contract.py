@@ -28,7 +28,17 @@ def test_repository_harness_coverage_report_regenerates() -> None:
     payload = json.loads(REPORT.read_text())
     assert payload["schema_version"] == "primitive-harness-coverage.v1"
     assert payload["summary"]["total_primitives"] > 0
-    assert payload["state_semantics"] == ["installed", "projected", "wired", "executable", "behavior-proven"]
+    assert payload["state_semantics"] == [
+        "installed",
+        "projected",
+        "wired",
+        "executable",
+        "behavior-proven",
+        "observable",
+        "operable",
+        "json-contract",
+        "exit-code-contract",
+    ]
     assert {"claude", "codex", "shell-ci", "cursor", "vscode-copilot", "opencode", "cline", "aider"} <= set(payload["harnesses"])
     assert payload["summary"].get("unclassified_gaps", 0) == 0
     assert payload["summary"].get("gaps_by_policy", {}).get("behavior-proof-needed", 0) == 0
@@ -53,6 +63,10 @@ def test_repository_report_contains_required_example_rows() -> None:
         assert "codex" in row["harnesses"]
         assert "shell-ci" in row["harnesses"]
         assert "coverage" in row
+        assert "surfaces" in row
+        assert row["surfaces"]["cos-cli"]["surface_kind"] == "cli"
+        assert row["surfaces"]["acc-report"]["surface_kind"] == "report"
+        assert row["surfaces"]["dashboard"]["surface_kind"] == "ui"
 
 
 def test_harness_coverage_primitive_has_lifecycle_and_agent_skill() -> None:
@@ -66,3 +80,12 @@ def test_harness_coverage_primitive_has_lifecycle_and_agent_skill() -> None:
     assert skill_row["kind"] == "skill"
     assert "tests/unit/test_primitive_harness_coverage.py" in "\n".join(script_row["evidence_commands"])
     assert (REPO / "skills" / "primitive-harness-coverage" / "SKILL.md").is_file()
+
+
+def test_dashboard_consumes_surface_coverage_report_in_observe_only_mode() -> None:
+    api = (REPO / "dashboard" / "lib" / "cos-api.ts").read_text(encoding="utf-8")
+    page = (REPO / "dashboard" / "app" / "page.tsx").read_text(encoding="utf-8")
+    assert "primitive-harness-coverage-latest.json" in api
+    assert 'mode: "observe-only"' in api
+    assert "Primitive Surface Coverage" in page
+    assert "getPrimitiveSurfaceCoverageSummary" in page
