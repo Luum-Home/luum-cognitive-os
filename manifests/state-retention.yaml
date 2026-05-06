@@ -185,6 +185,44 @@ surfaces:
       The latest report is a derived summary for operators and service-mode
       gates. It is intentionally replace-in-place and should not accumulate.
 
+
+  - id: run-flight-recorder-traces
+    kind: artifact-pool
+    path: .cognitive-os/runs/*/trace.json
+    max_age: P7D
+    max_count: 100
+    reaper: manual
+    retention_mode: observe
+    tombstone: archive-file
+    owner_pid: false
+    owner_files:
+      - lib/trace_joiner.py
+      - scripts/cos-run-trace
+    documentation:
+      - docs/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md
+    rationale: >
+      Run traces are derived observability artifacts for service-mode debugging.
+      They retain refs to private content instead of raw payloads and should be
+      bounded before any cloud/service projection.
+
+  - id: run-flight-recorder-latest-report
+    kind: cache
+    path: .cognitive-os/reports/run-trace-latest.json
+    max_age: P7D
+    max_count: 1
+    reaper: manual
+    retention_mode: observe
+    tombstone: regenerate-from-source-metrics
+    owner_pid: false
+    owner_files:
+      - lib/trace_joiner.py
+      - scripts/cos-run-trace
+    documentation:
+      - docs/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md
+    rationale: >
+      The latest run trace report is a derived operator summary and should be
+      replaced in place rather than accumulating.
+
   - id: runtime-locks
     kind: lock
     path: .cognitive-os/runtime/*.lock*

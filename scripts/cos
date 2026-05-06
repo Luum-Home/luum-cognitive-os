@@ -15,6 +15,8 @@
 #   cos private-content check-projection -> scripts/private_content_audit.py --check-projection
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
+#   cos observe run                    -> scripts/cos-run-trace
+#   cos service readiness              -> scripts/cos-service-readiness-gate
 #   cos promote-from-telemetry          -> scripts/cos-promote-from-telemetry
 #   cos maintainer once                 -> scripts/cos-maintainer-agent --once
 #   cos state retention [flags]         -> scripts/state_retention_audit.py
@@ -138,6 +140,22 @@ case "$SUBCMD" in
     echo "cos: unknown reward-signal subcommand '${2:-}'. Try: cos reward-signal audit [--json|--strict]" >&2
     exit 1
     ;;
+  observe)
+    if [ "${2:-}" = "run" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-run-trace" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown observe subcommand '${2:-}'. Try: cos observe run [--session-id ID|--run-id ID] [--json]" >&2
+    exit 1
+    ;;
+  service)
+    if [ "${2:-}" = "readiness" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-service-readiness-gate" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown service subcommand '${2:-}'. Try: cos service readiness [--json]" >&2
+    exit 1
+    ;;
   performance-ledger)
     if [ "${2:-}" = "compile" ] || [ -z "${2:-}" ] || [[ "${2:-}" == --* ]]; then
       shift
@@ -200,6 +218,9 @@ Usage:
   cos private-content check-projection PATH [--destination cloud|local] [--json]
                                          Block unsafe private-content export/projection
   cos reward-signal audit [--json]        Audit ADR-204 reward signal quality
+  cos observe run [--session-id ID|--run-id ID] [--json]
+                                         Join metric streams into ADR-205 run trace
+  cos service readiness [--json]         Aggregate ADR-211 service-mode readiness gates
   cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
   cos promote-from-telemetry [--json]    Convert consumable telemetry into bounded proposals
   cos maintainer once --dry-run [--json] Run proposer-only maintainer loop once

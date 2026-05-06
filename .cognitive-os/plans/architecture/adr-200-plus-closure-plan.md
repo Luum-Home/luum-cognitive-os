@@ -36,9 +36,9 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 - [x] Add reward-signal quality validator and quarantine schema.
 - [x] Add fixtures for valid, suspect, and corrupt rows.
-- [ ] Add run-id / event-id trace schema.
-- [ ] Add flight-recorder latest report from cross-stream joins.
-- [ ] Smoke-test a headless run that emits a joined trace without dashboard dependency.
+- [x] Add run-id / event-id trace schema via `lib/trace_joiner.py`.
+- [x] Add flight-recorder latest report from cross-stream joins: `scripts/cos-run-trace`, `cos observe run`, `.cognitive-os/runs/<run_id>/trace.json`, `.cognitive-os/metrics/run-trace.jsonl`, and `.cognitive-os/reports/run-trace-latest.json`.
+- [x] Smoke-test a headless run that emits a joined trace without dashboard dependency and without raw private-content payloads.
 
 ## Phase 3 — Performance Ledger and Maintainer proposal loop (ADR-201)
 
@@ -60,7 +60,7 @@ Turn the ADR-200 through ADR-211 design batch into executable, tested Cognitive 
 
 - [ ] Add Maintainer experiment/canary schema.
 - [ ] Add outcome-failure queue and regression handling.
-- [ ] Add service-mode readiness CLI that composes private-content, retention, signal, trace, ledger, claims, skill, and experiment gates.
+- [x] Add initial service-mode readiness CLI that composes ADR-202 private content, ADR-205 trace, ADR-201 ledger, ADR-204 reward signals, ADR-201 Maintainer propose-only, ADR-209 experiment schema, ADR-164 mutation boundary, cloud private-content smoke, and ADR-206 public claim gate.
 
 ## Phase 6 — Fleet/cloud confidence boundary (ADR-210)
 
@@ -79,5 +79,6 @@ python3 -m pytest tests/unit/test_performance_ledger_signal_quality.py -q
 python3 -m pytest tests/unit/test_performance_ledger.py -q
 python3 -m pytest tests/unit/test_promote_from_telemetry.py -q
 python3 -m pytest tests/behavior/test_maintainer_agent_loop.py -q
-python3 -m pytest tests/behavior/test_service_mode_readiness_gate.py -q
+python3 -m pytest tests/unit/test_trace_joiner.py tests/behavior/test_run_flight_recorder.py -q
+python3 -m pytest tests/unit/test_service_mode_readiness_gate.py tests/behavior/test_service_mode_readiness_gate.py -q
 ```
