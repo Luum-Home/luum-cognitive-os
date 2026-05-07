@@ -121,6 +121,8 @@ def build_report(metrics_dir: Path = METRICS, *, window_hours: int = DEFAULT_WIN
     files = sorted(metrics_dir.glob("*.jsonl")) if metrics_dir.exists() else []
     for path in files:
         for event in iter_jsonl(path):
+            if not isinstance(event, dict):
+                continue
             if since is not None:
                 ts = parse_ts(event.get("timestamp") or event.get("ts") or event.get("created_at"))
                 if ts is not None and ts < since:
