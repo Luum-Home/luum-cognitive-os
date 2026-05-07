@@ -1,0 +1,48 @@
+schema_version: pre-agent-snapshot/v2
+status: active
+owner: platform-safety
+adr: ADR-222
+
+hook_ordering:
+  PreToolUse:Agent:
+    must_run_after:
+      - agent-prelaunch.sh
+    must_run_before:
+      - agent-launch-confirmed.sh
+      - PostToolUse:Agent:post-agent-snapshot-restore.sh
+
+phases:
+  plan:
+    when: PreToolUse:Agent after preflight
+    hook: pre-agent-snapshot.sh
+    mutates: .cognitive-os/runtime/pre-agent-plan-<agent_id>.json
+    git_state_mutates: false
+  commit:
+    when: end-of-PreToolUse-with-lock
+    hook: agent-launch-confirmed.sh
+    mutates: git stash
+    git_state_mutates: true
+    requires_plan: true
+  restore:
+    when: PostToolUse:Agent
+    hook: post-agent-snapshot-restore.sh
+    mutates: git stash apply
+    git_state_mutates: true
+
+orphans:
+  plan_without_marker:
+    detect: plan file exists, no marker, age > plan_ttl_seconds
+    plan_ttl_seconds: 300
+    action: delete
+  marker_without_plan:
+    detect: marker file exists, plan deleted
+    action: log_warning
+  stash_without_marker:
+    detect: auto-pre-agent-* stash with no live marker pointing at it
+    action: emit stash_orphan event
+
+invariants:
+  - phase_1_must_not_call_git_stash
+  - phase_2_refuses_without_plan
+  - phase_3_tolerates_plan_without_marker
+  - stash_identity_is_sha

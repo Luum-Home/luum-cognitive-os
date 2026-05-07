@@ -262,6 +262,7 @@ cc_driver_emit() {
     "hooks/native-agent-heartbeat.sh"       "false" \
     "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/cross-session-event-emit.sh"      "true"  \
+    "hooks/agent-launch-confirmed.sh"        "false" \
   )
 
   local post_all
