@@ -71,6 +71,36 @@ if [ -n "$TOOL_USE_ID" ] && [ "$TOOL_USE_ID" != "null" ]; then
   AGENT_LEDGER_ID="$TOOL_USE_ID"
 fi
 
+# ADR-225: write/cloud/detached agents must run on their canonical task branch
+# once the lifecycle lane declares branch-per-task enforcement. Generic legacy
+# Agent launches stay advisory unless they explicitly opt into a write/cloud lane.
+BRANCH_MODE=$(echo "$INPUT" | jq -r '.tool_input.lifecycle_mode // .tool_input.agent_mode // .tool_input.execution_mode // empty' 2>/dev/null | head -1 || true)
+WRITE_CAPABLE=$(echo "$INPUT" | jq -r '.tool_input.write_capable // .tool_input.can_write // false' 2>/dev/null | head -1 || true)
+BRANCH_ENFORCE=0
+if [ "${COS_BRANCH_PER_TASK_ENFORCE:-0}" = "1" ]; then
+  BRANCH_ENFORCE=1
+elif echo "$BRANCH_MODE" | grep -qiE '^(write|cloud|detached|branch-per-task)$' 2>/dev/null; then
+  BRANCH_ENFORCE=1
+elif [ "$WRITE_CAPABLE" = "true" ] && echo "$DESCRIPTION" | grep -qiE 'BRANCH_PER_TASK: true|WRITE_AGENT: true' 2>/dev/null; then
+  BRANCH_ENFORCE=1
+fi
+
+if [ "$BRANCH_ENFORCE" -eq 1 ] && [ "$ALLOW_RO_ARG" != "--allow-read-only" ] && [ "${COS_SKIP_BRANCH_PER_TASK_GATE:-0}" != "1" ]; then
+  OS_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+  if command -v python3 >/dev/null 2>&1 && [ -x "$OS_ROOT/scripts/cos-branch-task-check" ]; then
+    set +e
+    BRANCH_CHECK_OUT=$("$OS_ROOT/scripts/cos-branch-task-check" --project-dir "$PROJECT_DIR" --task-id "$TASK_ID" --json --strict 2>&1)
+    BRANCH_CHECK_RC=$?
+    set -e
+    if [ "$BRANCH_CHECK_RC" -ne 0 ]; then
+      echo "ADR-225 BRANCH-PER-TASK PREFLIGHT BLOCK: write/cloud agent must run on canonical task branch." >&2
+      echo "$BRANCH_CHECK_OUT" >&2
+      echo "Command: scripts/cos agent worktree prepare --task-id '$TASK_ID' --session-id '$SESSION_ID' --json" >&2
+      exit "$BRANCH_CHECK_RC"
+    fi
+  fi
+fi
+
 # ADR-220: before any Agent launch, prove linked worktrees are not silently
 # divergent with overlapping dirty paths. This catches the "fix exists on main,
 # stale worktree still shows old content" failure before another agent observes
