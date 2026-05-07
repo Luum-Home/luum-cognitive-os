@@ -255,3 +255,5 @@
 - [x] Expected test skips are classified and enforced through ADR-166, `manifests/test-skip-registry.yaml`, and the pytest summary wrapper so new unclassified skips fail instead of silently growing.
 
 - [x] ADR-218 history sanitization dry-run substrate exists (`cos history sanitize --dry-run --json`); execute rewrite remains operator-gated.
+
+- [x] ADR-217 adoption-truth substrate exists (`cos adoption audit --json`); readiness/downstream consumption and baseline remediation remain pending.

@@ -17,6 +17,7 @@
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos license audit                   -> scripts/cos-cross-stack-license-audit
 #   cos secret audit                    -> scripts/cos-cross-stack-secret-audit
+#   cos adoption audit                  -> scripts/cos-cross-stack-adoption-truth
 #   cos history sanitize                -> scripts/cos-history-sanitization
 #   cos tool-discovery preuse        -> scripts/cos-tool-discovery-preuse
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
@@ -171,6 +172,14 @@ case "$SUBCMD" in
     echo "cos: unknown secret subcommand '${2:-}'. Try: cos secret audit [--json|--strict]" >&2
     exit 1
     ;;
+  adoption)
+    if [ "${2:-}" = "audit" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-cross-stack-adoption-truth" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown adoption subcommand '${2:-}'. Try: cos adoption audit [--json|--strict]" >&2
+    exit 1
+    ;;
   history)
     if [ "${2:-}" = "sanitize" ]; then
       shift 2
@@ -287,6 +296,7 @@ Usage:
   cos dependency adoption-gate [--staged|--audit|--json]
                                          Enforce ADR-208 pre-adoption evidence for dependency changes
   cos secret audit [--json|--strict]     Audit ADR-215 secret scanner posture and sensitive surfaces
+  cos adoption audit [--json|--strict]   Audit ADR-217 lockfile/NOTICE/docs adoption truth
   cos history sanitize [--dry-run|--execute] [--json]
                                          Audit ADR-218 pre-public git history sanitization plan
   cos observe run [--session-id ID|--run-id ID] [--json]
