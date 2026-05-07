@@ -17,6 +17,7 @@
 #   cos reward-signal audit            -> scripts/cos-reward-signal-audit
 #   cos license audit                   -> scripts/cos-cross-stack-license-audit
 #   cos secret audit                    -> scripts/cos-cross-stack-secret-audit
+#   cos history sanitize                -> scripts/cos-history-sanitization
 #   cos tool-discovery preuse        -> scripts/cos-tool-discovery-preuse
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos observe run                    -> scripts/cos-run-trace
@@ -170,6 +171,14 @@ case "$SUBCMD" in
     echo "cos: unknown secret subcommand '${2:-}'. Try: cos secret audit [--json|--strict]" >&2
     exit 1
     ;;
+  history)
+    if [ "${2:-}" = "sanitize" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-history-sanitization" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown history subcommand '${2:-}'. Try: cos history sanitize [--dry-run|--execute] [--json]" >&2
+    exit 1
+    ;;
   tool-discovery)
     if [ "${2:-}" = "preuse" ]; then
       shift 2
@@ -278,6 +287,8 @@ Usage:
   cos dependency adoption-gate [--staged|--audit|--json]
                                          Enforce ADR-208 pre-adoption evidence for dependency changes
   cos secret audit [--json|--strict]     Audit ADR-215 secret scanner posture and sensitive surfaces
+  cos history sanitize [--dry-run|--execute] [--json]
+                                         Audit ADR-218 pre-public git history sanitization plan
   cos observe run [--session-id ID|--run-id ID] [--json]
                                          Join metric streams into ADR-205 run trace
   cos service readiness [--json]         Aggregate ADR-211 service-mode readiness gates

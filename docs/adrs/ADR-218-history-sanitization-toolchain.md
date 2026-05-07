@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — slice 1 dry-run substrate active
 **Date**: 2026-05-06
 **Related**: ADR-202, ADR-203, ADR-211, ADR-215, ADR-055b
 **Source**: Operator question — *"cómo depuramos lo que está en git sobre datos sensibles y estos cambios de licencias sin crear un repo nuevo?"*
@@ -16,7 +16,7 @@ The 2026-05-06 secrets audit
 that the working tree is clean of hard secrets, but git **history** still
 contains:
 
-- Operator personal email (`2144218+MatiasNAmendola@users.noreply.github.com`) in old commits
+- Operator personal email (`<operator-email>`) in old commits
   (HEAD versions of the 9 preserve-manifest files were fixed via `sed`, but
   the old blobs still carry the email).
 - Operator absolute paths (`${HOME_PREFIX}-${PROJECT_PATH}-${REPO}/...`)
@@ -63,7 +63,7 @@ owner: platform-safety
 
 # Each rule: substitution applied to all commit content via git-filter-repo --replace-text
 text_replacements:
-  - pattern: "2144218+MatiasNAmendola@users.noreply.github.com"
+  - pattern: "$COS_HISTORY_SANITIZE_OPERATOR_EMAIL"
     replacement: "2144218+MatiasNAmendola@users.noreply.github.com"
     rationale: "operator personal email — replaced in HEAD via sed; history sanitization replaces in all blobs"
   - pattern: "${HOME_PREFIX}-${PROJECT_PATH}-${REPO}"
@@ -130,6 +130,17 @@ cos history sanitize --execute
 - **Preserve patterns are enforced**: if a manifest replacement would also
   match a preserve pattern, the CLI refuses to execute and asks operator
   to refine.
+
+## Implementation status — 2026-05-06
+
+Active first slice:
+
+- `manifests/history-sanitization.yaml` declares env-backed replacements for operator email<home>/<repo> path, sensitive-history regexes, preserve patterns, backup policy, and destructive execution policy.
+- `lib/history_sanitization.py` emits `history-sanitization-report/v1`, counts historical candidate hits without materializing full blob contents, detects replacement-vs-preserve conflicts, and blocks execute mode unless `COS_ALLOW_DESTRUCTIVE_GIT=1`.
+- `scripts/cos-history-sanitization` plus `scripts/cos history sanitize` expose the dry-run CLI.
+- `tests/unit/test_history_sanitization.py` and `tests/behavior/test_history_sanitization_cli.py` cover manifest loading, unresolved env warnings, non-mutating dry-run, destructive-env refusal, preserve conflict blocking, and route smoke.
+
+Not yet active: live `git-filter-repo` rewrite, mirror-backup creation, interactive confirmation prompt, installer wiring, and operator runbook. This is intentional: the automated part can now detect and plan history scrubbing, but mutating public history remains operator-approved only.
 
 ## Consequences
 
