@@ -38,13 +38,13 @@ Developer --> Cognitive OS --> AI Assistant (any)
 
 3. **Multiple agents in parallel** — Instead of 1 developer working, 12 simultaneous coordinated agents. What takes months, takes hours. Each agent is a specialist in its task.
 
-4. **Self-improving** — Learns from its mistakes. Detects failure patterns, updates its procedures, and optimizes which AI model to use for each type of task. Each session is more efficient than the last.
+4. **Telemetry-guided** — Detects failure patterns and records skill/model outcomes so maintainers can approve safer procedure and routing changes. Automatic mutation is not claimed for v1.
 
 5. **Enterprise security** — Sensitive data detection, dangerous action blocking, complete audit trail. Agents cannot access production, leak secrets, or execute destructive commands.
 
 6. **Works with any tool** — You're not locked into one IDE. Compatible with the 7 most popular editors on the market. Your investment in rules, knowledge, and procedures moves with you.
 
-7. **End-to-end automation** — From ticket to deployed code, with no manual intervention. Pipelines for new features, bug fixes, migrations, and deploys.
+7. **Governed automation** — From ticket to reviewed code with explicit quality gates, preservation checks, and operator approval where risk is high.
 
 ## Success Story
 
@@ -71,7 +71,7 @@ The platform had an Express.js monolith with 170 endpoints, 14 integrations with
 
 ### No direct competitor exists
 
-Cognitive OS is the first system to combine coding agent capabilities, MAPE-K self-healing, persistent cross-session memory, self-improving metrics, quality governance (44 rules, 41 hooks), and autonomous tool discovery in one integrated system.
+Cognitive OS combines coding-agent execution, MAPE-K-inspired self-healing patterns, persistent cross-session memory, telemetry-driven improvement proposals, quality governance, and tool-discovery gates in one integrated system.
 
 Comparing Cognitive OS to coding tools (Copilot, Cursor, Aider) is a category error — those are code editors/assistants, not agent operating systems. Cognitive OS can use them as execution backends.
 
@@ -82,10 +82,10 @@ The honest comparison is against the stack you would need to build and maintain 
 | Capability | Without Cognitive OS (DIY) | With Cognitive OS |
 |---|---|---|
 | Write code | Claude Code / Aider / Cursor | Built-in (any LLM) |
-| Auto-repair errors | Manual + StackStorm/Rundeck | MAPE-K loop + remediation registry |
+| Error repair | Manual + StackStorm/Rundeck | MAPE-K-inspired remediation registry with governed execution |
 | Cross-session memory | Nothing (lost every session) | Engram (persistent, searchable) |
 | Quality gates | Custom CI/CD pipeline | 44 rules + 41 hooks |
-| Metrics & KPIs | Grafana + custom dashboards | Built-in + auto-calibrating |
+| Metrics & KPIs | Grafana + custom dashboards | Built-in telemetry plus reviewed calibration proposals |
 | Tool discovery | Manual research | Weekly auto-scan |
 | Self-improvement | Doesn't exist | Built-in (feedback loops) |
 | Cost tracking | Manual | Built-in per-skill/model |

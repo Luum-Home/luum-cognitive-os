@@ -1,0 +1,37 @@
+schema_version: public-claim-evidence/v1
+adr: ADR-206
+status: active
+scope:
+  include:
+    - README.md
+    - docs/business/executive-summary.md
+    - docs/business/kubernetes-for-agents.md
+    - docs/business/value-proposition.md
+    - docs/business/features.md
+  exclude:
+    - docs/business/competitive-reassessment-openclaw-hermes-2026-04.md
+policy:
+  high_risk_patterns:
+    - autonomous self-improvement
+    - automatic reconfiguration
+    - autonomous tool discovery
+    - no manual intervention
+    - auto-calibrating
+    - self-improving
+    - self improving
+    - skill evolution
+    - cross-instance learning
+    - MAPE-K
+  allowed_context_patterns:
+    - not autonomous
+    - governed
+    - advisory
+    - inspired
+    - proposal
+    - propose-only
+    - human approval
+    - future work
+    - pending
+    - roadmap
+    - not claimed
+
