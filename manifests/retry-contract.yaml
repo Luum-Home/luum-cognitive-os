@@ -1,0 +1,24 @@
+schema_version: retry-contract/v1
+status: active
+owner: platform-orchestration
+failure_classes:
+  connection_layer:
+    max_attempts: 4
+    backoff: exponential_with_jitter
+  rate_limit:
+    max_attempts: 6
+    backoff: respect_retry_after_header_else_exponential
+  provider_5xx:
+    max_attempts: 3
+    backoff: exponential_with_jitter
+  validation_error:
+    max_attempts: 2
+    backoff: immediate
+    diversity_required: true
+  auth_error:
+    max_attempts: 0
+  quota_exceeded:
+    max_attempts: 0
+  unknown:
+    max_attempts: 1
+    diversity_required: true
