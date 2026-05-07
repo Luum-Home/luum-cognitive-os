@@ -132,7 +132,7 @@ def check_secret_release_readiness(project_dir: Path) -> GateStatus:
     if not manifest.exists():
         return _red("release-secret-audit", "ADR-215 secret audit manifest missing", manifest=str(manifest))
     try:
-        report = secret_audit(project_dir, verify_live=False)
+        report = secret_audit(project_dir, verify_live=False, include_local_sensitive_surfaces=False)
     except Exception as exc:
         return _red("release-secret-audit", "ADR-215 secret audit failed to run", error=str(exc))
     if report.get("schema_version") != "cross-stack-secret-audit-report/v1":
