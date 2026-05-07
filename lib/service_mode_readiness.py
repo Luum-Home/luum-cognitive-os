@@ -9,6 +9,7 @@ from typing import Any
 
 from lib.cross_stack_secret_audit import audit as secret_audit
 from lib.performance_ledger import repo_root
+from lib.public_claim_gate import scan as public_claim_scan
 from lib.reward_signal_quality import audit_stream, load_contract, summarize
 from lib.worktree_audit import audit as worktree_audit
 from scripts.private_content_audit import build_report as private_content_report
@@ -188,6 +189,18 @@ def check_cloud_private_content_smoke(project_dir: Path) -> GateStatus:
 
 
 def check_public_claim_gate(project_dir: Path) -> GateStatus:
+    try:
+        public_report = public_claim_scan(project_dir)
+    except Exception as exc:
+        return _red("public-claim-gate", "ADR-206 public claim gate failed to run", error=str(exc))
+    if public_report.get("status") != "pass":
+        return _red(
+            "public-claim-gate",
+            "ADR-206 public docs contain unbacked high-risk autonomous/self-improvement claims",
+            finding_count=public_report.get("finding_count"),
+            findings=public_report.get("findings", [])[:10],
+        )
+
     scripts_dir = project_dir / "scripts"
     if str(scripts_dir) not in sys.path:
         sys.path.insert(0, str(scripts_dir))
@@ -199,7 +212,7 @@ def check_public_claim_gate(project_dir: Path) -> GateStatus:
         report = build_report(project_dir / "manifests" / "primitive-lifecycle.yaml", project_dir / "manifests" / "external-adoption-evidence.yaml")
     except Exception as exc:
         return _red("public-claim-gate", "ADR-206 claim-signature audit failed to run", error=str(exc))
-    if report.get("status") == "fail" or report.get("signed_claim_count", 0) < report.get("claim_count", 1):
+    if report.get("status") == "fail" or report.get("warn_count", 0):
         return _red(
             "public-claim-gate",
             "Public claims are not fully signed by repository evidence",
@@ -209,7 +222,14 @@ def check_public_claim_gate(project_dir: Path) -> GateStatus:
             fail_count=report.get("fail_count"),
             warn_count=report.get("warn_count"),
         )
-    return _green("public-claim-gate", "Public claim signature audit passes", signed_claim_count=report.get("signed_claim_count"), claim_count=report.get("claim_count"))
+    return _green(
+        "public-claim-gate",
+        "Public claim gate passes; unsigned bilateral external-help claim remains info-only and must stay out of unqualified public copy",
+        signed_claim_count=report.get("signed_claim_count"),
+        claim_count=report.get("claim_count"),
+        public_claim_findings=public_report.get("finding_count"),
+        info_count=report.get("info_count"),
+    )
 
 
 def build_readiness_report(project_dir: Path | None = None) -> dict[str, Any]:
