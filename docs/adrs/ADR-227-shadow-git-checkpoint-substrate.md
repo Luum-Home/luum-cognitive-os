@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — Slice A implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-223 (agent lifecycle reconstruction — reserved), ADR-224 (shadow-state snapshots — reserved); depends on ADR-226 (event-sourced session bus)
 **Source**: [`docs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Hermes, Kilo.ai, and `git-shadow` independently converged on the same primitive: a bare git repo *outside* the project, `git write-tree` after every tool call, tree SHA stored alongside conversation context. No hypervisor, no cloud, no service.
@@ -198,6 +198,13 @@ The tests must prove:
 7. **Slice G — Operator runbook** at `docs/runbooks/shadow-git-rollback.md`. Three canonical recipes; troubleshooting for "I rolled back but the conversation didn't" → mode=conversation_only.
 
 Total: ~290 LOC.
+
+## Implementation status
+
+- **2026-05-07 — Slice A implemented with ADR-224**: `lib/shadow_git.py` creates off-repo bare repositories, snapshots workspace files with isolated `GIT_INDEX_FILE`, generates restore previews, and performs preview-gated `files_only` restore.
+- **CLI**: `scripts/cos-rollback` and `scripts/cos rollback` expose `--snapshot`, `--preview`, and `--restore --yes` flows.
+- **Safety-net boundary**: no git stash mutation and no user `.git/index` mutation during snapshot; storage is outside the project tree.
+- **Deferred**: conversation truncation, combined atomic files+conversation restore, PostToolUse event-envelope wiring, retention/reaper integration.
 
 ## Open questions
 

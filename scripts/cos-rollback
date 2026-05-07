@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.shadow_git import RestorePreviewRequired, ShadowGitError, preview, restore, snapshot  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Preview or restore ADR-227 shadow-git checkpoints.")
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--session-id", required=True)
+    parser.add_argument("--snapshot", action="store_true")
+    parser.add_argument("--tree-sha")
+    parser.add_argument("--preview", action="store_true")
+    parser.add_argument("--restore", action="store_true")
+    parser.add_argument("--preview-path")
+    parser.add_argument("--yes", action="store_true")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    try:
+        if args.snapshot:
+            record = snapshot(args.project_dir, args.session_id).to_dict() | {"status": "ok"}
+        elif args.preview:
+            if not args.tree_sha:
+                raise ShadowGitError("--tree-sha required for --preview")
+            path = preview(args.project_dir, args.session_id, args.tree_sha)
+            record = {"schema_version": "shadow-git-preview/v1", "status": "ok", "preview_path": str(path), "tree_sha": args.tree_sha}
+        elif args.restore:
+            if not args.tree_sha:
+                raise ShadowGitError("--tree-sha required for --restore")
+            restore(args.project_dir, args.session_id, args.tree_sha, preview_path=args.preview_path, yes=args.yes)
+            record = {"schema_version": "shadow-git-restore/v1", "status": "ok", "tree_sha": args.tree_sha}
+        else:
+            raise ShadowGitError("choose one of --snapshot, --preview, --restore")
+    except (ShadowGitError, RestorePreviewRequired) as exc:
+        record = {"schema_version": "shadow-git/v1", "status": "error", "error": str(exc)}
+        if args.json:
+            print(json.dumps(record, sort_keys=True))
+        else:
+            print(record["error"], file=sys.stderr)
+        return 2
+    if args.json:
+        print(json.dumps(record, sort_keys=True))
+    else:
+        print(record)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
