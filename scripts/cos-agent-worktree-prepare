@@ -9,23 +9,40 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.agent_lifecycle import AgentLifecycleError, prepare_agent_worktree  # noqa: E402
+from lib.agent_lifecycle import AgentLifecycleError, cleanup_agent_worktrees, lifecycle_projection, prepare_agent_worktree  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Prepare an ADR-223 dedicated worktree for a write-capable agent.")
     parser.add_argument("--project-dir", required=True)
-    parser.add_argument("--task-id", required=True)
-    parser.add_argument("--session-id", required=True)
+    parser.add_argument("--task-id")
+    parser.add_argument("--session-id")
     parser.add_argument("--worktree-root")
+    parser.add_argument("--branch-prefix", default="codex/agent")
+    parser.add_argument("--cleanup", action="store_true", help="Clean up COS-declared agent worktrees instead of preparing one")
+    parser.add_argument("--execute", action="store_true", help="Execute cleanup; default is dry-run")
+    parser.add_argument("--max-age-seconds", type=int, default=24 * 3600)
+    parser.add_argument("--projection", choices=["claude-code", "codex", "opencode", "openclaw", "generic"])
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
+    if args.cleanup:
+        records = [item.to_dict() for item in cleanup_agent_worktrees(args.project_dir, execute=args.execute, max_age_seconds=args.max_age_seconds)]
+        payload = {"schema_version": "agent-lifecycle-cleanup/v1", "status": "ok", "execute": args.execute, "items": records}
+        print(json.dumps(payload, sort_keys=True) if args.json else "\n".join(f"{r['action']} {r['worktree_path']}" for r in records))
+        return 0
+    if args.projection:
+        payload = lifecycle_projection(harness=args.projection, project_dir=args.project_dir)
+        print(json.dumps(payload, sort_keys=True) if args.json else payload["prelaunch_contract"])
+        return 0
+    if not args.task_id or not args.session_id:
+        parser.error("--task-id and --session-id are required unless --cleanup or --projection is used")
     try:
         record = prepare_agent_worktree(
             args.project_dir,
             task_id=args.task_id,
             session_id=args.session_id,
             worktree_root=args.worktree_root,
+            branch_prefix=args.branch_prefix,
         )
     except AgentLifecycleError as exc:
         if args.json:
