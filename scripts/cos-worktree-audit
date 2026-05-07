@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="."
+if [ "${1:-}" = "--project-dir" ]; then
+  PROJECT_DIR="$2"
+  shift 2
+fi
+exec python3 "$SCRIPT_DIR/../lib/worktree_audit.py" --project-dir "$PROJECT_DIR" "$@"
