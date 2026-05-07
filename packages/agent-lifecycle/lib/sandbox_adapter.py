@@ -131,6 +131,15 @@ def build_sandbox_command(
     raise SandboxUnavailable("no supported sandbox backend found; install bwrap or use macOS sandbox-exec")
 
 
-def run_sandboxed(command: list[str], *, workspace: str | Path, allow_fallback: bool = False, timeout: int = 30) -> subprocess.CompletedProcess[str]:
-    plan = build_sandbox_command(command, workspace=workspace, allow_fallback=allow_fallback)
+def run_sandboxed(
+    command: list[str],
+    *,
+    workspace: str | Path,
+    backend: str | None = None,
+    writable_roots: list[str] | None = None,
+    network: bool = False,
+    allow_fallback: bool = False,
+    timeout: int = 30,
+) -> subprocess.CompletedProcess[str]:
+    plan = build_sandbox_command(command, workspace=workspace, backend=backend, writable_roots=writable_roots, network=network, allow_fallback=allow_fallback)
     return subprocess.run(plan.command, cwd=str(Path(workspace).resolve()), text=True, capture_output=True, timeout=timeout)
