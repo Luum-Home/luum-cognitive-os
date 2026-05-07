@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -82,7 +83,6 @@ def _has_confidence_source(row: dict[str, Any], stream_cfg: dict[str, Any]) -> b
 def validate_row(stream: str, row: dict[str, Any], stream_cfg: dict[str, Any], known_subjects: set[str] | None = None, line_number: int | None = None) -> SignalValidation:
     reasons: list[str] = []
     status = "valid"
-    known_subjects = known_subjects or set()
 
     for field_name in stream_cfg.get("required_fields", []) or []:
         if _is_missing(row.get(field_name)):
@@ -97,7 +97,7 @@ def validate_row(stream: str, row: dict[str, Any], stream_cfg: dict[str, Any], k
         if not isinstance(subject_id, str) or not subject_id.strip():
             reasons.append("missing_skill_id")
             status = "corrupt"
-        elif known_subjects and subject_id not in known_subjects:
+        elif known_subjects is not None and subject_id not in known_subjects:
             reasons.append("unknown_skill_id")
             status = "corrupt"
 
@@ -164,7 +164,7 @@ def audit_stream(project_dir: Path, contract: dict[str, Any], stream: str, limit
     if not isinstance(stream_cfg, dict):
         raise ValueError(f"unknown reward signal stream: {stream}")
     path = project_dir / str(stream_cfg.get("path"))
-    known_subjects = known_skill_ids(project_dir, contract) if stream_cfg.get("known_subject_source") == "skills_dirs" else set()
+    known_subjects = known_skill_ids(project_dir, contract) if stream_cfg.get("known_subject_source") == "skills_dirs" else None
     results: list[SignalValidation] = []
     for index, (line_number, row, error) in enumerate(read_jsonl(path) or [], 1):
         if limit is not None and index > limit:
@@ -185,3 +185,66 @@ def summarize(results: Iterable[SignalValidation]) -> dict[str, int]:
         if result.eligible_for_rollup:
             summary["eligible_for_rollup"] += 1
     return summary
+
+
+def utc_stamp() -> str:
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def repair_stream(project_dir: Path, contract: dict[str, Any], stream: str, *, execute: bool = False, archive_root: Path | None = None) -> dict[str, Any]:
+    """Archive-first cleanup for ADR-204 reward streams.
+
+    Invalid/suspect rows are copied to recovery before the source JSONL is
+    rewritten with only rollup-eligible rows. Dry-run reports the planned split.
+    """
+    stream_cfg = (contract.get("streams", {}) or {}).get(stream)
+    if not isinstance(stream_cfg, dict):
+        raise ValueError(f"unknown reward signal stream: {stream}")
+    path = project_dir / str(stream_cfg.get("path"))
+    results = audit_stream(project_dir, contract, stream)
+    eligible_lines = {result.line_number for result in results if result.eligible_for_rollup}
+    quarantined_lines = {result.line_number for result in results if not result.eligible_for_rollup}
+    existing_lines = path.read_text(encoding="utf-8", errors="replace").splitlines() if path.exists() else []
+    archive_dir = archive_root or project_dir / ".cognitive-os" / "recovery" / f"reward-signal-cleanup-{utc_stamp()}"
+    archive_path = archive_dir / f"{stream}.quarantined.jsonl"
+    kept_path = archive_dir / f"{stream}.kept.jsonl"
+
+    if execute and existing_lines:
+        archive_dir.mkdir(parents=True, exist_ok=True)
+        archive_path.write_text(
+            "\n".join(line for idx, line in enumerate(existing_lines, 1) if idx in quarantined_lines) + ("\n" if quarantined_lines else ""),
+            encoding="utf-8",
+        )
+        kept = [line for idx, line in enumerate(existing_lines, 1) if idx in eligible_lines]
+        kept_path.write_text("\n".join(kept) + ("\n" if kept else ""), encoding="utf-8")
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        tmp.write_text("\n".join(kept) + ("\n" if kept else ""), encoding="utf-8")
+        tmp.replace(path)
+
+    return {
+        "stream": stream,
+        "path": str(path),
+        "execute": bool(execute),
+        "archive_path": str(archive_path),
+        "kept_path": str(kept_path),
+        "summary_before": summarize(results),
+        "kept_rows": len(eligible_lines),
+        "quarantined_rows": len(quarantined_lines),
+    }
+
+
+def repair_streams(project_dir: Path, contract: dict[str, Any], streams: list[str] | None = None, *, execute: bool = False) -> dict[str, Any]:
+    selected = streams or sorted((contract.get("streams", {}) or {}).keys())
+    archive_dir = project_dir / ".cognitive-os" / "recovery" / f"reward-signal-cleanup-{utc_stamp()}"
+    repairs = [repair_stream(project_dir, contract, stream, execute=execute, archive_root=archive_dir) for stream in selected]
+    return {
+        "schema_version": "reward-signal-repair/v1",
+        "project_dir": str(project_dir),
+        "execute": bool(execute),
+        "archive_dir": str(archive_dir),
+        "streams": repairs,
+        "summary": {
+            "kept_rows": sum(item["kept_rows"] for item in repairs),
+            "quarantined_rows": sum(item["quarantined_rows"] for item in repairs),
+        },
+    }
