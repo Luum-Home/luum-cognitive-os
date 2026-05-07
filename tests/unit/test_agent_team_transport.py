@@ -24,3 +24,61 @@ def test_nats_and_a2a_are_opt_in_upgrade_targets_without_default_deps() -> None:
 def test_transport_plan_rejects_unsafe_team_name() -> None:
     with pytest.raises(ValueError):
         transport_plan(team_name="../bad", backend="file")
+
+import json
+import threading
+from http.server import BaseHTTPRequestHandler, HTTPServer
+
+from lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport
+
+
+class FakeNatsClient:
+    def __init__(self) -> None:
+        self.published: list[tuple[str, bytes]] = []
+
+    def publish(self, subject: str, payload: bytes) -> None:
+        self.published.append((subject, payload))
+
+
+def test_nats_transport_publishes_to_session_inbox_subject() -> None:
+    client = FakeNatsClient()
+    result = NatsAgentTeamTransport(team_name="release", client=client).send_inbox(
+        session_id="worker",
+        payload={"type": "handoff", "id": "h1"},
+    )
+    assert result.delivered is True
+    assert client.published[0][0] == "cos.teams.release.inbox.worker"
+    assert json.loads(client.published[0][1])["type"] == "handoff"
+
+
+def test_a2a_http_transport_posts_message_envelope() -> None:
+    received: dict[str, object] = {}
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_POST(self):  # noqa: N802
+            length = int(self.headers["Content-Length"])
+            received.update(json.loads(self.rfile.read(length)))
+            self.send_response(202)
+            self.end_headers()
+            self.wfile.write(b"accepted")
+
+        def log_message(self, *args):  # noqa: ANN001
+            return
+
+    server = HTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        endpoint = f"http://127.0.0.1:{server.server_port}/a2a"
+        result = A2AHttpAgentTeamTransport(team_name="release", endpoint=endpoint).send_inbox(
+            session_id="worker",
+            payload={"type": "handoff", "id": "h1"},
+        )
+    finally:
+        server.shutdown()
+        thread.join(timeout=2)
+
+    assert result.delivered is True
+    assert received["transport"] == "a2a-http"
+    assert received["recipient"] == "worker"
+    assert received["message_part"] == {"type": "handoff", "id": "h1"}
