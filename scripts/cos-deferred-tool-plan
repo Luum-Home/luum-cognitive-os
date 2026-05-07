@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.deferred_tool_loading import dumps_json, plan_tool_loading, toolsearch_index  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Plan ADR-236 deferred tool loading.")
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--estimated-tool-tokens", type=int, default=0)
+    parser.add_argument("--index", action="store_true")
+    args = parser.parse_args()
+    if args.index:
+        print(dumps_json(toolsearch_index(args.project_dir)))
+    else:
+        print(dumps_json(plan_tool_loading(args.project_dir, estimated_tool_tokens=args.estimated_tool_tokens)))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
