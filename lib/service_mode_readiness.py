@@ -10,6 +10,7 @@ from typing import Any
 from lib.cross_stack_secret_audit import audit as secret_audit
 from lib.performance_ledger import repo_root
 from lib.reward_signal_quality import audit_stream, load_contract, summarize
+from lib.worktree_audit import audit as worktree_audit
 from scripts.private_content_audit import build_report as private_content_report
 from scripts.private_content_audit import classify_path, load_manifest as load_private_manifest, projection_decision
 
@@ -69,6 +70,31 @@ def check_run_trace(project_dir: Path) -> GateStatus:
     if int(payload.get("event_count") or 0) <= 0:
         return _red("run-flight-recorder", "ADR-205 latest run trace has no joined events", event_count=payload.get("event_count"))
     return _green("run-flight-recorder", "ADR-205 run trace latest report is present", event_count=payload.get("event_count"), streams=payload.get("streams", {}))
+
+
+def check_worktree_divergence(project_dir: Path) -> GateStatus:
+    try:
+        report = worktree_audit(project_dir)
+    except SystemExit as exc:
+        return _yellow("worktree-divergence", "ADR-220 worktree divergence audit not applicable outside a git worktree", error=str(exc))
+    except Exception as exc:
+        return _red("worktree-divergence", "ADR-220 worktree divergence audit failed", error=str(exc))
+    summary = report.get("summary", {})
+    if int(summary.get("block_count") or 0):
+        return _red(
+            "worktree-divergence",
+            "ADR-220 linked worktree divergence has blocking path overlap",
+            audit_summary=summary,
+            findings=report.get("findings", [])[:10],
+        )
+    if int(summary.get("warn_count") or 0):
+        return _yellow(
+            "worktree-divergence",
+            "ADR-220 linked worktree divergence has warnings without dirty-path overlap",
+            audit_summary=summary,
+            findings=report.get("findings", [])[:10],
+        )
+    return _green("worktree-divergence", "ADR-220 worktree divergence audit passes", audit_summary=summary)
 
 
 def check_performance_ledger(project_dir: Path) -> GateStatus:
@@ -191,6 +217,7 @@ def build_readiness_report(project_dir: Path | None = None) -> dict[str, Any]:
     gates = [
         check_private_content(project),
         check_run_trace(project),
+        check_worktree_divergence(project),
         check_performance_ledger(project),
         check_reward_signals(project),
         check_secret_release_readiness(project),
