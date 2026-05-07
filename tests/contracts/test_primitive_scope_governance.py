@@ -55,6 +55,7 @@ def test_scope_classification_governance_has_lifecycle_and_dedicated_adr() -> No
     assert "tests/contracts/test_primitive_scope_governance.py" in "\n".join(row["evidence_commands"])
 
 
+@pytest.mark.timeout(180)
 def test_every_family_has_regenerable_or_contract_classification_surface() -> None:
     manifest = yaml.safe_load((REPO / "manifests" / "primitive-scope-classification.yaml").read_text(encoding="utf-8"))
     coverage = {family: meta["coverage"] for family, meta in manifest["families"].items()}
