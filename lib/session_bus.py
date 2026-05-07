@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import json
 import os
+import platform
 import subprocess
 import time
+from collections.abc import Iterable
 from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -36,6 +38,25 @@ This is an open taxonomy: producers may append future event types without
 breaking the bus, but tests pin the v1 set so the current wiring cannot
 silently regress.
 """
+
+
+EVENT_STORE_SCHEMA_VERSION = "event-sourced-session-bus/v1"
+
+
+class EventBusError(RuntimeError):
+    """Base class for event-sourced session bus failures."""
+
+
+class EventStreamGapDetected(EventBusError):
+    """Raised when a per-session stream is not gap-free by seq."""
+
+
+class EventStreamCorrupt(EventBusError):
+    """Raised when a per-session event stream contains invalid JSON/schema."""
+
+
+class UnsupportedEventBusPlatform(EventBusError):
+    """Raised when the local filesystem/OS cannot safely support locking."""
 
 
 @dataclass(frozen=True)
@@ -99,8 +120,25 @@ def append_event(
     *,
     project_dir: str | Path | None = None,
     session_id: str | None = None,
+    event_store: bool = False,
+    strict_durability: bool = False,
+    single_writer: bool = False,
 ) -> dict[str, Any]:
-    """Append one coordination event and return the stored event."""
+    """Append one coordination event and return the stored event.
+
+    By default this preserves the ADR-027/ADR-205 v1 global JSONL behavior.
+    Passing ``event_store=True`` opts into ADR-226 Slice A: per-session streams
+    with monotonic ``seq`` and gap-detectable reads.
+    """
+    if event_store:
+        return append_session_event(
+            event_type,
+            payload,
+            project_dir=project_dir,
+            session_id=session_id,
+            strict_durability=strict_durability,
+            single_writer=single_writer,
+        )
     if not event_type or not event_type.strip():
         raise ValueError("event_type is required")
     root = _root(project_dir)
@@ -149,6 +187,206 @@ def read_events(
             continue
         events.append(event)
     return events
+
+
+
+def _safe_session_id(session_id: str | None) -> str:
+    sid = session_id or _session_id()
+    if not sid or sid == "unknown":
+        raise ValueError("session_id is required for event-sourced streams")
+    if sid in {".", ".."} or "/" in sid or "\\" in sid:
+        raise ValueError(f"unsafe session_id for path-backed stream: {sid!r}")
+    return sid
+
+
+def session_stream_path(project_dir: str | Path | None = None, session_id: str | None = None) -> Path:
+    """Return the ADR-226 per-session stream path for ``session_id``."""
+    sid = _safe_session_id(session_id)
+    return _root(project_dir) / ".cognitive-os" / "sessions" / f"{sid}.events.jsonl"
+
+
+def session_counter_path(project_dir: str | Path | None = None, session_id: str | None = None) -> Path:
+    """Return the rebuildable per-session seq counter cache path."""
+    sid = _safe_session_id(session_id)
+    return _root(project_dir) / ".cognitive-os" / "sessions" / ".seq-counters" / f"{sid}.counter"
+
+
+def session_lock_path(project_dir: str | Path | None = None, session_id: str | None = None) -> Path:
+    """Return the per-session lock path used by ADR-226 writers."""
+    sid = _safe_session_id(session_id)
+    return _root(project_dir) / ".cognitive-os" / "sessions" / ".seq-counters" / f"{sid}.lock"
+
+
+def _platform_supported(*, single_writer: bool = False, allow_network_fs: bool = False) -> None:
+    """Refuse known-unsupported platforms before writing event-store data.
+
+    Slice A intentionally keeps filesystem detection conservative and
+    dependency-free. Tests can force the refusal path with
+    ``COS_EVENT_BUS_FORCE_UNSUPPORTED_FS=1``; production can bypass locking only
+    with explicit ``single_writer=True`` when the orchestrator guarantees one
+    writer for the session.
+    """
+    if single_writer:
+        return
+    if os.environ.get("COS_EVENT_BUS_FORCE_UNSUPPORTED_FS") == "1" and not allow_network_fs:
+        raise UnsupportedEventBusPlatform("event bus refuses forced unsupported filesystem")
+    system = platform.system().lower()
+    if system.startswith("windows"):
+        raise UnsupportedEventBusPlatform("ADR-226 Slice A supports Linux/macOS local filesystems only")
+    if system not in {"linux", "darwin"}:
+        raise UnsupportedEventBusPlatform(f"unsupported event bus platform: {platform.system()}")
+
+
+@contextmanager
+def _session_locked(
+    project_dir: str | Path | None = None,
+    session_id: str | None = None,
+    *,
+    single_writer: bool = False,
+) -> Iterator[None]:
+    """Lock a per-session event stream unless single-writer mode is explicit."""
+    if single_writer:
+        yield
+        return
+    path = session_lock_path(project_dir, session_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+def _json_lines(path: Path) -> Iterable[tuple[int, str]]:
+    if not path.is_file():
+        return []
+    return enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), start=1)
+
+
+def _max_seq_in_stream(path: Path) -> int:
+    max_seq = 0
+    for line_number, line in _json_lines(path):
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise EventStreamCorrupt(f"corrupt JSON at {path}:{line_number}") from exc
+        if not isinstance(event, dict):
+            raise EventStreamCorrupt(f"non-object event at {path}:{line_number}")
+        seq = event.get("seq")
+        if not isinstance(seq, int) or seq < 1:
+            raise EventStreamCorrupt(f"missing/invalid seq at {path}:{line_number}")
+        max_seq = max(max_seq, seq)
+    return max_seq
+
+
+def _write_counter(path: Path, seq: int) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(str(seq) + "\n", encoding="utf-8")
+
+
+def append_session_event(
+    event_type: str,
+    payload: dict[str, Any] | None = None,
+    *,
+    project_dir: str | Path | None = None,
+    session_id: str | None = None,
+    strict_durability: bool = False,
+    single_writer: bool = False,
+    allow_network_fs: bool = False,
+) -> dict[str, Any]:
+    """Append one ADR-226 v2 event to a per-session stream.
+
+    Slice A implements the minimum substrate: monotonic per-session seq,
+    path-safe session streams, default group-commit durability, strict fsync
+    opt-in, and a rebuildable counter cache. Fan-out indexes and memoized
+    replay are intentionally deferred to later ADR-226 slices.
+    """
+    if not event_type or not event_type.strip():
+        raise ValueError("event_type is required")
+    _platform_supported(single_writer=single_writer, allow_network_fs=allow_network_fs)
+    root = _root(project_dir)
+    sid = _safe_session_id(session_id)
+    stream_path = session_stream_path(root, sid)
+    counter = session_counter_path(root, sid)
+
+    with _session_locked(root, sid, single_writer=single_writer):
+        stream_path.parent.mkdir(parents=True, exist_ok=True)
+        next_seq = _max_seq_in_stream(stream_path) + 1
+        event = {
+            "schema_version": EVENT_STORE_SCHEMA_VERSION,
+            "seq": next_seq,
+            "session_id": sid,
+            "event_type": normalize_event_type(event_type),
+            "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "timestamp_epoch": time.time(),
+            "producer": "orchestrator",
+            "pid": os.getpid(),
+            "project_dir": str(root),
+            "payload": payload or {},
+        }
+        line = json.dumps(event, sort_keys=True) + "\n"
+        try:
+            with stream_path.open("a", encoding="utf-8") as handle:
+                handle.write(line)
+                handle.flush()
+                if strict_durability:
+                    os.fsync(handle.fileno())
+        except Exception:
+            _write_counter(counter, next_seq - 1)
+            raise
+        _write_counter(counter, next_seq)
+        return event
+
+
+def read_session_events(
+    session_id: str,
+    *,
+    project_dir: str | Path | None = None,
+    event_type: str | None = None,
+) -> list[dict[str, Any]]:
+    """Read one ADR-226 per-session stream and fail on schema/seq gaps."""
+    path = session_stream_path(project_dir, session_id)
+    if not path.is_file():
+        return []
+    normalized_type = event_type.replace("_", "-") if event_type else None
+    events: list[dict[str, Any]] = []
+    expected_seq = 1
+    for line_number, line in _json_lines(path):
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise EventStreamCorrupt(f"corrupt JSON at {path}:{line_number}") from exc
+        if not isinstance(event, dict):
+            raise EventStreamCorrupt(f"non-object event at {path}:{line_number}")
+        if event.get("schema_version") != EVENT_STORE_SCHEMA_VERSION:
+            raise EventStreamCorrupt(f"unexpected schema_version at {path}:{line_number}")
+        seq = event.get("seq")
+        if seq != expected_seq:
+            raise EventStreamGapDetected(
+                f"seq gap in {path}: expected {expected_seq}, got {seq!r} at line {line_number}"
+            )
+        expected_seq += 1
+        if normalized_type and event.get("event_type") != normalized_type:
+            continue
+        events.append(event)
+    return events
+
+
+def recover_session_counter(
+    session_id: str,
+    *,
+    project_dir: str | Path | None = None,
+) -> int:
+    """Rebuild the counter cache from the stream and return max(seq)."""
+    path = session_stream_path(project_dir, session_id)
+    max_seq = _max_seq_in_stream(path)
+    _write_counter(session_counter_path(project_dir, session_id), max_seq)
+    return max_seq
 
 
 def _pid_alive(pid: int) -> bool:
