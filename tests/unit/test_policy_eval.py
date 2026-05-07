@@ -22,3 +22,9 @@ def test_policy_eval_asks_for_network_install(project_root) -> None:
 def test_policy_eval_default_allows_unmatched(project_root) -> None:
     decision = evaluate_action(project_root, {"tool": "Bash", "command": "git status"})
     assert decision.decision == "allow"
+
+
+def test_policy_eval_blocks_protected_config_write(project_root) -> None:
+    decision = evaluate_action(project_root, {"tool": "Write", "file_path": "hooks/new-hook.sh"})
+    assert decision.decision == "block"
+    assert decision.policy_id == "protected-config-write"

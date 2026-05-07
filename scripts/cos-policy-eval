@@ -17,10 +17,11 @@ def main() -> int:
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--tool", required=True)
     parser.add_argument("--command", default="")
+    parser.add_argument("--file-path", default="")
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true")
     args = parser.parse_args()
-    decision = evaluate_action(args.project_dir, {"tool": args.tool, "command": args.command})
+    decision = evaluate_action(args.project_dir, {"tool": args.tool, "command": args.command, "file_path": args.file_path})
     if args.json:
         print(dumps_json(decision))
     else:

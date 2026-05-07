@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Project ADR-234 YAML policies into host settings hook plans."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.policy_eval import load_policies  # noqa: E402
+
+
+def _trigger_tools(policy: dict[str, Any]) -> list[str]:
+    tools: set[str] = set()
+    for rule in policy.get("rules", []) or []:
+        if not isinstance(rule, dict):
+            continue
+        for tool in rule.get("tools", []) or []:
+            tools.add(str(tool))
+    return sorted(tools)
+
+
+def build_projection(project_dir: Path, host: str) -> dict[str, Any]:
+    root = project_dir.resolve()
+    entries = []
+    for policy in load_policies(root):
+        tools = _trigger_tools(policy)
+        if not tools:
+            continue
+        command = f'python3 "{root / "scripts" / "cos-policy-eval"}" --project-dir "{root}" --strict --json'
+        entries.append(
+            {
+                "policy_id": policy.get("id", "unknown"),
+                "host": host,
+                "event": "PreToolUse",
+                "matcher": "|".join(tools),
+                "command": command,
+                "mode": "projected-plan-only",
+            }
+        )
+    return {"schema_version": "policy-settings-projection/v1", "host": host, "entries": entries}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", default=str(ROOT))
+    parser.add_argument("--host", choices=["claude-code", "codex"], default="claude-code")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    projection = build_projection(Path(args.project_dir), args.host)
+    if args.json:
+        print(json.dumps(projection, indent=2, sort_keys=True))
+    else:
+        for entry in projection["entries"]:
+            print(f"{entry['host']} {entry['event']} {entry['matcher']}: {entry['policy_id']} -> {entry['command']}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

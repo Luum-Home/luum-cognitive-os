@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–C implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-216 (tool discovery gate), ADR-232 (sandbox tiers), ADR-235 (detached daemon)
 
@@ -27,14 +27,20 @@ Implemented Slice A:
 - `scripts/cos-policy-eval` exposes JSON/strict CLI.
 - Unit/audit/behavior tests cover block/ask/default allow, manifest, and CLI strict exit code.
 
+Implemented Slices B–C:
+
+- `hooks/destructive-rm-blocker.sh` evaluates `policies/destructive-bash.yaml` before its legacy parser.
+- `hooks/protected-config-write-guard.sh` evaluates `policies/protected-config-write.yaml` before falling back to the legacy manifest parser.
+- `scripts/cos-policy-eval` accepts `--file-path` as well as `--command`.
+- `scripts/cos-policy-settings-projection` emits Claude Code/Codex PreToolUse hook plans from policy manifests without mutating settings.
+
 Not implemented yet:
 
-- Migration of existing hooks to `policy_eval`.
-- Claude/Codex settings projection from policies.
-- External policy engines.
+- External policy engines; OPA/Cedar/Casbin remain deferred until multi-tenant/cloud policy inheritance needs them.
 
 ## Hard rules
 
 - No OPA/Cedar/Casbin dependency in default local mode.
 - Block/deny wins over ask/warn/allow.
-- Slice A is observe/migration substrate; hook replacement requires per-hook tests.
+- Migrated hooks must keep legacy fallback until policy parity is covered by per-hook tests.
+- Settings projection is plan-only; user-global settings mutation remains out of scope.
