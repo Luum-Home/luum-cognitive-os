@@ -31,7 +31,7 @@ For cross-service issues, trace through the architecture layers:
 Mobile App (headers: API-Key, Device-ID)
     |
     v
-<consumer-service-3> (JWT validation, request transformation)
+BFF / API gateway (JWT validation, request transformation)
     |
     v
 Microservice (business logic, DB operations)

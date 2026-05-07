@@ -30,7 +30,7 @@ Read `.claude/metrics/error-learning.jsonl`. Each line is a JSON object with:
 - `timestamp`: ISO timestamp
 - `timestamp_epoch`: Unix epoch seconds
 - `type`: TEST_FAILURE | LINT_ERROR | BUILD_ERROR | COMPILATION_ERROR | RUNTIME_ERROR
-- `service`: Service name (<consumer-codename-b>, <consumer-codename-a>, onboarding, etc.)
+- `service`: Service name (`<service-a>`, `<service-b>`, `<service-c>`, etc.)
 - `framework`: Testing/build framework used
 - `error`: Error message text
 - `command`: The command that failed
@@ -40,7 +40,7 @@ Read `.claude/metrics/error-learning.jsonl`. Each line is a JSON object with:
 ### Step 2: Group and Cluster Errors
 
 Group errors by:
-1. **Service** (<consumer-codename-b>, onboarding, <consumer-codename-a>, payments-service, etc.)
+1. **Service** (`<service-a>`, `<service-b>`, `<service-c>`, `<service-d>`, etc.)
 2. **Type** (TEST_FAILURE, LINT_ERROR, BUILD_ERROR, COMPILATION_ERROR)
 3. **Pattern**: Cluster similar error messages together. Look for:
    - Same error code (e.g., TS2345, TS7006)
