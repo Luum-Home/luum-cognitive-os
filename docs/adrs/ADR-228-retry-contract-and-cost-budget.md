@@ -251,7 +251,8 @@ Total: ~350 LOC + rule consolidation (net-negative bash equivalent).
 - **2026-05-07 — Slices A–E implemented**: `lib/retry_classifier.py`, `lib/session_budget.py`, and `lib/dispatch_gate.py` provide the failure classifier, retry policy lookup, sync pre-call budget gate, post-call accounting, context pressure signals, and idempotency key claims.
 - **Manifests/rule**: `manifests/retry-contract.yaml`, `manifests/session-budget.yaml`, and `rules/retry-contract.md` are the canonical policy surfaces.
 - **2026-05-07 — Dispatch retry loop implemented**: `lib/dispatch.py` now uses the ADR-228 classifier/policy for gated provider retry attempts, records retry events/provider attempt counts in `llm-dispatch`, and preserves budget pre-call checks before retry attempts.
-- **Deferred**: cost predictor pricing integration, deeper circuit-breaker chaos recovery, T6 baseline/perf budget, and runbook.
+- **2026-05-07 — Cost predictor/T6/T7 closed**: `lib/dispatch_cost_predictor.py` predicts provider cost from token estimates using provider/model estimators; dispatch uses it when explicit `estimated_cost_usd` is absent. `tests/perf/test_dispatch_gate_baseline.py` establishes a p95 pre-call/cost-predictor baseline, and `tests/chaos/test_dispatch_circuit_breaker_recovery.py` verifies half-open failure/reopen, close-on-success, and corrupt-state recovery.
+- **Deferred**: operator runbook polish only.
 
 ## Open questions
 

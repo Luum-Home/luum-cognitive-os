@@ -58,3 +58,38 @@ def test_handoff_receiver_timeout_persists_failure_receipt(tmp_path: Path) -> No
     )
     assert second.returncode == 0
     assert json.loads(second.stdout)["received"] == []
+
+@pytest.mark.chaos
+def test_handoff_receiver_sigkill_persists_failure_receipt(tmp_path: Path) -> None:
+    project = tmp_path / "project-sigkill"
+    project.mkdir()
+    send = subprocess.run(
+        [
+            str(COS), "team", "--json", "--project-dir", str(project),
+            "handoff", "send", "--team", "release", "--from-agent", "lead",
+            "--to-agent", "worker", "--text", "sigkill chaos", "--handoff-id", "chaos-sigkill-1",
+        ],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert send.returncode == 0, send.stderr
+
+    receive = subprocess.run(
+        [
+            str(COS), "team", "--json", "--project-dir", str(project),
+            "handoff", "receive", "--team", "release", "--session-id", "worker",
+            "--hook-command", "python3 -c 'import os, signal; os.kill(os.getpid(), signal.SIGKILL)'",
+            "--timeout-seconds", "5", "--strict", "--once",
+        ],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert receive.returncode == 2
+    receipt = project / ".cognitive-os/teams/release/handoff-receipts/chaos-sigkill-1.json"
+    data = json.loads(receipt.read_text())
+    assert data["exit_code"] < 0
+    assert data["executed"] is True

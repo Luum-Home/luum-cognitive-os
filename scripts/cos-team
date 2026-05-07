@@ -19,7 +19,7 @@ if str(ROOT) not in sys.path:
 from lib.agent_team import AgentTeam, AgentTeamError  # noqa: E402
 from lib.handoff_dispatcher import HandoffDispatchError, HandoffDispatcher  # noqa: E402
 from lib.handoff_envelope import HandoffEnvelope  # noqa: E402
-from lib.agent_team_transport import transport_plan  # noqa: E402
+from lib.agent_team_transport import A2AHttpAgentTeamTransport, NatsAgentTeamTransport, transport_plan  # noqa: E402
 
 
 def _json_default(value: Any) -> Any:
@@ -234,6 +234,22 @@ def cmd_transport_plan(args: argparse.Namespace) -> int:
     _emit({"status": "ok", "transport_plan": plan.to_dict()}, json_output=args.json)
     return 0
 
+
+def cmd_transport_send(args: argparse.Namespace) -> int:
+    payload = {"schema_version": "agent-team-message/v1", "text": args.text, "sender": args.sender}
+    if args.backend == "a2a":
+        if not args.endpoint:
+            raise ValueError("--endpoint is required for a2a transport-send")
+        result = A2AHttpAgentTeamTransport(team_name=args.team, endpoint=args.endpoint).send_inbox(session_id=args.session_id, payload=payload)
+    else:
+        if not args.allow_missing_nats:
+            raise ValueError("NATS transport-send requires a NATS client/server; use --allow-missing-nats only for dry-run planning")
+        result = {"schema_version": "agent-team-transport-plan/v1", "backend": "nats", "destination": transport_plan(team_name=args.team, backend="nats").subject_mapping["inbox"].replace("<session_id>", args.session_id), "delivered": False, "detail": "nats client not configured"}
+        _emit({"status": "planned", "transport_send": result}, json_output=args.json)
+        return 0
+    _emit({"status": "sent" if result.delivered else "failed", "transport_send": result.to_dict()}, json_output=args.json)
+    return 0 if result.delivered else 2
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", default=None, help="Project directory; defaults to CWD/COGNITIVE_OS_PROJECT_DIR")
@@ -326,6 +342,16 @@ def build_parser() -> argparse.ArgumentParser:
     transport.add_argument("--team", required=True)
     transport.add_argument("--backend", choices=["file", "nats", "a2a"], default="file")
     transport.set_defaults(func=cmd_transport_plan)
+
+    transport_send = sub.add_parser("transport-send", help="Send one ADR-233 message through an external transport adapter")
+    transport_send.add_argument("--team", required=True)
+    transport_send.add_argument("--backend", choices=["nats", "a2a"], required=True)
+    transport_send.add_argument("--session-id", required=True)
+    transport_send.add_argument("--sender", required=True)
+    transport_send.add_argument("--text", required=True)
+    transport_send.add_argument("--endpoint", help="A2A HTTP endpoint")
+    transport_send.add_argument("--allow-missing-nats", action="store_true", help="Return a NATS dry-run plan when no client is configured")
+    transport_send.set_defaults(func=cmd_transport_send)
 
     return parser
 
