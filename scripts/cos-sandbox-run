@@ -18,13 +18,16 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--allow-fallback", action="store_true")
+    parser.add_argument("--backend", choices=["bubblewrap", "seatbelt", "microvm", "contree"])
+    parser.add_argument("--network", action="store_true")
+    parser.add_argument("--writable-root", action="append", default=[])
     parser.add_argument("cmd", nargs=argparse.REMAINDER)
     args = parser.parse_args()
     cmd = args.cmd[1:] if args.cmd[:1] == ["--"] else args.cmd
     if not cmd:
         parser.error("command required after --")
     try:
-        plan = build_sandbox_command(cmd, workspace=args.workspace, allow_fallback=args.allow_fallback)
+        plan = build_sandbox_command(cmd, workspace=args.workspace, backend=args.backend, network=args.network, writable_roots=args.writable_root or None, allow_fallback=args.allow_fallback)
     except SandboxUnavailable as exc:
         if args.json:
             print(json.dumps({"schema_version": "sandbox-adapter/v1", "status": "unavailable", "error": str(exc)}))

@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–D implemented (2026-05-07)  
+**Status**: Accepted — Slices A–E implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-223 (worktree-per-write-agent), ADR-227 (shadow-git), ADR-228 (retry/budget), ADR-235 (detached agent daemon)
 
@@ -46,10 +46,15 @@ Implemented Slice D:
 - In-process SDK providers can be forced through an out-of-process boundary via `scripts/cos-provider-call` when `require_sandbox` is set and `isolate_inprocess_providers` is not disabled. Dispatch invokes that subprocess through the sandbox adapter, with network enabled for provider calls.
 - MicroVM and ConTree are declared as opt-in adapter contracts in `adapter_plan()` and `build_sandbox_command(..., backend=...)` without adding Firecracker/Kata/E2B/ConTree dependencies to the default install.
 
-Not implemented yet:
+Implemented Slice E:
+
+- `scripts/cos-sandbox-run` exposes `--backend microvm|contree`, `--network`, and `--writable-root` so optional runners can be exercised directly.
+- `build_sandbox_command(..., backend="microvm"|"contree")` activates real runner commands when `COS_SANDBOX_MICROVM_RUNNER` or `COS_SANDBOX_CONTREE_RUNNER` is configured.
+- No Firecracker/Kata/E2B/ConTree package is installed by default; runner adoption remains opt-in and license-gated.
+
+Remaining future work:
 
 - Landlock/seccomp policy generation beyond Bubblewrap CLI flags.
-- Actual optional microVM/ConTree runner integrations; current implementation is a dependency-free command contract plus env-configured runner escape hatch.
 
 ## Hard rules
 
