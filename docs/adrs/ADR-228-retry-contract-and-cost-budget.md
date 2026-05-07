@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–E implemented (2026-05-07)
+**Status**: Accepted — Slices A–F implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-049 (LLM dispatch), ADR-056 (adaptive Agent dispatch), ADR-211 (service mode readiness); depends on ADR-226 (event-sourced session bus)
 **Supersedes**: scattered retry magic numbers in `closed-loop-prompts.md`, `task-dag.md`, `estimation-calibration.md`, `agent-escalation.md`, `responsiveness.md`, `error-learning.md` (six files identified by [`failure-recovery-retry-semantics.md`](../research/orchestration-gaps/failure-recovery-retry-semantics.md))
@@ -238,6 +238,7 @@ The tests must prove:
 3. **Slice C — `lib/session_budget.py`** (~80 LOC). `SessionBudget` class, file-backed ledger, pre/post-call API. Tests T1+T2+T7.
 4. **Slice D — `lib/dispatch_gate.py`** (~100 LOC). Wraps `lib/dispatch.py` with the gate. `pre_call_check` → classify on failure → retry per policy → `record_actual`. Tests T2+T6.
 5. **Slice E — Idempotency mixin** (~40 LOC). `IdempotencyKeyMixin` on base tool class. Persisted at `.cognitive-os/metrics/idempotency-keys.jsonl`. Tests T1+T5.
+6. **Slice F — real `lib/dispatch.py` integration** (implemented 2026-05-07). Dispatch now runs a synchronous budget pre-call gate, records actual cost into the session ledger after the call, skips providers with an open file-backed circuit breaker, records provider failures into breaker state, and emits `dispatch_gate` metadata in `llm-dispatch` metrics. Tests T2.
 6. **Slice F — Circuit breaker** (~60 LOC). `lib/circuit_breaker.py`. Per-provider file-backed state. Tests T2+T7.
 7. **Slice G — `cost_predictor` integration** (~20 LOC wiring). Connect `get_real_model_prices()` into `pre_call_check` estimation. Closes the prediction-vs-actual loop.
 8. **Slice H — Operator runbook** at `docs/runbooks/cost-budget-and-retry.md`. Three recovery flows: budget-hit, circuit-open, classifier-unknown.
