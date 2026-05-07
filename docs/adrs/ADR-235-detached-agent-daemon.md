@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–E implemented (2026-05-07)  
+**Status**: Accepted — Slices A–F implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-223 (worktree-per-write-agent), ADR-225 (branch-per-task), ADR-228 (retry/budget), ADR-233 (agent-team file IPC)  
 **Source**: [`docs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md)
@@ -59,10 +59,15 @@ Implemented Slice E:
 - `install-service` writes opt-in launchd/systemd service files to user service directories or an explicit target directory; activation remains a separate operator step.
 - `kill` / `AgentDaemon.kill_task()` best-effort kills the tmux session, marks the task failed, and writes a `done.json` receipt with exit code 137.
 
-Not implemented yet:
+Implemented Slice F:
 
-- Automatic launchctl/systemctl activation helper.
-- Process-tree kill beyond tmux session termination.
+- `activate-service` prints or executes launchd/systemd activation commands; default is plan-only unless `--execute` is explicit.
+- Run scripts record their shell PID in `heartbeat.json`.
+- `kill` performs tmux session kill plus heartbeat-PID process-group SIGTERM/SIGKILL escalation when available, then writes a `done.json` receipt with `kill_signals`.
+
+Remaining future work:
+
+- None for the local-first Slice F contract. Cloud/fleet process supervisors remain outside ADR-235 local mode.
 
 ## Hard rules
 
