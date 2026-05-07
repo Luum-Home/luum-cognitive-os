@@ -1,0 +1,66 @@
+schema_version: event-sourced-session-bus/v1
+status: slice-a-active
+owner: platform-orchestration
+extends: "ADR-205 Flight Recorder"
+adr: "ADR-226"
+
+streams:
+  per_session_path: ".cognitive-os/sessions/{session_id}.events.jsonl"
+  global_index_path: ".cognitive-os/coordination/event-index.jsonl"
+  counter_dir: ".cognitive-os/sessions/.seq-counters/"
+
+durability:
+  default_mode: "group_commit"
+  group_commit_n: 8
+  group_commit_t_ms: 100
+  strict_mode_opt_in: "event_bus.strict_durability=true"
+  strict_mode_required_for:
+    - "ADR-227 file_restore_committed"
+    - "ADR-228 idempotency_key_claimed"
+    - "operator_destructive_action"
+
+locking:
+  primitive: "flock(2)"
+  supported_platforms:
+    - "linux+local_fs"
+    - "darwin+apfs"
+  refuses_on_default:
+    - "linux+nfs"
+    - "linux+fuse"
+    - "darwin+network_volume"
+    - "windows"
+  single_writer_escape_hatch:
+    flag: "event_bus.single_writer=true"
+    safe_when: "operator guarantees one process per session"
+
+performance:
+  budgets_set_after_measurement: true
+  slice_a_baseline_required: true
+  initial_target: "p95 measurable; budget proposed in Slice B"
+
+event_envelope_v2:
+  required_fields:
+    - schema_version
+    - seq
+    - session_id
+    - event_type
+    - ts
+    - producer
+  optional_fields:
+    - payload
+    - parent_seq
+    - wrapped_step
+    - file_tree_sha
+    - cost_event
+
+slice_a:
+  implemented:
+    - sequence_allocator
+    - per_session_stream_writer
+    - gap_detecting_reader
+    - counter_recovery
+  deferred:
+    - fan_out_global_index
+    - event_wrap
+    - migration_tool
+    - projections
