@@ -110,3 +110,27 @@ def test_cos_rollback_files_and_conversation_restore(project_root: Path, tmp_pat
     assert payload["mode"] == "files_and_conversation"
     assert (repo / "file.txt").read_text(encoding="utf-8") == "before\n"
     assert [event["event_type"] for event in read_session_events("s1", project_dir=repo)] == ["before", "shadow-git-restore"]
+
+@pytest.mark.behavior
+def test_cos_rollback_prune_shadow_snapshots(project_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
+    snap = subprocess.run(
+        [str(project_root / "scripts" / "cos-rollback"), "--project-dir", str(repo), "--session-id", "s1", "--snapshot", "--json"],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert snap.returncode == 0, snap.stderr
+    pruned = subprocess.run(
+        [str(project_root / "scripts" / "cos-rollback"), "--project-dir", str(repo), "--prune", "--max-age-seconds", "0", "--yes", "--json"],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert pruned.returncode == 0, pruned.stderr
+    payload = json.loads(pruned.stdout)
+    assert payload["status"] == "ok"
+    assert payload["candidates"][0]["pruned"] is True

@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented with ADR-227 (2026-05-07)
+**Status**: Accepted — Slices A–C implemented with ADR-227 (2026-05-07)
 **Date**: 2026-05-07
 **Related**: ADR-223 (worktree-per-write-agent), ADR-226 (event-sourced session bus), ADR-227 (shadow-git checkpoint substrate)
 **Source**: Cline/Hermes/Kilo/git-shadow pattern research; implemented clean-room under FSL-1.1-MIT.
@@ -24,8 +24,9 @@ Use ADR-227 shadow-git as the only default safety-net substrate for future rollb
 - Snapshot storage is never inside the project worktree.
 - Snapshot creation does not touch `.git/index` or `git stash`.
 - Restore requires preview first and explicit operator confirmation/`--yes`.
-- Conversation truncation remains deferred until ADR-227 combined mode; Slice A is filesystem-only.
+- Conversation truncation and combined restore use ADR-227 modes; filesystem-only remains available only for operator repair.
 
 ## Implementation status
 
 - **2026-05-07 — Slice A implemented**: `lib/shadow_git.py` stores bare repos off-repo and supports snapshot, preview, files-only restore, and prune. `scripts/cos-rollback` exposes preview/restore. Tests cover no-stash/no-index mutation and round-trip restore.
+- **2026-05-07 — Slices B–C implemented**: `docs/runbooks/shadow-git-rollback.md` documents capture/preview/restore/prune flows; `manifests/shadow-git.yaml` declares retention; `scripts/cos-rollback --prune` dry-runs or executes TTL cleanup for off-repo session stores.

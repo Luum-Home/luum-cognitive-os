@@ -9,14 +9,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.shadow_git import RestorePreviewRequired, ShadowGitError, preview, restore, snapshot  # noqa: E402
+from lib.shadow_git import RestorePreviewRequired, ShadowGitError, preview, prune_expired_snapshots, restore, snapshot  # noqa: E402
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Preview or restore ADR-227 shadow-git checkpoints.")
     parser.add_argument("--project-dir", default=".")
-    parser.add_argument("--session-id", required=True)
+    parser.add_argument("--session-id")
     parser.add_argument("--snapshot", action="store_true")
+    parser.add_argument("--prune", action="store_true")
+    parser.add_argument("--max-age-seconds", type=int, default=7 * 24 * 3600)
     parser.add_argument("--tree-sha")
     parser.add_argument("--preview", action="store_true")
     parser.add_argument("--restore", action="store_true")
@@ -27,20 +29,28 @@ def main() -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
     try:
-        if args.snapshot:
+        if args.prune:
+            record = prune_expired_snapshots(args.project_dir, max_age_seconds=args.max_age_seconds, execute=args.yes) | {"status": "ok"}
+        elif args.snapshot:
+            if not args.session_id:
+                raise ShadowGitError("--session-id required for --snapshot")
             record = snapshot(args.project_dir, args.session_id).to_dict() | {"status": "ok"}
         elif args.preview:
+            if not args.session_id:
+                raise ShadowGitError("--session-id required for --preview")
             if not args.tree_sha:
                 raise ShadowGitError("--tree-sha required for --preview")
             path = preview(args.project_dir, args.session_id, args.tree_sha)
             record = {"schema_version": "shadow-git-preview/v1", "status": "ok", "preview_path": str(path), "tree_sha": args.tree_sha}
         elif args.restore:
+            if not args.session_id:
+                raise ShadowGitError("--session-id required for --restore")
             if not args.tree_sha:
                 raise ShadowGitError("--tree-sha required for --restore")
             result = restore(args.project_dir, args.session_id, args.tree_sha, mode=args.mode, preview_path=args.preview_path, yes=args.yes, target_seq=args.target_seq)
             record = {"schema_version": "shadow-git-restore/v1", "status": "ok", "tree_sha": args.tree_sha, **result}
         else:
-            raise ShadowGitError("choose one of --snapshot, --preview, --restore")
+            raise ShadowGitError("choose one of --snapshot, --preview, --restore, --prune")
     except (ShadowGitError, RestorePreviewRequired) as exc:
         record = {"schema_version": "shadow-git/v1", "status": "error", "error": str(exc)}
         if args.json:
