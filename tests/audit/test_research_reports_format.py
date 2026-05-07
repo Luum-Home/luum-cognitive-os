@@ -96,58 +96,71 @@ def test_research_dir_exists() -> None:
         )
 
 
+def _reports_or_empty() -> list[Path]:
+    """Return runtime reports; absence is checked once by test_research_dir_exists."""
+    return _REPORTS
+
+
 @pytest.mark.audit
-@pytest.mark.xfail(len(_REPORTS) == 0, reason=_NO_REPORTS_REASON, strict=False)
-@pytest.mark.parametrize("report_path", _REPORTS, ids=[p.name for p in _REPORTS])
-def test_report_has_h1(report_path: Path) -> None:
+def test_report_has_h1() -> None:
     """Every research report must have at least one H1 heading."""
-    content = report_path.read_text(encoding="utf-8")
-    assert _has_h1(content), (
-        f"{report_path.name}: missing H1 heading.\n"
-        "Reports must start with a top-level title, e.g. '# Research: <topic>'"
+    failures = []
+    for report_path in _reports_or_empty():
+        content = report_path.read_text(encoding="utf-8")
+        if not _has_h1(content):
+            failures.append(report_path.name)
+    assert not failures, (
+        "Research reports missing H1 heading. Reports must start with a top-level title, "
+        f"e.g. '# Research: <topic>': {failures}"
     )
 
 
 @pytest.mark.audit
-@pytest.mark.xfail(len(_REPORTS) == 0, reason=_NO_REPORTS_REASON, strict=False)
-@pytest.mark.parametrize("report_path", _REPORTS, ids=[p.name for p in _REPORTS])
-def test_report_has_tldr_section(report_path: Path) -> None:
+def test_report_has_tldr_section() -> None:
     """Every research report must have a TL;DR section."""
-    content = report_path.read_text(encoding="utf-8")
-    assert _has_tldr_section(content), (
-        f"{report_path.name}: missing TL;DR section.\n"
-        "Add a section heading like '## TL;DR' per templates/agent-research-only.md"
+    failures = []
+    for report_path in _reports_or_empty():
+        content = report_path.read_text(encoding="utf-8")
+        if not _has_tldr_section(content):
+            failures.append(report_path.name)
+    assert not failures, (
+        "Research reports missing TL;DR section. Add a section heading like '## TL;DR' "
+        f"per templates/agent-research-only.md: {failures}"
     )
 
 
 @pytest.mark.audit
-@pytest.mark.xfail(len(_REPORTS) == 0, reason=_NO_REPORTS_REASON, strict=False)
-@pytest.mark.parametrize("report_path", _REPORTS, ids=[p.name for p in _REPORTS])
-def test_report_has_at_least_one_table(report_path: Path) -> None:
+def test_report_has_at_least_one_table() -> None:
     """Every research report must contain at least one markdown table.
 
     The template requires Decision Points and Risk Assessment as tables.
     """
-    content = report_path.read_text(encoding="utf-8")
-    assert _has_at_least_one_table(content), (
-        f"{report_path.name}: no markdown table found.\n"
-        "Reports must include at least one table (Decision Points or Risk Assessment)."
+    failures = []
+    for report_path in _reports_or_empty():
+        content = report_path.read_text(encoding="utf-8")
+        if not _has_at_least_one_table(content):
+            failures.append(report_path.name)
+    assert not failures, (
+        "Research reports without markdown table. Reports must include at least one table "
+        f"(Decision Points or Risk Assessment): {failures}"
     )
 
 
 @pytest.mark.audit
-@pytest.mark.xfail(len(_REPORTS) == 0, reason=_NO_REPORTS_REASON, strict=False)
-@pytest.mark.parametrize("report_path", _REPORTS, ids=[p.name for p in _REPORTS])
-def test_report_filename_has_parseable_date(report_path: Path) -> None:
+def test_report_filename_has_parseable_date() -> None:
     """Report filename must end with a parseable YYYY-MM-DD date suffix."""
-    date_str = _parse_date_from_filename(report_path)
-    assert date_str is not None, (
-        f"{report_path.name}: filename does not contain a YYYY-MM-DD date suffix.\n"
-        "Expected pattern: <topic>-YYYY-MM-DD.md\n"
-        "Example: cos-init-migration-2026-04-24.md"
+    failures = []
+    invalid_dates = []
+    for report_path in _reports_or_empty():
+        date_str = _parse_date_from_filename(report_path)
+        if date_str is None:
+            failures.append(report_path.name)
+            continue
+        year, month, day = date_str.split("-")
+        if not (2020 <= int(year) <= 2099 and 1 <= int(month) <= 12 and 1 <= int(day) <= 31):
+            invalid_dates.append(report_path.name)
+    assert not failures, (
+        "Research report filenames without YYYY-MM-DD suffix. Expected pattern: "
+        f"<topic>-YYYY-MM-DD.md: {failures}"
     )
-    # Validate the date components are in reasonable ranges
-    year, month, day = date_str.split("-")
-    assert 2020 <= int(year) <= 2099, f"Implausible year in filename: {year}"
-    assert 1 <= int(month) <= 12, f"Invalid month in filename: {month}"
-    assert 1 <= int(day) <= 31, f"Invalid day in filename: {day}"
+    assert not invalid_dates, f"Research report filenames with invalid date components: {invalid_dates}"
