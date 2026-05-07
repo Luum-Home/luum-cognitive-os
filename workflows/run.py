@@ -6,10 +6,10 @@
 Cognitive OS Workflow CLI - AI-powered pipeline orchestration.
 
 Usage:
-  uv run .cognitive-os/workflows/run.py feature --service <consumer-service-2> --ticket DEV-1234
+  uv run .cognitive-os/workflows/run.py feature --service accounts-go --ticket DEV-1234
   uv run .cognitive-os/workflows/run.py bug --service <consumer-codename-a> --ticket BUG-567
   uv run .cognitive-os/workflows/run.py migration --service <consumer-service-4> --description "add transfers table"
-  uv run .cognitive-os/workflows/run.py deploy --service <consumer-service-2> --env staging
+  uv run .cognitive-os/workflows/run.py deploy --service accounts-go --env staging
   uv run .cognitive-os/workflows/run.py new-service --name analytics --port 3006
   uv run .cognitive-os/workflows/run.py resume --workflow-id abc12345
   uv run .cognitive-os/workflows/run.py services

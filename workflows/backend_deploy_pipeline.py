@@ -2,7 +2,7 @@
 Backend Deploy Pipeline - Deployment workflow for backend services.
 
 Usage:
-  uv run .cognitive-os/workflows/run.py deploy --service <consumer-service-2> --env staging
+  uv run .cognitive-os/workflows/run.py deploy --service accounts-go --env staging
   uv run .cognitive-os/workflows/run.py deploy --service <consumer-codename-a> --env prod
 
 Phases (5 steps):
@@ -22,17 +22,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from backend_state import BackendWorkflowState, setup_logger
 from lib.shared_phases import (
     BOLD,
-    CYAN,
     DIM,
     GREEN,
     RED,
     RESET,
-    YELLOW,
     cleanup_orphan_node_processes,
     format_duration,
     phase_build,
     phase_test,
-    print_state_summary,
     print_timing_summary,
 )
 from lib.telegram import (
