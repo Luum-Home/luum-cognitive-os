@@ -7267,7 +7267,7 @@
         "doc": 5,
         "hook": 1,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -7328,6 +7328,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_post_agent_verify.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py"
         }
       ],
@@ -7336,7 +7340,7 @@
         "lifecycle",
         "hook_consumers:1",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:5",
         "config_consumers:5"
       ],
@@ -7350,7 +7354,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 15
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -21917,7 +21921,7 @@
         "doc": 16,
         "rule": 1,
         "script": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -22014,6 +22018,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_p95_hook_latency.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_metrics_rotation.py"
         }
       ],
@@ -22021,7 +22029,7 @@
       "evidence": [
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:16",
         "config_consumers:2"
       ],
@@ -22033,7 +22041,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 24
+      "total_consumers": 25
     },
     {
       "confidence": "medium",
