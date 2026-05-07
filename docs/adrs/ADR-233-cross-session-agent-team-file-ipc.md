@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–B implemented (2026-05-07)  
+**Status**: Accepted — Slices A–C implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-211 (service readiness), ADR-226 (event-sourced session bus), ADR-230 (handoff envelope), ADR-231 (MCP server surface), ADR-235 (detached agent daemon)  
 **Source**: [`docs/research/orchestration-gaps/cross-session-agent-teams.md`](../research/orchestration-gaps/cross-session-agent-teams.md)
@@ -44,10 +44,15 @@ Implemented Slice B:
 - `TeammateIdle` optionally claims the next dependency-ready team task before falling back to legacy `.claude/tasks/active-tasks.json`.
 - ADR-230 handoff envelopes can now be delivered as at-least-once inbox messages through ADR-233 file IPC.
 
+Implemented Slice C:
+
+- `TaskCompleted` optionally mirrors completion into `AgentTeam.complete_task`.
+- Chaos test proves `claim_next` has a single winner across concurrent processes.
+- Cross-harness contract test proves Codex-style and Claude-style session envs share the same team inbox/handoff transport.
+
 Not implemented yet:
 
-- `TaskCompleted` mirroring into `AgentTeam.complete_task`.
-- Cross-harness and chaos tests.
+- Receiver execution after inbox delivery.
 - Tier-3 NATS/A2A upgrade path.
 
 ## Hard rules
@@ -63,8 +68,8 @@ Not implemented yet:
 - T1 unit: `tests/unit/test_agent_team.py`
 - T3 behavior/contract: `tests/behavior/test_agent_team_file_ipc_flow.py`
 - T4 smoke: covered by the behavior flow for two independent sessions
-- T7 chaos: pending
-- T8 cross-harness: pending
+- T7 chaos: `tests/chaos/test_agent_team_claim_race.py`
+- T8 cross-harness: `tests/integration/test_agent_team_cross_harness_contract.py`
 
 ## Acceptance criteria
 

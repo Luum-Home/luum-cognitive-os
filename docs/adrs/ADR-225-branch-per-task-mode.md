@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–B implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-219 (work ownership), ADR-220 (worktree divergence), ADR-223 (worktree-per-write-agent), ADR-233 (agent-team file IPC), ADR-235 (detached agent daemon)
 
@@ -20,7 +20,7 @@ Define a canonical branch-per-task policy:
 codex/task/<task-id-slug>
 ```
 
-Read-only agents are exempt. Write/cloud/detached agents should eventually be blocked if they are not on their canonical task branch. Slice A ships observe/check tooling only; enforcement waits until ADR-223 becomes default-on for write agents.
+Read-only agents are exempt. Write/cloud/detached agents are blocked at prelaunch when they explicitly declare a write/cloud/detached lifecycle lane, or when `COS_BRANCH_PER_TASK_ENFORCE=1` is set. Generic legacy Agent launches remain advisory until ADR-223 is fully default-on.
 
 ## Implementation status (2026-05-07)
 
@@ -32,15 +32,20 @@ Implemented Slice A:
 - `manifests/branch-per-task.yaml` declares observe mode and invariants.
 - Unit, audit, and behavior tests cover slugging, pass/block verdicts, manifest, and CLI strict behavior.
 
+Implemented Slice B:
+
+- `agent-prelaunch.sh` enforces `cos-branch-task-check --strict` for explicit write/cloud/detached lifecycle launches.
+- `COS_BRANCH_PER_TASK_ENFORCE=1` forces enforcement for all non-read-only Agent launches.
+- `COS_SKIP_BRANCH_PER_TASK_GATE=1` is the explicit operator bypass.
+
 Not implemented yet:
 
-- Default prelaunch blocking.
 - Automatic branch migration for existing worktrees.
-- Integration with ADR-233 task claims and ADR-235 detached daemon.
+- ADR-235 detached daemon auto-branching beyond explicit ADR-223 worktree preparation.
 
 ## Hard rules
 
 - Branch names derive from task IDs, not raw prompts.
 - Read-only agents are exempt.
-- Slice A is observe/check only; no branch creation/mutation.
+- Enforcement is prelaunch-only and does not create or mutate branches.
 - Strict mode is available for readiness/smoke tests and future prelaunch gates.

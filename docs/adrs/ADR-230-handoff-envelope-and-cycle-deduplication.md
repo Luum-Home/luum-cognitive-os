@@ -261,9 +261,9 @@ Slices A–E are implemented as the first executable handoff contract:
 - `manifests/handoff-protocol.yaml` declares the active policy, emitted events, hooks, intent semantics, context modes, and permission-intersection invariant.
 - Tests cover unit, behavior, smoke, and audit lanes: `tests/unit/test_handoff_envelope.py`, `tests/unit/test_handoff_dispatcher.py`, `tests/behavior/test_handoff_dispatcher_flow.py`, `tests/audit/test_handoff_manifest.py`, and `tests/smoke/test_handoff_cycle_detection.sh`.
 
-Slice F transport is partially implemented: `cos team handoff send` now dispatches the ADR-230 envelope through `HandoffDispatcher` and delivers the scoped envelope as an ADR-233 inbox message. This is real cross-session file-IPC transport, not receiver execution.
+Slice F transport is implemented for file-IPC delivery: `cos team handoff send` dispatches the ADR-230 envelope through `HandoffDispatcher` and delivers the scoped envelope as an ADR-233 inbox message. A cross-harness contract test proves Codex-style and Claude-style session ids share the same transport. This is real cross-session file-IPC transport, not receiver execution.
 
-Not implemented yet: runtime hook invocation via an external hook runner, receiver execution, chaos kill-mid-dispatch lane, and cross-harness adapter tests. The current slices intentionally do not spawn agents or mutate worktrees.
+Not implemented yet: runtime hook invocation via an external hook runner, receiver execution, and chaos kill-mid-dispatch lane. The current slices intentionally do not spawn agents or mutate worktrees.
 
 ## Open questions
 
