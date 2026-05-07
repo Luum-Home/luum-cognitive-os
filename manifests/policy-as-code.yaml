@@ -4,11 +4,18 @@ owner: platform-safety
 adr: ADR-234
 
 policy_dir: policies
-mode: observe-first
+mode: hook-migration
 external_engines:
   opa: deferred
   cedar: deferred
   casbin: deferred
+
+migrated_hooks:
+  - hooks/destructive-rm-blocker.sh
+  - hooks/protected-config-write-guard.sh
+settings_projection:
+  command: scripts/cos-policy-settings-projection
+  mode: plan-only
 
 invariants:
   - no_external_policy_engine_dependency
