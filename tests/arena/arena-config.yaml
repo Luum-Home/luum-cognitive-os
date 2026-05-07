@@ -204,7 +204,7 @@ arena:
       category: debugging
       difficulty: medium
       prompt: |
-        Docker logs show 'connection refused' errors from <consumer-service-2> service trying to reach
+        Docker logs show 'connection refused' errors from accounts-go service trying to reach
         <consumer-codename-b> on port 8080. The service works fine when started manually.
         Diagnose the issue, explain the root cause, and fix it.
         Hint: check Docker networking, environment variables, and service discovery.
@@ -273,7 +273,7 @@ arena:
       category: docs
       difficulty: easy
       prompt: |
-        Generate OpenAPI/Swagger documentation for the <consumer-service-2> service's
+        Generate OpenAPI/Swagger documentation for the accounts-go service's
         transfer endpoints. Include request/response schemas, error codes,
         and example payloads. Output as a valid openapi.yaml file.
       timeout: 180
