@@ -92,3 +92,28 @@ def test_service_plan_outputs_launchd_and_systemd(tmp_path: Path) -> None:
     daemon = AgentDaemon(project_dir=tmp_path)
     assert "com.luum.cos-agent-daemon" in daemon.launchd_plist()
     assert "ExecStart=python3" in daemon.systemd_unit()
+
+
+def test_install_service_writes_launchd_file_to_target_dir(tmp_path: Path) -> None:
+    from lib.agent_daemon import AgentDaemon
+
+    project = tmp_path / "project"
+    project.mkdir()
+    target = tmp_path / "LaunchAgents"
+    path = AgentDaemon(project_dir=project).install_service(kind="launchd", target_dir=target, python_bin="python3")
+    assert path.parent == target
+    assert path.name == "com.luum.cos-agent-daemon.plist"
+    assert "cos-agent-daemon" in path.read_text()
+
+
+def test_kill_task_marks_failed_and_writes_done_without_tmux(tmp_path: Path) -> None:
+    from lib.agent_daemon import AgentDaemon
+
+    daemon = AgentDaemon(project_dir=tmp_path)
+    task = daemon.enqueue(command="sleep 999", task_id="kill-me", session_id="s1")
+    daemon.launch(task.task_id, dry_run=True)
+    killed = daemon.kill_task(task.task_id, tmux_bin="/missing/tmux", reason="test_kill")
+    assert killed.status == "failed"
+    done = json.loads(daemon.done_path(task.task_id).read_text())
+    assert done["exit_code"] == 137
+    assert done["reasons"] == ["test_kill"]
