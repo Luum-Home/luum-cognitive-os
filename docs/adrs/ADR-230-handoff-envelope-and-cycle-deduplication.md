@@ -263,7 +263,9 @@ Slices A–E are implemented as the first executable handoff contract:
 
 Slice F transport is implemented for file-IPC delivery: `cos team handoff send` dispatches the ADR-230 envelope through `HandoffDispatcher` and delivers the scoped envelope as an ADR-233 inbox message. A cross-harness contract test proves Codex-style and Claude-style session ids share the same transport. This is real cross-session file-IPC transport, not receiver execution.
 
-Not implemented yet: runtime hook invocation via an external hook runner, receiver execution, and chaos kill-mid-dispatch lane. The current slices intentionally do not spawn agents or mutate worktrees.
+Slice G receiver execution is implemented as an explicit operator-controlled command: `cos team handoff receive --exec-command-template ...` reads ADR-233 inbox handoffs, writes idempotency receipts, and optionally executes a bounded shell template.
+
+Not implemented yet: runtime hook invocation via an external hook runner and chaos kill-mid-dispatch lane. The current slices intentionally do not spawn agents or mutate worktrees.
 
 ## Open questions
 
