@@ -81,14 +81,14 @@ class TestMockMetricsData:
         error_file = metrics_dir / "error-learning.jsonl"
         epoch = int(time.time())
 
-        # 5 TEST_FAILURE errors for <consumer-codename-b>
+        # 5 TEST_FAILURE errors for service-a
         for i in range(1, 6):
             ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             entry = {
                 "timestamp": ts,
                 "timestamp_epoch": epoch - i * 60,
                 "type": "TEST_FAILURE",
-                "service": "<consumer-codename-b>",
+                "service": "service-a",
                 "framework": "go-test",
                 "error": "FAIL: TestUserCreate - expected 200 got 500",
                 "command": "go test ./...",
@@ -98,14 +98,14 @@ class TestMockMetricsData:
             with open(error_file, "a") as f:
                 f.write(json.dumps(entry) + "\n")
 
-        # 3 LINT_ERROR for <consumer-codename-a>
+        # 3 LINT_ERROR for service-c
         for i in range(1, 4):
             ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
             entry = {
                 "timestamp": ts,
                 "timestamp_epoch": epoch - i * 120,
                 "type": "LINT_ERROR",
-                "service": "<consumer-codename-a>",
+                "service": "service-c",
                 "framework": "eslint",
                 "error": "error TS2345: Argument of type string is not assignable",
                 "command": "npx eslint .",
@@ -176,7 +176,7 @@ class TestMockMetricsData:
         kpi_file = mock_metrics_env["metrics_dir"] / "kpi-history.jsonl"
         if kpi_file.exists():
             last_line = kpi_file.read_text().strip().split("\n")[-1]
-            data = json.loads(last_line)
+            json.loads(last_line)
             assert "first_pass_success_rate" in last_line, "should contain first_pass_success_rate"
             assert "avg_iterations" in last_line, "should contain avg_iterations"
 

@@ -122,7 +122,7 @@ arena:
       category: greenfield
       difficulty: hard
       prompt: |
-        Create a new Go microservice called 'preferences' under <consumer-service-5>preferences/.
+        Create a new Go microservice called 'preferences' under services/preferences/.
         Requirements:
         - Clean architecture: domain, application, infrastructure layers
         - CRUD endpoints: GET/POST/PUT/DELETE /api/preferences/:userId
@@ -134,8 +134,8 @@ arena:
       timeout: 300
       metrics: [files_created, tests_created, compiles, architecture_score, time_seconds, tokens_used]
       evaluation:
-        compiles: "cd <consumer-service-5>preferences && go build ./..."
-        tests_pass: "cd <consumer-service-5>preferences && go test ./..."
+        compiles: "cd services/preferences && go build ./..."
+        tests_pass: "cd services/preferences && go test ./..."
         architecture: "Check domain/, application/, infrastructure/ separation"
 
     - id: fix-known-bug
@@ -157,7 +157,7 @@ arena:
       category: feature
       difficulty: medium
       prompt: |
-        Add GET /api/users/:id/preferences to the <consumer-service-4> service.
+        Add GET /api/users/:id/preferences to the service-a-go service.
         - Follow existing controller patterns (ginext handlers)
         - Create a use case that queries the preferences table
         - Return JSON: { preferences: [{key, value}] }
@@ -188,9 +188,9 @@ arena:
       category: integration
       difficulty: hard
       prompt: |
-        When a user updates their email in <consumer-service-4>:
+        When a user updates their email in service-a-go:
         1. Publish a Kafka event 'user.email.updated' with userId, oldEmail, newEmail
-        2. Create a consumer in <consumer-codename-c> that updates the email in Keycloak
+        2. Create a consumer in service-b that updates the email in Keycloak
         3. Use existing Kafka producer/consumer patterns from pkg/tools/kafka
         4. Add idempotency via event ID
       timeout: 300
@@ -205,7 +205,7 @@ arena:
       difficulty: medium
       prompt: |
         Docker logs show 'connection refused' errors from <consumer-service-2> service trying to reach
-        <consumer-codename-b> on port 8080. The service works fine when started manually.
+        service-a on port 8080. The service works fine when started manually.
         Diagnose the issue, explain the root cause, and fix it.
         Hint: check Docker networking, environment variables, and service discovery.
       timeout: 180
