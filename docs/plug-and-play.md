@@ -354,7 +354,7 @@ metadata:
   name: payments-team
 spec:
   repos:
-    - services/<consumer-service>
+    - services/example-gateway
     - services/payments-go
   skills:
     - systematic-debugging

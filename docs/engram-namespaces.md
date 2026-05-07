@@ -27,7 +27,7 @@ Engram
 │   ├── architecture/auth-model
 │   ├── planning/feature-x/proposal
 │   ├── sre-fix/api-server/oom
-│   └── discovery/<consumer-codename-b>-44-endpoints
+│   └── discovery/example-users-44-endpoints
 │
 └── cognitive-os-meta          ← KPIs, metrics, squad performance
     ├── agent-kpis/latest
@@ -73,7 +73,7 @@ Knowledge that belongs to ONE project. This is the project's private memory.
 | What Goes Here | Example |
 |---------------|---------|
 | Architecture decisions | "Auth uses OIDC provider with realm '{your-realm}'" |
-| Service inventory | "<consumer-codename-b> has 44 endpoints on port 8080" |
+| Service inventory | "example-users has 44 endpoints on port 8080" |
 | SDD artifacts | Proposals, specs, designs, task breakdowns |
 | SRE fixes | "monolith OOM fix: increase Docker memory to 2GB" |
 | Bug discoveries | "onboarding identity-provider mock returns wrong status code" |
@@ -210,9 +210,9 @@ When an agent discovers a pattern that is NOT project-specific, it saves to both
 ```python
 # 1. Project-specific fix
 mem_save(
-    title="Fixed OOM in <consumer-codename-b>",
+    title="Fixed OOM in example-users",
     project="{project}",
-    topic_key="sre-fix/<consumer-codename-b>/oom",
+    topic_key="sre-fix/example-users/oom",
     content="Increased memory limit to 2GB in docker-compose..."
 )
 
