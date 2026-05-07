@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — Slices A–E implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-203 (subagent capability contract), ADR-211 (service mode readiness), ADR-225 (branch-per-task — reserved); depends on ADR-226 (event-sourced session bus); pairs with ADR-233 (cross-session agent teams)
 **Source**: [`docs/research/orchestration-gaps/agent-to-agent-handoff.md`](../research/orchestration-gaps/agent-to-agent-handoff.md). Production failure rate of 41–87% on state-of-the-art open-source multi-agent systems (MAST 2025 paper). The #1 production failure mode is the infinite handoff loop: agent A delegates to B who delegates to C who re-delegates back to A. **Zero frameworks prevent this.** Cognitive OS today has no handoff protocol at all — every cross-agent call routes through the orchestrator — but ADR-211 service mode and ADR-233 cross-session teams both anticipate one. This ADR ships the protocol.
@@ -251,6 +251,17 @@ The tests must prove:
 6. **Slice F — Operator runbook** at `docs/runbooks/handoff-troubleshooting.md`. Three flows: cycle-detected, blast-radius-block, depth-exceeded.
 
 Total: ~180 LOC. Slice B alone (cycle dedup) is the <1-day high-ROI MVP.
+
+## Implementation status (2026-05-07)
+
+Slices A–E are implemented as the first executable handoff contract:
+
+- `packages/agent-lifecycle/lib/handoff_envelope.py` (+ `lib/handoff_envelope.py` symlink) defines the frozen `HandoffEnvelope` schema, validators, JSON round-trip, and next-hop lineage helper.
+- `packages/agent-lifecycle/lib/handoff_dispatcher.py` (+ `lib/handoff_dispatcher.py` symlink) enforces cycle detection before any secondary side effect, max-depth checks, query read-only semantics, receiver tool intersection, blast-radius operator blocking, event emission through ADR-226, and idempotent handoff replay.
+- `manifests/handoff-protocol.yaml` declares the active policy, emitted events, hooks, intent semantics, context modes, and permission-intersection invariant.
+- Tests cover unit, behavior, smoke, and audit lanes: `tests/unit/test_handoff_envelope.py`, `tests/unit/test_handoff_dispatcher.py`, `tests/behavior/test_handoff_dispatcher_flow.py`, `tests/audit/test_handoff_manifest.py`, and `tests/smoke/test_handoff_cycle_detection.sh`.
+
+Not implemented yet: real cross-session delivery transport (ADR-233 consumer), runtime hook invocation via an external hook runner, chaos kill-mid-dispatch lane, and cross-harness adapter tests. The current slice is the substrate and safety gate; it intentionally does not spawn agents or mutate worktrees.
 
 ## Open questions
 
