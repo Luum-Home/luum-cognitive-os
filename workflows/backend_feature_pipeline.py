@@ -2,7 +2,7 @@
 Backend Feature Pipeline - Orchestrator for creating new features in any backend service.
 
 Usage:
-  uv run .cognitive-os/workflows/run.py feature --service <consumer-service-2> --ticket DEV-1234
+  uv run .cognitive-os/workflows/run.py feature --service accounts-go --ticket DEV-1234
   uv run .cognitive-os/workflows/run.py feature --service <consumer-codename-a> --ticket DEV-1234 --description "Add user endpoint"
   uv run .cognitive-os/workflows/run.py resume --workflow-id abc12345
   uv run .cognitive-os/workflows/run.py resume --workflow-id abc12345 --start-from build
@@ -29,7 +29,6 @@ import time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from backend_state import BackendWorkflowState, setup_logger
-from lib.data_types import ServiceConfig
 from lib.shared_phases import (
     BOLD,
     CYAN,
@@ -37,7 +36,6 @@ from lib.shared_phases import (
     GREEN,
     RED,
     RESET,
-    YELLOW,
     build_pr_description_fn,
     cleanup_orphan_node_processes,
     format_duration,
@@ -64,7 +62,6 @@ from phases import (
     phase_evaluate,
     phase_implement,
     phase_plan,
-    phase_security_check,
 )
 
 

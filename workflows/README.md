@@ -13,7 +13,7 @@ uv sync
 uv run python run.py services
 
 # Run a feature pipeline
-uv run python run.py feature --service <consumer-service-2> --ticket DEV-1234
+uv run python run.py feature --service accounts-go --ticket DEV-1234
 
 # Run a bug fix pipeline
 uv run python run.py bug --service <consumer-codename-a> --ticket BUG-567
@@ -22,7 +22,7 @@ uv run python run.py bug --service <consumer-codename-a> --ticket BUG-567
 uv run python run.py migration --service <consumer-service-4> --description "add transfers table"
 
 # Deploy a service
-uv run python run.py deploy --service <consumer-service-2> --env staging
+uv run python run.py deploy --service accounts-go --env staging
 
 # Create a new Go service
 uv run python run.py new-service --name analytics --port 3006

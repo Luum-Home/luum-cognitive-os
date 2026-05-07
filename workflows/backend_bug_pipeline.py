@@ -2,7 +2,7 @@
 Backend Bug Pipeline - Orchestrator for bug fixes in any backend service.
 
 Usage:
-  uv run .cognitive-os/workflows/run.py bug --service <consumer-service-2> --ticket BUG-567
+  uv run .cognitive-os/workflows/run.py bug --service accounts-go --ticket BUG-567
   uv run .cognitive-os/workflows/run.py bug --service <consumer-codename-a> --ticket BUG-567 --description "Fix auth token"
 
 Phases (11 steps):
@@ -33,7 +33,6 @@ from lib.shared_phases import (
     GREEN,
     RED,
     RESET,
-    YELLOW,
     build_pr_description_fn,
     cleanup_orphan_node_processes,
     format_duration,
