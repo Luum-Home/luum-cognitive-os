@@ -71,6 +71,48 @@ if [ -n "$TOOL_USE_ID" ] && [ "$TOOL_USE_ID" != "null" ]; then
   AGENT_LEDGER_ID="$TOOL_USE_ID"
 fi
 
+# ADR-220: before any Agent launch, prove linked worktrees are not silently
+# divergent with overlapping dirty paths. This catches the "fix exists on main,
+# stale worktree still shows old content" failure before another agent observes
+# or mutates stale state.
+if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos-worktree-audit" ] && [ "${COS_SKIP_WORKTREE_DIVERGENCE_AUDIT:-0}" != "1" ]; then
+  if git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    WORKTREE_AUDIT_TMP=$(mktemp "${TMPDIR:-/tmp}/cos-worktree-audit.XXXXXX.json")
+    WORKTREE_AUDIT_ERR=$(mktemp "${TMPDIR:-/tmp}/cos-worktree-audit.XXXXXX.err")
+    set +e
+    "$PROJECT_DIR/scripts/cos-worktree-audit" --project-dir "$PROJECT_DIR" --json --strict >"$WORKTREE_AUDIT_TMP" 2>"$WORKTREE_AUDIT_ERR"
+    WORKTREE_AUDIT_RC=$?
+    set -e
+    if [ "$WORKTREE_AUDIT_RC" -ne 0 ]; then
+      echo "ADR-220 WORKTREE PREFLIGHT BLOCK: linked worktree divergence may hide or overwrite WIP before Agent launch." >&2
+      [ -s "$WORKTREE_AUDIT_ERR" ] && cat "$WORKTREE_AUDIT_ERR" >&2
+      command -v python3 >/dev/null 2>&1 && python3 - "$WORKTREE_AUDIT_TMP" <<'PYEOF' >&2 || cat "$WORKTREE_AUDIT_TMP" >&2
+import json, sys
+from pathlib import Path
+try:
+    payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+except Exception:
+    print(Path(sys.argv[1]).read_text(encoding="utf-8")[:4000])
+    raise SystemExit(0)
+summary = payload.get("summary", {})
+print(
+    "ADR-220 worktree audit summary: "
+    f"status={payload.get('status')} worktrees={summary.get('worktree_count', 0)} "
+    f"blockers={summary.get('block_count', 0)} warnings={summary.get('warn_count', 0)}"
+)
+for finding in (payload.get("findings") or [])[:8]:
+    print(f"- {finding.get('level')} {finding.get('code')} {finding.get('subject')}: {finding.get('detail')}")
+    if finding.get("action"):
+        print(f"  action: {finding.get('action')}")
+print("Command: scripts/cos worktree audit --json --strict")
+PYEOF
+      rm -f "$WORKTREE_AUDIT_TMP" "$WORKTREE_AUDIT_ERR"
+      exit "$WORKTREE_AUDIT_RC"
+    fi
+    rm -f "$WORKTREE_AUDIT_TMP" "$WORKTREE_AUDIT_ERR"
+  fi
+fi
+
 # ADR-116 P1.1/P3.3: acquire the shared active task claim and prove the
 # coordination surface is clean before recording or launching the agent.
 ACTIVE_CLAIM_ACQUIRED=0
