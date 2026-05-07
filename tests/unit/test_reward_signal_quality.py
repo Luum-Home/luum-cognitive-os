@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from lib.reward_signal_quality import audit_stream, known_skill_ids, load_contract, summarize, validate_row
+from lib.reward_signal_quality import audit_stream, known_skill_ids, load_contract, repair_streams, summarize, validate_row
 
 
 REPO = Path(__file__).resolve().parents[2]
@@ -121,3 +121,42 @@ def test_known_skill_ids_reads_skill_directories():
     ids = known_skill_ids(REPO, contract)
 
     assert "docs-to-artifact" in ids
+
+
+def test_repair_streams_archives_quarantined_rows_and_rewrites_valid_only(tmp_path):
+    skill_dir = tmp_path / "skills" / "known"
+    skill_dir.mkdir(parents=True)
+    (skill_dir / "SKILL.md").write_text("---\nname: known\n---\n", encoding="utf-8")
+    metrics_dir = tmp_path / ".cognitive-os" / "metrics"
+    metrics_dir.mkdir(parents=True)
+    stream = metrics_dir / "skill-feedback.jsonl"
+    stream.write_text(
+        '{"timestamp":"2026-05-06T00:00:00Z","skill":"known","success":true}\n'
+        '{"timestamp":"2026-05-06T00:01:00Z","skill":"matias","success":false}\n',
+        encoding="utf-8",
+    )
+    contract = {
+        "schema_version": "reward-signal-contract/v1",
+        "known_subject_sources": {"skills_dirs": ["skills"]},
+        "streams": {
+            "skill-feedback": {
+                "path": ".cognitive-os/metrics/skill-feedback.jsonl",
+                "subject_type": "skill",
+                "subject_field": "skill",
+                "outcome_field": "success",
+                "required_fields": ["timestamp", "skill", "success"],
+                "known_subject_source": "skills_dirs",
+            }
+        },
+    }
+
+    payload = repair_streams(tmp_path, contract, ["skill-feedback"], execute=True)
+
+    assert payload["summary"] == {"kept_rows": 1, "quarantined_rows": 1}
+    rewritten = stream.read_text(encoding="utf-8")
+    assert rewritten.count("\n") == 1
+    assert '"skill":"known"' in rewritten
+    assert '"skill":"matias"' not in rewritten
+    archive = Path(payload["streams"][0]["archive_path"])
+    assert archive.exists()
+    assert '"skill":"matias"' in archive.read_text(encoding="utf-8")
