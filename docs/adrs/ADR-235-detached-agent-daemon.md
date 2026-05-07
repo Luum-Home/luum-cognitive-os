@@ -1,5 +1,9 @@
 # ADR-235 — Detached Agent Daemon
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–F implemented (2026-05-07)  
@@ -84,3 +88,14 @@ python3 -m pytest tests/unit/test_agent_daemon.py tests/behavior/test_cos_agent_
 python3 -m py_compile scripts/cos-agent-daemon && bash -n scripts/cos
 ```
 
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

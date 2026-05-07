@@ -96,6 +96,7 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
 
     # Extension docs that explicitly say no direct key required.
     AllowedReference("packages/cos-advisory-llm/README.md", "native_prompt_hook_docs", "states no direct key required"),
+    AllowedReference("docs/research/orchestration-gaps/background-agent-patterns.md", "auth_rotation_research", "research report discusses detached-agent credential rotation risk"),
 )
 
 _ALLOWED_BY_PATH = {entry.path: entry for entry in ALLOWED_REFERENCES}

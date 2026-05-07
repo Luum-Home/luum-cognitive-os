@@ -1,5 +1,9 @@
 # ADR-210 — Fleet-Aggregated Confidence Boundary
 
+## Status
+Proposed
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Proposed  
@@ -73,3 +77,11 @@ scripts/cos-fleet-confidence-export --dry-run --json
 
 The tests must prove `local-only` and `secret-never-touch` content cannot be
 included in fleet confidence exports.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

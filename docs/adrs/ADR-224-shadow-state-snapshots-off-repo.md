@@ -1,5 +1,9 @@
 # ADR-224 — Shadow-State Snapshots, Off-Repo
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–C implemented with ADR-227 (2026-05-07)
@@ -30,3 +34,15 @@ Use ADR-227 shadow-git as the only default safety-net substrate for future rollb
 
 - **2026-05-07 — Slice A implemented**: `lib/shadow_git.py` stores bare repos off-repo and supports snapshot, preview, files-only restore, and prune. `scripts/cos-rollback` exposes preview/restore. Tests cover no-stash/no-index mutation and round-trip restore.
 - **2026-05-07 — Slices B–C implemented**: `docs/runbooks/shadow-git-rollback.md` documents capture/preview/restore/prune flows; `manifests/shadow-git.yaml` declares retention; `scripts/cos-rollback --prune` dry-runs or executes TTL cleanup for off-repo session stores.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

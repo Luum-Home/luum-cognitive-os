@@ -1,5 +1,9 @@
 # ADR-232 — Sandbox Adapter Tiers
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–E implemented (2026-05-07)  
@@ -62,3 +66,15 @@ Remaining future work:
 - Network is off by default.
 - No new daemon or service dependency.
 - Sandbox adapters wrap commands; they do not mutate git/worktree state.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

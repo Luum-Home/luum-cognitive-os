@@ -1,5 +1,9 @@
 # ADR-236 — Deferred Tool Loading + ToolSearch Adoption
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–D implemented (2026-05-07)  
@@ -55,3 +59,15 @@ Not implemented yet:
 - Deferred tools remain discoverable by metadata.
 - Eager surface must stay small and governance-oriented.
 - Runtime loading changes require separate dispatch integration tests.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

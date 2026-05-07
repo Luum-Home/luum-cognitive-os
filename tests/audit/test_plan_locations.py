@@ -73,6 +73,8 @@ ALLOWLIST_RELATIVE: list[str] = [
     ".claude/plugins/",      # plugin skill templates use example paths
     # ADR file that defines the convention (self-referential, historic)
     "docs/adrs/ADR-082-plan-location-convention.md",
+    # Private strategy/research workspace (gitignored), not active OS plan inventory
+    ".cognitive-os/strategy/",  # private strategy/research workspace; not canonical active OS plans
     # Measurement / audit artifacts that document the old state
     "docs/measurements/",
     # Business-scoped files (ADR-082 §"Files that stay in place")

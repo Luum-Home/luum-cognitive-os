@@ -1,5 +1,9 @@
 # ADR-222 — Pre-Agent Stash Deferred Until Agent Launch Confirmed
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices 1–8 implemented (2026-05-07)
@@ -203,3 +207,8 @@ Remaining/deprecated path: `COS_LEGACY_SNAPSHOT=1` still uses old one-phase stas
 - Should `dispatch-gate` (the validation-mode lock) be promoted to a first-class concept in cognitive-os.yaml (e.g., `orchestration.dispatch_gate.enabled`)? Initial answer: defer; current opt-in via env vars suffices until we have a second consumer.
 - Coordination with ADR-203 (subagent capability contract) — the contract's preflight phase is the natural place for "Phase 1 plan" if we converge on a single subagent-launch primitive. Tracked as a follow-up.
 - Coordination with ADR-211 (service mode readiness) — service mode invocation paths must NOT call `pre-agent-snapshot.sh` at all. ADR-099 already disables under `COS_VALIDATION_MODE`; service mode should set the equivalent flag. Verify in the service-mode integration test.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

@@ -1,5 +1,9 @@
 # ADR-227 — Shadow-Git Checkpoint Substrate
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–F implemented (2026-05-07)
@@ -213,3 +217,8 @@ Total: ~290 LOC.
 - **Does `cos rollback --to-event-id` semantics need a "soft" mode that *preserves* later events while restoring files?** Initial answer: no — that's exactly the context-mismatch bug. If operators want it, document as research-question-not-feature.
 - **Interaction with ADR-220 worktree audit**: a successful restore may invalidate the audit's "behind/conflict" findings. Worktree audit should re-run after a restore. Tracked as a slice of ADR-220.
 - **Interaction with ADR-223 (agent lifecycle reconstruction)**: when ADR-223 lands and worktree-per-write-agent replaces auto-stash, the snapshot trigger moves from PostToolUse to per-worktree commit. Re-evaluate snapshot trigger semantics after 223 lands.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

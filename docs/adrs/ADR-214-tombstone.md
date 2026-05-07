@@ -48,3 +48,15 @@ Coordination) together address the broader category. A future amendment may
 add ADR-number reservation to the coordination contract; until then, parallel
 sessions accept that number collisions resolve via the first commit to land,
 and tombstones document the vacated slots.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Reusing this ADR number for a different decision — rejected because tombstones preserve numbering provenance and prevent contradictory references.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

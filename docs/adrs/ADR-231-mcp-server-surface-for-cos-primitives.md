@@ -1,5 +1,9 @@
 # ADR-231 — MCP Server Surface for COS Primitives
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–C implemented (2026-05-07)  
@@ -102,3 +106,11 @@ Negative / trade-offs:
 
 - The implementation predates ADR-231 and still needs OTel instrumentation.
 - `cos_save_memory` is not read-only; it remains allowed only because it uses the safe memory write path. Future write tools should not copy this exception casually.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

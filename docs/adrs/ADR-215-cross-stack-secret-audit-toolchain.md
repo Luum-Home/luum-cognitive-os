@@ -1,5 +1,9 @@
 # ADR-215 — Cross-Stack Secret Audit Toolchain
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — slice 1 substrate active
@@ -242,3 +246,8 @@ The tests must prove:
   operator-driven release.
 - detect-secrets baseline file (`.secrets.baseline`) — committed or gitignored?
   Recommendation: committed, as it represents the audited-and-allowed set.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

@@ -1,5 +1,9 @@
 # ADR-217 — Cross-Stack Adoption Truth Audit Toolchain
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — slice 1 audit substrate active
@@ -189,3 +193,8 @@ The behavior tests must prove:
   Recommendation: yes — same convention.
 - Cadence: runs as part of `cos pre-launch verify` and on a weekly cron in
   service mode (ADR-031 sibling cadence)?
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
