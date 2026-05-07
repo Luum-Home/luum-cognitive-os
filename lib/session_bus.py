@@ -452,6 +452,82 @@ def read_session_events(
     return events
 
 
+
+def truncate_session_events(
+    session_id: str,
+    *,
+    project_dir: str | Path | None = None,
+    target_seq: int,
+    strict_durability: bool = False,
+    single_writer: bool = False,
+) -> dict[str, Any]:
+    """Truncate one ADR-226 per-session stream to ``target_seq`` inclusively.
+
+    This is the conversation half of ADR-227 restore. It preserves seq order,
+    rewrites the rebuildable counter cache, and removes truncated records from
+    the fan-out index so later gap checks do not see ghost events.
+    """
+    if target_seq < 0:
+        raise ValueError("target_seq must be >= 0")
+    _platform_supported(single_writer=single_writer)
+    root = _root(project_dir)
+    sid = _safe_session_id(session_id)
+    stream = session_stream_path(root, sid)
+    counter = session_counter_path(root, sid)
+
+    with _session_locked(root, sid, single_writer=single_writer):
+        existing = read_session_events(sid, project_dir=root)
+        if existing and target_seq > int(existing[-1].get("seq", 0)):
+            raise EventStreamGapDetected(
+                f"cannot truncate session={sid} to future seq={target_seq}; max_seq={existing[-1].get('seq')}"
+            )
+        kept = [event for event in existing if int(event.get("seq", 0)) <= target_seq]
+        stream.parent.mkdir(parents=True, exist_ok=True)
+        tmp = stream.with_suffix(stream.suffix + ".tmp")
+        with tmp.open("w", encoding="utf-8") as handle:
+            for event in kept:
+                handle.write(json.dumps(event, sort_keys=True) + "\n")
+            handle.flush()
+            if strict_durability:
+                os.fsync(handle.fileno())
+        os.replace(tmp, stream)
+        _write_counter(counter, target_seq)
+        _truncate_event_index_for_session(root, sid, target_seq, strict_durability=strict_durability)
+        return {
+            "schema_version": EVENT_STORE_SCHEMA_VERSION,
+            "session_id": sid,
+            "target_seq": target_seq,
+            "events_before": len(existing),
+            "events_after": len(kept),
+        }
+
+
+def _truncate_event_index_for_session(
+    project_dir: Path,
+    session_id: str,
+    target_seq: int,
+    *,
+    strict_durability: bool = False,
+) -> None:
+    path = event_index_path(project_dir)
+    if not path.is_file():
+        return
+    records = read_event_index(project_dir=project_dir)
+    kept = [
+        record
+        for record in records
+        if record.get("session_id") != session_id or int(record.get("seq", 0)) <= target_seq
+    ]
+    with _index_locked(project_dir):
+        tmp = path.with_suffix(path.suffix + ".tmp")
+        with tmp.open("w", encoding="utf-8") as handle:
+            for record in kept:
+                handle.write(json.dumps(record, sort_keys=True) + "\n")
+            handle.flush()
+            if strict_durability:
+                os.fsync(handle.fileno())
+        os.replace(tmp, path)
+
 def recover_session_counter(
     session_id: str,
     *,
