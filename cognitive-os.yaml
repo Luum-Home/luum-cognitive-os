@@ -1216,7 +1216,7 @@ harness:
     secret-detector:
       script: hooks/secret-detector.sh
       event: PreToolUse
-      matcher: "Edit|Write"
+      matcher: "Bash|Edit|Write"
       scope: os-only
 
     project-docs-convention:
@@ -1852,6 +1852,20 @@ harness:
       script: hooks/cross-session-event-emit.sh
       event: PreToolUse
       matcher: "Edit|Write"
+      async: true
+      scope: os-only
+
+    cross-session-event-emit-agent:
+      script: hooks/cross-session-event-emit.sh
+      event: PreToolUse
+      matcher: "Agent"
+      async: true
+      scope: os-only
+
+    cross-session-event-emit-post-bash:
+      script: hooks/cross-session-event-emit.sh
+      event: PostToolUse
+      matcher: "Bash"
       async: true
       scope: os-only
 
