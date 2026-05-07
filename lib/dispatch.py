@@ -336,6 +336,30 @@ def _try_claude(
     }
 
 
+
+
+def _retry_sleep_seconds(backoff: str, attempt_index: int) -> float:
+    """Return bounded retry sleep for ADR-228 retry loop.
+
+    attempt_index is 1-based for the retry being scheduled after a failed
+    attempt. The default cap is deliberately small because dispatch is a hot
+    path; operators can raise it via COS_DISPATCH_RETRY_MAX_SLEEP_SECONDS.
+    """
+    try:
+        cap = float(os.environ.get("COS_DISPATCH_RETRY_MAX_SLEEP_SECONDS", "0.25"))
+    except ValueError:
+        cap = 0.25
+    cap = max(0.0, cap)
+    if backoff == "none" or cap == 0.0:
+        return 0.0
+    if backoff == "immediate":
+        return 0.0
+    base = 0.05 * (2 ** max(0, attempt_index - 1))
+    # Deterministic bounded jitter avoids test flake and synchronized storms.
+    jitter = (attempt_index % 3) * 0.01
+    return min(cap, base + jitter)
+
+
 def _dispatch_budget_cap(skill_req: dict[str, Any]) -> float:
     raw = skill_req.get("session_budget_cap_usd") or os.environ.get("COS_SESSION_BUDGET_CAP_USD") or "5.0"
     try:
@@ -578,6 +602,8 @@ def dispatch(
     metric_sink = _metric_sink or _log_metric
 
     response: dict | None = None
+    retry_events: list[dict[str, Any]] = []
+    provider_attempts: dict[str, int] = {}
 
     for idx, provider in enumerate(providers_requested):
         is_fallback = idx > 0
@@ -674,44 +700,119 @@ def dispatch(
             prefix = "[dispatch] primary" if not is_fallback else "[dispatch] fallback"
             print(f"{prefix} → {provider}", file=sys.stderr)
 
-        if provider == "qwen":
-            attempt = qwen_fn(prompt, claude_model=claude_model, verbose=verbose)
-            if attempt is None:
-                # Qwen unavailable (unconfigured / SDK missing / disabled) — advance
-                if verbose:
-                    print("[dispatch] qwen unavailable — advancing", file=sys.stderr)
-                continue
-            response = attempt
-        elif provider == "claude":
-            if claude_executor is None:
-                if verbose:
-                    print("[dispatch] no claude_executor provided — skipping", file=sys.stderr)
-                continue
-            if _claude_fn is None:
-                response = claude_fn(
-                    prompt,
-                    claude_model,
-                    claude_executor,
-                    timeout,
-                    sandbox_required=bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
-                    allow_sandbox_fallback=bool(_skill_req.get("allow_sandbox_fallback", False)),
-                )
+        attempt_no = 0
+        accumulated_cost = 0.0
+        while True:
+            attempt_no += 1
+            provider_attempts[provider] = attempt_no
+            if gate_enabled and attempt_no > 1 and dispatch_gate is not None and estimated_cost > 0:
+                try:
+                    retry_decision = dispatch_gate.pre_call(estimated_cost)
+                    budget_pressure = retry_decision.pressure
+                except SessionBudgetExceeded as exc:
+                    response = {
+                        "success": False,
+                        "text": "",
+                        "tokens_in": 0,
+                        "tokens_out": 0,
+                        "cost_usd": accumulated_cost,
+                        "error": str(exc),
+                        "model": "",
+                        "provider_label": provider,
+                    }
+                    retry_events.append({
+                        "provider": provider,
+                        "attempt": attempt_no,
+                        "action": "budget_refused_retry",
+                        "error": str(exc),
+                    })
+                    break
+
+            if provider == "qwen":
+                attempt = qwen_fn(prompt, claude_model=claude_model, verbose=verbose)
+                if attempt is None:
+                    # Qwen unavailable (unconfigured / SDK missing / disabled) — advance
+                    if verbose:
+                        print("[dispatch] qwen unavailable — advancing", file=sys.stderr)
+                    response = None
+                    break
+                response = attempt
+            elif provider == "claude":
+                if claude_executor is None:
+                    if verbose:
+                        print("[dispatch] no claude_executor provided — skipping", file=sys.stderr)
+                    response = None
+                    break
+                if _claude_fn is None:
+                    response = claude_fn(
+                        prompt,
+                        claude_model,
+                        claude_executor,
+                        timeout,
+                        sandbox_required=bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
+                        allow_sandbox_fallback=bool(_skill_req.get("allow_sandbox_fallback", False)),
+                    )
+                else:
+                    response = claude_fn(prompt, claude_model, claude_executor, timeout)
             else:
-                response = claude_fn(prompt, claude_model, claude_executor, timeout)
-        else:
-            # ADR-062: N-provider cascade via lib/providers/REGISTRY
-            attempt = _try_registry_provider(
-                provider=provider,
-                prompt=prompt,
-                claude_model=claude_model,
-                verbose=verbose,
-            )
-            if attempt is None:
-                # Provider unavailable (not configured / SDK missing / disabled) — advance
-                if verbose:
-                    print(f"[dispatch] provider {provider!r} unavailable — advancing", file=sys.stderr)
-                continue
-            response = attempt
+                # ADR-062: N-provider cascade via lib/providers/REGISTRY
+                attempt = _try_registry_provider(
+                    provider=provider,
+                    prompt=prompt,
+                    claude_model=claude_model,
+                    verbose=verbose,
+                )
+                if attempt is None:
+                    # Provider unavailable (not configured / SDK missing / disabled) — advance
+                    if verbose:
+                        print(f"[dispatch] provider {provider!r} unavailable — advancing", file=sys.stderr)
+                    response = None
+                    break
+                response = attempt
+
+            if response is None:
+                break
+            accumulated_cost += float(response.get("cost_usd", 0.0) or 0.0)
+            if response.get("success"):
+                if accumulated_cost:
+                    response["cost_usd"] = accumulated_cost
+                break
+
+            if not gate_enabled or dispatch_gate is None:
+                if accumulated_cost:
+                    response["cost_usd"] = accumulated_cost
+                break
+
+            failure, policy = dispatch_gate.classify(response.get("error") or response)
+            max_attempts = int(policy.max_attempts)
+            # max_attempts is total provider attempts. 0 means never retry.
+            if max_attempts <= 1 or attempt_no >= max_attempts:
+                if accumulated_cost:
+                    response["cost_usd"] = accumulated_cost
+                retry_events.append({
+                    "provider": provider,
+                    "attempt": attempt_no,
+                    "failure_class": failure.value,
+                    "action": "exhausted" if max_attempts > 1 else "no_retry",
+                    "max_attempts": max_attempts,
+                })
+                break
+
+            retry_events.append({
+                "provider": provider,
+                "attempt": attempt_no,
+                "failure_class": failure.value,
+                "action": "retry",
+                "max_attempts": max_attempts,
+                "backoff": policy.backoff,
+                "diversity_required": policy.diversity_required,
+            })
+            sleep_s = _retry_sleep_seconds(policy.backoff, attempt_no)
+            if sleep_s > 0:
+                time.sleep(sleep_s)
+
+        if response is None:
+            continue
 
         # ADR-080 Tier 1 #4 — record rate-limit headers if present in response
         # (providers that surface headers embed them under "rate_limit_headers" key)
@@ -802,6 +903,8 @@ def dispatch(
             "sandbox_required": bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
             "sandbox_plan": sandbox_plan,
             "tool_loading": tool_loading_plan,
+            "provider_attempts": provider_attempts,
+            "retry_events": retry_events,
         },
         "skill_routing": {
             "tier": _skill_req.get("tier") if _skill_req else None,
