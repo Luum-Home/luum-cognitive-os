@@ -1,0 +1,41 @@
+schema_version: deferred-tool-loading/v1
+status: active
+owner: platform-orchestration
+adr: ADR-236
+extends: ADR-216
+
+policy:
+  mode: opt-in
+  toolsearch_threshold_tokens: 10000
+  force_toolsearch: false
+  no_parallel_router: true
+
+# Minimal registry: these are categories surfaced to ToolSearch-like discovery.
+# Concrete runtime tool schemas remain harness-owned; COS stores compact metadata.
+tools:
+  - name: cos_tool_discovery_preuse
+    category: governance
+    description: Check a Bash command against COS primitive-first rules before using ad-hoc tools.
+    load_mode: eager
+    always_available: true
+  - name: cos_mcp_server_surface
+    category: mcp
+    description: Exposes COS memory, metrics, rules, tasks, quality checks, and status through MCP.
+    load_mode: deferred
+  - name: cos_agent_team_file_ipc
+    category: orchestration
+    description: Cross-session members/tasks/inbox/events file-IPC substrate.
+    load_mode: deferred
+  - name: cos_sandbox_adapter
+    category: safety
+    description: Opt-in Bubblewrap/Seatbelt command wrapper with explicit fallback.
+    load_mode: deferred
+  - name: cos_branch_task_check
+    category: orchestration
+    description: ADR-225 branch-per-task observe/check policy.
+    load_mode: deferred
+
+invariants:
+  - extends_adr_216_not_parallel_router
+  - eager_surface_remains_small
+  - deferred_tools_are_searchable_by_metadata
