@@ -4,6 +4,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from lib.cross_stack_secret_audit import (
+    audit,
     audit_workflows,
     classify_external_finding,
     discover_sensitive_files,
@@ -80,6 +81,24 @@ def test_discovers_secret_never_touch_files_without_reading_contents(tmp_path: P
     assert [f.path for f in findings] == [".env"]
     assert "REAL_VALUE" not in findings[0].message
     assert findings[0].severity == "warn"
+
+
+def test_release_scope_excludes_local_secret_never_touch_surfaces(tmp_path: Path, monkeypatch) -> None:
+    _write_policy(tmp_path)
+    (tmp_path / ".env").write_text("REAL_VALUE_SHOULD_NOT_BE_IN_REPORT=secret\n", encoding="utf-8")
+    monkeypatch.setattr("lib.cross_stack_secret_audit.installed_tool_versions", lambda policy: {
+        "gitleaks": {"installed": True, "path": "/usr/bin/gitleaks", "version": "fixture"},
+        "trufflehog": {"installed": True, "path": "/usr/bin/trufflehog", "version": "fixture"},
+    })
+
+    default_report = audit(tmp_path)
+    release_report = audit(tmp_path, include_local_sensitive_surfaces=False)
+
+    assert default_report["status"] == "warn"
+    assert any(f["code"] == "secret-never-touch-file-present" for f in default_report["findings"])
+    assert release_report["status"] == "pass"
+    assert release_report["findings"] == []
+    assert release_report["include_local_sensitive_surfaces"] is False
 
 
 def test_classifies_allowlisted_fixture_as_placeholder(tmp_path: Path) -> None:

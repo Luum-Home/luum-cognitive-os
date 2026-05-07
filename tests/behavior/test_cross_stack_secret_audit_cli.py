@@ -51,6 +51,34 @@ def test_cross_stack_secret_audit_cli_strict_fails_on_sensitive_local_surface(pr
 
 
 @pytest.mark.behavior
+def test_cross_stack_secret_audit_release_scope_ignores_local_sensitive_surface(project_root: Path, tmp_path: Path) -> None:
+    manifest = tmp_path / "manifests/cross-stack-secret-audit.yaml"
+    manifest.parent.mkdir(parents=True)
+    manifest.write_text((project_root / "manifests/cross-stack-secret-audit.yaml").read_text(encoding="utf-8"), encoding="utf-8")
+    (tmp_path / ".env").write_text("DO_NOT_PRINT_ME=secret\n", encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            str(project_root / "scripts/cos-cross-stack-secret-audit"),
+            "--project-dir",
+            str(tmp_path),
+            "--json",
+            "--strict",
+            "--release-scope",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    assert result.returncode in {0, 1}
+    payload = json.loads(result.stdout)
+    assert payload["include_local_sensitive_surfaces"] is False
+    assert not any(f["code"] == "secret-never-touch-file-present" for f in payload["findings"])
+    assert "DO_NOT_PRINT_ME" not in result.stdout
+
+
+@pytest.mark.behavior
 def test_cos_secret_audit_route_works(project_root: Path) -> None:
     result = subprocess.run(
         [str(project_root / "scripts/cos"), "secret", "audit", "--json", "--no-write-latest"],
