@@ -27,6 +27,7 @@ Python 3.10+ (FastMCP requirement)
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 import subprocess
@@ -42,8 +43,11 @@ from typing import Any, Dict, List, Optional
 
 _THIS_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = _THIS_DIR.parent
+MCP_TRANSPORT = "stdio"
 
 # Add project root to sys.path so we can import lib/
+if not (PROJECT_ROOT / "cognitive-os.yaml").is_file() and (_THIS_DIR.parents[1] / "cognitive-os.yaml").is_file():
+    PROJECT_ROOT = _THIS_DIR.parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -284,7 +288,7 @@ def _mcp_tool_span(tool_name: str):
         with tracer.start_as_current_span(f"mcp.tool.{tool_name}") as span:
             span.set_attribute("mcp.server.name", "Cognitive OS")
             span.set_attribute("mcp.tool.name", tool_name)
-            span.set_attribute("mcp.transport", "stdio")
+            span.set_attribute("mcp.transport", MCP_TRANSPORT)
             yield span
     except Exception:
         yield None
@@ -830,5 +834,37 @@ def cos_status() -> str:
 # Entry point
 # ---------------------------------------------------------------------------
 
+def run_server(transport: str = "stdio", host: str = "127.0.0.1", port: int = 8765, path: str = "/mcp") -> None:
+    """Run the COS MCP server over stdio or Streamable HTTP.
+
+    Streamable HTTP is opt-in for ADR-231 consumers that need a long-lived
+    local endpoint. The default remains stdio to preserve the zero-daemon path.
+    """
+    global MCP_TRANSPORT
+    MCP_TRANSPORT = transport
+    if transport == "stdio":
+        mcp.run()
+        return
+    if transport != "streamable-http":
+        raise ValueError(f"unsupported MCP transport: {transport}")
+    try:
+        mcp.run(transport="streamable-http", host=host, port=port, path=path)
+    except TypeError:
+        # fastmcp versions differ on kwarg names; retry with the compact form
+        # used by older releases while keeping the public COS CLI stable.
+        mcp.run(transport="streamable-http")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Run the Cognitive OS MCP server")
+    parser.add_argument("--transport", choices=["stdio", "streamable-http"], default="stdio")
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--path", default="/mcp")
+    args = parser.parse_args(argv)
+    run_server(args.transport, host=args.host, port=args.port, path=args.path)
+    return 0
+
+
 if __name__ == "__main__":
-    mcp.run()
+    raise SystemExit(main())
