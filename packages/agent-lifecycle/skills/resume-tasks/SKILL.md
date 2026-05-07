@@ -57,9 +57,9 @@ Show the user a table with ALL tasks (not just incomplete ones):
 ```
 | # | Task Description | Status | Age | Recoverable? | Action |
 |---|-----------------|--------|-----|--------------|--------|
-| 1 | Migrate <consumer-codename-c> to Go | in_progress | 2h ago | Yes - no outputs found | Re-launch |
-| 2 | Add mock for PaymentGateway | failed | 1d ago | Partial - 2/3 files exist | Resume |
-| 3 | Update BFF routes | completed | 3h ago | N/A | Done |
+| 1 | Migrate `<service>` to Go | in_progress | 2h ago | Yes - no outputs found | Re-launch |
+| 2 | Add mock for `<external-gateway>` | failed | 1d ago | Partial - 2/3 files exist | Resume |
+| 3 | Update gateway routes | completed | 3h ago | N/A | Done |
 ```
 
 **Recoverable?** column logic:
