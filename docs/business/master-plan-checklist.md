@@ -253,3 +253,5 @@
 - [x] Cross-instance local consumer E2E is documented in [Cross-Instance Consumer E2E Drill — 2026-05-03](../reports/cross-instance-consumer-e2e-2026-05-03.md), proving install, provenance export/import, drills, and that self-owned evidence does not sign external-help claims.
 
 - [x] Expected test skips are classified and enforced through ADR-166, `manifests/test-skip-registry.yaml`, and the pytest summary wrapper so new unclassified skips fail instead of silently growing.
+
+- [x] ADR-218 history sanitization dry-run substrate exists (`cos history sanitize --dry-run --json`); execute rewrite remains operator-gated.
