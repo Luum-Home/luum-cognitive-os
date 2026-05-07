@@ -1,0 +1,40 @@
+schema_version: mcp-server-registration/v1
+adr: ADR-231
+server:
+  name: cos
+  package: "@luum/mcp-server"
+  transport: stdio
+  command: python3
+  args:
+    - mcp-server/cos_mcp.py
+  cwd: project_root
+  otel:
+    enabled: optional
+    tracer: luum.cognitive_os.mcp
+    attributes:
+      - mcp.server.name
+      - mcp.tool.name
+      - mcp.transport
+      - mcp.response.error_code
+hosts:
+  claude-code:
+    config_path: .claude/settings.json
+    key_path: mcpServers.cos
+    supported: true
+  codex:
+    config_path: .codex/config.toml
+    key_path: mcp_servers.cos
+    supported: true
+    note: generated plan only; host-specific projection owns final TOML shape
+  cursor:
+    config_path: .cursor/mcp.json
+    key_path: mcpServers.cos
+    supported: true
+  windsurf:
+    config_path: .windsurf/mcp_config.json
+    key_path: mcpServers.cos
+    supported: true
+hard_rules:
+  - registration plans are generated only; no user-global MCP config mutation by default
+  - stdio is canonical in Slice B; HTTP transport remains future work
+  - OTel instrumentation is optional and must not make fastmcp import fail

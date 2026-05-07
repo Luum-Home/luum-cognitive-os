@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–B implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-211 (service readiness), ADR-216 (tool discovery pre-use gate), ADR-226 (event-sourced session bus), ADR-233 (cross-session teams), ADR-236 (deferred tool loading)  
 **Source**: [`docs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md)
@@ -43,9 +43,14 @@ Implemented:
 - `tests/behavior/test_mcp_server_smoke.py` imports the package path in a subprocess and calls read-mostly tools without needing FastMCP installed.
 - Existing `tests/unit/test_cos_mcp_server.py` continues to validate tool behavior.
 
-Not implemented in Slice A:
+Implemented Slice B:
 
-- OTel spans for MCP tool calls.
+- Optional OpenTelemetry spans around all eight MCP tools. Instrumentation is no-op when OTel is absent.
+- `manifests/mcp-server-registration.yaml` declares stdio registration plans for Claude Code, Codex, Cursor, and Windsurf.
+- `scripts/cos-mcp-registration-plan` plus `cos mcp registration-plan` emit host-specific registration plans without mutating user-global config.
+
+Not implemented in Slice B:
+
 - Streamable HTTP transport.
 - External MCP trust-pinning enforcement before consuming third-party MCP servers.
 - ToolSearch/deferred loading; tracked by ADR-236.
@@ -63,13 +68,13 @@ Not implemented in Slice A:
 - T1 unit: `tests/unit/test_cos_mcp_server.py`
 - T3 contract/audit: `tests/audit/test_mcp_server_package_surface.py`
 - T4 smoke: `tests/behavior/test_mcp_server_smoke.py`
-- T8 cross-harness: pending manual harness registration checks
+- T8 cross-harness: `tests/behavior/test_mcp_registration_plan_cli.py` verifies host registration plans for Claude Code, Codex, Cursor, and Windsurf
 - T9 adoption-truth: package manifest must match importable tools
 
 ## Acceptance criteria
 
 ```bash
-python3 -m pytest tests/unit/test_cos_mcp_server.py tests/audit/test_mcp_server_package_surface.py tests/behavior/test_mcp_server_smoke.py -q
+python3 -m pytest tests/unit/test_cos_mcp_server.py tests/unit/test_cos_mcp_otel.py tests/audit/test_mcp_server_package_surface.py tests/audit/test_mcp_registration_manifest.py tests/behavior/test_mcp_server_smoke.py tests/behavior/test_mcp_registration_plan_cli.py -q
 ```
 
 The tests must prove:
