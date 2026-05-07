@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–B implemented (2026-05-07)  
+**Status**: Accepted — Slices A–C implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-211 (service readiness), ADR-216 (tool discovery pre-use gate), ADR-226 (event-sourced session bus), ADR-233 (cross-session teams), ADR-236 (deferred tool loading)  
 **Source**: [`docs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md)
@@ -49,10 +49,15 @@ Implemented Slice B:
 - `manifests/mcp-server-registration.yaml` declares stdio registration plans for Claude Code, Codex, Cursor, and Windsurf.
 - `scripts/cos-mcp-registration-plan` plus `cos mcp registration-plan` emit host-specific registration plans without mutating user-global config.
 
-Not implemented in Slice B:
+Implemented Slice C:
 
-- Streamable HTTP transport.
-- External MCP trust-pinning enforcement before consuming third-party MCP servers.
+- `mcp-server/cos_mcp.py` and package mirror accept `--transport streamable-http` while preserving stdio as the default.
+- `manifests/mcp-server-registration.yaml` declares both stdio and Streamable HTTP transport shapes.
+- `scripts/cos-mcp-registration-plan --transport streamable-http` emits URL-based host plans with `trust_pin_required: true` instead of command mutation.
+- `scripts/mcp_tofu_audit.py` fingerprints URL/transport fields so external HTTP MCP consumption can be pinned before use.
+
+Not implemented in Slice C:
+
 - ToolSearch/deferred loading; tracked by ADR-236.
 
 ## Hard rules
@@ -61,7 +66,7 @@ Not implemented in Slice B:
 - The package export path must resolve to the canonical implementation.
 - The first public surface is read-mostly; new mutating MCP tools require an ADR/update and readiness gate.
 - FastMCP absence must degrade gracefully for tests and direct tool imports.
-- MCP consumer trust-pinning is out of scope for this server publisher ADR; external MCP consumption remains governed by existing MCP scan / TOFU tooling.
+- Streamable HTTP consumption must carry `trust_pin_required: true` and pass MCP TOFU audit before external servers are trusted.
 
 ## Test matrix
 
@@ -83,6 +88,7 @@ The tests must prove:
 - `cos-package.yaml` lists exactly the exposed tool names.
 - The package path can be imported in a clean subprocess.
 - Read-mostly tools return JSON without requiring FastMCP transport startup.
+- Streamable HTTP registration plans are URL-based and explicitly require trust pins.
 
 ## Consequences
 

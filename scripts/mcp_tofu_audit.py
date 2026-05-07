@@ -54,6 +54,9 @@ def discover(root: Path=REPO) -> list[dict[str, Any]]:
                 'config_path': rel.as_posix(),
                 'command': str(cfg.get('command','')),
                 'args': [str(x) for x in cfg.get('args',[]) if x is not None],
+                'url': str(cfg.get('url','')),
+                'transport': str(cfg.get('transport','')),
+                'trust_pin_required': bool(cfg.get('trust_pin_required', False)),
                 'env_keys': sorted(str(k) for k in env.keys()),
                 'tool_description_hashes': _tool_description_hashes(cfg),
             }
@@ -62,7 +65,7 @@ def discover(root: Path=REPO) -> list[dict[str, Any]]:
     return found
 
 def fingerprint(rec: dict[str, Any]) -> str:
-    material={k:rec[k] for k in ['name','config_path','command','args','env_keys'] if k in rec}
+    material={k:rec[k] for k in ['name','config_path','command','args','url','transport','trust_pin_required','env_keys'] if k in rec}
     material["tool_description_hashes"] = rec.get("tool_description_hashes", {})
     return hashlib.sha256(json.dumps(material, sort_keys=True, separators=(',',':')).encode()).hexdigest()
 
@@ -75,7 +78,7 @@ def audit(root: Path=REPO, pins_path: Path=PIN_MANIFEST) -> dict[str, Any]:
         key=(s['name'],s['config_path'])
         expected=pins.get(key)
         if expected is None:
-            unpinned.append({k:s[k] for k in ['name','config_path','command','args','env_keys','tool_description_hashes','fingerprint']})
+            unpinned.append({k:s[k] for k in ['name','config_path','command','args','url','transport','trust_pin_required','env_keys','tool_description_hashes','fingerprint']})
         elif expected != s['fingerprint']:
             mismatched.append({'name':s['name'],'config_path':s['config_path'],'expected':expected,'actual':s['fingerprint']})
     return {'schema_version':'mcp-tofu-audit.v1','servers':servers,'unpinned':unpinned,'mismatched':mismatched,'status':'fail' if unpinned or mismatched else 'pass'}
