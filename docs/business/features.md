@@ -13,15 +13,21 @@
 | 2 | Spec-Driven Development | Structured 10-phase workflow for complex changes | Features are planned, specified, and verified — not just coded |
 | 3 | Quality Control | 7 immutable gates + configurable rules | Quality guaranteed by infrastructure, not by willpower |
 | 4 | Self-Improvement Loop | Captures errors, detects patterns, improves skills | The system gets smarter with every session |
-| 5 | Multi-Agent Orchestration | 12+ simultaneous agents with coordination | What one developer takes weeks to do, 12 agents do in hours |
-| 6 | Security and Compliance | NeMo Guardrails, PII masking, credential management | Enterprise security from day one |
-| 7 | Observability and Cost Control | Traces, metrics, budget caps, cost attribution | Know exactly how much your AI costs |
-| 8 | Developer Experience | 27+ skills, 21 hooks, 19 rules, 16+ agent personas | Specialized expertise for every task |
-| 9 | Multi-IDE Portability | Support for 7+ IDEs/tools via standards | Your investment moves with you, no vendor lock-in |
-| 10 | SRE and Self-Healing | Autonomous monitoring with known-fix database | AI fixes problems while you sleep |
-| 11 | Industry Presets | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
-| 12 | Automation Workflows | End-to-end pipelines: from ticket to deployed code | Full automation from idea to production |
-| 13 | Open-Source Core | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
+| 5 | Multi-Agent Orchestration | 12+ simultaneous agents with cycle-deduplication and worktree isolation | Closes the #1 multi-agent production failure mode (MAST 2025) |
+| 6 | Replay Timeline & Restore-by-Checkpoint | Shadow-git substrate; every governance event carries a `file_tree_sha` | Devin-parity rewind without VM snapshots; governance-as-restore-point — unique |
+| 7 | Sync Cost + Retry Gate | Pre-call budget enforcement, retry classifier, idempotency keys, circuit breaker | Closes the runaway-loop class (Nov 2025 industry $47K incident) |
+| 8 | Agent-to-Agent Handoff Protocol | Typed `HandoffEnvelope` with call-chain dedup and permission intersection | Prevents the 41–87% production failure rate cycles cause |
+| 9 | Security and Compliance | NeMo Guardrails, PII masking, credential management | Enterprise security from day one |
+| 10 | Observability and Cost Control | Per-session JSONL streams, OpenTelemetry MCP semconv, budget caps | Know exactly how much your AI costs |
+| 11 | Developer Experience | 27+ skills, 30+ hooks, 22+ rules, 16+ agent personas | Specialized expertise for every task |
+| 12 | Multi-IDE Portability + MCP Server | 7+ IDE adapters PLUS native MCP server exposing core primitives | Your investment moves with you; every MCP-aware tool gets governance access |
+| 13 | Sandbox Adapter Tiers | Bubblewrap (Linux) / Seatbelt (macOS) OS-native default; E2B/microVM opt-in | 80% of accidental-destruction threat closed at zero new dep cost |
+| 14 | Detached Agent Daemon | Local-first long-running agents via tmux + worktree + file-sentinel | "Fire and forget" UX without going cloud |
+| 15 | SRE and Self-Healing | Autonomous monitoring with known-fix database | AI fixes problems while you sleep |
+| 16 | Industry Presets | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
+| 17 | Automation Workflows | End-to-end pipelines: from ticket to deployed code | Full automation from idea to production |
+| 18 | Manifest-Driven Governance | Every primitive declares a schema-versioned YAML | Auditable, machine-readable, no policy hidden in shell scripts |
+| 19 | Open-Source Core | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
 
 ---
 
@@ -159,6 +165,65 @@ Coordinate multiple AI agents working in parallel without conflicts.
 2. LLM call resilience (auth rotation, rate limit detection, model fallback)
 3. Context resilience (pre-compaction flush to Engram, session summary)
 4. Agent resilience (orphan detection, parent notification, relaunch)
+
+**Concurrency safety primitives (post-2026-05-07):**
+- Worktree-per-write-agent isolation (ADR-220 + ADR-223) with mutex on `git worktree add` to dodge the upstream race
+- Stash references by SHA, not position (ADR-221) — eliminates the Anthropic-shipped class of "applied wrong stash" bugs
+- Two-phase capture pre-agent stash (ADR-222) — no stash exists if the agent never launched
+- Cross-session agent-team file-IPC (ADR-233) — `cos team ...` CLI with TaskCreated/TaskCompleted/TeammateIdle hooks
+
+---
+
+## 6. Replay Timeline & Restore-by-Checkpoint
+
+Devin's signature feature, without the hypervisor.
+
+**Architecture:**
+- Off-repo bare git repo per session under `~/.cognitive-os/snapshots/{project_id}/{session_id}/.git`
+- Every state-mutating tool call snapshots via `git write-tree`; the SHA rides on the originating event in the per-session JSONL stream
+- Three restore modes (Cline-pattern proven UX): files only, conversation only, files+conversation atomic
+- Diff preview is mandatory before any restore; `cos rollback` refuses without operator confirmation
+
+**Differentiation:**
+- Every governance event (policy check, blast-radius, audit finding) carries a `file_tree_sha`. **Any governance event is itself a restorable checkpoint.** No competitor links policy events to file state with restore capability.
+- Captures untracked files at snapshot time — covers the "operator's WIP that wasn't committed" class git stash misses.
+- No hypervisor, no cloud service. Pattern proven in production by Cline, Hermes, Kilo.ai, and `git-shadow` — all four use the same primitive.
+
+**Files:**
+- `lib/shadow_git.py`, `manifests/shadow-git.yaml`, `cos rollback` CLI
+
+---
+
+## 7. Sync Cost + Retry Gate
+
+The runaway-loop killer. The November 2025 industry $47,000 incident proved that async cost dashboards cannot prevent the next API call. Only synchronous pre-call gates can.
+
+**Sub-features:**
+- **Failure classifier (`lib/retry_classifier.py`)** — single authoritative classify_failure() across 7 classes (connection_layer, rate_limit, provider_5xx, validation_error, auth_error, quota_exceeded, unknown). Replaces six contradictory retry magic numbers previously scattered across rule files.
+- **Per-failure-class policy (`manifests/retry-contract.yaml`)** — deterministic mapping (max_attempts, backoff, diversity_required, escalation_after_n). Validation errors get re-prompt-with-schema; connection errors get exponential-with-jitter (closes the SDK ECONNRESET silent-drop gap); auth errors don't retry.
+- **Per-session budget (`lib/session_budget.py`)** — file-backed ledger at `.cognitive-os/metrics/session-budgets/{session_id}.json`. Pre-call check raises `SessionBudgetExceeded` BEFORE the HTTP request fires.
+- **Graduated backpressure** at 70% / 90% / 100% — caution signal injected → cheaper-tier preference → refuse. Avoids the binary hard-stop UX problem.
+- **Idempotency keys (`IdempotencyKeyMixin`)** — required on stateful tools. Eliminates the documented 15–30% silent side-effect duplication that retry-without-idempotency ships with industry-wide.
+- **Per-provider circuit breaker** — opens on error_rate / p95_latency / quota / validation_failure_rate; cooldown + half-open probe.
+
+**Files:**
+- `lib/dispatch_gate.py`, `lib/session_budget.py`, `lib/retry_classifier.py`, `manifests/retry-contract.yaml`, `manifests/session-budget.yaml`
+
+---
+
+## 8. Agent-to-Agent Handoff Protocol
+
+The MAST 2025 paper documented 41–87% production failure rates on state-of-the-art open-source multi-agent systems. The #1 cause: infinite handoff loops (A→B→C→A). **No framework prevents them.** Cognitive OS does.
+
+**Primitives:**
+- **`HandoffEnvelope` typed struct (`lib/handoff_envelope.py`)** — every cross-agent call MUST construct one. Carries identity, intent (delegate / handoff / query), context_mode, granted_tools, depth, call_chain.
+- **Call-chain deduplication (`lib/handoff_dispatcher.py`)** — before any handoff, dispatcher checks `to_agent in call_chain`. If yes, raise `HandoffCycleDetected` cleanly. Highest-ROI safety primitive in the orchestration space (<1 day of code closes the 41-87% failure class).
+- **Permission intersection** — granted tools = caller_grants ∩ receiver_manifest_declares. Compromised sub-agent doesn't get the orchestrator's blast radius.
+- **Operator-in-the-loop above blast-radius threshold** — `HandoffRequested` hook can exit code 2 to require operator approval.
+- **MAX_HANDOFF_DEPTH = 7** — defense-in-depth against pathological-but-acyclic chains.
+
+**Files:**
+- `lib/handoff_envelope.py`, `lib/handoff_dispatcher.py`, `manifests/handoff-protocol.yaml`
 
 ---
 
