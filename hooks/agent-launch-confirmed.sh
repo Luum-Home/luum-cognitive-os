@@ -60,6 +60,7 @@ fi
 
 PLAN_FILE="$RUNTIME_DIR/pre-agent-plan-${AGENT_ID}.json"
 MARKER_FILE="$RUNTIME_DIR/pre-agent-snapshot-${AGENT_ID}.json"
+SNAPSHOT_FILE="$PROJECT_DIR/.cognitive-os/sessions/$SESSION_ID/agent-${AGENT_ID}-snapshot.json"
 [ -f "$PLAN_FILE" ] || exit 0
 mkdir -p "$RUNTIME_DIR" "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 
@@ -103,6 +104,21 @@ if [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ] || [ -n "$SNAPSHOT_ID" ]; then
   printf '{"schema_version":"pre-agent-snapshot/v2","stash_sha":"%s","stash_ref_at_capture":"%s","stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
     "${STASH_SHA//\"/\\\"}" "${STASH_REF//\"/\\\"}" "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
     > "$MARKER_FILE" 2>/dev/null || true
+
+  if [ -f "$SNAPSHOT_FILE" ] && command -v jq >/dev/null 2>&1; then
+    SNAPSHOT_TMP=$(mktemp "${TMPDIR:-/tmp}/agent-snapshot.XXXXXX.json")
+    if jq \
+      --arg status "$SNAPSHOT_STATUS" \
+      --arg stash_ref "$STASH_REF" \
+      --arg stash_sha "$STASH_SHA" \
+      --arg snapshot_id "$SNAPSHOT_ID" \
+      '.status=$status | .stash_ref=$stash_ref | .stash_sha=$stash_sha | .snapshot_id=$snapshot_id | .launch_confirmed=true' \
+      "$SNAPSHOT_FILE" > "$SNAPSHOT_TMP" 2>/dev/null; then
+      mv "$SNAPSHOT_TMP" "$SNAPSHOT_FILE" 2>/dev/null || rm -f "$SNAPSHOT_TMP" 2>/dev/null || true
+    else
+      rm -f "$SNAPSHOT_TMP" 2>/dev/null || true
+    fi
+  fi
 fi
 rm -f "$PLAN_FILE" 2>/dev/null || true
 safe_jsonl_append "$METRICS_LOG" "{\"timestamp\":\"$TIMESTAMP\",\"event\":\"agent_snapshot_commit\",\"agent_id\":\"$AGENT_ID\",\"session_id\":\"$SESSION_ID\",\"status\":\"$SNAPSHOT_STATUS\",\"stash_ref\":\"$STASH_REF\",\"stash_sha\":\"$STASH_SHA\",\"snapshot_id\":\"$SNAPSHOT_ID\"}" 2>/dev/null || true

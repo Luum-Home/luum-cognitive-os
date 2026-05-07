@@ -83,8 +83,11 @@ def _hook_env(project: Path) -> dict[str, str]:
     }
 
 
-def _run_hook_command(command: str, project: Path, payload: str) -> subprocess.CompletedProcess[str]:
-    return _run(["bash", "-lc", command], project, env=_hook_env(project), input_text=payload)
+def _run_hook_command(command: str, project: Path, payload: str, *, env_overrides: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
+    env = _hook_env(project)
+    if env_overrides:
+        env.update(env_overrides)
+    return _run(["bash", "-lc", command], project, env=env, input_text=payload)
 
 
 def _agent_payload() -> str:
@@ -130,7 +133,7 @@ def test_old_bad_order_would_have_hidden_wip_in_auto_stash(tmp_path: Path) -> No
     snapshot_command = next(cmd for cmd in commands if "pre-agent-snapshot.sh" in cmd)
     prelaunch_command = next(cmd for cmd in commands if "agent-prelaunch.sh" in cmd)
 
-    snapshot = _run_hook_command(snapshot_command, project, payload)
+    snapshot = _run_hook_command(snapshot_command, project, payload, env_overrides={"COS_LEGACY_SNAPSHOT": "1"})
     assert snapshot.returncode == 0, snapshot.stderr
 
     # This is the old failure mode: visible operator WIP moved out of git diff
