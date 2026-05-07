@@ -1,0 +1,39 @@
+schema_version: test-execution-efficiency/v1
+scope: cognitive-os-maintainers-only
+status: active
+policy:
+  broad_first_default: false
+  final_laptop_lane: make test-laptop
+  max_broad_reruns_without_targeted_pass: 0
+  failure_batching: true
+  serial_lanes:
+    - integration
+    - chaos
+    - e2e
+    - smoke
+lanes:
+  syntax:
+    command: python3 -m py_compile {python_files}
+    applies_to: ['*.py']
+  unit:
+    command: python3 -m pytest {unit_tests} -q
+    applies_to: ['lib/**', 'packages/**/lib/**', 'scripts/*.py', 'scripts/cos-*']
+  behavior:
+    command: python3 -m pytest {behavior_tests} -q
+    applies_to: ['scripts/**', 'hooks/**', 'packages/**']
+  integration:
+    command: python3 -m pytest {integration_tests} -q
+    applies_to: ['lib/dispatch.py', 'lib/claude_executor.py', 'packages/**/lib/**']
+  chaos:
+    command: python3 -m pytest {chaos_tests} -q
+    applies_to: ['lib/dispatch_gate.py', 'lib/handoff_dispatcher.py', 'scripts/cos-team']
+  audit:
+    command: python3 scripts/derived_artifact_gate.py
+    applies_to: ['docs/**', 'manifests/**', 'rules/**', '.codex/skills/**']
+workflow:
+  - plan_from_changed_files
+  - run_syntax_if_needed
+  - run_targeted_groups
+  - repair_all_failures_in_group
+  - rerun_targeted_groups_once
+  - run_final_laptop_lane_once
