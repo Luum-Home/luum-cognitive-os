@@ -157,6 +157,14 @@ case "$SUBCMD" in
     echo "cos: unknown dependency subcommand '${2:-}'. Try: cos dependency adoption-gate [--staged|--audit|--json]" >&2
     exit 1
     ;;
+  imported-pattern)
+    if [ "${2:-}" = "closure-audit" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-imported-pattern-closure-audit" "$@"
+    fi
+    echo "cos: unknown imported-pattern subcommand '${2:-}'. Try: cos imported-pattern closure-audit [--json]" >&2
+    exit 1
+    ;;
   license)
     if [ "${2:-}" = "audit" ]; then
       shift 2
@@ -230,6 +238,14 @@ case "$SUBCMD" in
       exec "$SCRIPT_DIR/cos-performance-ledger" --project-dir "$PROJECT_ROOT" "$@"
     fi
     echo "cos: unknown performance-ledger subcommand '${2:-}'. Try: cos performance-ledger compile [--json]" >&2
+    exit 1
+    ;;
+  skill-performance)
+    if [ "${2:-}" = "ledger" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-skill-performance-ledger" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown skill-performance subcommand '${2:-}'. Try: cos skill-performance ledger [--json]" >&2
     exit 1
     ;;
   promote-from-telemetry)
@@ -312,6 +328,8 @@ Usage:
   cos reward-signal audit [--json]        Audit ADR-204 reward signal quality
   cos dependency adoption-gate [--staged|--audit|--json]
                                          Enforce ADR-208 pre-adoption evidence for dependency changes
+  cos imported-pattern closure-audit [--json]
+                                         Audit ADR-208 imported producer/consumer/evaluator closure contracts
   cos secret audit [--json|--strict]     Audit ADR-215 secret scanner posture and sensitive surfaces
   cos adoption audit [--json|--strict]   Audit ADR-217 lockfile/NOTICE/docs adoption truth
   cos history sanitize [--dry-run|--execute] [--json]
@@ -321,6 +339,7 @@ Usage:
                                          Join metric streams into ADR-205 run trace
   cos service readiness [--json]         Aggregate ADR-211 service-mode readiness gates
   cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
+  cos skill-performance ledger [--json] Project ADR-207 skill lifecycle proposals from clean reward signals
   cos promote-from-telemetry [--json]    Convert consumable telemetry into bounded proposals
   cos maintainer once --dry-run [--json] Run proposer-only maintainer loop once
   cos adr resolve N [--expect-title T]   Resolve ADR number against canonical docs/adrs state
