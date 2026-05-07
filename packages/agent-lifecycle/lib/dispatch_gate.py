@@ -71,3 +71,86 @@ class DispatchGate:
         if decision.pressure == "refuse":
             raise SessionBudgetExceeded("budget exhausted")
         return ""
+
+
+@dataclass(frozen=True)
+class CircuitBreakerDecision:
+    allowed: bool
+    state: str
+    reason: str = ""
+
+
+class ProviderCircuitBreaker:
+    """Small file-backed provider circuit breaker for the dispatch hot path."""
+
+    def __init__(
+        self,
+        project_dir: str | Path,
+        provider: str,
+        *,
+        failure_threshold: int = 3,
+        cooldown_seconds: int = 60,
+    ) -> None:
+        self.project_dir = Path(project_dir).resolve()
+        self.provider = provider.replace("/", "_").replace("\\", "_")
+        self.failure_threshold = int(failure_threshold)
+        self.cooldown_seconds = int(cooldown_seconds)
+        self.path = self.project_dir / ".cognitive-os" / "metrics" / "circuit-breakers" / f"{self.provider}.json"
+
+    def _load(self) -> dict[str, object]:
+        if self.path.is_file():
+            try:
+                data = json.loads(self.path.read_text(encoding="utf-8"))
+                if isinstance(data, dict):
+                    return data
+            except json.JSONDecodeError:
+                pass
+        return {
+            "schema_version": "provider-circuit-breaker/v1",
+            "provider": self.provider,
+            "state": "closed",
+            "consecutive_failures": 0,
+            "opened_at_epoch": 0.0,
+            "updated_at_epoch": time.time(),
+        }
+
+    def _save(self, data: dict[str, object]) -> None:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    def allow_call(self) -> CircuitBreakerDecision:
+        data = self._load()
+        state = str(data.get("state") or "closed")
+        opened = float(data.get("opened_at_epoch") or 0.0)
+        now = time.time()
+        if state == "open":
+            remaining = self.cooldown_seconds - (now - opened)
+            if remaining > 0:
+                return CircuitBreakerDecision(False, "open", f"cooldown {remaining:.1f}s remaining")
+            data["state"] = "half_open"
+            data["updated_at_epoch"] = now
+            self._save(data)
+            return CircuitBreakerDecision(True, "half_open", "cooldown elapsed; allowing probe")
+        return CircuitBreakerDecision(True, state)
+
+    def record_result(self, *, success: bool, failure: FailureClass | None = None) -> dict[str, object]:
+        data = self._load()
+        now = time.time()
+        if success:
+            data.update({"state": "closed", "consecutive_failures": 0, "last_failure_class": "", "updated_at_epoch": now})
+            self._save(data)
+            return data
+
+        failures = int(data.get("consecutive_failures") or 0) + 1
+        state = str(data.get("state") or "closed")
+        if failures >= self.failure_threshold or state == "half_open":
+            state = "open"
+            data["opened_at_epoch"] = now
+        data.update({
+            "state": state,
+            "consecutive_failures": failures,
+            "last_failure_class": str(failure.value if failure else "unknown"),
+            "updated_at_epoch": now,
+        })
+        self._save(data)
+        return data
