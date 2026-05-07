@@ -6,7 +6,7 @@ Accepted
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — slice 1 dry-run substrate active
+**Status**: Accepted — slices 1–6 active (dry-run + execute substrate, behavior round-trip + 3 refusal-path tests passing 2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-202, ADR-203, ADR-211, ADR-215, ADR-055b
 **Source**: Operator question — *"cómo depuramos lo que está en git sobre datos sensibles y estos cambios de licencias sin crear un repo nuevo?"*

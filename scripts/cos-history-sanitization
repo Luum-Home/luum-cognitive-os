@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI for ADR-218 history sanitization dry-run and safety checks."""
+"""CLI for ADR-218 history sanitization (dry-run + execute)."""
 from __future__ import annotations
 
 import argparse
@@ -10,17 +10,115 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from lib.history_sanitization import build_report, dumps_json  # noqa: E402
+from lib.history_sanitization import (  # noqa: E402
+    SanitizationError,
+    build_report,
+    dumps_json,
+    execute,
+)
+
+
+PROMPT_TEXT = """\
+========================================================
+  ABOUT TO REWRITE GIT HISTORY (DESTRUCTIVE, IRREVERSIBLE)
+========================================================
+
+A backup mirror will be created at:
+  ~/.cognitive-os/recovery/pre-history-sanitization-<ts>.git
+
+Replacement rules are taken from manifests/history-sanitization.yaml
+seeded with the operator-set environment variables. Preserve patterns
+(license-transition, scanner-fixtures) are NOT touched.
+
+After the rewrite:
+  - all commit SHAs change
+  - tags v0.27.0 / v0.27.1 dangle relative to new history
+  - origin still has the old SHAs until you force-push (separate step)
+
+If anything goes wrong, restore from the backup mirror.
+
+Type 'REWRITE' to proceed (anything else aborts): """
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Audit planned pre-public git history sanitization.")
+    parser = argparse.ArgumentParser(description="ADR-218 history sanitization (dry-run + execute).")
     parser.add_argument("--project-dir", type=Path, default=ROOT)
-    parser.add_argument("--dry-run", action="store_true", help="Non-mutating default mode")
-    parser.add_argument("--execute", action="store_true", help="Validate execute preconditions; live rewrite is not run by this substrate slice")
-    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--dry-run", action="store_true", help="Non-mutating audit (default mode)")
+    parser.add_argument(
+        "--execute",
+        action="store_true",
+        help="Run the live rewrite (creates backup, runs git-filter-repo, writes report)",
+    )
+    parser.add_argument(
+        "--yes",
+        action="store_true",
+        help="Skip the interactive 'REWRITE' confirmation. CI/automation only — operator-driven runs should NOT use this.",
+    )
+    parser.add_argument("--json", action="store_true", help="Emit JSON instead of human-readable summary")
     args = parser.parse_args()
-    mode = "execute" if args.execute else "dry-run"
+
+    if args.execute:
+        # Execute path: build dry-run report first as the gating audit.
+        # If anything is `block`, refuse before touching git.
+        gate_report = build_report(args.project_dir, mode="execute")
+        if gate_report["status"] == "block":
+            if args.json:
+                print(dumps_json(gate_report))
+            else:
+                print(f"history sanitization execute: BLOCKED ({gate_report['status']})")
+                for finding in gate_report["findings"]:
+                    if finding["severity"] == "block":
+                        rid = f" {finding.get('rule_id')}:" if finding.get("rule_id") else ""
+                        print(f"[block] {finding['code']}:{rid} {finding['message']}")
+            return 2
+
+        # Operator confirmation
+        if args.yes:
+            confirmed = True
+        else:
+            try:
+                response = input(PROMPT_TEXT)
+            except EOFError:
+                print("\n[abort] interactive confirmation required (no TTY); use --yes only in CI.", file=sys.stderr)
+                return 2
+            confirmed = response.strip() == "REWRITE"
+
+        if not confirmed:
+            print("[abort] operator did not type 'REWRITE'; rewrite cancelled.", file=sys.stderr)
+            return 2
+
+        # Run the rewrite
+        try:
+            result = execute(args.project_dir, confirmed=confirmed)
+        except SanitizationError as exc:
+            error_payload = {
+                "schema_version": "history-sanitization-execute-error/v1",
+                "status": "failed",
+                "error_code": exc.code,
+                "error_message": exc.message,
+            }
+            if args.json:
+                print(dumps_json(error_payload))
+            else:
+                print(f"[fail] {exc.code}: {exc.message}", file=sys.stderr)
+            return 2
+
+        if args.json:
+            print(dumps_json(result))
+        else:
+            print(f"history sanitization execute: {result['status']}")
+            print(f"  report:           {result['report_path']}")
+            print(f"  backup mirror:    {result['backup_mirror']}")
+            print(f"  tombstone branch: {result['tombstone_branch']}")
+            print(f"  pre HEAD  → {result['pre_rewrite']['head'][:8]} ({result['pre_rewrite']['commit_count']} commits)")
+            print(f"  post HEAD → {result['post_rewrite']['head'][:8]} ({result['post_rewrite']['commit_count']} commits)")
+            for rule_id, count in result["remaining_hits"].items():
+                marker = "✓" if count == 0 else "⚠"
+                print(f"  {marker} {rule_id}: {count} remaining hits")
+        return 0 if result["status"] == "ok" else 1
+
+    # Default: dry-run
+    mode = "dry-run"
     report = build_report(args.project_dir, mode=mode)
     if args.json:
         print(dumps_json(report))
