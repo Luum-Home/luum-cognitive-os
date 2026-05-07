@@ -23,11 +23,23 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
-def build_plan(project_dir: Path, host: str | None = None) -> dict[str, Any]:
+def build_plan(project_dir: Path, host: str | None = None, transport: str = "stdio") -> dict[str, Any]:
     manifest = load_manifest(ROOT / "manifests" / "mcp-server-registration.yaml")
-    server = dict(manifest["server"])
+    base_server = dict(manifest["server"])
+    transport_cfg = dict(base_server.get("transports", {}).get(transport, {}))
+    if not transport_cfg:
+        raise SystemExit(f"unsupported MCP transport in manifest: {transport}")
+    server = {k: v for k, v in base_server.items() if k != "transports"}
+    server["transport"] = transport
+    if transport == "streamable-http":
+        server.pop("command", None)
+        server.pop("args", None)
+        server["url"] = transport_cfg.get("default_url", "http://127.0.0.1:8765/mcp")
+        server["trust_pin_required"] = bool(transport_cfg.get("trust_pin_required", True))
+    else:
+        server["command"] = transport_cfg.get("command", server.get("command"))
+        server["args"] = [str((project_dir / arg).resolve()) if arg == "mcp-server/cos_mcp.py" else arg for arg in transport_cfg.get("args", server.get("args", []))]
     server["cwd"] = str(project_dir.resolve())
-    server["args"] = [str((project_dir / arg).resolve()) if arg == "mcp-server/cos_mcp.py" else arg for arg in server["args"]]
     hosts = manifest["hosts"]
     selected = {host: hosts[host]} if host else hosts
     plans = []
@@ -47,15 +59,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", default=str(ROOT))
     parser.add_argument("--host", choices=["claude-code", "codex", "cursor", "windsurf"])
+    parser.add_argument("--transport", choices=["stdio", "streamable-http"], default="stdio")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
-    plan = build_plan(Path(args.project_dir), host=args.host)
+    plan = build_plan(Path(args.project_dir), host=args.host, transport=args.transport)
     if args.json:
         print(json.dumps(plan, indent=2, sort_keys=True))
     else:
         for item in plan["plans"]:
             server = item["server"]
-            print(f"{item['host']}: {item['config_path']} -> {item['key_path']} :: {server['command']} {' '.join(server['args'])}")
+            if server.get("transport") == "streamable-http":
+                print(f"{item['host']}: {item['config_path']} -> {item['key_path']} :: {server['url']} trust_pin_required={server.get('trust_pin_required')}")
+            else:
+                print(f"{item['host']}: {item['config_path']} -> {item['key_path']} :: {server['command']} {' '.join(server['args'])}")
     return 0
 
 
