@@ -50,6 +50,7 @@ from lib.paths import runtime_project_root_or_cwd
 from lib.dispatch_gate import DispatchGate, ProviderCircuitBreaker
 from lib.session_budget import SessionBudgetExceeded
 from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
+from lib.deferred_tool_loading import plan_tool_loading, toolsearch_index
 
 # Rate-limit patterns for cascade advance logic. Kept in sync with
 # scripts/orchestrator.py _RATE_LIMIT_PATTERNS and hooks/rate-limit-detector.sh.
@@ -304,20 +305,32 @@ def _try_claude(
     claude_model: Optional[str],
     claude_executor: Any,
     timeout: int = 600,
+    *,
+    sandbox_required: bool = False,
+    allow_sandbox_fallback: bool = False,
 ) -> dict:
     """Call ClaudeExecutor. Returns dict with response fields.
 
     claude_executor is injected (already-instantiated) so dispatch stays
     unit-testable without spawning real sub-claudes.
     """
-    r = claude_executor.run(prompt, model=claude_model, timeout=timeout)
+    try:
+        r = claude_executor.run(
+            prompt,
+            model=claude_model,
+            timeout=timeout,
+            sandbox_required=sandbox_required,
+            allow_sandbox_fallback=allow_sandbox_fallback,
+        )
+    except TypeError:
+        r = claude_executor.run(prompt, model=claude_model, timeout=timeout)
     return {
         "success": r.success,
-        "text": getattr(r, "text", ""),
-        "tokens_in": getattr(r, "input_tokens", 0),
-        "tokens_out": getattr(r, "output_tokens", 0),
+        "text": getattr(r, "text", "") or getattr(r, "result_text", ""),
+        "tokens_in": getattr(r, "input_tokens", 0) or getattr(r, "tokens_in", 0),
+        "tokens_out": getattr(r, "output_tokens", 0) or getattr(r, "tokens_out", 0),
         "cost_usd": getattr(r, "cost_usd", 0.0),
-        "error": getattr(r, "error", "") or "",
+        "error": getattr(r, "error", "") or getattr(r, "error_message", "") or "",
         "model": claude_model or "",
         "provider_label": "claude",
     }
@@ -465,6 +478,26 @@ def dispatch(
     estimated_cost = _dispatch_estimated_cost(_skill_req)
     budget_cap = _dispatch_budget_cap(_skill_req)
 
+    tool_loading_plan: dict[str, object] | None = None
+    if _skill_req.get("enable_toolsearch") or _skill_req.get("toolsearch_enabled") or _skill_req.get("estimated_tool_tokens") is not None:
+        try:
+            plan = plan_tool_loading(
+                project_dir,
+                estimated_tool_tokens=int(_skill_req.get("estimated_tool_tokens") or 0),
+                threshold_tokens=_skill_req.get("toolsearch_threshold_tokens"),
+            )
+            tool_loading_plan = plan.to_dict()
+            if plan.toolsearch_enabled and plan.deferred_tools:
+                index = toolsearch_index(project_dir)
+                prompt = (
+                    "[TOOLSEARCH_INDEX] "
+                    + json.dumps(index, sort_keys=True)
+                    + "\n"
+                    + prompt
+                )
+        except Exception:  # noqa: BLE001
+            tool_loading_plan = {"status": "error"}
+
     sandbox_plan: dict[str, object] | None = None
     if _skill_req.get("require_sandbox") or _skill_req.get("sandbox_required"):
         try:
@@ -497,7 +530,7 @@ def dispatch(
                 "latency_ms": latency_ms,
                 "success": False,
                 "error": result.error[:500],
-                "dispatch_gate": {"sandbox_required": True, "sandbox_plan": None},
+                "dispatch_gate": {"sandbox_required": True, "sandbox_plan": None, "tool_loading": tool_loading_plan},
                 "skill_routing": None,
             })
             return result
@@ -532,7 +565,7 @@ def dispatch(
                 "latency_ms": latency_ms,
                 "success": False,
                 "error": result.error[:500],
-                "dispatch_gate": {"budget_pressure": "refuse", "estimated_cost_usd": estimated_cost, "cap_usd": budget_cap},
+                "dispatch_gate": {"budget_pressure": "refuse", "estimated_cost_usd": estimated_cost, "cap_usd": budget_cap, "tool_loading": tool_loading_plan},
                 "skill_routing": None,
             })
             return result
@@ -654,7 +687,17 @@ def dispatch(
                 if verbose:
                     print("[dispatch] no claude_executor provided — skipping", file=sys.stderr)
                 continue
-            response = claude_fn(prompt, claude_model, claude_executor, timeout)
+            if _claude_fn is None:
+                response = claude_fn(
+                    prompt,
+                    claude_model,
+                    claude_executor,
+                    timeout,
+                    sandbox_required=bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
+                    allow_sandbox_fallback=bool(_skill_req.get("allow_sandbox_fallback", False)),
+                )
+            else:
+                response = claude_fn(prompt, claude_model, claude_executor, timeout)
         else:
             # ADR-062: N-provider cascade via lib/providers/REGISTRY
             attempt = _try_registry_provider(
@@ -758,6 +801,7 @@ def dispatch(
             "budget_pressure": budget_pressure,
             "sandbox_required": bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
             "sandbox_plan": sandbox_plan,
+            "tool_loading": tool_loading_plan,
         },
         "skill_routing": {
             "tier": _skill_req.get("tier") if _skill_req else None,
