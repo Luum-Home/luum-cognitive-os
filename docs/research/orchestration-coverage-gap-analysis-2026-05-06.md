@@ -127,6 +127,114 @@ After all 12 agents return, the synthesis pass produces:
 
 ---
 
+## Synthesis constraints (binding for SYNTHESIS-2026-05-06.md)
+
+These are operator-set non-negotiables. The synthesis pass and any ADR
+candidates emerging from the 11 research reports MUST honor them. If a
+research report's top recommendation violates these, the synthesis MUST
+either (a) propose a constraint-respecting alternative or (b) explicitly
+mark the area as "rejected — constraints conflict" with rationale.
+
+### C1. Adopt over build — permissive licenses only
+
+- **First reflex**: search for an existing tool / library / spec that solves
+  the gap. Adoption is preferred to in-house implementation in every case
+  where a well-maintained option exists.
+- **License allowlist**: MIT, BSD-2-Clause, BSD-3-Clause, Apache-2.0, ISC,
+  MPL-2.0 (file-level copyleft, OK), Unlicense, 0BSD, Zlib.
+- **License blocklist** (cannot adopt as runtime dependency or vendored
+  code): AGPL-3.0 / AGPL-3.0-or-later, SSPL, BSL / Business Source License
+  in any pre-Change-Date state, Commons Clause additions, EPL-2.0 (only
+  by case review), GPL-2.0 / GPL-3.0 (only as separate-process tools called
+  via subprocess/IPC, never linked or vendored).
+- **Patterns / ideas / specs** can be borrowed from any license, including
+  blocklisted ones — it's the *code* that has the contagion. Read the AGPL
+  source, document the pattern, write a clean-room implementation under
+  our license.
+- Each research report MUST cite license for every tool it recommends
+  adopting. If unknown, mark "license: unverified — requires triage."
+
+### C2. Footprint discipline — do not overload any consumer surface
+
+The OS exists in four consumer contexts. Each has its own footprint budget.
+Adopting a tool that overloads any of them is grounds for rejection.
+
+| Consumer surface | Budget signal |
+|---|---|
+| **The OS itself** (this repo) | New required runtime deps ≤ 1 per ADR; new optional opt-in deps OK; no mandatory daemon process unless it is the feature itself |
+| **Projects that install the OS** (the user's repo) | Zero forced new toolchains; everything that touches the user's repo MUST be opt-in via cognitive-os.yaml flag; default-off for anything that runs a process |
+| **The OS as a service** (cosd, ADR-211 service mode) | No new long-lived processes per session; bounded memory; bounded disk; no required network egress |
+| **Docker / container runtime** (current and future packaging) | Image size delta < 50 MB per adopted dependency; alpine-compatible preferred; multi-arch (arm64+amd64) support required; no dependency that requires privileged mode |
+
+Specific anti-patterns to avoid in recommendations:
+- "We'll add a Postgres / Redis / RabbitMQ requirement." Hard no unless
+  it's an opt-in adapter, default off, with a SQLite/file/in-process
+  fallback.
+- "We'll require the user to install a kernel module / Docker / Firecracker."
+  Hard no for any default path. Allowed as an opt-in tier.
+- "We'll vendor a 200 MB Go binary." Hard no.
+- "We'll add a background daemon to every project." Hard no — daemonization
+  is opt-in service mode only.
+- "We'll tightly couple to one cloud provider's SDK." Hard no — abstract
+  behind an adapter or don't ship.
+
+### C3. Test coverage tiers — every recommendation declares its tiers
+
+Every implementation recommendation in the synthesis MUST declare a test
+matrix across at least the following tiers. The synthesis cannot accept
+a recommendation that says "tests TBD."
+
+| Tier | What it proves | Trigger |
+|---|---|---|
+| **T1 — Unit** | Functions / classes work in isolation against documented inputs | Every function with branching logic |
+| **T2 — Integration** | Modules interact correctly within one process | Any feature spanning ≥2 modules |
+| **T3 — Behavior / contract** | The CLI / API / hook contract behaves as advertised end-to-end | Every CLI flag, hook, manifest schema |
+| **T4 — Smoke** | Happy-path end-to-end on a clean env produces the documented user-visible result in <60s | Every ADR — non-negotiable |
+| **T5 — Adversarial / negative** | Wrong inputs, missing files, race conditions, blocked preflight, permission denials all produce expected errors, not crashes | Every primitive with a security or correctness boundary |
+| **T6 — Performance / load** | p50/p95 latency under N concurrent agents stays within budget | Any primitive on the hot path of agent launch / dispatch |
+| **T7 — Failure injection / chaos** | Killing the agent mid-flight, dropping the network, full disk, all leave the system recoverable | Any primitive that mutates state |
+| **T8 — Compatibility / cross-harness** | Works on Claude Code + Codex + OpenCode where applicable | Any primitive declared harness-agnostic |
+| **T9 — Adoption truth (ADR-217 reuse)** | Anything claimed in NOTICE / docs / READMEs actually exists and runs | Any ADR introducing a new external tool |
+| **T10 — Audit invariants (ADR-220 reuse)** | After a primitive runs, repo divergence / WT mutation / stash state stays within declared invariants | Any primitive that touches git or working tree |
+
+Tier defaults:
+- **Internal-only library** → T1 + T2 minimum, T4 strongly preferred.
+- **Operator-facing primitive (CLI / hook / manifest)** → T1 + T2 + T3 + T4 + T5 minimum.
+- **Anything touching git, working tree, stash, worktree** → add T7 + T10.
+- **Anything in the agent-launch hot path** → add T6.
+- **Anything claiming cross-harness** → add T8.
+- **Anything adopting an external tool** → add T9.
+
+The smoke tier (T4) is the constraint everyone cuts and shouldn't.
+Smoke runs the actual feature end-to-end on the actual binary in a
+clean fixture directory. It catches the "works in my context, breaks
+in a fresh checkout" class that unit + integration miss.
+
+### C4. Synthesis output requirements
+
+For each of the 11 research areas, the synthesis MUST emit a structured
+verdict block:
+
+```
+### <Gap area>
+- Recommendation: ADOPT <tool> | INTEGRATE <spec> | BUILD MINIMAL | DEFER | REJECT
+- License (if ADOPT/INTEGRATE): <SPDX id> — allowlist|blocklist|unverified
+- Footprint impact:
+    OS repo: <none|small|medium|large>
+    Implementing projects: <none|opt-in|forced>
+    Service mode: <none|opt-in|required>
+    Docker image: <delta MB>
+- Test tier matrix: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ⬜ T8 ⬜ T9 ⬜ T10 ⬜
+- Effort: <S | M | L | XL>
+- Leverage: <high | medium | low>
+- ADR candidate: <yes — number TBD | no | superseded by ADR-XXX>
+```
+
+A recommendation that cannot fill all six fields is incomplete and goes
+back for refinement before being merged into the synthesis.
+
+---
+
 ## What this document does NOT do
 
 - It does not commit to implementing all 12 areas. It commits to *researching* them so the operator can decide.
