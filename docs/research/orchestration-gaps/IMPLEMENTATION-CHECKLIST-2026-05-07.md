@@ -22,6 +22,7 @@
 | ADR | Topic | Status | Next implementation slice | Required tests |
 |---|---|---:|---|---|
 | ADR-226 | Event-Sourced Session Bus | 🟡 Slice A ✅ | Slice B: fan-out global index + measured latency budget | T2, T5, T6 |
+| ADR-223 | Agent Lifecycle Reconstruction | 🟡 Slice A ✅ | Next: default-on policy + cleanup/reaper + cross-harness launch projection | T7, T8, T10 |
 | ADR-227 | Shadow-Git Checkpoint Substrate | 🔲 | Draft/implement after ADR-226 Slice B, using per-session event envelope | T1, T2, T4, T7, T10 |
 | ADR-228 | Retry Contract + Cost Budget | 🔲 | Implement retry classifier + pre-call session budget against ADR-226 events | T1, T2, T3, T4, T5, T6 |
 | ADR-230 | Handoff Envelope + Cycle Deduplication | 🔲 | Implement envelope dataclass + cycle/depth checks before any team runtime | T1, T2, T3, T4, T5 |

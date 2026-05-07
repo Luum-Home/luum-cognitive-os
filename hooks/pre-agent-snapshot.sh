@@ -118,6 +118,15 @@ if [ -z "$AGENT_ID" ]; then
   fi
 fi
 
+# ADR-223 Slice A: write-capable agents launched in dedicated worktrees do not
+# need an operator-worktree stash snapshot. The safety boundary is the linked
+# worktree prepared by agent-prelaunch.sh. This prevents auto-pre-agent stashes
+# from hiding operator WIP in the worktree lifecycle lane.
+SUPPRESS_MARKER="$PROJECT_DIR/.cognitive-os/runtime/suppress-agent-snapshot-${AGENT_ID}.json"
+if [ "${COS_AGENT_LIFECYCLE_MODE:-}" = "worktree" ] && [ -f "$SUPPRESS_MARKER" ]; then
+  exit 0
+fi
+
 # Extract a short prompt summary (first 200 chars) for the metadata file
 PROMPT_SUMMARY=""
 if [ -n "$INPUT" ] && command -v jq >/dev/null 2>&1; then
