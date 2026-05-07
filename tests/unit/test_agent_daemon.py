@@ -117,3 +117,28 @@ def test_kill_task_marks_failed_and_writes_done_without_tmux(tmp_path: Path) -> 
     done = json.loads(daemon.done_path(task.task_id).read_text())
     assert done["exit_code"] == 137
     assert done["reasons"] == ["test_kill"]
+
+
+def test_activation_command_and_plan_are_operator_visible(tmp_path: Path) -> None:
+    daemon = AgentDaemon(project_dir=tmp_path)
+    service = tmp_path / "cos-agent-daemon.service"
+    assert daemon.activation_command(kind="systemd", service_path=service) == ["systemctl", "--user", "enable", "--now", "cos-agent-daemon.service"]
+    plan = daemon.activate_service(kind="launchd", service_path=tmp_path / "com.luum.cos-agent-daemon.plist", execute=False)
+    assert plan["executed"] is False
+    assert plan["command"][:3] == ["launchctl", "load", "-w"]
+
+
+def test_kill_task_uses_heartbeat_pid_process_tree(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    daemon = AgentDaemon(project_dir=tmp_path)
+    task = daemon.enqueue(command="sleep 999", task_id="kill-tree", session_id="s1")
+    daemon.launch(task.task_id, dry_run=True)
+    daemon.heartbeat_path(task.task_id).write_text('{"pid":4242,"timestamp":1}\n', encoding="utf-8")
+    calls = []
+    monkeypatch.setattr(daemon, "_kill_process_tree", lambda pid: calls.append(pid) or ["SIGTERM", "SIGKILL"])
+
+    daemon.kill_task(task.task_id, tmux_bin="/missing/tmux", reason="tree")
+
+    assert calls == [4242]
+    done = json.loads(daemon.done_path(task.task_id).read_text())
+    assert done["pid"] == 4242
+    assert done["kill_signals"][-2:] == ["SIGTERM", "SIGKILL"]
