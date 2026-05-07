@@ -29,7 +29,7 @@ See `.cognitive-os/rules/infra-intent.md` for the complete keyword-to-infrastruc
 | Category | Existing in Stack? | Primary Component |
 |----------|-------------------|-------------------|
 | Database | Yes | MySQL (3306), MongoDB (27017, 27018) |
-| Auth | Yes | auth-provider (8070), <consumer-codename-c> (8090) |
+| Auth | Yes | auth-provider (8070), example-auth (8090) |
 | Real-time | No | Suggest Socket.IO + Redis |
 | Storage | Partial | GCS in prod, no local mock |
 | Queue | Yes | RabbitMQ (5672), Bull (Redis) |
