@@ -1,5 +1,7 @@
 # ADR-229 — Tombstone (consolidated into ADR-228)
 
+status: tombstone
+
 ## Status
 Tombstone
 
