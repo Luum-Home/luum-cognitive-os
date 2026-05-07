@@ -120,7 +120,7 @@ core — not the product center.
 **Architecture** — Cognitive OS maps to a traditional OS: kernel
 (`cognitive-os.yaml` + `hooks/_lib/`), process scheduler (hook chain), memory
 management (Engram), device drivers (skills), system calls (rules), networking
-(harness drivers), and self-healing (MAPE-K loop).
+(harness drivers), and advisory self-healing patterns (MAPE-K-inspired loop, not autonomous production mutation).
 
 **3-Layer model**
 

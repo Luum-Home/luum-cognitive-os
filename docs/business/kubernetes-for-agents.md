@@ -2,7 +2,7 @@
 
 > The orchestration layer that manages AI agents like K8s manages containers.
 
-Kubernetes didn't invent containers. It made them **manageable at scale**. Cognitive OS doesn't invent AI agents. It makes them **manageable, composable, and self-improving at scale**.
+Kubernetes didn't invent containers. It made them **manageable at scale**. Cognitive OS doesn't invent AI agents. It makes them **manageable, composable, observable, and governable at scale**.
 
 ---
 
@@ -322,8 +322,8 @@ Like Kubernetes separates the control plane (API server, scheduler, etcd) from t
 
 **After Cognitive OS:**
 - `cognitive-os apply -f cognitive-os.yaml`
-- Auto-reconfiguration based on performance metrics
-- Self-improving with error learning and skill adaptation
+- Performance metrics produce reviewed proposals before configuration changes
+- Error learning and skill adaptation remain proposal-driven until experiments prove safety
 - Standard agent infrastructure across all repos and teams
 
 ### The scale opportunity
