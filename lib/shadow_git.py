@@ -330,6 +330,42 @@ def restore(
     return {"mode": mode, "tree_sha": tree_sha, "target_seq": target_seq, "truncate": result, "event_seq": event["seq"]}
 
 
+
+def prune_expired_snapshots(
+    workspace: str | Path | None = None,
+    *,
+    max_age_seconds: int = 7 * 24 * 3600,
+    execute: bool = False,
+) -> dict[str, Any]:
+    """Prune off-repo shadow-git session stores older than the retention TTL."""
+    if max_age_seconds < 0:
+        raise ValueError("max_age_seconds must be >= 0")
+    now = time.time()
+    roots: list[Path]
+    if workspace is not None:
+        project_root = shadow_base_dir() / project_id(workspace)
+        roots = [project_root] if project_root.exists() else []
+    else:
+        roots = [path for path in shadow_base_dir().iterdir() if path.is_dir()] if shadow_base_dir().exists() else []
+    candidates: list[dict[str, Any]] = []
+    for project_root in roots:
+        for session_dir in sorted(path for path in project_root.iterdir() if path.is_dir()):
+            age = now - session_dir.stat().st_mtime
+            if age < max_age_seconds:
+                continue
+            record = {"path": str(session_dir), "age_seconds": int(age), "pruned": False}
+            if execute:
+                shutil.rmtree(session_dir)
+                record["pruned"] = True
+            candidates.append(record)
+    return {
+        "schema_version": "shadow-git-retention/v1",
+        "execute": execute,
+        "max_age_seconds": max_age_seconds,
+        "candidates": candidates,
+        "count": len(candidates),
+    }
+
 def prune_session_repo(workspace: str | Path, session_id: str) -> None:
     path = shadow_repo_path(workspace, session_id).parent
     if path.exists():
