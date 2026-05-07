@@ -2,7 +2,7 @@
 Backend Migration Pipeline - Database migration workflow.
 
 Usage:
-  uv run .cognitive-os/workflows/run.py migration --service <consumer-service-4> --description "add transfers table"
+  uv run .cognitive-os/workflows/run.py migration --service example-go-service --description "add transfers table"
 
 Phases (8 steps):
   1. plan       - Generate migration plan
@@ -26,7 +26,6 @@ from lib.agent import prompt_with_retry
 from lib.data_types import AgentPromptRequest
 from lib.shared_phases import (
     BOLD,
-    CYAN,
     DIM,
     GREEN,
     RED,
@@ -34,15 +33,8 @@ from lib.shared_phases import (
     YELLOW,
     cleanup_orphan_node_processes,
     format_duration,
-    phase_build,
     phase_test,
-    print_state_summary,
     print_timing_summary,
-)
-from lib.telegram import (
-    notify_phase_failure,
-    notify_phase_success,
-    notify_pipeline_complete,
 )
 from lib.utils import get_project_root, get_service_config, make_workflow_id
 from phases import phase_migration_check
@@ -271,7 +263,7 @@ def run_pipeline(
             print_timing_summary(phase_timings, pipeline_start)
             return False
 
-    total_duration = time.time() - pipeline_start
+    time.time() - pipeline_start
     print_timing_summary(phase_timings, pipeline_start)
     print(f"\n{GREEN}Migration pipeline complete!{RESET}")
 

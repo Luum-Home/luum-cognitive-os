@@ -3,7 +3,7 @@ Backend Bug Pipeline - Orchestrator for bug fixes in any backend service.
 
 Usage:
   uv run .cognitive-os/workflows/run.py bug --service accounts-go --ticket BUG-567
-  uv run .cognitive-os/workflows/run.py bug --service <consumer-codename-a> --ticket BUG-567 --description "Fix auth token"
+  uv run .cognitive-os/workflows/run.py bug --service example-api --ticket BUG-567 --description "Fix auth token"
 
 Phases (11 steps):
   1. fetch      - Fetch task from ClickUp

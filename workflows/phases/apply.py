@@ -4,7 +4,7 @@ import os
 
 from lib.agent import prompt_with_retry
 from lib.data_types import AgentPromptRequest
-from lib.shared_phases import BOLD, DIM, GREEN, RED, RESET, YELLOW
+from lib.shared_phases import BOLD, DIM, GREEN, RESET, YELLOW
 from lib.utils import get_project_root
 
 

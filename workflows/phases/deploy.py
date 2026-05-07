@@ -46,7 +46,7 @@ def phase_deploy(state, step_label: str, service, env_name: str) -> bool:
         state.update(deploy_status="awaiting_approval")
         return True
 
-    project_root = get_project_root()
+    get_project_root()
     service_abs = get_service_abs_path(service)
 
     # Step 1: Docker build
@@ -121,7 +121,8 @@ def phase_deploy(state, step_label: str, service, env_name: str) -> bool:
 def _build_image_tag(service_name: str, env_name: str) -> str:
     """Build a Docker image tag with timestamp."""
     timestamp = time.strftime("%Y%m%d-%H%M%S")
-    return f"${PROJECT_NAME:-my-project}/{service_name}:{env_name}-{timestamp}"
+    project_name = os.environ.get("PROJECT_NAME", "my-project")
+    return f"{project_name}/{service_name}:{env_name}-{timestamp}"
 
 
 def _docker_build(service_path: str, tag: str) -> bool:
