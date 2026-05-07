@@ -154,7 +154,7 @@ class TestSnapshotBehavior:
 
         assert meta["agent_id"] == "agent-meta"
         assert meta["session_id"] == "sess-meta"
-        assert meta["status"] == "ok"
+        assert meta["status"] == "planned"
         assert meta["tree_dirty"] is True
         assert meta["stash_ref"] == ""
         copied = repo / ".cognitive-os" / "snapshots" / meta["snapshot_id"] / "work.txt"
@@ -176,7 +176,7 @@ class TestSnapshotBehavior:
         entry = json.loads(lines[-1])
         assert entry["event"] == "agent_snapshot"
         assert entry["agent_id"] == "agent-metrics"
-        assert entry["status"] == "ok"
+        assert entry["status"] == "planned"
         assert entry["tree_dirty"] is True
 
     def test_snapshot_ignores_non_agent_tools(self, tmp_path: Path):
