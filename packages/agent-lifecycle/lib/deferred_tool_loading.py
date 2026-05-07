@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -102,20 +103,38 @@ def toolsearch_index(project_dir: str | Path) -> dict[str, Any]:
 
 
 
+def _native_defer_supported(provider: str) -> bool:
+    configured = os.environ.get("COS_NATIVE_DEFER_LOADING_PROVIDERS", "")
+    allowed = {item.strip().lower() for item in configured.split(",") if item.strip()}
+    return "*" in allowed or provider.strip().lower() in allowed
+
+
 def provider_native_defer_payload(project_dir: str | Path, *, provider: str) -> dict[str, Any]:
     """Return provider-native defer/list_changed payload when supported.
 
-    Current providers do not expose a stable native defer_loading API, so COS
-    emits a truthful unsupported payload plus the local ToolSearch index.
+    COS is truthful by default: no current provider path in this repo exposes a
+    stable native API. Operators can opt in per provider with
+    ``COS_NATIVE_DEFER_LOADING_PROVIDERS=provider`` once a host API appears; the
+    payload shape is then generated and still carries the local ToolSearch index.
     """
     index = toolsearch_index(project_dir)
-    return {
+    supported = _native_defer_supported(provider)
+    payload: dict[str, Any] = {
         "schema_version": SCHEMA_VERSION,
         "provider": provider,
-        "native_defer_loading_supported": False,
-        "reason": "provider_api_not_available",
+        "native_defer_loading_supported": supported,
         "toolsearch_index": index,
     }
+    if supported:
+        payload["reason"] = "provider_api_enabled_by_operator"
+        payload["provider_payload"] = {
+            "defer_loading": True,
+            "list_changed": True,
+            "toolsearch_index": index,
+        }
+    else:
+        payload["reason"] = "provider_api_not_available"
+    return payload
 
 
 def _index_hash(index: dict[str, Any]) -> str:
