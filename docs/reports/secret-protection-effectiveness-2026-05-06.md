@@ -1,5 +1,16 @@
 # Secret Protection Effectiveness Audit — 2026-05-06
 
+> **Scope of this report**: per-tool-call hook wiring effectiveness. Asks:
+> *"When an agent runs Bash/Edit/Write, does our `secret-detector.sh` hook
+> actually fire and redact?"* Tied to a specific implementation slice
+> (matcher fix `Edit|Write` → `Bash|Edit|Write`) with tests.
+>
+> **Companion report (different scope)**:
+> [`secret-audit-release-readiness-2026-05-06.md`](./secret-audit-release-readiness-2026-05-06.md)
+> covers the whole-repo release-readiness scan via ADR-215's `cos secret
+> audit`. The two reports are intentionally separate: this one is *what
+> gets blocked when an agent runs a tool*; the other is *what's in the repo*.
+
 ## Verdict
 
 The secret/sensitive-data mesh was **real but not exhaustive**.
