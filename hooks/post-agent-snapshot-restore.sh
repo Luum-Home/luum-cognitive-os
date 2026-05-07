@@ -108,14 +108,25 @@ MARKER_FILE=""
 STASH_REF=""
 STASH_SHA=""
 SNAPSHOT_ID=""
+PLAN_FILE=""
 if [ -n "$AGENT_ID" ]; then
   MARKER_FILE="$RUNTIME_DIR/pre-agent-snapshot-${AGENT_ID}.json"
+  PLAN_FILE="$RUNTIME_DIR/pre-agent-plan-${AGENT_ID}.json"
 fi
 
 if [ -n "$MARKER_FILE" ] && [ -f "$MARKER_FILE" ] && command -v jq >/dev/null 2>&1; then
   STASH_SHA=$(jq -r '.stash_sha // empty' "$MARKER_FILE" 2>/dev/null || true)
   STASH_REF=$(jq -r '.stash_ref_at_capture // .stash_ref // empty' "$MARKER_FILE" 2>/dev/null || true)
   SNAPSHOT_ID=$(jq -r '.snapshot_id // empty' "$MARKER_FILE" 2>/dev/null || true)
+fi
+
+if [ -n "$PLAN_FILE" ] && [ -f "$PLAN_FILE" ] && { [ -z "$MARKER_FILE" ] || [ ! -f "$MARKER_FILE" ]; }; then
+  # ADR-222 normal path: preflight passed far enough to plan, but launch-confirmed
+  # never committed a stash. No git state was mutated, so cleanup is just deleting
+  # the plan and emitting one advisory metric.
+  rm -f "$PLAN_FILE" 2>/dev/null || true
+  log_metric "plan_without_marker_cleanup" "" ""
+  exit 0
 fi
 
 if [ -z "$STASH_SHA" ] && [ -z "$STASH_REF" ] && { [ -z "$MARKER_FILE" ] || [ ! -f "$MARKER_FILE" ]; } && command -v jq >/dev/null 2>&1; then

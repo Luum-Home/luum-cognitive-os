@@ -1335,6 +1335,12 @@ harness:
       matcher: Agent
       scope: os-only
 
+    agent-launch-confirmed:
+      script: hooks/agent-launch-confirmed.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
+
     native-agent-heartbeat-pre:
       script: hooks/native-agent-heartbeat.sh
       event: PreToolUse

@@ -21,6 +21,7 @@
 
 | ADR | Topic | Status | Next implementation slice | Required tests |
 |---|---|---:|---|---|
+| ADR-222 | Pre-Agent Snapshot Two-Phase Capture | ✅ | Implemented tactical mitigation: plan-only pre-agent hook + launch-confirmed stash commit + plan cleanup + ordering tests. Deprecates once ADR-223 fully replaces operator-worktree stash lane. | T1, T3, T4 done |
 | ADR-226 | Event-Sourced Session Bus | ✅ Slices A–E implemented | Monitor perf/concurrency; consumers may now build on stable envelope | T6/T7 follow-ups |
 | ADR-223 | Agent Lifecycle Reconstruction | 🟡 Slice A ✅ | Next: default-on policy + cleanup/reaper + cross-harness launch projection | T7, T8, T10 |
 | ADR-227 | Shadow-Git Checkpoint Substrate | 🟡 Slice A ✅ | Next: conversation truncation + combined atomic restore + event-envelope wiring | T4, T7, T10 |
