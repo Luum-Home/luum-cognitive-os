@@ -67,7 +67,7 @@ A 170-endpoint monolith was decomposed into 14+ microservices in ~24 hours using
 
 2. **Proven on real software** — Not a demo project. Built and validated on a fintech platform with 170+ endpoints, 3 programming languages, and 14 integrations with external providers.
 
-3. **Self-improving** — A feedback loop that runs continuously: errors detected, patterns learned, skills improved, models optimized, fewer errors.
+3. **Telemetry-guided improvement** — The system records errors, patterns, and skill outcomes so maintainers can review proposed improvements; autonomous mutation remains gated by explicit experiments and human approval.
 
 4. **Portability** — Not tied to any IDE or AI provider. Rules (markdown), skills (markdown), and integrations (MCP) are format-agnostic.
 

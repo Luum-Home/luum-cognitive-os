@@ -189,6 +189,14 @@ case "$SUBCMD" in
     echo "cos: unknown history subcommand '${2:-}'. Try: cos history sanitize [--dry-run|--execute] [--json]" >&2
     exit 1
     ;;
+  public-claim)
+    if [ "${2:-}" = "gate" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-public-claim-gate" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown public-claim subcommand '${2:-}'. Try: cos public-claim gate [--json]" >&2
+    exit 1
+    ;;
   tool-discovery)
     if [ "${2:-}" = "preuse" ]; then
       shift 2
@@ -308,6 +316,7 @@ Usage:
   cos adoption audit [--json|--strict]   Audit ADR-217 lockfile/NOTICE/docs adoption truth
   cos history sanitize [--dry-run|--execute] [--json]
                                          Audit ADR-218 pre-public git history sanitization plan
+  cos public-claim gate [--json]        Block unbacked ADR-206 public autonomous/self-improvement claims
   cos observe run [--session-id ID|--run-id ID] [--json]
                                          Join metric streams into ADR-205 run trace
   cos service readiness [--json]         Aggregate ADR-211 service-mode readiness gates
