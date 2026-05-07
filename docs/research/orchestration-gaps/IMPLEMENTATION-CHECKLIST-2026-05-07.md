@@ -34,7 +34,7 @@
 | ADR-233 | Cross-Session Agent-Team File IPC | 🟡 Slice A ✅ | File-backed AgentTeam substrate implemented: members/tasks/inbox/events with locks. Remaining: hook consumers, CLI, ADR-230 handoff integration, chaos/cross-harness. | T1, T3, T4 done; T7/T8 pending |
 | ADR-234 | Approval Policies as Code | 🔲 | Migrate pure-decision deny hooks to generated/native settings projection | T1, T3, T4, T5, T8 |
 | ADR-235 | Detached Agent Daemon | 🔲 | Wait for worktree-per-write-agent/lifecycle reconstruction; opt-in only | T1, T2, T4, T5, T7, T10 |
-| ADR-236 | Deferred Tool Loading + ToolSearch | 🔲 | Extend ADR-216 tool discovery; do not create parallel router loop | T1, T2, T3, T4, T8, T9 |
+| ADR-236 | Deferred Tool Loading + ToolSearch | 🟡 Slice A ✅ | Manifest-backed eager/deferred planning + ToolSearch-like metadata index implemented. Remaining: provider defer_loading + dispatch ToolSearch insertion + list_changed handling. | T1, T3, T4 done; T8/T9 pending |
 
 ## Guardrail
 
