@@ -106,8 +106,14 @@ def cmd_install_service(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def cmd_activate_service(args: argparse.Namespace) -> int:
+    payload = daemon(args).activate_service(kind=args.kind, service_path=args.service_path, execute=args.execute)
+    emit({"status": "activated" if args.execute else "activation_plan", **payload}, json_output=args.json)
+    return 0
+
 def cmd_kill(args: argparse.Namespace) -> int:
-    task = daemon(args).kill_task(args.task_id, tmux_bin=args.tmux_bin, reason=args.reason)
+    task = daemon(args).kill_task(args.task_id, tmux_bin=args.tmux_bin, reason=args.reason, process_tree=not args.no_process_tree)
     emit({"status": "killed", "task": task.to_dict()}, json_output=args.json)
     return 0
 
@@ -190,7 +196,14 @@ def build_parser() -> argparse.ArgumentParser:
     kill.add_argument("--task-id", required=True)
     kill.add_argument("--tmux-bin")
     kill.add_argument("--reason", default="operator_killed")
+    kill.add_argument("--no-process-tree", action="store_true", help="Only kill tmux session; do not use heartbeat PID process-tree escalation")
     kill.set_defaults(func=cmd_kill)
+
+    activate = sub.add_parser("activate-service", help="Plan or execute opt-in launchd/systemd service activation")
+    activate.add_argument("--kind", choices=["launchd", "systemd"], required=True)
+    activate.add_argument("--service-path", required=True)
+    activate.add_argument("--execute", action="store_true")
+    activate.set_defaults(func=cmd_activate_service)
 
     return parser
 

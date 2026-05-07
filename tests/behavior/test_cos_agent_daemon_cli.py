@@ -159,3 +159,20 @@ def test_cos_agent_daemon_prepare_worktree_uses_branch_per_task_prefix(tmp_path:
     assert queued["task"]["worktree_path"].endswith("branch-task")
     branch = subprocess.run(["git", "-C", queued["task"]["worktree_path"], "branch", "--show-current"], capture_output=True, text=True, check=True).stdout.strip()
     assert branch == "codex/task/branch-task"
+
+@pytest.mark.behavior
+def test_cos_agent_daemon_activation_plan_cli(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    service = tmp_path / "cos-agent-daemon.service"
+    service.write_text("[Service]\n")
+    plan = run_agent_daemon(
+        project,
+        "--project-dir", str(project),
+        "activate-service",
+        "--kind", "systemd",
+        "--service-path", str(service),
+    )
+    assert plan["status"] == "activation_plan"
+    assert plan["executed"] is False
+    assert plan["command"] == ["systemctl", "--user", "enable", "--now", "cos-agent-daemon.service"]
