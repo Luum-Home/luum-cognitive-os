@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
@@ -151,6 +152,49 @@ def cmd_handoff_send(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_handoff_receive(args: argparse.Namespace) -> int:
+    team = _team(args)
+    messages = team.inbox(args.session_id)
+    received: list[dict[str, Any]] = []
+    receipts_dir = Path(args.project_dir).resolve() / ".cognitive-os" / "teams" / args.team / "handoff-receipts"
+    receipts_dir.mkdir(parents=True, exist_ok=True)
+    for message in messages:
+        try:
+            payload = json.loads(message.text)
+        except json.JSONDecodeError:
+            continue
+        if payload.get("type") != "handoff" or not isinstance(payload.get("handoff"), dict):
+            continue
+        envelope = payload["handoff"]
+        handoff_id = str(envelope.get("handoff_id") or "")
+        if not handoff_id:
+            continue
+        receipt = receipts_dir / f"{handoff_id}.json"
+        if receipt.exists():
+            continue
+        result: dict[str, Any] = {"handoff": envelope, "executed": False, "exit_code": None}
+        if args.exec_command_template:
+            text = str((envelope.get("context_payload") or {}).get("text") or "")
+            command = args.exec_command_template.format(
+                handoff_id=handoff_id,
+                from_agent=envelope.get("from_agent") or "",
+                to_agent=envelope.get("to_agent") or "",
+                text=text,
+            )
+            proc = subprocess.run(command, shell=True, cwd=str(Path(args.project_dir).resolve()), capture_output=True, text=True, timeout=args.timeout_seconds)
+            result.update({"executed": True, "exit_code": proc.returncode, "stdout": proc.stdout[-4000:], "stderr": proc.stderr[-4000:]})
+            if proc.returncode != 0 and args.strict:
+                receipt.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+                print(json.dumps({"status": "receiver_failed", **result}, sort_keys=True), file=sys.stderr)
+                return 2
+        receipt.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        received.append(result)
+        if args.once:
+            break
+    _emit({"status": "ok", "received": received}, json_output=args.json)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", default=None, help="Project directory; defaults to CWD/COGNITIVE_OS_PROJECT_DIR")
@@ -228,6 +272,15 @@ def build_parser() -> argparse.ArgumentParser:
     handoff_send.add_argument("--operator-approved", action="store_true")
     handoff_send.add_argument("--no-return-control", action="store_true")
     handoff_send.set_defaults(func=cmd_handoff_send)
+
+    handoff_receive = handoff_sub.add_parser("receive")
+    handoff_receive.add_argument("--team", required=True)
+    handoff_receive.add_argument("--session-id", required=True)
+    handoff_receive.add_argument("--exec-command-template")
+    handoff_receive.add_argument("--timeout-seconds", type=int, default=30)
+    handoff_receive.add_argument("--once", action="store_true")
+    handoff_receive.add_argument("--strict", action="store_true")
+    handoff_receive.set_defaults(func=cmd_handoff_receive)
 
     return parser
 
