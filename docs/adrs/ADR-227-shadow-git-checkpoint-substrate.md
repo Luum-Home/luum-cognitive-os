@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)
+**Status**: Accepted — Slices A–F implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-223 (agent lifecycle reconstruction — reserved), ADR-224 (shadow-state snapshots — reserved); depends on ADR-226 (event-sourced session bus)
 **Source**: [`docs/research/orchestration-gaps/replay-timeline-architectures.md`](../research/orchestration-gaps/replay-timeline-architectures.md). Cline, Hermes, Kilo.ai, and `git-shadow` independently converged on the same primitive: a bare git repo *outside* the project, `git write-tree` after every tool call, tree SHA stored alongside conversation context. No hypervisor, no cloud, no service.
