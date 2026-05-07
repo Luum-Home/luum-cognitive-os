@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice C implemented (2026-05-07)
+**Status**: Accepted — implemented through Slice E (2026-05-07)
 **Date**: 2026-05-06
 **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
@@ -244,17 +244,17 @@ Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorat
 - Replay refuses when the function qualname/signature hash differs from the recorded event.
 - Tests cover record/replay, no re-execution during replay, non-JSON refusal, and signature mismatch refusal.
 
-### Slice D — Migration tool
+### Slice D — Migration tool — implemented 2026-05-07
 
-After Slice C.
-- `scripts/migrate_event_log_to_v2.py`. Reads v1 ADR-205 flight-recorder log, demultiplexes by `session_id`, allocates seq, writes per-session streams. Idempotent.
-- Tests T3, T4 (round-trip migration smoke).
+- `scripts/migrate_event_log_to_v2.py` reads v1 ADR-205 flight-recorder log, demultiplexes by `session_id`, and writes ADR-226 per-session streams.
+- The migration is idempotent for already-populated target streams.
+- Tests cover dry-run and execute smoke.
 
-### Slice E — Built-in projection stubs
+### Slice E — Built-in projection stubs — implemented 2026-05-07
 
-After Slice C, before consumer ADRs draft against the substrate.
-- `lib/event_projections/*.py` for cost ledger, retry classifier, timeline, handoff chain. Each is `fold(state, event) -> state`. Stubs only; consumer ADRs (227/228/230) wire them.
-- Tests T2.
+- `lib/event_projections/*.py` provides `fold(state, event) -> state` stubs for cost ledger, retry classifier, timeline, and handoff chain.
+- Consumer ADRs (227/228/230) can now wire against stable projection interfaces instead of inventing their own event shapes.
+- Tests cover minimal projection behavior and handoff cycle counting.
 
 **Critical sequencing rule**: no consumer ADR drafts code against Slice C+ shape until Slice A baseline + Slice B budget are committed and reviewed. This is the single piece of discipline that prevents the substrate from being prematurely locked in to the wrong shape.
 
@@ -263,7 +263,8 @@ After Slice C, before consumer ADRs draft against the substrate.
 - **2026-05-07 — Slice A implemented**: `lib/session_bus.py` exposes `append_session_event()`, `read_session_events()`, `recover_session_counter()`, and `append_event(..., event_store=True)`. It writes `.cognitive-os/sessions/{session_id}.events.jsonl`, maintains rebuildable `.seq-counters/{session_id}.counter`, rejects unsafe session IDs, refuses unsupported filesystem/platform paths, and provides gap-detecting reads.
 - **2026-05-07 — Slice B implemented**: appends the ADR-205 fan-out index at `.cognitive-os/coordination/event-index.jsonl`, exposes `read_event_index()` and `assert_index_consistent()`, and adds a measured initial p95 budget (`<=25ms` for the local Slice B append+fanout fixture) in `manifests/event-sourced-session-bus.yaml`.
 - **2026-05-07 — Slice C implemented**: `lib/event_wrap.py` records JSON-serializable non-deterministic function results as `wrapped-step` events and replays them under `COS_REPLAY_FROM_SEQ`, refusing signature mismatches.
-- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the Slice C active contract and defers migration and projections.
+- **2026-05-07 — Slices D/E implemented**: `scripts/migrate_event_log_to_v2.py` migrates ADR-205 legacy global logs into per-session streams; `lib/event_projections/` provides first projection stubs for timeline, cost ledger, retry classifier, and handoff chain.
+- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the ADR-226 substrate active.
 - **Validation**: focused T1/T2/T3/T4/T5/T6/T10 tests passed locally: `python3 -m pytest tests/unit/test_event_sourced_bus.py tests/behavior/test_event_sourced_bus_smoke.py tests/audit/test_event_sourced_bus_invariants.py tests/benchmark/test_event_sourced_bus_baseline.py tests/unit/test_cross_session_events.py tests/contracts/test_cross_session_event_taxonomy.py -q`; `bash -n hooks/*.sh` passed.
 
 ## Open questions
