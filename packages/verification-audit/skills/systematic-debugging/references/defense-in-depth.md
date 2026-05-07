@@ -12,13 +12,13 @@ When you fix a bug caused by invalid data, adding validation at one place feels 
 Reject obviously invalid input at API boundary.
 
 ```typescript
-// NestJS DTO validation (BFF, Onboarding)
+// NestJS DTO validation (Node services)
 @IsNotEmpty() @IsString() email: string;
 
-// Spring Boot Bean Validation (<consumer-codename-b>, <consumer-codename-c>)
+// Spring Boot Bean Validation (JVM services)
 @NotBlank @Email private String email;
 
-// Express.js Zod validation (monolith)
+// Express.js Zod validation (Node monolith)
 const schema = z.object({ email: z.string().email() });
 ```
 
