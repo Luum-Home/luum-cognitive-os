@@ -52,6 +52,7 @@ from lib.dispatch_gate import DispatchGate, ProviderCircuitBreaker
 from lib.session_budget import SessionBudgetExceeded
 from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
 from lib.deferred_tool_loading import plan_tool_loading, toolsearch_index
+from lib.dispatch_cost_predictor import predict_call_cost
 
 # Rate-limit patterns for cascade advance logic. Kept in sync with
 # scripts/orchestrator.py _RATE_LIMIT_PATTERNS and hooks/rate-limit-detector.sh.
@@ -541,6 +542,16 @@ def dispatch(
     cost_signal = ""
     estimated_cost = _dispatch_estimated_cost(_skill_req)
     budget_cap = _dispatch_budget_cap(_skill_req)
+    cost_prediction: dict[str, object] | None = None
+    if estimated_cost == 0.0 and (_skill_req.get("estimated_input_tokens") is not None or _skill_req.get("estimated_output_tokens") is not None):
+        predicted = predict_call_cost(
+            providers[0] if providers else "unknown",
+            model_hint=claude_model,
+            input_tokens=_skill_req.get("estimated_input_tokens") or 0,
+            output_tokens=_skill_req.get("estimated_output_tokens") or 0,
+        )
+        cost_prediction = predicted.to_dict()
+        estimated_cost = float(predicted.estimated_cost_usd)
 
     tool_loading_plan: dict[str, object] | None = None
     if _skill_req.get("enable_toolsearch") or _skill_req.get("toolsearch_enabled") or _skill_req.get("estimated_tool_tokens") is not None:
@@ -965,6 +976,7 @@ def dispatch(
             "enabled": gate_enabled,
             "session_id": session_id,
             "estimated_cost_usd": estimated_cost,
+            "cost_prediction": cost_prediction,
             "budget_cap_usd": budget_cap,
             "budget_pressure": budget_pressure,
             "sandbox_required": sandbox_required_flag,
