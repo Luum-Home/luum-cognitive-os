@@ -21959,7 +21959,7 @@
         "lifecycle",
         "hook_consumers:1",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:5",
         "config_consumers:5",
         "role_source:lifecycle",
@@ -85161,7 +85161,7 @@
       "coverage_debt:65"
     ]
   },
-  "generated_at": "2026-05-07T15:11:43Z",
+  "generated_at": "2026-05-07T16:23:55Z",
   "harness_projection": {
     "aider": {
       "display_name": "Aider",

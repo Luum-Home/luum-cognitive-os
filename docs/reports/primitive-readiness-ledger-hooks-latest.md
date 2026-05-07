@@ -42,7 +42,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/agent-bus-monitor.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 18 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/agent-checkpoint.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 37 | keep maintainer-only or add explicit export path |
 | `hooks/agent-control-inbound-guard.sh` | driver-specific | lifecycle | high | projected-consumer-surface | blocking | 15 | keep lifecycle, tests, and harness proof current |
-| `hooks/agent-launch-confirmed.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 15 | keep maintainer-only or add explicit export path |
+| `hooks/agent-launch-confirmed.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | advisory | 16 | keep maintainer-only or add explicit export path |
 | `hooks/agent-message-inbox-context.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 14 | keep maintainer-only or add explicit export path |
 | `hooks/agent-message-inbox-guard.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 13 | keep maintainer-only or add explicit export path |
 | `hooks/agent-output-verifier.sh` | observability | heuristic:text | medium | so-local-only |  | 11 | add lifecycle/package/projection metadata or keep SO-local |
@@ -138,7 +138,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/memory-prefetch.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 19 | keep maintainer-only or add explicit export path |
 | `hooks/memu-sync.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/metrics-calibrator-trigger.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 14 | add lifecycle/package/projection metadata or keep SO-local |
-| `hooks/metrics-rotation.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 24 | add lifecycle/package/projection metadata or keep SO-local |
+| `hooks/metrics-rotation.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 25 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/mlflow-sync.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 15 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/native-agent-heartbeat.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 16 | keep maintainer-only or add explicit export path |
 | `hooks/network-egress-guard.sh` | driver-specific | lifecycle | high | lifecycle-declared-maintainer | blocking | 15 | keep maintainer-only or add explicit export path |

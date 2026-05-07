@@ -132,6 +132,9 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
     "trust-score-validator",
     "confidence-gate",
     "claim-validator",
+    # SessionStart maintenance hook: rotates/scans JSONL metrics and is governed
+    # by the disk-growth SLO rather than the hot-path hook latency ceiling.
+    "metrics-rotation",
 })
 
 
