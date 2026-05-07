@@ -40,3 +40,20 @@ def test_microvm_and_contree_adapter_contracts_are_declared() -> None:
     assert microvm["status"] == "adapter_contract"
     assert "opt-in only" in microvm["dependency_policy"]
     assert contree["command_contract"][0] == "contree"
+
+
+def test_microvm_runner_env_builds_active_command(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("COS_SANDBOX_MICROVM_RUNNER", "/opt/cos/bin/microvm-runner")
+    plan = build_sandbox_command(["echo", "ok"], workspace=tmp_path, backend="microvm", network=True)
+    assert plan.backend == "microvm"
+    assert plan.adapter_status == "active"
+    assert plan.network is True
+    assert plan.command[:3] == ["/opt/cos/bin/microvm-runner", "--workspace", str(tmp_path.resolve())]
+
+
+def test_contree_runner_env_builds_active_command(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("COS_SANDBOX_CONTREE_RUNNER", "/opt/cos/bin/contree")
+    plan = build_sandbox_command(["pytest"], workspace=tmp_path, backend="contree")
+    assert plan.backend == "contree"
+    assert plan.adapter_status == "active"
+    assert plan.command[:3] == ["/opt/cos/bin/contree", "--workspace", str(tmp_path.resolve())]
