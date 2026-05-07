@@ -30,7 +30,7 @@
 | ADR-230 | Handoff Envelope + Cycle Deduplication | 🟡 | Slices A–E substrate implemented: envelope, cycle/depth checks, permission intersection, ADR-226 events, manifest/audit/smoke. Remaining: real transport + chaos/cross-harness lanes. | T1, T3, T4, T5 done; T2/T7/T8 pending |
 | ADR-225 | Branch-Per-Task Mode | 🟡 Slice A ✅ | Observe/check substrate implemented: canonical task branch policy, manifest, CLI strict mode. Remaining: default prelaunch enforcement + ADR-233/235 integration. | T1, T3, T4 done |
 | ADR-231 | MCP Server Surface | 🟡 Slice A ✅ | Existing 8-tool FastMCP server formalized, package export path added, manifest/audit/smoke tests. Remaining: OTel, HTTP transport, cross-harness registration. | T1, T3, T4 done; T8 pending |
-| ADR-232 | Sandbox Adapter Tiers | 🔲 | OS-native adapter prototype only after worktree/lifecycle invariants are green | T1, T2, T4, T5, T7, T8, T10 |
+| ADR-232 | Sandbox Adapter Tiers | 🟡 Slice A ✅ | Opt-in sandbox command wrapper implemented for Bubblewrap/Seatbelt with explicit fallback. Remaining: microVM/ConTree adapters + hook/dispatch integration. | T1, T3, T4 done; T7/T8/T10 pending |
 | ADR-233 | Cross-Session Agent-Team File IPC | 🟡 Slice A ✅ | File-backed AgentTeam substrate implemented: members/tasks/inbox/events with locks. Remaining: hook consumers, CLI, ADR-230 handoff integration, chaos/cross-harness. | T1, T3, T4 done; T7/T8 pending |
 | ADR-234 | Approval Policies as Code | 🔲 | Migrate pure-decision deny hooks to generated/native settings projection | T1, T3, T4, T5, T8 |
 | ADR-235 | Detached Agent Daemon | 🔲 | Wait for worktree-per-write-agent/lifecycle reconstruction; opt-in only | T1, T2, T4, T5, T7, T10 |
