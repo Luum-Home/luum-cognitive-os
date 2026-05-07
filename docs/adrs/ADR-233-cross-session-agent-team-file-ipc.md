@@ -50,10 +50,14 @@ Implemented Slice C:
 - Chaos test proves `claim_next` has a single winner across concurrent processes.
 - Cross-harness contract test proves Codex-style and Claude-style session envs share the same team inbox/handoff transport.
 
+Implemented Slice D:
+
+- Receiver execution is consumed through ADR-230 `cos team handoff receive`, including external hook command execution and idempotency receipts.
+- `lib/agent_team_transport.py` and `cos team transport-plan` expose a machine-readable file/NATS/A2A upgrade mapping without adding NATS/A2A dependencies to the default install.
+
 Not implemented yet:
 
-- Receiver execution after inbox delivery.
-- Tier-3 NATS/A2A upgrade path.
+- Actual NATS/A2A transport adapters. They remain opt-in future work behind the declared mapping.
 
 ## Hard rules
 
@@ -61,7 +65,7 @@ Not implemented yet:
 - Writes use advisory locks; no read-modify-write JSON arrays.
 - Inbox is append-only and at-least-once; consumers must treat message IDs as idempotency keys.
 - Task claims must be locked and dependency-aware.
-- No daemon, Redis, Postgres, NATS, or tmux dependency in the default path.
+- No daemon, Redis, Postgres, NATS, A2A SDK, or tmux dependency in the default path.
 
 ## Test matrix
 
@@ -70,11 +74,12 @@ Not implemented yet:
 - T4 smoke: covered by the behavior flow for two independent sessions
 - T7 chaos: `tests/chaos/test_agent_team_claim_race.py`
 - T8 cross-harness: `tests/integration/test_agent_team_cross_harness_contract.py`
+- Upgrade-path contract: `tests/unit/test_agent_team_transport.py` and `tests/behavior/test_cos_team_cli.py::test_cos_team_transport_plan_cli_exposes_nats_upgrade_mapping`
 
 ## Acceptance criteria
 
 ```bash
-python3 -m pytest tests/unit/test_agent_team.py tests/behavior/test_agent_team_file_ipc_flow.py tests/behavior/test_cos_team_cli.py tests/hooks/test_agent_team_file_ipc_hooks.py -q
+python3 -m pytest tests/unit/test_agent_team.py tests/unit/test_agent_team_transport.py tests/behavior/test_agent_team_file_ipc_flow.py tests/behavior/test_cos_team_cli.py tests/hooks/test_agent_team_file_ipc_hooks.py -q
 ```
 
 The tests must prove:
