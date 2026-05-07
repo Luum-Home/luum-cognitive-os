@@ -224,6 +224,7 @@ T10 ⬜ audit invariants — N/A (no git/WT mutation)
 python3 -m pytest tests/unit/test_handoff_envelope.py tests/unit/test_handoff_dispatcher.py tests/integration/test_handoff_round_trip.py tests/audit/test_no_raw_dispatch_to_agent.py tests/behavior/test_handoff_manifest.py tests/chaos/test_handoff_kill_mid_dispatch.py -q
 
 # Smoke (T4)
+python3 -m pytest tests/unit/test_handoff_envelope.py tests/unit/test_handoff_dispatcher.py tests/behavior/test_handoff_dispatcher_flow.py tests/behavior/test_cos_team_cli.py -q
 bash tests/smoke/test_handoff_cycle_detection.sh
 ```
 
@@ -263,9 +264,11 @@ Slices A–E are implemented as the first executable handoff contract:
 
 Slice F transport is implemented for file-IPC delivery: `cos team handoff send` dispatches the ADR-230 envelope through `HandoffDispatcher` and delivers the scoped envelope as an ADR-233 inbox message. A cross-harness contract test proves Codex-style and Claude-style session ids share the same transport. This is real cross-session file-IPC transport, not receiver execution.
 
-Slice G receiver execution is implemented as an explicit operator-controlled command: `cos team handoff receive --exec-command-template ...` reads ADR-233 inbox handoffs, writes idempotency receipts, and optionally executes a bounded shell template.
+Slice G receiver execution is implemented as an explicit operator-controlled command: `cos team handoff receive --exec-command-template ...` reads ADR-233 inbox handoffs, validates envelopes, writes idempotency receipts, and optionally executes a bounded shell template.
 
-Not implemented yet: runtime hook invocation via an external hook runner and chaos kill-mid-dispatch lane. The current slices intentionally do not spawn agents or mutate worktrees.
+Slice H external receiver hooks are implemented via `cos team handoff receive --hook-command ...`: the envelope is passed on stdin, `COS_HANDOFF_*` environment variables are set, timeout is bounded, and strict-mode failures/timeouts write receipts before returning exit 2.
+
+Not implemented yet: daemon-spawned receiver processes and process-kill chaos for mid-dispatch agent death. The current slices intentionally do not spawn agents or mutate worktrees.
 
 ## Open questions
 

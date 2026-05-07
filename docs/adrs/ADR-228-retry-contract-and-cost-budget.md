@@ -212,7 +212,7 @@ T10 ⬜ audit invariants — N/A (substrate, not git-touching)
 ## Acceptance criteria
 
 ```bash
-python3 -m pytest tests/unit/test_dispatch_gate.py tests/unit/test_retry_classifier.py tests/unit/test_session_budget.py tests/integration/test_dispatch_with_gate.py tests/audit/test_no_external_retry_counts.py tests/perf/test_pre_call_gate_latency.py tests/chaos/test_circuit_breaker_recovery.py -q
+python3 -m pytest tests/unit/test_dispatch.py tests/unit/test_dispatch_gate.py tests/unit/test_retry_classifier.py tests/unit/test_session_budget.py tests/integration/test_dispatch_gate_real_dispatch.py -q
 
 # Smoke (T4)
 bash tests/smoke/test_budget_backpressure.sh
@@ -239,9 +239,10 @@ The tests must prove:
 4. **Slice D — `lib/dispatch_gate.py`** (~100 LOC). Wraps `lib/dispatch.py` with the gate. `pre_call_check` → classify on failure → retry per policy → `record_actual`. Tests T2+T6.
 5. **Slice E — Idempotency mixin** (~40 LOC). `IdempotencyKeyMixin` on base tool class. Persisted at `.cognitive-os/metrics/idempotency-keys.jsonl`. Tests T1+T5.
 6. **Slice F — real `lib/dispatch.py` integration** (implemented 2026-05-07). Dispatch now runs a synchronous budget pre-call gate, records actual cost into the session ledger after the call, skips providers with an open file-backed circuit breaker, records provider failures into breaker state, and emits `dispatch_gate` metadata in `llm-dispatch` metrics. Tests T2.
-6. **Slice F — Circuit breaker** (~60 LOC). `lib/circuit_breaker.py`. Per-provider file-backed state. Tests T2+T7.
-7. **Slice G — `cost_predictor` integration** (~20 LOC wiring). Connect `get_real_model_prices()` into `pre_call_check` estimation. Closes the prediction-vs-actual loop.
-8. **Slice H — Operator runbook** at `docs/runbooks/cost-budget-and-retry.md`. Three recovery flows: budget-hit, circuit-open, classifier-unknown.
+7. **Slice G — retry attempt loop in `lib/dispatch.py`** (implemented 2026-05-07). When the dispatch gate is active, failed provider calls are classified and retried according to `manifests/retry-contract.yaml`; retry events and provider attempt counts are emitted in metrics. Tests T2/T3.
+8. **Slice H — Circuit breaker chaos hardening** (~60 LOC). Per-provider file-backed state is active; remaining work is kill/recovery chaos around half-open probes. Tests T7.
+9. **Slice I — `cost_predictor` integration** (~20 LOC wiring). Connect `get_real_model_prices()` into `pre_call_check` estimation. Closes the prediction-vs-actual loop.
+10. **Slice J — Operator runbook** at `docs/runbooks/cost-budget-and-retry.md`. Three recovery flows: budget-hit, circuit-open, classifier-unknown.
 
 Total: ~350 LOC + rule consolidation (net-negative bash equivalent).
 
@@ -249,7 +250,8 @@ Total: ~350 LOC + rule consolidation (net-negative bash equivalent).
 
 - **2026-05-07 — Slices A–E implemented**: `lib/retry_classifier.py`, `lib/session_budget.py`, and `lib/dispatch_gate.py` provide the failure classifier, retry policy lookup, sync pre-call budget gate, post-call accounting, context pressure signals, and idempotency key claims.
 - **Manifests/rule**: `manifests/retry-contract.yaml`, `manifests/session-budget.yaml`, and `rules/retry-contract.md` are the canonical policy surfaces.
-- **Deferred**: full `lib/dispatch.py` integration, provider circuit-breaker state machine beyond the existing generic circuit breaker, cost predictor pricing integration, runbook.
+- **2026-05-07 — Dispatch retry loop implemented**: `lib/dispatch.py` now uses the ADR-228 classifier/policy for gated provider retry attempts, records retry events/provider attempt counts in `llm-dispatch`, and preserves budget pre-call checks before retry attempts.
+- **Deferred**: cost predictor pricing integration, deeper circuit-breaker chaos recovery, T6 baseline/perf budget, and runbook.
 
 ## Open questions
 
