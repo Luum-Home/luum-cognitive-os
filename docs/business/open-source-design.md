@@ -669,7 +669,7 @@ For an existing project, migration looks like this:
 - Five new commercial wedges become citable (cycle-dedup vs MAST 2025, sync cost gate vs $47K incident, replay-restore without hypervisor, retry classifier consolidation, native MCP server). All map to file paths in `main`.
 
 **Consequences (negative / honest pendings)**:
-- 13 of 14 ADRs are **🟡 partially implemented** (Slice A done, slices B–F pending or not yet drafted). The IMPLEMENTATION-CHECKLIST publishes this state explicitly.
+- ADR slice progression varies (Slices A–F across the 14 ADRs as of the latest checklist update; ADR-222 fully closed; substrate ADRs 226/227/228/230 advanced; consumer + adapter ADRs 231/232/233/234/235/236 at 🟢 with multiple slices done). The IMPLEMENTATION-CHECKLIST publishes per-ADR slice and tier-test status explicitly — no claim of "production-hardened" without the corresponding T6/T7/T8/T9/T10 evidence.
 - T6 perf budget is single-platform (macOS+APFS, p95 25 ms manifest target). Linux + Docker baselines pending.
 - T7 chaos coverage is partial (event bus covered; handoff path kill-mid-dispatch pending).
 - T8 cross-harness end-to-end exercises only the event bus (`tests/red_team/portability/test_event_bus.py`). Codex/OpenCode round-trip for ADR-228/230/233 pending.

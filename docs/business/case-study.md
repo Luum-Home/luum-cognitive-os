@@ -240,7 +240,7 @@ The challenge: replace the broken primitive without breaking adoption, while als
 
 The first case study (fintech monolith, ~300x acceleration) showed that Cognitive OS can decompose external systems with 100+ parallel agents.
 
-The second case study shows that **Cognitive OS can extend itself with the same discipline it extends external systems.** The ADRs honor a versioned C1–C4 contract (license allowlist/blocklist, footprint discipline, test-tier matrix). The implementation honors the ADRs. The guardrail validator confirms the substrate-consumer boundary holds. The IMPLEMENTATION-CHECKLIST publishes 🟡 partially-implemented status for 13 of 14 ADRs — no overclaim.
+The second case study shows that **Cognitive OS can extend itself with the same discipline it extends external systems.** The ADRs honor a versioned C1–C4 contract (license allowlist/blocklist, footprint discipline, test-tier matrix). The implementation honors the ADRs. The guardrail validator confirms the substrate-consumer boundary holds. The IMPLEMENTATION-CHECKLIST publishes per-ADR slice progression (Slices A–F across 14 ADRs as of the latest update) with T6/T7/T8/T9/T10 hardening pendings called out per ADR — no overclaim.
 
 For commercial purposes, the operative point is not "fast" — it is "fast under a versioned contract that an operator can audit." Speed without contract is research-inflation. Speed under contract is durable engineering.
 
@@ -259,7 +259,7 @@ cat manifests/orchestration-research-evaluation.yaml
 # Read the ranked synthesis
 cat docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md
 
-# Read the implementation tracker (honest 🟡 status per ADR)
+# Read the implementation tracker (per-ADR slice + tier-test pendings)
 cat docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md
 
 # Run the substrate-consumer guardrail validator
