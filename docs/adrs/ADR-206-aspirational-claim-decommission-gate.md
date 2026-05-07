@@ -1,5 +1,9 @@
 # ADR-206 — Aspirational Claim Decommission Gate
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — public claim gate active  
@@ -72,3 +76,11 @@ scripts/cos-public-claim-gate --json
 
 The test fixture must prove unbacked MAPE-K/autonomous self-improvement claims
 fail and propose-only claims pass.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

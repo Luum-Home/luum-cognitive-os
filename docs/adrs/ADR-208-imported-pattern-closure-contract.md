@@ -1,5 +1,9 @@
 # ADR-208 — Imported Pattern Closure Contract
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — closure audit slice active  
@@ -76,3 +80,11 @@ scripts/cos-imported-pattern-closure-audit --json
 
 The tests must prove a producer-only imported pattern cannot be marked active or
 core.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

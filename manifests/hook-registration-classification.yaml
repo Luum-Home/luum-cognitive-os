@@ -298,3 +298,11 @@ entries:
     event payload can supply its required intent arguments yet.
   next_action: Keep out of Claude/Codex lifecycle projections until cosd v1 defines
     a typed event payload and integration lane.
+- path: hooks/state-retention-audit.sh
+  status: manual_trigger
+  rationale: State-retention audit can archive or reap state and must be invoked by explicit operator/session-retention flows, not every Claude lifecycle event.
+  next_action: Keep manual until the retention controller promotes a specific safe lifecycle projection.
+- path: hooks/subagent-capability-preflight.sh
+  status: manual_trigger
+  rationale: ADR-203 capability checks are available as an explicit launch-preflight wrapper, but are not yet projected into Claude or Codex lifecycle settings.
+  next_action: Promote through a concrete launch path before changing this status to projected_elsewhere.

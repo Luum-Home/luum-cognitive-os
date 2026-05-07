@@ -1,5 +1,9 @@
 # ADR-226 — Event-Sourced Session Bus
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — implemented through Slice E (2026-05-07)
@@ -273,3 +277,8 @@ Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorat
 - **Should `@event_wrap` support partial replay (replay first N wrapped calls, re-execute the rest)?** Defer. MVP is replay-all-or-replay-none. Partial replay is a Phase-3 addition once we have a use case.
 - **Should we expose `seq` to MCP consumers (ADR-231) so external tools can subscribe to a session's stream?** Likely yes — this is how MCP becomes the natural bus for cross-session agent-teams (ADR-233). Tracked as a slice of ADR-231.
 - **Counter-file recovery on a corrupted directory.** Initial answer: walk the stream, take `max(seq) + 1`. If the stream is also corrupted, refuse and require operator intervention (no silent re-allocation).
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

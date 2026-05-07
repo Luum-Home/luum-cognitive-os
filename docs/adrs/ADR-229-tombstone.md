@@ -1,5 +1,9 @@
 # ADR-229 — Tombstone (consolidated into ADR-228)
 
+## Status
+Tombstone
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Tombstone
@@ -29,3 +33,21 @@ See **[ADR-228 — Retry Contract + Cost Session Budget (consolidated)](ADR-228-
 - ADR-229 is reserved as a tombstone. Do not reuse the number for unrelated work.
 - Future work on cost-aware routing extends ADR-228 in place or supersedes it; it does not re-occupy ADR-229.
 - This mirrors the precedent set by ADR-214 (also a tombstone, vacated for a parallel-session collision).
+
+## Context
+This ADR was backfilled into the ADR-067 section contract after the decision had already been recorded. The original context remains in the existing sections above; this section exists so the ADR can be audited uniformly.
+
+## Decision
+Keep the decision described in this ADR as the canonical project policy for this slot. Implementation-specific details remain in the sections above and in the files referenced by this ADR.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Reusing this ADR number for a different decision — rejected because tombstones preserve numbering provenance and prevent contradictory references.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

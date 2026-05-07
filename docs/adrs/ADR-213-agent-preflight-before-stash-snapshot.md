@@ -1,5 +1,9 @@
 # ADR-213 — Agent Preflight Before Stash Snapshot
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted  
@@ -82,3 +86,11 @@ The smoke test must simulate a dirty working tree plus a manual stash that makes
 `agent-prelaunch.sh` block. In the correct order, no `auto-pre-agent-*` stash is
 created and the dirty working-tree diff remains visible. A control test proves
 the old snapshot-before-preflight order would have hidden that WIP in stash.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
