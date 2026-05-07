@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+"""CLI for ADR-207 skill performance/lifecycle ledger."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.reward_signal_quality import audit_stream, load_contract, summarize  # noqa: E402
+from lib.skill_lifecycle_promoter import build_skill_lifecycle_report  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", type=Path, default=ROOT)
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+
+    project = args.project_dir.resolve()
+    lifecycle = build_skill_lifecycle_report(project).to_dict()
+    contract = load_contract(project / "manifests" / "reward-signal-contract.yaml")
+    skill_streams = [stream for stream, cfg in (contract.get("streams", {}) or {}).items() if cfg.get("subject_type") == "skill"]
+    validations = []
+    for stream in skill_streams:
+        validations.extend(audit_stream(project, contract, stream))
+    quality = summarize(validations)
+    payload = {
+        "schema_version": "skill-performance-ledger/v1",
+        "project_dir": str(project),
+        "status": "quarantined-input" if quality["suspect"] or quality["corrupt"] else lifecycle["status"],
+        "reward_signal_quality": quality,
+        "lifecycle": lifecycle,
+        "policy": "Corrupt/suspect skill reward rows cannot produce rewrite, promotion, demotion, or router-confidence proposals.",
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"skill-performance-ledger: {payload['status']} corrupt={quality['corrupt']} suspect={quality['suspect']}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+
