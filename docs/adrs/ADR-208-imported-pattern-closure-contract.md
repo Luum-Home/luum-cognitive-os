@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — closure audit slice active  
 **Date**: 2026-05-06  
 **Related**: ADR-074, ADR-076, ADR-078, ADR-080, ADR-095, ADR-096, ADR-102, ADR-201  
 **Source**: `.cognitive-os/strategy/research/05-hermes-imitation-forensics.md`, `.cognitive-os/strategy/research/06-external-patterns-benchmark.md`
@@ -55,10 +55,10 @@ closure contract passes.
 ## Implementation slices
 
 0. [x] Add a dependency-adoption gate so staged dependency manifest additions require `/repo-scout`, `/repo-forensics`, or equivalent adoption evidence before commit.
-1. [ ] Add `manifests/imported-pattern-closures.yaml`.
-2. [ ] Add `scripts/cos-imported-pattern-closure-audit`.
-3. [ ] Seed historical Hermes-derived patterns with current closure status.
-4. [ ] Block promotion claims when closure is missing.
+1. [x] Add `manifests/imported-pattern-closures.yaml`.
+2. [x] Add `scripts/cos-imported-pattern-closure-audit`.
+3. [x] Seed initial dependency-adoption preuse loop with current closure status.
+4. [x] Block promotion claims when closure is missing.
 5. [ ] Feed missing closure into ADR-201 maintainer proposals.
 
 The dependency gate is the first consumer loop: it wires the existing research
