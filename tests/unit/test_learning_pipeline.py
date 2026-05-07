@@ -102,7 +102,7 @@ class TestRecordError:
         from lib.learning_pipeline import ErrorCorrelation
         correlation = pipeline.record_error(
             error_type="TEST_FAILURE",
-            service="<consumer-codename-b>",
+            service="service-a",
             message="assertion failed",
         )
         assert isinstance(correlation, ErrorCorrelation)
