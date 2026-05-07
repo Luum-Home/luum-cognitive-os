@@ -99,3 +99,39 @@ def test_cos_agent_daemon_enqueue_team_next(tmp_path: Path) -> None:
     )
     assert queued["status"] == "queued_team_task"
     assert queued["task"]["command"] == "echo docs:Write docs"
+
+@pytest.mark.behavior
+def test_cos_agent_daemon_install_service_and_kill_cli(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    target = tmp_path / "systemd"
+    installed = run_agent_daemon(
+        project,
+        "--project-dir", str(project),
+        "install-service",
+        "--kind", "systemd",
+        "--target-dir", str(target),
+    )
+    assert installed["status"] == "installed"
+    assert Path(installed["path"]).is_file()
+
+    queued = run_agent_daemon(
+        project,
+        "--project-dir", str(project),
+        "enqueue",
+        "--task-id", "kill-cli",
+        "--session-id", "s1",
+        "--command", "sleep 999",
+    )
+    assert queued["task"]["task_id"] == "kill-cli"
+    run_agent_daemon(project, "--project-dir", str(project), "run-once", "--dry-run")
+    killed = run_agent_daemon(
+        project,
+        "--project-dir", str(project),
+        "kill",
+        "--task-id", "kill-cli",
+        "--tmux-bin", "/missing/tmux",
+        "--reason", "test_cli_kill",
+    )
+    assert killed["status"] == "killed"
+    assert killed["task"]["status"] == "failed"

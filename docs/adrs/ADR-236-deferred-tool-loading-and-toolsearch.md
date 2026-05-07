@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–C implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-044 (context payload slimming), ADR-216 (tool discovery pre-use gate), ADR-231 (MCP server surface)
 
@@ -35,11 +35,15 @@ Implemented Slice B:
 
 - `lib/dispatch.py` can inject a compact `[TOOLSEARCH_INDEX]` into the prompt and emit tool-loading metadata when `skill_requirements.enable_toolsearch` / `estimated_tool_tokens` requests it.
 
+Implemented Slice C:
+
+- `list_changed()` compares the current ToolSearch index with a persisted state hash and reports added/removed tools; `scripts/cos-deferred-tool-plan --list-changed [--update-state]` exposes it.
+- `provider_native_defer_payload()` emits a truthful provider payload: native `defer_loading` is marked unsupported until a provider API exists, while still carrying the local ToolSearch index.
+
 Not implemented yet:
 
-- Actual provider API `defer_loading` flags.
-- Runtime insertion of ToolSearch into `lib/dispatch.py`.
-- MCP `notifications/tools/list_changed` handling.
+- Actual provider API `defer_loading` flags. No current provider path in this repo exposes that API, so COS must not pretend native support exists.
+- Real MCP `notifications/tools/list_changed` transport emission; local detection is implemented and ready to feed it.
 
 ## Hard rules
 
