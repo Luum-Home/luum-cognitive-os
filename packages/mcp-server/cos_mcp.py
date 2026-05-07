@@ -1,0 +1,1 @@
+../../mcp-server/cos_mcp.py

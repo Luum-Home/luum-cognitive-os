@@ -28,7 +28,7 @@
 | ADR-224 | Shadow-State Snapshots Off-Repo | 🟡 Slice A ✅ | Next: operator runbook + retention/reaper integration | T3, T4, T10 |
 | ADR-228 | Retry Contract + Cost Budget | 🟡 Slices A–E ✅ | Next: wire into lib/dispatch.py + provider circuit breaker + cost predictor | T2, T4, T6, T7 |
 | ADR-230 | Handoff Envelope + Cycle Deduplication | 🟡 | Slices A–E substrate implemented: envelope, cycle/depth checks, permission intersection, ADR-226 events, manifest/audit/smoke. Remaining: real transport + chaos/cross-harness lanes. | T1, T3, T4, T5 done; T2/T7/T8 pending |
-| ADR-231 | MCP Server Surface | 🔲 | Wait until core governance read-only tools are stable; expose read-mostly tools first | T1, T2, T3, T4, T8, T9 |
+| ADR-231 | MCP Server Surface | 🟡 Slice A ✅ | Existing 8-tool FastMCP server formalized, package export path added, manifest/audit/smoke tests. Remaining: OTel, HTTP transport, cross-harness registration. | T1, T3, T4 done; T8 pending |
 | ADR-232 | Sandbox Adapter Tiers | 🔲 | OS-native adapter prototype only after worktree/lifecycle invariants are green | T1, T2, T4, T5, T7, T8, T10 |
 | ADR-233 | Cross-Session Agent-Team File IPC | 🔲 | Wait for ADR-226 Slice B and ADR-230 envelope | T1, T2, T3, T4, T5, T7 |
 | ADR-234 | Approval Policies as Code | 🔲 | Migrate pure-decision deny hooks to generated/native settings projection | T1, T3, T4, T5, T8 |
