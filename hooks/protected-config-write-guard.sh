@@ -52,6 +52,10 @@ if isinstance(ti, dict):
             if isinstance(e, dict) and e.get('file_path'):
                 paths.append(str(e['file_path']))
 blocked=[]
+try:
+    from lib.policy_eval import evaluate_action
+except Exception:
+    evaluate_action=None
 for raw in paths:
     p=Path(raw)
     full=(p if p.is_absolute() else project/p).resolve()
@@ -59,6 +63,11 @@ for raw in paths:
         rel=full.relative_to(project).as_posix()
     except ValueError:
         rel=raw
+    if evaluate_action is not None:
+        decision=evaluate_action(project, {'tool': payload.get('tool_name',''), 'file_path': rel})
+        if decision.decision in {'block','deny'}:
+            blocked.append(rel)
+            continue
     allowed=any(fnmatch.fnmatch(rel, pat) for pat in policy.get('allowlisted_generated_outputs',[]))
     protected=any(fnmatch.fnmatch(rel, pat) for pat in policy.get('protected_globs',[]))
     if protected and not allowed:
