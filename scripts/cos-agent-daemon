@@ -51,6 +51,7 @@ def cmd_enqueue(args: argparse.Namespace) -> int:
             task_id=args.task_id,
             session_id=args.session_id or "detached",
             worktree_root=args.worktree_root,
+            branch_prefix=args.branch_prefix,
         )
         worktree_path = record.worktree_path
     task = daemon(args).enqueue(
@@ -146,6 +147,7 @@ def build_parser() -> argparse.ArgumentParser:
     enqueue.add_argument("--worktree-path")
     enqueue.add_argument("--prepare-worktree", action="store_true")
     enqueue.add_argument("--worktree-root")
+    enqueue.add_argument("--branch-prefix", default="codex/task", help="Branch prefix for --prepare-worktree; default aligns ADR-225")
     enqueue.add_argument("--max-runtime-seconds", type=int, default=3600)
     enqueue.add_argument("--estimated-cost-usd", type=float, default=0.0)
     enqueue.add_argument("--budget-cap-usd", type=float, default=5.0)

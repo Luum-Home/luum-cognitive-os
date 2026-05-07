@@ -38,6 +38,11 @@ Implemented Slice B:
 - `COS_BRANCH_PER_TASK_ENFORCE=1` forces enforcement for all non-read-only Agent launches.
 - `COS_SKIP_BRANCH_PER_TASK_GATE=1` is the explicit operator bypass.
 
+Implemented 2026-05-07:
+
+- Detached-agent `--prepare-worktree` now defaults to `codex/task/<task>` branch prefixes, aligning ADR-235 with branch-per-task.
+- ADR-223 `prepare_agent_worktree(..., branch_prefix=...)` supports branch migration/auto-branching callers without prompt-derived branch names.
+
 Not implemented yet:
 
 - Automatic branch migration for existing worktrees.

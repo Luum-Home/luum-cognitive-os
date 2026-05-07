@@ -135,3 +135,27 @@ def test_cos_agent_daemon_install_service_and_kill_cli(tmp_path: Path) -> None:
     )
     assert killed["status"] == "killed"
     assert killed["task"]["status"] == "failed"
+
+@pytest.mark.behavior
+def test_cos_agent_daemon_prepare_worktree_uses_branch_per_task_prefix(tmp_path: Path) -> None:
+    project = tmp_path / "project-git"
+    project.mkdir()
+    subprocess.run(["git", "init", "-q"], cwd=project, check=True)
+    subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=project, check=True)
+    subprocess.run(["git", "config", "user.name", "Test"], cwd=project, check=True)
+    (project / "README.md").write_text("hello\n")
+    subprocess.run(["git", "add", "README.md"], cwd=project, check=True)
+    subprocess.run(["git", "commit", "-q", "-m", "init"], cwd=project, check=True)
+    queued = run_agent_daemon(
+        project,
+        "--project-dir", str(project),
+        "enqueue",
+        "--task-id", "branch-task",
+        "--session-id", "s1",
+        "--command", "true",
+        "--prepare-worktree",
+        "--worktree-root", str(tmp_path / "worktrees"),
+    )
+    assert queued["task"]["worktree_path"].endswith("branch-task")
+    branch = subprocess.run(["git", "-C", queued["task"]["worktree_path"], "branch", "--show-current"], capture_output=True, text=True, check=True).stdout.strip()
+    assert branch == "codex/task/branch-task"

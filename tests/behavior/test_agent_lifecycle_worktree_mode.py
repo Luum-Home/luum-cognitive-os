@@ -81,3 +81,64 @@ def test_pre_agent_snapshot_suppressed_for_agent_worktree_marker(project_root: P
     assert result.returncode == 0, result.stderr
     assert subprocess.run(["git", "-C", str(repo), "stash", "list"], capture_output=True, text=True).stdout == ""
     assert (repo / "README.md").read_text(encoding="utf-8") == "dirty\n"
+
+@pytest.mark.behavior
+def test_agent_prelaunch_defaults_to_worktree_mode(project_root: Path, tmp_path: Path) -> None:
+    repo = tmp_path / "repo-default"
+    repo.mkdir()
+    _init_repo(repo)
+    (repo / "scripts").mkdir()
+    (repo / "scripts" / "cos-agent-worktree-prepare").symlink_to(project_root / "scripts" / "cos-agent-worktree-prepare")
+
+    payload = {"tool_name": "Agent", "tool_use_id": "toolu_default", "tool_input": {"prompt": "Write README update"}}
+    result = subprocess.run(
+        ["bash", str(project_root / "hooks" / "agent-prelaunch.sh")],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        env={
+            "CLAUDE_PROJECT_DIR": str(repo),
+            "COGNITIVE_OS_PROJECT_DIR": str(repo),
+            "COGNITIVE_OS_SESSION_ID": "s1",
+            "COS_AGENT_WORKTREE_ROOT": str(tmp_path / "agent-worktrees"),
+            "COS_SKIP_GOVERNED_INVENTORY": "1",
+            "COS_SKIP_WORKTREE_DIVERGENCE_AUDIT": "1",
+        },
+        timeout=20,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "WORKING DIR:" in json.loads(result.stdout)["hookSpecificOutput"]["additionalContext"]
+
+
+@pytest.mark.behavior
+def test_cos_agent_worktree_cleanup_and_projection_cli(project_root: Path, tmp_path: Path) -> None:
+    repo = tmp_path / "repo-cli"
+    repo.mkdir()
+    _init_repo(repo)
+    root = tmp_path / "agent-worktrees"
+    prepare = subprocess.run(
+        [str(project_root / "scripts/cos-agent-worktree-prepare"), "--project-dir", str(repo), "--task-id", "cleanup-cli", "--session-id", "s1", "--worktree-root", str(root), "--json"],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert prepare.returncode == 0, prepare.stderr
+    worktree = Path(json.loads(prepare.stdout)["worktree_path"])
+    assert worktree.exists()
+    cleanup = subprocess.run(
+        [str(project_root / "scripts/cos-agent-worktree-prepare"), "--project-dir", str(repo), "--cleanup", "--execute", "--max-age-seconds", "0", "--json"],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert cleanup.returncode == 0, cleanup.stderr
+    assert json.loads(cleanup.stdout)["items"][0]["action"] == "remove"
+    assert not worktree.exists()
+    projection = subprocess.run(
+        [str(project_root / "scripts/cos-agent-worktree-prepare"), "--project-dir", str(repo), "--projection", "codex", "--json"],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert projection.returncode == 0
+    assert json.loads(projection.stdout)["harness"] == "codex"
