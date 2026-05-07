@@ -25,6 +25,10 @@ This ADR number remains reserved so the project decision ledger stays auditable.
 The removed decision content is not active architecture and must not be recreated
 under the same number.
 
+ADR-004 is not the canonical project-license decision. Current publication
+licensing is represented by the root `LICENSE`, package metadata, release
+packaging metadata, and the private pre-launch license-switch log.
+
 ## Decision
 
 Keep ADR-004 as a neutral tombstone. Do not reuse this number for a different
