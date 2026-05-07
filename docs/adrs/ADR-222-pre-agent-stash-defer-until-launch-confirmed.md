@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — Slices 1–8 implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-099 (pre-agent snapshot copy-on-untracked), ADR-116 (governed preflight), ADR-117 (stash mutation reversibility), ADR-200 (state retention controller), ADR-203 (subagent capability contract and launch preflight), ADR-213 (agent preflight before stash snapshot), ADR-221 (stash refs by SHA)
 **Supersedes (in part)**: the PreToolUse-Agent ordering currently relied on by `pre-agent-snapshot.sh`.
@@ -181,6 +181,20 @@ The tests must prove:
 8. Behavior tests for the four scenarios (blocked-preflight, crashed-agent, completed-agent, late-launch-within-TTL).
 9. Operator runbook update `docs/runbooks/agent-snapshot-recovery.md` — describe two-phase, add troubleshooting for "I see a plan but no marker" (= preflight blocked; expected).
 10. Migration: one-release-cycle legacy reader (piggyback on ADR-221's legacy path).
+
+## Implementation status (2026-05-07)
+
+Slices 1–8 are implemented as a tactical mitigation while ADR-223 worktree-per-write-agent replaces operator-worktree auto-stash over time:
+
+- `manifests/pre-agent-snapshot.yaml` declares the two-phase contract and ordering invariants.
+- `hooks/pre-agent-snapshot.sh` now performs Phase 1 planning only in non-legacy mode: it copies untracked files and writes `.cognitive-os/runtime/pre-agent-plan-<agent_id>.json` without calling `git stash`.
+- `hooks/agent-launch-confirmed.sh` performs Phase 2 at the end of the `PreToolUse:Agent` chain: it refuses without a plan, stashes only planned tracked files, records stash SHA per ADR-221, writes the v2 marker, and deletes the plan.
+- `hooks/post-agent-snapshot-restore.sh` treats plan-without-marker as normal blocked/aborted launch cleanup and exits without scanning for fallback stashes.
+- `hooks/session-start-stash-reapply.sh` sweeps stale uncommitted plan files using the same 300s TTL declared in the manifest.
+- `scripts/_lib/settings-driver-claude-code.sh`, `.claude/settings.json`, `cognitive-os.yaml`, and `manifests/hook-quality.yaml` register `agent-launch-confirmed.sh` last in the `PreToolUse:Agent` group.
+- Tests cover unit, audit, and behavior lanes: `tests/unit/test_pre_agent_two_phase.py`, `tests/audit/test_pre_agent_hook_ordering.py`, and `tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py`.
+
+Remaining/deprecated path: `COS_LEGACY_SNAPSHOT=1` still uses old one-phase stash semantics by explicit opt-in only. The long-term replacement remains ADR-223 worktree-per-write-agent; ADR-222 exists to make the legacy operator-worktree lane stop orphaning stashes while that migration proceeds.
 
 ## Open questions
 
