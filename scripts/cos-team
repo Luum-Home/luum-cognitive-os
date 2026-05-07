@@ -1,0 +1,250 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""CLI for ADR-233 file-backed agent teams and ADR-230 handoff inbox transport."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import asdict, is_dataclass
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.agent_team import AgentTeam, AgentTeamError  # noqa: E402
+from lib.handoff_dispatcher import HandoffDispatchError, HandoffDispatcher  # noqa: E402
+from lib.handoff_envelope import HandoffEnvelope  # noqa: E402
+
+
+def _json_default(value: Any) -> Any:
+    if is_dataclass(value):
+        return asdict(value)
+    if isinstance(value, Path):
+        return str(value)
+    raise TypeError(f"not JSON serializable: {type(value).__name__}")
+
+
+def _emit(payload: dict[str, Any], *, json_output: bool) -> None:
+    if json_output:
+        print(json.dumps(payload, sort_keys=True, default=_json_default))
+        return
+    status = payload.get("status", "ok")
+    print(f"cos team: {status}")
+    if payload.get("task"):
+        task = payload["task"]
+        print(f"task: {task.get('task_id')} {task.get('status')} {task.get('title')}")
+    if payload.get("message"):
+        msg = payload["message"]
+        print(f"message: {msg.get('message_id')} {msg.get('sender')} -> {msg.get('recipient')}")
+    if payload.get("handoff"):
+        handoff = payload["handoff"]
+        print(f"handoff: {handoff.get('handoff_id')} {handoff.get('from_agent')} -> {handoff.get('to_agent')}")
+
+
+def _team(args: argparse.Namespace) -> AgentTeam:
+    return AgentTeam(args.team, project_dir=args.project_dir)
+
+
+def cmd_join(args: argparse.Namespace) -> int:
+    member = _team(args).join(
+        session_id=args.session_id,
+        role=args.role,
+        worktree_path=args.worktree_path,
+        status=args.status,
+    )
+    _emit({"status": "joined", "member": asdict(member)}, json_output=args.json)
+    return 0
+
+
+def cmd_members(args: argparse.Namespace) -> int:
+    members = [asdict(member) for member in _team(args).members()]
+    _emit({"status": "ok", "members": members}, json_output=args.json)
+    return 0
+
+
+def cmd_task_create(args: argparse.Namespace) -> int:
+    task = _team(args).create_task(args.title, task_id=args.task_id, depends_on=args.depends_on or [])
+    _emit({"status": "task_created", "task": asdict(task)}, json_output=args.json)
+    return 0
+
+
+def cmd_task_list(args: argparse.Namespace) -> int:
+    tasks = [asdict(task) for task in _team(args).tasks()]
+    _emit({"status": "ok", "tasks": tasks}, json_output=args.json)
+    return 0
+
+
+def cmd_task_claim_next(args: argparse.Namespace) -> int:
+    task = _team(args).claim_next(session_id=args.session_id)
+    if task is None:
+        _emit({"status": "no_claimable_task", "task": None}, json_output=args.json)
+        return 0
+    _emit({"status": "task_claimed", "task": asdict(task)}, json_output=args.json)
+    return 0
+
+
+def cmd_task_complete(args: argparse.Namespace) -> int:
+    task = _team(args).complete_task(
+        args.task_id,
+        session_id=args.session_id,
+        output_summary=args.output_summary or "",
+    )
+    _emit({"status": "task_completed", "task": asdict(task)}, json_output=args.json)
+    return 0
+
+
+def cmd_message_send(args: argparse.Namespace) -> int:
+    message = _team(args).send_message(sender=args.sender, recipient=args.recipient, text=args.text)
+    _emit({"status": "message_sent", "message": asdict(message)}, json_output=args.json)
+    return 0
+
+
+def cmd_inbox(args: argparse.Namespace) -> int:
+    messages = [asdict(message) for message in _team(args).inbox(args.session_id)]
+    _emit({"status": "ok", "messages": messages}, json_output=args.json)
+    return 0
+
+
+def cmd_handoff_send(args: argparse.Namespace) -> int:
+    team = _team(args)
+    envelope = HandoffEnvelope.create(
+        parent_event_seq=args.parent_event_seq,
+        from_agent=args.from_agent,
+        to_agent=args.to_agent,
+        intent=args.intent,
+        context_mode=args.context_mode,
+        context_payload={"text": args.text},
+        granted_tools=args.granted_tool or [],
+        granted_blast_radius=args.granted_blast_radius,
+        depth=args.depth,
+        call_chain=args.call_chain or [args.from_agent],
+        return_control=not args.no_return_control,
+        handoff_id=args.handoff_id,
+    )
+    dispatcher = HandoffDispatcher(
+        project_dir=args.project_dir,
+        session_id=args.session_id or args.from_agent,
+        operator_approved=args.operator_approved,
+        persist_idempotency=True,
+    )
+    result = dispatcher.dispatch(envelope)
+    payload = {"type": "handoff", "handoff": result.envelope.to_dict()}
+    message = team.send_message(
+        sender=args.from_agent,
+        recipient=args.to_agent,
+        text=json.dumps(payload, sort_keys=True),
+        message_id=f"handoff-{result.envelope.handoff_id}",
+    )
+    _emit(
+        {
+            "status": "handoff_sent" if result.delivered else "handoff_duplicate",
+            "handoff": result.envelope.to_dict(),
+            "message": asdict(message),
+            "delivered": result.delivered,
+            "duplicate": result.duplicate,
+        },
+        json_output=args.json,
+    )
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", default=None, help="Project directory; defaults to CWD/COGNITIVE_OS_PROJECT_DIR")
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    join = sub.add_parser("join", help="Register a session as a team member")
+    join.add_argument("--team", required=True)
+    join.add_argument("--session-id", required=True)
+    join.add_argument("--role", default="teammate")
+    join.add_argument("--worktree-path", required=True)
+    join.add_argument("--status", default="active")
+    join.set_defaults(func=cmd_join)
+
+    members = sub.add_parser("members", help="List team members")
+    members.add_argument("--team", required=True)
+    members.set_defaults(func=cmd_members)
+
+    task = sub.add_parser("task", help="Manage team task queue")
+    task_sub = task.add_subparsers(dest="task_command", required=True)
+
+    task_create = task_sub.add_parser("create", help="Create a team task")
+    task_create.add_argument("--team", required=True)
+    task_create.add_argument("--title", required=True)
+    task_create.add_argument("--task-id")
+    task_create.add_argument("--depends-on", action="append", default=[])
+    task_create.set_defaults(func=cmd_task_create)
+
+    task_list = task_sub.add_parser("list", help="List team tasks")
+    task_list.add_argument("--team", required=True)
+    task_list.set_defaults(func=cmd_task_list)
+
+    claim = task_sub.add_parser("claim-next", help="Claim next dependency-ready task")
+    claim.add_argument("--team", required=True)
+    claim.add_argument("--session-id", required=True)
+    claim.set_defaults(func=cmd_task_claim_next)
+
+    complete = task_sub.add_parser("complete", help="Complete a claimed task")
+    complete.add_argument("--team", required=True)
+    complete.add_argument("--task-id", required=True)
+    complete.add_argument("--session-id", required=True)
+    complete.add_argument("--output-summary", default="")
+    complete.set_defaults(func=cmd_task_complete)
+
+    message = sub.add_parser("message", help="Send an inbox message")
+    message_sub = message.add_subparsers(dest="message_command", required=True)
+    send = message_sub.add_parser("send")
+    send.add_argument("--team", required=True)
+    send.add_argument("--sender", required=True)
+    send.add_argument("--recipient", required=True)
+    send.add_argument("--text", required=True)
+    send.set_defaults(func=cmd_message_send)
+
+    inbox = sub.add_parser("inbox", help="Read a session inbox")
+    inbox.add_argument("--team", required=True)
+    inbox.add_argument("--session-id", required=True)
+    inbox.set_defaults(func=cmd_inbox)
+
+    handoff = sub.add_parser("handoff", help="Send an ADR-230 handoff through an ADR-233 inbox")
+    handoff_sub = handoff.add_subparsers(dest="handoff_command", required=True)
+    handoff_send = handoff_sub.add_parser("send")
+    handoff_send.add_argument("--team", required=True)
+    handoff_send.add_argument("--from-agent", required=True)
+    handoff_send.add_argument("--to-agent", required=True)
+    handoff_send.add_argument("--text", required=True)
+    handoff_send.add_argument("--parent-event-seq", type=int, default=0)
+    handoff_send.add_argument("--intent", choices=["delegate", "handoff", "query"], default="delegate")
+    handoff_send.add_argument("--context-mode", choices=["full", "summary", "reference", "none"], default="summary")
+    handoff_send.add_argument("--granted-tool", action="append", default=[])
+    handoff_send.add_argument("--granted-blast-radius", type=int, default=0)
+    handoff_send.add_argument("--depth", type=int, default=0)
+    handoff_send.add_argument("--call-chain", action="append", default=[])
+    handoff_send.add_argument("--session-id")
+    handoff_send.add_argument("--handoff-id")
+    handoff_send.add_argument("--operator-approved", action="store_true")
+    handoff_send.add_argument("--no-return-control", action="store_true")
+    handoff_send.set_defaults(func=cmd_handoff_send)
+
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    try:
+        return int(args.func(args))
+    except (AgentTeamError, HandoffDispatchError, ValueError) as exc:
+        payload = {"status": "error", "error": str(exc), "error_type": type(exc).__name__}
+        if getattr(args, "json", False):
+            print(json.dumps(payload, sort_keys=True), file=sys.stderr)
+        else:
+            print(f"cos team: ERROR — {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

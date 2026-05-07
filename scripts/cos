@@ -21,6 +21,7 @@
 #   cos adoption audit                  -> scripts/cos-cross-stack-adoption-truth
 #   cos history sanitize                -> scripts/cos-history-sanitization
 #   cos tool-discovery preuse        -> scripts/cos-tool-discovery-preuse
+#   cos team ...                    -> scripts/cos-team
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos observe run                    -> scripts/cos-run-trace
 #   cos rollback                        -> scripts/cos-rollback
@@ -223,6 +224,10 @@ case "$SUBCMD" in
     echo "cos: unknown tool-discovery subcommand '${2:-}'. Try: cos tool-discovery preuse --command CMD [--json]" >&2
     exit 1
     ;;
+  team)
+    shift
+    exec "$SCRIPT_DIR/cos-team" --project-dir "$PROJECT_ROOT" "$@"
+    ;;
   rollback)
     shift
     exec "$SCRIPT_DIR/cos-rollback" --project-dir "$PROJECT_ROOT" "$@"
@@ -352,6 +357,8 @@ Usage:
   cos public-claim gate [--json]        Block unbacked ADR-206 public autonomous/self-improvement claims
   cos observe run [--session-id ID|--run-id ID] [--json]
   cos rollback --session-id ID --snapshot|--preview|--restore [--tree-sha SHA] [--yes]
+  cos team join|task|message|inbox|handoff ...
+                                         Coordinate ADR-233 file-IPC teams and ADR-230 inbox handoffs
                                          Join metric streams into ADR-205 run trace
   cos service readiness [--json]         Aggregate ADR-211 service-mode readiness gates
   cos performance-ledger compile [--json] Compile ADR-201 SQLite performance ledger
