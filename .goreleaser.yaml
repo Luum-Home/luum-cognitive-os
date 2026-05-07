@@ -66,6 +66,7 @@ homebrew_casks:
     directory: Casks
     homepage: https://github.com/luum-home/luum-cognitive-os
     description: Portable AI Agent Operating System — memory, quality gates, self-healing
-    license: FSL-1.1-MIT
+    caveats: >-
+      Cognitive OS is distributed under FSL-1.1-MIT, which is source-available and not represented by a Homebrew Cask SPDX license stanza. See LICENSE in the archive.
     binaries:
       - cos

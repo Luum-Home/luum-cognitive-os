@@ -635,9 +635,9 @@ For an existing project, migration looks like this:
 
 **Consequences**: Configuration is version-controlled and human-readable. Hooks need a YAML parser (handled via `yq` or simple grep/sed for flat values). Environment variables can still override for CI/CD contexts.
 
-### ADR-004: FSL-1.1-MIT License
+### Licensing Decision: FSL-1.1-MIT License
 
-**Status**: Superseded (originally proposed Apache 2.0; switched to FSL-1.1-MIT before first public release — see `.cognitive-os/strategy/04-license-repo-and-corrections-log.md`)
+**Status**: Active pre-public licensing posture. ADR-004 is a tombstone/reserved slot, not the canonical license ADR; see `.cognitive-os/strategy/04-license-repo-and-corrections-log.md` for the license-switch record.
 
 **Context**: The framework needs a license that allows broad use while protecting against hyperscaler clones (Datadog, Dynatrace, etc.) offering the product as a managed service.
 
