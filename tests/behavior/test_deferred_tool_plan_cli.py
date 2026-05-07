@@ -52,3 +52,26 @@ def test_deferred_tool_plan_cli_list_changed_and_native_payload(tmp_path: Path) 
     )
     assert native.returncode == 0
     assert json.loads(native.stdout)["native_defer_loading_supported"] is False
+
+
+
+def test_deferred_tool_plan_native_payload_operator_enabled(tmp_path: Path) -> None:
+    root = Path(__file__).resolve().parents[2]
+    project = tmp_path / "project"
+    (project / "manifests").mkdir(parents=True)
+    (project / "manifests/deferred-tool-loading.yaml").write_text(
+        "schema_version: deferred-tool-loading/v1\n"
+        "tools:\n  - name: alpha\n    load_mode: deferred\n",
+        encoding="utf-8",
+    )
+    proc = subprocess.run(
+        [str(root / "scripts/cos-deferred-tool-plan"), "--project-dir", str(project), "--native-payload-provider", "claude"],
+        text=True,
+        capture_output=True,
+        timeout=10,
+        env={"COS_NATIVE_DEFER_LOADING_PROVIDERS": "claude"},
+    )
+    assert proc.returncode == 0, proc.stderr
+    payload = json.loads(proc.stdout)
+    assert payload["native_defer_loading_supported"] is True
+    assert payload["provider_payload"]["defer_loading"] is True

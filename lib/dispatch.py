@@ -51,7 +51,7 @@ from lib.paths import runtime_project_root_or_cwd
 from lib.dispatch_gate import DispatchGate, ProviderCircuitBreaker
 from lib.session_budget import SessionBudgetExceeded
 from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
-from lib.deferred_tool_loading import plan_tool_loading, toolsearch_index
+from lib.deferred_tool_loading import plan_tool_loading, provider_native_defer_payload, toolsearch_index
 from lib.dispatch_cost_predictor import predict_call_cost
 
 # Rate-limit patterns for cascade advance logic. Kept in sync with
@@ -564,6 +564,10 @@ def dispatch(
             tool_loading_plan = plan.to_dict()
             if plan.toolsearch_enabled and plan.deferred_tools:
                 index = toolsearch_index(project_dir)
+                if _skill_req.get("native_defer_loading"):
+                    tool_loading_plan["provider_native_payloads"] = [
+                        provider_native_defer_payload(project_dir, provider=provider) for provider in providers
+                    ]
                 prompt = (
                     "[TOOLSEARCH_INDEX] "
                     + json.dumps(index, sort_keys=True)

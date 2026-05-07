@@ -34,7 +34,7 @@
 | ADR-233 | Cross-Session Agent-Team File IPC | 🟢 Transport adapters closed | File-backed AgentTeam substrate, `cos team ...`, hooks, ADR-230 receiver flow, chaos claim race, cross-harness inbox contract, real opt-in NATS publish adapter, real A2A HTTP JSON adapter, and CLI `transport-send`. | T1, T3, T4, T7, T8 done |
 | ADR-234 | Approval Policies as Code | 🟢 Slices A–C ✅ | YAML evaluator, CLI, destructive/protected-config policies, two real hook migrations, and plan-only Claude/Codex settings projection. External engines intentionally deferred. | T1, T3, T4 done; T5/T8 partial |
 | ADR-235 | Detached Agent Daemon | 🟢 Slices A–F ✅ | Queue/state + tmux launcher + sentinels + watchdog + budget gate + TeamTask enqueue + service-plan/install + activation helper + tmux/process-tree kill escalation. | T1, T3, T4, T5, T7 done; T10 partial |
-| ADR-236 | Deferred Tool Loading + ToolSearch | 🟡 Slices A–C ✅ | Manifest-backed planning + ToolSearch index + dispatch insertion/metrics + local `list_changed` state + truthful provider-native payload when APIs are unavailable. Remaining: true provider-native `defer_loading` once provider APIs exist. | T1, T2, T3, T4, T8-lite done; T9 pending |
+| ADR-236 | Deferred Tool Loading + ToolSearch | 🟢 Slices A–D ✅ | Manifest-backed planning + ToolSearch index + dispatch insertion/metrics + local `list_changed` state + truthful provider-native payloads with operator-enabled native API switch. | T1, T2, T3, T4, T8-lite done; T9 pending |
 
 ## Guardrail
 

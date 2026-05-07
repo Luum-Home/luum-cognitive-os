@@ -65,3 +65,21 @@ def test_provider_native_payload_is_truthful_until_provider_api_exists(tmp_path:
     assert payload["native_defer_loading_supported"] is False
     assert payload["reason"] == "provider_api_not_available"
     assert payload["toolsearch_index"]["schema_version"] == "deferred-tool-loading/v1"
+
+
+def test_provider_native_payload_can_be_enabled_by_operator(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from lib.deferred_tool_loading import provider_native_defer_payload
+
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "manifests/deferred-tool-loading.yaml").write_text(
+        "schema_version: deferred-tool-loading/v1\n"
+        "tools:\n  - name: heavy\n    load_mode: deferred\n    description: Heavy tool\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("COS_NATIVE_DEFER_LOADING_PROVIDERS", "claude")
+
+    payload = provider_native_defer_payload(tmp_path, provider="claude")
+
+    assert payload["native_defer_loading_supported"] is True
+    assert payload["provider_payload"]["defer_loading"] is True
+    assert payload["provider_payload"]["list_changed"] is True
