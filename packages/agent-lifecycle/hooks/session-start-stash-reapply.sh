@@ -42,6 +42,20 @@ PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_D
 "
 PROJECT_DIR="${PROJECT_DIR%$'\n'}"
 
+# ADR-222: stale Phase-1 plans mean launch never reached the commit boundary.
+# Delete them before any stash reapply logic; no git stash was created.
+if command -v python3 >/dev/null 2>&1; then
+  PYTHONPATH="$OS_ROOT${PYTHONPATH:+:$PYTHONPATH}" python3 - "$PROJECT_DIR" <<'PYEOF' 2>/dev/null || true
+import sys
+from pathlib import Path
+try:
+    from lib.snapshot_manager import sweep_snapshot_plans
+    sweep_snapshot_plans(Path(sys.argv[1]), ttl_seconds=300)
+except Exception:
+    pass
+PYEOF
+fi
+
 # Ensure stash_provenance module is importable
 export PYTHONPATH="$OS_ROOT/packages/agent-coordination/lib:$OS_ROOT/lib:$OS_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 
