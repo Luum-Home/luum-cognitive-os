@@ -18,6 +18,7 @@ pytestmark = [pytest.mark.audit]
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 MANIFEST = PROJECT_ROOT / "manifests" / "hook-registration-classification.yaml"
 VALID_STATUSES = {
+    "active",
     "candidate_promote",
     "conditional_opt_in",
     "demoted",
@@ -63,11 +64,25 @@ def _manifest_entries() -> list[dict[str, str]]:
 
 def test_unregistered_hooks_match_classification_manifest() -> None:
     unregistered = _top_level_hook_paths() - _registered_claude_hook_paths()
-    classified = {entry.get("path") for entry in _manifest_entries()}
-    assert unregistered == classified, (
+    entries = _manifest_entries()
+    classified_unregistered = {
+        entry.get("path")
+        for entry in entries
+        if entry.get("status") != "active"
+    }
+    assert unregistered == classified_unregistered, (
         "Every top-level hook absent from .claude/settings.json must be classified. "
-        f"Missing: {sorted(unregistered - classified)}; stale: {sorted(classified - unregistered)}"
+        f"Missing: {sorted(unregistered - classified_unregistered)}; "
+        f"stale: {sorted(classified_unregistered - unregistered)}"
     )
+
+    registered = _registered_claude_hook_paths()
+    stale_active = sorted(
+        str(entry.get("path"))
+        for entry in entries
+        if entry.get("status") == "active" and entry.get("path") not in registered
+    )
+    assert not stale_active, f"active hook classification rows must be registered: {stale_active}"
 
 
 def test_hook_registration_classifications_are_actionable() -> None:
