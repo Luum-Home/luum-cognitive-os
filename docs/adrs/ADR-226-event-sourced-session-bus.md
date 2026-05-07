@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — Slice A implemented (2026-05-07)
 **Date**: 2026-05-06
 **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
@@ -145,7 +145,7 @@ migration:
 ## Hard rules
 
 - **`seq` is per-session, monotonic, gap-free under normal operation.** Gap detection is the consumer's responsibility but the producer guarantees no skipped allocation under successful append.
-- **Append failure does not consume a `seq`.** The counter advances only on successful fsync of the event line. If fsync fails, the counter is rolled back; the next append retries the same `seq`.
+- **Append failure does not consume a `seq`.** In Slice A the counter cache advances only after a successful stream write. In strict durability mode, `fsync()` is part of the success condition; in default group-commit mode, durability is intentionally amortized per §"Atomicity model". The stream remains the source of truth and the counter is rebuildable.
 - **`@event_wrap` MUST refuse to replay if the wrapped function's qualname or signature has changed since recording.** Silent replay against a changed function is the entire class of "deterministic replay diverged" production bugs.
 - **The global index is a *fan-out* projection, not a primary.** Recovery from a corrupted index reads the per-session streams and rebuilds. The reverse (recovering a session from the index) is not supported.
 - **No external dependencies.** `flock` is POSIX; `fsync` is POSIX; everything else is the existing Python stdlib. Honors C2 (footprint discipline). Locking-platform constraints declared in §"Locking and portability" and the manifest's `locking.supported_platforms`.
@@ -211,7 +211,7 @@ The tests must prove:
 - Per-session stream + global index are consistent: every event in a session stream has exactly one matching index entry.
 - `seq` gap in a stream raises `EventStreamGapDetected` on first read.
 - v1 legacy events are read by the v1-legacy reader; new events are written in v2.
-- Append latency p95 < 5ms under N=100 concurrent sessions on a 7200-rpm disk fixture.
+- Slice A records a local latency baseline without asserting a p95 budget; Slice B proposes the budget from measured data.
 
 ## Implementation slices
 
@@ -257,6 +257,12 @@ After Slice C, before consumer ADRs draft against the substrate.
 - Tests T2.
 
 **Critical sequencing rule**: no consumer ADR drafts code against Slice C+ shape until Slice A baseline + Slice B budget are committed and reviewed. This is the single piece of discipline that prevents the substrate from being prematurely locked in to the wrong shape.
+
+## Implementation status
+
+- **2026-05-07 — Slice A implemented**: `lib/session_bus.py` now exposes `append_session_event()`, `read_session_events()`, `recover_session_counter()`, and an `append_event(..., event_store=True)` opt-in path. The slice writes `.cognitive-os/sessions/{session_id}.events.jsonl`, maintains rebuildable `.seq-counters/{session_id}.counter`, rejects unsafe session IDs, refuses unsupported filesystem/platform paths, and provides gap-detecting reads.
+- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the Slice A active contract and defers fan-out index, `@event_wrap`, migration, and projections.
+- **Validation**: focused T1/T3/T4/T6/T10 tests passed locally: `python3 -m pytest tests/unit/test_event_sourced_bus.py tests/behavior/test_event_sourced_bus_smoke.py tests/audit/test_event_sourced_bus_invariants.py tests/benchmark/test_event_sourced_bus_baseline.py tests/unit/test_cross_session_events.py tests/contracts/test_cross_session_event_taxonomy.py -q` → 25 passed; `bash -n hooks/*.sh` passed.
 
 ## Open questions
 
