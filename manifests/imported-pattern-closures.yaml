@@ -1,0 +1,36 @@
+schema_version: imported-pattern-closures/v1
+adr: ADR-208
+status: active
+policy:
+  promoted_states_require_closure:
+    - active
+    - core
+    - blocking
+    - default-visible
+  required_fields:
+    - id
+    - imported_source
+    - license_posture
+    - target_primitive
+    - producer
+    - consumer
+    - scheduler_or_trigger
+    - evaluator
+    - lifecycle_owner
+    - contract_tests
+    - demotion_path
+closures:
+  - id: dependency-adoption-preuse-loop
+    imported_source: Renovate-style pre-adoption gate pattern
+    license_posture: pattern-only
+    target_primitive: scripts/cos-dependency-adoption-gate
+    status: active
+    producer: repo-scout/repo-forensics research reports
+    consumer: dependency-adoption pre-commit gate
+    scheduler_or_trigger: staged dependency manifest additions
+    evaluator: tests/unit/test_dependency_adoption_gate.py
+    lifecycle_owner: platform-safety
+    contract_tests:
+      - python3 -m pytest tests/unit/test_dependency_adoption_gate.py tests/behavior/test_dependency_adoption_gate_cli.py -q
+    demotion_path: demote gate to advisory if false positives block safe dependency updates twice in a release window
+
