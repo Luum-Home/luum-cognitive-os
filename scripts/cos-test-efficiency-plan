@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.test_efficiency_planner import changed_files_from_git, dumps_json, plan_tests  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Plan efficient COS maintainer test lanes before broad validation.")
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--from-git", action="store_true")
+    parser.add_argument("--base-ref", default="origin/main")
+    parser.add_argument("--changed-file", action="append", default=[])
+    parser.add_argument("--failure-file")
+    parser.add_argument("--include-final-laptop", action="store_true")
+    parser.add_argument("--commands", action="store_true")
+    args = parser.parse_args()
+
+    changed = list(args.changed_file or [])
+    if args.from_git:
+        changed.extend(changed_files_from_git(args.project_dir, base_ref=args.base_ref))
+    failure_text = ""
+    if args.failure_file:
+        failure_text = Path(args.failure_file).read_text(encoding="utf-8", errors="replace")
+    plan = plan_tests(args.project_dir, changed_files=changed, failure_text=failure_text, include_final_laptop=args.include_final_laptop)
+    if args.commands:
+        for lane in plan.lanes:
+            print(lane.command)
+        if plan.final_lane:
+            print(plan.final_lane.command)
+    else:
+        print(dumps_json(plan))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
