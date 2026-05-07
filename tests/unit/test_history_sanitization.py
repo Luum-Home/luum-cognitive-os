@@ -5,6 +5,7 @@ from pathlib import Path
 
 import yaml
 
+import lib.history_sanitization as hs
 from lib.history_sanitization import build_report, load_manifest, normalize_pattern, preserve_conflicts, resolved_rules
 
 MACOS_HOME = "/" + "Users/example/dev/project"
@@ -69,6 +70,24 @@ def test_dry_run_reports_sensitive_and_preserve_hits_without_mutating(tmp_path: 
     assert report["status"] == "warn"
     assert any(hit["id"] == "home" and hit["hit_count"] > 0 for hit in report["sensitive_hits"])
     assert any(hit["id"] == "license-transition" and hit["hit_count"] > 0 for hit in report["preserve_hits"])
+
+
+def test_history_scan_timeout_is_reported_without_hanging(tmp_path: Path, monkeypatch) -> None:
+    repo = _make_repo(tmp_path)
+
+    def fake_git(project_dir: Path, args: list[str], *, timeout_seconds: float | None = None):
+        if args and args[0] == "log":
+            raise subprocess.TimeoutExpired(cmd=["git", *args], timeout=timeout_seconds or 0)
+        return _git(project_dir, *args)
+
+    monkeypatch.setenv("COS_HISTORY_SCAN_TIMEOUT_SECONDS", "0.1")
+    monkeypatch.setattr(hs, "git", fake_git)
+
+    report = build_report(repo, mode="dry-run")
+
+    assert report["status"] == "warn"
+    assert any(finding["code"] == "history-scan-timeout" for finding in report["findings"])
+    assert any(hit["timed_out"] is True and hit["hit_count"] is None for hit in report["sensitive_hits"])
 
 
 def test_execute_without_destructive_env_blocks(tmp_path: Path, monkeypatch) -> None:
