@@ -31,6 +31,8 @@ import json
 import re
 import subprocess
 import sys
+from contextlib import contextmanager
+from functools import wraps
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -262,6 +264,50 @@ def _engram_save(title: str, content: str, type_: str = "manual",
     return json.dumps({"error": "Engram CLI not available. Install engram."})
 
 
+
+# ---------------------------------------------------------------------------
+# Optional ADR-231 OTel instrumentation
+# ---------------------------------------------------------------------------
+
+@contextmanager
+def _mcp_tool_span(tool_name: str):
+    """Best-effort OpenTelemetry span for MCP tool execution.
+
+    The MCP server must remain dependency-light: if OpenTelemetry is not
+    installed or no tracer provider is configured, this context manager is a
+    no-op. Attribute names follow the emerging MCP semantic convention shape
+    used by the ADR-231 research notes.
+    """
+    try:
+        from opentelemetry import trace  # type: ignore
+        tracer = trace.get_tracer("luum.cognitive_os.mcp")
+        with tracer.start_as_current_span(f"mcp.tool.{tool_name}") as span:
+            span.set_attribute("mcp.server.name", "Cognitive OS")
+            span.set_attribute("mcp.tool.name", tool_name)
+            span.set_attribute("mcp.transport", "stdio")
+            yield span
+    except Exception:
+        yield None
+
+
+def _instrument_mcp_tool(tool_name: str):
+    """Decorate MCP tools with optional OTel spans without changing outputs."""
+    def _decorator(func):
+        @wraps(func)
+        def _wrapped(*args, **kwargs):
+            with _mcp_tool_span(tool_name) as span:
+                try:
+                    result = func(*args, **kwargs)
+                    if span is not None:
+                        span.set_attribute("mcp.response.error_code", "")
+                    return result
+                except Exception as exc:
+                    if span is not None:
+                        span.set_attribute("mcp.response.error_code", type(exc).__name__)
+                    raise
+        return _wrapped
+    return _decorator
+
 # ---------------------------------------------------------------------------
 # Build contextual trigger index from cognitive-os.yaml
 # ---------------------------------------------------------------------------
@@ -296,6 +342,7 @@ mcp = FastMCP(
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_search_memory")
 def cos_search_memory(query: str, project: str = "", limit: int = 10) -> str:
     """Search Engram for past decisions, discoveries, bugs, and patterns.
 
@@ -311,6 +358,7 @@ def cos_search_memory(query: str, project: str = "", limit: int = 10) -> str:
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_get_tasks")
 def cos_get_tasks(status: str = "all") -> str:
     """Get current tasks from active-tasks.json.
 
@@ -348,6 +396,7 @@ def cos_get_tasks(status: str = "all") -> str:
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_get_rules")
 def cos_get_rules(context: str) -> str:
     """Given a context description, return the most relevant COS rules.
 
@@ -425,6 +474,7 @@ def cos_get_rules(context: str) -> str:
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_check_quality")
 def cos_check_quality(code: str, file_path: str = "") -> str:
     """Run COS quality checks on a piece of code.
 
@@ -547,6 +597,7 @@ def cos_check_quality(code: str, file_path: str = "") -> str:
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_get_metrics")
 def cos_get_metrics(metric_type: str = "all") -> str:
     """Get current COS metrics: trust scores, error rates, cost, KPIs.
 
@@ -594,6 +645,7 @@ def cos_get_metrics(metric_type: str = "all") -> str:
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_suggest_skill")
 def cos_suggest_skill(message: str) -> str:
     """Given a user message, suggest the best COS skill to use.
 
@@ -668,6 +720,7 @@ def cos_suggest_skill(message: str) -> str:
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_save_memory")
 def cos_save_memory(
     title: str,
     content: str,
@@ -698,6 +751,7 @@ def cos_save_memory(
 
 
 @mcp.tool()
+@_instrument_mcp_tool("cos_status")
 def cos_status() -> str:
     """Get COS installation status: phase, rules, hooks, skills, packages, metrics."""
     status: Dict[str, Any] = {}

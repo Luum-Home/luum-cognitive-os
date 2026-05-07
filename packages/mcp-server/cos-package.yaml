@@ -27,6 +27,10 @@ dependencies:
     version: ">=0.1.0"
     required: false
     install: "See engram documentation"
+  opentelemetry-api:
+    version: ">=1.0.0"
+    required: false
+    install: "pip install opentelemetry-api"
 
 tools:
   - name: cos_search_memory
@@ -45,3 +49,10 @@ tools:
     description: "Save an observation to Engram persistent memory"
   - name: cos_status
     description: "Get COS installation status: phase, rules, hooks, skills, packages"
+
+registration:
+  manifest: ../../manifests/mcp-server-registration.yaml
+  command: scripts/cos-mcp-registration-plan
+  hosts: [claude-code, codex, cursor, windsurf]
+  transport: stdio
+  otel: optional
