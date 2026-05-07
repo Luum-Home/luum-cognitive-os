@@ -45,6 +45,8 @@ def _is_imported(bare: str, root: Path) -> bool:
         re.compile(rf"import\s+lib\.{re.escape(bare)}"),
         re.compile(rf"importlib\.import_module\(\s*[\"']lib\.{re.escape(bare)}[\"']\s*\)"),
         re.compile(rf"\bpython3?\s+-m\s+{re.escape(bare)}\b"),
+        re.compile(rf"lib/{re.escape(bare)}\.py"),
+        re.compile(rf"lib/{re.escape(bare)}"),
     ]
     # Search dirs that are allowed to import from lib/
     # Includes both .py and .sh files (hooks embed Python via heredocs)
@@ -53,7 +55,11 @@ def _is_imported(bare: str, root: Path) -> bool:
         search = root / dir_name
         if not search.exists():
             continue
-        for candidate in (*search.rglob("*.py"), *search.rglob("*.sh")):
+        if dir_name == "scripts":
+            candidates = [p for p in search.rglob("*") if p.is_file()]
+        else:
+            candidates = [*search.rglob("*.py"), *search.rglob("*.sh")]
+        for candidate in candidates:
             if "__pycache__" in str(candidate):
                 continue
             try:
