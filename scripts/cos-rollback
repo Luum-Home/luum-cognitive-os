@@ -21,6 +21,8 @@ def main() -> int:
     parser.add_argument("--preview", action="store_true")
     parser.add_argument("--restore", action="store_true")
     parser.add_argument("--preview-path")
+    parser.add_argument("--mode", choices=["files_only", "conversation_only", "files_and_conversation"], default="files_only")
+    parser.add_argument("--target-seq", type=int)
     parser.add_argument("--yes", action="store_true")
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
@@ -35,8 +37,8 @@ def main() -> int:
         elif args.restore:
             if not args.tree_sha:
                 raise ShadowGitError("--tree-sha required for --restore")
-            restore(args.project_dir, args.session_id, args.tree_sha, preview_path=args.preview_path, yes=args.yes)
-            record = {"schema_version": "shadow-git-restore/v1", "status": "ok", "tree_sha": args.tree_sha}
+            result = restore(args.project_dir, args.session_id, args.tree_sha, mode=args.mode, preview_path=args.preview_path, yes=args.yes, target_seq=args.target_seq)
+            record = {"schema_version": "shadow-git-restore/v1", "status": "ok", "tree_sha": args.tree_sha, **result}
         else:
             raise ShadowGitError("choose one of --snapshot, --preview, --restore")
     except (ShadowGitError, RestorePreviewRequired) as exc:
