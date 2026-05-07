@@ -1,0 +1,314 @@
+# manifests/orchestration-research-evaluation.yaml
+#
+# Canonical evaluation contract for the orchestration-gap research stream.
+# Promotes the C1-C4 constraints from chat directives to a versioned,
+# machine-readable manifest. Consumers: SYNTHESIS-2026-05-06.md, every
+# ADR derived from the 11 gap reports, future research synthesizers.
+#
+# Source of decisions: docs/research/orchestration-coverage-gap-analysis-
+# 2026-05-06.md §"Synthesis constraints (binding for SYNTHESIS-...)".
+#
+# This manifest is normative. If a downstream artifact contradicts it,
+# the manifest wins until explicitly amended via a new schema_version.
+
+schema_version: orchestration-research-evaluation/v1
+status: active
+owner: platform-orchestration
+date: 2026-05-06
+
+# =============================================================================
+# C1 — License policy
+# =============================================================================
+license_policy:
+  posture: "Adopt > build. Existing tools with permissive licenses preferred over in-house re-implementation when a well-maintained option exists."
+
+  allowlist_runtime:
+    description: |
+      Acceptable as runtime dependency or vendored code. Linkage and
+      distribution OK under FSL-1.1-MIT.
+    spdx_ids:
+      - "MIT"
+      - "BSD-2-Clause"
+      - "BSD-3-Clause"
+      - "Apache-2.0"
+      - "ISC"
+      - "MPL-2.0"        # file-level copyleft, OK
+      - "Unlicense"
+      - "0BSD"
+      - "Zlib"
+
+  blocklist_runtime:
+    description: |
+      Cannot be adopted as runtime dependency or vendored code. May still be
+      consulted as documentation for patterns and ideas — see pattern_reuse.
+    spdx_ids:
+      - "AGPL-3.0"
+      - "AGPL-3.0-or-later"
+      - "SSPL"
+      - "BSL-*"          # any pre-Change-Date Business Source License variant
+      - "Commons-Clause" # additions on top of permissive bases still trigger
+      - "EPL-2.0"        # case-by-case review required
+      - "GPL-2.0"        # subprocess-only; never linked or vendored
+      - "GPL-3.0"        # subprocess-only; never linked or vendored
+
+  pattern_reuse:
+    description: |
+      Patterns, ideas, and specs may be borrowed from any source — including
+      blocklisted licenses. The contagion is on code; clean-room
+      implementations under our license are always permitted.
+    requirements:
+      - "Document the source pattern in the consuming ADR."
+      - "State explicitly that the implementation is clean-room."
+      - "Cite the original source for traceability without implying derivation."
+
+  research_report_requirement:
+    description: |
+      Every gap research report citing an external tool MUST record its
+      license. Unknown licenses must be marked 'unverified — requires triage'
+      and cannot be promoted to ADR adoption recommendation.
+    enforced_by: "Synthesis review against the verdict block schema (C4)."
+
+# =============================================================================
+# C2 — Footprint discipline
+# =============================================================================
+footprint_discipline:
+  posture: |
+    The OS exists in four consumer contexts. Each has its own footprint
+    budget. Adopting a tool that overloads any of them is grounds for
+    rejection regardless of license.
+
+  surfaces:
+    os_repo:
+      description: "This repository (luum-agent-os)."
+      budgets:
+        new_required_runtime_deps_per_adr: "<= 1"
+        new_optional_opt_in_deps: "OK"
+        mandatory_daemon_processes: "0 (unless the daemon IS the feature)"
+        line_count_growth_signal: "S/M/L/XL declared per ADR slice"
+
+    implementing_projects:
+      description: "Projects that install COS into their own repo (the user's repo)."
+      budgets:
+        forced_new_toolchains: "0"
+        default_off_for_processes: "required"
+        opt_in_via: "cognitive-os.yaml"
+
+    service_mode:
+      description: "cosd / ADR-211 service-mode runtime."
+      budgets:
+        new_long_lived_processes_per_session: "0 by default"
+        memory_growth_per_session: "bounded; declared per ADR"
+        disk_growth_per_session: "bounded; declared per ADR"
+        required_network_egress: "0 by default"
+
+    docker_runtime:
+      description: "Container packaging (current and future)."
+      budgets:
+        image_size_delta_per_dep_mb: "<= 50"
+        alpine_compatibility: "preferred"
+        multi_arch_support: "required (arm64 + amd64)"
+        privileged_mode_required: "0"
+
+  anti_patterns:
+    description: "Recommendations that propose any of these are rejected unless they meet the explicit opt-in adapter pattern."
+    examples:
+      - "Adding Postgres / Redis / RabbitMQ as a default requirement"
+      - "Requiring kernel modules / Docker / Firecracker on the default path"
+      - "Vendoring large binaries (> 50 MB)"
+      - "Adding a background daemon to every implementing project by default"
+      - "Tightly coupling to a single cloud provider's SDK"
+
+# =============================================================================
+# C3 — Test coverage tiers
+# =============================================================================
+test_coverage:
+  posture: |
+    Every implementation recommendation MUST declare a test matrix across
+    the tiers below. Recommendations that say 'tests TBD' do not pass
+    synthesis review.
+
+  tiers:
+    T1:
+      label: "Unit"
+      proves: "Functions / classes work in isolation against documented inputs."
+      trigger: "Every function with branching logic."
+
+    T2:
+      label: "Integration"
+      proves: "Modules interact correctly within one process."
+      trigger: "Any feature spanning >= 2 modules."
+
+    T3:
+      label: "Behavior / contract"
+      proves: "The CLI / API / hook contract behaves as advertised end-to-end."
+      trigger: "Every CLI flag, hook, manifest schema."
+
+    T4:
+      label: "Smoke"
+      proves: "Happy-path end-to-end on a clean env produces the documented user-visible result in < 60s."
+      trigger: "Every ADR — non-negotiable."
+
+    T5:
+      label: "Adversarial / negative"
+      proves: "Wrong inputs, missing files, race conditions, blocked preflight, permission denials all produce expected errors, not crashes."
+      trigger: "Every primitive with a security or correctness boundary."
+
+    T6:
+      label: "Performance / load"
+      proves: "p50/p95 latency under N concurrent agents stays within budget."
+      trigger: "Any primitive on the hot path of agent launch / dispatch."
+      caveat: |
+        Performance budgets are MEASURED FIRST when no prior art exists.
+        ADRs should propose 'measure baseline, then set budget' rather
+        than assert specific p95 numbers without evidence.
+
+    T7:
+      label: "Failure injection / chaos"
+      proves: "Killing the agent mid-flight, dropping the network, full disk all leave the system recoverable."
+      trigger: "Any primitive that mutates state."
+
+    T8:
+      label: "Compatibility / cross-harness"
+      proves: "Works on Claude Code + Codex + OpenCode where applicable."
+      trigger: "Any primitive declared harness-agnostic."
+
+    T9:
+      label: "Adoption truth"
+      proves: "Anything claimed in NOTICE / docs / READMEs actually exists and runs (reuses ADR-217)."
+      trigger: "Any ADR introducing a new external tool."
+
+    T10:
+      label: "Audit invariants"
+      proves: "After a primitive runs, repo divergence / WT mutation / stash state stays within declared invariants (reuses ADR-220)."
+      trigger: "Any primitive that touches git or working tree."
+
+  defaults_by_artifact_type:
+    internal_library:
+      required: ["T1", "T2"]
+      strongly_preferred: ["T4"]
+
+    operator_facing_primitive:
+      description: "CLI / hook / manifest"
+      required: ["T1", "T2", "T3", "T4", "T5"]
+
+    git_or_worktree_touching:
+      additional_required: ["T7", "T10"]
+
+    agent_launch_hot_path:
+      additional_required: ["T6"]
+
+    cross_harness_claim:
+      additional_required: ["T8"]
+
+    external_tool_adoption:
+      additional_required: ["T9"]
+
+  smoke_constraint:
+    description: |
+      T4 (smoke) is the tier most often cut and least often justified.
+      Smoke runs the actual feature end-to-end on the actual binary in a
+      clean fixture directory. It catches the 'works in my context, breaks
+      in a fresh checkout' class that unit + integration miss.
+    non_negotiable: true
+
+# =============================================================================
+# C4 — Verdict block schema
+# =============================================================================
+verdict_block:
+  posture: |
+    Every recommendation in synthesis output emits a structured verdict
+    block. Incomplete blocks (missing any required field) go back for
+    refinement before being merged.
+
+  required_fields:
+    recommendation:
+      enum: ["ADOPT", "INTEGRATE", "BUILD MINIMAL", "DEFER", "REJECT"]
+      description: |
+        ADOPT: take an existing tool as runtime dependency.
+        INTEGRATE: implement the spec/protocol of an existing standard.
+        BUILD MINIMAL: own implementation; pattern from elsewhere allowed.
+        DEFER: not now; revisit on signal.
+        REJECT: this synthesis says no; document rationale.
+
+    license:
+      required_when: "recommendation in [ADOPT, INTEGRATE]"
+      format: "SPDX id"
+      annotation: "allowlist | blocklist | unverified"
+
+    footprint_impact:
+      required_subfields:
+        - os_repo: "none | small | medium | large"
+        - implementing_projects: "none | opt-in | forced"
+        - service_mode: "none | opt-in | required"
+        - docker_image_delta_mb: "integer"
+
+    test_tier_matrix:
+      format: "T1 ✅/⬜ T2 ✅/⬜ ... T10 ✅/⬜"
+      required: true
+
+    effort:
+      enum: ["S", "M", "L", "XL"]
+      definitions:
+        S: "<= 2 days"
+        M: "2-5 days"
+        L: "5-15 days"
+        XL: "> 15 days"
+
+    leverage:
+      enum: ["high", "medium", "low"]
+      description: "Subjective; should be defended in the verdict prose."
+
+    adr_candidate:
+      enum: ["yes — number TBD", "yes — ADR-NNN", "no", "superseded by ADR-NNN"]
+
+  consolidation_signal:
+    description: |
+      If two verdict blocks share more than 70% of the same code path or
+      manifest surface, mark as 'consolidation candidate'. Synthesis
+      reviewer decides whether to merge into one ADR.
+
+# =============================================================================
+# Promotion / amendment process
+# =============================================================================
+governance:
+  amendment_process: |
+    Changes to C1-C4 require a new schema_version (v1 -> v2) and a
+    governance commit referencing both the gap-analysis document and
+    every downstream ADR that needs re-evaluation.
+
+  enforcement_status:
+    research_reports: "active — applies to all 11 reports under docs/research/orchestration-gaps/"
+    synthesis: "active — patches SYNTHESIS-2026-05-06.md"
+    adrs:
+      "226-230": "active — verdict blocks declared in source"
+      "223-225": "applies on draft"
+      "231-236": "applies on draft"
+
+  audit_test:
+    proposed_path: "tests/audit/test_orchestration_research_evaluation_compliance.py"
+    proposed_checks:
+      - "Every ADR derived from a gap report cites this manifest by schema_version."
+      - "Every adopted external tool in an ADR has a license field within the allowlist or an explicit pattern_reuse declaration."
+      - "Every ADR carries a T1-T10 matrix; smoke (T4) is checked unless explicitly rejected with rationale."
+      - "Verdict blocks include all six required fields."
+    enforcement_status: "proposed"
+
+# =============================================================================
+# Cross-references
+# =============================================================================
+references:
+  source_of_constraints:
+    - "docs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
+    - "docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md"
+  consumed_by:
+    - "docs/adrs/ADR-226-event-sourced-session-bus.md"
+    - "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
+    - "docs/adrs/ADR-228-retry-contract-and-cost-budget.md"
+    - "docs/adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md"
+    - "docs/adrs/ADR-223-*.md (reserved)"
+    - "docs/adrs/ADR-224-*.md (reserved)"
+    - "docs/adrs/ADR-225-*.md (reserved)"
+    - "docs/adrs/ADR-231-*.md to ADR-236-*.md (proposed)"
+  related_manifests:
+    - "manifests/strategy-surfaces.yaml"     # ADR-202 surface boundary
+    - "manifests/cross-stack-license-audit.yaml"  # ADR-212; license audit consumer

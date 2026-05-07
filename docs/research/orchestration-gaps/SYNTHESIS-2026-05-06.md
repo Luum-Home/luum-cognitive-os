@@ -2,8 +2,9 @@
 
 **Date**: 2026-05-06
 **Status**: Active — ranks ADR-worthy proposals from 11 parallel research reports
-**Constraints**: Honors C1 (permissive licenses), C2 (footprint discipline), C3 (test tiers T1–T10), C4 (verdict block format) declared in [`../orchestration-coverage-gap-analysis-2026-05-06.md`](../orchestration-coverage-gap-analysis-2026-05-06.md)
+**Constraints**: Honors C1 (permissive licenses), C2 (footprint discipline), C3 (test tiers T1–T10), C4 (verdict block format) — promoted from prose into the canonical contract at [`manifests/orchestration-research-evaluation.yaml`](../../../manifests/orchestration-research-evaluation.yaml). The gap-analysis prose at [`../orchestration-coverage-gap-analysis-2026-05-06.md`](../orchestration-coverage-gap-analysis-2026-05-06.md) remains the human-readable rationale; the manifest is the normative source.
 **Inputs**: 11 reports under `docs/research/orchestration-gaps/`, ~42,000 words combined, ~230 sources cited
+**Note on numbers below**: LOC and timeline estimates are reported by the underlying research agents and intentionally optimistic. Treat them as direction, not commitment. Per C3, T6 budgets are *measured first* — see the ADR-226 patch — rather than asserted up front.
 
 ---
 
@@ -15,7 +16,7 @@ The 11 reports converge on a structural insight that was not visible in the orig
 
 The four capabilities, ranked by leverage:
 
-1. **Event-sourced orchestrator state** — adds monotonic sequences + per-session streams + memoized step wrapping. Unlocks replay-timeline (capability #2), failure-retry classification (capability #3 prerequisite), cross-session coordination (capability #4 prerequisite), cost ledger backpressure, audit invariants for ADR-220. **One ~150 LOC primitive unlocks five gap areas.**
+1. **Event-sourced orchestrator state** — adds monotonic sequences + per-session streams + memoized step wrapping. Unlocks replay-timeline (capability #2), failure-retry classification (capability #3 prerequisite), cross-session coordination (capability #4 prerequisite), cost ledger backpressure, audit invariants for ADR-220. The substrate is small but the claim that "~150 LOC unlocks five gap areas" depends on those gap areas reusing it without contortion — re-evaluate after Slice A lands.
 
 2. **Shadow-git checkpoint substrate** — `lib/shadow_git.py` bare-repo per session. Unlocks `/rollback`, replay determinism (paired with event wrapping), governance-event-as-restore-point (the differentiation no competitor has). Cline + Hermes + Kilo + git-shadow already proved the pattern. **~200 LOC, zero new deps.**
 
@@ -54,7 +55,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ✅ T8 ⬜ T9 ⬜ T10 ✅
 - **Effort**: M
 - **Leverage**: HIGH — closes Devin-parity governance differentiation
-- **ADR candidate**: yes — proposed ADR-223
+- **ADR candidate**: yes — **ADR-227** (drafted; consume ADR-226 substrate, pair with ADR-224 reserved)
 
 ### G2. Background / detached agents (`background-agent-patterns.md`)
 
@@ -65,7 +66,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ✅ T8 ⬜ T9 ⬜ T10 ✅
 - **Effort**: M
 - **Leverage**: MEDIUM — closes "fire and forget" UX gap; defensible local-first answer
-- **ADR candidate**: yes — proposed ADR-224
+- **ADR candidate**: yes — **ADR-235** (Phase 3; consumes ADR-225 reserved branch-per-task policy)
 
 ### G3. Agent-to-agent handoff (`agent-to-agent-handoff.md`)
 
@@ -76,7 +77,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ✅ T8 ✅ T9 ⬜ T10 ⬜
 - **Effort**: S (call-chain dedup is <1 day, envelope+permission is 1–2 days)
 - **Leverage**: HIGH — call-chain dedup blocks the #1 failure mode (MAST 2025: 41–87% failure rates)
-- **ADR candidate**: yes — proposed ADR-225
+- **ADR candidate**: yes — **ADR-230** (drafted)
 
 ### G4. MCP as orchestration bus (`mcp-as-orchestration-bus.md`)
 
@@ -87,7 +88,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ⬜ T8 ✅ T9 ✅ T10 ⬜
 - **Effort**: M
 - **Leverage**: HIGH — distribution channel to every MCP-aware tool (Cursor, Windsurf, Cline, Codex, Claude Code) without per-harness adapters
-- **ADR candidate**: yes — proposed ADR-226
+- **ADR candidate**: yes — **ADR-231** (Phase 2; read-mostly tools first, write tools after the read surface stabilizes)
 
 ### G5. Sandbox primitive integration (`sandbox-primitives-integration.md`)
 
@@ -98,7 +99,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ✅ T8 ✅ T9 ✅ T10 ✅
 - **Effort**: M
 - **Leverage**: MEDIUM — closes 80% of accidental-destruction threat at zero new dep cost
-- **ADR candidate**: yes — proposed ADR-227
+- **ADR candidate**: yes — **ADR-232** (Phase 2; per-OS adapter — Linux Bubblewrap, macOS Seatbelt, no shared default path)
 
 ### G6. Cross-session agent teams (`cross-session-agent-teams.md`)
 
@@ -109,7 +110,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ✅ T8 ⬜ T9 ⬜ T10 ✅
 - **Effort**: M
 - **Leverage**: HIGH — codifies the "subagent vs agent-team" distinction operators currently navigate by feel
-- **ADR candidate**: yes — proposed ADR-228 (NATS JetStream documented as Tier-3 future, not Phase 1)
+- **ADR candidate**: yes — **ADR-233** (Phase 2; depends on ADR-219 ownership/liveness + ADR-226 event bus before this can land. NATS JetStream documented as Tier-3 future, not default.)
 
 ### G7. Approval policies as code (`approval-policies-as-code.md`)
 
@@ -120,7 +121,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ⬜ T7 ⬜ T8 ✅ T9 ⬜ T10 ⬜
 - **Effort**: S (Phase 1) + S (Phase 2)
 - **Leverage**: MEDIUM — reduces hook count, surfaces policy in `/permissions`, kills bash-embedded thresholds
-- **ADR candidate**: yes — proposed ADR-229 (multi-phase)
+- **ADR candidate**: yes — **ADR-234** (Phase 3; multi-phase migration via *generated projection* from manifests, not abrupt hook replacement)
 
 ### G8. Cost-aware routing + budgets (`cost-aware-routing.md`)
 
@@ -131,7 +132,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ✅ T7 ⬜ T8 ⬜ T9 ⬜ T10 ⬜
 - **Effort**: S
 - **Leverage**: HIGH — closes the documented $47K-incident class (alerts can't prevent the next call; only sync gates can)
-- **ADR candidate**: yes — proposed ADR-230 (or fold into ADR-211 service-mode readiness)
+- **ADR candidate**: yes — **ADR-228 (consolidated with G10 retry contract)** drafted. Ledger MUST take a per-session lock; estimation source is `cost_predictor.get_real_model_prices()`.
 
 ### G9. Event-driven orchestrator state (`event-driven-orchestrator-state.md`)
 
@@ -142,7 +143,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ✅ T7 ✅ T8 ⬜ T9 ⬜ T10 ✅
 - **Effort**: S (sequence) + S (per-session) + M (event_wrap)
 - **Leverage**: VERY HIGH — **prerequisite for replay (G1), retry classification (G10), cost ledger (G8 reconciliation), agent-teams event log (G6)**. Build first.
-- **ADR candidate**: yes — proposed ADR-231 (load-bearing for several other ADRs)
+- **ADR candidate**: yes — **ADR-226** (drafted; explicitly *extends* ADR-205 Flight Recorder rather than replacing it. Load-bearing for ADR-227, ADR-228, ADR-230, ADR-233.)
 
 ### G10. Failure recovery / retry semantics (`failure-recovery-retry-semantics.md`)
 
@@ -153,7 +154,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ✅ T7 ✅ T8 ⬜ T9 ⬜ T10 ⬜
 - **Effort**: S
 - **Leverage**: HIGH — closes the silent ECONNRESET/EPIPE gap and the LangGraph+Pydantic ValidationError trap; idempotency keys eliminate side-effect duplication on retry
-- **ADR candidate**: yes — proposed ADR-232
+- **ADR candidate**: yes — **ADR-228 (consolidated with G8 cost budget)** drafted. Idempotency keys are the load-bearing piece; classifier and circuit breaker are supporting.
 
 ### G11. Tool discovery dynamic registration (`tool-discovery-dynamic-registration.md`)
 
@@ -164,57 +165,67 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ✅ T7 ⬜ T8 ✅ T9 ⬜ T10 ⬜
 - **Effort**: S
 - **Leverage**: MEDIUM — 85% token reduction reported, no surface expansion
-- **ADR candidate**: maybe — could fold into ADR-226 (MCP server) as a sibling concern, or stand alone as ADR-233
+- **ADR candidate**: yes — **ADR-236** (Phase 3; **explicitly extends ADR-216 tool-discovery pre-use gate**, does not create a parallel discovery loop. Could fold into ADR-231 MCP server as a sibling concern.)
 
 ---
 
 ## Ranked implementation plan
 
-Three phases. Each phase is a coherent unit; Phase 1 is the prerequisite layer; Phases 2 and 3 build on it.
+Four tiers, not three phases. The earlier phasing collapsed substrate (which has no consumer) into the same bucket as consumer code (which depends on the substrate). The four-tier categorization is more honest:
 
-### Phase 1 — Substrate (build before everything else)
-
-| # | Item | ADR | Effort | LOC | Unblocks |
-|---|---|---|---|---|---|
-| 1.1 | Event-sourced session_bus (sequence + per-session + `@event_wrap`) | 231 | S+S+M | ~150 | G1, G6, G8, G10 |
-| 1.2 | Shadow-git substrate (`lib/shadow_git.py`) | 223 | M | ~200 | G1, governance-as-restore |
-| 1.3 | Retry contract + cost session ledger | 232 + 230 | S+S | ~170 | G10 closure, G8 closure |
-| 1.4 | Handoff envelope + call-chain dedup | 225 | S | ~150 | G3, G6 |
-
-**Phase 1 totals**: ~670 LOC, zero new external deps, all ✅ on C1+C2. Should be ~2 weeks for a single-author. Unlocks 60% of the gap surface.
-
-### Phase 2 — Distribution & adapters (after substrate)
-
-| # | Item | ADR | Effort | LOC | Notes |
-|---|---|---|---|---|---|
-| 2.1 | MCP server (`packages/mcp-server/cos_mcp.py`) | 226 | M | ~400 | fastmcp adoption; +5 MB image; trust-pinning prerequisite |
-| 2.2 | Cross-session agent-team substrate | 228 | M | ~400 | file-IPC; uses Phase 1 event log |
-| 2.3 | Bubblewrap/Seatbelt sandbox adapter | 227 | M | ~250 | OS-native; zero new deps; opt-in |
-| 2.4 | defer_loading + ToolSearch wiring | 233 (or merged into 226) | S | ~50 | client-side; native Anthropic feature |
-
-**Phase 2 totals**: ~1,100 LOC + ~5 MB image delta (only fastmcp). Each is opt-in from the user's perspective; defaults preserve current behavior.
-
-### Phase 3 — Operator surface & policy hygiene (after Phases 1+2)
-
-| # | Item | ADR | Effort | LOC | Notes |
-|---|---|---|---|---|---|
-| 3.1 | Detached agent daemon (cos-agent-daemon.py + tmux + worktree wiring) | 224 | M | ~300 | Reuses ADR-220 worktree audit; opt-in service-mode lane |
-| 3.2 | Approval policies — Phase 1 (migrate 15–20 hooks to settings.json) | 229.1 | S | net negative | Removes bash, adds visibility in /permissions |
-| 3.3 | Approval policies — Phase 2 (`policy-eval.sh` + `policies/*.yaml`) | 229.2 | S | ~150 | Generalizes existing content-policy pattern |
-
-**Phase 3 totals**: ~450 LOC + duplication killed in bash hooks. All opt-in.
-
-### Conscious non-coverage (document in Phase 0 README addendum, do not pursue)
-
-| Area | Why we don't pursue | Track for later |
+| Tier | Definition | Lands when |
 |---|---|---|
-| Multi-machine cloud orchestration | Local-first is positioning, not a gap | If demand emerges from operator cohort |
-| CRDT-based merging | Code is non-commutative; nobody uses CRDT for agent merges | n/a |
-| Hypervisor sandboxes (Firecracker) as primary | Operationally expensive; Bubblewrap closes 80% at zero cost | E2BAdapter as opt-in tier in ADR-227 |
-| OPA / Rego policy engine | Single-operator OS doesn't need ABAC complexity | Re-evaluate at multi-tenant deployment |
-| Mid-session MCP server injection | "Not planned" upstream (Anthropic); deferred-loading covers 85% | Track Anthropic spec changes |
+| **Substrate** | Has no consumer in itself; provides the shape every consumer reuses. Wrong shape here forces every later ADR to fight the substrate. | First. Single ADR at a time. |
+| **Consumer** | Consumes a substrate to deliver an operator-visible capability. | After its substrate has at least Slice A landed and validated by smoke (T4). |
+| **Opt-in adapter** | Off by default. Adds a capability behind a configuration flag. | Anytime after its substrate; not on the critical path. |
+| **Future / cloud** | Not pursued in the current cycle. Documented as conscious non-coverage with re-evaluation triggers. | Re-evaluated on operator signal. |
+
+Each tier's items are coherent within themselves; cross-tier dependencies are declared.
+
+### Tier 1 — Substrate (single ADR at a time, in this order)
+
+| # | ADR | Item | Effort | LOC | Unblocks |
+|---|---|---|---|---|---|
+| 1.1 | **ADR-226** | Event-sourced session_bus (sequence + per-session + `@event_wrap`) | S+S+M | est. ~150–250 | G1, G6, G8, G10 |
+| 1.2 | **ADR-223** (reserved) | Agent Lifecycle Reconstruction (kill auto-stash → worktree-per-write-agent + mutex) | M | est. ~200 | unblocks ADR-227 / 224 / 235 by removing the broken primitive they'd otherwise inherit |
+| 1.3 | **ADR-227** + **ADR-224** (reserved) | Shadow-git checkpoint substrate + Cline-pattern safety net | M | est. ~250 | G1, governance-as-restore |
+| 1.4 | **ADR-228** (consolidated G8+G10) | Retry contract + cost session ledger + idempotency keys + circuit breaker | S+S | est. ~170 | G10 closure, G8 closure |
+| 1.5 | **ADR-230** | Handoff envelope + call-chain dedup + permission intersection | S | est. ~150 | G3, G6 |
+
+LOC numbers are agent-reported estimates. Treat as direction. Per C3, Slice A of ADR-226 measures actual append latency before later slices commit to a budget.
+
+The single most important sequencing decision: **ADR-223 lands BEFORE ADR-227+224.** Otherwise the safety net inherits a broken pre-agent-stash flow it was supposed to replace. ADR-222 (proposed, in-tree) stays as tactical mitigation for as long as `git stash` is on the pre-agent path; once ADR-223 lands, ADR-222 is deprecated.
+
+### Tier 2 — Consumers (after Tier 1 substrate is validated)
+
+| # | ADR | Item | Effort | LOC | Notes |
+|---|---|---|---|---|---|
+| 2.1 | **ADR-231** | MCP server (`packages/mcp-server/cos_mcp.py`) | M | est. ~400 | fastmcp adoption; +~5 MB image; **read-mostly tools first**, write tools after read surface stabilizes; trust-pinning prerequisite |
+| 2.2 | **ADR-233** | Cross-session agent-team file-IPC substrate | M | est. ~400 | depends on ADR-219 ownership/liveness + ADR-226 event bus; do not implement before both |
+| 2.3 | **ADR-225** (reserved) | Branch-Per-Task Mode | S | est. ~80 | policy primitive; pairs naturally with ADR-235 |
+
+### Tier 3 — Opt-in adapters (off by default)
+
+| # | ADR | Item | Effort | LOC | Notes |
+|---|---|---|---|---|---|
+| 3.1 | **ADR-232** | Sandbox adapter tiers (Bubblewrap/Seatbelt OS-native; E2B/microVM opt-in) | M | est. ~250 | per-OS branching: Linux Bubblewrap, macOS Seatbelt — different code paths, not a single adapter |
+| 3.2 | **ADR-235** | Detached agent daemon (cos-agent-daemon.py + tmux + worktree wiring) | M | est. ~300 | tmux is **assumed installed**, not bundled; daemon is opt-in service-mode lane |
+| 3.3 | **ADR-236** | Deferred tool loading + ToolSearch | S | est. ~50 | extends ADR-216, does not parallel it |
+| 3.4 | **ADR-234** | Approval policies as code, multi-phase | S+S | est. net-negative LOC | migration via *generated projection* from manifests, not abrupt hook replacement |
+
+### Tier 4 — Future / cloud / not pursued in this cycle
+
+Documented as conscious non-coverage; tracked for re-evaluation on operator signal.
+
+| Area | Why we don't pursue | Re-evaluation trigger |
+|---|---|---|
+| Multi-machine cloud orchestration | Local-first is positioning, not a gap | Operator cohort demand |
+| CRDT-based merging | Code is non-commutative; nobody uses CRDT for agent merges | n/a — anti-recommendation |
+| Hypervisor sandboxes (Firecracker) as primary | Operationally expensive; Bubblewrap closes 80% at zero cost | E2BAdapter as Tier-3 opt-in covers the remaining cases |
+| OPA / Rego policy engine | Single-operator OS doesn't need ABAC complexity | Multi-tenant deployment |
+| Mid-session MCP server injection | "Not planned" upstream (Anthropic); deferred-loading covers ~85% | Track Anthropic spec changes |
 | Temporal / Cadence durable workflows | Heavy external dep violates C2 | `@event_wrap` covers MVP determinism need |
-| NATS JetStream cross-session bus | Heavy external dep violates C2 default; documented as Tier-3 only | If file-IPC contention measured > X% in production |
+| NATS JetStream cross-session bus | Heavy external dep violates C2 default; documented as Tier-3 future only | If file-IPC contention measured > X% in production |
 
 ---
 
@@ -254,11 +265,16 @@ Three phases. Each phase is a coherent unit; Phase 1 is the prerequisite layer; 
 
 ## Honest assessment
 
-The gap analysis from earlier in the day estimated ~60–65% coverage breadth. With Phase 1 + Phase 2 implemented, that rises to ~85–90%, with the remaining ~10% being conscious non-coverage (multi-machine cloud, hypervisor sandboxes as primary, OPA, Temporal, etc.) plus deferred items (mid-session MCP server injection, which the upstream itself hasn't shipped).
+The gap analysis from earlier in the day estimated ~60–65% coverage breadth. The optimistic projection — Tier 1 + Tier 2 lifting that to ~85–90% in ~3–4 weeks of single-author work — is the *agent-reported* estimate from the underlying research and is almost certainly low on time, high on coverage. Treat as direction, not commitment.
 
-**The ~85–90% coverage target is reachable in ~3–4 weeks of single-author work** if the substrate (Phase 1) lands first and Phase 2 piggybacks on it. The biggest risk is *not* technical — it's resisting the temptation to add a new dependency for each Phase 2 item. The reports are unanimous: the patterns we need exist; they're built on file-IPC + git + JSONL + native OS primitives. Adopting them is the work.
+The honest version:
+- **Coverage**: Tier 1 plausibly closes 50–60% of the gap surface (substrate + idempotency + cycle-dedup + retry contract are foundational). Tier 2 adds another 15–20%. Tier 3 adapters add the last 5–10% only when adopted. The remaining ~10% is conscious non-coverage.
+- **Timeline**: ADR-226 Slice A alone (sequence allocator + per-session stream + gap-detecting reader + smoke) is 2–3 days of focused work, but landing it cleanly with T7 chaos coverage is closer to 5. The "~3–4 weeks for Tier 1" claim assumes nothing else preempts and is optimistic by 50–100%.
+- **Risk**: research inflation. Eleven solid reports can become eleven semi-overlapping ADRs and recreate the very debt this exercise was supposed to retire. Discipline: consolidate where consolidation candidates were flagged (G8+G10 → ADR-228), defer tier-3 adapters until tier-1+2 actually shipped, refuse tier-4 items even when they tempt.
 
-**One uncomfortable finding from the synthesis**: several items the operator probably perceives as separate (replay, agent teams, retry, cost) all share the same load-bearing primitive (event-sourced session bus). Building any one of them as a standalone feature locks in the wrong shape. The synthesis recommends ADR-231 first, even though it has the lowest user-visible immediate value, because every other high-value ADR depends on its shape.
+**The single uncomfortable load-bearing finding**: replay, agent teams, retry, and cost ledger all share the same substrate (event-sourced session bus). Building any one of them standalone locks in the wrong shape. **ADR-226 lands first, alone, validated by smoke (T4) and chaos (T7), before any Tier-2 ADR begins drafting against its event envelope.**
+
+This is a constraint on *how to build*, not a list of features to build.
 
 **Trust report (per `rules/trust-score.md`)**:
 - SCORE: 82 STATUS: HIGH EVIDENCE: 11 reports + 230 sources UNCERTAINTIES: 4
