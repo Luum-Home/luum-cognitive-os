@@ -114,6 +114,30 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/agent-timeouts.jsonl
+- id: hooks/agent-launch-confirmed.sh
+  kind: hook
+  owner_adr: ADR-222
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: lab
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/agent-launch-confirmed.sh
+  runtime_projection: true
+  behavior_evidence: metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo
+  evidence_commands:
+  - bash -n hooks/agent-launch-confirmed.sh
+  - python3 -m pytest tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py tests/audit/test_pre_agent_hook_ordering.py -q
+  rollback_or_repair_command: Disable or demote hooks/agent-launch-confirmed.sh in generated harness settings,
+    then regenerate projections.
+  sunset_criteria: Archive when ADR-223 worktree-per-write-agent fully replaces the tactical ADR-222 stash lane.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/agent-snapshots.jsonl
 - id: hooks/agent-prelaunch.sh
   kind: hook
   owner_adr: ADR-126
