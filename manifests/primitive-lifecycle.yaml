@@ -8187,3 +8187,61 @@ primitives:
   metrics_file: .cognitive-os/metrics/skill-router.jsonl
   consumer_accessibility: lifecycle-declared-core
   consumer_access_next_action: Promote after confidence-based skill routing is exercised in maintainer sessions.
+
+- id: scripts/cos-test-efficiency-plan
+  kind: script
+  owner_adr: ADR-237
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-test-efficiency-plan
+  - .codex/skills/test-efficiency/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Generates targeted test plans from git changes or failure logs before heavy laptop validation.
+  evidence_commands:
+  - python3 -m pytest tests/unit/test_test_efficiency_planner.py tests/behavior/test_cos_test_efficiency_plan_cli.py tests/audit/test_test_execution_efficiency_manifest.py -q
+  rollback_or_repair_command: Disable the test-efficiency skill and fall back to manual targeted pytest groups.
+  repair_message: Rerun ADR-237 planner tests before relying on generated validation commands.
+  false_positive_tests:
+  - tests/unit/test_test_efficiency_planner.py
+  - tests/behavior/test_cos_test_efficiency_plan_cli.py
+  sunset_criteria: Archive only if a broader validation planner supersedes ADR-237 with equivalent grouped-rerun tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/reports/test-runs/*
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep as SO-maintainer helper; promote to core only after repeated laptop-lane success.
+
+
+- id: scripts/dependency-lane.sh
+  kind: script
+  owner_adr: ADR-145
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/dependency-lane.sh
+  runtime_projection: false
+  behavior_evidence: Splits dependency-sensitive checks into an explicit lane for adoption and license/security validation.
+  evidence_commands:
+  - bash -n scripts/dependency-lane.sh
+  - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+  rollback_or_repair_command: Remove dependency-lane references from skill/docs and use direct dependency audit commands.
+  repair_message: Run bash syntax check and primitive readiness ledger contract before advertising dependency-lane use.
+  false_positive_tests:
+  - tests/contracts/test_primitive_readiness_ledger_contract.py
+  sunset_criteria: Archive only if dependency adoption gates absorb this lane with equivalent explicit dependency-governance evidence.
+  docs_claim_level: advisory
+  exit_behavior: mixed
+  metrics_file: .cognitive-os/reports/dependency-lane/*.json
+  consumer_accessibility: lifecycle-declared-team
+  consumer_access_next_action: Keep documented as explicit dependency-governance lane.
