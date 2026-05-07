@@ -1,5 +1,9 @@
 # ADR-234 — Approval Policies as Code
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–C implemented (2026-05-07)  
@@ -44,3 +48,15 @@ Not implemented yet:
 - Block/deny wins over ask/warn/allow.
 - Migrated hooks must keep legacy fallback until policy parity is covered by per-hook tests.
 - Settings projection is plan-only; user-global settings mutation remains out of scope.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

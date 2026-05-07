@@ -1,5 +1,9 @@
 # ADR-230 — Agent Handoff Envelope + Call-Chain Deduplication
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–E implemented (2026-05-07)
@@ -277,3 +281,8 @@ Process-kill chaos is implemented in `tests/chaos/test_handoff_receiver_kill_mid
 - **Cross-vendor envelope interop with A2A.** Defer; the envelope is a strict subset, so A2A interop is a translation layer when needed.
 - **Should `granted_blast_radius` be a count or a path-pattern set?** Initial answer: count (matches existing `blast_radius` hook semantics). Path-pattern set is a Phase-2 refinement if false positives bite.
 - **Handoff persistence across crashes.** ADR-226 sequences cover the event log; the dispatcher itself is stateless. A crash mid-dispatch leaves the envelope in the event log for recovery; the handoff is re-attempted by the recovering session via the idempotency-key mechanism.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

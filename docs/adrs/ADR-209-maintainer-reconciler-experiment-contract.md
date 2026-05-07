@@ -1,5 +1,9 @@
 # ADR-209 — Maintainer Reconciler Experiment Contract
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — experiment schema slice active  
@@ -80,3 +84,11 @@ python3 -m pytest tests/behavior/test_maintainer_canary_flow.py -q
 
 The behavior test must prove a router-confidence experiment with a failing
 guardrail is marked failed and does not promote.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

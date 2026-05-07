@@ -237,3 +237,8 @@ action suggestions.
 Proposed. This ADR fills the private-content gap left implicit by ADR-008 and
 must be reconciled before treating cloud/headless service portability as safe by
 default.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

@@ -340,3 +340,8 @@ allowed write paths, tests, rollback plan, and outcome-failure protocol.
 
 Proposed. Implementation should start narrow and remain propose-only until the
 performance ledger and smoke tests are stable.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

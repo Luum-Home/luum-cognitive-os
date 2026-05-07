@@ -1,5 +1,9 @@
 # ADR-207 — Skill Ecosystem Performance and Lifecycle Closure
 
+## Status
+Tombstone
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — skill performance ledger slice active  
@@ -80,3 +84,11 @@ scripts/cos-skill-performance-ledger --json
 
 The tests must prove corrupt `skill` identities are quarantined and cannot
 produce rewrite or confidence-change proposals.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

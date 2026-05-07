@@ -1,5 +1,9 @@
 # ADR-218 — History Sanitization Toolchain
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — slice 1 dry-run substrate active
@@ -237,3 +241,8 @@ new public remote. Never repeat after public availability.
 - Integration with `git-crypt` or transparent-encryption alternatives:
   defer; this ADR addresses pre-public scrubbing, not ongoing private
   collaboration.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

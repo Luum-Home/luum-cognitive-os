@@ -223,3 +223,6 @@ agent-message-inbox-guard.sh
 # 2026-05-06: ADR-184 cosd intent submit wrapper; workflow-invoked, not projected by default.
 cosd-auth-guard.sh
 cosd-intent-submit.sh
+# 2026-05-07: ADR-199/200 state-retention audit wrapper is manual/session-retention
+# only; it can archive/reap state and must not be projected into every profile.
+state-retention-audit.sh
