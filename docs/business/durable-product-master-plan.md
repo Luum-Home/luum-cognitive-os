@@ -425,6 +425,40 @@ Deliverables:
 - sharper contributor path
 - clearer extension taxonomy
 
+### Phase 5 — Orchestration substrate (landed 2026-05-06/07)
+
+Goals:
+
+- close the orchestration coverage gap against the May 2026 frontier (Claude Code 2.x, Cursor 3, Codex App, Devin 2, Replit Agent, Copilot CLI/Cloud, OpenCode, GitButler, Aider, OpenHands)
+- promote constraints (license, footprint, test-tier matrix, verdict block) from chat directives to a versioned, machine-readable manifest
+- ship 14 ADRs (220–236, ADR-229 tombstone) under that contract
+- preserve honest 🟡 status for slices not yet hardened
+
+Deliverables (all in `main`):
+
+- evaluation contract: `manifests/orchestration-research-evaluation.yaml`
+- substrate (Tier 1): ADR-220/221/222/223/226/227/228/230 — `lib/{session_bus, event_wrap, shadow_git, dispatch_gate, retry_classifier, session_budget, handoff_envelope, handoff_dispatcher}.py` + 11 schema-versioned manifests + 20+ test files
+- consumers (Tier 2): ADR-225/231/233 — branch-per-task, MCP server (FastMCP, 8 tools), cross-session agent-team file-IPC
+- opt-in adapters (Tier 3): ADR-224/232/234/235/236 — shadow-state safety net, sandbox tiers (Bubblewrap/Seatbelt), policy-as-code, detached-agent daemon, deferred tool loading
+- substrate-consumer guardrail: `scripts/validate_substrate_consumers.py` (14/14 PASS on 2026-05-07)
+- public tracking: `docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`
+- second case study: `docs/business/case-study.md` §"Case Study 2"
+
+Posture: Phase 5 closed the orchestration coverage gap structurally, but T6 (perf budget multi-platform), T7 (chaos), T8 (cross-harness end-to-end), T9 (adoption truth re-run), T10 (audit invariants extension) are explicit hardening pendings. Phase 6 picks those up.
+
+### Phase 6 — Hardening across the substrate (next)
+
+Goals:
+
+- multi-platform perf baselines for the event-sourced bus (Linux + Docker, currently macOS+APFS only)
+- chaos tier coverage for kill-mid-dispatch on the handoff path
+- cross-harness end-to-end (Codex / OpenCode round-trip for ADR-228/230/233)
+- ADR-217 adoption-truth re-run with the new dependencies (FastMCP, OTel MCP semconv)
+- ADR-211 service-mode readiness gate re-audit against the post-Phase-5 substrate
+- IMPLEMENTATION-CHECKLIST 🟡 → ✅ migration for the first 4 substrate ADRs
+
+This phase does not add new ADRs; it closes the explicit pendings the Phase-5 checklist tracks.
+
 ## Immediate Next Actions
 
 1. Fix known documentation drift in `README.md` and `CONTRIBUTING.md`.
