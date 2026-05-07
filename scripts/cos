@@ -11,6 +11,7 @@
 #   cos measure harness-profiles       -> scripts/measure_harness_profiles.py
 #   cos sprint ...                     -> scripts/cos_sprint.py
 #   cos subagent preflight             -> scripts/subagent_launch_preflight.py
+#   cos agent worktree prepare          -> scripts/cos-agent-worktree-prepare
 #   cos private-content audit          -> scripts/private_content_audit.py
 #   cos private-content check-projection -> scripts/private_content_audit.py --check-projection
 #   cos dependency adoption-gate        -> scripts/cos-dependency-adoption-gate
@@ -120,6 +121,14 @@ case "$SUBCMD" in
   sprint)
     shift
     exec python3 "$SCRIPT_DIR/cos_sprint.py" "$@"
+    ;;
+  agent)
+    if [ "${2:-}" = "worktree" ] && [ "${3:-}" = "prepare" ]; then
+      shift 3
+      exec "$SCRIPT_DIR/cos-agent-worktree-prepare" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown agent subcommand '${2:-} ${3:-}'. Try: cos agent worktree prepare --task-id ID --session-id ID [--json]" >&2
+    exit 1
     ;;
   subagent)
     if [ "${2:-}" = "preflight" ]; then
@@ -321,6 +330,7 @@ Usage:
   cos governance readiness [--json]      Report architecture readiness and remaining gaps
   cos sprint <cmd>                       Run sprint orchestration commands
   cos subagent preflight --type TYPE --prompt TEXT
+  cos agent worktree prepare --task-id ID --session-id ID [--json]
                                          Check subagent capability contract before launch
   cos private-content audit [--json]      Audit ADR-202 private-content classifications
   cos private-content check-projection PATH [--destination cloud|local] [--json]
