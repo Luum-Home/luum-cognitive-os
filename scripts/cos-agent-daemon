@@ -98,6 +98,18 @@ def cmd_service_plan(args: argparse.Namespace) -> int:
     return 0
 
 
+
+def cmd_install_service(args: argparse.Namespace) -> int:
+    path = daemon(args).install_service(kind=args.kind, target_dir=args.target_dir, python_bin=args.python_bin)
+    emit({"status": "installed", "kind": args.kind, "path": str(path)}, json_output=args.json)
+    return 0
+
+
+def cmd_kill(args: argparse.Namespace) -> int:
+    task = daemon(args).kill_task(args.task_id, tmux_bin=args.tmux_bin, reason=args.reason)
+    emit({"status": "killed", "task": task.to_dict()}, json_output=args.json)
+    return 0
+
 def cmd_enqueue_team_next(args: argparse.Namespace) -> int:
     team = AgentTeam(args.team, project_dir=args.project_dir)
     task = team.claim_next(session_id=args.session_id)
@@ -165,6 +177,18 @@ def build_parser() -> argparse.ArgumentParser:
     service_plan.add_argument("--kind", choices=["launchd", "systemd"], required=True)
     service_plan.add_argument("--python-bin", default="python3")
     service_plan.set_defaults(func=cmd_service_plan)
+
+    install_service = sub.add_parser("install-service", help="Install opt-in launchd/systemd service file without activating it")
+    install_service.add_argument("--kind", choices=["launchd", "systemd"], required=True)
+    install_service.add_argument("--python-bin", default="python3")
+    install_service.add_argument("--target-dir")
+    install_service.set_defaults(func=cmd_install_service)
+
+    kill = sub.add_parser("kill", help="Kill a detached task tmux session and mark it failed")
+    kill.add_argument("--task-id", required=True)
+    kill.add_argument("--tmux-bin")
+    kill.add_argument("--reason", default="operator_killed")
+    kill.set_defaults(func=cmd_kill)
 
     return parser
 

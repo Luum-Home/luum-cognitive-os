@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from lib.deferred_tool_loading import dumps_json, plan_tool_loading, toolsearch_index  # noqa: E402
+from lib.deferred_tool_loading import dumps_json, list_changed, plan_tool_loading, provider_native_defer_payload, toolsearch_index  # noqa: E402
 
 
 def main() -> int:
@@ -16,9 +16,16 @@ def main() -> int:
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--estimated-tool-tokens", type=int, default=0)
     parser.add_argument("--index", action="store_true")
+    parser.add_argument("--list-changed", action="store_true")
+    parser.add_argument("--update-state", action="store_true")
+    parser.add_argument("--native-payload-provider")
     args = parser.parse_args()
     if args.index:
         print(dumps_json(toolsearch_index(args.project_dir)))
+    elif args.list_changed:
+        print(dumps_json(list_changed(args.project_dir, update_state=args.update_state)))
+    elif args.native_payload_provider:
+        print(dumps_json(provider_native_defer_payload(args.project_dir, provider=args.native_payload_provider)))
     else:
         print(dumps_json(plan_tool_loading(args.project_dir, estimated_tool_tokens=args.estimated_tool_tokens)))
     return 0

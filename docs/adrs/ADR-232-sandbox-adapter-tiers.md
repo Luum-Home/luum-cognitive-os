@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–B implemented (2026-05-07)  
+**Status**: Accepted — Slices A–D implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-223 (worktree-per-write-agent), ADR-227 (shadow-git), ADR-228 (retry/budget), ADR-235 (detached agent daemon)
 
@@ -37,12 +37,19 @@ Implemented Slice B:
 - `lib/dispatch.py` recognizes `skill_requirements={"require_sandbox": true}` / `sandbox_required` and blocks before provider execution unless a native backend is available or `allow_sandbox_fallback` is explicit.
 - Dispatch metrics include the sandbox preflight plan under `dispatch_gate.sandbox_plan`.
 
+Implemented Slice C:
+
+- Claude CLI provider subprocesses are wrapped by the sandbox adapter when `require_sandbox` is used with explicit fallback policy.
+
+Implemented Slice D:
+
+- In-process SDK providers can be forced through an out-of-process boundary via `scripts/cos-provider-call` when `require_sandbox` is set and `isolate_inprocess_providers` is not disabled. Dispatch invokes that subprocess through the sandbox adapter, with network enabled for provider calls.
+- MicroVM and ConTree are declared as opt-in adapter contracts in `adapter_plan()` and `build_sandbox_command(..., backend=...)` without adding Firecracker/Kata/E2B/ConTree dependencies to the default install.
+
 Not implemented yet:
 
 - Landlock/seccomp policy generation beyond Bubblewrap CLI flags.
-- E2B / microVM adapter.
-- ConTree branching adapter.
-- Claude CLI provider subprocesses can now be wrapped by the sandbox adapter when `require_sandbox` is used with `allow_sandbox_fallback` policy. In-process provider HTTP calls still are not OS-sandboxed; they require a future subprocess/microVM boundary.
+- Actual optional microVM/ConTree runner integrations; current implementation is a dependency-free command contract plus env-configured runner escape hatch.
 
 ## Hard rules
 

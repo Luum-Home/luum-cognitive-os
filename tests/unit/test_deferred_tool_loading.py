@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from lib.deferred_tool_loading import plan_tool_loading, toolsearch_index
@@ -27,3 +29,39 @@ def test_toolsearch_index_contains_metadata(project_root) -> None:
     index = toolsearch_index(project_root)
     names = {tool["name"] for tool in index["tools"]}
     assert "cos_sandbox_adapter" in names
+
+
+
+@pytest.mark.unit
+def test_list_changed_tracks_tool_index_hash(tmp_path: Path) -> None:
+    (tmp_path / "manifests").mkdir()
+    manifest = tmp_path / "manifests/deferred-tool-loading.yaml"
+    manifest.write_text(
+        "schema_version: deferred-tool-loading/v1\n"
+        "tools:\n  - name: alpha\n    load_mode: deferred\n"
+    )
+    from lib.deferred_tool_loading import list_changed
+
+    first = list_changed(tmp_path, update_state=True)
+    assert first["changed"] is True
+    assert first["added_tools"] == ["alpha"]
+    second = list_changed(tmp_path)
+    assert second["changed"] is False
+    manifest.write_text(
+        "schema_version: deferred-tool-loading/v1\n"
+        "tools:\n  - name: alpha\n    load_mode: deferred\n  - name: beta\n    load_mode: deferred\n"
+    )
+    third = list_changed(tmp_path)
+    assert third["changed"] is True
+    assert third["added_tools"] == ["beta"]
+
+
+
+@pytest.mark.unit
+def test_provider_native_payload_is_truthful_until_provider_api_exists(tmp_path: Path) -> None:
+    from lib.deferred_tool_loading import provider_native_defer_payload
+
+    payload = provider_native_defer_payload(tmp_path, provider="claude")
+    assert payload["native_defer_loading_supported"] is False
+    assert payload["reason"] == "provider_api_not_available"
+    assert payload["toolsearch_index"]["schema_version"] == "deferred-tool-loading/v1"
