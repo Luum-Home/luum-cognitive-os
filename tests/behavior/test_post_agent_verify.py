@@ -21,6 +21,7 @@ pytestmark = pytest.mark.behavior
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 PRE_HOOK = PROJECT_ROOT / "hooks" / "pre-agent-snapshot.sh"
 POST_HOOK = PROJECT_ROOT / "hooks" / "post-agent-verify.sh"
+CONFIRM_HOOK = PROJECT_ROOT / "hooks" / "agent-launch-confirmed.sh"
 
 
 def _git(repo: Path, *args: str) -> subprocess.CompletedProcess:
@@ -63,6 +64,19 @@ def _run_pre(repo: Path, agent_id: str, session_id: str, prompt: str = "work") -
     payload = {"tool_name": "Agent", "tool_input": {"prompt": prompt, "description": prompt}}
     return subprocess.run(
         ["bash", str(PRE_HOOK)],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        env=_common_env(repo, agent_id, session_id),
+        cwd=str(repo),
+        timeout=15,
+    )
+
+
+def _run_confirmed(repo: Path, agent_id: str, session_id: str, prompt: str = "work") -> subprocess.CompletedProcess:
+    payload = {"tool_name": "Agent", "tool_input": {"prompt": prompt, "description": prompt}}
+    return subprocess.run(
+        ["bash", str(CONFIRM_HOOK)],
         input=json.dumps(payload),
         capture_output=True,
         text=True,
@@ -123,6 +137,8 @@ class TestPostVerifyBehavior:
 
         pre = _run_pre(repo, agent_id, session_id)
         assert pre.returncode == 0, pre.stderr
+        confirmed = _run_confirmed(repo, agent_id, session_id)
+        assert confirmed.returncode == 0, confirmed.stderr
 
         # Declare scope BEFORE the agent writes
         _write_touch_scope(repo, session_id, agent_id, ["src/allowed.txt"])
@@ -165,6 +181,8 @@ class TestPostVerifyBehavior:
 
         pre = _run_pre(repo, agent_id, session_id)
         assert pre.returncode == 0, pre.stderr
+        confirmed = _run_confirmed(repo, agent_id, session_id)
+        assert confirmed.returncode == 0, confirmed.stderr
 
         _write_touch_scope(repo, session_id, agent_id, ["src/allowed.txt"])
 
@@ -203,6 +221,8 @@ class TestPostVerifyBehavior:
 
         pre = _run_pre(repo, agent_id, session_id)
         assert pre.returncode == 0
+        confirmed = _run_confirmed(repo, agent_id, session_id)
+        assert confirmed.returncode == 0, confirmed.stderr
 
         _write_touch_scope(repo, session_id, agent_id, ["a.txt"])
 
@@ -236,6 +256,8 @@ class TestPostVerifyBehavior:
         (repo / "a.txt").write_text("baseline\n")
         pre = _run_pre(repo, agent_id, session_id)
         assert pre.returncode == 0
+        confirmed = _run_confirmed(repo, agent_id, session_id)
+        assert confirmed.returncode == 0, confirmed.stderr
 
         # No prompt file written → no TOUCH scope available
 

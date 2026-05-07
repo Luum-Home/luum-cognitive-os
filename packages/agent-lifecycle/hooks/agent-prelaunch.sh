@@ -300,7 +300,7 @@ fi
 
 
 AGENT_WORKTREE_CONTEXT=""
-if [ "${COS_AGENT_LIFECYCLE_MODE:-worktree}" = "worktree" ] && [ -z "$ALLOW_RO_ARG" ] && [ -x "$PROJECT_DIR/scripts/cos-agent-worktree-prepare" ]; then
+if [ "${COS_AGENT_LIFECYCLE_MODE:-worktree}" = "worktree" ] && [ -z "$ALLOW_RO_ARG" ] && [ -x "$PROJECT_DIR/scripts/cos-agent-worktree-prepare" ] && git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   set +e
   WORKTREE_OUT=$("$PROJECT_DIR/scripts/cos-agent-worktree-prepare" --project-dir "$PROJECT_DIR" --task-id "$TASK_ID" --session-id "$SESSION_ID" --json 2>&1)
   WORKTREE_RC=$?
