@@ -93,3 +93,6 @@ bash -n hooks/state-retention-audit.sh scripts/so-reaper.sh scripts/cos
 python3 -m pytest tests/unit/test_state_retention_audit.py -q
 python3 scripts/state_retention_audit.py --project-dir . --json --no-metrics
 ```
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.

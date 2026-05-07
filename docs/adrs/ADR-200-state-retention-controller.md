@@ -79,3 +79,6 @@ ACCEPTANCE CRITERIA:
 bash -n hooks/agent-prelaunch.sh scripts/so-reaper.sh scripts/state_retention_audit.py
 python3 -m pytest tests/unit/test_state_retention_audit.py tests/behavior/test_state_retention_controller_flow.py -q
 ```
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.

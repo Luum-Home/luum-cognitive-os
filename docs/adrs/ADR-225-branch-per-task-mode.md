@@ -1,5 +1,9 @@
 # ADR-225 — Branch-Per-Task Mode
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–B implemented (2026-05-07)  
@@ -54,3 +58,15 @@ Not implemented yet:
 - Read-only agents are exempt.
 - Enforcement is prelaunch-only and does not create or mutate branches.
 - Strict mode is available for readiness/smoke tests and future prelaunch gates.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

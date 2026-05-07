@@ -1,5 +1,9 @@
 # ADR-219: Work Ownership Liveness Preflight
 
+## Status
+Accepted
+
+
 **Status**: Accepted  
 **Date**: 2026-05-06  
 **Related**: ADR-106, ADR-108, ADR-110, ADR-116, ADR-117, ADR-121, ADR-129, ADR-199, ADR-200, ADR-213
@@ -59,21 +63,9 @@ original agent is inactive.
 
 ## Alternatives rejected
 
-### Trust the temporary branch
-
-Rejected. A preservation branch proves recoverability, not that the original
-worktree, stash, or agent is inactive.
-
-### Drop all stale `auto-pre-agent-*` stashes after TTL
-
-Rejected as a complete answer. TTL-based cleanup is still useful for stale COS
-residue, but path ownership must distinguish active linked worktrees, manual
-stashes, branch copies, and claims.
-
-### Require humans to run separate Git/lsof commands
-
-Rejected. The failure mode is orchestration opacity; asking operators to compose
-`git stash`, `git worktree`, claims, locks, and `lsof` manually repeats the bug.
+- Trust the temporary branch — rejected because a preservation branch proves recoverability, not that the original worktree, stash, or agent is inactive.
+- Drop all stale `auto-pre-agent-*` stashes after TTL — rejected as a complete answer because TTL cleanup cannot distinguish active linked worktrees, manual stashes, branch copies, and claims.
+- Require humans to run separate Git/lsof commands — rejected because the failure mode is orchestration opacity; asking operators to compose `git stash`, `git worktree`, claims, locks, and `lsof` manually repeats the bug.
 
 ## Acceptance criteria
 
@@ -86,3 +78,8 @@ Rejected. The failure mode is orchestration opacity; asking operators to compose
 4. A `codex/stash-*` preservation branch touching the requested path is reported
    as `preserved_copy_only`, not as proof of inactivity.
 5. Unit tests cover linked-worktree and preservation-branch cases.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

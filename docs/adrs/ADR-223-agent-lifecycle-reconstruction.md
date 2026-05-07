@@ -1,5 +1,9 @@
 # ADR-223 — Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–D implemented (2026-05-07)
@@ -56,3 +60,15 @@ Slice A is **opt-in** via `COS_AGENT_LIFECYCLE_MODE=worktree`. This avoids chang
 - **2026-05-07 — Slice A implemented**: opt-in worktree-per-write-agent preparation and snapshot suppression markers.
 - **2026-05-07 — Slices B–D implemented**: worktree lifecycle is default-on unless `COS_AGENT_LIFECYCLE_MODE=stash` disables it; `cleanup_agent_worktrees` plus `cos-agent-worktree-prepare --cleanup` provide the manifest-scoped reaper; `lifecycle_projection` plus `--projection` emits cross-harness launch hints; daemon `--prepare-worktree` defaults to ADR-225 `codex/task/*` branches.
 - **Deferred**: deeper retention integration with ADR-224/227 shadow-state snapshots.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

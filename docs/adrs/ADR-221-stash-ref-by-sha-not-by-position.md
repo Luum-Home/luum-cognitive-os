@@ -1,5 +1,9 @@
 # ADR-221 — Stash References by SHA, Not by Position
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — slice 1 active
@@ -155,3 +159,8 @@ The tests must prove:
 - Should we also record the stash *tree SHA* (the commit's tree) for an additional integrity check? Initial answer: defer. Stash commit SHA is sufficient for identity; tree SHA is redundant unless we discover hash collisions in practice (we won't).
 - Does the v1-legacy fallback need to handle the case where the recorded subject was modified (e.g., `git stash apply --message`)? Initial answer: no. OS-managed stashes never set custom messages; operator-managed stashes are out of scope for this ADR.
 - Coordinate with ADR-117 reversibility: the reversibility table records stash ops by `stash_ref`; v2 should add `stash_sha`. Tracked as a sub-task in slice 5.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

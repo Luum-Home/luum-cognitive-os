@@ -1,5 +1,9 @@
 # ADR-212 — Cross-Stack License Audit Toolchain
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted  
@@ -103,3 +107,11 @@ bash -n scripts/install-syft-grype.sh scripts/install-trivy.sh scripts/license-a
 
 The tests must prove unsafe Trivy workflow usage is blocked and known-bad
 Trivy versions are classified as blocked.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

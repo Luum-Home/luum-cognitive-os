@@ -1,5 +1,9 @@
 # ADR-204 — Signal Quality and Reward Integrity Boundary
 
+## Status
+Proposed
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Proposed  
@@ -84,3 +88,11 @@ scripts/cos-reward-signal-audit --json
 
 The tests must prove default trust scores and `skill: matias` rows are
 quarantined and cannot affect rollups.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

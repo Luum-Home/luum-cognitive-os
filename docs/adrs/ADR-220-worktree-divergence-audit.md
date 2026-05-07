@@ -1,5 +1,9 @@
 # ADR-220 — Worktree Divergence Audit Toolchain
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — preflight/readiness gate active
@@ -199,3 +203,8 @@ The tests must prove:
 - Should the audit fetch automatically when `origin/main` is older than N hours? Current proposal: no. Fetching is operator policy. The audit *reports* staleness ("origin/main is 4h old; consider `git fetch`") but does not act.
 - Cross-worktree stash inspection requires acquiring the stash lock briefly. ADR-117 governs that; verify no contention in the integration test before merging.
 - Does this primitive need a Singularity reward signal? Defer; out of scope until ADR-200 / Singularity loop is past pilot.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

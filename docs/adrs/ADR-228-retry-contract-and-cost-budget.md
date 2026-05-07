@@ -1,5 +1,9 @@
 # ADR-228 — Retry Contract + Cost Session Budget (consolidated)
 
+## Status
+Tombstone
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slices A–F implemented (2026-05-07)
@@ -261,3 +265,8 @@ Total: ~350 LOC + rule consolidation (net-negative bash equivalent).
 - **How does ADR-228 interact with ADR-211 service-mode readiness?** Service mode MUST require a budget cap; reject service-mode invocation without one. Tracked as a slice of ADR-211.
 - **Cross-provider budget reconciliation when ADR-049 dispatch falls over to Qwen.** Initial answer: budget is dollar-denominated, not provider-tied; falling over to a cheaper provider extends runway, not budget. Document explicitly in runbook.
 - **Should the circuit breaker open globally or per-tier?** Initial answer: per-(provider, model_tier). A degraded Sonnet doesn't necessarily mean degraded Haiku.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
