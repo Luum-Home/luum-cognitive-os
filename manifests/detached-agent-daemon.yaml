@@ -1,0 +1,26 @@
+schema_version: detached-agent-daemon-policy/v1
+adr: ADR-235
+status: active-slice-a
+mode: opt-in
+runtime:
+  default: tmux
+  bundled: false
+  required_for_launch: true
+state:
+  root: .cognitive-os/agent-daemon
+  queue: queue.jsonl
+  task_state: tasks/<task-id>/state.json
+  heartbeat: tasks/<task-id>/heartbeat.json
+  done: tasks/<task-id>/done.json
+  results: results.jsonl
+hard_rules:
+  - detached mode must be explicitly requested
+  - write-capable detached tasks should use ADR-223 worktree preparation
+  - no launchd/systemd installation in slice A
+  - no Redis/Postgres/RabbitMQ/Docker default dependency
+  - done.json is the completion sentinel
+integrations:
+  adr_223_worktree_prepare: opt_in_via_prepare_worktree
+  adr_225_branch_per_task: pending_default_enforcement
+  adr_228_budget_gate: pending
+  adr_233_agent_team: pending_auto_enqueue
