@@ -43,3 +43,28 @@ def test_teammate_idle_hook_claims_agent_team_task_before_legacy_queue(run_hook,
     claimed = {task.task_id: task for task in team.tasks()}["policy-docs"]
     assert claimed.status == "in_progress"
     assert claimed.claimed_by == "worker-1"
+
+@pytest.mark.behavior
+def test_task_completed_hook_mirrors_completion_into_agent_team(run_hook, mock_project) -> None:
+    project_dir = mock_project["project_dir"]
+    team = AgentTeam("release", project_dir=project_dir)
+    team.create_task("Audit release notes", task_id="audit")
+    team.claim_next(session_id="worker-1")
+
+    result = run_hook(
+        "task-completed.sh",
+        stdin_json={
+            "hook_event_name": "TaskCompleted",
+            "team_name": "release",
+            "session_id": "worker-1",
+            "task_id": "audit",
+            "output": "Completed release notes audit with test evidence and clean verification.",
+        },
+        env=mock_project["env"],
+    )
+
+    assert result.returncode == 0
+    completed = {task.task_id: task for task in team.tasks()}["audit"]
+    assert completed.status == "completed"
+    assert completed.claimed_by == "worker-1"
+    assert "release notes audit" in completed.output_summary
