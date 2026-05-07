@@ -257,3 +257,72 @@
 - [x] ADR-218 history sanitization dry-run substrate exists (`cos history sanitize --dry-run --json`); execute rewrite remains operator-gated.
 
 - [x] ADR-217 adoption-truth substrate exists (`cos adoption audit --json`); readiness/downstream consumption and baseline remediation remain pending.
+
+## 9. Orchestration Coverage Substrate (line of work landed 2026-05-06/07)
+
+> Disparada por la pregunta del operador *"¿estamos cubriendo todo lo que cubren los demás en sus versiones más recientes?"*. 79-source prior-art research + 11 reportes paralelos por gap + síntesis ranqueada → 14 ADRs (220–236, ADR-229 tombstone) drafted + Slice A implemented en ~24h. Detalle completo en [SYNTHESIS-2026-05-06.md](../research/orchestration-gaps/SYNTHESIS-2026-05-06.md) y [IMPLEMENTATION-CHECKLIST-2026-05-07.md](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+
+### 9.1 Evaluation contract
+
+- [x] C1–C4 evaluation contract promoted from chat directives to canonical manifest at [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml) — `schema_version: orchestration-research-evaluation/v1`. License allowlist/blocklist, 4 footprint surfaces, T1–T10 with smoke non-negotiable + measure-first T6 caveat, verdict block schema with 6 required fields.
+- [x] Substrate-consumer guardrail validator at [`scripts/validate_substrate_consumers.py`](../../scripts/validate_substrate_consumers.py) — 14 checks across 6 dimensions (schema-version invariant, projection robustness, strict-durability required-for, seq type, perf budget liveness, substrate-truth sanity). Result on 2026-05-07: **14/14 PASS**.
+
+### 9.2 Substrate (Tier 1 — load-bearing)
+
+- [x] **ADR-220** Worktree Divergence Audit — `lib/worktree_audit.py` + `cos worktree audit --json [--strict]` + manifest. Accepted, preflight/readiness gate active.
+- [x] **ADR-221** Stash Refs by SHA, Not by Position — `lib/stash_sha.py` + marker schema v2 + CI audit tests. Accepted, slice 1 active.
+- [x] **ADR-222** Pre-Agent Stash Two-Phase Capture — `agent-launch-confirmed.sh` + plan-only PreToolUse + cleanup. Slices 1–8 implemented (tactical mitigation until ADR-223 fully replaces).
+- [x] **ADR-223** Agent Lifecycle Reconstruction (kill auto-pre-agent-stash, worktree-per-write-agent + mutex on `git worktree add`) — `lib/agent_lifecycle.py`. Slice A implemented.
+- [x] **ADR-226** Event-Sourced Session Bus (load-bearing) — `lib/session_bus.py` (extends ADR-205 Flight Recorder) + `lib/event_wrap.py` + `lib/event_projections/{cost_ledger,handoff_chain,retry_classifier,timeline}.py` + per-session JSONL streams + manifest with measured p95_budget_ms. Slices A–E implemented.
+- [x] **ADR-227** Shadow-Git Checkpoint Substrate — `lib/shadow_git.py` + `cos rollback` CLI + atomic file+conversation truncation + diff preview. Slice A implemented.
+- [x] **ADR-228** Retry Contract + Cost Session Budget (consolidated G8+G10) — `lib/dispatch_gate.py` + `lib/retry_classifier.py` + `lib/session_budget.py` + idempotency mixin + circuit breaker + manifest with 7 failure classes. Slices A–F implemented.
+- [x] **ADR-230** Handoff Envelope + Cycle Deduplication — `lib/handoff_envelope.py` + `lib/handoff_dispatcher.py` + permission intersection + ADR-233 inbox transport via `cos team handoff send`. Slices A–E implemented.
+- [ ] T6 perf budget hardening across substrate ADRs (Linux/Docker baselines pending; macOS+APFS baseline at p95 25 ms locked in manifest)
+- [ ] T7 chaos coverage hardening (kill-mid-dispatch on handoff path pending; event-bus chaos covered)
+- [ ] T8 cross-harness end-to-end (Codex/OpenCode round-trip for 228/230/233 pending; event bus covered via `tests/red_team/portability/test_event_bus.py`)
+- [ ] T10 audit invariants extension (some consumers pending)
+
+### 9.3 Consumers (Tier 2)
+
+- [x] **ADR-225** Branch-Per-Task Mode — `lib/branch_task_policy.py` + conditional prelaunch enforcement for explicit write/cloud/detached launches. Slices A–B implemented.
+- [x] **ADR-231** MCP Server Surface — FastMCP-based 8-tool server formalized + optional OTel spans + cross-harness stdio registration plans for Claude Code/Codex/Cursor/Windsurf. Slices A–B implemented.
+- [x] **ADR-233** Cross-Session Agent-Team File-IPC — `lib/agent_team.py` + `cos team ...` CLI + TaskCreated/TaskCompleted/TeammateIdle hooks + chaos claim race. Slices A–C implemented.
+- [ ] ADR-231 Streamable HTTP transport + external trust-pinning consumption
+- [ ] ADR-233 receiver execution + NATS/A2A upgrade path
+
+### 9.4 Opt-in adapters (Tier 3)
+
+- [x] **ADR-224** Shadow-State Snapshots Off-Repo — Slice A implemented with ADR-227.
+- [x] **ADR-232** Sandbox Adapter Tiers (Bubblewrap Linux / Seatbelt macOS, OS-native default) — `lib/sandbox_adapter.py` + dispatch `require_sandbox` preflight boundary. Slices A–B implemented.
+- [x] **ADR-234** Approval Policies as Code — `lib/policy_eval.py` + YAML policy evaluator + sample destructive-bash policy. Slice A implemented.
+- [x] **ADR-235** Detached Agent Daemon — `lib/agent_daemon.py` + opt-in queue/state + tmux launcher + done/heartbeat sentinels + CLI. Slice A implemented.
+- [x] **ADR-236** Deferred Tool Loading + ToolSearch — `lib/deferred_tool_loading.py` + manifest-backed eager/deferred planning + ToolSearch-like metadata index. Slice A implemented.
+- [ ] ADR-232 provider-process sandboxing, microVM/ConTree adapters, hook integration
+- [ ] ADR-234 hook migration / settings projection / external engines
+- [ ] ADR-235 launchd/systemd installer + watchdog + ADR-228 budget gate + ADR-233 auto-enqueue
+- [ ] ADR-236 provider `defer_loading` + dispatch ToolSearch insertion + `list_changed` handling
+
+### 9.5 Tombstone
+
+- [x] **ADR-229** consolidated into ADR-228 (cost-budget + retry-contract on the same code path).
+
+### 9.6 Conscious non-coverage (do not pursue this cycle)
+
+- [x] Multi-machine cloud orchestration documented as positioning, not a gap.
+- [x] CRDT-based merging documented as anti-recommendation (code is non-commutative).
+- [x] Hypervisor sandboxes (Firecracker) as primary documented as opt-in tier only (E2BAdapter via ADR-232).
+- [x] OPA/Rego policy engine documented as deferred until multi-tenant deployment.
+- [x] Mid-session MCP server injection documented as upstream "not planned"; deferred-loading covers ~85%.
+- [x] Temporal/Cadence durable workflows documented as heavy-dep violation of C2; `@event_wrap` covers MVP determinism.
+- [x] NATS JetStream cross-session bus documented as Tier-3 future, not default.
+
+### 9.7 Ledger / business-doc downstream impacts
+
+- [x] Strategy private log [`04-license-repo-and-corrections-log.md`](../../.cognitive-os/strategy/04-license-repo-and-corrections-log.md) — Anexo with full orchestration-line narrative + 5 new commercial-grade cuñas.
+- [x] Strategy research/09 dogfood metrics — §7 added with 8 reproducible orchestration-line metrics.
+- [x] Strategy 03-self-bite-pattern — marked CLOSED 2026-05-07 with chain of resolving ADRs.
+- [x] Strategy 01-commercial-brief-v2 — patched §2/§5/§7/§9/§12 + new §16 with 5 cuñas + post-landing fold rotation.
+- [x] Public docs/business/value-proposition — added 4 new "What It Does" entries + "upstream gaps" table linking each ADR to its issue/limitation.
+- [x] Public docs/business/features — Feature Overview 13→19 + new sections §6/§7/§8 (replay, cost+retry, handoff).
+- [x] Public docs/business/roadmap — Current State counts refreshed; "What works end-to-end" expanded with 5 new shippables.
+- [x] Public docs/business/executive-summary — Problem section expanded with replay-Devin-framing and $47K-incident framing.
