@@ -272,35 +272,38 @@
 - [x] **ADR-220** Worktree Divergence Audit — `lib/worktree_audit.py` + `cos worktree audit --json [--strict]` + manifest. Accepted, preflight/readiness gate active.
 - [x] **ADR-221** Stash Refs by SHA, Not by Position — `lib/stash_sha.py` + marker schema v2 + CI audit tests. Accepted, slice 1 active.
 - [x] **ADR-222** Pre-Agent Stash Two-Phase Capture — `agent-launch-confirmed.sh` + plan-only PreToolUse + cleanup. Slices 1–8 implemented (tactical mitigation until ADR-223 fully replaces).
-- [x] **ADR-223** Agent Lifecycle Reconstruction (kill auto-pre-agent-stash, worktree-per-write-agent + mutex on `git worktree add`) — `lib/agent_lifecycle.py`. Slice A implemented.
+- [x] **ADR-223** Agent Lifecycle Reconstruction (kill auto-pre-agent-stash, worktree-per-write-agent + mutex on `git worktree add`) — `lib/agent_lifecycle.py` + default-on worktree lifecycle + manifest-scoped cleanup/reaper + cross-harness projection + branch-prefix support. Slices A–D implemented.
 - [x] **ADR-226** Event-Sourced Session Bus (load-bearing) — `lib/session_bus.py` (extends ADR-205 Flight Recorder) + `lib/event_wrap.py` + `lib/event_projections/{cost_ledger,handoff_chain,retry_classifier,timeline}.py` + per-session JSONL streams + manifest with measured p95_budget_ms. Slices A–E implemented.
-- [x] **ADR-227** Shadow-Git Checkpoint Substrate — `lib/shadow_git.py` + `cos rollback` CLI + atomic file+conversation truncation + diff preview. Slice A implemented.
-- [x] **ADR-228** Retry Contract + Cost Session Budget (consolidated G8+G10) — `lib/dispatch_gate.py` + `lib/retry_classifier.py` + `lib/session_budget.py` + idempotency mixin + circuit breaker + manifest with 7 failure classes. Slices A–F implemented.
-- [x] **ADR-230** Handoff Envelope + Cycle Deduplication — `lib/handoff_envelope.py` + `lib/handoff_dispatcher.py` + permission intersection + ADR-233 inbox transport via `cos team handoff send`. Slices A–E implemented.
-- [ ] T6 perf budget hardening across substrate ADRs (Linux/Docker baselines pending; macOS+APFS baseline at p95 25 ms locked in manifest)
-- [ ] T7 chaos coverage hardening (kill-mid-dispatch on handoff path pending; event-bus chaos covered)
-- [ ] T8 cross-harness end-to-end (Codex/OpenCode round-trip for 228/230/233 pending; event bus covered via `tests/red_team/portability/test_event_bus.py`)
-- [ ] T10 audit invariants extension (some consumers pending)
+- [x] **ADR-227** Shadow-Git Checkpoint Substrate — `lib/shadow_git.py` + `cos rollback` CLI + off-repo snapshots + preview-gated files restore + conversation truncation + atomic files+conversation restore + event-envelope `file_tree_sha` wiring. Slices A–F implemented.
+- [x] **ADR-228** Retry Contract + Cost Session Budget (consolidated G8+G10) — `lib/dispatch_gate.py` + `lib/retry_classifier.py` + `lib/session_budget.py` + idempotency mixin + circuit breaker + provider-aware cost predictor + T6 perf baseline + T7 circuit recovery chaos. Runtime closed.
+- [x] **ADR-230** Handoff Envelope + Cycle Deduplication — `lib/handoff_envelope.py` + `lib/handoff_dispatcher.py` + permission intersection + ADR-233 inbox transport + explicit receiver execution + external hook runner via `--hook-command` + timeout/failure receipts + SIGKILL/timeout chaos receipts + idempotent skip after failure. Runtime receiver closed.
+
+Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md)):
+
+- [ ] T6 perf budget hardening across substrate (Linux/Docker baselines pending; macOS+APFS baseline at p95 25 ms locked in manifest; ADR-228 T6 done)
+- [ ] T7/T10 chaos and audit invariants partial (event-bus chaos covered; ADR-227 T7/T10 partial; ADR-228 chaos done; some downstream consumers pending)
+- [ ] T8 cross-harness end-to-end for some consumers (event bus covered via `tests/red_team/portability/test_event_bus.py`; ADR-230 T8 done; ADR-231 T8 done)
 
 ### 9.3 Consumers (Tier 2)
 
-- [x] **ADR-225** Branch-Per-Task Mode — `lib/branch_task_policy.py` + conditional prelaunch enforcement for explicit write/cloud/detached launches. Slices A–B implemented.
-- [x] **ADR-231** MCP Server Surface — FastMCP-based 8-tool server formalized + optional OTel spans + cross-harness stdio registration plans for Claude Code/Codex/Cursor/Windsurf. Slices A–B implemented.
-- [x] **ADR-233** Cross-Session Agent-Team File-IPC — `lib/agent_team.py` + `cos team ...` CLI + TaskCreated/TaskCompleted/TeammateIdle hooks + chaos claim race. Slices A–C implemented.
-- [ ] ADR-231 Streamable HTTP transport + external trust-pinning consumption
-- [ ] ADR-233 receiver execution + NATS/A2A upgrade path
+- [x] **ADR-225** Branch-Per-Task Mode — `lib/branch_task_policy.py` + conditional prelaunch enforcement + ADR-235 auto-branching via `--prepare-worktree` default `codex/task/*` prefix. Slices A–C implemented.
+- [x] **ADR-231** MCP Server Surface — FastMCP-based 8-tool server + optional OTel spans + stdio + Streamable HTTP registration plans + trust-pin-required URL consumption fingerprints. Slices A–C implemented.
+- [x] **ADR-233** Cross-Session Agent-Team File-IPC — `lib/agent_team.py` + `cos team ...` CLI + TaskCreated/TaskCompleted/TeammateIdle hooks + ADR-230 receiver flow + chaos claim race + cross-harness inbox + opt-in NATS publish adapter + A2A HTTP JSON adapter + `transport-send` CLI. Transport adapters closed.
 
 ### 9.4 Opt-in adapters (Tier 3)
 
-- [x] **ADR-224** Shadow-State Snapshots Off-Repo — Slice A implemented with ADR-227.
-- [x] **ADR-232** Sandbox Adapter Tiers (Bubblewrap Linux / Seatbelt macOS, OS-native default) — `lib/sandbox_adapter.py` + dispatch `require_sandbox` preflight boundary. Slices A–B implemented.
-- [x] **ADR-234** Approval Policies as Code — `lib/policy_eval.py` + YAML policy evaluator + sample destructive-bash policy. Slice A implemented.
-- [x] **ADR-235** Detached Agent Daemon — `lib/agent_daemon.py` + opt-in queue/state + tmux launcher + done/heartbeat sentinels + CLI. Slice A implemented.
-- [x] **ADR-236** Deferred Tool Loading + ToolSearch — `lib/deferred_tool_loading.py` + manifest-backed eager/deferred planning + ToolSearch-like metadata index. Slice A implemented.
-- [ ] ADR-232 provider-process sandboxing, microVM/ConTree adapters, hook integration
-- [ ] ADR-234 hook migration / settings projection / external engines
-- [ ] ADR-235 launchd/systemd installer + watchdog + ADR-228 budget gate + ADR-233 auto-enqueue
-- [ ] ADR-236 provider `defer_loading` + dispatch ToolSearch insertion + `list_changed` handling
+- [x] **ADR-224** Shadow-State Snapshots Off-Repo — off-repo shadow-git safety net + operator rollback runbook + manual retention/reaper via `cos rollback --prune`. Slices A–C implemented.
+- [x] **ADR-232** Sandbox Adapter Tiers (Bubblewrap Linux / Seatbelt macOS, OS-native default) — `lib/sandbox_adapter.py` + dispatch `require_sandbox` preflight + Claude CLI/provider subprocess wrapping + microVM/ConTree adapter contracts + opt-in runner-backed CLI execution. Slices A–E implemented.
+- [x] **ADR-234** Approval Policies as Code — `lib/policy_eval.py` + YAML evaluator + CLI + destructive/protected-config policies + two real hook migrations + plan-only Claude/Codex settings projection. External engines deferred. Slices A–C implemented.
+- [x] **ADR-235** Detached Agent Daemon — `lib/agent_daemon.py` + queue/state + tmux launcher + sentinels + watchdog + budget gate + TeamTask enqueue + service-plan/install + activation helper + tmux/process-tree kill escalation. Slices A–F implemented.
+- [x] **ADR-236** Deferred Tool Loading + ToolSearch — `lib/deferred_tool_loading.py` + manifest-backed planning + ToolSearch index + dispatch insertion/metrics + local `list_changed` state + truthful provider-native payloads with operator-enabled native API switch. Slices A–D implemented.
+
+Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md)):
+
+- [ ] ADR-232 T7/T8/T10 hardening (chaos + cross-harness + audit invariants extension)
+- [ ] ADR-234 T5/T8 hardening (adversarial + cross-harness)
+- [ ] ADR-235 T10 audit invariants partial
+- [ ] ADR-236 T9 adoption-truth re-run with FastMCP / OTel MCP semconv
 
 ### 9.5 Tombstone
 
