@@ -1,0 +1,49 @@
+schema_version: maintainer-experiment-schema/v1
+adr: ADR-209
+status: active
+purpose: >
+  Machine-readable contract for any Maintainer proposal that can mutate COS
+  behavior after human approval. Propose-only proposals may include a draft
+  experiment, but executable changes must satisfy this schema first.
+
+required_fields:
+  - schema_version
+  - experiment_id
+  - proposal_id
+  - target_surface
+  - desired_state
+  - canary_scope
+  - success_metrics
+  - guardrail_metrics
+  - rollback_threshold
+  - measurement_window
+  - human_approval
+  - owner
+  - cooldown
+  - outcome_action
+
+field_contracts:
+  schema_version:
+    enum: [maintainer-experiment/v1]
+  canary_scope:
+    required_fields: [type, population]
+  success_metrics:
+    min_items: 1
+  guardrail_metrics:
+    min_items: 1
+  human_approval:
+    required_fields: [required, approver_role]
+  outcome_action:
+    enum:
+      - promote
+      - rollback
+      - quarantine_proposal
+      - manual_investigation
+
+policy:
+  auto_execute_default: false
+  require_guardrail_for_every_success_metric: true
+  fail_closed_on_schema_violation: true
+  fail_open_for_launch_paths: true
+  mutation_boundary: ADR-164
+
