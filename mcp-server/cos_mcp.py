@@ -730,7 +730,7 @@ def cos_status() -> str:
         total_entries = 0
         for mf in metric_files:
             try:
-                with open(mf, "r") as f:
+                with open(mf, "r", encoding="utf-8", errors="replace") as f:
                     total_entries += sum(1 for _ in f)
             except OSError:
                 pass
