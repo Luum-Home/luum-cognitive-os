@@ -183,6 +183,19 @@ Recommended sequence:
 5. Classify and de-center non-core subsystems.
 6. Prepare a canonical five-minute demo.
 
+### Post-2026-05-07 sequence update (orchestration substrate landed)
+
+The 2026-05-06/07 orchestration line shifted the agenda. Items 1–6 above remain relevant for the public OSS reveal, but a new sequence interleaves with them:
+
+7. **Land the C1–C4 evaluation contract as a manifest before drafting any new ADR.** Done: `manifests/orchestration-research-evaluation.yaml` (`schema_version: orchestration-research-evaluation/v1`).
+8. **Substrate ADRs first, consumers second, adapters third.** Done: ADR-226 load-bearing event-sourced bus → ADR-227 shadow-git substrate → ADR-228 retry+budget → ADR-230 handoff envelope → consumers (231, 233) → opt-in adapters (232, 234, 235, 236).
+9. **Independent guardrail validator before consumers depend on substrate shape.** Done: `scripts/validate_substrate_consumers.py` (14/14 PASS).
+10. **Public tracking with honest 🟡 partial-implementation per ADR.** Done: `docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`.
+11. **Hardening tier (T6/T7/T8/T9/T10) before claiming "production-ready."** Pending — Phase 6 of the durable master plan.
+12. **Re-audit ADR-211 service-mode readiness gates against the post-substrate state.** Pending.
+
+The seven core requirements (Inviolable Promise, Protected Core, Strategy as Enforcement, CI Proves the Product, Onboarding Simplicity, Complexity Compression, Visible Superiority) remain unchanged — the substrate landing is *evidence* for requirement 7 (Visible Superiority), not a new requirement.
+
 ## Success Condition
 
 The product is succeeding when:
