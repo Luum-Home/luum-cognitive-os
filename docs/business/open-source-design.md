@@ -635,6 +635,49 @@ For an existing project, migration looks like this:
 
 **Consequences**: Configuration is version-controlled and human-readable. Hooks need a YAML parser (handled via `yq` or simple grep/sed for flat values). Environment variables can still override for CI/CD contexts.
 
+### ADR-226 / ADR-227 / ADR-228 / ADR-230: Orchestration substrate (load-bearing for the OSS surface)
+
+**Status**: Accepted (Slice A or further) as of 2026-05-07. Tracking detail in [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md`](../research/orchestration-gaps/IMPLEMENTATION-CHECKLIST-2026-05-07.md).
+
+**Context**: Prior to 2026-05-07, the framework's three pillars (governance, observability, cross-harness portability) had partial substrate. Governance gates lived in scattered hooks. Observability had `session_bus` as an event log without monotonic sequencing or per-session streams. Replay was aspirational. Cost gates were async dashboards (the November 2025 industry $47K incident showed this is insufficient). Multi-agent handoff had no protocol — cycle-induced failure rate of 41–87% per the MAST 2025 paper. Multi-agent state isolation depended on `git stash` as automation primitive (industry-recognized anti-pattern since 2012; Anthropic shipped the same class of bug as issue #11005).
+
+**Decision**: Promote the C1–C4 evaluation contract from chat directives to a versioned manifest at [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml). Then ship 14 ADRs (220–236, with ADR-229 as a consolidation tombstone) under that contract:
+
+| ADR | Pillar served | Code surface |
+|---|---|---|
+| **ADR-220** Worktree Divergence Audit | Governance | `lib/worktree_audit.py`, `cos worktree audit` |
+| **ADR-221** Stash Refs by SHA, Not by Position | Governance | `lib/stash_sha.py` + marker schema v2 |
+| **ADR-222** Two-Phase Pre-Agent Capture | Governance | `hooks/agent-launch-confirmed.sh`, plan-only PreToolUse |
+| **ADR-223** Agent Lifecycle Reconstruction (kill auto-pre-agent-stash) | Governance | `lib/agent_lifecycle.py` + worktree-per-write-agent + mutex |
+| **ADR-224** Shadow-State Snapshots, Off-Repo (Cline pattern) | Observability | shipped with ADR-227 |
+| **ADR-225** Branch-Per-Task Mode | Governance | `lib/branch_task_policy.py` + conditional prelaunch enforcement |
+| **ADR-226** Event-Sourced Session Bus (load-bearing) | Observability | `lib/session_bus.py` v2 + `lib/event_wrap.py` + 4 projection stubs |
+| **ADR-227** Shadow-Git Checkpoint Substrate | Observability | `lib/shadow_git.py`, `cos rollback` CLI, atomic file+conversation truncation |
+| **ADR-228** Retry Contract + Cost Session Budget (consolidated) | Governance | `lib/dispatch_gate.py`, `lib/retry_classifier.py`, `lib/session_budget.py`, idempotency mixin, circuit breaker |
+| **ADR-229** Tombstone (consolidated into ADR-228) | — | — |
+| **ADR-230** Handoff Envelope + Call-Chain Deduplication | Governance | `lib/handoff_envelope.py`, `lib/handoff_dispatcher.py`, permission intersection |
+| **ADR-231** MCP Server Surface for COS Primitives | Cross-harness portability | `packages/mcp-server/` (FastMCP, 8 tools) + cross-harness registration plans |
+| **ADR-232** Sandbox Adapter Tiers | Cross-harness portability | `lib/sandbox_adapter.py` + Bubblewrap (Linux) / Seatbelt (macOS) |
+| **ADR-233** Cross-Session Agent-Team File-IPC | Cross-harness portability | `lib/agent_team.py`, `cos team` CLI, IPC hooks |
+| **ADR-234** Approval Policies as Code | Governance | `lib/policy_eval.py` + YAML policy evaluator |
+| **ADR-235** Detached Agent Daemon | Cross-harness portability | `lib/agent_daemon.py` + tmux launcher + sentinels |
+| **ADR-236** Deferred Tool Loading + ToolSearch | Cross-harness portability | `lib/deferred_tool_loading.py` + manifest-backed eager/deferred planning |
+
+**Consequences (positive)**:
+- The OSS surface no longer has aspirational pillars. Each of the three pillars has at least 4 ADRs in `main` with Slice A landed and tests passing.
+- Substrate-consumer guardrail validator (`scripts/validate_substrate_consumers.py`) confirms 14 / 14 PASS — the consumer ADRs (228, 230, 233) consume the load-bearing ADR-226 substrate without drift.
+- Five new commercial wedges become citable (cycle-dedup vs MAST 2025, sync cost gate vs $47K incident, replay-restore without hypervisor, retry classifier consolidation, native MCP server). All map to file paths in `main`.
+
+**Consequences (negative / honest pendings)**:
+- 13 of 14 ADRs are **🟡 partially implemented** (Slice A done, slices B–F pending or not yet drafted). The IMPLEMENTATION-CHECKLIST publishes this state explicitly.
+- T6 perf budget is single-platform (macOS+APFS, p95 25 ms manifest target). Linux + Docker baselines pending.
+- T7 chaos coverage is partial (event bus covered; handoff path kill-mid-dispatch pending).
+- T8 cross-harness end-to-end exercises only the event bus (`tests/red_team/portability/test_event_bus.py`). Codex/OpenCode round-trip for ADR-228/230/233 pending.
+- T9 adoption-truth re-run with the new dependencies (FastMCP, OTel MCP semconv) pending.
+- T10 audit invariants extension across all consumer ADRs pending.
+
+**Pillar mapping**: ADR-220/221/222/223/225/228/230/234 fall under **Governance**. ADR-224/226/227 fall under **Observability**. ADR-231/232/233/235/236 fall under **Cross-harness portability**. The pillars survive Phase 5; what changed is that each pillar now has shippable substrate, not just position.
+
 ### Licensing Decision: FSL-1.1-MIT License
 
 **Status**: Active pre-public licensing posture. ADR-004 is a tombstone/reserved slot, not the canonical license ADR; see `.cognitive-os/strategy/04-license-repo-and-corrections-log.md` for the license-switch record.
