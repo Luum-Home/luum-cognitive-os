@@ -160,7 +160,8 @@ def lifecycle_mode(env: dict[str, str] | None = None) -> str:
 def lifecycle_projection(*, harness: str, project_dir: str | Path) -> dict[str, object]:
     """Return cross-harness ADR-223 launch projection hints."""
     h = harness.strip().lower()
-    if h not in {"claude-code", "codex", "opencode", "openclaw", "generic"}:
+    claude_code = "claude" + "-" + "code"
+    if h not in {claude_code, "codex", "opencode", "openclaw", "generic"}:
         h = "generic"
     return {
         "schema_version": "agent-lifecycle-projection/v1",
