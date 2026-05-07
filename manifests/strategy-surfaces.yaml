@@ -1,0 +1,242 @@
+# strategy-surfaces.yaml — declares the export classification for content
+# under .cognitive-os/strategy/ and its public-facing siblings.
+#
+# Consumed by:
+#   - ADR-202 (private content cross-harness portability boundary)
+#   - ADR-212 (license audit) — reads raw_audit_artifacts via pointer, never content
+#   - ADR-215 (secret audit) — same pointer-only access pattern
+#
+# Validated by:
+#   - tests/audit/test_strategy_surface_export_policy.py (proposed)
+#   - cos export validators (proposed; deferred until first export attempt)
+
+schema_version: strategy-surfaces/v1
+status: active
+owner: platform-safety
+
+# Surface classification table.
+# Each entry declares:
+#   - level: export tier (see "levels" below)
+#   - paths: glob patterns under repo root
+#   - rationale: why this level was chosen (audit trail)
+#   - exit_path: the only sanctioned way to move to a more public level
+levels:
+  local-only:
+    description: |
+      Never leaves the operator's machine. Not in git history, not in
+      issue trackers, not in chat, not in LLM context windows projected
+      to other harnesses. May be read by local manifest-driven tools
+      via pointer (path), never by content extraction.
+    enforced_by:
+      - .gitignore (.cognitive-os/* with explicit allowlist exceptions)
+      - ADR-202 projection guard
+      - audit/LOCAL-ONLY-README.md (operator-facing reminder)
+
+  private:
+    description: |
+      May exist in this repo on the operator's machine and may be
+      committed to a *private* sibling repo (e.g. luum-cos-cloud) but
+      MUST NOT land in the public OSS repo.
+
+  sanitized-export:
+    description: |
+      Originally private content that has been processed (PII removed,
+      raw scanner output replaced with counts/categories, operator
+      paths normalized to <home>/<repo>) and is safe to ship in the
+      public OSS repo.
+
+  public:
+    description: |
+      Authored to be public from the start. ADRs, public reports,
+      README, license, NOTICE.
+
+# Surface map — order matters; first match wins.
+surfaces:
+  # ── LOCAL-ONLY ────────────────────────────────────────────────────
+  - level: local-only
+    paths:
+      - ".cognitive-os/strategy/audit/*.json"
+      - ".cognitive-os/strategy/audit/*.csv"
+      - ".cognitive-os/strategy/audit/custom-sweep.json"
+      - ".cognitive-os/strategy/audit/gitleaks.json"
+      - ".cognitive-os/strategy/audit/trufflehog.json"
+      - ".cognitive-os/strategy/audit/go-licenses-report.csv"
+      - ".cognitive-os/strategy/audit/node-licenses.json"
+      - ".cognitive-os/strategy/audit/python-licenses.json"
+    rationale: |
+      Raw scanner artifacts. Contain operator absolute paths, email,
+      secret-shaped fixtures, and unverified candidates. Even
+      "unverified" can be doxxing material. No legitimate reason to
+      ever copy these to docs/.
+    exit_path: |
+      Sanitize to counts/categories, write a NEW file under
+      docs/reports/, leave raw artifact in place. Never `mv`/`cp`.
+
+  # ── PRIVATE ──────────────────────────────────────────────────────
+  - level: private
+    paths:
+      - ".cognitive-os/strategy/00-first-approach.md"
+      - ".cognitive-os/strategy/01-commercial-brief-v2.md"
+      - ".cognitive-os/strategy/02-pre-launch-playbook.md"
+      - ".cognitive-os/strategy/03-self-bite-pattern.md"
+      - ".cognitive-os/strategy/04-license-repo-and-corrections-log.md"
+      - ".cognitive-os/strategy/README.md"
+      - ".cognitive-os/strategy/research/09-dogfood-metrics-commercial.md"
+      - ".cognitive-os/strategy/research/10-competitive-landscape-commercial.md"
+    rationale: |
+      Pricing, packaging, sales motion, competitive positioning,
+      operator-side dogfood numbers. Eligible for a private sibling
+      repo (luum-cos-cloud) but never the OSS repo.
+    exit_path: |
+      Push to luum-cos-cloud. Public OSS path is split-and-rewrite
+      (extract OSS-friendly framing, drop pricing/competitive details,
+      author a NEW file under docs/).
+
+  # ── PRIVATE — research that may eventually publish ───────────────
+  - level: private
+    paths:
+      - ".cognitive-os/strategy/research/01-origin-archeology.md"
+      - ".cognitive-os/strategy/research/02-real-self-improvement.md"
+      - ".cognitive-os/strategy/research/03-aspirational-dormant.md"
+      - ".cognitive-os/strategy/research/04-telemetry-action-gap.md"
+      - ".cognitive-os/strategy/research/05-hermes-imitation-forensics.md"
+      - ".cognitive-os/strategy/research/06-external-patterns-benchmark.md"
+      - ".cognitive-os/strategy/research/07-skill-ecosystem-evolution.md"
+      - ".cognitive-os/strategy/research/08-self-improvement-roadmap.md"
+    rationale: |
+      Deep research on real-vs-aspirational state, skill ecosystem
+      maturity, telemetry gaps. Honest enough to be uncomfortable
+      publicly until claims are validated. Stays private until the
+      audited claims they describe are either fixed or accepted as
+      "known weaknesses."
+    exit_path: |
+      Per-document review. Some can become docs/reports/ entries
+      after the underlying issue is closed; others are permanently
+      private (operator forensic record).
+
+  # ── SUPERSEDED — historical, kept for traceability ───────────────
+  - level: private
+    paths:
+      - ".cognitive-os/strategy/research/11-cross-stack-license-audit-tools.md"
+    rationale: |
+      Superseded by ADR-212 + docs/reports/cross-stack-license-audit-
+      tools-2026-05-06.md. Kept for historical traceability of the
+      decision path, not for re-use. Two parts of the original
+      analysis were wrong (Trivy as primary, supply-chain risk
+      underweighted). DO NOT cite as a current source.
+    exit_path: |
+      None. Public version already exists; this private original is
+      a frozen historical record.
+
+  # ── SANITIZED-EXPORT (public docs/reports/) ──────────────────────
+  - level: sanitized-export
+    paths:
+      - "docs/reports/*.md"
+    rationale: |
+      Reports authored to be public from the start, or sanitized
+      derivatives of private reports. Subject to PII grep, secret
+      scan, and operator-path normalization before commit.
+    exit_path: |
+      n/a (already at the public-facing level).
+
+  # ── PUBLIC ───────────────────────────────────────────────────────
+  - level: public
+    paths:
+      - "docs/adrs/*.md"
+      - "docs/research/*.md"
+      - "docs/business/*.md"
+      - "docs/manual-tests/*.md"
+      - "docs/runbooks/*.md"
+      - "README.md"
+      - "LICENSE"
+      - "NOTICE"
+      - "CONTRIBUTING.md"
+      - "CHANGELOG.md"
+    rationale: |
+      Authored as public from the start. ADRs, public business docs,
+      OSS-facing user guides.
+    exit_path: |
+      n/a.
+
+# Hard rules — enforced by tests/audit/test_strategy_surface_export_policy.py.
+hard_rules:
+  - rule: |
+      No file under .cognitive-os/strategy/audit/ may be referenced
+      by content (cat, cp, mv, symlink target) from any tracked file.
+      Pointer references (e.g. `manifests/cross-stack-secret-audit.yaml`
+      pointing at the path as a string) are allowed.
+    applies_to:
+      - ".cognitive-os/strategy/audit/*.json"
+      - ".cognitive-os/strategy/audit/*.csv"
+
+  - rule: |
+      No file under .cognitive-os/strategy/ may be `git add`-ed
+      (gitignored, but a `git add -f` bypass should be CI-blocked).
+    applies_to:
+      - ".cognitive-os/strategy/**/*"
+
+  - rule: |
+      docs/reports/ files MUST have passed `cos secret audit --strict`
+      AND a PII grep (`/Users/`, operator email, host names) before
+      being committed for the first time.
+    applies_to:
+      - "docs/reports/*.md"
+    enforcement_status: proposed
+
+  - rule: |
+      A file moving from local-only or private to sanitized-export
+      MUST be a NEW file (different path), never a `mv`/`rename`. The
+      original file stays in place at its original level.
+    applies_to:
+      - "**/*"
+
+# Audit signals consumers can rely on.
+audit_signals:
+  on_violation:
+    emit: ".cognitive-os/metrics/surface-violation.jsonl"
+    fields:
+      - timestamp
+      - source_path
+      - source_level
+      - target_path
+      - target_level
+      - violation_type           # mv-without-rewrite | content-leak | force-add | etc.
+      - operator_session_id
+
+# Cross-references.
+references:
+  adrs:
+    - "docs/adrs/ADR-202-private-content-cross-harness-portability-boundary.md"
+    - "docs/adrs/ADR-212-cross-stack-license-audit-toolchain.md"
+    - "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+    - "docs/adrs/ADR-218-history-sanitization-toolchain.md"
+  related_manifests:
+    - "manifests/cross-stack-license-audit.yaml"
+    - "manifests/cross-stack-secret-audit.yaml"
+    - "manifests/cross-stack-adoption-truth.yaml"
+    - "manifests/history-sanitization.yaml"
+
+# Open questions — track here, not in the README.
+open_questions:
+  - question: |
+      Should this manifest also govern .claude/ session artifacts
+      (worktrees/, sessions/) that may contain operator-side state?
+    initial_answer: |
+      Out of scope. Those are governed by .gitignore + ADR-099
+      copy-on-untracked. Revisit if a leak is observed.
+
+  - question: |
+      Should sanitized-export require a CI gate that enforces the
+      PII grep, not just an honor-system rule?
+    initial_answer: |
+      Yes. Tracked as a slice of ADR-215 / ADR-202 enforcement work.
+      Default off until baselines are curated to avoid CI noise.
+
+  - question: |
+      How do we handle re-classifying an entry (e.g., a research/
+      file becomes safe to publish)? Just update the surface entry
+      and create the public derivative?
+    initial_answer: |
+      Yes. Entry stays at its original level; new public-level entry
+      is added; the new file is written under docs/reports/ with a
+      header citing the (now-public) origin.
