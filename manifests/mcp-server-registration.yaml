@@ -4,6 +4,19 @@ server:
   name: cos
   package: "@luum/mcp-server"
   transport: stdio
+  transports:
+    stdio:
+      command: python3
+      args:
+        - mcp-server/cos_mcp.py
+    streamable-http:
+      command: python3
+      args:
+        - mcp-server/cos_mcp.py
+        - --transport
+        - streamable-http
+      default_url: http://127.0.0.1:8765/mcp
+      trust_pin_required: true
   command: python3
   args:
     - mcp-server/cos_mcp.py
@@ -36,5 +49,6 @@ hosts:
     supported: true
 hard_rules:
   - registration plans are generated only; no user-global MCP config mutation by default
-  - stdio is canonical in Slice B; HTTP transport remains future work
+  - stdio remains canonical for zero-daemon local usage
+  - Streamable HTTP is opt-in and must be protected by MCP TOFU trust pins before external consumption
   - OTel instrumentation is optional and must not make fastmcp import fail
