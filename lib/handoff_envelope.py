@@ -1,0 +1,1 @@
+../packages/agent-lifecycle/lib/handoff_envelope.py
