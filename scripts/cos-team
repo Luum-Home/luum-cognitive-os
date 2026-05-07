@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import subprocess
 import sys
 from dataclasses import asdict, is_dataclass
@@ -18,6 +19,7 @@ if str(ROOT) not in sys.path:
 from lib.agent_team import AgentTeam, AgentTeamError  # noqa: E402
 from lib.handoff_dispatcher import HandoffDispatchError, HandoffDispatcher  # noqa: E402
 from lib.handoff_envelope import HandoffEnvelope  # noqa: E402
+from lib.agent_team_transport import transport_plan  # noqa: E402
 
 
 def _json_default(value: Any) -> Any:
@@ -172,18 +174,49 @@ def cmd_handoff_receive(args: argparse.Namespace) -> int:
         receipt = receipts_dir / f"{handoff_id}.json"
         if receipt.exists():
             continue
-        result: dict[str, Any] = {"handoff": envelope, "executed": False, "exit_code": None}
+        parsed_envelope = HandoffEnvelope.from_dict(envelope)
+        result: dict[str, Any] = {"handoff": parsed_envelope.to_dict(), "executed": False, "exit_code": None}
+        command: str | None = None
+        text = str((parsed_envelope.context_payload or {}).get("text") or "")
         if args.exec_command_template:
-            text = str((envelope.get("context_payload") or {}).get("text") or "")
             command = args.exec_command_template.format(
                 handoff_id=handoff_id,
-                from_agent=envelope.get("from_agent") or "",
-                to_agent=envelope.get("to_agent") or "",
+                from_agent=parsed_envelope.from_agent,
+                to_agent=parsed_envelope.to_agent,
                 text=text,
             )
-            proc = subprocess.run(command, shell=True, cwd=str(Path(args.project_dir).resolve()), capture_output=True, text=True, timeout=args.timeout_seconds)
-            result.update({"executed": True, "exit_code": proc.returncode, "stdout": proc.stdout[-4000:], "stderr": proc.stderr[-4000:]})
-            if proc.returncode != 0 and args.strict:
+        elif args.hook_command:
+            command = args.hook_command
+
+        if command:
+            env = {
+                **dict(os.environ),
+                "COS_HANDOFF_ID": handoff_id,
+                "COS_HANDOFF_FROM_AGENT": parsed_envelope.from_agent,
+                "COS_HANDOFF_TO_AGENT": parsed_envelope.to_agent,
+                "COS_HANDOFF_TEXT": text,
+            }
+            try:
+                proc = subprocess.run(
+                    command,
+                    shell=True,
+                    cwd=str(Path(args.project_dir).resolve()),
+                    capture_output=True,
+                    text=True,
+                    timeout=args.timeout_seconds,
+                    input=json.dumps(parsed_envelope.to_dict(), sort_keys=True),
+                    env=env,
+                )
+                result.update({"executed": True, "exit_code": proc.returncode, "stdout": proc.stdout[-4000:], "stderr": proc.stderr[-4000:]})
+            except subprocess.TimeoutExpired as exc:
+                result.update({
+                    "executed": True,
+                    "exit_code": 124,
+                    "stdout": (exc.stdout or "")[-4000:] if isinstance(exc.stdout, str) else "",
+                    "stderr": (exc.stderr or "")[-4000:] if isinstance(exc.stderr, str) else "",
+                    "error": "receiver_timeout",
+                })
+            if int(result.get("exit_code") or 0) != 0 and args.strict:
                 receipt.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
                 print(json.dumps({"status": "receiver_failed", **result}, sort_keys=True), file=sys.stderr)
                 return 2
@@ -194,6 +227,12 @@ def cmd_handoff_receive(args: argparse.Namespace) -> int:
     _emit({"status": "ok", "received": received}, json_output=args.json)
     return 0
 
+
+
+def cmd_transport_plan(args: argparse.Namespace) -> int:
+    plan = transport_plan(team_name=args.team, backend=args.backend)
+    _emit({"status": "ok", "transport_plan": plan.to_dict()}, json_output=args.json)
+    return 0
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -277,10 +316,16 @@ def build_parser() -> argparse.ArgumentParser:
     handoff_receive.add_argument("--team", required=True)
     handoff_receive.add_argument("--session-id", required=True)
     handoff_receive.add_argument("--exec-command-template")
+    handoff_receive.add_argument("--hook-command", help="External receiver hook command; envelope JSON is passed on stdin and COS_HANDOFF_* env is set")
     handoff_receive.add_argument("--timeout-seconds", type=int, default=30)
     handoff_receive.add_argument("--once", action="store_true")
     handoff_receive.add_argument("--strict", action="store_true")
     handoff_receive.set_defaults(func=cmd_handoff_receive)
+
+    transport = sub.add_parser("transport-plan", help="Print ADR-233 file/NATS/A2A transport mapping")
+    transport.add_argument("--team", required=True)
+    transport.add_argument("--backend", choices=["file", "nats", "a2a"], default="file")
+    transport.set_defaults(func=cmd_transport_plan)
 
     return parser
 
