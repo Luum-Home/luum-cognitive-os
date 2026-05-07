@@ -1,0 +1,132 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""ADR-235 detached agent daemon CLI (opt-in, local-first)."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from dataclasses import asdict, is_dataclass
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.agent_daemon import AgentDaemon, AgentDaemonError  # noqa: E402
+from lib.agent_lifecycle import AgentLifecycleError, prepare_agent_worktree  # noqa: E402
+
+
+def _default(value: Any) -> Any:
+    if is_dataclass(value):
+        return asdict(value)
+    if isinstance(value, Path):
+        return str(value)
+    raise TypeError(type(value).__name__)
+
+
+def emit(payload: dict[str, Any], *, json_output: bool) -> None:
+    if json_output:
+        print(json.dumps(payload, sort_keys=True, default=_default))
+        return
+    print(f"cos agent daemon: {payload.get('status', 'ok')}")
+    if payload.get("task"):
+        task = payload["task"]
+        print(f"task: {task.get('task_id')} {task.get('status')} {task.get('tmux_session')}")
+
+
+def daemon(args: argparse.Namespace) -> AgentDaemon:
+    return AgentDaemon(project_dir=args.project_dir, root_dir=args.root_dir)
+
+
+def cmd_enqueue(args: argparse.Namespace) -> int:
+    worktree_path = args.worktree_path
+    if args.prepare_worktree:
+        if not args.task_id:
+            raise AgentDaemonError("--prepare-worktree requires --task-id")
+        record = prepare_agent_worktree(
+            args.project_dir,
+            task_id=args.task_id,
+            session_id=args.session_id or "detached",
+            worktree_root=args.worktree_root,
+        )
+        worktree_path = record.worktree_path
+    task = daemon(args).enqueue(
+        command=args.command,
+        task_id=args.task_id,
+        session_id=args.session_id,
+        worktree_path=worktree_path,
+        team_name=args.team,
+        max_runtime_seconds=args.max_runtime_seconds,
+    )
+    emit({"status": "queued", "task": task.to_dict()}, json_output=args.json)
+    return 0
+
+
+def cmd_list(args: argparse.Namespace) -> int:
+    tasks = [task.to_dict() for task in daemon(args).list_tasks()]
+    emit({"status": "ok", "tasks": tasks}, json_output=args.json)
+    return 0
+
+
+def cmd_run_once(args: argparse.Namespace) -> int:
+    task = daemon(args).launch_next(tmux_bin=args.tmux_bin, dry_run=args.dry_run)
+    emit({"status": "no_queued_task" if task is None else "launched", "task": task.to_dict() if task else None}, json_output=args.json)
+    return 0
+
+
+def cmd_reap(args: argparse.Namespace) -> int:
+    completed = [task.to_dict() for task in daemon(args).reap_completed()]
+    emit({"status": "ok", "completed": completed}, json_output=args.json)
+    return 0
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", required=True)
+    parser.add_argument("--root-dir")
+    parser.add_argument("--json", action="store_true")
+    sub = parser.add_subparsers(dest="command_name", required=True)
+
+    enqueue = sub.add_parser("enqueue", help="Queue a detached agent task")
+    enqueue.add_argument("--command", required=True)
+    enqueue.add_argument("--task-id")
+    enqueue.add_argument("--session-id")
+    enqueue.add_argument("--team")
+    enqueue.add_argument("--worktree-path")
+    enqueue.add_argument("--prepare-worktree", action="store_true")
+    enqueue.add_argument("--worktree-root")
+    enqueue.add_argument("--max-runtime-seconds", type=int, default=3600)
+    enqueue.set_defaults(func=cmd_enqueue)
+
+    listed = sub.add_parser("list", help="List detached agent tasks")
+    listed.set_defaults(func=cmd_list)
+
+    run_once = sub.add_parser("run-once", help="Launch one queued task in tmux")
+    run_once.add_argument("--tmux-bin")
+    run_once.add_argument("--dry-run", action="store_true")
+    run_once.set_defaults(func=cmd_run_once)
+
+    reap = sub.add_parser("reap", help="Mark running tasks completed when done.json exists")
+    reap.set_defaults(func=cmd_reap)
+
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    try:
+        return int(args.func(args))
+    except (AgentDaemonError, AgentLifecycleError) as exc:
+        payload = {"status": "error", "error": str(exc), "error_type": type(exc).__name__}
+        if getattr(args, "json", False):
+            print(json.dumps(payload, sort_keys=True), file=sys.stderr)
+        else:
+            print(f"cos-agent-daemon: ERROR — {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
