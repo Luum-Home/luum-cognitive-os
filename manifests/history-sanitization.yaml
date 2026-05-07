@@ -29,6 +29,37 @@ rules:
     required: false
     rationale: Replace absolute local repository paths in historical blobs.
 
+  # Consumer-project leak rules (added 2026-05-07).
+  # Each value comes from an env var so the manifest does not commit the
+  # actual codename. The codename pre-existed in this repo's history because
+  # it bled in from a consumer project before the project-specific terms hook
+  # was config-driven. Operator runs the rewrite once with the env vars set
+  # to the real codenames and replaces them with stable generic placeholders.
+  - id: consumer-codename-a
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_CODENAME_A
+    replacement: <consumer-codename-a>
+    required: false
+    rationale: Replace consumer-project codename A leaked into history before Gate-1 hook was config-driven.
+  - id: consumer-codename-b
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_CODENAME_B
+    replacement: <consumer-codename-b>
+    required: false
+    rationale: Replace consumer-project codename B leaked into history.
+  - id: consumer-codename-c
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_CODENAME_C
+    replacement: <consumer-codename-c>
+    required: false
+    rationale: Replace consumer-project codename C (and its hyphenated variant via separate env-var if needed) leaked into history.
+  - id: consumer-service-name
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE
+    replacement: <consumer-service>
+    required: false
+    rationale: Replace consumer-project service name used in worked examples (workflows/, docs/hooks.md, packages/verification-audit/, tests/arena/) before the rename to a generic service name landed.
+
 sensitive_history_patterns:
   - id: macos-user-home-path
     mode: regex

@@ -102,6 +102,23 @@ class TestGate1ProhibitedTerms:
         filepath.write_text(content)
         subprocess.run(["git", "add", str(filepath)], cwd=str(repo), capture_output=True)
 
+    # Synthetic patterns used by every Gate-1 fixture below. These are
+    # deliberately fake (no resemblance to any real codename) so the test
+    # body never carries actual project-specific identifiers.
+    _SYNTH_PATTERN_1 = "synthetic-blocked-token-alpha"
+    _SYNTH_PATTERN_2 = "synthetic-client-codename-beta"
+
+    def _seed_blocked_strings_file(self, repo):
+        """Write a fixture .cognitive-os/private/blocked-strings.txt with synth patterns."""
+        cfg_dir = repo / ".cognitive-os" / "private"
+        cfg_dir.mkdir(parents=True, exist_ok=True)
+        cfg_path = cfg_dir / "blocked-strings.txt"
+        cfg_path.write_text(
+            f"# fixture for Gate 1 tests\n{self._SYNTH_PATTERN_1}\n{self._SYNTH_PATTERN_2}\n",
+            encoding="utf-8",
+        )
+        return cfg_path
+
     def test_gate1_blocks_file_with_prohibited_term(self, tmp_path):
         """A staged .py file containing a prohibited term should block the commit."""
         repo = _make_git_repo(tmp_path)
@@ -110,11 +127,10 @@ class TestGate1ProhibitedTerms:
         hook_dest.mkdir()
         import shutil
         shutil.copy(HOOK, hook_dest / "pre-commit")
+        self._seed_blocked_strings_file(repo)
 
-        # Create and stage a file with a known prohibited term
-        # Based on Gate1 patterns (<consumer-codename-a>, <consumer-codename-b>, <consumer-codename-c> are blocked)
         bad_file = repo / "bad.py"
-        bad_file.write_text("# This mentions <consumer-codename-a> which is prohibited\npass\n")
+        bad_file.write_text(f"# This mentions {self._SYNTH_PATTERN_1} which is prohibited\npass\n")
         subprocess.run(["git", "add", str(bad_file)], cwd=str(repo), capture_output=True)
 
         result = subprocess.run(
@@ -136,9 +152,10 @@ class TestGate1ProhibitedTerms:
         hook_dest.mkdir()
         import shutil
         shutil.copy(HOOK, hook_dest / "pre-commit")
+        self._seed_blocked_strings_file(repo)
 
         bad_file = repo / "bad.md"
-        bad_file.write_text("This project uses <consumer-codename-b> as a dependency.\n")
+        bad_file.write_text(f"This project uses {self._SYNTH_PATTERN_2} as a dependency.\n")
         subprocess.run(["git", "add", str(bad_file)], cwd=str(repo), capture_output=True)
 
         result = subprocess.run(
@@ -149,14 +166,13 @@ class TestGate1ProhibitedTerms:
             env={**os.environ, "GIT_DIR": str(repo / ".git"), "PROJECT_ROOT": str(repo)},
             timeout=20,
         )
-        combined = result.stdout + result.stderr
-        # Should mention the term or "prohibited" or "blocked"
+        combined = (result.stdout + result.stderr).lower()
+        # Should mention the file, the gate, or the policy outcome
         assert (
-            "<consumer-codename-a>" in combined.lower()
-            or "gamer" in combined.lower()
-            or "prohibited" in combined.lower()
-            or "blocked" in combined.lower()
-            or "gate" in combined.lower()
+            "bad.md" in combined
+            or "blocked" in combined
+            or "gate" in combined
+            or "blocked-strings" in combined
         )
 
     def test_gate1_ignores_gitlink_submodule_worktree_content(self, tmp_path):
@@ -165,11 +181,12 @@ class TestGate1ProhibitedTerms:
         hook_dest.mkdir()
         import shutil
         shutil.copy(HOOK, hook_dest / "pre-commit")
+        self._seed_blocked_strings_file(repo)
 
         plugin = repo / "vendor" / "plugin"
         plugin.mkdir(parents=True)
         (plugin / "README.md").write_text(
-            "Upstream docs mention <consumer-codename-b>, but this is submodule content.\n"
+            f"Upstream docs mention {self._SYNTH_PATTERN_2}, but this is submodule content.\n"
         )
         subprocess.run(
             [
@@ -201,6 +218,7 @@ class TestGate1ProhibitedTerms:
         hook_dest.mkdir()
         import shutil
         shutil.copy(HOOK, hook_dest / "pre-commit")
+        self._seed_blocked_strings_file(repo)
 
         old_file = repo / "old.md"
         new_file = repo / "new.md"
@@ -213,7 +231,7 @@ class TestGate1ProhibitedTerms:
             capture_output=True,
         )
         old_file.rename(new_file)
-        new_file.write_text("This mentions <consumer-codename-b> after rename.\n")
+        new_file.write_text(f"This mentions {self._SYNTH_PATTERN_2} after rename.\n")
         subprocess.run(["git", "add", "-A"], cwd=str(repo), check=True)
 
         result = subprocess.run(
@@ -229,6 +247,68 @@ class TestGate1ProhibitedTerms:
         assert result.returncode != 0
         assert "new.md" in combined
         assert "old.md\tnew.md" not in combined
+
+    def test_gate1_noop_when_blocked_strings_file_absent(self, tmp_path):
+        """Without the config file, Gate 1 must be a no-op (does NOT block)."""
+        repo = _make_git_repo(tmp_path)
+        hook_dest = repo / ".githooks"
+        hook_dest.mkdir()
+        import shutil
+        shutil.copy(HOOK, hook_dest / "pre-commit")
+        # Note: no _seed_blocked_strings_file() call — config file is absent.
+
+        # Stage a file with content that the OLD hardcoded regex would have
+        # blocked. Under the new contract, with no config file present, Gate 1
+        # is a no-op so the commit proceeds (other gates may still fire on
+        # unrelated checks; we only assert Gate 1 itself didn't block).
+        bench_file = repo / "neutral.md"
+        bench_file.write_text("synthetic-blocked-token-alpha would have been blocked\n")
+        subprocess.run(["git", "add", str(bench_file)], cwd=str(repo), capture_output=True)
+
+        result = subprocess.run(
+            ["bash", str(hook_dest / "pre-commit")],
+            capture_output=True,
+            text=True,
+            cwd=str(repo),
+            env={**os.environ, "GIT_DIR": str(repo / ".git"), "PROJECT_ROOT": str(repo)},
+            timeout=20,
+        )
+
+        combined = result.stdout + result.stderr
+        # Gate 1 must NOT have produced its block message.
+        assert "Gate 1" not in combined or "blocked-strings" not in combined.lower()
+        # Returncode may be non-zero from later gates, but Gate 1 must be silent
+        # about a missing config file.
+
+    def test_gate1_respects_override_env(self, tmp_path):
+        """COS_BLOCKED_STRINGS_FILE env var overrides the default config path."""
+        repo = _make_git_repo(tmp_path)
+        hook_dest = repo / ".githooks"
+        hook_dest.mkdir()
+        import shutil
+        shutil.copy(HOOK, hook_dest / "pre-commit")
+
+        override_cfg = tmp_path / "external-blocked.txt"
+        override_cfg.write_text(f"{self._SYNTH_PATTERN_1}\n", encoding="utf-8")
+
+        bad_file = repo / "leak.md"
+        bad_file.write_text(f"contains {self._SYNTH_PATTERN_1}\n")
+        subprocess.run(["git", "add", str(bad_file)], cwd=str(repo), capture_output=True)
+
+        result = subprocess.run(
+            ["bash", str(hook_dest / "pre-commit")],
+            capture_output=True,
+            text=True,
+            cwd=str(repo),
+            env={
+                **os.environ,
+                "GIT_DIR": str(repo / ".git"),
+                "PROJECT_ROOT": str(repo),
+                "COS_BLOCKED_STRINGS_FILE": str(override_cfg),
+            },
+            timeout=20,
+        )
+        assert result.returncode != 0, "override config should still trigger the gate"
 
 
 # ─── Gate 2: Python syntax ────────────────────────────────────────────────────

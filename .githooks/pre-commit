@@ -6,27 +6,51 @@ set -euo pipefail
 errors=0
 
 # --- Gate 1: Block project-specific terms ---
-BLOCKED="n""1u|N""1u|N""1U|<consumer-codename-b>|<consumer-codename-c>|alta-tienda"
-VIOLATIONS=""
-while IFS= read -r staged_path; do
-  [ -z "$staged_path" ] && continue
-  case "$staged_path" in
-    .githooks/*|tests/*|.engram/exports/*|docs/architecture/POST-MORTEM*|docs/business/*)
-      continue
-      ;;
-  esac
-  if git show ":$staged_path" 2>/dev/null | grep -qE "$BLOCKED"; then
-    VIOLATIONS="${VIOLATIONS}${staged_path}"$'\n'
+#
+# The list of blocked terms lives OUTSIDE the hook source so it is not
+# itself committed to git. Operator places one literal pattern per line
+# at .cognitive-os/private/blocked-strings.txt (path is gitignored).
+# If the file is absent, Gate 1 is a no-op.
+#
+# Template + setup instructions: templates/blocked-strings.example.txt
+COS_ROOT_FOR_GATE1="${COS_ROOT:-$(git rev-parse --show-toplevel)}"
+BLOCKED_STRINGS_FILE="${COS_ROOT_FOR_GATE1}/.cognitive-os/private/blocked-strings.txt"
+BLOCKED_STRINGS_OVERRIDE="${COS_BLOCKED_STRINGS_FILE:-}"
+if [ -n "$BLOCKED_STRINGS_OVERRIDE" ] && [ -f "$BLOCKED_STRINGS_OVERRIDE" ]; then
+  BLOCKED_STRINGS_FILE="$BLOCKED_STRINGS_OVERRIDE"
+fi
+if [ -f "$BLOCKED_STRINGS_FILE" ]; then
+  # Read non-comment, non-empty lines as literal patterns.
+  BLOCKED_PATTERN_FILE="$(mktemp -t cos-gate1.XXXXXX)"
+  trap 'rm -f "$BLOCKED_PATTERN_FILE"' EXIT
+  grep -vE '^[[:space:]]*(#|$)' "$BLOCKED_STRINGS_FILE" > "$BLOCKED_PATTERN_FILE" || true
+  if [ -s "$BLOCKED_PATTERN_FILE" ]; then
+    VIOLATIONS=""
+    while IFS= read -r staged_path; do
+      [ -z "$staged_path" ] && continue
+      case "$staged_path" in
+        .githooks/*|tests/*|.engram/exports/*|docs/architecture/POST-MORTEM*|docs/business/*|templates/blocked-strings.example.txt)
+          continue
+          ;;
+      esac
+      if git show ":$staged_path" 2>/dev/null | grep -qFf "$BLOCKED_PATTERN_FILE"; then
+        VIOLATIONS="${VIOLATIONS}${staged_path}"$'\n'
+      fi
+    done < <(
+      git diff --cached --raw -M -C --diff-filter=ACM 2>/dev/null \
+        | awk '$4 != "160000" { n = split($0, parts, "\t"); if (n >= 2 && parts[n] != "") print parts[n] }'
+    )
+    VIOLATIONS=$(printf '%s' "$VIOLATIONS" | grep -v '^$' || true)
+    if [ -n "$VIOLATIONS" ]; then
+      echo "BLOCKED: Gate 1 — staged file(s) contain a pattern from $BLOCKED_STRINGS_FILE." >&2
+      echo "$VIOLATIONS" >&2
+      echo "" >&2
+      echo "  Edit the file or move the content to a path Gate 1 ignores" >&2
+      echo "  (.githooks/, tests/, .engram/exports/, docs/architecture/POST-MORTEM*, docs/business/)." >&2
+      echo "  Template + setup: templates/blocked-strings.example.txt" >&2
+      exit 1
+    fi
   fi
-done < <(
-  git diff --cached --raw -M -C --diff-filter=ACM 2>/dev/null \
-    | awk '$4 != "160000" { n = split($0, parts, "\t"); if (n >= 2 && parts[n] != "") print parts[n] }'
-)
-VIOLATIONS=$(printf '%s' "$VIOLATIONS" | grep -v '^$' || true)
-if [ -n "$VIOLATIONS" ]; then
-  echo "BLOCKED: Project-specific terms found. Use generic names."
-  echo "$VIOLATIONS"
-  exit 1
 fi
 
 # --- Gate 1b: Block developer-specific absolute home paths ---

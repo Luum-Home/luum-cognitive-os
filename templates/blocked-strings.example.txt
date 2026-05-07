@@ -1,0 +1,56 @@
+# Cognitive OS — Blocked-strings template (Gate 1 / pre-commit)
+#
+# This file is the operator-side configuration for the pre-commit Gate 1
+# hook (.githooks/pre-commit). One pattern per line. The hook treats each
+# line as a literal string to grep -F (NOT regex) against staged files.
+#
+# Lines beginning with `#` are comments. Empty lines are ignored.
+#
+# === Where to install ===
+#
+# Copy this file to:
+#
+#     .cognitive-os/private/blocked-strings.txt
+#
+# That path is gitignored (per top-level .gitignore: `.cognitive-os/*`),
+# so the patterns themselves never enter your git history. The pre-commit
+# hook reads from that path; if the file is absent, Gate 1 is a no-op.
+#
+# === What to put here ===
+#
+# Project-specific identifiers that should NEVER appear in your repo's
+# committed content. Typical examples:
+#
+#   - Internal client / customer / product code names
+#   - Internal service names not intended for public release
+#   - Internal repo paths from sister projects
+#   - Trademarked names you don't want to associate publicly with this repo
+#
+# DO NOT put here:
+#
+#   - API tokens, passwords, or secrets — use the secret-detector hook
+#     and a real secret scanner (gitleaks/trufflehog) instead
+#   - Generic technical terms (database, payment, transaction) — these
+#     produce too many false positives and degrade the gate's signal
+#
+# === Example contents (REPLACE BEFORE USE) ===
+
+# acme-corp
+# project-thunderbolt
+# internal-payments-svc
+
+# === Privacy of this file ===
+#
+# The patterns themselves are sensitive — they reveal what you don't want
+# revealed. Keep .cognitive-os/private/blocked-strings.txt out of:
+#
+#   - git history (gitignored already)
+#   - shared chat logs / Slack
+#   - issue tracker comments
+#   - LLM prompt context (Cognitive OS' confidentiality-enforcer hook
+#     should already block this, but double-check via an audit run)
+#
+# If you suspect this file leaked, treat it as a secret rotation event:
+# rename the codenames in your project, then update this file, then run
+# `cos history sanitize` (ADR-218) on any repo that may have ingested
+# the old codenames.
