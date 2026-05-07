@@ -14,8 +14,10 @@ policy:
 
 gates:
   prelaunch:
-    enabled: false
-    reason: slice_a_library_only_until_worktree_lifecycle_default_on
+    enabled: true
+    mode: conditional_write_cloud_detached
+    bypass_env: COS_SKIP_BRANCH_PER_TASK_GATE
+    enforcement_env: COS_BRANCH_PER_TASK_ENFORCE
   readiness:
     report: true
 
