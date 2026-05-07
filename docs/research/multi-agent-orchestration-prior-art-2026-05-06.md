@@ -691,4 +691,4 @@ Format: URL — one-line takeaway.
 
 ---
 
-*End of research report. ~10,000 words. 79 sources cited.*
+*End of research report. ~7,850 words (`wc -w`). 79 sources cited in §8.*

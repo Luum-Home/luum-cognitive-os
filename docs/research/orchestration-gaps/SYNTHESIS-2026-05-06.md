@@ -218,23 +218,37 @@ Three phases. Each phase is a coherent unit; Phase 1 is the prerequisite layer; 
 
 ---
 
-## ADR proposal slate (numbered relative to current ceiling)
+## ADR proposal slate
 
-Current ceiling: ADR-222 (proposed). Recommended new ADRs:
+**Reserved slots — already filled or earmarked**:
+- ADR-219 — Work Ownership Liveness Preflight (existing, accepted)
+- ADR-220 — Worktree Divergence Audit (existing, accepted)
+- ADR-221 — Stash Ref by SHA, Not by Position (existing, accepted slice 1)
+- ADR-222 — Pre-Agent Stash Two-Phase / Deferred Until Launch Confirmed (existing, proposed — tactical mitigation while G1+ migrate off auto-stash)
+- ADR-223 — Agent Lifecycle Reconstruction (reserved by [`prior-art research R1`](../multi-agent-orchestration-prior-art-2026-05-06.md): kill auto-pre-agent-stash, adopt worktree-per-write-agent + mutex on `git worktree add`)
+- ADR-224 — Shadow-State Snapshots, Off-Repo (reserved by [`prior-art research R2`](../multi-agent-orchestration-prior-art-2026-05-06.md): Cline-pattern safety net, opt-in)
+- ADR-225 — Branch-Per-Task Mode (reserved by [`prior-art research R5`](../multi-agent-orchestration-prior-art-2026-05-06.md): production-mode policy)
 
-- **ADR-223** — Shadow-Git Checkpoint Substrate (G1)
-- **ADR-224** — Detached Agent Daemon (G2)
-- **ADR-225** — Agent Handoff Envelope + Call-Chain Deduplication (G3)
-- **ADR-226** — MCP Server Surface for COS Primitives (G4)
-- **ADR-227** — Sandbox Adapter Tiers: OS-Native Default, microVM Opt-In (G5)
-- **ADR-228** — Cross-Session Agent-Team File-IPC Substrate (G6)
-- **ADR-229** — Approval Policies as Code (multi-phase migration) (G7)
-- **ADR-230** — Session Budget Pre-Call Gate (G8)
-- **ADR-231** — Event-Sourced Session Bus (G9 — load-bearing for several others)
-- **ADR-232** — Retry Contract + Idempotency Keys (G10)
-- **ADR-233** — Deferred Tool Loading + ToolSearch Adoption (G11) [or fold into ADR-226]
+**New ADRs proposed by this synthesis** (numbered to skip the reserved set):
 
-11 candidate ADRs. Recommend writing 4 first (the high-leverage Phase 1 set: 231, 223, 232+230 combined, 225) and sequencing the rest behind those.
+- **ADR-226** — Event-Sourced Session Bus (G9 — load-bearing for several others)
+- **ADR-227** — Shadow-Git Checkpoint Substrate (G1) [pairs with ADR-224 — both consume per-session shadow state; consolidation candidate]
+- **ADR-228** — Retry Contract + Idempotency Keys (G10)
+- **ADR-229** — Session Budget Pre-Call Gate (G8) [consolidation candidate with ADR-228]
+- **ADR-230** — Agent Handoff Envelope + Call-Chain Deduplication (G3)
+- **ADR-231** — MCP Server Surface for COS Primitives (G4)
+- **ADR-232** — Sandbox Adapter Tiers: OS-Native Default, microVM Opt-In (G5)
+- **ADR-233** — Cross-Session Agent-Team File-IPC Substrate (G6)
+- **ADR-234** — Approval Policies as Code (multi-phase migration) (G7)
+- **ADR-235** — Detached Agent Daemon (G2)
+- **ADR-236** — Deferred Tool Loading + ToolSearch Adoption (G11) [or fold into ADR-231]
+
+11 candidate ADRs. Recommend writing 4 Phase-1 first (the high-leverage substrate set: **226 event-sourced bus**, **227 shadow-git**, **228+229 combined retry+budget**, **230 handoff envelope**) and sequencing the rest behind those.
+
+**Coordinate with the reserved set**:
+- ADR-223 (kill auto-stash) and ADR-227 (shadow-git) overlap: shadow-git is the safety-net replacement that ADR-224 anticipates. Sequencing: 223 lands first (structural change), 227+224 land together (substrate + safety-net).
+- ADR-222 (two-phase capture) stays as **tactical mitigation** for as long as `git stash` remains on the pre-agent path. Once 223 lands, 222 can be deprecated.
+- ADR-225 (branch-per-task) is policy-level and can land anytime; pairs naturally with 235 (detached daemon) which benefits from a strict branch contract.
 
 ---
 
