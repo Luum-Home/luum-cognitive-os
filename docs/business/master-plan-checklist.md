@@ -236,18 +236,18 @@
   - [x] Feed ADR-204 quality counts into ADR-201 Performance Ledger so corrupt/suspect rows are excluded from rollups.
   - [x] Block `PromoteFromTelemetry` consumption above corrupt-ratio policy via Performance Ledger `consumption_policy` and `--require-consumable` CLI gate.
 - [x] Implement ADR-205 run flight recorder substrate before treating service-mode observability as complete: `lib/trace_joiner.py`, `scripts/cos-run-trace`, `cos observe run`, run-id/event-id normalization, latest run report, JSONL index, state-retention declarations, and tests proving private-content payloads stay ref-only.
-- [ ] Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.
-- [ ] Implement ADR-207 skill performance ledger and lifecycle closure before claiming skill self-improvement.
+- [x] Implement ADR-206 public claim gate and purge/demote unbacked autonomous/MAPE-K/self-improvement claims before public launch.
+- [x] Implement ADR-207 skill performance ledger substrate before claiming skill self-improvement; router override events and rewrite proposals remain follow-up slices.
 - [x] Adopt ADR-212 cross-stack license audit toolchain: Syft+Grype primary, Trivy guarded secondary, workflow safety gate, install/run wrappers, and tests.
 - [x] Fix ADR-213 Agent hook ordering so blocking preflight runs before stash snapshot, preventing hidden WIP after blocked launches.
 - [x] Implement ADR-216 Tool Discovery Pre-Use Gate so ad-hoc license/repo tool choices are blocked or warned when COS primitives exist.
 - [x] Implement ADR-219 work ownership liveness preflight so preserved branches, stashes, linked worktrees, claims, and process activity are joined before cleanup/closure claims.
-- [ ] Implement ADR-208 imported-pattern closure audit so producer-only imports cannot be promoted as active loops.
+- [x] Implement ADR-208 imported-pattern closure audit so producer-only imports cannot be promoted as active loops.
   - [x] Wire the first consumer loop: dependency manifest additions now hit a pre-commit dependency-adoption gate and require staged `/repo-scout`, `/repo-forensics`, or equivalent evidence before adoption.
   - [ ] Add the full imported-pattern closure manifest/audit that proves producer, consumer, scheduler, evaluator, owner, demotion path, and contract tests before promotion claims.
-- [ ] Implement ADR-209 maintainer experiment contract before executable maintainer changes.
+- [x] Implement ADR-209 maintainer experiment contract before executable maintainer changes.
 - [ ] Keep ADR-210 fleet confidence as future/cloud-only until ADR-202 sanitized-export and provenance are enforced.
-- [x] Implement ADR-211 initial service-mode readiness gate before any standalone/cloud autonomy launch claim: `lib/service_mode_readiness.py`, `scripts/cos-service-readiness-gate`, `cos service readiness`, JSON/compact output, and tests proving missing private-content/trace/ledger gates fail red. ADR-209 executable experiment contract remains a deliberate red gate.
+- [x] Implement ADR-211 initial service-mode readiness gate before any standalone/cloud autonomy launch claim: `lib/service_mode_readiness.py`, `scripts/cos-service-readiness-gate`, `cos service readiness`, JSON/compact output, and tests proving missing private-content/trace/ledger gates fail red. ADR-209 executable experiment contract is now green at schema/evaluator level; executable Maintainer changes still require proposal integration and canary slices.
 - [x] Self-evolving doctrine proposals are documented in [Self-Evolving Doctrine Proposals](../architecture/self-evolving-doctrine-proposals.md) and [ADR-135](../adrs/ADR-135-self-evolving-doctrine-proposals.md), with `scripts/cos-doctrine-proposer` generating proposed, non-runtime doctrine amendments from control-plane evidence.
 - [x] Cross-instance learning runway is documented in [Cross-Instance Learning Runway](../architecture/cross-instance-learning-runway.md) and [ADR-136](../adrs/ADR-136-cross-instance-learning-runway.md), with consumer evidence exchange, deterministic registry locks, propose-only Engram bundles, and Shape-B federation trigger audit.
 - [x] Cross-instance local consumer E2E is documented in [Cross-Instance Consumer E2E Drill — 2026-05-03](../reports/cross-instance-consumer-e2e-2026-05-03.md), proving install, provenance export/import, drills, and that self-owned evidence does not sign external-help claims.

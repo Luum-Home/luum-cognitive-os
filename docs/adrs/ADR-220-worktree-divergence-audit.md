@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — preflight/readiness gate active
 **Date**: 2026-05-06
 **Related**: ADR-035 (worktree CWD enforcement), ADR-099 (pre-agent snapshot), ADR-116 (governed preflight), ADR-117 (stash mutation reversibility), ADR-129 (safe worktree removal), ADR-182 (branch ownership lock), ADR-219 (work ownership liveness preflight)
 **Source**: Operator session 2026-05-06 — sed-fix on `.cognitive-os/preserve-manifests/*` appeared "lost" because commits landed on `main` while the operator was viewing a worktree branch 3 commits behind. Forensic conclusion: silent worktree↔main divergence with no first-class detection.

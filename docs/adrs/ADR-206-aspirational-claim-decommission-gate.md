@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — public claim gate active  
 **Date**: 2026-05-06  
 **Related**: ADR-031, ADR-061, ADR-133, ADR-198, ADR-201  
 **Source**: `.cognitive-os/strategy/research/03-aspirational-dormant.md`, `.cognitive-os/strategy/00-first-approach.md`, `.cognitive-os/strategy/02-pre-launch-playbook.md`
@@ -57,11 +57,11 @@ claim inventory.
 
 ## Implementation slices
 
-1. Add `manifests/public-claim-evidence.yaml`.
-2. Add `scripts/cos-public-claim-gate`.
-3. Seed high-risk claims from the strategy research top-danger list.
-4. Wire into release/readiness checks, not every local edit.
-5. Add suppression format requiring expiry and evidence owner.
+1. [x] Add `manifests/public-claim-evidence.yaml`.
+2. [x] Add `scripts/cos-public-claim-gate`.
+3. [x] Seed high-risk claims from the strategy research top-danger list.
+4. [x] Wire into release/readiness checks, not every local edit.
+5. [ ] Add suppression format requiring expiry and evidence owner.
 
 ## Acceptance criteria
 

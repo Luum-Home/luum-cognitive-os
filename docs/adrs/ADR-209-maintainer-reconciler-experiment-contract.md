@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — experiment schema slice active  
 **Date**: 2026-05-06  
 **Related**: ADR-201, ADR-204, ADR-205, ADR-207  
 **Source**: `.cognitive-os/strategy/research/06-external-patterns-benchmark.md`, `.cognitive-os/strategy/research/08-self-improvement-roadmap.md`
@@ -65,11 +65,11 @@ passes, fails, or is inconclusive.
 
 ## Implementation slices
 
-1. Add `manifests/maintainer-experiment-schema.yaml`.
-2. Add `lib/maintainer_experiment.py`.
-3. Require experiment design for ADR-201 proposals that mutate behavior.
-4. Add canary fixture for router-confidence change.
-5. Add outcome evaluator with pass/fail/inconclusive statuses.
+1. [x] Add `manifests/maintainer-experiment-schema.yaml`.
+2. [x] Add `lib/maintainer_experiment.py`.
+3. [ ] Require experiment design for ADR-201 proposals that mutate behavior.
+4. [ ] Add canary fixture for router-confidence change.
+5. [x] Add outcome evaluator with pass/fail/inconclusive statuses.
 
 ## Acceptance criteria
 
