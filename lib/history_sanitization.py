@@ -272,3 +272,397 @@ def build_report(project_dir: Path, *, mode: str = "dry-run") -> dict[str, Any]:
 
 def dumps_json(payload: dict[str, Any]) -> str:
     return json.dumps(payload, indent=2, sort_keys=True)
+
+
+# ────────────────────────────────────────────────────────────────────────
+# Execute slice (ADR-218 §"Implementation slices" 2 + 6)
+# ────────────────────────────────────────────────────────────────────────
+
+# A `SanitizationError` is raised by `execute()` for any pre-condition
+# violation or in-flight failure. Callers should catch it and surface its
+# `.message` + `.code` to the operator. Crucially: the error is raised
+# AFTER any partial work is rolled back where possible, or else the error
+# message instructs the operator to restore from the backup mirror.
+class SanitizationError(RuntimeError):
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
+
+
+def _utc_timestamp() -> str:
+    from datetime import datetime, timezone
+    return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+
+
+def _backup_destination(project_dir: Path, ts: str) -> Path:
+    home = Path(os.path.expanduser("~"))
+    return home / ".cognitive-os" / "recovery" / f"pre-history-sanitization-{ts}.git"
+
+
+def _check_clean_worktree(project_dir: Path) -> None:
+    proc = git(project_dir, ["status", "--porcelain"])
+    if proc.returncode != 0:
+        raise SanitizationError("git-status-failed", f"git status returned {proc.returncode}: {proc.stderr.strip()}")
+    if proc.stdout.strip():
+        raise SanitizationError(
+            "working-tree-not-clean",
+            "working tree has uncommitted changes; commit or stash before executing the rewrite.",
+        )
+
+
+def _check_filter_repo_installed() -> str:
+    path = shutil.which("git-filter-repo")
+    if not path:
+        raise SanitizationError(
+            "git-filter-repo-missing",
+            "git-filter-repo is not on PATH; run scripts/install-git-filter-repo.sh first.",
+        )
+    return path
+
+
+def _check_destructive_env(manifest: dict[str, Any]) -> None:
+    required_env = (manifest.get("execution") or {}).get("require_env", "COS_ALLOW_DESTRUCTIVE_GIT")
+    required_value = str((manifest.get("execution") or {}).get("require_env_value", "1"))
+    if os.environ.get(str(required_env)) != required_value:
+        raise SanitizationError(
+            "destructive-git-env-missing",
+            f"Execute requires {required_env}={required_value}.",
+        )
+
+
+def _check_backup_writable(backup_path: Path) -> None:
+    if backup_path.exists():
+        raise SanitizationError(
+            "backup-destination-exists",
+            f"backup destination already exists: {backup_path}; refuse to overwrite.",
+        )
+    backup_path.parent.mkdir(parents=True, exist_ok=True)
+    if not os.access(str(backup_path.parent), os.W_OK):
+        raise SanitizationError("backup-destination-unwritable", f"backup parent not writable: {backup_path.parent}")
+
+
+def _create_backup_mirror(project_dir: Path, backup_path: Path) -> None:
+    proc = subprocess.run(
+        ["git", "clone", "--mirror", str(project_dir), str(backup_path)],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise SanitizationError(
+            "backup-mirror-failed",
+            f"git clone --mirror failed (rc={proc.returncode}): {proc.stderr.strip()[:400]}",
+        )
+    fsck = subprocess.run(
+        ["git", "-C", str(backup_path), "fsck", "--no-progress"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if fsck.returncode != 0:
+        raise SanitizationError(
+            "backup-mirror-fsck-failed",
+            f"backup mirror failed fsck: {fsck.stderr.strip()[:400]}",
+        )
+
+
+def _write_replacements_file(rules: list[dict[str, Any]], target_path: Path) -> int:
+    """Write replacement rules in git-filter-repo's `OLD==>NEW` format.
+
+    Returns the number of rules written. Skips rules whose value is unresolved
+    (empty or None) — those would have been flagged in `dry-run` and the
+    caller is expected to refuse to proceed if the dry-run had warnings.
+
+    Order matters: longer (more specific) patterns are written FIRST so that
+    git-filter-repo applies them before shorter overlapping prefixes. This
+    is the opposite ordering from naive expectation; git-filter-repo iterates
+    rules per-blob and applies all matches, so the longest-first ordering
+    minimises double-application risk on overlapping prefixes (e.g. when
+    repo-absolute-path is a strict superset of operator-home-prefix).
+    """
+    sorted_rules = sorted(rules, key=lambda r: -len(str(r.get("value") or "")))
+    lines: list[str] = []
+    for rule in sorted_rules:
+        value = rule.get("value")
+        replacement = rule.get("replacement")
+        if not value or replacement is None:
+            continue
+        # Filter-repo replacement file format: `OLD==>NEW` literal-by-default.
+        # Manifest "mode: regex" rules use `regex:OLD==>NEW`; we honour that.
+        mode = rule.get("mode", "literal")
+        if mode == "regex":
+            lines.append(f"regex:{value}==>{replacement}")
+        else:
+            lines.append(f"{value}==>{replacement}")
+    target_path.parent.mkdir(parents=True, exist_ok=True)
+    target_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    return len(lines)
+
+
+def _run_filter_repo(project_dir: Path, rules_file: Path) -> subprocess.CompletedProcess[str]:
+    proc = subprocess.run(
+        ["git", "filter-repo", "--replace-text", str(rules_file), "--force"],
+        cwd=str(project_dir),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise SanitizationError(
+            "filter-repo-failed",
+            f"git filter-repo --replace-text failed (rc={proc.returncode}): "
+            f"{proc.stderr.strip()[:600] or proc.stdout.strip()[:600]}. "
+            f"The repo may be in a partially-rewritten state; restore from the backup mirror.",
+        )
+    return proc
+
+
+def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]]) -> dict[str, int]:
+    """Run grep against post-rewrite history for each replacement source.
+
+    Each remaining hit count must be 0 (or close to 0 for regex rules with
+    intentional partial matches) for the rewrite to be considered complete.
+    Caller decides whether to treat non-zero remaining counts as failure.
+    """
+    remaining: dict[str, int] = {}
+    for rule in rules:
+        value = rule.get("value")
+        rule_id = rule.get("id", "unknown")
+        if not value:
+            remaining[rule_id] = -1
+            continue
+        proc = subprocess.run(
+            ["git", "log", "--all", "--pretty=format:", "-p"],
+            cwd=str(project_dir),
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if proc.returncode != 0:
+            remaining[rule_id] = -1
+            continue
+        try:
+            count = proc.stdout.count(str(value))
+        except Exception:
+            count = -1
+        remaining[rule_id] = count
+    return remaining
+
+
+def _create_tombstone_branch(project_dir: Path, ts: str) -> str:
+    branch_name = f"history-sanitization-{ts}"
+    proc = git(project_dir, ["branch", "-f", branch_name, "HEAD"])
+    if proc.returncode != 0:
+        raise SanitizationError(
+            "tombstone-branch-failed",
+            f"failed to create tombstone branch {branch_name}: {proc.stderr.strip()}",
+        )
+    return branch_name
+
+
+def _write_post_execute_report(
+    project_dir: Path,
+    *,
+    ts: str,
+    pre_head: str,
+    post_head: str,
+    pre_commit_count: int,
+    post_commit_count: int,
+    rules: list[dict[str, Any]],
+    backup_path: Path,
+    tombstone_branch: str,
+    rules_written: int,
+    remaining_hits: dict[str, int],
+) -> Path:
+    report_dir = project_dir / ".cognitive-os" / "reports" / "history-sanitization"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    report_path = report_dir / f"{ts}.json"
+
+    payload = {
+        "schema_version": SCHEMA_VERSION,
+        "executed_at": ts,
+        "policy_reference": "docs/adrs/ADR-218-history-sanitization-toolchain.md",
+        "boundary_tag_recommended": "v0.27.1-pre-history-rewrite",
+        "backup_mirror": str(backup_path),
+        "tombstone_branch": tombstone_branch,
+        "pre_rewrite": {
+            "head": pre_head,
+            "commit_count": pre_commit_count,
+        },
+        "post_rewrite": {
+            "head": post_head,
+            "commit_count": post_commit_count,
+        },
+        "replacements": [
+            {
+                "id": str(rule.get("id", "unknown")),
+                "mode": str(rule.get("mode", "literal")),
+                "replacement": str(rule.get("replacement", "")),
+                "expected_hits": rule.get("hit_count"),
+                "remaining_hits": remaining_hits.get(str(rule.get("id", "unknown")), -1),
+            }
+            for rule in rules
+        ],
+        "rules_written_to_filter_file": rules_written,
+        "verification": {
+            "all_replacements_resolved_to_zero": all(v == 0 for v in remaining_hits.values()),
+            "commit_count_preserved": pre_commit_count == post_commit_count,
+        },
+        "policy": (
+            "Rewrite executed. The backup mirror is the rollback path. "
+            "Operator must (1) verify counts above, (2) re-tag versions onto post-rewrite "
+            "equivalent SHAs, (3) copy this report to docs/reports/, (4) write disclosure doc, "
+            "(5) force-push origin/main only after 1-4."
+        ),
+    }
+    report_path.write_text(dumps_json(payload), encoding="utf-8")
+    return report_path
+
+
+def execute(
+    project_dir: Path,
+    *,
+    confirmed: bool,
+    timestamp: str | None = None,
+) -> dict[str, Any]:
+    """Run the actual history rewrite per ADR-218.
+
+    Pre-conditions (refuses to proceed unless ALL pass):
+      - working tree clean
+      - git-filter-repo installed
+      - COS_ALLOW_DESTRUCTIVE_GIT=1 (or manifest-configured equivalent)
+      - backup destination writable and not pre-existing
+      - dry-run report has no `block`-severity findings (caller responsibility)
+      - operator confirmation explicit (`confirmed=True`)
+
+    On success returns a dict with:
+      - schema_version
+      - status: "ok" | "completed-with-warnings"
+      - report_path: absolute path to the post-execute JSON report
+      - backup_mirror: absolute path
+      - tombstone_branch: name
+      - pre_rewrite, post_rewrite: head + commit_count
+      - remaining_hits: per-rule grep count (must be 0 for clean rewrite)
+
+    On any failure raises `SanitizationError` with `.code` and `.message`.
+    Partial-state recovery: see the backup mirror at the path declared in
+    the error message or in the report.
+    """
+    if not confirmed:
+        raise SanitizationError(
+            "operator-confirmation-required",
+            "execute() refuses to proceed without confirmed=True; the CLI is responsible for the y/n prompt.",
+        )
+
+    project = project_dir.resolve()
+    manifest = load_manifest(project)
+    ts = timestamp or _utc_timestamp()
+
+    # 1. Pre-conditions
+    _check_filter_repo_installed()
+    _check_destructive_env(manifest)
+    _check_clean_worktree(project)
+
+    backup_path = _backup_destination(project, ts)
+    _check_backup_writable(backup_path)
+
+    # 2. Resolve rules (same source of truth as dry-run)
+    replacement_rules, rule_findings = resolved_rules(manifest)
+    if any(f.severity == "block" for f in rule_findings):
+        first_block = next(f for f in rule_findings if f.severity == "block")
+        raise SanitizationError(
+            "rule-resolution-blocked",
+            f"replacement rule resolution failed: {first_block.message}",
+        )
+
+    # Conflict guard against preserve patterns
+    preserve_rules = [r for r in (manifest.get("preserve") or [])]
+    conflicts = preserve_conflicts(replacement_rules, preserve_rules)
+    if conflicts:
+        raise SanitizationError(
+            "preserve-conflict",
+            f"replacement rules conflict with preserve patterns: {conflicts}; refine manifest before executing.",
+        )
+
+    # 3. Capture pre-rewrite state
+    pre_head_proc = git(project, ["rev-parse", "HEAD"])
+    if pre_head_proc.returncode != 0:
+        raise SanitizationError("git-rev-parse-failed", "could not read HEAD before rewrite.")
+    pre_head = pre_head_proc.stdout.strip()
+
+    pre_count_proc = git(project, ["rev-list", "--count", "--all"])
+    pre_commit_count = int(pre_count_proc.stdout.strip() or "0")
+
+    # 4. Backup mirror (mandatory; backup-or-refuse)
+    _create_backup_mirror(project, backup_path)
+
+    # 5. Generate replacements file
+    rules_file = project / ".cognitive-os" / "runtime" / f"history-sanitize-rules-{ts}.txt"
+    rules_written = _write_replacements_file(replacement_rules, rules_file)
+    if rules_written == 0:
+        raise SanitizationError(
+            "no-rules-to-apply",
+            "no replacement rules resolved — refusing to run filter-repo with empty rules.",
+        )
+
+    # 6. Run filter-repo (THE destructive step)
+    try:
+        _run_filter_repo(project, rules_file)
+    finally:
+        # The rules file is intentionally kept for forensic audit (report
+        # references it). It can be deleted by the operator post-verify.
+        pass
+
+    # 7. Capture post-rewrite state
+    post_head_proc = git(project, ["rev-parse", "HEAD"])
+    if post_head_proc.returncode != 0:
+        raise SanitizationError(
+            "post-rewrite-rev-parse-failed",
+            f"could not read HEAD after filter-repo. Restore from backup: {backup_path}",
+        )
+    post_head = post_head_proc.stdout.strip()
+    post_count_proc = git(project, ["rev-list", "--count", "--all"])
+    post_commit_count = int(post_count_proc.stdout.strip() or "0")
+
+    if pre_head == post_head:
+        raise SanitizationError(
+            "no-rewrite-occurred",
+            "filter-repo did not change HEAD — replacement rules may not have matched anything.",
+        )
+
+    # 8. Verify replacements applied
+    remaining_hits = _verify_replacements_applied(project, replacement_rules)
+
+    # 9. Tombstone branch
+    tombstone_branch = _create_tombstone_branch(project, ts)
+
+    # 10. Write report
+    report_path = _write_post_execute_report(
+        project,
+        ts=ts,
+        pre_head=pre_head,
+        post_head=post_head,
+        pre_commit_count=pre_commit_count,
+        post_commit_count=post_commit_count,
+        rules=replacement_rules,
+        backup_path=backup_path,
+        tombstone_branch=tombstone_branch,
+        rules_written=rules_written,
+        remaining_hits=remaining_hits,
+    )
+
+    all_clean = all(v == 0 for v in remaining_hits.values())
+    count_preserved = pre_commit_count == post_commit_count
+
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "status": "ok" if (all_clean and count_preserved) else "completed-with-warnings",
+        "report_path": str(report_path),
+        "backup_mirror": str(backup_path),
+        "tombstone_branch": tombstone_branch,
+        "pre_rewrite": {"head": pre_head, "commit_count": pre_commit_count},
+        "post_rewrite": {"head": post_head, "commit_count": post_commit_count},
+        "remaining_hits": remaining_hits,
+        "rules_file": str(rules_file),
+    }
