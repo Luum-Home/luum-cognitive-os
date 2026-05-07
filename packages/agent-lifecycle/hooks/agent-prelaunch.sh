@@ -268,6 +268,34 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inv
   fi
 fi
 
+
+AGENT_WORKTREE_CONTEXT=""
+if [ "${COS_AGENT_LIFECYCLE_MODE:-}" = "worktree" ] && [ -z "$ALLOW_RO_ARG" ] && [ -x "$PROJECT_DIR/scripts/cos-agent-worktree-prepare" ]; then
+  set +e
+  WORKTREE_OUT=$("$PROJECT_DIR/scripts/cos-agent-worktree-prepare" --project-dir "$PROJECT_DIR" --task-id "$TASK_ID" --session-id "$SESSION_ID" --json 2>&1)
+  WORKTREE_RC=$?
+  set -e
+  if [ "$WORKTREE_RC" -ne 0 ]; then
+    echo "ADR-223 AGENT LIFECYCLE BLOCK: failed to prepare dedicated write-agent worktree." >&2
+    echo "$WORKTREE_OUT" >&2
+    exit 2
+  fi
+  if command -v jq >/dev/null 2>&1; then
+    AGENT_WORKTREE_PATH=$(printf '%s' "$WORKTREE_OUT" | jq -r '.worktree_path // empty' 2>/dev/null || true)
+    AGENT_WORKTREE_BRANCH=$(printf '%s' "$WORKTREE_OUT" | jq -r '.branch // empty' 2>/dev/null || true)
+    if [ -n "$AGENT_WORKTREE_PATH" ]; then
+      mkdir -p "$PROJECT_DIR/.cognitive-os/runtime" 2>/dev/null || true
+      printf '{"schema_version":"agent-lifecycle-snapshot-suppression/v1","agent_id":"%s","task_id":"%s","session_id":"%s","worktree_path":"%s","branch":"%s","created_at":"%s"}
+' \
+        "$AGENT_LEDGER_ID" "$TASK_ID" "$SESSION_ID" "$AGENT_WORKTREE_PATH" "$AGENT_WORKTREE_BRANCH" "$TIMESTAMP" \
+        > "$PROJECT_DIR/.cognitive-os/runtime/suppress-agent-snapshot-${AGENT_LEDGER_ID}.json" 2>/dev/null || true
+      AGENT_WORKTREE_CONTEXT="WORKING DIR: $AGENT_WORKTREE_PATH
+(ADR-223: dedicated worktree-per-write-agent, branch=$AGENT_WORKTREE_BRANCH.)
+Do not write in the operator worktree. Scope git commands with: git -C "$AGENT_WORKTREE_PATH" ..."
+    fi
+  fi
+fi
+
 # Fix 1 (ADR-097): write "pending" here, not "in_progress".
 # The hook fires at PreToolUse — after dispatch-gate has allowed the launch —
 # but BEFORE the agent process actually starts.  Status flips to "in_progress"
@@ -357,6 +385,15 @@ PYEOF
       fi
     fi
   done <<< "$DOMAINS"
+fi
+
+if [ -n "${AGENT_WORKTREE_CONTEXT:-}" ]; then
+  if command -v python3 >/dev/null 2>&1; then
+    AGENT_WORKTREE_CONTEXT="$AGENT_WORKTREE_CONTEXT" python3 - <<'PYEOF'
+import json, os
+print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "additionalContext": os.environ.get("AGENT_WORKTREE_CONTEXT", "")}}))
+PYEOF
+  fi
 fi
 
 exit 0
