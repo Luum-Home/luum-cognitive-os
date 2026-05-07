@@ -10,7 +10,9 @@ AI coding assistants (Claude Code, Cursor, Codex, Gemini) are the most transform
 
 - **No memory**: Every session starts from scratch. The AI doesn't remember decisions, bugs, or conventions.
 - **No quality control**: Nothing prevents an agent from introducing bugs, skipping tests, or violating the architecture.
-- **No coordination**: Running multiple agents in parallel creates chaos — they overwrite each other's work.
+- **No coordination**: Running multiple agents in parallel creates chaos — handoff cycles cause 41–87% failure rates in production multi-agent systems (MAST 2025), and zero frameworks prevent it.
+- **No replay**: When an agent goes wrong at step 17, you can't rewind to step 16 and try again. Devin solved this with hypervisor snapshots; nobody else has.
+- **No cost safety**: A single runaway loop in November 2025 burned $47,000 in API costs because dashboards detect *after* the fact, not before the next call fires.
 - **No observability**: There's no way to know what the agents did, how many tokens they burned, or whether they succeeded.
 - **No continuous improvement**: When an agent makes a mistake and you correct it, that correction is lost. The same error will happen again.
 
