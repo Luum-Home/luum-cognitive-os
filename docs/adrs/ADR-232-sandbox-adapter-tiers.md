@@ -42,7 +42,7 @@ Not implemented yet:
 - Landlock/seccomp policy generation beyond Bubblewrap CLI flags.
 - E2B / microVM adapter.
 - ConTree branching adapter.
-- Sandboxing the LLM/provider HTTP call itself. The current dispatch integration is a truthful preflight boundary, not process isolation for Python provider calls.
+- Claude CLI provider subprocesses can now be wrapped by the sandbox adapter when `require_sandbox` is used with `allow_sandbox_fallback` policy. In-process provider HTTP calls still are not OS-sandboxed; they require a future subprocess/microVM boundary.
 
 ## Hard rules
 

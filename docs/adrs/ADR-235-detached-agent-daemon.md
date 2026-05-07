@@ -47,12 +47,17 @@ Implemented Slice A:
 - Manifest policy at `manifests/detached-agent-daemon.yaml`.
 - Unit and behavior tests cover queueing, generated launch script, dry-run launch, CLI flow, and fake-tmux launch.
 
+Implemented additional slices:
+
+- Watchdog `reap_stale` marks stale/missing-heartbeat running tasks failed with `done.json` receipts.
+- ADR-228 budget gate checks estimated cost before enqueue and records estimate on completion.
+- `enqueue-team-next` claims the next ADR-233 team task and queues a detached command template.
+- `service-plan` prints launchd/systemd definitions without installing them.
+
 Not implemented yet:
 
-- launchd/systemd user-service installer.
-- Watchdog timeout kill and heartbeat staleness enforcement.
-- Cost/budget pre-call integration with ADR-228.
-- AgentTeam task auto-enqueue from ADR-233 queues.
+- launchd/systemd installer that mutates user service directories.
+- Process kill escalation beyond state/done receipts.
 
 ## Hard rules
 

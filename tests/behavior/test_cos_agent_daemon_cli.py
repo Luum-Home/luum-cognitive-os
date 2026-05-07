@@ -63,3 +63,39 @@ def test_cos_agent_daemon_uses_fake_tmux_runtime(tmp_path: Path) -> None:
 
     assert launched["status"] == "launched"
     assert "new-session -d -s cos-agent-docs" in fake_log.read_text()
+
+@pytest.mark.behavior
+def test_cos_agent_daemon_reap_stale_and_service_plan(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    run_agent_daemon(project, "--project-dir", str(project), "enqueue", "--task-id", "stale", "--command", "sleep 99", "--max-runtime-seconds", "1")
+    run_agent_daemon(project, "--project-dir", str(project), "run-once", "--dry-run")
+    reaped = run_agent_daemon(project, "--project-dir", str(project), "reap", "--stale-heartbeat-seconds", "0")
+    assert reaped["stale_failed"][0]["task_id"] == "stale"
+
+    plan = run_agent_daemon(project, "--project-dir", str(project), "service-plan", "--kind", "systemd")
+    assert "ExecStart" in plan["content"]
+
+
+@pytest.mark.behavior
+def test_cos_agent_daemon_enqueue_team_next(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    subprocess.run(
+        [str(COS), "team", "--json", "--project-dir", str(project), "task", "create", "--team", "release", "--task-id", "docs", "--title", "Write docs"],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=15,
+        check=True,
+    )
+    queued = run_agent_daemon(
+        project,
+        "--project-dir", str(project),
+        "enqueue-team-next",
+        "--team", "release",
+        "--session-id", "worker",
+        "--command-template", "echo {task_id}:{title}",
+    )
+    assert queued["status"] == "queued_team_task"
+    assert queued["task"]["command"] == "echo docs:Write docs"

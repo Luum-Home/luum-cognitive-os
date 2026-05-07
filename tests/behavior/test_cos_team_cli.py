@@ -141,3 +141,40 @@ def test_cos_team_cli_task_message_and_handoff_flow(tmp_path: Path) -> None:
     handoff_payloads = [json.loads(text) for text in texts if text.startswith('{"handoff"') or '"type": "handoff"' in text]
     assert handoff_payloads[0]["type"] == "handoff"
     assert handoff_payloads[0]["handoff"]["to_agent"] == "worker"
+
+@pytest.mark.behavior
+def test_cos_team_handoff_receive_executes_once(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    output = project / "received.txt"
+    run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "handoff", "send",
+        "--team", "release",
+        "--from-agent", "lead",
+        "--to-agent", "worker",
+        "--text", "hello receiver",
+        "--handoff-id", "receive-1",
+    )
+    received = run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "handoff", "receive",
+        "--team", "release",
+        "--session-id", "worker",
+        "--exec-command-template", f"printf '{{text}}' > {output}",
+        "--once",
+    )
+    assert received["received"][0]["executed"] is True
+    assert output.read_text() == "hello receiver"
+
+    second = run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "handoff", "receive",
+        "--team", "release",
+        "--session-id", "worker",
+        "--once",
+    )
+    assert second["received"] == []

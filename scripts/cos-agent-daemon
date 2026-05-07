@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
 
 from lib.agent_daemon import AgentDaemon, AgentDaemonError  # noqa: E402
 from lib.agent_lifecycle import AgentLifecycleError, prepare_agent_worktree  # noqa: E402
+from lib.agent_team import AgentTeam  # noqa: E402
 
 
 def _default(value: Any) -> Any:
@@ -59,6 +60,8 @@ def cmd_enqueue(args: argparse.Namespace) -> int:
         worktree_path=worktree_path,
         team_name=args.team,
         max_runtime_seconds=args.max_runtime_seconds,
+        estimated_cost_usd=args.estimated_cost_usd,
+        budget_cap_usd=args.budget_cap_usd,
     )
     emit({"status": "queued", "task": task.to_dict()}, json_output=args.json)
     return 0
@@ -77,8 +80,42 @@ def cmd_run_once(args: argparse.Namespace) -> int:
 
 
 def cmd_reap(args: argparse.Namespace) -> int:
-    completed = [task.to_dict() for task in daemon(args).reap_completed()]
-    emit({"status": "ok", "completed": completed}, json_output=args.json)
+    d = daemon(args)
+    completed = [task.to_dict() for task in d.reap_completed()]
+    stale = [task.to_dict() for task in d.reap_stale(stale_heartbeat_seconds=args.stale_heartbeat_seconds)]
+    emit({"status": "ok", "completed": completed, "stale_failed": stale}, json_output=args.json)
+    return 0
+
+
+def cmd_service_plan(args: argparse.Namespace) -> int:
+    d = daemon(args)
+    unit = d.launchd_plist(python_bin=args.python_bin) if args.kind == "launchd" else d.systemd_unit(python_bin=args.python_bin)
+    payload = {"status": "ok", "kind": args.kind, "content": unit}
+    if args.json:
+        print(json.dumps(payload, sort_keys=True))
+    else:
+        print(unit, end="")
+    return 0
+
+
+def cmd_enqueue_team_next(args: argparse.Namespace) -> int:
+    team = AgentTeam(args.team, project_dir=args.project_dir)
+    task = team.claim_next(session_id=args.session_id)
+    if task is None:
+        emit({"status": "no_claimable_team_task", "task": None}, json_output=args.json)
+        return 0
+    command = args.command_template.format(task_id=task.task_id, title=task.title)
+    queued = daemon(args).enqueue(
+        command=command,
+        task_id=task.task_id,
+        session_id=args.session_id,
+        worktree_path=args.worktree_path,
+        team_name=args.team,
+        max_runtime_seconds=args.max_runtime_seconds,
+        estimated_cost_usd=args.estimated_cost_usd,
+        budget_cap_usd=args.budget_cap_usd,
+    )
+    emit({"status": "queued_team_task", "team_task": asdict(task), "task": queued.to_dict()}, json_output=args.json)
     return 0
 
 
@@ -98,7 +135,19 @@ def build_parser() -> argparse.ArgumentParser:
     enqueue.add_argument("--prepare-worktree", action="store_true")
     enqueue.add_argument("--worktree-root")
     enqueue.add_argument("--max-runtime-seconds", type=int, default=3600)
+    enqueue.add_argument("--estimated-cost-usd", type=float, default=0.0)
+    enqueue.add_argument("--budget-cap-usd", type=float, default=5.0)
     enqueue.set_defaults(func=cmd_enqueue)
+
+    enqueue_team = sub.add_parser("enqueue-team-next", help="Claim and queue the next ADR-233 team task")
+    enqueue_team.add_argument("--team", required=True)
+    enqueue_team.add_argument("--session-id", required=True)
+    enqueue_team.add_argument("--command-template", required=True, help="Format string with {task_id} and {title}")
+    enqueue_team.add_argument("--worktree-path")
+    enqueue_team.add_argument("--max-runtime-seconds", type=int, default=3600)
+    enqueue_team.add_argument("--estimated-cost-usd", type=float, default=0.0)
+    enqueue_team.add_argument("--budget-cap-usd", type=float, default=5.0)
+    enqueue_team.set_defaults(func=cmd_enqueue_team_next)
 
     listed = sub.add_parser("list", help="List detached agent tasks")
     listed.set_defaults(func=cmd_list)
@@ -108,8 +157,14 @@ def build_parser() -> argparse.ArgumentParser:
     run_once.add_argument("--dry-run", action="store_true")
     run_once.set_defaults(func=cmd_run_once)
 
-    reap = sub.add_parser("reap", help="Mark running tasks completed when done.json exists")
+    reap = sub.add_parser("reap", help="Mark running tasks completed when done.json exists and fail stale tasks")
+    reap.add_argument("--stale-heartbeat-seconds", type=int, default=300)
     reap.set_defaults(func=cmd_reap)
+
+    service_plan = sub.add_parser("service-plan", help="Print opt-in launchd/systemd service definition")
+    service_plan.add_argument("--kind", choices=["launchd", "systemd"], required=True)
+    service_plan.add_argument("--python-bin", default="python3")
+    service_plan.set_defaults(func=cmd_service_plan)
 
     return parser
 
