@@ -22,6 +22,7 @@
 #   cos adoption audit                  -> scripts/cos-cross-stack-adoption-truth
 #   cos history sanitize                -> scripts/cos-history-sanitization
 #   cos tool-discovery preuse        -> scripts/cos-tool-discovery-preuse
+#   cos mcp registration-plan         -> scripts/cos-mcp-registration-plan
 #   cos team ...                    -> scripts/cos-team
 #   cos performance-ledger compile     -> scripts/cos-performance-ledger
 #   cos observe run                    -> scripts/cos-run-trace
@@ -227,6 +228,14 @@ case "$SUBCMD" in
       exec "$SCRIPT_DIR/cos-tool-discovery-preuse" --project-dir "$PROJECT_ROOT" "$@"
     fi
     echo "cos: unknown tool-discovery subcommand '${2:-}'. Try: cos tool-discovery preuse --command CMD [--json]" >&2
+    exit 1
+    ;;
+  mcp)
+    if [ "${2:-}" = "registration-plan" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-mcp-registration-plan" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown mcp subcommand '${2:-}'. Try: cos mcp registration-plan [--host HOST] [--json]" >&2
     exit 1
     ;;
   team)
