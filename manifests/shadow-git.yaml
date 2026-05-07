@@ -1,0 +1,23 @@
+schema_version: shadow-git/v1
+status: slice-a-active
+owner: platform-orchestration
+adrs:
+  - ADR-224
+  - ADR-227
+storage:
+  base_dir_env: COS_SHADOW_GIT_BASE
+  default_base_dir: ~/.cognitive-os/snapshots
+  off_repo_required: true
+snapshot:
+  index_isolation: GIT_INDEX_FILE
+  stash_mutation_allowed: false
+restore:
+  modes_implemented:
+    - files_only
+  modes_deferred:
+    - conversation_only
+    - files_and_conversation
+  preview_required: true
+  explicit_yes_required: true
+cli:
+  command: cos rollback
