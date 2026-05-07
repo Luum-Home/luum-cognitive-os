@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import subprocess
+from subprocess import TimeoutExpired
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,12 @@ import yaml
 
 SCHEMA_VERSION = "history-sanitization-report/v1"
 DEFAULT_MANIFEST = Path("manifests/history-sanitization.yaml")
+
+
+@dataclass(frozen=True)
+class CountResult:
+    count: int | None
+    timed_out: bool = False
 
 
 @dataclass(frozen=True)
@@ -40,8 +47,14 @@ def load_manifest(project_dir: Path) -> dict[str, Any]:
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
 
 
-def git(project_dir: Path, args: list[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(["git", "-C", str(project_dir), *args], text=True, capture_output=True, check=False)
+def git(project_dir: Path, args: list[str], *, timeout_seconds: float | None = None) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "-C", str(project_dir), *args],
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=timeout_seconds,
+    )
 
 
 def rev_list(project_dir: Path) -> list[str]:
@@ -71,18 +84,37 @@ def normalize_git_regex(pattern: str) -> str:
     return pattern.replace(r"\s", "[[:space:]]")
 
 
-def count_history(project_dir: Path, pattern: str, *, mode: str) -> int:
-    """Count commits whose patches indicate a historical content match."""
+def history_scan_timeout_seconds(manifest: dict[str, Any]) -> float:
+    configured = (manifest.get("scan") or {}).get("per_rule_timeout_seconds")
+    raw = os.environ.get("COS_HISTORY_SCAN_TIMEOUT_SECONDS", configured)
+    try:
+        value = float(raw) if raw is not None else 3.0
+    except (TypeError, ValueError):
+        value = 3.0
+    return max(0.1, value)
+
+
+def count_history(project_dir: Path, pattern: str, *, mode: str, timeout_seconds: float | None = None) -> CountResult:
+    """Count commits whose patches indicate a historical content match.
+
+    History sanitization is a release-readiness primitive, so a dry-run must not
+    hang the laptop lane on broad regexes over a large repository. If git exceeds
+    the per-rule budget, return an unknown count and let the report surface an
+    explicit warning instead of blocking all validation.
+    """
     if not pattern:
-        return 0
+        return CountResult(0)
     if mode == "regex":
         args = ["log", "--all", "--format=%H", "-G", normalize_git_regex(pattern)]
     else:
         args = ["log", "--all", "--format=%H", "-S", pattern]
-    proc = git(project_dir, args)
+    try:
+        proc = git(project_dir, args, timeout_seconds=timeout_seconds)
+    except TimeoutExpired:
+        return CountResult(None, timed_out=True)
     if proc.returncode != 0:
-        return 0
-    return len({line.strip() for line in proc.stdout.splitlines() if line.strip()})
+        return CountResult(0)
+    return CountResult(len({line.strip() for line in proc.stdout.splitlines() if line.strip()}))
 
 
 def count_literal(text: str, needle: str) -> int:
@@ -124,6 +156,7 @@ def resolved_rules(manifest: dict[str, Any], environ: dict[str, str] | None = No
 
 def scan(project_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
     rules, findings = resolved_rules(manifest)
+    timeout_seconds = history_scan_timeout_seconds(manifest)
     replacement_hits: list[dict[str, Any]] = []
     resolved_replacement_rules: list[dict[str, Any]] = []
     for rule in rules:
@@ -132,25 +165,31 @@ def scan(project_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
             replacement_hits.append({"id": rule.get("id"), "resolved": False, "hit_count": None})
             continue
         mode = rule.get("mode", "literal")
-        count = count_history(project_dir, str(value), mode=mode)
-        replacement_hits.append({"id": rule.get("id"), "resolved": True, "mode": mode, "hit_count": count, "replacement": rule.get("replacement")})
+        result = count_history(project_dir, str(value), mode=mode, timeout_seconds=timeout_seconds)
+        replacement_hits.append({"id": rule.get("id"), "resolved": True, "mode": mode, "hit_count": result.count, "replacement": rule.get("replacement"), "timed_out": result.timed_out})
+        if result.timed_out:
+            findings.append(Finding("warn", "history-scan-timeout", f"History scan for replacement rule {rule.get('id')} exceeded {timeout_seconds:g}s; rerun with COS_HISTORY_SCAN_TIMEOUT_SECONDS for exhaustive release review.", rule_id=str(rule.get("id"))))
         resolved_replacement_rules.append(rule)
 
     sensitive_hits: list[dict[str, Any]] = []
     for rule in manifest.get("sensitive_history_patterns", []) or []:
         pattern = str(rule.get("pattern", ""))
         mode = "regex" if rule.get("mode") == "regex" else "literal"
-        count = count_history(project_dir, pattern, mode=mode)
-        sensitive_hits.append({"id": rule.get("id"), "severity": rule.get("severity", "warn"), "hit_count": count, "rationale": rule.get("rationale")})
-        if count:
-            findings.append(Finding(str(rule.get("severity", "warn")), "sensitive-history-pattern-hit", f"Sensitive history pattern {rule.get('id')} matched historical content.", rule_id=str(rule.get("id")), count=count))
+        result = count_history(project_dir, pattern, mode=mode, timeout_seconds=timeout_seconds)
+        sensitive_hits.append({"id": rule.get("id"), "severity": rule.get("severity", "warn"), "hit_count": result.count, "timed_out": result.timed_out, "rationale": rule.get("rationale")})
+        if result.timed_out:
+            findings.append(Finding("warn", "history-scan-timeout", f"History scan for sensitive pattern {rule.get('id')} exceeded {timeout_seconds:g}s; rerun with COS_HISTORY_SCAN_TIMEOUT_SECONDS for exhaustive release review.", rule_id=str(rule.get("id"))))
+        elif result.count:
+            findings.append(Finding(str(rule.get("severity", "warn")), "sensitive-history-pattern-hit", f"Sensitive history pattern {rule.get('id')} matched historical content.", rule_id=str(rule.get("id")), count=result.count))
 
     preserve_hits: list[dict[str, Any]] = []
     for rule in manifest.get("preserve", []) or []:
         pattern = str(rule.get("pattern", ""))
         mode = "regex" if rule.get("mode") == "regex" else "literal"
-        count = count_history(project_dir, pattern, mode=mode)
-        preserve_hits.append({"id": rule.get("id"), "hit_count": count, "rationale": rule.get("rationale")})
+        result = count_history(project_dir, pattern, mode=mode, timeout_seconds=timeout_seconds)
+        preserve_hits.append({"id": rule.get("id"), "hit_count": result.count, "timed_out": result.timed_out, "rationale": rule.get("rationale")})
+        if result.timed_out:
+            findings.append(Finding("warn", "history-scan-timeout", f"History scan for preserve rule {rule.get('id')} exceeded {timeout_seconds:g}s; rerun with COS_HISTORY_SCAN_TIMEOUT_SECONDS for exhaustive release review.", rule_id=str(rule.get("id"))))
 
     conflicts = preserve_conflicts(resolved_replacement_rules, manifest.get("preserve", []) or [])
     for conflict in conflicts:
