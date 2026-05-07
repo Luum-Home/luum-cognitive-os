@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import signal
 import shutil
 import subprocess
 import time
@@ -269,17 +270,79 @@ class AgentDaemon:
         path.write_text(content, encoding="utf-8")
         return path
 
-    def kill_task(self, task_id: str, *, tmux_bin: str | None = None, reason: str = "operator_killed") -> DetachedAgentTask:
-        """Best-effort kill escalation for a detached task, then mark failed."""
+    def activation_command(self, *, kind: str, service_path: str | Path) -> list[str]:
+        """Return the operator-visible command that activates an installed service."""
+        path = Path(service_path).expanduser()
+        if kind == "launchd":
+            return ["launchctl", "load", "-w", str(path)]
+        if kind == "systemd":
+            return ["systemctl", "--user", "enable", "--now", path.name]
+        raise AgentDaemonError("kind must be launchd or systemd")
+
+    def activate_service(self, *, kind: str, service_path: str | Path, execute: bool = False) -> dict[str, Any]:
+        """Plan or execute launchd/systemd activation for the opt-in daemon."""
+        command = self.activation_command(kind=kind, service_path=service_path)
+        if not execute:
+            return {"kind": kind, "command": command, "executed": False}
+        proc = subprocess.run(command, capture_output=True, text=True, timeout=15)
+        if proc.returncode != 0:
+            raise AgentDaemonError(proc.stderr.strip() or proc.stdout.strip() or "service activation failed")
+        return {"kind": kind, "command": command, "executed": True, "stdout": proc.stdout.strip()}
+
+    def _heartbeat_pid(self, task_id: str) -> int | None:
+        path = self.heartbeat_path(task_id)
+        if not path.is_file():
+            return None
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            pid = int(data.get("pid", 0))
+            return pid if pid > 1 else None
+        except (json.JSONDecodeError, TypeError, ValueError):
+            return None
+
+    def _kill_process_tree(self, pid: int, *, grace_seconds: float = 0.2) -> list[str]:
+        signals: list[str] = []
+        try:
+            pgid = os.getpgid(pid)
+        except ProcessLookupError:
+            return ["process_missing"]
+        except PermissionError:
+            return ["process_permission_denied"]
+        try:
+            os.killpg(pgid, signal.SIGTERM)
+            signals.append("SIGTERM")
+            time.sleep(grace_seconds)
+            os.killpg(pgid, signal.SIGKILL)
+            signals.append("SIGKILL")
+        except ProcessLookupError:
+            signals.append("process_exited")
+        except PermissionError:
+            signals.append("process_permission_denied")
+        return signals
+
+    def kill_task(
+        self,
+        task_id: str,
+        *,
+        tmux_bin: str | None = None,
+        reason: str = "operator_killed",
+        process_tree: bool = True,
+    ) -> DetachedAgentTask:
+        """Best-effort kill escalation for tmux plus recorded process tree."""
         task = self.get_task(task_id)
         launcher = tmux_bin or shutil.which("tmux")
+        kill_signals: list[str] = []
         if launcher and task.tmux_session:
             try:
                 subprocess.run([launcher, "kill-session", "-t", task.tmux_session], capture_output=True, text=True, timeout=10)
+                kill_signals.append("tmux-kill-session")
             except (FileNotFoundError, subprocess.TimeoutExpired):
-                pass
+                kill_signals.append("tmux-kill-unavailable")
+        pid = self._heartbeat_pid(task.task_id)
+        if process_tree and pid is not None:
+            kill_signals.extend(self._kill_process_tree(pid))
         updated = self._replace_task(task, status="failed")
-        done = {"task_id": task.task_id, "exit_code": 137, "reasons": [reason], "timestamp": time.time()}
+        done = {"task_id": task.task_id, "exit_code": 137, "reasons": [reason], "kill_signals": kill_signals, "pid": pid, "timestamp": time.time()}
         self.done_path(task.task_id).write_text(json.dumps(done, sort_keys=True) + "\n", encoding="utf-8")
         _append_jsonl(self.results_path, {**updated.to_dict(), "done": done})
         return updated
@@ -295,7 +358,7 @@ class AgentDaemon:
             "#!/usr/bin/env bash\n"
             "set -euo pipefail\n"
             f"cd {json.dumps(task.worktree_path)}\n"
-            f"printf '{{\"timestamp\":%s,\"task_id\":\"{task.task_id}\"}}\\n' \"$(date +%s)\" > {json.dumps(str(heartbeat))}\n"
+            f"printf '{{\"timestamp\":%s,\"task_id\":\"{task.task_id}\",\"pid\":%s}}\\n' \"$(date +%s)\" \"$$\" > {json.dumps(str(heartbeat))}\n"
             "exit_code=0\n"
             f"bash -lc '{escaped_command}' || exit_code=$?\n"
             f"printf '{{\"timestamp\":%s,\"task_id\":\"{task.task_id}\",\"exit_code\":%s}}\\n' \"$(date +%s)\" \"$exit_code\" > {json.dumps(str(done))}\n"
