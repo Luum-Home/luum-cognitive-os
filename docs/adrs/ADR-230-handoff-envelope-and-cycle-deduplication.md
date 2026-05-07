@@ -268,7 +268,7 @@ Slice G receiver execution is implemented as an explicit operator-controlled com
 
 Slice H external receiver hooks are implemented via `cos team handoff receive --hook-command ...`: the envelope is passed on stdin, `COS_HANDOFF_*` environment variables are set, timeout is bounded, and strict-mode failures/timeouts write receipts before returning exit 2.
 
-Not implemented yet: daemon-spawned receiver processes and process-kill chaos for mid-dispatch agent death. The current slices intentionally do not spawn agents or mutate worktrees.
+Process-kill chaos is implemented in `tests/chaos/test_handoff_receiver_kill_mid_dispatch.py`: timeout and SIGKILL receiver failures both persist receipts before returning failure, and a second receive skips the failed handoff idempotently. The current slices intentionally do not spawn agents or mutate worktrees.
 
 ## Open questions
 

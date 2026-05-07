@@ -55,9 +55,11 @@ Implemented Slice D:
 - Receiver execution is consumed through ADR-230 `cos team handoff receive`, including external hook command execution and idempotency receipts.
 - `lib/agent_team_transport.py` and `cos team transport-plan` expose a machine-readable file/NATS/A2A upgrade mapping without adding NATS/A2A dependencies to the default install.
 
-Not implemented yet:
+Implemented Slice E:
 
-- Actual NATS/A2A transport adapters. They remain opt-in future work behind the declared mapping.
+- `NatsAgentTeamTransport` publishes ADR-233 inbox payloads to NATS subjects using an injected/optional `nats-py` client. `connect()` is opt-in and raises a clear install error if `nats-py` is absent.
+- `A2AHttpAgentTeamTransport` POSTs schema-versioned A2A-style JSON message envelopes to an operator-provided HTTP endpoint using stdlib `urllib`.
+- `cos team transport-send` exposes A2A HTTP send and NATS dry-run planning; NATS live clients are consumed through the Python adapter to avoid a default dependency.
 
 ## Hard rules
 
@@ -74,7 +76,7 @@ Not implemented yet:
 - T4 smoke: covered by the behavior flow for two independent sessions
 - T7 chaos: `tests/chaos/test_agent_team_claim_race.py`
 - T8 cross-harness: `tests/integration/test_agent_team_cross_harness_contract.py`
-- Upgrade-path contract: `tests/unit/test_agent_team_transport.py` and `tests/behavior/test_cos_team_cli.py::test_cos_team_transport_plan_cli_exposes_nats_upgrade_mapping`
+- Upgrade-path + adapters: `tests/unit/test_agent_team_transport.py` and `tests/behavior/test_cos_team_cli.py::test_cos_team_transport_plan_cli_exposes_nats_upgrade_mapping`, `test_cos_team_transport_send_a2a_http_posts_message`, `test_cos_team_transport_send_nats_dry_run_plan`
 
 ## Acceptance criteria
 
