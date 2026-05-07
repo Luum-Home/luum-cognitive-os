@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.agent_lifecycle import AgentLifecycleError, prepare_agent_worktree  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Prepare an ADR-223 dedicated worktree for a write-capable agent.")
+    parser.add_argument("--project-dir", required=True)
+    parser.add_argument("--task-id", required=True)
+    parser.add_argument("--session-id", required=True)
+    parser.add_argument("--worktree-root")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    try:
+        record = prepare_agent_worktree(
+            args.project_dir,
+            task_id=args.task_id,
+            session_id=args.session_id,
+            worktree_root=args.worktree_root,
+        )
+    except AgentLifecycleError as exc:
+        if args.json:
+            print(json.dumps({"schema_version": "agent-lifecycle-worktree/v1", "status": "error", "error": str(exc)}))
+        else:
+            print(f"cos-agent-worktree-prepare: {exc}", file=sys.stderr)
+        return 2
+    payload = record.to_dict() | {"status": "ok"}
+    if args.json:
+        print(json.dumps(payload, sort_keys=True))
+    else:
+        print(record.worktree_path)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
