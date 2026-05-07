@@ -50,3 +50,63 @@ def test_cos_rollback_snapshot_preview_restore_smoke(project_root: Path, tmp_pat
     )
     assert restored.returncode == 0, restored.stderr
     assert (repo / "file.txt").read_text(encoding="utf-8") == "before\n"
+
+
+@pytest.mark.behavior
+def test_cos_rollback_files_and_conversation_restore(project_root: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from lib.session_bus import append_session_event, read_session_events
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
+
+    snap = subprocess.run(
+        [str(project_root / "scripts" / "cos-rollback"), "--project-dir", str(repo), "--session-id", "s1", "--snapshot", "--json"],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert snap.returncode == 0, snap.stderr
+    tree_sha = json.loads(snap.stdout)["tree_sha"]
+    append_session_event("before", {}, project_dir=repo, session_id="s1", single_writer=True)
+    append_session_event("after", {}, project_dir=repo, session_id="s1", single_writer=True)
+    (repo / "file.txt").write_text("after\n", encoding="utf-8")
+
+    prev = subprocess.run(
+        [str(project_root / "scripts" / "cos-rollback"), "--project-dir", str(repo), "--session-id", "s1", "--tree-sha", tree_sha, "--preview", "--json"],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert prev.returncode == 0, prev.stderr
+    preview_path = json.loads(prev.stdout)["preview_path"]
+
+    restored = subprocess.run(
+        [
+            str(project_root / "scripts" / "cos-rollback"),
+            "--project-dir",
+            str(repo),
+            "--session-id",
+            "s1",
+            "--tree-sha",
+            tree_sha,
+            "--restore",
+            "--mode",
+            "files_and_conversation",
+            "--target-seq",
+            "1",
+            "--preview-path",
+            preview_path,
+            "--yes",
+            "--json",
+        ],
+        capture_output=True,
+        text=True,
+        timeout=10,
+    )
+    assert restored.returncode == 0, restored.stderr
+    payload = json.loads(restored.stdout)
+    assert payload["mode"] == "files_and_conversation"
+    assert (repo / "file.txt").read_text(encoding="utf-8") == "before\n"
+    assert [event["event_type"] for event in read_session_events("s1", project_dir=repo)] == ["before", "shadow-git-restore"]
