@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice B implemented (2026-05-07)
+**Status**: Accepted — Slice C implemented (2026-05-07)
 **Date**: 2026-05-06
 **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
@@ -237,11 +237,12 @@ Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorat
 - Initial local p95 budget is recorded in the manifest as `p95_budget_ms: 25`; this is intentionally conservative and must be revisited after a concurrent T6 benchmark.
 - Tests cover cross-stream consistency and missing-index detection.
 
-### Slice C — `@event_wrap` decorator
+### Slice C — `@event_wrap` decorator — implemented 2026-05-07
 
-After Slice B. The piece replay actually depends on.
-- `lib/event_wrap.py`. Records on first call, replays under env signal. Hard-rule refusal on signature mismatch.
-- Tests T1, T2, T5.
+- `lib/event_wrap.py` records on first call and replays under `COS_REPLAY_FROM_SEQ`.
+- Results must be JSON-serializable in this slice.
+- Replay refuses when the function qualname/signature hash differs from the recorded event.
+- Tests cover record/replay, no re-execution during replay, non-JSON refusal, and signature mismatch refusal.
 
 ### Slice D — Migration tool
 
@@ -261,8 +262,9 @@ After Slice C, before consumer ADRs draft against the substrate.
 
 - **2026-05-07 — Slice A implemented**: `lib/session_bus.py` exposes `append_session_event()`, `read_session_events()`, `recover_session_counter()`, and `append_event(..., event_store=True)`. It writes `.cognitive-os/sessions/{session_id}.events.jsonl`, maintains rebuildable `.seq-counters/{session_id}.counter`, rejects unsafe session IDs, refuses unsupported filesystem/platform paths, and provides gap-detecting reads.
 - **2026-05-07 — Slice B implemented**: appends the ADR-205 fan-out index at `.cognitive-os/coordination/event-index.jsonl`, exposes `read_event_index()` and `assert_index_consistent()`, and adds a measured initial p95 budget (`<=25ms` for the local Slice B append+fanout fixture) in `manifests/event-sourced-session-bus.yaml`.
-- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the Slice B active contract and defers `@event_wrap`, migration, and projections.
-- **Validation**: focused T1/T2/T3/T4/T6/T10 tests passed locally: `python3 -m pytest tests/unit/test_event_sourced_bus.py tests/behavior/test_event_sourced_bus_smoke.py tests/audit/test_event_sourced_bus_invariants.py tests/benchmark/test_event_sourced_bus_baseline.py tests/unit/test_cross_session_events.py tests/contracts/test_cross_session_event_taxonomy.py -q`; `bash -n hooks/*.sh` passed.
+- **2026-05-07 — Slice C implemented**: `lib/event_wrap.py` records JSON-serializable non-deterministic function results as `wrapped-step` events and replays them under `COS_REPLAY_FROM_SEQ`, refusing signature mismatches.
+- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the Slice C active contract and defers migration and projections.
+- **Validation**: focused T1/T2/T3/T4/T5/T6/T10 tests passed locally: `python3 -m pytest tests/unit/test_event_sourced_bus.py tests/behavior/test_event_sourced_bus_smoke.py tests/audit/test_event_sourced_bus_invariants.py tests/benchmark/test_event_sourced_bus_baseline.py tests/unit/test_cross_session_events.py tests/contracts/test_cross_session_event_taxonomy.py -q`; `bash -n hooks/*.sh` passed.
 
 ## Open questions
 

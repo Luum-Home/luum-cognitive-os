@@ -20,7 +20,8 @@ def test_event_sourced_bus_manifest_declares_slice_a_contract(project_root: Path
     assert manifest["performance"]["slice_a_baseline_required"] is True
     assert manifest["performance"]["p95_budget_ms"] == 25
     assert "fan_out_global_index" in manifest["slice_a"]["implemented"]
-    assert "event_wrap" in manifest["slice_a"]["deferred"]
+    assert "event_wrap" in manifest["slice_a"]["implemented"]
+    assert "migration_tool" in manifest["slice_a"]["deferred"]
 
 
 @pytest.mark.audit
