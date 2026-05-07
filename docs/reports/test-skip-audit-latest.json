@@ -1,0 +1,2205 @@
+{
+  "counts_by_action": {
+    "deterministic-fixture: add fixture data or keep only in runtime-observability lane": 9,
+    "lane-opt-in-or-fixture: keep only if optional artifact/profile is documented": 1,
+    "lane-opt-in: keep skip in laptop; prove in dependency/provider lane": 2,
+    "lane-opt-in: keep skip in laptop; prove in explicit opt-in lane": 1,
+    "policy-review: keep only with paired owner policy; otherwise xfail/remove": 202
+  },
+  "counts_by_category": {
+    "external-dependency": 2,
+    "opt-in-lane": 1,
+    "optional-runtime-state": 1,
+    "policy-exemption": 202,
+    "runtime-sample-precondition": 9
+  },
+  "lanes": {
+    "architecture": {
+      "counts_by_category": {},
+      "source": ".cognitive-os/reports/test-runs/20260507T153816Z--n-2-tests-architecture-/skip-summary.json",
+      "total_skips": 0
+    },
+    "audit": {
+      "counts_by_category": {
+        "external-dependency": 2,
+        "opt-in-lane": 1,
+        "optional-runtime-state": 1,
+        "policy-exemption": 200,
+        "runtime-sample-precondition": 8
+      },
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "total_skips": 212
+    },
+    "behavior": {
+      "counts_by_category": {
+        "policy-exemption": 1
+      },
+      "source": ".cognitive-os/reports/test-runs/20260507T155834Z-tests-behavior-/skip-summary.json",
+      "total_skips": 1
+    },
+    "contract": {
+      "counts_by_category": {
+        "policy-exemption": 1,
+        "runtime-sample-precondition": 1
+      },
+      "source": ".cognitive-os/reports/test-runs/20260507T164230Z--n-2-tests-contracts-/skip-summary.json",
+      "total_skips": 2
+    }
+  },
+  "schema_version": "test-skip-audit.v1",
+  "skips": [
+    {
+      "category": "policy-exemption",
+      "lane": "behavior",
+      "nodeid": "tests.behavior.test_singularity.TestPlan::test_cooldown_same_event_type_within_hour",
+      "reason": "Cooldown is enforced in the analyze phase (see TestAnalyze); plan trusts analyze output <repo-root>/tests/behavior/test_singularity.py:819: Cooldown is enforced in the analyze phase (see TestAnalyze); plan trusts analyze output",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T155834Z-tests-behavior-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "contract",
+      "nodeid": "tests.contracts.test_p95_hook_latency::test_no_hook_p95_exceeds_ceiling",
+      "reason": "no hooks with >= 20 samples; cannot compute p95 <repo-root>/tests/contracts/test_p95_hook_latency.py:157: no hooks with >= 20 samples; cannot compute p95",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T164230Z--n-2-tests-contracts-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "contract",
+      "nodeid": "tests.contracts.test_redteam_portability_coverage::test_source_file_has_scope_both_marker[templates/contracts/test_redteam_baseline.template.py-template-test-redteam-baseline.bats]",
+      "reason": "Template portability test is its own artifact \u2014 skip self-check <repo-root>/tests/contracts/test_redteam_portability_coverage.py:94: Template portability test is its own artifact \u2014 skip self-check",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T164230Z--n-2-tests-contracts-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_adrs_frontmatter::test_implementation_files_present_for_implemented[ADR-116]",
+      "reason": "ADR-116 status is 'accepted', skipping file check <repo-root>/tests/audit/test_adrs_frontmatter.py:179: ADR-116 status is 'accepted', skipping file check",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_adrs_frontmatter::test_implementation_files_present_for_implemented[ADR-121]",
+      "reason": "ADR-121 status is 'accepted', skipping file check <repo-root>/tests/audit/test_adrs_frontmatter.py:179: ADR-121 status is 'accepted', skipping file check",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_adrs_frontmatter::test_implementation_files_present_for_implemented[ADR-123]",
+      "reason": "ADR-123 status is 'proposed', skipping file check <repo-root>/tests/audit/test_adrs_frontmatter.py:179: ADR-123 status is 'proposed', skipping file check",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_adrs_frontmatter::test_implemented_adr_declares_files[ADR-116]",
+      "reason": "ADR-116 is not 'implemented' <repo-root>/tests/audit/test_adrs_frontmatter.py:201: ADR-116 is not 'implemented'",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_adrs_frontmatter::test_implemented_adr_declares_files[ADR-121]",
+      "reason": "ADR-121 is not 'implemented' <repo-root>/tests/audit/test_adrs_frontmatter.py:201: ADR-121 is not 'implemented'",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_adrs_frontmatter::test_implemented_adr_declares_files[ADR-123]",
+      "reason": "ADR-123 is not 'implemented' <repo-root>/tests/audit/test_adrs_frontmatter.py:201: ADR-123 is not 'implemented'",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "external-dependency",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_install_scripts::test_install_sh_remote_flow",
+      "reason": "requires network access (curl + git clone from GitHub) <repo-root>/tests/audit/test_install_scripts.py:401: requires network access (curl + git clone from GitHub)",
+      "recommended_action": "lane-opt-in: keep skip in laptop; prove in dependency/provider lane",
+      "rule_id": "external-host-tool-or-library",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "external-dependency",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_install_scripts::test_cos_bootstrap_full_flow",
+      "reason": "requires Docker daemon + real Langfuse stack <repo-root>/tests/audit/test_install_scripts.py:410: requires Docker daemon + real Langfuse stack",
+      "recommended_action": "lane-opt-in: keep skip in laptop; prove in dependency/provider lane",
+      "rule_id": "external-host-tool-or-library",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "opt-in-lane",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_install_scripts::test_cos_init_global_writes_to_user_home",
+      "reason": "requires $HOME mutation; tested via auto-update-projects --list in a redirected-HOME sandbox <repo-root>/tests/audit/test_install_scripts.py:418: requires $HOME mutation; tested via auto-update-projects --list in a redirected-HOME sandbox",
+      "recommended_action": "lane-opt-in: keep skip in laptop; prove in explicit opt-in lane",
+      "rule_id": "explicit-opt-in-resource-lane",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_integrity::test_every_squad_references_existing_skills[organization.yaml]",
+      "reason": "organization.yaml declares no skills <repo-root>/tests/audit/test_integrity.py:204: organization.yaml declares no skills",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_integrity::test_every_agent_model_is_recognized[test-coverage-enforcer.md]",
+      "reason": "test-coverage-enforcer.md has no `model` in frontmatter <repo-root>/tests/audit/test_integrity.py:229: test-coverage-enforcer.md has no `model` in frontmatter",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "optional-runtime-state",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_research_reports_format::test_research_dir_exists",
+      "reason": "No runtime research report directory at <repo-root>/.cognitive-os/reports/research; reports are generated on demand. <repo-root>/tests/audit/test_research_reports_format.py:94: No runtime research report directory at <repo-root>/.cognitive-os/reports/research; reports are generated on demand.",
+      "recommended_action": "lane-opt-in-or-fixture: keep only if optional artifact/profile is documented",
+      "rule_id": "optional-profile-artifact-absent",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_in_compact_index[ROADMAP.md]",
+      "reason": "ROADMAP.md is intentionally exempt from compact index <repo-root>/tests/audit/test_rules_enforcement.py:182: ROADMAP.md is intentionally exempt from compact index",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_in_compact_index[RULES-COMPACT.md]",
+      "reason": "RULES-COMPACT.md is intentionally exempt from compact index <repo-root>/tests/audit/test_rules_enforcement.py:182: RULES-COMPACT.md is intentionally exempt from compact index",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[adaptive-bypass.md]",
+      "reason": "adaptive-bypass.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: adaptive-bypass.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[adversarial-review.md]",
+      "reason": "adversarial-review.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: adversarial-review.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-customization.md]",
+      "reason": "agent-customization.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: agent-customization.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-escalation.md]",
+      "reason": "agent-escalation.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: agent-escalation.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-identity.md]",
+      "reason": "agent-identity.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: agent-identity.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-kpis.md]",
+      "reason": "agent-kpis.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: agent-kpis.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-output-reading.md]",
+      "reason": "agent-output-reading.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: agent-output-reading.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-security.md]",
+      "reason": "agent-security.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: agent-security.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[agent-sidecars.md]",
+      "reason": "agent-sidecars.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: agent-sidecars.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[broken-window-policy.md]",
+      "reason": "broken-window-policy.md references hook(s) deferred by registration allowlist: ['pre-commit-gate.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: broken-window-policy.md references hook(s) deferred by registration allowlist: ['pre-commit-gate.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[capability-protection.md]",
+      "reason": "capability-protection.md references hook(s) deferred by registration allowlist: ['pre-cleanup-snapshot.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: capability-protection.md references hook(s) deferred by registration allowlist: ['pre-cleanup-snapshot.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[cognitive-load.md]",
+      "reason": "cognitive-load.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: cognitive-load.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[context-optimization.md]",
+      "reason": "context-optimization.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: context-optimization.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[context7-auto-trigger.md]",
+      "reason": "context7-auto-trigger.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: context7-auto-trigger.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[cost-prediction.md]",
+      "reason": "cost-prediction.md references hook(s) deferred by registration allowlist: ['task-recorder.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: cost-prediction.md references hook(s) deferred by registration allowlist: ['task-recorder.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[credential-management.md]",
+      "reason": "credential-management.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: credential-management.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[cross-harness-authoring.md]",
+      "reason": "cross-harness-authoring.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: cross-harness-authoring.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[decomposition.md]",
+      "reason": "decomposition.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: decomposition.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[definition-of-done.md]",
+      "reason": "definition-of-done.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: definition-of-done.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[dry-run.md]",
+      "reason": "dry-run.md references hook(s) deferred by registration allowlist: ['dry-run-preview.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: dry-run.md references hook(s) deferred by registration allowlist: ['dry-run-preview.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[dynamic-tool-creation.md]",
+      "reason": "dynamic-tool-creation.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: dynamic-tool-creation.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[e2b-integration.md]",
+      "reason": "e2b-integration.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: e2b-integration.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[engram-api-safety.md]",
+      "reason": "engram-api-safety.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: engram-api-safety.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[engram-organization.md]",
+      "reason": "engram-organization.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: engram-organization.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[estimation-calibration.md]",
+      "reason": "estimation-calibration.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: estimation-calibration.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[hcom-integration.md]",
+      "reason": "hcom-integration.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: hcom-integration.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[impact-analysis.md]",
+      "reason": "impact-analysis.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: impact-analysis.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[infra-intent.md]",
+      "reason": "infra-intent.md references hook(s) deferred by registration allowlist: ['infra-intent-detector.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: infra-intent.md references hook(s) deferred by registration allowlist: ['infra-intent-detector.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[lane-taxonomy.md]",
+      "reason": "lane-taxonomy.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: lane-taxonomy.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[license-policy.md]",
+      "reason": "license-policy.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: license-policy.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[model-compatibility.md]",
+      "reason": "model-compatibility.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: model-compatibility.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[model-routing.md]",
+      "reason": "model-routing.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: model-routing.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[non-blocking-retry.md]",
+      "reason": "non-blocking-retry.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: non-blocking-retry.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[observability.md]",
+      "reason": "observability.md exempt: mlflow-sync.sh exists; registration pending (agent-instruction-only per scorecard) <repo-root>/tests/audit/test_rules_enforcement.py:204: observability.md exempt: mlflow-sync.sh exists; registration pending (agent-instruction-only per scorecard)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[orchestrator-mode.md]",
+      "reason": "orchestrator-mode.md references hook(s) deferred by registration allowlist: ['valkey-ensure.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: orchestrator-mode.md references hook(s) deferred by registration allowlist: ['valkey-ensure.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[orchestrator-prompt-compose.md]",
+      "reason": "orchestrator-prompt-compose.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: orchestrator-prompt-compose.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[pentesting-readiness.md]",
+      "reason": "pentesting-readiness.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: pentesting-readiness.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[performance-monitoring.md]",
+      "reason": "performance-monitoring.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: performance-monitoring.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[pre-commit-gate.md]",
+      "reason": "pre-commit-gate.md exempt: git hook (.git/hooks/pre-commit), not a Claude hook <repo-root>/tests/audit/test_rules_enforcement.py:204: pre-commit-gate.md exempt: git hook (.git/hooks/pre-commit), not a Claude hook",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[private-mode.md]",
+      "reason": "private-mode.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: private-mode.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[prompt-composition.md]",
+      "reason": "prompt-composition.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: prompt-composition.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[queue-advisor.md]",
+      "reason": "queue-advisor.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: queue-advisor.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[repomix-integration.md]",
+      "reason": "repomix-integration.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: repomix-integration.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[research-first-protocol.md]",
+      "reason": "research-first-protocol.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: research-first-protocol.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[resource-governance.md]",
+      "reason": "resource-governance.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: resource-governance.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[response-compression.md]",
+      "reason": "response-compression.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: response-compression.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[responsiveness.md]",
+      "reason": "responsiveness.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: responsiveness.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[retry-contract.md]",
+      "reason": "retry-contract.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: retry-contract.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[scout-pattern.md]",
+      "reason": "scout-pattern.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: scout-pattern.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[security-scanning.md]",
+      "reason": "security-scanning.md references hook(s) deferred by registration allowlist: ['semgrep-scan.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: security-scanning.md references hook(s) deferred by registration allowlist: ['semgrep-scan.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[singularity.md]",
+      "reason": "singularity.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: singularity.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[skill-management.md]",
+      "reason": "skill-management.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: skill-management.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[split-and-resume.md]",
+      "reason": "split-and-resume.md references hook(s) deferred by registration allowlist: ['clarification-interceptor.sh'] <repo-root>/tests/audit/test_rules_enforcement.py:225: split-and-resume.md references hook(s) deferred by registration allowlist: ['clarification-interceptor.sh']",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[squad-protocol.md]",
+      "reason": "squad-protocol.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: squad-protocol.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[step-files.md]",
+      "reason": "step-files.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: step-files.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[supply-chain-defense.md]",
+      "reason": "supply-chain-defense.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: supply-chain-defense.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[tero-integration.md]",
+      "reason": "tero-integration.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: tero-integration.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[token-economy.md]",
+      "reason": "token-economy.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: token-economy.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[trailofbits-skills.md]",
+      "reason": "trailofbits-skills.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: trailofbits-skills.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[trust-score.md]",
+      "reason": "trust-score.md exempt: trust-score-validator.sh IS registered; test trips on secondary confidence-gate.sh ref (see ROADMAP \u00a71.3) <repo-root>/tests/audit/test_rules_enforcement.py:204: trust-score.md exempt: trust-score-validator.sh IS registered; test trips on secondary confidence-gate.sh ref (see ROADMAP \u00a71.3)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[user-prompt-capture.md]",
+      "reason": "user-prompt-capture.md references hooks but none exist on disk (caught elsewhere) <repo-root>/tests/audit/test_rules_enforcement.py:217: user-prompt-capture.md references hooks but none exist on disk (caught elsewhere)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_hook_enforced_rule_has_live_hook[workload-scheduling.md]",
+      "reason": "workload-scheduling.md references no .sh files <repo-root>/tests/audit/test_rules_enforcement.py:202: workload-scheduling.md references no .sh files",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_scope_comment[decision-depth-gate.md]",
+      "reason": "decision-depth-gate.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement) <repo-root>/tests/audit/test_rules_enforcement.py:436: decision-depth-gate.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_scope_comment[llm-dispatch.md]",
+      "reason": "llm-dispatch.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement) <repo-root>/tests/audit/test_rules_enforcement.py:436: llm-dispatch.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_scope_comment[python-naming.md]",
+      "reason": "python-naming.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement) <repo-root>/tests/audit/test_rules_enforcement.py:436: python-naming.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_scope_comment[startup-protocol.md]",
+      "reason": "startup-protocol.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement) <repo-root>/tests/audit/test_rules_enforcement.py:436: startup-protocol.md grandfathered (predates ADR-067 Phase 2 SCOPE requirement)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[ROADMAP.md]",
+      "reason": "ROADMAP.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: ROADMAP.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[RULES-COMPACT.md]",
+      "reason": "RULES-COMPACT.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: RULES-COMPACT.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[agent-communication.md]",
+      "reason": "agent-communication.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: agent-communication.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[agent-identity.md]",
+      "reason": "agent-identity.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: agent-identity.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[agent-kpis.md]",
+      "reason": "agent-kpis.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: agent-kpis.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[agent-quality.md]",
+      "reason": "agent-quality.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: agent-quality.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[aguara-integration.md]",
+      "reason": "aguara-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: aguara-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[auto-repair.md]",
+      "reason": "auto-repair.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: auto-repair.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[auto-skill-generation.md]",
+      "reason": "auto-skill-generation.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: auto-skill-generation.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[capability-protection.md]",
+      "reason": "capability-protection.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: capability-protection.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[context-management.md]",
+      "reason": "context-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: context-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[context-optimization.md]",
+      "reason": "context-optimization.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: context-optimization.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[cost-prediction.md]",
+      "reason": "cost-prediction.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: cost-prediction.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[credential-management.md]",
+      "reason": "credential-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: credential-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[doc-sync.md]",
+      "reason": "doc-sync.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: doc-sync.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[e2b-integration.md]",
+      "reason": "e2b-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: e2b-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[error-learning.md]",
+      "reason": "error-learning.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: error-learning.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[fault-tolerance.md]",
+      "reason": "fault-tolerance.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: fault-tolerance.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[hcom-integration.md]",
+      "reason": "hcom-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: hcom-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[infra-health.md]",
+      "reason": "infra-health.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: infra-health.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[license-policy.md]",
+      "reason": "license-policy.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: license-policy.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[llm-dispatch.md]",
+      "reason": "llm-dispatch.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: llm-dispatch.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[model-compatibility.md]",
+      "reason": "model-compatibility.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: model-compatibility.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[model-routing.md]",
+      "reason": "model-routing.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: model-routing.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[non-blocking-retry.md]",
+      "reason": "non-blocking-retry.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: non-blocking-retry.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[observability.md]",
+      "reason": "observability.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: observability.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[orchestrator-mode.md]",
+      "reason": "orchestrator-mode.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: orchestrator-mode.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[parry-integration.md]",
+      "reason": "parry-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: parry-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[pentesting-readiness.md]",
+      "reason": "pentesting-readiness.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: pentesting-readiness.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[performance-monitoring.md]",
+      "reason": "performance-monitoring.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: performance-monitoring.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[phase-aware-agents.md]",
+      "reason": "phase-aware-agents.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: phase-aware-agents.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[private-mode.md]",
+      "reason": "private-mode.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: private-mode.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[prompt-composition.md]",
+      "reason": "prompt-composition.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: prompt-composition.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[queue-advisor.md]",
+      "reason": "queue-advisor.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: queue-advisor.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[queue-drain.md]",
+      "reason": "queue-drain.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: queue-drain.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[rate-limit-protection.md]",
+      "reason": "rate-limit-protection.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: rate-limit-protection.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[rate-limiting.md]",
+      "reason": "rate-limiting.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: rate-limiting.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[reinvention-prevention.md]",
+      "reason": "reinvention-prevention.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: reinvention-prevention.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[repomix-integration.md]",
+      "reason": "repomix-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: repomix-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[resource-governance.md]",
+      "reason": "resource-governance.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: resource-governance.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[response-compression.md]",
+      "reason": "response-compression.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: response-compression.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[result-management.md]",
+      "reason": "result-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: result-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[sandbox-sampling.md]",
+      "reason": "sandbox-sampling.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: sandbox-sampling.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[scope-creep-detection.md]",
+      "reason": "scope-creep-detection.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: scope-creep-detection.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[security-scanning.md]",
+      "reason": "security-scanning.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: security-scanning.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[self-improvement-protocol.md]",
+      "reason": "self-improvement-protocol.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: self-improvement-protocol.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[session-concurrency.md]",
+      "reason": "session-concurrency.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: session-concurrency.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[singularity.md]",
+      "reason": "singularity.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: singularity.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[skill-management.md]",
+      "reason": "skill-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: skill-management.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[so-slo.md]",
+      "reason": "so-slo.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: so-slo.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[squad-protocol.md]",
+      "reason": "squad-protocol.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: squad-protocol.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[startup-protocol.md]",
+      "reason": "startup-protocol.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: startup-protocol.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[step-files.md]",
+      "reason": "step-files.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: step-files.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[supply-chain-defense.md]",
+      "reason": "supply-chain-defense.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: supply-chain-defense.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[tero-integration.md]",
+      "reason": "tero-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: tero-integration.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[token-economy.md]",
+      "reason": "token-economy.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: token-economy.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[trailofbits-skills.md]",
+      "reason": "trailofbits-skills.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: trailofbits-skills.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[user-prompt-capture.md]",
+      "reason": "user-prompt-capture.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: user-prompt-capture.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_every_rule_has_opening_section[workload-scheduling.md]",
+      "reason": "workload-scheduling.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:477: workload-scheduling.md grandfathered (uses non-standard opening section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[ROADMAP.md]",
+      "reason": "ROADMAP.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: ROADMAP.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[RULES-COMPACT.md]",
+      "reason": "RULES-COMPACT.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: RULES-COMPACT.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[adversarial-review.md]",
+      "reason": "adversarial-review.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: adversarial-review.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[agent-audit-before-commit.md]",
+      "reason": "agent-audit-before-commit.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: agent-audit-before-commit.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[agent-customization.md]",
+      "reason": "agent-customization.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: agent-customization.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[agent-identity.md]",
+      "reason": "agent-identity.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: agent-identity.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[agent-kpis.md]",
+      "reason": "agent-kpis.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: agent-kpis.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[agent-security.md]",
+      "reason": "agent-security.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: agent-security.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[agent-sidecars.md]",
+      "reason": "agent-sidecars.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: agent-sidecars.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[auto-repair.md]",
+      "reason": "auto-repair.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: auto-repair.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[auto-skill-generation.md]",
+      "reason": "auto-skill-generation.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: auto-skill-generation.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[bash-naming.md]",
+      "reason": "bash-naming.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: bash-naming.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[capability-levels.md]",
+      "reason": "capability-levels.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: capability-levels.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[capability-protection.md]",
+      "reason": "capability-protection.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: capability-protection.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[closed-loop-prompts.md]",
+      "reason": "closed-loop-prompts.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: closed-loop-prompts.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[confidence-gate.md]",
+      "reason": "confidence-gate.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: confidence-gate.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[consequence-system.md]",
+      "reason": "consequence-system.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: consequence-system.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[content-policy.md]",
+      "reason": "content-policy.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: content-policy.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[context-management.md]",
+      "reason": "context-management.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: context-management.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[context-optimization.md]",
+      "reason": "context-optimization.md grandfathered (uses non-standard contextual trigger section; predates ADR-067 Phase 2) <repo-root>/tests/audit/test_rules_enforcement.py:513: context-optimization.md grandfathered (uses non-standard contextual trigger section; predates ADR-067 Phase 2)",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[context7-auto-trigger.md]",
+      "reason": "context7-auto-trigger.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: context7-auto-trigger.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[crash-recovery.md]",
+      "reason": "crash-recovery.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: crash-recovery.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[credential-management.md]",
+      "reason": "credential-management.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: credential-management.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[decomposition.md]",
+      "reason": "decomposition.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: decomposition.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[doc-sync.md]",
+      "reason": "doc-sync.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: doc-sync.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[dry-run.md]",
+      "reason": "dry-run.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: dry-run.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[engram-api-safety.md]",
+      "reason": "engram-api-safety.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: engram-api-safety.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[engram-organization.md]",
+      "reason": "engram-organization.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: engram-organization.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[error-learning.md]",
+      "reason": "error-learning.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: error-learning.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[fault-tolerance.md]",
+      "reason": "fault-tolerance.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: fault-tolerance.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[infra-health.md]",
+      "reason": "infra-health.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: infra-health.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[infra-intent.md]",
+      "reason": "infra-intent.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: infra-intent.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[lane-taxonomy.md]",
+      "reason": "lane-taxonomy.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: lane-taxonomy.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[license-policy.md]",
+      "reason": "license-policy.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: license-policy.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[model-compatibility.md]",
+      "reason": "model-compatibility.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: model-compatibility.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[model-routing.md]",
+      "reason": "model-routing.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: model-routing.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[observability.md]",
+      "reason": "observability.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: observability.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[orchestrator-mode.md]",
+      "reason": "orchestrator-mode.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: orchestrator-mode.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[pentesting-readiness.md]",
+      "reason": "pentesting-readiness.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: pentesting-readiness.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[phase-aware-agents.md]",
+      "reason": "phase-aware-agents.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: phase-aware-agents.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[pre-commit-gate.md]",
+      "reason": "pre-commit-gate.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: pre-commit-gate.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[private-mode.md]",
+      "reason": "private-mode.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: private-mode.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[prompt-composition.md]",
+      "reason": "prompt-composition.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: prompt-composition.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[python-naming.md]",
+      "reason": "python-naming.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: python-naming.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[queue-advisor.md]",
+      "reason": "queue-advisor.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: queue-advisor.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[rate-limit-protection.md]",
+      "reason": "rate-limit-protection.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: rate-limit-protection.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[reinvention-prevention.md]",
+      "reason": "reinvention-prevention.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: reinvention-prevention.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[repomix-integration.md]",
+      "reason": "repomix-integration.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: repomix-integration.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[resource-governance.md]",
+      "reason": "resource-governance.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: resource-governance.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[response-compression.md]",
+      "reason": "response-compression.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: response-compression.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[responsiveness.md]",
+      "reason": "responsiveness.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: responsiveness.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[result-management.md]",
+      "reason": "result-management.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: result-management.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[security-scanning.md]",
+      "reason": "security-scanning.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: security-scanning.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[self-improvement-protocol.md]",
+      "reason": "self-improvement-protocol.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: self-improvement-protocol.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[session-concurrency.md]",
+      "reason": "session-concurrency.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: session-concurrency.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[skill-invocation-mandatory.md]",
+      "reason": "skill-invocation-mandatory.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: skill-invocation-mandatory.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[skill-management.md]",
+      "reason": "skill-management.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: skill-management.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[so-slo.md]",
+      "reason": "so-slo.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: so-slo.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[squad-protocol.md]",
+      "reason": "squad-protocol.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: squad-protocol.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[step-files.md]",
+      "reason": "step-files.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: step-files.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[supply-chain-defense.md]",
+      "reason": "supply-chain-defense.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: supply-chain-defense.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[token-economy.md]",
+      "reason": "token-economy.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: token-economy.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[trailofbits-skills.md]",
+      "reason": "trailofbits-skills.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: trailofbits-skills.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_rules_enforcement::test_contextual_rules_have_trigger_section[trust-score.md]",
+      "reason": "trust-score.md does not mention Contextual Trigger \u2014 skip <repo-root>/tests/audit/test_rules_enforcement.py:510: trust-score.md does not mention Contextual Trigger \u2014 skip",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "policy-exemption",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_skills_contracts::test_every_skill_reference_exists[scaffold-project]",
+      "reason": "skills/scaffold-project/ is in _OUTPUT_PATH_SKILLS \u2014 references are output paths generated by the skill, not project artifacts <repo-root>/tests/audit/test_skills_contracts.py:328: skills/scaffold-project/ is in _OUTPUT_PATH_SKILLS \u2014 references are output paths generated by the skill, not project artifacts",
+      "recommended_action": "policy-review: keep only with paired owner policy; otherwise xfail/remove",
+      "rule_id": "documented-policy-exemption",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[PreCompact-5000]",
+      "reason": "No invocations recorded for event 'PreCompact' <repo-root>/tests/audit/test_hook_latency_budget.py:179: No invocations recorded for event 'PreCompact'",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[PreToolUse-2000]",
+      "reason": "Operational hook latency budget exceeded for 'PreToolUse' but COS_ENFORCE_HOOK_LATENCY_BUDGET=1 is not set: destructive-git-blocker (event=PreToolUse, n=31, p95=3228ms, budget=2000ms)",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[SessionStart-3000]",
+      "reason": "No invocations recorded for event 'SessionStart' <repo-root>/tests/audit/test_hook_latency_budget.py:179: No invocations recorded for event 'SessionStart'",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[SubagentStart-3000]",
+      "reason": "No invocations recorded for event 'SubagentStart' <repo-root>/tests/audit/test_hook_latency_budget.py:179: No invocations recorded for event 'SubagentStart'",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[TaskCompleted-3000]",
+      "reason": "No invocations recorded for event 'TaskCompleted' <repo-root>/tests/audit/test_hook_latency_budget.py:179: No invocations recorded for event 'TaskCompleted'",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[TaskCreated-3000]",
+      "reason": "No invocations recorded for event 'TaskCreated' <repo-root>/tests/audit/test_hook_latency_budget.py:179: No invocations recorded for event 'TaskCreated'",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_p95_within_budget_for_event[TeammateIdle-3000]",
+      "reason": "No invocations recorded for event 'TeammateIdle' <repo-root>/tests/audit/test_hook_latency_budget.py:179: No invocations recorded for event 'TeammateIdle'",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    },
+    {
+      "category": "runtime-sample-precondition",
+      "lane": "audit",
+      "nodeid": "tests.audit.test_hook_latency_budget::test_no_hooks_exceed_default_budget",
+      "reason": "No hooks recorded for events outside the explicit budget table. <repo-root>/tests/audit/test_hook_latency_budget.py:224: No hooks recorded for events outside the explicit budget table.",
+      "recommended_action": "deterministic-fixture: add fixture data or keep only in runtime-observability lane",
+      "rule_id": "runtime-sample-window",
+      "source": ".cognitive-os/reports/test-runs/20260507T171415Z--n-2-tests-audit-/skip-summary.json",
+      "suspicious": "false"
+    }
+  ],
+  "suspicious": [],
+  "suspicious_count": 0,
+  "total_skips": 215
+}
