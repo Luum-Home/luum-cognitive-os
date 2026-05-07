@@ -131,6 +131,7 @@ hooks:
     script: hooks/agent-control-inbound-guard.sh
   agent-launch-confirmed:
     behavior_tests:
+    - tests/behavior/test_post_agent_verify.py
     - tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py
     bypass_policy: not_required_warning_only
     criticality: coordination
