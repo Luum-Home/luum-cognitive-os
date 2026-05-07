@@ -267,3 +267,23 @@ def test_dispatch_does_not_retry_auth_error_and_opens_circuit(tmp_path: Path) ->
     assert calls == 1
     assert records[0]["dispatch_gate"]["retry_events"][0]["action"] == "no_retry"
     assert records[0]["dispatch_gate"]["retry_events"][0]["failure_class"] == "auth_error"
+
+@pytest.mark.integration
+def test_dispatch_sandboxed_inprocess_provider_uses_subprocess_boundary(tmp_path: Path) -> None:
+    records: list[dict] = []
+    with patch.dict(
+        os.environ,
+        {"COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "s1", "COS_SANDBOX_DISABLE_NATIVE": "1"},
+        clear=False,
+    ):
+        result = dispatch_module.dispatch(
+            "hello isolated",
+            providers=["echo"],
+            skill_requirements={"require_sandbox": True, "allow_sandbox_fallback": True, "session_budget_cap_usd": 1.0},
+            _metric_sink=records.append,
+        )
+    assert result.success is True
+    assert result.provider_used == "echo"
+    assert result.text == "hello isolated"
+    assert records[0]["dispatch_gate"]["isolate_inprocess_providers"] is True
+    assert records[0]["dispatch_gate"]["sandbox_plan"]["fallback_used"] is True

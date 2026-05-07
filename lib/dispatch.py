@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 import sys
 import time
 import uuid
@@ -254,6 +255,45 @@ def _try_registry_provider(
         "provider_label": provider,
     }
 
+
+
+def _try_provider_subprocess(
+    provider: str,
+    prompt: str,
+    *,
+    claude_model: Optional[str] = None,
+    timeout: int = 600,
+    project_dir: Path | None = None,
+    sandbox_required: bool = False,
+    allow_sandbox_fallback: bool = False,
+    sandbox_backend: str | None = None,
+) -> Optional[dict]:
+    """Run a provider in a separate process, optionally wrapped by ADR-232 sandbox."""
+    root = Path(__file__).resolve().parent.parent
+    script = root / "scripts" / "cos-provider-call"
+    command = [sys.executable, str(script), "--provider", provider]
+    if claude_model:
+        command.extend(["--claude-model", claude_model])
+    cwd = project_dir or runtime_project_root_or_cwd()
+    if sandbox_required:
+        plan = build_sandbox_command(
+            command,
+            workspace=cwd,
+            network=True,
+            backend=sandbox_backend,
+            allow_fallback=allow_sandbox_fallback,
+        )
+        command = plan.command
+    proc = subprocess.run(command, input=prompt, text=True, capture_output=True, cwd=str(cwd), timeout=timeout)
+    if proc.returncode != 0:
+        return {"success": False, "text": "", "tokens_in": 0, "tokens_out": 0, "cost_usd": 0.0, "error": (proc.stderr or proc.stdout)[-500:], "model": "", "provider_label": provider}
+    try:
+        payload = json.loads(proc.stdout.strip().splitlines()[-1])
+        if isinstance(payload, dict):
+            return payload
+    except (json.JSONDecodeError, IndexError):
+        pass
+    return {"success": False, "text": "", "tokens_in": 0, "tokens_out": 0, "cost_usd": 0.0, "error": "provider subprocess returned invalid JSON", "model": "", "provider_label": provider}
 
 def _try_qwen(
     prompt: str,
@@ -523,12 +563,16 @@ def dispatch(
             tool_loading_plan = {"status": "error"}
 
     sandbox_plan: dict[str, object] | None = None
-    if _skill_req.get("require_sandbox") or _skill_req.get("sandbox_required"):
+    sandbox_required_flag = bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required"))
+    allow_sandbox_fallback_flag = bool(_skill_req.get("allow_sandbox_fallback", False))
+    sandbox_backend = _skill_req.get("sandbox_backend") if isinstance(_skill_req.get("sandbox_backend"), str) else None
+    isolate_inprocess_providers = bool(sandbox_required_flag and _skill_req.get("isolate_inprocess_providers", True))
+    if sandbox_required_flag:
         try:
             sandbox_plan = build_sandbox_command(
                 ["true"],
                 workspace=project_dir,
-                allow_fallback=bool(_skill_req.get("allow_sandbox_fallback", False)),
+                allow_fallback=allow_sandbox_fallback_flag,
             ).to_dict()
         except (SandboxUnavailable, ValueError) as exc:
             latency_ms = int((time.monotonic() - t0) * 1000)
@@ -729,14 +773,25 @@ def dispatch(
                     break
 
             if provider == "qwen":
-                attempt = qwen_fn(prompt, claude_model=claude_model, verbose=verbose)
-                if attempt is None:
+                if isolate_inprocess_providers and _qwen_fn is None:
+                    response = _try_provider_subprocess(
+                        "qwen",
+                        prompt,
+                        claude_model=claude_model,
+                        timeout=timeout,
+                        project_dir=project_dir,
+                        sandbox_required=sandbox_required_flag,
+                        allow_sandbox_fallback=allow_sandbox_fallback_flag,
+                        sandbox_backend=sandbox_backend,
+                    )
+                else:
+                    response = qwen_fn(prompt, claude_model=claude_model, verbose=verbose)
+                if response is None:
                     # Qwen unavailable (unconfigured / SDK missing / disabled) — advance
                     if verbose:
                         print("[dispatch] qwen unavailable — advancing", file=sys.stderr)
                     response = None
                     break
-                response = attempt
             elif provider == "claude":
                 if claude_executor is None:
                     if verbose:
@@ -749,19 +804,31 @@ def dispatch(
                         claude_model,
                         claude_executor,
                         timeout,
-                        sandbox_required=bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
-                        allow_sandbox_fallback=bool(_skill_req.get("allow_sandbox_fallback", False)),
+                        sandbox_required=sandbox_required_flag,
+                        allow_sandbox_fallback=allow_sandbox_fallback_flag,
                     )
                 else:
                     response = claude_fn(prompt, claude_model, claude_executor, timeout)
             else:
                 # ADR-062: N-provider cascade via lib/providers/REGISTRY
-                attempt = _try_registry_provider(
-                    provider=provider,
-                    prompt=prompt,
-                    claude_model=claude_model,
-                    verbose=verbose,
-                )
+                if isolate_inprocess_providers:
+                    attempt = _try_provider_subprocess(
+                        provider,
+                        prompt,
+                        claude_model=claude_model,
+                        timeout=timeout,
+                        project_dir=project_dir,
+                        sandbox_required=sandbox_required_flag,
+                        allow_sandbox_fallback=allow_sandbox_fallback_flag,
+                        sandbox_backend=sandbox_backend,
+                    )
+                else:
+                    attempt = _try_registry_provider(
+                        provider=provider,
+                        prompt=prompt,
+                        claude_model=claude_model,
+                        verbose=verbose,
+                    )
                 if attempt is None:
                     # Provider unavailable (not configured / SDK missing / disabled) — advance
                     if verbose:
@@ -900,7 +967,8 @@ def dispatch(
             "estimated_cost_usd": estimated_cost,
             "budget_cap_usd": budget_cap,
             "budget_pressure": budget_pressure,
-            "sandbox_required": bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
+            "sandbox_required": sandbox_required_flag,
+            "isolate_inprocess_providers": isolate_inprocess_providers,
             "sandbox_plan": sandbox_plan,
             "tool_loading": tool_loading_plan,
             "provider_attempts": provider_attempts,

@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–E implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-223 (worktree-per-write-agent), ADR-225 (branch-per-task), ADR-228 (retry/budget), ADR-233 (agent-team file IPC)  
 **Source**: [`docs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md)
@@ -54,10 +54,15 @@ Implemented additional slices:
 - `enqueue-team-next` claims the next ADR-233 team task and queues a detached command template.
 - `service-plan` prints launchd/systemd definitions without installing them.
 
+Implemented Slice E:
+
+- `install-service` writes opt-in launchd/systemd service files to user service directories or an explicit target directory; activation remains a separate operator step.
+- `kill` / `AgentDaemon.kill_task()` best-effort kills the tmux session, marks the task failed, and writes a `done.json` receipt with exit code 137.
+
 Not implemented yet:
 
-- launchd/systemd installer that mutates user service directories.
-- Process kill escalation beyond state/done receipts.
+- Automatic launchctl/systemctl activation helper.
+- Process-tree kill beyond tmux session termination.
 
 ## Hard rules
 

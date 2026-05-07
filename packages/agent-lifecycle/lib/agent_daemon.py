@@ -246,6 +246,44 @@ class AgentDaemon:
             "[Install]\nWantedBy=default.target\n"
         )
 
+
+    def launchd_install_path(self, *, label: str = "com.luum.cos-agent-daemon", target_dir: str | Path | None = None) -> Path:
+        base = Path(target_dir).expanduser() if target_dir else Path.home() / "Library" / "LaunchAgents"
+        return base / f"{label}.plist"
+
+    def systemd_install_path(self, *, unit_name: str = "cos-agent-daemon.service", target_dir: str | Path | None = None) -> Path:
+        base = Path(target_dir).expanduser() if target_dir else Path.home() / ".config" / "systemd" / "user"
+        return base / unit_name
+
+    def install_service(self, *, kind: str, target_dir: str | Path | None = None, python_bin: str = "python3") -> Path:
+        """Install an opt-in service file; activation is a separate operator step."""
+        if kind == "launchd":
+            path = self.launchd_install_path(target_dir=target_dir)
+            content = self.launchd_plist(python_bin=python_bin)
+        elif kind == "systemd":
+            path = self.systemd_install_path(target_dir=target_dir)
+            content = self.systemd_unit(python_bin=python_bin)
+        else:
+            raise AgentDaemonError("kind must be launchd or systemd")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        return path
+
+    def kill_task(self, task_id: str, *, tmux_bin: str | None = None, reason: str = "operator_killed") -> DetachedAgentTask:
+        """Best-effort kill escalation for a detached task, then mark failed."""
+        task = self.get_task(task_id)
+        launcher = tmux_bin or shutil.which("tmux")
+        if launcher and task.tmux_session:
+            try:
+                subprocess.run([launcher, "kill-session", "-t", task.tmux_session], capture_output=True, text=True, timeout=10)
+            except (FileNotFoundError, subprocess.TimeoutExpired):
+                pass
+        updated = self._replace_task(task, status="failed")
+        done = {"task_id": task.task_id, "exit_code": 137, "reasons": [reason], "timestamp": time.time()}
+        self.done_path(task.task_id).write_text(json.dumps(done, sort_keys=True) + "\n", encoding="utf-8")
+        _append_jsonl(self.results_path, {**updated.to_dict(), "done": done})
+        return updated
+
     def _write_run_script(self, task: DetachedAgentTask) -> Path:
         task_dir = self.task_dir(task.task_id)
         task_dir.mkdir(parents=True, exist_ok=True)
