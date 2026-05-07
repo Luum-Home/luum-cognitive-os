@@ -4,8 +4,10 @@
 
 **Status**: Proposed
 **Date**: 2026-05-06
+**Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
-**Source**: Synthesis of 11 orchestration-gap research reports (`docs/research/orchestration-gaps/`). The replay-timeline, retry-classifier, cost-ledger, and cross-session agent-team gaps all share the same prerequisite: an *event-sourced* session bus, not the *event-log* the OS has today.
+**Source**: Synthesis of 11 orchestration-gap research reports (`docs/research/orchestration-gaps/`). The replay-timeline, retry-classifier, cost-ledger, and cross-session agent-team gaps all share the same prerequisite: per-session sequencing + memoized step wrapping on top of the existing flight recorder.
+**Evaluation contract**: [`manifests/orchestration-research-evaluation.yaml`](../../manifests/orchestration-research-evaluation.yaml) — C1/C2/C3/C4.
 
 ---
 
@@ -30,11 +32,33 @@ This ADR is **load-bearing for the Phase-1 substrate**. It must land before ADR-
 
 ## Decision
 
-Upgrade `session_bus.py` from event-log to event-store with three additive primitives:
+Extend the ADR-205 Flight Recorder substrate with three additive primitives, all opt-in via the existing `session_bus.append_event()` API:
 
-1. **Monotonic sequence numbers**: every `append_event()` allocates and persists a per-session monotonic `seq` (uint64). Allocation is atomic via `flock` on a per-session counter file; the counter is recovered on startup by reading the highest `seq` in the stream.
-2. **Per-session streams**: events route to `.cognitive-os/sessions/{session_id}.events.jsonl`. The existing global log becomes a fan-out *index* (`.cognitive-os/coordination/event-index.jsonl`) carrying only `{seq, session_id, event_type, ts}` for cross-session projections.
+1. **Monotonic per-session sequence numbers**: every `append_event()` allocates and persists a per-session monotonic `seq` (uint64). Allocation is atomic via a per-session counter; recovery on startup walks the stream to find `max(seq)`. The counter file is the *cache*; the stream is the *truth*. See §"Atomicity model" below for the durability contract.
+2. **Per-session streams**: events route to `.cognitive-os/sessions/{session_id}.events.jsonl`. The existing ADR-205 flight-recorder global log continues to receive a fan-out *index* (`{seq, session_id, event_type, ts}` only) for cross-stream joining. Per-session streams are the primary; the global index is a projection.
 3. **`@event_wrap` decorator**: wraps any function whose output is non-deterministic (LLM call, network call, time-dependent). On first execution, runs the function and persists the result as an event with `kind: "wrapped_step"`. On subsequent execution within a replay context (signalled by env var `COS_REPLAY_FROM_SEQ`), reads the stored result instead of re-invoking. Idempotency keyed on `(session_id, function_qualname, call_index_within_session)`.
+
+## Atomicity model (replaces the simplified "fsync per event" claim)
+
+The original draft asserted "append latency p95 < 5ms" with implicit per-event fsync. That budget is unsupportable on most filesystems and operator hardware without measurement. The corrected contract:
+
+- **Default mode — group commit.** Events are written via `write()` and become durable on the next `fsync()`, which is triggered every N events or every T milliseconds (whichever comes first; defaults `N=8`, `T=100ms`, both manifest-tunable). Crash semantics: at most N–1 events may be lost on power-fail; no event is partially-written (the writer holds the per-session lock for the duration of a `write()`).
+- **Strict mode — per-event fsync.** Opt-in via `event_bus.strict_durability=true`. Every `append_event()` fsyncs before returning. Used when the event itself is the audit record of a destructive operation (e.g. ADR-227 file restore commit, ADR-228 idempotency-key claim).
+- **Sequence rollback on append failure.** The counter advances *after* successful `write()`. On `write()` exception, the counter is rolled back; the next append reuses the same `seq`. On `fsync()` exception (group-commit failure), the affected events are re-written to a quarantine stream and the operator is notified — they are not silently lost.
+- **Recovery contract.** On process restart, `recover_session(session_id)` walks the stream, takes `max(seq)`, and validates the stream is gap-free up to that point. Gaps trigger refusal to append and an operator alert. The stream is the source of truth; the counter file is rebuildable from the stream.
+
+Performance budgets are **measured first** (per C3 and the evaluation manifest's T6 caveat). Slice A delivers a baseline measurement; subsequent slices propose budgets grounded in that measurement.
+
+## Locking and portability
+
+`flock(2)` is the portable POSIX advisory lock primitive. ADR-226 uses it as the default per-session counter lock. Portability constraints:
+
+- **Linux**: `flock(2)` works on local filesystems. **Refuses to advance the counter on NFS / FUSE** unless the operator opts in via `event_bus.allow_network_fs=true` — `flock` semantics on NFS are implementation-defined and have produced historical data loss.
+- **macOS**: `flock(2)` is supported. APFS is the supported default. Network volumes inherit the same opt-in guard as Linux NFS.
+- **Windows**: not a supported default. ADR-226 emits an explicit `unsupported_platform` error on Windows. A future slice may add `msvcrt.locking()` support behind an opt-in flag, but Windows is outside the local-first default scope.
+- **Other harnesses**: harnesses running COS in environments without `flock` (containers without `/var/lock`, restricted sandboxes) can opt into a *single-writer mode* (`event_bus.single_writer=true`) that skips locking entirely. This is safe iff the operator guarantees one process per session — appropriate for ADR-211 service-mode where the dispatcher already enforces that.
+
+The portability matrix is declared in the manifest below and verified by T8 cross-harness tests.
 
 ## Manifest declaration
 
@@ -43,11 +67,39 @@ Upgrade `session_bus.py` from event-log to event-store with three additive primi
 schema_version: event-sourced-session-bus/v1
 status: active
 owner: platform-orchestration
+extends: "ADR-205 Flight Recorder"
 
 streams:
   per_session_path: ".cognitive-os/sessions/{session_id}.events.jsonl"
-  global_index_path: ".cognitive-os/coordination/event-index.jsonl"
+  global_index_path: ".cognitive-os/coordination/event-index.jsonl"   # ADR-205 flight-recorder index, extended with seq
   counter_dir: ".cognitive-os/sessions/.seq-counters/"
+
+durability:
+  default_mode: "group_commit"
+  group_commit_n: 8           # fsync every N events
+  group_commit_t_ms: 100      # or every T ms
+  strict_mode_opt_in: "event_bus.strict_durability=true"
+  strict_mode_required_for:
+    - "ADR-227 file_restore_committed"
+    - "ADR-228 idempotency_key_claimed"
+    - "operator_destructive_action"
+
+locking:
+  primitive: "flock(2)"
+  supported_platforms: ["linux+local_fs", "darwin+apfs"]
+  refuses_on_default:
+    - "linux+nfs"            # opt in via allow_network_fs=true
+    - "linux+fuse"
+    - "darwin+network_volume"
+    - "windows"              # explicit unsupported_platform error
+  single_writer_escape_hatch:
+    flag: "event_bus.single_writer=true"
+    safe_when: "operator guarantees one process per session (ADR-211 service mode)"
+
+performance:
+  budgets_set_after_measurement: true
+  slice_a_baseline_required: true
+  initial_target: "p95 measurable; budget proposed in Slice B"
 
 event_envelope_v2:
   required_fields:
@@ -96,7 +148,7 @@ migration:
 - **Append failure does not consume a `seq`.** The counter advances only on successful fsync of the event line. If fsync fails, the counter is rolled back; the next append retries the same `seq`.
 - **`@event_wrap` MUST refuse to replay if the wrapped function's qualname or signature has changed since recording.** Silent replay against a changed function is the entire class of "deterministic replay diverged" production bugs.
 - **The global index is a *fan-out* projection, not a primary.** Recovery from a corrupted index reads the per-session streams and rebuilds. The reverse (recovering a session from the index) is not supported.
-- **No external dependencies.** `flock` is POSIX; `fsync` is POSIX; everything else is the existing Python stdlib. Honors C2 (footprint discipline).
+- **No external dependencies.** `flock` is POSIX; `fsync` is POSIX; everything else is the existing Python stdlib. Honors C2 (footprint discipline). Locking-platform constraints declared in §"Locking and portability" and the manifest's `locking.supported_platforms`.
 - **Schema-versioned.** Every event carries `schema_version: event-sourced-session-bus/v1`. Consumers MUST check.
 
 ## Test tier matrix (per C3)
@@ -106,7 +158,7 @@ T2 ✅ integration — write+read+replay round-trip on fixture session
 T3 ✅ behavior — manifest validator, schema rejection, refusal conditions
 T4 ✅ smoke — end-to-end record→replay produces byte-identical projection state in <60s
 T5 ✅ adversarial — `seq` gap injection, fsync failure mid-append, function signature change between record and replay, concurrent appends from N writers
-T6 ✅ performance — append latency p50/p95/p99 under N=100 concurrent sessions; budget: p95 < 5ms
+T6 ✅ performance — append latency p50/p95/p99 under N=100 concurrent sessions. **Slice A delivers the baseline measurement on operator hardware; the budget is proposed in Slice B based on that data.** No upfront p95 number asserted — per the evaluation manifest's T6 caveat.
 T7 ✅ chaos — kill -9 mid-append, full disk, corrupted index, missing session stream
 T8 ⬜ cross-harness — N/A, internal substrate
 T9 ⬜ adoption-truth — N/A, no external tool adopted
@@ -163,15 +215,48 @@ The tests must prove:
 
 ## Implementation slices
 
-Each slice is independently shippable; later slices depend on earlier ones.
+Each slice is independently shippable; later slices depend on earlier ones. **LOC numbers are agent-reported estimates** — treat as direction, not commitment.
 
-1. **Slice A — Sequence allocator + per-session streams** (~60 LOC). `lib/session_bus.py` v2: add `seq` allocator with `flock`-protected counter; route `append_event()` by `session_id`. Maintain v1 readers. Tests T1+T3+T7+T10.
-2. **Slice B — Fan-out global index** (~30 LOC). Background thread or hook tap that mirrors `{seq, session_id, event_type, ts}` to `.cognitive-os/coordination/event-index.jsonl`. Tests T2+T5.
-3. **Slice C — `@event_wrap` decorator** (~50 LOC). `lib/event_wrap.py`. Records on first call, replays under env signal. Hard-rule refusal on signature mismatch. Tests T1+T2+T5.
-4. **Slice D — Migration tool** (~30 LOC). `scripts/migrate_event_log_to_v2.py`. Reads v1 global log, demultiplexes by `session_id`, allocates seq numbers, writes per-session streams. Idempotent. Tests T3+T4.
-5. **Slice E — Built-in projections** (cost ledger, retry classifier, timeline, handoff chain stubs). `lib/event_projections/*.py`. Each is `fold(state, event) -> state`. Will be wired by ADRs 227/228/230. Tests T2.
+### Slice A — Minimum viable substrate (lands first, alone)
 
-Total: ~170 LOC for the substrate. ADR-227/228/230 will add their own consumer code on top.
+Scope reduced from the original draft. The goal of Slice A is to validate the *shape* against operator hardware before any consumer (ADR-227 / 228 / 230 / 233) drafts against it.
+
+Includes:
+- **Sequence allocator** with `flock`-protected per-session counter (Linux+local_fs, macOS+APFS only — refusal on NFS/FUSE/Windows).
+- **Per-session stream writer** at `.cognitive-os/sessions/{session_id}.events.jsonl` with the durability contract from §"Atomicity model" (group commit by default; strict mode opt-in).
+- **Stream reader with gap detection** (`read_session(session_id) -> Iterator[Event]`; raises `EventStreamGapDetected` on the first gap).
+- **Smoke test (T4)**: end-to-end record N events, kill the process, restart, replay from seq 0, assert byte-identical projection state. <60s.
+- **Baseline performance measurement (T6)**: report p50/p95/p99 append latency on operator hardware. No budget asserted; the report becomes input to Slice B's budget proposal.
+- **Tests**: T1 (allocator unit), T3 (manifest validator), T4 (smoke), T7 (kill mid-append, fsync failure), T10 (read-only audit invariants).
+
+Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections.
+
+### Slice B — Fan-out global index + perf budget
+
+After Slice A's baseline measurement lands.
+- Mirror `{seq, session_id, event_type, ts}` to `.cognitive-os/coordination/event-index.jsonl` (extends the ADR-205 flight-recorder index).
+- Propose a p95 append-latency budget grounded in Slice A's measurements; lock the budget into the manifest.
+- Tests T2 (cross-stream consistency), T5 (concurrent writer contention on the index).
+
+### Slice C — `@event_wrap` decorator
+
+After Slice B. The piece replay actually depends on.
+- `lib/event_wrap.py`. Records on first call, replays under env signal. Hard-rule refusal on signature mismatch.
+- Tests T1, T2, T5.
+
+### Slice D — Migration tool
+
+After Slice C.
+- `scripts/migrate_event_log_to_v2.py`. Reads v1 ADR-205 flight-recorder log, demultiplexes by `session_id`, allocates seq, writes per-session streams. Idempotent.
+- Tests T3, T4 (round-trip migration smoke).
+
+### Slice E — Built-in projection stubs
+
+After Slice C, before consumer ADRs draft against the substrate.
+- `lib/event_projections/*.py` for cost ledger, retry classifier, timeline, handoff chain. Each is `fold(state, event) -> state`. Stubs only; consumer ADRs (227/228/230) wire them.
+- Tests T2.
+
+**Critical sequencing rule**: no consumer ADR drafts code against Slice C+ shape until Slice A baseline + Slice B budget are committed and reviewed. This is the single piece of discipline that prevents the substrate from being prematurely locked in to the wrong shape.
 
 ## Open questions
 
