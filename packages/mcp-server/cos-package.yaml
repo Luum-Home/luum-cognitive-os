@@ -10,7 +10,7 @@ provides:
   - mcp-server
 
 exports:
-  - source: "../../mcp-server/cos_mcp.py"
+  - source: "cos_mcp.py"
     type: mcp-server
     description: "FastMCP server with 8 COS tools"
 
