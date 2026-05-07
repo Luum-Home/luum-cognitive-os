@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — skill performance ledger slice active  
 **Date**: 2026-05-06  
 **Related**: ADR-090, ADR-095, ADR-174, ADR-180, ADR-188, ADR-201, ADR-204  
 **Source**: `.cognitive-os/strategy/research/07-skill-ecosystem-evolution.md`, `.cognitive-os/strategy/research/05-hermes-imitation-forensics.md`
@@ -64,11 +64,11 @@ approval and tests.
 
 ## Implementation slices
 
-1. Fix skill-feedback identity extraction and validate against known skill ids.
-2. Add `scripts/cos-skill-performance-ledger`.
-3. Record structured router accept/ignore/override events.
-4. Generate one rewrite proposal from validated evidence in dry-run mode.
-5. Add deprecation proposal path with archive/tombstone requirements.
+1. [x] Fix skill-feedback identity extraction and validate against known skill ids.
+2. [x] Add `scripts/cos-skill-performance-ledger`.
+3. [ ] Record structured router accept/ignore/override events.
+4. [ ] Generate one rewrite proposal from validated evidence in dry-run mode.
+5. [ ] Add deprecation proposal path with archive/tombstone requirements.
 
 ## Acceptance criteria
 
