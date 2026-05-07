@@ -12,6 +12,7 @@
 #   cos sprint ...                     -> scripts/cos_sprint.py
 #   cos subagent preflight             -> scripts/subagent_launch_preflight.py
 #   cos agent worktree prepare          -> scripts/cos-agent-worktree-prepare
+#   cos agent daemon ...                -> scripts/cos-agent-daemon
 #   cos private-content audit          -> scripts/private_content_audit.py
 #   cos private-content check-projection -> scripts/private_content_audit.py --check-projection
 #   cos dependency adoption-gate        -> scripts/cos-dependency-adoption-gate
@@ -129,7 +130,11 @@ case "$SUBCMD" in
       shift 3
       exec "$SCRIPT_DIR/cos-agent-worktree-prepare" --project-dir "$PROJECT_ROOT" "$@"
     fi
-    echo "cos: unknown agent subcommand '${2:-} ${3:-}'. Try: cos agent worktree prepare --task-id ID --session-id ID [--json]" >&2
+    if [ "${2:-}" = "daemon" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-agent-daemon" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown agent subcommand '${2:-} ${3:-}'. Try: cos agent {worktree prepare|daemon} ..." >&2
     exit 1
     ;;
   subagent)
@@ -341,6 +346,8 @@ Usage:
   cos sprint <cmd>                       Run sprint orchestration commands
   cos subagent preflight --type TYPE --prompt TEXT
   cos agent worktree prepare --task-id ID --session-id ID [--json]
+  cos agent daemon enqueue|run-once|list|reap ...
+                                         Queue and launch opt-in detached local agents
                                          Check subagent capability contract before launch
   cos private-content audit [--json]      Audit ADR-202 private-content classifications
   cos private-content check-projection PATH [--destination cloud|local] [--json]
