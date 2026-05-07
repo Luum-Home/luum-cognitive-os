@@ -24,6 +24,8 @@ class SandboxPlan:
     network: bool
     writable_roots: list[str]
     fallback_used: bool = False
+    adapter_status: str = "active"
+    adapter_hint: str = ""
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -33,6 +35,8 @@ class SandboxPlan:
             "network": self.network,
             "writable_roots": self.writable_roots,
             "fallback_used": self.fallback_used,
+            "adapter_status": self.adapter_status,
+            "adapter_hint": self.adapter_hint,
         }
 
 
@@ -45,6 +49,31 @@ def available_backend() -> str | None:
     if system == "darwin" and shutil.which("sandbox-exec"):
         return "seatbelt"
     return None
+
+
+
+def adapter_plan(backend: str) -> dict[str, object]:
+    """Return ADR-232 adapter status without executing external runtimes."""
+    selected = backend.strip().lower()
+    if selected in {"bubblewrap", "seatbelt"}:
+        return {"backend": selected, "status": "active", "dependency_policy": "host-native optional", "requires": ["bwrap" if selected == "bubblewrap" else "sandbox-exec"]}
+    if selected == "microvm":
+        return {
+            "backend": "microvm",
+            "status": "adapter_contract",
+            "dependency_policy": "opt-in only; no Firecracker/Kata/E2B dependency in default install",
+            "requires": ["microvm-provider"],
+            "command_contract": ["<microvm-runner>", "--workspace", "<workspace>", "--", "<command>"],
+        }
+    if selected == "contree":
+        return {
+            "backend": "contree",
+            "status": "adapter_contract",
+            "dependency_policy": "opt-in only; no ConTree runtime in default install",
+            "requires": ["contree"],
+            "command_contract": ["contree", "fork", "--workspace", "<workspace>", "--", "<command>"],
+        }
+    raise ValueError("backend must be one of: bubblewrap, seatbelt, microvm, contree")
 
 
 def build_sandbox_command(
@@ -87,6 +116,15 @@ def build_sandbox_command(
         net = "(allow network*)" if network else ""
         profile = f'(version 1)\n(deny default)\n(allow process*)\n(allow file-read*)\n{writes}\n{net}\n'
         return SandboxPlan(SCHEMA_VERSION, "seatbelt", ["sandbox-exec", "-p", profile, *command], network, writable)
+
+    if selected in {"microvm", "contree"}:
+        plan = adapter_plan(selected)
+        runner = os.environ.get("COS_SANDBOX_MICROVM_RUNNER" if selected == "microvm" else "COS_SANDBOX_CONTREE_RUNNER")
+        if runner:
+            return SandboxPlan(SCHEMA_VERSION, selected, [runner, "--workspace", workspace_path, "--", *command], network, writable, adapter_status="active", adapter_hint=str(plan["dependency_policy"]))
+        if allow_fallback:
+            return SandboxPlan(SCHEMA_VERSION, "none", list(command), network, writable, fallback_used=True, adapter_status="fallback", adapter_hint=f"{selected} runner unavailable")
+        raise SandboxUnavailable(f"{selected} backend requested but no runner configured")
 
     if allow_fallback:
         return SandboxPlan(SCHEMA_VERSION, "none", list(command), network, writable, fallback_used=True)

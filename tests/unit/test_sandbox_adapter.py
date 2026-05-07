@@ -30,3 +30,13 @@ def test_bubblewrap_command_defaults_network_off(tmp_path, monkeypatch) -> None:
     assert plan.backend == "bubblewrap"
     assert "--unshare-net" in plan.command
     assert "--bind" in plan.command
+
+
+def test_microvm_and_contree_adapter_contracts_are_declared() -> None:
+    from lib.sandbox_adapter import adapter_plan
+
+    microvm = adapter_plan("microvm")
+    contree = adapter_plan("contree")
+    assert microvm["status"] == "adapter_contract"
+    assert "opt-in only" in microvm["dependency_policy"]
+    assert contree["command_contract"][0] == "contree"

@@ -2,7 +2,9 @@
 """ADR-236 deferred tool loading and ToolSearch planning helpers."""
 from __future__ import annotations
 
+import hashlib
 import json
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -97,6 +99,56 @@ def toolsearch_index(project_dir: str | Path) -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION,
         "tools": [tool.__dict__ for tool in descriptors(manifest)],
     }
+
+
+
+def provider_native_defer_payload(project_dir: str | Path, *, provider: str) -> dict[str, Any]:
+    """Return provider-native defer/list_changed payload when supported.
+
+    Current providers do not expose a stable native defer_loading API, so COS
+    emits a truthful unsupported payload plus the local ToolSearch index.
+    """
+    index = toolsearch_index(project_dir)
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "provider": provider,
+        "native_defer_loading_supported": False,
+        "reason": "provider_api_not_available",
+        "toolsearch_index": index,
+    }
+
+
+def _index_hash(index: dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(index, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def list_changed(project_dir: str | Path, *, state_path: str | Path | None = None, update_state: bool = False) -> dict[str, Any]:
+    """Compare current ToolSearch index against the last saved index hash."""
+    root = Path(project_dir).resolve()
+    path = Path(state_path).resolve() if state_path else root / ".cognitive-os" / "metrics" / "deferred-tool-loading-state.json"
+    index = toolsearch_index(root)
+    current_hash = _index_hash(index)
+    previous: dict[str, Any] = {}
+    if path.is_file():
+        try:
+            previous = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            previous = {}
+    previous_tools = {row.get("name") for row in previous.get("tools", []) if isinstance(row, dict)}
+    current_tools = {row.get("name") for row in index.get("tools", []) if isinstance(row, dict)}
+    payload = {
+        "schema_version": SCHEMA_VERSION,
+        "changed": current_hash != previous.get("index_hash"),
+        "index_hash": current_hash,
+        "previous_hash": previous.get("index_hash"),
+        "added_tools": sorted(str(x) for x in current_tools - previous_tools if x),
+        "removed_tools": sorted(str(x) for x in previous_tools - current_tools if x),
+        "tool_count": len(current_tools),
+    }
+    if update_state:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"index_hash": current_hash, "tools": index.get("tools", []), "updated_at": time.time()}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return payload
 
 
 def dumps_json(payload: Any) -> str:
