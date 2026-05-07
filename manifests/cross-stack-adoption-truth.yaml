@@ -1,0 +1,41 @@
+schema_version: cross-stack-adoption-truth/v1
+status: active
+owner: platform-safety
+purpose: Reconcile lockfiles, NOTICE, component-sources, and research inventories before public claims.
+
+sources:
+  python_pyproject_globs:
+    - pyproject.toml
+    - workflows/pyproject.toml
+  go_mod_globs:
+    - go.mod
+    - cmd/*/go.mod
+  node_package_json_globs:
+    - package.json
+    - dashboard/package.json
+    - examples/*/package.json
+  submodule_manifest: .gitmodules
+  notice: NOTICE
+  component_sources: docs/component-sources.md
+  external_inventory_globs:
+    - docs/reports/external-tools-inventory-*.md
+  marketing_doc_globs:
+    - README.md
+    - docs/business/*.md
+
+allowlists:
+  transitive_only:
+    - pip
+    - setuptools
+    - wheel
+  notice_optional:
+    - arize-phoenix
+  submodule_reference_only:
+    - hermes-agent
+    - pi
+    - caveman
+
+strict_block_verdicts:
+  - DEAD_IN_NOTICE
+  - ASPIRATIONAL_PLANNED
+  - OVERCLAIMED
