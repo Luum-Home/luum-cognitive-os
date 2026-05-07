@@ -1,4 +1,17 @@
-# Secret / Sensitive Data Protection Effectiveness Audit — 2026-05-06
+# Secret Audit — Release Readiness — 2026-05-06
+
+> **Scope of this report**: whole-repo / release-readiness audit driven by
+> ADR-215. Asks: *"Across the entire tracked + working tree, do we leak
+> secret-shaped content if we publish today?"*
+>
+> **Companion report (different scope)**:
+> [`secret-protection-effectiveness-2026-05-06.md`](./secret-protection-effectiveness-2026-05-06.md)
+> covers the per-tool-call hook wiring fix (`secret-detector.sh` matcher
+> from `Edit|Write` → `Bash|Edit|Write`). The two reports are intentionally
+> separate: this one is *what's in the repo*; the other is *what gets
+> blocked when an agent runs a tool*.
+>
+> **Canonical CLI**: `scripts/cos secret audit --json [--strict]` (ADR-215)
 
 ## Verdict
 
