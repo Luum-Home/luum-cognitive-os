@@ -75,6 +75,35 @@ if [ -f "$TASKS_FILE" ]; then
   fi
 fi
 
+
+# ─── ADR-233 file-IPC task mirror (optional) ────────────────────────────────
+
+mirror_agent_team_task() {
+  local team_name task_id os_root
+  team_name=$(echo "$_STDIN_JSON" | jq -r '.team_name // .team // empty' 2>/dev/null | head -1 || true)
+  task_id=$(echo "$_STDIN_JSON" | jq -r '.task_id // .id // empty' 2>/dev/null | head -1 || true)
+
+  if [ -z "$team_name" ]; then
+    team_name="${COS_AGENT_TEAM_NAME:-}"
+  fi
+  if [ -z "$team_name" ] || ! command -v python3 >/dev/null 2>&1; then
+    return 0
+  fi
+
+  os_root="$(cd "$(dirname "$0")/.." && pwd)"
+  PYTHONPATH="$os_root:${PYTHONPATH:-}" python3 - "$os_root" "$_PROJECT_DIR" "$team_name" "$task_desc" "$task_id" <<'PYEOF' >/dev/null 2>&1 || true
+import sys
+from pathlib import Path
+
+os_root, project_dir, team_name, title, task_id = sys.argv[1:6]
+sys.path.insert(0, os_root)
+from lib.agent_team import AgentTeam
+
+team = AgentTeam(team_name, project_dir=Path(project_dir))
+team.create_task(title, task_id=(task_id or None))
+PYEOF
+}
+
 # ─── Phase-aware: check for acceptance criteria in production ───────────────
 
 phase=$(get_phase "reconstruction")
@@ -96,5 +125,6 @@ fi
 
 # ─── All checks passed ─────────────────────────────────────────────────────
 
+mirror_agent_team_task
 log_task_event "allow" "passed_validation"
 exit 0
