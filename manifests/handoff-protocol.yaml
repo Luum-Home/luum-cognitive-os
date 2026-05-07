@@ -1,0 +1,61 @@
+schema_version: handoff-envelope/v1
+status: active
+owner: platform-orchestration
+adr: ADR-230
+
+dispatcher:
+  max_handoff_depth: 7
+  default_context_mode_by_depth:
+    "0..2": full
+    "3..5": summary
+    "6+": reference
+  blast_radius_operator_threshold: 50
+  cycle_detection: required
+  idempotency: required
+
+intent_types:
+  delegate:
+    awaits_return: true
+    default_timeout_seconds: 300
+  handoff:
+    awaits_return: false
+    transfers_control: true
+  query:
+    awaits_return: true
+    forces_read_only: true
+
+context_modes:
+  full:
+    payload_schema: conversation_history_v1
+    max_chain_depth: 3
+  summary:
+    payload_schema: summary_payload_v1
+    requires_field: [compression_method, summary_seq_range]
+  reference:
+    payload_schema: reference_payload_v1
+    requires_field: [event_seq_range, file_tree_sha, session_id]
+  none:
+    payload_schema: minimal_payload_v1
+
+permission_intersection:
+  source_a: caller.granted_tools
+  source_b: receiver.manifest.accepts
+  result: set_intersection
+  scoped_down_event: handoff.permission.scoped_down
+
+hooks:
+  pre_handoff: HandoffRequested
+  post_handoff: HandoffCompleted
+  on_cycle: HandoffCycleDetected
+  on_depth_exceeded: HandoffDepthExceeded
+  on_blast_radius_block: HandoffBlockedByOperator
+
+emitted_events:
+  - handoff.requested
+  - handoff.dispatched
+  - handoff.permission.scoped_down
+  - handoff.completed
+  - handoff.cycle_detected
+  - handoff.depth_exceeded
+  - handoff.operator_blocked
+  - handoff.idempotent_replay
