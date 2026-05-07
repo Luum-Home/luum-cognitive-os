@@ -70,6 +70,21 @@ fi
 if [ -z "$COMMAND" ]; then
   exit 0
 fi
+# ADR-234 policy-as-code migration: evaluate declarative destructive Bash
+# policies first. Legacy parser below remains as a defense-in-depth fallback for
+# richer erasure patterns not yet expressible in the small YAML evaluator.
+if [ -x "$PROJECT_DIR/scripts/cos-policy-eval" ]; then
+  POLICY_DECISION=$("$PROJECT_DIR/scripts/cos-policy-eval" --project-dir "$PROJECT_DIR" --tool Bash --command "$COMMAND" --json 2>/dev/null || true)
+  if [ -n "$POLICY_DECISION" ] && command -v jq >/dev/null 2>&1; then
+    POLICY_VERDICT=$(printf '%s' "$POLICY_DECISION" | jq -r '.decision // empty' 2>/dev/null || true)
+    if [ "$POLICY_VERDICT" = "block" ] || [ "$POLICY_VERDICT" = "deny" ]; then
+      echo "=== DESTRUCTIVE RM BLOCKER: BLOCKED BY POLICY-AS-CODE ===" >&2
+      printf '%s\n' "$POLICY_DECISION" >&2
+      exit 2
+    fi
+  fi
+fi
+
 
 # ── Safe-zone check ──────────────────────────────────────────────────────────
 # Returns 0 (safe) if a path falls inside /tmp, $TMPDIR, or $SESSION_DIR.

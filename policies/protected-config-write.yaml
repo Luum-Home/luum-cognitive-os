@@ -1,0 +1,25 @@
+schema_version: policy-eval/v1
+id: protected-config-write
+status: active
+owner: platform-safety
+trigger: PreToolUse:Edit|Write|MultiEdit
+rules:
+  - id: block-agent-control-plane-writes
+    decision: block
+    tools: [Edit, Write, MultiEdit]
+    match:
+      file_path:
+        - ".claude/**"
+        - ".codex/**"
+        - ".cursor/**"
+        - ".windsurf/**"
+        - ".continue/**"
+        - "mcp.json"
+        - ".mcp/**"
+        - "hooks/**"
+        - "rules/**"
+        - "skills/*/SKILL.md"
+        - "manifests/*security*.yaml"
+        - "manifests/credential-safe-scripts.yaml"
+        - "manifests/runtime-env-flags.yaml"
+    reason: Protected control-plane paths require explicit human approval.
