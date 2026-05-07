@@ -14,7 +14,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 17,
+        "doc": 18,
         "hook": 3,
         "rule": 1,
         "script": 4,
@@ -123,6 +123,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/self-usage-audit.md"
         },
         {
@@ -185,7 +189,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:5",
-        "doc_consumers:17",
+        "doc_consumers:18",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -199,7 +203,7 @@
         "claude",
         "shell"
       ],
-      "total_consumers": 39
+      "total_consumers": 40
     },
     {
       "confidence": "medium",
@@ -243,13 +247,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
-        "doc": 82,
+        "config": 6,
+        "doc": 97,
         "hook": 28,
         "rule": 5,
-        "script": 34,
+        "script": 35,
         "skill": 7,
-        "test": 58
+        "test": 61
       },
       "consumers": [
         {
@@ -262,7 +266,19 @@
         },
         {
           "family": "config",
+          "path": "manifests/cross-stack-secret-audit.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/private-content.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
         },
         {
           "family": "doc",
@@ -402,6 +418,30 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-220-worktree-divergence-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-226-event-sourced-session-bus.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-228-retry-contract-and-cost-budget.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -438,6 +478,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/harness-adoption-gap/scripts-audit-A-root-installers.md"
         },
         {
@@ -471,6 +515,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/service-control-plane-research-2026-05-04.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/surface-5-and-secure-cosd-roadmap.md"
         },
         {
           "family": "doc",
@@ -571,6 +619,34 @@
         {
           "family": "doc",
           "path": "docs/research/engram-mcp-sharing-feasibility-2026-04-20.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/background-agent-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/cost-aware-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/event-driven-orchestrator-state.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/failure-recovery-retry-semantics.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/sandbox-primitives-integration.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/tool-discovery-dynamic-registration.md"
         },
         {
           "family": "doc",
@@ -842,6 +918,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/private_content_audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/register-mcps.sh"
         },
         {
@@ -894,6 +974,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_adr_tool_gate_numbering.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_anthropic_api_key_references.py"
         },
         {
@@ -919,6 +1003,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_cos_update.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_event_sourced_bus_smoke.py"
         },
         {
           "family": "test",
@@ -1042,6 +1130,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_dependency_adoption_gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_doctrine_proposer.py"
         },
         {
@@ -1126,10 +1218,10 @@
         "skill_consumers:7",
         "hook_consumers:28",
         "rule_consumers:5",
-        "script_consumers:34",
-        "test_consumers:58",
-        "doc_consumers:82",
-        "config_consumers:3"
+        "script_consumers:35",
+        "test_consumers:61",
+        "doc_consumers:97",
+        "config_consumers:6"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -1139,7 +1231,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 217
+      "total_consumers": 239
     },
     {
       "confidence": "medium",
@@ -1147,11 +1239,11 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 4,
-        "doc": 8,
+        "doc": 11,
         "hook": 3,
         "rule": 2,
         "script": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -1184,6 +1276,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-228-retry-contract-and-cost-budget.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/README.md"
         },
         {
@@ -1197,6 +1293,14 @@
         {
           "family": "doc",
           "path": "docs/organizational-model.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/failure-recovery-retry-semantics.md"
         },
         {
           "family": "doc",
@@ -1236,6 +1340,10 @@
         },
         {
           "family": "test",
+          "path": "tests/chaos/test_dispatch_circuit_breaker_recovery.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_circuit_breaker.py"
         },
         {
@@ -1248,8 +1356,8 @@
         "hook_consumers:3",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:4",
-        "doc_consumers:8",
+        "test_consumers:5",
+        "doc_consumers:11",
         "config_consumers:4"
       ],
       "family": "hooks",
@@ -1260,7 +1368,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 22
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
@@ -1268,10 +1376,10 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 52,
+        "doc": 71,
         "hook": 72,
         "rule": 6,
-        "script": 23,
+        "script": 24,
         "skill": 2,
         "test": 31
       },
@@ -1351,6 +1459,54 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-184-manager-of-managers-daemon.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-214-tombstone.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-223-agent-lifecycle-reconstruction.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-224-shadow-state-snapshots-off-repo.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-225-branch-per-task-mode.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-229-tombstone.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-232-sandbox-adapter-tiers.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-233-cross-session-agent-team-file-ipc.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-234-approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-235-detached-agent-daemon.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-236-deferred-tool-loading-and-toolsearch.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-237-test-execution-efficiency-protocol.md"
         },
         {
           "family": "doc",
@@ -1471,6 +1627,34 @@
         {
           "family": "doc",
           "path": "docs/prompt-driven-governance.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/background-agent-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/failure-recovery-retry-semantics.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/replay-timeline-architectures.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/sandbox-primitives-integration.md"
         },
         {
           "family": "doc",
@@ -1870,6 +2054,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/license-audit-trivy.sh"
+        },
+        {
+          "family": "script",
           "path": "scripts/primitive_duplication_audit.py"
         },
         {
@@ -2038,9 +2226,9 @@
         "skill_consumers:2",
         "hook_consumers:72",
         "rule_consumers:6",
-        "script_consumers:23",
+        "script_consumers:24",
         "test_consumers:31",
-        "doc_consumers:52",
+        "doc_consumers:71",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -2051,7 +2239,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 189
+      "total_consumers": 209
     },
     {
       "confidence": "medium",
@@ -2239,12 +2427,16 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "hook": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/private-content.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
@@ -2279,7 +2471,7 @@
         "hook_consumers:2",
         "test_consumers:1",
         "doc_consumers:3",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -2289,7 +2481,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
@@ -2298,10 +2490,10 @@
       "consumer_families": {
         "config": 1,
         "doc": 3,
-        "hook": 160,
+        "hook": 163,
         "script": 3,
         "skill": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -2343,6 +2535,10 @@
         {
           "family": "hook",
           "path": "hooks/agent-checkpoint.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-launch-confirmed.sh"
         },
         {
           "family": "hook",
@@ -2882,6 +3078,14 @@
         },
         {
           "family": "hook",
+          "path": "hooks/state-retention-audit.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/subagent-capability-preflight.sh"
+        },
+        {
+          "family": "hook",
           "path": "hooks/subagent-context-injector.sh"
         },
         {
@@ -2978,6 +3182,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_state_retention_controller_flow.py"
+        },
+        {
+          "family": "test",
           "path": "tests/chaos/test_killswitch_exercise.py"
         },
         {
@@ -2996,9 +3204,9 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
-        "hook_consumers:160",
+        "hook_consumers:163",
         "script_consumers:3",
-        "test_consumers:4",
+        "test_consumers:5",
         "doc_consumers:3",
         "config_consumers:1"
       ],
@@ -3010,7 +3218,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 172
+      "total_consumers": 176
     },
     {
       "confidence": "medium",
@@ -3045,8 +3253,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 5,
-        "doc": 102,
-        "hook": 22,
+        "doc": 110,
+        "hook": 23,
         "rule": 2,
         "script": 30,
         "skill": 5,
@@ -3207,6 +3415,34 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-185-cross-agent-audit-findings.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-191-cos-binary-release-pipeline.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-202-private-content-cross-harness-portability-boundary.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-226-event-sourced-session-bus.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-231-mcp-server-surface-for-cos-primitives.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/agent-capability-coverage.md"
         },
         {
@@ -3264,6 +3500,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/sprint-5-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
         },
         {
           "family": "doc",
@@ -3492,6 +3732,10 @@
         {
           "family": "hook",
           "path": "hooks/agent-checkpoint.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-control-inbound-guard.sh"
         },
         {
           "family": "hook",
@@ -4041,11 +4285,11 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:5",
-        "hook_consumers:22",
+        "hook_consumers:23",
         "rule_consumers:2",
         "script_consumers:30",
         "test_consumers:80",
-        "doc_consumers:102",
+        "doc_consumers:110",
         "config_consumers:5"
       ],
       "family": "hooks",
@@ -4056,7 +4300,7 @@
       "role": "runtime-safety",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 246
+      "total_consumers": 255
     },
     {
       "confidence": "medium",
@@ -4150,12 +4394,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 34,
+        "doc": 37,
         "hook": 4,
         "rule": 3,
         "script": 1,
         "skill": 2,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -4205,6 +4449,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-217-cross-stack-adoption-truth-audit.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-220-worktree-divergence-audit.md"
         },
         {
           "family": "doc",
@@ -4261,6 +4513,10 @@
         {
           "family": "doc",
           "path": "docs/business/features.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
         },
         {
           "family": "doc",
@@ -4388,6 +4644,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_public_claim_gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_remediation.py"
         },
         {
@@ -4401,8 +4661,8 @@
         "hook_consumers:4",
         "rule_consumers:3",
         "script_consumers:1",
-        "test_consumers:9",
-        "doc_consumers:34",
+        "test_consumers:10",
+        "doc_consumers:37",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -4413,7 +4673,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 59
+      "total_consumers": 63
     },
     {
       "confidence": "medium",
@@ -4455,7 +4715,7 @@
       "consumer_families": {
         "config": 2,
         "doc": 6,
-        "hook": 61,
+        "hook": 62,
         "script": 2,
         "test": 11
       },
@@ -4503,6 +4763,10 @@
         {
           "family": "hook",
           "path": "hooks/adaptive-bypass.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-launch-confirmed.sh"
         },
         {
           "family": "hook",
@@ -4791,7 +5055,7 @@
       ],
       "distribution": null,
       "evidence": [
-        "hook_consumers:61",
+        "hook_consumers:62",
         "script_consumers:2",
         "test_consumers:11",
         "doc_consumers:6",
@@ -4805,7 +5069,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 82
+      "total_consumers": 83
     },
     {
       "confidence": "medium",
@@ -5028,14 +5292,22 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
-        "hook": 4,
+        "config": 2,
+        "hook": 5,
         "test": 2
       },
       "consumers": [
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-launch-confirmed.sh"
         },
         {
           "family": "hook",
@@ -5064,9 +5336,9 @@
       ],
       "distribution": null,
       "evidence": [
-        "hook_consumers:4",
+        "hook_consumers:5",
         "test_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -5076,7 +5348,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 9
     },
     {
       "confidence": "high",
@@ -5129,7 +5401,8 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "hook": 2
+        "hook": 2,
+        "test": 1
       },
       "consumers": [
         {
@@ -5143,11 +5416,16 @@
         {
           "family": "hook",
           "path": "hooks/completion-gate.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_state_retention_controller_flow.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "hook_consumers:2",
+        "test_consumers:1",
         "config_consumers:1"
       ],
       "family": "hooks",
@@ -5158,7 +5436,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -5166,12 +5444,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 37,
+        "doc": 42,
         "hook": 2,
         "rule": 1,
         "script": 18,
         "skill": 3,
-        "test": 27
+        "test": 30
       },
       "consumers": [
         {
@@ -5245,6 +5523,18 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-205-cross-stream-trace-joiner-and-flight-recorder.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
         },
         {
           "family": "doc",
@@ -5333,6 +5623,14 @@
         {
           "family": "doc",
           "path": "docs/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/INDEX.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/background-agent-patterns.md"
         },
         {
           "family": "doc",
@@ -5460,6 +5758,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_run_flight_recorder.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_safety_mesh.py"
         },
         {
@@ -5544,11 +5846,19 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_service_mode_readiness_gate.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_session_start_budget.py"
         },
         {
           "family": "test",
           "path": "tests/unit/test_tool_sequence_capture.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_trace_joiner.py"
         }
       ],
       "distribution": null,
@@ -5557,8 +5867,8 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:18",
-        "test_consumers:27",
-        "doc_consumers:37",
+        "test_consumers:30",
+        "doc_consumers:42",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -5569,7 +5879,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 94
+      "total_consumers": 102
     },
     {
       "confidence": "medium",
@@ -5577,7 +5887,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 24,
+        "doc": 25,
         "rule": 2,
         "test": 2
       },
@@ -5637,6 +5947,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-185-cross-agent-audit-findings.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-220-worktree-divergence-audit.md"
         },
         {
           "family": "doc",
@@ -5703,7 +6017,7 @@
       "evidence": [
         "rule_consumers:2",
         "test_consumers:2",
-        "doc_consumers:24",
+        "doc_consumers:25",
         "config_consumers:1"
       ],
       "family": "hooks",
@@ -5714,15 +6028,15 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 8,
-        "doc": 4,
+        "config": 9,
+        "doc": 5,
         "hook": 4,
         "script": 4,
         "test": 3
@@ -5761,6 +6075,10 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
+        },
+        {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
         },
@@ -5771,6 +6089,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-129-safe-worktree-removal.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
         },
         {
           "family": "doc",
@@ -5826,8 +6148,8 @@
         "hook_consumers:4",
         "script_consumers:4",
         "test_consumers:3",
-        "doc_consumers:4",
-        "config_consumers:8"
+        "doc_consumers:5",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -5837,7 +6159,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 23
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -5932,11 +6254,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
-        "doc": 25,
+        "config": 9,
+        "doc": 24,
         "rule": 4,
         "script": 5,
-        "test": 16
+        "test": 17
       },
       "consumers": [
         {
@@ -5965,19 +6287,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6046,6 +6364,10 @@
         {
           "family": "doc",
           "path": "docs/research/minimal-context-principle.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -6141,6 +6463,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -6177,9 +6503,9 @@
         "lifecycle",
         "rule_consumers:4",
         "script_consumers:5",
-        "test_consumers:16",
-        "doc_consumers:25",
-        "config_consumers:8"
+        "test_consumers:17",
+        "doc_consumers:24",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/adaptive-bypass.sh",
@@ -6191,18 +6517,18 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 58
+      "total_consumers": 59
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
-        "doc": 10,
+        "config": 3,
+        "doc": 8,
         "script": 1,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -6211,19 +6537,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
           "path": "docs/HOW-TO-USE-COS.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6264,15 +6586,19 @@
         {
           "family": "test",
           "path": "tests/contracts/test_hook_timeout_wrappers.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
-        "doc_consumers:10",
-        "config_consumers:2"
+        "test_consumers:2",
+        "doc_consumers:8",
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -6555,11 +6881,11 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
-        "doc": 9,
+        "config": 4,
+        "doc": 7,
         "rule": 1,
         "skill": 1,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -6568,19 +6894,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/runtime-env-flags.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6628,6 +6950,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_chaos_template.py"
         },
         {
@@ -6639,9 +6965,9 @@
       "evidence": [
         "skill_consumers:1",
         "rule_consumers:1",
-        "test_consumers:4",
-        "doc_consumers:9",
-        "config_consumers:3"
+        "test_consumers:5",
+        "doc_consumers:7",
+        "config_consumers:4"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -6658,11 +6984,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
-        "doc": 19,
+        "config": 9,
+        "doc": 18,
         "rule": 1,
         "script": 5,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -6691,6 +7017,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -6700,14 +7030,6 @@
         {
           "family": "doc",
           "path": "docs/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -6767,6 +7089,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/self-usage-audit.md"
         },
         {
@@ -6803,6 +7129,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_agent_timeout.py"
         },
         {
@@ -6815,9 +7145,9 @@
         "lifecycle",
         "rule_consumers:1",
         "script_consumers:5",
-        "test_consumers:3",
-        "doc_consumers:19",
-        "config_consumers:8"
+        "test_consumers:4",
+        "doc_consumers:18",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/agent-checkpoint.sh",
@@ -6829,7 +7159,198 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 36
+      "total_consumers": 37
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 6,
+        "doc": 3,
+        "rule": 1,
+        "script": 2,
+        "skill": 1,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-185-cross-agent-audit-findings.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/agent-communication.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "skill",
+          "path": "skills/agent-control/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_agent_control_primitive_lifecycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_agent_control_inbound_guard.py"
+        }
+      ],
+      "distribution": "core",
+      "evidence": [
+        "lifecycle",
+        "skill_consumers:1",
+        "rule_consumers:1",
+        "script_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:3",
+        "config_consumers:6"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/agent-control-inbound-guard.sh",
+      "lifecycle_state": "blocking",
+      "next_action": "keep lifecycle, tests, and harness proof current",
+      "path": "hooks/agent-control-inbound-guard.sh",
+      "role": "driver-specific",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude",
+        "codex"
+      ],
+      "total_consumers": 15
+    },
+    {
+      "confidence": "high",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
+      "consumer_families": {
+        "config": 5,
+        "doc": 5,
+        "hook": 1,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/pre-agent-snapshot.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/open-source-design.md"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/pre-agent-snapshot.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_pre_agent_hook_ordering.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py"
+        }
+      ],
+      "distribution": "lab",
+      "evidence": [
+        "lifecycle",
+        "hook_consumers:1",
+        "script_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:5",
+        "config_consumers:5"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/agent-launch-confirmed.sh",
+      "lifecycle_state": "advisory",
+      "next_action": "keep maintainer-only or add explicit export path",
+      "path": "hooks/agent-launch-confirmed.sh",
+      "role": "lab",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude"
+      ],
+      "total_consumers": 15
     },
     {
       "confidence": "high",
@@ -7008,10 +7529,10 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
-        "doc": 6,
+        "config": 3,
+        "doc": 4,
         "rule": 1,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -7020,15 +7541,11 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7056,15 +7573,19 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_agent_verifier.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "test_consumers:2",
-        "doc_consumers:6",
-        "config_consumers:2"
+        "test_consumers:3",
+        "doc_consumers:4",
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -7081,12 +7602,12 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 11,
-        "doc": 28,
-        "hook": 1,
+        "config": 14,
+        "doc": 32,
+        "hook": 2,
         "rule": 1,
         "script": 4,
-        "test": 7
+        "test": 16
       },
       "consumers": [
         {
@@ -7127,6 +7648,14 @@
         },
         {
           "family": "config",
+          "path": "manifests/pre-agent-snapshot.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -7134,16 +7663,12 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
+        },
+        {
           "family": "doc",
           "path": "docs/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7176,6 +7701,26 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-122-preflight-gate-refinements.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-200-state-retention-controller.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-213-agent-preflight-before-stash-snapshot.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-223-agent-lifecycle-reconstruction.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-225-branch-per-task-mode.md"
         },
         {
           "family": "doc",
@@ -7239,6 +7784,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/self-usage-audit.md"
         },
         {
@@ -7248,6 +7797,10 @@
         {
           "family": "hook",
           "path": "hooks/dispatch-gate.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/pre-agent-snapshot.sh"
         },
         {
           "family": "rule",
@@ -7271,7 +7824,19 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_pre_agent_hook_ordering.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_adr108_ledger_hook_wiring.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_agent_blocked_preflight_no_stash.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_agent_lifecycle_worktree_mode.py"
         },
         {
           "family": "test",
@@ -7279,11 +7844,31 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_agent_prelaunch_worktree_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_hooks_batch1.py"
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_state_retention_controller_flow.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/hooks/test_branch_per_task_prelaunch.py"
+        },
+        {
+          "family": "test",
           "path": "tests/test_task_lifecycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_agent_hook_order.py"
         },
         {
           "family": "test",
@@ -7296,17 +7881,21 @@
         {
           "family": "test",
           "path": "tests/unit/test_task_tracker_lifecycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_trace_joiner.py"
         }
       ],
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "hook_consumers:1",
+        "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:4",
-        "test_consumers:7",
-        "doc_consumers:28",
-        "config_consumers:11"
+        "test_consumers:16",
+        "doc_consumers:32",
+        "config_consumers:14"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/agent-prelaunch.sh",
@@ -7318,19 +7907,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 52
+      "total_consumers": 69
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
-        "doc": 2,
+        "config": 4,
+        "doc": 1,
         "hook": 1,
         "script": 3,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -7339,15 +7928,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-readiness-script-overrides.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7375,6 +7964,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_agent_quota_advisor.py"
         }
       ],
@@ -7383,9 +7976,9 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "script_consumers:3",
-        "test_consumers:1",
-        "doc_consumers:2",
-        "config_consumers:3"
+        "test_consumers:2",
+        "doc_consumers:1",
+        "config_consumers:4"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -7395,7 +7988,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -7403,6 +7996,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
+        "doc": 1,
         "script": 2,
         "skill": 1,
         "test": 1
@@ -7419,6 +8013,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "script",
@@ -7442,6 +8040,7 @@
         "skill_consumers:1",
         "script_consumers:2",
         "test_consumers:1",
+        "doc_consumers:1",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -7452,17 +8051,17 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -7471,15 +8070,23 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "script",
           "path": "scripts/set-security-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
         },
         {
           "family": "test",
@@ -7489,9 +8096,9 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -7501,17 +8108,17 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 5
+      "total_consumers": 7
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
-        "doc": 4,
+        "config": 7,
+        "doc": 3,
         "script": 4,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -7532,15 +8139,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7572,6 +8179,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_agent_working_dir_inject.py"
         },
         {
@@ -7599,9 +8210,9 @@
       "evidence": [
         "lifecycle",
         "script_consumers:4",
-        "test_consumers:6",
-        "doc_consumers:4",
-        "config_consumers:6"
+        "test_consumers:7",
+        "doc_consumers:3",
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/agent-working-dir-inject.sh",
@@ -7613,7 +8224,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 20
+      "total_consumers": 21
     },
     {
       "confidence": "medium",
@@ -7691,11 +8302,11 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
-        "doc": 19,
+        "config": 6,
+        "doc": 18,
         "rule": 2,
         "script": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -7712,15 +8323,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/runtime-env-flags.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -7820,6 +8431,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_hook_graceful_degradation.py"
         }
       ],
@@ -7827,9 +8442,9 @@
       "evidence": [
         "rule_consumers:2",
         "script_consumers:2",
-        "test_consumers:3",
-        "doc_consumers:19",
-        "config_consumers:5"
+        "test_consumers:4",
+        "doc_consumers:18",
+        "config_consumers:6"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -7839,19 +8454,19 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 31
+      "total_consumers": 32
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 5,
-        "doc": 13,
+        "config": 6,
+        "doc": 12,
         "hook": 1,
         "rule": 3,
         "skill": 2,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -7872,11 +8487,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -7960,6 +8575,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         }
       ],
@@ -7968,9 +8587,9 @@
         "skill_consumers:2",
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:3",
-        "doc_consumers:13",
-        "config_consumers:5"
+        "test_consumers:4",
+        "doc_consumers:12",
+        "config_consumers:6"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -7980,7 +8599,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 27
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -8101,12 +8720,12 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
-        "doc": 23,
+        "config": 9,
+        "doc": 22,
         "hook": 1,
         "rule": 2,
         "script": 2,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
@@ -8135,15 +8754,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8267,6 +8886,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_efficiency_optimization.py"
         },
         {
@@ -8280,9 +8903,9 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:2",
-        "test_consumers:5",
-        "doc_consumers:23",
-        "config_consumers:8"
+        "test_consumers:6",
+        "doc_consumers:22",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/assumption-tracker.sh",
@@ -8294,7 +8917,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 41
+      "total_consumers": 42
     },
     {
       "confidence": "high",
@@ -8431,12 +9054,12 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 10,
-        "doc": 21,
+        "config": 11,
+        "doc": 20,
         "hook": 3,
         "rule": 1,
         "script": 5,
-        "test": 7
+        "test": 8
       },
       "consumers": [
         {
@@ -8469,6 +9092,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -8478,10 +9105,6 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8605,6 +9228,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_hook_basics.py"
         },
         {
@@ -8634,9 +9261,9 @@
         "hook_consumers:3",
         "rule_consumers:1",
         "script_consumers:5",
-        "test_consumers:7",
-        "doc_consumers:21",
-        "config_consumers:10"
+        "test_consumers:8",
+        "doc_consumers:20",
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/auto-checkpoint.sh",
@@ -8648,20 +9275,20 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 47
+      "total_consumers": 48
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
-        "doc": 39,
+        "config": 7,
+        "doc": 40,
         "hook": 3,
         "rule": 5,
         "script": 6,
         "skill": 2,
-        "test": 13
+        "test": 15
       },
       "consumers": [
         {
@@ -8682,15 +9309,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -8778,6 +9405,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/complexity-audit.md"
         },
         {
@@ -8823,6 +9454,10 @@
         {
           "family": "doc",
           "path": "docs/release/v1.0-release-criteria.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -8934,6 +9569,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -8959,6 +9598,10 @@
         {
           "family": "test",
           "path": "tests/unit/test_hook_behavioral.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router.py"
         }
       ],
       "distribution": "lab",
@@ -8968,9 +9611,9 @@
         "hook_consumers:3",
         "rule_consumers:5",
         "script_consumers:6",
-        "test_consumers:13",
-        "doc_consumers:39",
-        "config_consumers:6"
+        "test_consumers:15",
+        "doc_consumers:40",
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/auto-refine.sh",
@@ -8982,19 +9625,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 74
+      "total_consumers": 78
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
-        "doc": 18,
+        "config": 10,
+        "doc": 17,
         "hook": 2,
         "rule": 1,
         "script": 3,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -9027,6 +9670,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -9036,10 +9683,6 @@
         {
           "family": "doc",
           "path": "docs/README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9131,6 +9774,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_repair_chain.py"
         },
         {
@@ -9144,9 +9791,9 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:2",
-        "doc_consumers:18",
-        "config_consumers:9"
+        "test_consumers:3",
+        "doc_consumers:17",
+        "config_consumers:10"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/auto-repair-dispatcher.sh",
@@ -9158,19 +9805,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
+        "config": 7,
         "doc": 14,
         "hook": 1,
         "rule": 2,
         "script": 4,
-        "test": 8
+        "test": 9
       },
       "consumers": [
         {
@@ -9191,6 +9838,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -9200,10 +9851,6 @@
         {
           "family": "doc",
           "path": "README.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9240,6 +9887,10 @@
         {
           "family": "doc",
           "path": "docs/hook-security-profiles.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -9303,6 +9954,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_chaos_template.py"
         },
         {
@@ -9320,9 +9975,9 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:4",
-        "test_consumers:8",
+        "test_consumers:9",
         "doc_consumers:14",
-        "config_consumers:6"
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/auto-rollback-trigger.sh",
@@ -9334,7 +9989,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 35
+      "total_consumers": 37
     },
     {
       "confidence": "high",
@@ -9541,13 +10196,13 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
-        "doc": 36,
+        "config": 8,
+        "doc": 35,
         "hook": 1,
         "rule": 9,
         "script": 6,
         "skill": 3,
-        "test": 13
+        "test": 14
       },
       "consumers": [
         {
@@ -9572,15 +10227,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -9828,6 +10483,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_auto_update_flow.py"
         },
         {
@@ -9858,9 +10517,9 @@
         "hook_consumers:1",
         "rule_consumers:9",
         "script_consumers:6",
-        "test_consumers:13",
-        "doc_consumers:36",
-        "config_consumers:7"
+        "test_consumers:14",
+        "doc_consumers:35",
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/auto-verify.sh",
@@ -9872,16 +10531,16 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 75
+      "total_consumers": 76
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 3,
-        "doc": 5,
-        "test": 1
+        "config": 4,
+        "doc": 4,
+        "test": 2
       },
       "consumers": [
         {
@@ -9894,11 +10553,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -9919,13 +10578,17 @@
         {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:1",
-        "doc_consumers:5",
-        "config_consumers:3"
+        "test_consumers:2",
+        "doc_consumers:4",
+        "config_consumers:4"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -9935,20 +10598,20 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 11,
-        "doc": 54,
+        "config": 12,
+        "doc": 60,
         "hook": 4,
         "rule": 10,
-        "script": 8,
+        "script": 9,
         "skill": 1,
-        "test": 23
+        "test": 24
       },
       "consumers": [
         {
@@ -9985,6 +10648,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -10002,10 +10669,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-ADR-CLOSURE-2026-05-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -10050,6 +10713,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-230-handoff-envelope-and-cycle-deduplication.md"
         },
         {
           "family": "doc",
@@ -10113,6 +10784,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/business/features.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/value-proposition.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/component-audit.md"
         },
         {
@@ -10170,6 +10849,18 @@
         {
           "family": "doc",
           "path": "docs/release/roadmap-v1.0-full-e2e.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/agent-to-agent-handoff.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/replay-timeline-architectures.md"
         },
         {
           "family": "doc",
@@ -10277,6 +10968,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-team"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos_architecture_readiness.py"
         },
         {
@@ -10330,6 +11025,10 @@
         {
           "family": "test",
           "path": "tests/contracts/test_p95_hook_latency.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
         },
         {
           "family": "test",
@@ -10402,10 +11101,10 @@
         "skill_consumers:1",
         "hook_consumers:4",
         "rule_consumers:10",
-        "script_consumers:8",
-        "test_consumers:23",
-        "doc_consumers:54",
-        "config_consumers:11"
+        "script_consumers:9",
+        "test_consumers:24",
+        "doc_consumers:60",
+        "config_consumers:12"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/blast-radius.sh",
@@ -10417,7 +11116,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 111
+      "total_consumers": 120
     },
     {
       "confidence": "high",
@@ -10562,12 +11261,12 @@
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 36,
         "hook": 3,
         "rule": 4,
         "script": 7,
-        "test": 15
+        "test": 16
       },
       "consumers": [
         {
@@ -10593,6 +11292,10 @@
         {
           "family": "config",
           "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -10824,6 +11527,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_red_team_harness_primitives.py"
         },
         {
@@ -10869,9 +11576,9 @@
         "hook_consumers:3",
         "rule_consumers:4",
         "script_consumers:7",
-        "test_consumers:15",
+        "test_consumers:16",
         "doc_consumers:36",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/claim-validator.sh",
@@ -10883,19 +11590,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 73
+      "total_consumers": 75
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 10,
+        "config": 11,
         "doc": 38,
         "hook": 4,
         "rule": 10,
         "script": 7,
-        "test": 22
+        "test": 23
       },
       "consumers": [
         {
@@ -10928,6 +11635,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -10937,10 +11648,6 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -11061,6 +11768,10 @@
         {
           "family": "doc",
           "path": "docs/prompt-driven-governance.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -11208,6 +11919,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_hook_basics.py"
         },
         {
@@ -11269,9 +11984,9 @@
         "hook_consumers:4",
         "rule_consumers:10",
         "script_consumers:7",
-        "test_consumers:22",
+        "test_consumers:23",
         "doc_consumers:38",
-        "config_consumers:10"
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/clarification-gate.sh",
@@ -11283,18 +11998,18 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 91
+      "total_consumers": 93
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 10,
         "rule": 1,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -11303,11 +12018,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -11332,6 +12047,10 @@
         {
           "family": "doc",
           "path": "docs/hooks.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -11364,15 +12083,19 @@
         {
           "family": "test",
           "path": "tests/behavior/test_safety_mesh_integration.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:10",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -11382,16 +12105,16 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 19
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
-        "doc": 7,
-        "test": 2
+        "config": 3,
+        "doc": 6,
+        "test": 3
       },
       "consumers": [
         {
@@ -11400,11 +12123,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -11437,13 +12160,17 @@
         {
           "family": "test",
           "path": "tests/contracts/test_hook_timeout_wrappers.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:2",
-        "doc_consumers:7",
-        "config_consumers:2"
+        "test_consumers:3",
+        "doc_consumers:6",
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -11453,7 +12180,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -11553,10 +12280,10 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
-        "doc": 7,
+        "config": 3,
+        "doc": 6,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -11565,11 +12292,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -11601,15 +12328,19 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_hooks.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "test_consumers:1",
-        "doc_consumers:7",
-        "config_consumers:2"
+        "test_consumers:2",
+        "doc_consumers:6",
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -11619,19 +12350,19 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 10,
+        "config": 11,
         "doc": 28,
         "hook": 3,
         "rule": 6,
         "script": 3,
-        "test": 9
+        "test": 10
       },
       "consumers": [
         {
@@ -11665,6 +12396,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
           "family": "config",
@@ -11844,6 +12579,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_hook_basics.py"
         },
         {
@@ -11877,9 +12616,9 @@
         "hook_consumers:3",
         "rule_consumers:6",
         "script_consumers:3",
-        "test_consumers:9",
+        "test_consumers:10",
         "doc_consumers:28",
-        "config_consumers:10"
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/completeness-check.sh",
@@ -11891,19 +12630,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 59
+      "total_consumers": 61
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 10,
+        "config": 11,
         "doc": 31,
         "hook": 4,
         "rule": 6,
         "script": 6,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -11940,6 +12679,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -11949,10 +12692,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12049,6 +12788,10 @@
         {
           "family": "doc",
           "path": "docs/performance.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -12156,6 +12899,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_e2e_self_repair.py"
         },
         {
@@ -12181,9 +12928,9 @@
         "hook_consumers:4",
         "rule_consumers:6",
         "script_consumers:6",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:31",
-        "config_consumers:10"
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/completion-gate.sh",
@@ -12195,7 +12942,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 67
+      "total_consumers": 69
     },
     {
       "confidence": "medium",
@@ -12304,12 +13051,12 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 11,
-        "doc": 22,
+        "doc": 21,
         "hook": 1,
         "rule": 1,
         "script": 3,
         "skill": 1,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -12359,10 +13106,6 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-05-04.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12486,6 +13229,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/integration/test_compaction_resilience.py"
         },
         {
@@ -12516,8 +13263,8 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:3",
-        "test_consumers:10",
-        "doc_consumers:22",
+        "test_consumers:11",
+        "doc_consumers:21",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -12537,11 +13284,11 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
-        "doc": 7,
+        "config": 3,
+        "doc": 6,
         "rule": 1,
         "script": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -12550,11 +13297,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -12590,6 +13337,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_hooks.py"
         }
       ],
@@ -12597,9 +13348,9 @@
       "evidence": [
         "rule_consumers:1",
         "script_consumers:1",
-        "test_consumers:1",
-        "doc_consumers:7",
-        "config_consumers:2"
+        "test_consumers:2",
+        "doc_consumers:6",
+        "config_consumers:3"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -12609,19 +13360,19 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
+        "config": 10,
         "doc": 29,
         "hook": 3,
         "rule": 7,
         "script": 5,
-        "test": 10
+        "test": 11
       },
       "consumers": [
         {
@@ -12654,15 +13405,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -12747,6 +13498,10 @@
         {
           "family": "doc",
           "path": "docs/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -12858,6 +13613,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
@@ -12883,9 +13642,9 @@
         "hook_consumers:3",
         "rule_consumers:7",
         "script_consumers:5",
-        "test_consumers:10",
+        "test_consumers:11",
         "doc_consumers:29",
-        "config_consumers:9"
+        "config_consumers:10"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/confidence-gate.sh",
@@ -12897,19 +13656,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 63
+      "total_consumers": 65
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
-        "doc": 9,
+        "config": 7,
+        "doc": 13,
         "hook": 1,
         "rule": 2,
         "script": 5,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -12930,6 +13689,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -12938,7 +13701,11 @@
         },
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
         },
         {
           "family": "doc",
@@ -12962,11 +13729,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research-log.md"
         },
         {
           "family": "doc",
+          "path": "docs/research/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -13010,6 +13789,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         }
       ],
@@ -13019,9 +13802,9 @@
         "hook_consumers:1",
         "rule_consumers:2",
         "script_consumers:5",
-        "test_consumers:2",
-        "doc_consumers:9",
-        "config_consumers:6"
+        "test_consumers:3",
+        "doc_consumers:13",
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/confidentiality-enforcer.sh",
@@ -13033,19 +13816,19 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 25
+      "total_consumers": 31
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 9,
-        "doc": 17,
+        "config": 10,
+        "doc": 16,
         "hook": 2,
         "rule": 3,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -13078,15 +13861,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13186,6 +13969,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_capability_level5.py"
         }
       ],
@@ -13195,9 +13982,9 @@
         "hook_consumers:2",
         "rule_consumers:3",
         "script_consumers:2",
-        "test_consumers:2",
-        "doc_consumers:17",
-        "config_consumers:9"
+        "test_consumers:3",
+        "doc_consumers:16",
+        "config_consumers:10"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/consequence-evaluator.sh",
@@ -13209,20 +13996,20 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 35
+      "total_consumers": 36
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 10,
-        "doc": 41,
+        "config": 11,
+        "doc": 43,
         "hook": 2,
         "rule": 9,
         "script": 9,
         "skill": 3,
-        "test": 19
+        "test": 20
       },
       "consumers": [
         {
@@ -13255,6 +14042,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-harness-gap-policy.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
@@ -13264,10 +14055,6 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -13288,6 +14075,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-086-hook-execution-observability.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md"
         },
         {
           "family": "doc",
@@ -13384,6 +14175,14 @@
         {
           "family": "doc",
           "path": "docs/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/SYNTHESIS-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -13547,6 +14346,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_hook_basics.py"
         },
         {
@@ -13605,9 +14408,9 @@
         "hook_consumers:2",
         "rule_consumers:9",
         "script_consumers:9",
-        "test_consumers:19",
-        "doc_consumers:41",
-        "config_consumers:10"
+        "test_consumers:20",
+        "doc_consumers:43",
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/content-policy.sh",
@@ -13619,7 +14422,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 93
+      "total_consumers": 97
     },
     {
       "confidence": "high",
@@ -13627,7 +14430,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 2,
+        "doc": 3,
         "script": 2,
         "test": 3
       },
@@ -13665,6 +14468,10 @@
           "path": "docs/architecture/context-budget-observability.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -13690,7 +14497,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:2",
+        "doc_consumers:3",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -13703,16 +14510,16 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 4,
-        "doc": 10,
-        "test": 2
+        "config": 5,
+        "doc": 9,
+        "test": 3
       },
       "consumers": [
         {
@@ -13729,11 +14536,11 @@
         },
         {
           "family": "config",
-          "path": "manifests/silent-failure-allowlist.yaml"
+          "path": "manifests/primitive-harness-gap-policy.yaml"
         },
         {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
+          "family": "config",
+          "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
           "family": "doc",
@@ -13777,14 +14584,18 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_primitive_harness_partials_contract.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_context_diet_native.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "test_consumers:2",
-        "doc_consumers:10",
-        "config_consumers:4"
+        "test_consumers:3",
+        "doc_consumers:9",
+        "config_consumers:5"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -13794,7 +14605,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -13802,7 +14613,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 14,
+        "doc": 15,
         "rule": 1,
         "script": 1,
         "test": 3
@@ -13843,6 +14654,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -13927,7 +14742,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -13940,7 +14755,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 28
+      "total_consumers": 29
     },
     {
       "confidence": "medium",
@@ -13948,7 +14763,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 8,
+        "doc": 9,
         "test": 3
       },
       "consumers": [
@@ -13967,6 +14782,10 @@
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -14012,7 +14831,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:3",
-        "doc_consumers:8",
+        "doc_consumers:9",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -14023,7 +14842,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -14256,6 +15075,88 @@
       "total_consumers": 4
     },
     {
+      "confidence": "high",
+      "consumer_access_next_action": "keep install/profile/harness proof current",
+      "consumer_accessibility": "projected-consumer-surface",
+      "consumer_families": {
+        "config": 5,
+        "doc": 2,
+        "rule": 1,
+        "script": 2,
+        "test": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": ".claude/settings.json"
+        },
+        {
+          "family": "config",
+          "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/hook-quality.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "rule",
+          "path": "rules/cosd-secure-api.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/_lib/settings-driver-claude-code.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_cosd_auth_primitives.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/integration/test_cosd_auth_guard_hook.py"
+        }
+      ],
+      "distribution": "core",
+      "evidence": [
+        "lifecycle",
+        "rule_consumers:1",
+        "script_consumers:2",
+        "test_consumers:2",
+        "doc_consumers:2",
+        "config_consumers:5"
+      ],
+      "family": "hooks",
+      "lifecycle_id": "hooks/cosd-auth-guard.sh",
+      "lifecycle_state": "blocking",
+      "next_action": "keep lifecycle, tests, and harness proof current",
+      "path": "hooks/cosd-auth-guard.sh",
+      "role": "driver-specific",
+      "role_source": "lifecycle",
+      "supported_harnesses": [
+        "claude"
+      ],
+      "total_consumers": 12
+    },
+    {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
@@ -14300,7 +15201,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 12,
-        "doc": 30,
+        "doc": 31,
         "hook": 3,
         "rule": 3,
         "script": 7,
@@ -14458,6 +15359,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/rules-consolidation-plan.md"
         },
         {
@@ -14565,7 +15470,7 @@
         "rule_consumers:3",
         "script_consumers:7",
         "test_consumers:6",
-        "doc_consumers:30",
+        "doc_consumers:31",
         "config_consumers:12"
       ],
       "family": "hooks",
@@ -14578,7 +15483,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 62
+      "total_consumers": 63
     },
     {
       "confidence": "high",
@@ -14830,7 +15735,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 1,
+        "doc": 2,
         "script": 3,
         "test": 1
       },
@@ -14869,6 +15774,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/security/cognitive-os-agent-security-research-2026-05-05.md"
         },
         {
@@ -14893,7 +15802,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:1",
+        "doc_consumers:2",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -14907,7 +15816,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -15027,7 +15936,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 7,
-        "doc": 15,
+        "doc": 18,
         "hook": 2,
         "rule": 1,
         "script": 6,
@@ -15109,6 +16018,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md"
         },
         {
@@ -15118,6 +16031,14 @@
         {
           "family": "doc",
           "path": "docs/case-studies/external-review-cycle-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-coverage-gap-analysis-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -15212,7 +16133,7 @@
         "rule_consumers:1",
         "script_consumers:6",
         "test_consumers:10",
-        "doc_consumers:15",
+        "doc_consumers:18",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -15225,15 +16146,15 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 42
+      "total_consumers": 45
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "keep install/profile/harness proof current",
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
-        "config": 8,
-        "doc": 7,
+        "config": 9,
+        "doc": 9,
         "hook": 1,
         "rule": 1,
         "script": 5,
@@ -15263,6 +16184,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/policy-as-code.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
@@ -15283,6 +16208,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-234-approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -15296,6 +16225,10 @@
         {
           "family": "doc",
           "path": "docs/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -15370,8 +16303,8 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:6",
-        "doc_consumers:7",
-        "config_consumers:8"
+        "doc_consumers:9",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/destructive-rm-blocker.sh",
@@ -15383,7 +16316,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 30
+      "total_consumers": 33
     },
     {
       "confidence": "high",
@@ -15391,7 +16324,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 9,
-        "doc": 7,
+        "doc": 10,
         "script": 5,
         "test": 4
       },
@@ -15446,7 +16379,15 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/direct-main-policy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
         },
         {
           "family": "doc",
@@ -15459,6 +16400,10 @@
         {
           "family": "doc",
           "path": "docs/case-studies/external-review-cycle-2026-05-02.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "script",
@@ -15502,7 +16447,7 @@
         "lifecycle",
         "script_consumers:5",
         "test_consumers:4",
-        "doc_consumers:7",
+        "doc_consumers:10",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -15515,7 +16460,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 25
+      "total_consumers": 28
     },
     {
       "confidence": "high",
@@ -15523,7 +16468,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 18,
+        "doc": 20,
         "hook": 4,
         "rule": 4,
         "script": 5,
@@ -15589,6 +16534,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/POST-MORTEM-2026-04.md"
         },
         {
@@ -15630,6 +16579,10 @@
         {
           "family": "doc",
           "path": "docs/incidents/2026-05-01-session-multi-spawn-hang.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -15713,11 +16666,11 @@
         },
         {
           "family": "test",
-          "path": "tests/unit/test_codex_guard_layer.py"
+          "path": "tests/behavior/test_run_flight_recorder.py"
         },
         {
           "family": "test",
-          "path": "tests/unit/test_dispatch_gate.py"
+          "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
           "family": "test",
@@ -15748,7 +16701,7 @@
         "rule_consumers:4",
         "script_consumers:5",
         "test_consumers:10",
-        "doc_consumers:18",
+        "doc_consumers:20",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -15761,7 +16714,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 52
+      "total_consumers": 54
     },
     {
       "confidence": "high",
@@ -15769,7 +16722,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 13,
+        "doc": 14,
         "rule": 1,
         "script": 5,
         "test": 3
@@ -15806,6 +16759,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
         },
         {
           "family": "doc",
@@ -15902,7 +16859,7 @@
         "rule_consumers:1",
         "script_consumers:5",
         "test_consumers:3",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -15915,7 +16872,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "high",
@@ -17500,7 +18457,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 11,
-        "doc": 61,
+        "doc": 64,
         "hook": 11,
         "rule": 10,
         "script": 5,
@@ -17599,6 +18556,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-176-skillstore-and-analysis-trigger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-228-retry-contract-and-cost-budget.md"
         },
         {
           "family": "doc",
@@ -17743,6 +18704,14 @@
         {
           "family": "doc",
           "path": "docs/research-log.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/failure-recovery-retry-semantics.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
         },
         {
           "family": "doc",
@@ -18085,7 +19054,7 @@
         "rule_consumers:10",
         "script_consumers:5",
         "test_consumers:41",
-        "doc_consumers:61",
+        "doc_consumers:64",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -18098,7 +19067,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 142
+      "total_consumers": 145
     },
     {
       "confidence": "high",
@@ -18568,7 +19537,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 7,
+        "doc": 9,
         "script": 2,
         "test": 2
       },
@@ -18627,6 +19596,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/multi-session-orchestration-audit-2026-05-02.md"
         },
         {
@@ -18655,7 +19632,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:7",
+        "doc_consumers:9",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -18668,7 +19645,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 19
+      "total_consumers": 21
     },
     {
       "confidence": "high",
@@ -18676,7 +19653,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 11,
+        "doc": 13,
         "hook": 2,
         "rule": 4,
         "script": 3,
@@ -18729,6 +19706,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -18742,6 +19723,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
         },
         {
           "family": "doc",
@@ -18831,7 +19816,7 @@
         "rule_consumers:4",
         "script_consumers:3",
         "test_consumers:6",
-        "doc_consumers:11",
+        "doc_consumers:13",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -18844,7 +19829,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 35
+      "total_consumers": 37
     },
     {
       "confidence": "medium",
@@ -18852,7 +19837,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 16,
+        "doc": 17,
         "hook": 2,
         "rule": 1,
         "script": 1,
@@ -18933,6 +19918,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/testing.md"
         },
         {
@@ -18966,7 +19955,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:16",
+        "doc_consumers:17",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -18977,7 +19966,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
@@ -20445,9 +21434,9 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 23,
+        "doc": 24,
         "script": 7,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -20556,6 +21545,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/orchestration-gaps/mcp-as-orchestration-bus.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md"
         },
         {
@@ -20616,6 +21609,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_projectable_script_surface_evidence.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_hook_graceful_degradation.py"
         }
       ],
@@ -20623,8 +21620,8 @@
       "evidence": [
         "lifecycle",
         "script_consumers:7",
-        "test_consumers:2",
-        "doc_consumers:23",
+        "test_consumers:3",
+        "doc_consumers:24",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -20637,7 +21634,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 42
+      "total_consumers": 44
     },
     {
       "confidence": "high",
@@ -21132,9 +22129,9 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
+        "config": 8,
         "doc": 2,
-        "script": 3,
+        "script": 4,
         "test": 2
       },
       "consumers": [
@@ -21167,6 +22164,10 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
+        },
+        {
           "family": "doc",
           "path": "docs/adrs/ADR-033-harness-agnostic-event-capture.md"
         },
@@ -21184,6 +22185,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos_work_inventory.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/set-security-profile.sh"
         },
         {
@@ -21198,10 +22203,10 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "script_consumers:3",
+        "script_consumers:4",
         "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:7"
+        "config_consumers:8"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/native-agent-heartbeat.sh",
@@ -21213,7 +22218,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 14
+      "total_consumers": 16
     },
     {
       "confidence": "high",
@@ -21313,7 +22318,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 11,
-        "doc": 22,
+        "doc": 26,
         "hook": 3,
         "rule": 1,
         "script": 4,
@@ -21402,6 +22407,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md"
         },
         {
@@ -21443,6 +22452,18 @@
         {
           "family": "doc",
           "path": "docs/measurements/hook-timing-runbook.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/background-agent-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/replay-timeline-architectures.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/tool-discovery-dynamic-registration.md"
         },
         {
           "family": "doc",
@@ -21519,7 +22540,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:7",
-        "doc_consumers:22",
+        "doc_consumers:26",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -21530,7 +22551,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 48
+      "total_consumers": 52
     },
     {
       "confidence": "high",
@@ -21538,7 +22559,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 7,
-        "doc": 9,
+        "doc": 11,
         "hook": 1,
         "script": 4,
         "test": 9
@@ -21586,6 +22607,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/adr-frontmatter-schema.md"
         },
         {
@@ -21595,6 +22620,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/cognitive-prosthesis.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
         },
         {
           "family": "doc",
@@ -21671,7 +22700,7 @@
         "hook_consumers:1",
         "script_consumers:4",
         "test_consumers:9",
-        "doc_consumers:9",
+        "doc_consumers:11",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -21684,7 +22713,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 30
+      "total_consumers": 32
     },
     {
       "confidence": "high",
@@ -21826,7 +22855,7 @@
         "doc": 1,
         "rule": 1,
         "script": 2,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -21872,6 +22901,10 @@
         {
           "family": "test",
           "path": "tests/contracts/test_skill_invocation_gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_research_quality_advisor.py"
         }
       ],
       "distribution": "team",
@@ -21879,7 +22912,7 @@
         "lifecycle",
         "rule_consumers:1",
         "script_consumers:2",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:1",
         "config_consumers:6"
       ],
@@ -21894,7 +22927,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -22242,11 +23275,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
-        "doc": 3,
+        "config": 9,
+        "doc": 7,
         "hook": 2,
         "script": 2,
-        "test": 4
+        "test": 5
       },
       "consumers": [
         {
@@ -22267,6 +23300,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/pre-agent-snapshot.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
         },
         {
@@ -22278,6 +23315,10 @@
           "path": "manifests/silent-failure-allowlist.yaml"
         },
         {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
+        },
+        {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
         },
@@ -22287,7 +23328,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-213-agent-preflight-before-stash-snapshot.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/business/cos-vs-vanilla-dx-review.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
         },
         {
           "family": "hook",
@@ -22304,6 +23361,10 @@
         {
           "family": "script",
           "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py"
         },
         {
           "family": "test",
@@ -22327,9 +23388,9 @@
         "lifecycle",
         "hook_consumers:2",
         "script_consumers:2",
-        "test_consumers:4",
-        "doc_consumers:3",
-        "config_consumers:7"
+        "test_consumers:5",
+        "doc_consumers:7",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/post-agent-snapshot-restore.sh",
@@ -22341,7 +23402,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 18
+      "total_consumers": 25
     },
     {
       "confidence": "high",
@@ -22534,11 +23595,11 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 7,
-        "doc": 18,
-        "hook": 3,
+        "config": 9,
+        "doc": 23,
+        "hook": 4,
         "script": 8,
-        "test": 10
+        "test": 16
       },
       "consumers": [
         {
@@ -22563,11 +23624,19 @@
         },
         {
           "family": "config",
+          "path": "manifests/pre-agent-snapshot.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
         },
         {
           "family": "doc",
@@ -22607,6 +23676,22 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-213-agent-preflight-before-stash-snapshot.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-223-agent-lifecycle-reconstruction.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/LESSONS-LEARNED.md"
         },
         {
@@ -22642,8 +23727,16 @@
           "path": "docs/measurements/snapshot-chaos-runbook.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
+        },
+        {
           "family": "hook",
           "path": "hooks/_lib/stash-lock.sh"
+        },
+        {
+          "family": "hook",
+          "path": "hooks/agent-launch-confirmed.sh"
         },
         {
           "family": "hook",
@@ -22687,7 +23780,23 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_pre_agent_hook_ordering.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_agent_blocked_preflight_no_stash.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_agent_lifecycle_worktree_mode.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_post_agent_verify.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_pre_agent_blocked_preflight_no_orphan.py"
         },
         {
           "family": "test",
@@ -22715,11 +23824,19 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_agent_hook_order.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_codex_guard_layer.py"
         },
         {
           "family": "test",
           "path": "tests/unit/test_cos_governance_roi.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_pre_agent_two_phase.py"
         },
         {
           "family": "test",
@@ -22729,11 +23846,11 @@
       "distribution": "lab",
       "evidence": [
         "lifecycle",
-        "hook_consumers:3",
+        "hook_consumers:4",
         "script_consumers:8",
-        "test_consumers:10",
-        "doc_consumers:18",
-        "config_consumers:7"
+        "test_consumers:16",
+        "doc_consumers:23",
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/pre-agent-snapshot.sh",
@@ -22745,7 +23862,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 46
+      "total_consumers": 60
     },
     {
       "confidence": "medium",
@@ -22856,7 +23973,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 6,
-        "doc": 2,
+        "doc": 4,
         "script": 3,
         "test": 2
       },
@@ -22894,6 +24011,14 @@
           "path": "docs/adoption-tiers.md"
         },
         {
+          "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
+        },
+        {
           "family": "script",
           "path": "scripts/_lib/settings-driver-claude-code.sh"
         },
@@ -22919,7 +24044,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:2",
+        "doc_consumers:4",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -22932,7 +24057,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
@@ -22940,7 +24065,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 26,
+        "doc": 28,
         "hook": 1,
         "rule": 5,
         "script": 1,
@@ -22986,6 +24111,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/core-vs-extensions-audit-2026-04-20.md"
         },
         {
@@ -22999,6 +24128,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-rules.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
         },
         {
           "family": "doc",
@@ -23132,7 +24265,7 @@
         "rule_consumers:5",
         "script_consumers:1",
         "test_consumers:8",
-        "doc_consumers:26",
+        "doc_consumers:28",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -23143,7 +24276,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 44
+      "total_consumers": 46
     },
     {
       "confidence": "high",
@@ -24162,8 +25295,8 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 6,
-        "doc": 4,
+        "config": 7,
+        "doc": 6,
         "script": 3,
         "test": 1
       },
@@ -24182,6 +25315,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/policy-as-code.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
         },
         {
@@ -24195,6 +25332,14 @@
         {
           "family": "doc",
           "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-234-approval-policies-as-code.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/orchestration-gaps/approval-policies-as-code.md"
         },
         {
           "family": "doc",
@@ -24230,8 +25375,8 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:1",
-        "doc_consumers:4",
-        "config_consumers:6"
+        "doc_consumers:6",
+        "config_consumers:7"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/protected-config-write-guard.sh",
@@ -24243,7 +25388,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 14
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -26639,7 +27784,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 8,
-        "doc": 6,
+        "doc": 8,
         "script": 3,
         "test": 5
       },
@@ -26694,6 +27839,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-190-harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/harness-action-receipts.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/red-team-harness-design.md"
         },
         {
@@ -26738,7 +27891,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:5",
-        "doc_consumers:6",
+        "doc_consumers:8",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -26751,7 +27904,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 22
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -27009,12 +28162,12 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 9,
-        "doc": 44,
+        "doc": 47,
         "hook": 1,
         "rule": 5,
         "script": 10,
         "skill": 2,
-        "test": 13
+        "test": 14
       },
       "consumers": [
         {
@@ -27088,6 +28241,14 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-215-cross-stack-secret-audit-toolchain.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md"
         },
         {
           "family": "doc",
@@ -27196,6 +28357,10 @@
         {
           "family": "doc",
           "path": "docs/research/llm-wiki-v2-engram-evolution-2026-04-27.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/multi-agent-orchestration-prior-art-2026-05-06.md"
         },
         {
           "family": "doc",
@@ -27351,6 +28516,10 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_secret_detector_registration.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_secret_detector_updated_input.py"
         }
       ],
@@ -27361,8 +28530,8 @@
         "hook_consumers:1",
         "rule_consumers:5",
         "script_consumers:10",
-        "test_consumers:13",
-        "doc_consumers:44",
+        "test_consumers:14",
+        "doc_consumers:47",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -27375,7 +28544,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 84
+      "total_consumers": 88
     },
     {
       "confidence": "high",
@@ -30144,7 +31313,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 4,
+        "doc": 6,
         "script": 3,
         "test": 2
       },
@@ -30191,6 +31360,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-221-stash-ref-by-sha-not-by-position.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-222-pre-agent-stash-defer-until-launch-confirmed.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/boring-reliability-control-plane.md"
         },
         {
@@ -30223,7 +31400,7 @@
         "lifecycle",
         "script_consumers:3",
         "test_consumers:2",
-        "doc_consumers:4",
+        "doc_consumers:6",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -30236,7 +31413,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 17
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -31478,10 +32655,10 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 3,
+        "doc": 4,
         "script": 2,
         "skill": 1,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -31526,6 +32703,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-216-tool-discovery-pre-use-gate.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/manual-tests/hook-enforced-rule-projection.md"
         },
         {
@@ -31543,6 +32724,10 @@
         {
           "family": "test",
           "path": "tests/behavior/test_skill_router_bash_gate.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_tool_discovery_preuse_gate.py"
         }
       ],
       "distribution": "lab",
@@ -31550,8 +32735,8 @@
         "lifecycle",
         "skill_consumers:1",
         "script_consumers:2",
-        "test_consumers:1",
-        "doc_consumers:3",
+        "test_consumers:2",
+        "doc_consumers:4",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -31565,7 +32750,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 15
+      "total_consumers": 17
     },
     {
       "confidence": "high",
@@ -32187,6 +33372,102 @@
       "total_consumers": 29
     },
     {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 2,
+        "script": 2
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-199-state-retention-policy-and-reaper-protocol.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/state_retention_audit.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:2",
+        "doc_consumers:2",
+        "config_consumers:1"
+      ],
+      "family": "hooks",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "hooks/state-retention-audit.sh",
+      "role": "driver-specific",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
+      "confidence": "medium",
+      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
+      "consumer_accessibility": "so-local-only",
+      "consumer_families": {
+        "config": 1,
+        "doc": 2,
+        "script": 1,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "script",
+          "path": "scripts/apply-efficiency-profile.sh"
+        },
+        {
+          "family": "test",
+          "path": "tests/behavior/test_subagent_capability_preflight_hook.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "script_consumers:1",
+        "test_consumers:1",
+        "doc_consumers:2",
+        "config_consumers:1"
+      ],
+      "family": "hooks",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "hooks/subagent-capability-preflight.sh",
+      "role": "observability",
+      "role_source": "heuristic:text",
+      "supported_harnesses": [],
+      "total_consumers": 5
+    },
+    {
       "confidence": "high",
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
@@ -32670,9 +33951,9 @@
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
         "config": 7,
-        "doc": 15,
+        "doc": 16,
         "script": 3,
-        "test": 3
+        "test": 4
       },
       "consumers": [
         {
@@ -32761,6 +34042,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/INDEX.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/self-usage-audit.md"
         },
         {
@@ -32781,6 +34066,10 @@
         },
         {
           "family": "test",
+          "path": "tests/hooks/test_agent_team_file_ipc_hooks.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_agent_teams_hooks.py"
         },
         {
@@ -32792,8 +34081,8 @@
       "evidence": [
         "lifecycle",
         "script_consumers:3",
-        "test_consumers:3",
-        "doc_consumers:15",
+        "test_consumers:4",
+        "doc_consumers:16",
         "config_consumers:7"
       ],
       "family": "hooks",
@@ -32806,7 +34095,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 28
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -32816,7 +34105,7 @@
         "config": 9,
         "doc": 8,
         "script": 5,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -32909,6 +34198,10 @@
         },
         {
           "family": "test",
+          "path": "tests/hooks/test_agent_team_file_ipc_hooks.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_agent_teams_hooks.py"
         }
       ],
@@ -32916,7 +34209,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:5",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:8",
         "config_consumers:9"
       ],
@@ -32930,7 +34223,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -33001,7 +34294,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 10,
+        "doc": 11,
         "rule": 1
       },
       "consumers": [
@@ -33012,6 +34305,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -33061,7 +34358,7 @@
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -33072,7 +34369,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -33082,7 +34379,7 @@
         "config": 8,
         "doc": 9,
         "script": 5,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -33175,6 +34472,10 @@
         },
         {
           "family": "test",
+          "path": "tests/hooks/test_agent_team_file_ipc_hooks.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/test_agent_teams_hooks.py"
         }
       ],
@@ -33182,7 +34483,7 @@
       "evidence": [
         "lifecycle",
         "script_consumers:5",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:9",
         "config_consumers:8"
       ],
@@ -33196,7 +34497,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -33204,7 +34505,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 5,
+        "doc": 6,
         "hook": 2,
         "rule": 1,
         "script": 4,
@@ -33242,6 +34543,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -33319,7 +34624,7 @@
         "rule_consumers:1",
         "script_consumers:4",
         "test_consumers:5",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -33332,7 +34637,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 25
+      "total_consumers": 26
     },
     {
       "confidence": "medium",
@@ -33415,7 +34720,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 6,
-        "doc": 13,
+        "doc": 14,
         "hook": 2,
         "rule": 2,
         "test": 6
@@ -33444,6 +34749,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -33543,7 +34852,7 @@
         "hook_consumers:2",
         "rule_consumers:2",
         "test_consumers:6",
-        "doc_consumers:13",
+        "doc_consumers:14",
         "config_consumers:6"
       ],
       "family": "hooks",
@@ -33554,7 +34863,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 29
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -33646,7 +34955,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 9,
-        "doc": 30,
+        "doc": 31,
         "hook": 2,
         "rule": 5,
         "script": 8,
@@ -33692,6 +35001,10 @@
         {
           "family": "doc",
           "path": "README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -33925,7 +35238,7 @@
         "rule_consumers:5",
         "script_consumers:8",
         "test_consumers:12",
-        "doc_consumers:30",
+        "doc_consumers:31",
         "config_consumers:9"
       ],
       "family": "hooks",
@@ -33938,7 +35251,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 66
+      "total_consumers": 67
     },
     {
       "confidence": "high",
@@ -34317,7 +35630,7 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 8,
+        "config": 9,
         "doc": 4,
         "script": 2,
         "test": 3
@@ -34354,6 +35667,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/state-retention.yaml"
         },
         {
           "family": "doc",
@@ -34398,7 +35715,7 @@
         "script_consumers:2",
         "test_consumers:3",
         "doc_consumers:4",
-        "config_consumers:8"
+        "config_consumers:9"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/validation-lock-cleanup.sh",
@@ -34410,7 +35727,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 17
+      "total_consumers": 18
     },
     {
       "confidence": "high",
@@ -34490,7 +35807,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 3,
-        "doc": 6,
+        "doc": 7,
         "rule": 1,
         "script": 1,
         "test": 1
@@ -34507,6 +35824,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -34550,7 +35871,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:6",
+        "doc_consumers:7",
         "config_consumers:3"
       ],
       "family": "hooks",
@@ -34561,7 +35882,7 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
@@ -34651,7 +35972,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 3,
+        "doc": 4,
         "test": 2
       },
       "consumers": [
@@ -34662,6 +35983,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
         },
         {
           "family": "doc",
@@ -34687,7 +36012,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:2",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:2"
       ],
       "family": "hooks",
@@ -34698,31 +36023,31 @@
       "role": "memory-lifecycle",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     }
   ],
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 152,
-      "medium": 86
+      "high": 155,
+      "medium": 88
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 1,
-      "lifecycle-declared-maintainer": 138,
-      "projected-consumer-surface": 13,
-      "so-local-only": 86
+      "lifecycle-declared-maintainer": 139,
+      "projected-consumer-surface": 15,
+      "so-local-only": 88
     },
     "roles": {
-      "driver-specific": 14,
-      "lab": 117,
+      "driver-specific": 17,
+      "lab": 118,
       "memory-lifecycle": 74,
-      "observability": 26,
+      "observability": 27,
       "runtime-safety": 7
     },
-    "total": 238,
+    "total": 243,
     "without_consumers": 0,
-    "without_lifecycle": 86
+    "without_lifecycle": 88
   },
   "target_family": "hooks"
 }

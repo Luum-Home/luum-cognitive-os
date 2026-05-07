@@ -166,3 +166,5 @@ user-prompt-capture.sh | INFRA: UserPromptSubmit event — full profile only
 aci-observation-capture.sh | CONDITIONAL: registered in cognitive-os.yaml PostToolUse wildcard governance but not projected into default .claude/settings.json for this profile.
 lethal-trifecta-gate.sh | CONDITIONAL: registered in cognitive-os.yaml PreToolUse wildcard governance but not projected into default .claude/settings.json for this profile.
 concurrent-write-guard-codex-proxy.sh | CONDITIONAL: Codex-only UserPromptSubmit degraded projection for ADR-111 Gate-3; registered through cognitive-os.yaml/.codex hooks, not default .claude/settings.json.
+state-retention-audit.sh | MANUAL_TRIGGER: ADR-199/200 retention audit can archive/reap state; invoked by explicit retention/session cleanup flows, not a default hook matcher
+subagent-capability-preflight.sh | MANUAL_TRIGGER: ADR-203 launch capability preflight wrapper; promote only when a concrete lifecycle projection exists

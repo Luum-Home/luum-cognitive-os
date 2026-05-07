@@ -1,6 +1,26 @@
 {
   "items": [
     {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/agent-control-inbound-guard.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/agent-launch-confirmed.sh",
+      "scope": "both"
+    },
+    {
       "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: claude, codex",
@@ -18,6 +38,16 @@
       "gap_severity": "medium",
       "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
       "primitive": "hooks/contextual-rule-loader.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+claude+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/cosd-auth-guard.sh",
       "scope": "both"
     },
     {
@@ -431,6 +461,26 @@
       "scope": "both"
     },
     {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/state-retention-audit.sh",
+      "scope": "both"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "hooks",
+      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap_policy": "codex-adapter-needed",
+      "gap_severity": "medium",
+      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
+      "primitive": "hooks/subagent-capability-preflight.sh",
+      "scope": "both"
+    },
+    {
       "coverage": "acc-report+claude+dashboard+tui",
       "family": "hooks",
       "gap": "scope=both but missing projected/wired support for: codex",
@@ -519,19 +569,80 @@
       "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
       "primitive": "hooks/worktree-submodule-fix.sh",
       "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/credibility-audit.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-credibility-tools.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-syft-grype.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-trivy.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/license-audit-syft-grype.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/license-audit-trivy.sh",
+      "scope": "project"
     }
   ],
   "schema_version": "primitive-harness-partials.v1",
   "source_schema_version": "primitive-harness-coverage.v1",
   "summary": {
     "by_policy": {
-      "codex-adapter-needed": 52
+      "codex-adapter-needed": 57,
+      "projectable-needs-driver": 6
     },
     "by_severity": {
-      "medium": 52
+      "medium": 63
     },
-    "partial_count": 52,
-    "total_gaps": 699,
+    "partial_count": 63,
+    "total_gaps": 750,
     "unclassified_gaps": 0
   }
 }

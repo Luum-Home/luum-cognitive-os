@@ -306,3 +306,7 @@ entries:
   status: manual_trigger
   rationale: ADR-203 capability checks are available as an explicit launch-preflight wrapper, but are not yet projected into Claude or Codex lifecycle settings.
   next_action: Promote through a concrete launch path before changing this status to projected_elsewhere.
+- path: hooks/agent-control-inbound-guard.sh
+  status: active
+  rationale: Active inbound control guard for stop/pause/resume signals at hook boundaries.
+  next_action: Keep projected while bidirectional agent control relies on filesystem inbound signals.
