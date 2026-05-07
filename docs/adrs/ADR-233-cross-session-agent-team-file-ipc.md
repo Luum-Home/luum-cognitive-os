@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–B implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-211 (service readiness), ADR-226 (event-sourced session bus), ADR-230 (handoff envelope), ADR-231 (MCP server surface), ADR-235 (detached agent daemon)  
 **Source**: [`docs/research/orchestration-gaps/cross-session-agent-teams.md`](../research/orchestration-gaps/cross-session-agent-teams.md)
@@ -37,11 +37,16 @@ Implemented Slice A:
 - Per-recipient inbox append/read.
 - Unit and behavior tests proving membership, dependency-aware claims, duplicate-claim prevention, inbox delivery, and event log emission.
 
+Implemented Slice B:
+
+- `scripts/cos-team` plus `cos team ...` dispatch for membership, task lifecycle, messages, inbox reads, and handoff sends.
+- `TaskCreated` optionally mirrors tasks into `.cognitive-os/teams/<team>/tasks.jsonl` when `team_name`/`team` or `COS_AGENT_TEAM_NAME` is provided.
+- `TeammateIdle` optionally claims the next dependency-ready team task before falling back to legacy `.claude/tasks/active-tasks.json`.
+- ADR-230 handoff envelopes can now be delivered as at-least-once inbox messages through ADR-233 file IPC.
+
 Not implemented yet:
 
-- Hook consumers that call the library directly from `TaskCreated`, `TaskCompleted`, and `TeammateIdle`.
-- CLI wrapper (`scripts/cos team ...`).
-- Integration with ADR-230 handoff envelopes for team-to-team delegation.
+- `TaskCompleted` mirroring into `AgentTeam.complete_task`.
 - Cross-harness and chaos tests.
 - Tier-3 NATS/A2A upgrade path.
 
@@ -64,7 +69,7 @@ Not implemented yet:
 ## Acceptance criteria
 
 ```bash
-python3 -m pytest tests/unit/test_agent_team.py tests/behavior/test_agent_team_file_ipc_flow.py -q
+python3 -m pytest tests/unit/test_agent_team.py tests/behavior/test_agent_team_file_ipc_flow.py tests/behavior/test_cos_team_cli.py tests/hooks/test_agent_team_file_ipc_hooks.py -q
 ```
 
 The tests must prove:
