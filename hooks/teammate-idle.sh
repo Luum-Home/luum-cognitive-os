@@ -40,7 +40,55 @@ log_idle_event() {
   echo "$entry" >> "$METRICS_FILE" 2>/dev/null || true
 }
 
+
+# ─── ADR-233 file-IPC task claim (optional) ─────────────────────────────────
+
+claim_agent_team_task() {
+  local team_name session_id os_root claim_json claim_status claim_title claim_id
+  team_name=$(echo "$_STDIN_JSON" | jq -r '.team_name // .team // empty' 2>/dev/null | head -1 || true)
+  session_id=$(echo "$_STDIN_JSON" | jq -r '.session_id // .agent_id // .teammate_id // empty' 2>/dev/null | head -1 || true)
+
+  if [ -z "$team_name" ]; then
+    team_name="${COS_AGENT_TEAM_NAME:-}"
+  fi
+  if [ -z "$session_id" ]; then
+    session_id="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+  fi
+  if [ -z "$team_name" ] || ! command -v python3 >/dev/null 2>&1; then
+    return 0
+  fi
+
+  os_root="$(cd "$(dirname "$0")/.." && pwd)"
+  claim_json=$(PYTHONPATH="$os_root:${PYTHONPATH:-}" python3 - "$os_root" "$_PROJECT_DIR" "$team_name" "$session_id" <<'PYEOF' 2>/dev/null || true
+import json
+import sys
+from dataclasses import asdict
+from pathlib import Path
+
+os_root, project_dir, team_name, session_id = sys.argv[1:5]
+sys.path.insert(0, os_root)
+from lib.agent_team import AgentTeam
+
+team = AgentTeam(team_name, project_dir=Path(project_dir))
+task = team.claim_next(session_id=session_id)
+print(json.dumps({"task": asdict(task) if task else None}, sort_keys=True))
+PYEOF
+)
+  claim_status=$(echo "$claim_json" | jq -r 'if .task == null then "none" else "claimed" end' 2>/dev/null || echo "none")
+  if [ "$claim_status" = "claimed" ]; then
+    claim_id=$(echo "$claim_json" | jq -r '.task.task_id' 2>/dev/null || echo "unknown")
+    claim_title=$(echo "$claim_json" | jq -r '.task.title' 2>/dev/null || echo "unknown")
+    log_idle_event "agent_team_claimed" 1
+    echo "TEAMMATE_IDLE: claimed ADR-233 team task $claim_id."
+    echo "Next team task: $claim_title"
+    echo "Suggestion: complete this claimed task before going idle."
+    exit 2
+  fi
+}
+
 # ─── Check for unclaimed tasks ──────────────────────────────────────────────
+
+claim_agent_team_task
 
 TASKS_FILE="$_PROJECT_DIR/.claude/tasks/active-tasks.json"
 
