@@ -259,7 +259,7 @@ def test_timing_wrapper_instrumented_hooks_count(timing_pairs):
         pytest.skip("hook timing has no records yet")
     if len(unique_hooks) < 10 and "cos-validation-capsules" in str(_timing_log_path()):
         pytest.skip(
-            f"validation capsule has only {len(unique_hooks)} distinct hook timing sample(s); "
+            f"not enough data: validation capsule has only {len(unique_hooks)} distinct hook timing sample(s); "
             "requires a normal operator session for wrapper coverage enforcement"
         )
     assert len(unique_hooks) >= 10, (
