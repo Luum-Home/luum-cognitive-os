@@ -32,7 +32,7 @@
 | ADR-231 | MCP Server Surface | 🟡 Slice A ✅ | Existing 8-tool FastMCP server formalized, package export path added, manifest/audit/smoke tests. Remaining: OTel, HTTP transport, cross-harness registration. | T1, T3, T4 done; T8 pending |
 | ADR-232 | Sandbox Adapter Tiers | 🟡 Slice A ✅ | Opt-in sandbox command wrapper implemented for Bubblewrap/Seatbelt with explicit fallback. Remaining: microVM/ConTree adapters + hook/dispatch integration. | T1, T3, T4 done; T7/T8/T10 pending |
 | ADR-233 | Cross-Session Agent-Team File IPC | 🟡 Slice A ✅ | File-backed AgentTeam substrate implemented: members/tasks/inbox/events with locks. Remaining: hook consumers, CLI, ADR-230 handoff integration, chaos/cross-harness. | T1, T3, T4 done; T7/T8 pending |
-| ADR-234 | Approval Policies as Code | 🔲 | Migrate pure-decision deny hooks to generated/native settings projection | T1, T3, T4, T5, T8 |
+| ADR-234 | Approval Policies as Code | 🟡 Slice A ✅ | YAML policy evaluator + CLI + sample destructive-bash policy. Remaining: hook migration/settings projection/external engines. | T1, T3, T4 done; T5/T8 pending |
 | ADR-235 | Detached Agent Daemon | 🔲 | Wait for worktree-per-write-agent/lifecycle reconstruction; opt-in only | T1, T2, T4, T5, T7, T10 |
 | ADR-236 | Deferred Tool Loading + ToolSearch | 🟡 Slice A ✅ | Manifest-backed eager/deferred planning + ToolSearch-like metadata index implemented. Remaining: provider defer_loading + dispatch ToolSearch insertion + list_changed handling. | T1, T3, T4 done; T8/T9 pending |
 

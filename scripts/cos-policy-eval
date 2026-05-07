@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.policy_eval import dumps_json, evaluate_action  # noqa: E402
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Evaluate ADR-234 YAML policies.")
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--tool", required=True)
+    parser.add_argument("--command", default="")
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--strict", action="store_true")
+    args = parser.parse_args()
+    decision = evaluate_action(args.project_dir, {"tool": args.tool, "command": args.command})
+    if args.json:
+        print(dumps_json(decision))
+    else:
+        print(f"{decision.decision}: {decision.policy_id}/{decision.rule_id} — {decision.reason}")
+    return 2 if args.strict and decision.decision in {"block", "deny"} else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

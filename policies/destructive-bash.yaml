@@ -1,0 +1,22 @@
+schema_version: policy-eval/v1
+id: destructive-bash
+status: active
+owner: platform-safety
+trigger: PreToolUse:Bash
+rules:
+  - id: deny-rm-root
+    decision: block
+    tools: [Bash]
+    match:
+      command:
+        - "rm -rf /*"
+        - "sudo rm -rf /*"
+    reason: Destructive root deletion commands are forbidden.
+  - id: ask-network-install
+    decision: ask
+    tools: [Bash]
+    match:
+      command:
+        - "curl *|*sh*"
+        - "wget *|*sh*"
+    reason: Network install pipes require explicit operator approval.
