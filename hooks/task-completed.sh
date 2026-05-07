@@ -76,6 +76,38 @@ if [ "$phase" = "production" ] || [ "$phase" = "maintenance" ]; then
   fi
 fi
 
+
+# ─── ADR-233 file-IPC completion mirror (optional) ─────────────────────────
+
+mirror_agent_team_completion() {
+  local team_name session_id os_root
+  team_name=$(echo "$_STDIN_JSON" | jq -r '.team_name // .team // empty' 2>/dev/null | head -1 || true)
+  session_id=$(echo "$_STDIN_JSON" | jq -r '.session_id // .agent_id // .teammate_id // empty' 2>/dev/null | head -1 || true)
+
+  if [ -z "$team_name" ]; then
+    team_name="${COS_AGENT_TEAM_NAME:-}"
+  fi
+  if [ -z "$session_id" ]; then
+    session_id="${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-unknown}}"
+  fi
+  if [ -z "$team_name" ] || [ -z "$task_id" ] || ! command -v python3 >/dev/null 2>&1; then
+    return 0
+  fi
+
+  os_root="$(cd "$(dirname "$0")/.." && pwd)"
+  PYTHONPATH="$os_root:${PYTHONPATH:-}" python3 - "$os_root" "$_PROJECT_DIR" "$team_name" "$task_id" "$session_id" "$task_output" <<'PYEOF' >/dev/null 2>&1 || true
+import sys
+from pathlib import Path
+
+os_root, project_dir, team_name, task_id, session_id, output_summary = sys.argv[1:7]
+sys.path.insert(0, os_root)
+from lib.agent_team import AgentTeam
+
+team = AgentTeam(team_name, project_dir=Path(project_dir))
+team.complete_task(task_id, session_id=session_id, output_summary=output_summary)
+PYEOF
+}
+
 # ─── Update active-tasks.json if matching task found ────────────────────────
 
 TASKS_FILE="$_PROJECT_DIR/.claude/tasks/active-tasks.json"
@@ -96,5 +128,6 @@ fi
 
 # ─── All checks passed ─────────────────────────────────────────────────────
 
+mirror_agent_team_completion
 log_completion_event "accept" "passed_validation"
 exit 0
