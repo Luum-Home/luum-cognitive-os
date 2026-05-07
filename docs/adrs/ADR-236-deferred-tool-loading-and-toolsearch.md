@@ -31,6 +31,10 @@ Implemented Slice A:
 - `scripts/cos-deferred-tool-plan` exposes plan/index output.
 - Unit/audit/behavior tests validate threshold behavior, ADR-216 extension invariant, and CLI smoke.
 
+Implemented Slice B:
+
+- `lib/dispatch.py` can inject a compact `[TOOLSEARCH_INDEX]` into the prompt and emit tool-loading metadata when `skill_requirements.enable_toolsearch` / `estimated_tool_tokens` requests it.
+
 Not implemented yet:
 
 - Actual provider API `defer_loading` flags.

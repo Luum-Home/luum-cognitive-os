@@ -147,3 +147,56 @@ def test_dispatch_sandbox_required_allows_explicit_fallback(tmp_path: Path) -> N
 
     assert result.success is True
     assert records[0]["dispatch_gate"]["sandbox_plan"]["fallback_used"] is True
+
+@pytest.mark.integration
+def test_dispatch_injects_toolsearch_index_when_requested(tmp_path: Path) -> None:
+    (tmp_path / "manifests").mkdir()
+    (tmp_path / "manifests/deferred-tool-loading.yaml").write_text(
+        "schema_version: deferred-tool-loading/v1\n"
+        "policy:\n  toolsearch_threshold_tokens: 1\n"
+        "tools:\n  - name: always\n    load_mode: eager\n    always_available: true\n  - name: rare\n    load_mode: deferred\n    description: Rare tool\n"
+    )
+    seen: dict[str, str] = {}
+    def qwen(prompt, **kwargs):
+        seen["prompt"] = prompt
+        return _success()
+    with patch.dict(os.environ, {"COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "s1"}, clear=False):
+        records: list[dict] = []
+        result = dispatch_module.dispatch(
+            "hello",
+            providers=["qwen"],
+            skill_requirements={"enable_toolsearch": True, "estimated_tool_tokens": 2},
+            _qwen_fn=qwen,
+            _metric_sink=records.append,
+        )
+    assert result.success is True
+    assert seen["prompt"].startswith("[TOOLSEARCH_INDEX]")
+    assert records[0]["dispatch_gate"]["tool_loading"]["status"] == "deferred"
+
+
+@pytest.mark.integration
+def test_dispatch_passes_sandbox_flags_to_claude_executor(tmp_path: Path) -> None:
+    class FakeClaude:
+        def __init__(self):
+            self.kwargs = None
+        def run(self, prompt, model=None, timeout=None, **kwargs):
+            self.kwargs = kwargs
+            class Result:
+                success = True
+                result_text = "ok"
+                tokens_in = 1
+                tokens_out = 1
+                cost_usd = 0.0
+                error_message = ""
+            return Result()
+    fake = FakeClaude()
+    with patch.dict(os.environ, {"COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "s1", "COS_SANDBOX_DISABLE_NATIVE": "1"}, clear=False):
+        result = dispatch_module.dispatch(
+            "hello",
+            providers=["claude"],
+            claude_executor=fake,
+            skill_requirements={"require_sandbox": True, "allow_sandbox_fallback": True},
+            _metric_sink=lambda rec: None,
+        )
+    assert result.success is True
+    assert fake.kwargs == {"sandbox_required": True, "allow_sandbox_fallback": True}

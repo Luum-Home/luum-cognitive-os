@@ -17,6 +17,9 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
 
+from lib.dispatch_gate import DispatchGate
+from lib.session_budget import SessionBudgetExceeded
+
 SCHEMA_VERSION = "detached-agent-task/v1"
 
 
@@ -38,6 +41,8 @@ class DetachedAgentTask:
     updated_at: float
     team_name: str | None = None
     max_runtime_seconds: int = 3600
+    estimated_cost_usd: float = 0.0
+    budget_cap_usd: float = 5.0
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -82,17 +87,27 @@ class AgentDaemon:
         worktree_path: str | Path | None = None,
         team_name: str | None = None,
         max_runtime_seconds: int = 3600,
+        estimated_cost_usd: float = 0.0,
+        budget_cap_usd: float = 5.0,
     ) -> DetachedAgentTask:
         if not command.strip():
             raise AgentDaemonError("command is required")
         tid = _safe_id(task_id or f"agent-{uuid.uuid4().hex[:12]}")
         if max_runtime_seconds <= 0:
             raise AgentDaemonError("max_runtime_seconds must be positive")
+        estimated = float(estimated_cost_usd or 0.0)
+        cap = float(budget_cap_usd or 5.0)
+        resolved_session = session_id or os.environ.get("COGNITIVE_OS_SESSION_ID") or "manual"
+        if estimated > 0:
+            try:
+                DispatchGate(self.project_dir, resolved_session, cap_usd=cap).pre_call(estimated)
+            except SessionBudgetExceeded as exc:
+                raise AgentDaemonError(str(exc)) from exc
         now = time.time()
         task = DetachedAgentTask(
             schema_version=SCHEMA_VERSION,
             task_id=tid,
-            session_id=session_id or os.environ.get("COGNITIVE_OS_SESSION_ID") or "manual",
+            session_id=resolved_session,
             command=command,
             project_dir=str(self.project_dir),
             worktree_path=str(Path(worktree_path or self.project_dir).resolve()),
@@ -102,6 +117,8 @@ class AgentDaemon:
             updated_at=now,
             team_name=team_name,
             max_runtime_seconds=max_runtime_seconds,
+            estimated_cost_usd=estimated,
+            budget_cap_usd=cap,
         )
         self._write_state(task)
         _append_jsonl(self.queue_path, task.to_dict())
@@ -167,9 +184,67 @@ class AgentDaemon:
             done = json.loads(self.done_path(task.task_id).read_text(encoding="utf-8"))
             status = "completed" if int(done.get("exit_code", 1)) == 0 else "failed"
             updated = self._replace_task(task, status=status)
+            if task.estimated_cost_usd > 0:
+                try:
+                    DispatchGate(self.project_dir, task.session_id, cap_usd=task.budget_cap_usd).record_actual(task.estimated_cost_usd)
+                except Exception:
+                    pass
             _append_jsonl(self.results_path, {**updated.to_dict(), "done": done})
             completed.append(updated)
         return completed
+
+    def reap_stale(self, *, stale_heartbeat_seconds: int = 300, now: float | None = None) -> list[DetachedAgentTask]:
+        """Fail running tasks whose heartbeat/runtime exceeds the watchdog budget."""
+        current = time.time() if now is None else now
+        failed: list[DetachedAgentTask] = []
+        for task in self.list_tasks():
+            if task.status != "running" or self.done_path(task.task_id).is_file():
+                continue
+            reasons: list[str] = []
+            if current - task.updated_at > task.max_runtime_seconds:
+                reasons.append("max_runtime_exceeded")
+            heartbeat = self.heartbeat_path(task.task_id)
+            if heartbeat.is_file():
+                try:
+                    beat = json.loads(heartbeat.read_text(encoding="utf-8"))
+                    if current - float(beat.get("timestamp", task.updated_at)) > stale_heartbeat_seconds:
+                        reasons.append("heartbeat_stale")
+                except (json.JSONDecodeError, TypeError, ValueError):
+                    reasons.append("heartbeat_corrupt")
+            elif current - task.updated_at > stale_heartbeat_seconds:
+                reasons.append("heartbeat_missing")
+            if reasons:
+                updated = self._replace_task(task, status="failed")
+                done = {"task_id": task.task_id, "exit_code": 124, "reasons": reasons, "timestamp": current}
+                self.done_path(task.task_id).write_text(json.dumps(done, sort_keys=True) + "\n", encoding="utf-8")
+                _append_jsonl(self.results_path, {**updated.to_dict(), "done": done})
+                failed.append(updated)
+        return failed
+
+    def launchd_plist(self, *, python_bin: str = "python3") -> str:
+        """Return an opt-in launchd plist. Caller decides whether to install it."""
+        script = self.project_dir / "scripts" / "cos-agent-daemon"
+        return (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" '
+            '"http://www.apple.com/DTDs/PropertyList-1.0.dtd">\n'
+            '<plist version="1.0"><dict>\n'
+            '  <key>Label</key><string>com.luum.cos-agent-daemon</string>\n'
+            f'  <key>ProgramArguments</key><array><string>{python_bin}</string><string>{script}</string>'
+            f'<string>--project-dir</string><string>{self.project_dir}</string><string>run-once</string></array>\n'
+            '  <key>RunAtLoad</key><true/>\n'
+            '</dict></plist>\n'
+        )
+
+    def systemd_unit(self, *, python_bin: str = "python3") -> str:
+        """Return an opt-in user systemd unit. Caller decides whether to install it."""
+        script = self.project_dir / "scripts" / "cos-agent-daemon"
+        return (
+            "[Unit]\nDescription=COS Detached Agent Daemon\n"
+            "[Service]\nType=oneshot\n"
+            f"ExecStart={python_bin} {script} --project-dir {self.project_dir} run-once\n"
+            "[Install]\nWantedBy=default.target\n"
+        )
 
     def _write_run_script(self, task: DetachedAgentTask) -> Path:
         task_dir = self.task_dir(task.task_id)

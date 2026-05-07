@@ -433,6 +433,8 @@ class ClaudeExecutor:
         model: Optional[str] = None,
         timeout: Optional[int] = None,
         allowed_tools: Optional[List[str]] = None,
+        sandbox_required: bool = False,
+        allow_sandbox_fallback: bool = False,
     ) -> ClaudeResult:
         """Execute a single Claude Code prompt and return structured result.
 
@@ -447,6 +449,22 @@ class ClaudeExecutor:
         """
         effective_timeout = timeout if timeout is not None else self.default_timeout
         cmd = self._build_command(prompt, model=model, allowed_tools=allowed_tools)
+        if sandbox_required:
+            try:
+                from lib.sandbox_adapter import build_sandbox_command
+                cmd = build_sandbox_command(
+                    cmd,
+                    workspace=self.working_dir,
+                    allow_fallback=allow_sandbox_fallback,
+                ).command
+            except Exception as exc:  # noqa: BLE001
+                return ClaudeResult(
+                    success=False,
+                    result_text="",
+                    retry_code=RetryCode.EXECUTION_ERROR,
+                    error_message=f"sandbox required but unavailable: {exc}",
+                    exit_code=2,
+                )
         env = _get_safe_env(self.extra_env)
 
         start_time = time.monotonic()
