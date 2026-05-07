@@ -1,5 +1,5 @@
 schema_version: event-sourced-session-bus/v1
-status: slice-a-active
+status: slice-b-active
 owner: platform-orchestration
 extends: "ADR-205 Flight Recorder"
 adr: "ADR-226"
@@ -36,7 +36,10 @@ locking:
 performance:
   budgets_set_after_measurement: true
   slice_a_baseline_required: true
-  initial_target: "p95 measurable; budget proposed in Slice B"
+  measured_on: "2026-05-07 local macOS/APFS baseline, pytest benchmark fixture"
+  sample_count: 60
+  p95_budget_ms: 25
+  initial_target: "p95 <= 25ms for Slice B append+fanout fixture; revisit after T6 concurrent benchmark"
 
 event_envelope_v2:
   required_fields:
@@ -59,8 +62,8 @@ slice_a:
     - per_session_stream_writer
     - gap_detecting_reader
     - counter_recovery
-  deferred:
     - fan_out_global_index
+  deferred:
     - event_wrap
     - migration_tool
     - projections
