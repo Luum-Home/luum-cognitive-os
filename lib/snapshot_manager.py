@@ -21,6 +21,8 @@ import time
 from pathlib import Path
 from typing import Optional
 
+from lib.stash_sha import resolve_sha_to_ref, resolve_top_stash_sha
+
 # ─── Constants ────────────────────────────────────────────────────────────────
 
 DEFAULT_TTL_DAYS = 30
@@ -73,10 +75,13 @@ def _has_tracked_modifications(repo: Path) -> bool:
     return False
 
 
-def _stash_tracked(repo: Path, message: str) -> Optional[str]:
+def _stash_tracked(repo: Path, message: str) -> tuple[Optional[str], Optional[str]]:
     """
     Run `git stash push --keep-index` (no --include-untracked) to stash
-    tracked modifications. Returns the stash ref (e.g. "stash@{0}") or None.
+    tracked modifications. Returns (stash_ref_at_capture, stash_sha).
+
+    ``stash_ref_at_capture`` is for forensics only; callers must persist/use
+    ``stash_sha`` as the stable identity (ADR-221).
     """
     rc, _, _ = _run(
         [
@@ -94,15 +99,16 @@ def _stash_tracked(repo: Path, message: str) -> Optional[str]:
         cwd=repo,
     )
     if rc != 0:
-        return None
+        return None, None
     rc2, out2, _ = _run(
         ["git", "stash", "list", "--max-count=1"],
         cwd=repo,
     )
-    if rc2 != 0 or not out2:
-        return None
-    ref = out2.split(":")[0].strip()
-    return ref if ref else None
+    ref = None
+    if rc2 == 0 and out2:
+        candidate = out2.split(":")[0].strip()
+        ref = candidate if candidate else None
+    return ref, resolve_top_stash_sha(repo)
 
 
 def _copy_untracked(
@@ -193,7 +199,8 @@ def create_snapshot(
         "agent_id": str,
         "timestamp": float (unix epoch),
         "untracked_files": [str, ...],
-        "tracked_stash_ref": str | None,
+        "tracked_stash_ref": str | None,   # forensics only
+        "tracked_stash_sha": str | None,   # canonical identity
         "snapshot_dir": str,
         "mode": "copy" | "legacy_stash",
         "status": "ok" | "partial" | "error",
@@ -213,6 +220,7 @@ def create_snapshot(
 
     untracked = _get_untracked_files(repo)
     tracked_stash_ref: Optional[str] = None
+    tracked_stash_sha: Optional[str] = None
     mode = "copy"
     status = "ok"
 
@@ -238,8 +246,8 @@ def create_snapshot(
     has_tracked = _has_tracked_modifications(repo)
     if has_tracked:
         stash_msg = f"auto-pre-agent-{agent_id}"
-        tracked_stash_ref = _stash_tracked(repo, stash_msg)
-        if tracked_stash_ref is None and has_tracked:
+        tracked_stash_ref, tracked_stash_sha = _stash_tracked(repo, stash_msg)
+        if tracked_stash_sha is None and has_tracked:
             status = "partial"
 
     manifest: dict = {
@@ -255,6 +263,7 @@ def create_snapshot(
             "max_total_mb": max_total_mb,
         },
         "tracked_stash_ref": tracked_stash_ref,
+        "tracked_stash_sha": tracked_stash_sha,
         "snapshot_dir": str(snap_dir),
         "mode": mode,
         "status": status,
@@ -300,12 +309,14 @@ def create_legacy_snapshot(repo: Path, agent_id: str) -> dict:
     )
 
     tracked_stash_ref: Optional[str] = None
+    tracked_stash_sha: Optional[str] = None
     status = "ok"
     if rc == 0:
         rc2, out2, _ = _run(["git", "stash", "list", "--max-count=1"], cwd=repo)
         if rc2 == 0 and out2:
             ref = out2.split(":")[0].strip()
             tracked_stash_ref = ref if ref else None
+        tracked_stash_sha = resolve_top_stash_sha(repo)
     else:
         status = "error"
 
@@ -316,6 +327,7 @@ def create_legacy_snapshot(repo: Path, agent_id: str) -> dict:
         "timestamp_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamp)),
         "untracked_files": [],
         "tracked_stash_ref": tracked_stash_ref,
+        "tracked_stash_sha": tracked_stash_sha,
         "snapshot_dir": str(snap_dir),
         "mode": "legacy_stash",
         "status": status,
@@ -364,7 +376,7 @@ def restore_snapshot(
 
     - If files is None, restores ALL files captured in the snapshot.
     - For untracked files: copies them back from the snapshot dir to the WT.
-    - For tracked files (stash): runs `git stash apply <stash_ref>`.
+    - For tracked files (stash): runs `git stash apply <stash_sha>` when available.
 
     Returns a result dict:
     {
@@ -415,16 +427,21 @@ def restore_snapshot(
             errors.append(f"Failed to restore {rel_path}: {exc}")
 
     # Restore tracked files from stash (only when restoring all)
+    stash_sha = manifest.get("tracked_stash_sha")
     stash_ref = manifest.get("tracked_stash_ref")
-    if stash_ref and files is None:
-        rc, _, stderr = _run(
-            ["git", "stash", "apply", stash_ref],
-            cwd=repo,
-        )
+    stash_identity = stash_sha or stash_ref
+    if stash_identity and files is None:
+        if stash_sha and not resolve_sha_to_ref(repo, stash_sha):
+            rc, stderr = 1, "stash SHA not present in stash list"
+        else:
+            rc, _, stderr = _run(
+                ["git", "stash", "apply", stash_identity],
+                cwd=repo,
+            )
         if rc == 0:
             restored_tracked = True
         else:
-            errors.append(f"git stash apply {stash_ref} failed: {stderr}")
+            errors.append(f"git stash apply {stash_identity} failed: {stderr}")
 
     # Update manifest to record partial restore
     if files is not None and all_untracked:

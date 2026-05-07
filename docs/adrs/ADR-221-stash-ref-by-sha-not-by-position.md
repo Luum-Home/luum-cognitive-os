@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — slice 1 active
 **Date**: 2026-05-06
 **Related**: ADR-099 (pre-agent snapshot copy-on-untracked), ADR-117 (stash mutation reversibility), ADR-200 (state retention controller), ADR-213 (agent preflight before stash snapshot), ADR-220 (worktree divergence audit)
 **Supersedes (in part)**: the marker-file format produced by `pre-agent-snapshot.sh` and consumed by `post-agent-snapshot-restore.sh`.
@@ -104,6 +104,18 @@ Existing v1 markers (with `stash_ref` only) are tolerated for one release cycle:
 - **Use `git stash store --message` with a deterministic SHA-based message**: rejected. `store` requires a tree object, not a stash entry; it would mean reimplementing what `stash push` does and managing the working-tree state manually. Bigger blast radius than the bug being fixed.
 - **Eliminate `git stash` from the pre-agent path entirely (worktree-per-agent)**: this is the right long-term move and is tracked separately by the prior-art research report. ADR-221 is the tactical fix that holds while the larger move is sequenced. Not rejected — deferred.
 - **Use `git rev-parse refs/stash@{<id>}` syntax**: rejected. Same position semantics, just a different spelling.
+
+## Implementation status — 2026-05-06
+
+Slice 1 is active:
+
+- `lib/stash_sha.py` provides SHA-first stash helpers.
+- `lib/snapshot_manager.py` writes `tracked_stash_sha` in snapshot manifests and applies by SHA when available.
+- `hooks/pre-agent-snapshot.sh` writes marker schema `pre-agent-snapshot/v2` with `stash_sha` and `stash_ref_at_capture`.
+- `hooks/post-agent-snapshot-restore.sh` resolves current stash position from `stash_sha`, applies by SHA, drops the resolved ref only after success, and tolerates shifted stash positions.
+- Regression tests cover SHA resolution under stash position drift and PostToolUse restore after a later stash shifts `stash@{0}`.
+
+Remaining follow-up: update `stash_provenance` / SessionStart reapply to persist and consume `stash_sha`; add grep-based audit tests forbidding position refs in apply/drop/show code paths.
 
 ## Acceptance criteria
 

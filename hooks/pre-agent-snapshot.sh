@@ -139,6 +139,7 @@ MARKER_FILE="$RUNTIME_DIR/pre-agent-snapshot-${AGENT_ID}.json"
 if [ "$LEGACY_MODE" = "1" ]; then
   STASH_MSG="auto-pre-agent-${AGENT_ID}"
   STASH_REF=""
+  STASH_SHA=""
   SNAPSHOT_STATUS="skipped"
   ERROR_MSG=""
 
@@ -168,7 +169,8 @@ if [ "$LEGACY_MODE" = "1" ]; then
           -- ':(exclude).cognitive-os' ':(exclude).cognitive-os/**' '.' \
           >/dev/null 2>&1; then
       STASH_REF=$(git -C "$PROJECT_DIR" stash list --max-count=1 2>/dev/null | head -1 | cut -d: -f1 || true)
-      if [ -n "$STASH_REF" ]; then
+      STASH_SHA=$(git -C "$PROJECT_DIR" rev-parse --verify "stash@{0}" 2>/dev/null || true)
+      if [ -n "$STASH_REF" ] && [ -n "$STASH_SHA" ]; then
         SNAPSHOT_STATUS="stashed_legacy"
         # ADR-116 P4.3: record stash provenance for auto-reapply on next SessionStart
         _PROV_FILES=$(git -C "$PROJECT_DIR" stash show --name-only "$STASH_REF" 2>/dev/null | tr '\n' '\n' || true)
@@ -206,6 +208,7 @@ if [ "$LEGACY_MODE" = "1" ]; then
     printf '"session_id":"%s",' "$SESSION_ID"
     printf '"mode":"legacy_stash",'
     printf '"stash_ref":"%s",' "${STASH_REF//\"/\\\"}"
+    printf '"stash_sha":"%s",' "${STASH_SHA//\"/\\\"}"
     printf '"stash_message":"%s",' "$STASH_MSG"
     printf '"status":"%s",' "$SNAPSHOT_STATUS"
     printf '"tree_dirty":%s,' "$TREE_DIRTY"
@@ -218,15 +221,15 @@ if [ "$LEGACY_MODE" = "1" ]; then
     printf '}\n'
   } > "$SNAPSHOT_FILE" 2>/dev/null || true
 
-  METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","stash_ref":"%s","tree_dirty":%s,"mode":"legacy_stash"}' \
-    "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${STASH_REF}" "$TREE_DIRTY")
+  METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","stash_ref":"%s","stash_sha":"%s","tree_dirty":%s,"mode":"legacy_stash"}' \
+    "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${STASH_REF}" "${STASH_SHA}" "$TREE_DIRTY")
   safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 
   # Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash
   if [ -n "$STASH_REF" ]; then
     mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
-    printf '{"stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"","mode":"legacy_stash"}\n' \
-      "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" \
+    printf '{"schema_version":"pre-agent-snapshot/v2","stash_sha":"%s","stash_ref_at_capture":"%s","stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"","mode":"legacy_stash"}\n' \
+      "${STASH_SHA//\"/\\\"}" "${STASH_REF//\"/\\\"}" "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" \
       > "$MARKER_FILE" 2>/dev/null || true
   fi
 
@@ -238,6 +241,7 @@ SNAPSHOT_RESULT=""
 SNAPSHOT_STATUS="skipped"
 SNAPSHOT_ID=""
 STASH_REF=""
+STASH_SHA=""
 TREE_DIRTY=false
 UNTRACKED_COUNT=0
 SKIPPED_UNTRACKED_COUNT=0
@@ -299,15 +303,16 @@ PYEOF
     SNAPSHOT_STATUS=$(echo "$SNAPSHOT_RESULT" | jq -r '.status // "error"' 2>/dev/null || echo "error")
     SNAPSHOT_ID=$(echo "$SNAPSHOT_RESULT" | jq -r '.snapshot_id // ""' 2>/dev/null || true)
     STASH_REF=$(echo "$SNAPSHOT_RESULT" | jq -r '.tracked_stash_ref // ""' 2>/dev/null || true)
+    STASH_SHA=$(echo "$SNAPSHOT_RESULT" | jq -r '.tracked_stash_sha // ""' 2>/dev/null || true)
     UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.untracked_files // []) | length' 2>/dev/null || echo 0)
     SKIPPED_UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.skipped_untracked_files // []) | length' 2>/dev/null || echo 0)
     TREE_DIRTY=false
-    if [ -n "$STASH_REF" ] || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null || [ "${SKIPPED_UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
+    if [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ] || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null || [ "${SKIPPED_UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
       TREE_DIRTY=true
     fi
     if [ "$SNAPSHOT_STATUS" = "ok" ] && [ "$TREE_DIRTY" = false ]; then
       SNAPSHOT_STATUS="skip_clean"
-    elif [ "$SNAPSHOT_STATUS" = "ok" ] && [ -n "$STASH_REF" ]; then
+    elif [ "$SNAPSHOT_STATUS" = "ok" ] && { [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ]; }; then
       SNAPSHOT_STATUS="stashed"
       # ADR-116 P4.3: record stash provenance for auto-reapply on next SessionStart
       _PROV_FILES=$(git -C "$PROJECT_DIR" stash show --name-only "$STASH_REF" 2>/dev/null | tr '\n' '\n' || true)
@@ -339,6 +344,7 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
   printf '"mode":"copy",'
   printf '"snapshot_id":"%s",' "${SNAPSHOT_ID//\"/\\\"}"
   printf '"stash_ref":"%s",' "${STASH_REF//\"/\\\"}"
+  printf '"stash_sha":"%s",' "${STASH_SHA//\"/\\\"}"
   printf '"status":"%s",' "$SNAPSHOT_STATUS"
   printf '"tree_dirty":%s,' "$TREE_DIRTY"
   escaped_prompt=${PROMPT_SUMMARY//\\/\\\\}
@@ -348,15 +354,15 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 } > "$SNAPSHOT_FILE" 2>/dev/null || true
 
 # Append to metrics JSONL
-METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","tree_dirty":%s,"untracked_count":%s,"skipped_untracked_count":%s,"mode":"copy"}' \
-  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "$TREE_DIRTY" "${UNTRACKED_COUNT:-0}" "${SKIPPED_UNTRACKED_COUNT:-0}")
+METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","stash_sha":"%s","tree_dirty":%s,"untracked_count":%s,"skipped_untracked_count":%s,"mode":"copy"}' \
+  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "${STASH_SHA}" "$TREE_DIRTY" "${UNTRACKED_COUNT:-0}" "${SKIPPED_UNTRACKED_COUNT:-0}")
 safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 
 # Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash/snapshot
-if [ -n "$STASH_REF" ] || [ -n "$SNAPSHOT_ID" ]; then
+if [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ] || [ -n "$SNAPSHOT_ID" ]; then
   mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
-  printf '{"stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
-    "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
+  printf '{"schema_version":"pre-agent-snapshot/v2","stash_sha":"%s","stash_ref_at_capture":"%s","stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
+    "${STASH_SHA//\"/\\\"}" "${STASH_REF//\"/\\\"}" "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
     > "$MARKER_FILE" 2>/dev/null || true
 fi
 
