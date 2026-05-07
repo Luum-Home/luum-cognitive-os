@@ -71,7 +71,7 @@ SESSION END
 1. Checks out the repo
 2. Runs Claude (claude-sonnet-4-6, max 5 turns) to analyze the issue
 3. Identifies affected service(s) using label scheme:
-   - `service:mobile-app`, `service:<consumer-codename-a>`, `service:<consumer-codename-b>`, etc.
+   - `service:mobile-app`, `service:example-bff`, `service:example-users`, etc.
 4. Classifies issue type: `bug`, `feature`, `enhancement`, `chore`, `docs`
 5. Estimates priority: `priority:critical`, `priority:high`, `priority:medium`, `priority:low`
 6. Adds labels and posts a comment with context
@@ -94,7 +94,7 @@ Schedule: 0 9 * * 1-5 (9:00 AM, Mon-Fri, local time)
 
 It checks:
 - Docker container status
-- Service health endpoints (BFF, <consumer-codename-b>, <consumer-codename-c>, onboarding, gateway, auth-provider)
+- Service health endpoints (BFF, example-users, example-auth, onboarding, gateway, auth-provider)
 - Infrastructure probes (MySQL, MongoDB, Redis, RabbitMQ)
 - Reports OK/DOWN status with troubleshooting suggestions
 
