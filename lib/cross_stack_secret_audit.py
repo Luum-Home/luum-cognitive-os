@@ -222,12 +222,13 @@ def summarize_existing_reports(project_dir: Path, policy: dict[str, Any]) -> dic
     return summary
 
 
-def audit(project_dir: Path, *, verify_live: bool = False) -> dict[str, Any]:
+def audit(project_dir: Path, *, verify_live: bool = False, include_local_sensitive_surfaces: bool = True) -> dict[str, Any]:
     root = project_dir.resolve()
     policy = load_policy(root)
     tools = installed_tool_versions(policy)
     findings = audit_workflows(root, policy)
-    findings.extend(discover_sensitive_files(root, policy))
+    if include_local_sensitive_surfaces:
+        findings.extend(discover_sensitive_files(root, policy))
 
     for tool in policy.get("primary", {}).get("tools", []):
         if not tools.get(tool, {}).get("installed"):
@@ -256,6 +257,7 @@ def audit(project_dir: Path, *, verify_live: bool = False) -> dict[str, Any]:
         "status": status,
         "primary_toolchain": policy.get("primary", {}).get("toolchain", "gitleaks-trufflehog"),
         "live_verification": bool(verify_live),
+        "include_local_sensitive_surfaces": bool(include_local_sensitive_surfaces),
         "tools": tools,
         "findings": [finding.to_dict() for finding in findings],
         "existing_report_summary": summarize_existing_reports(root, policy),
