@@ -69,3 +69,74 @@ def test_prune_path_is_session_scoped(tmp_path: Path, monkeypatch: pytest.Monkey
     monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
     snap = snapshot(repo, "s1")
     assert shadow_repo_path(repo, "s1") == Path(snap.shadow_repo)
+
+
+def test_restore_conversation_only_truncates_session_stream(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from lib.session_bus import append_session_event, read_session_events
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
+    snap = snapshot(repo, "s1")
+    append_session_event("step-one", {"n": 1}, project_dir=repo, session_id="s1", single_writer=True)
+    append_session_event("step-two", {"n": 2}, project_dir=repo, session_id="s1", single_writer=True)
+    append_session_event("step-three", {"n": 3}, project_dir=repo, session_id="s1", single_writer=True)
+
+    result = restore(repo, "s1", snap.tree_sha, mode="conversation_only", target_seq=2, yes=True)
+
+    events = read_session_events("s1", project_dir=repo)
+    assert result["event_seq"] == 3
+    assert [event["event_type"] for event in events] == ["step-one", "step-two", "shadow-git-restore"]
+    assert events[-1]["payload"]["file_tree_sha"] == snap.tree_sha
+
+
+def test_restore_files_and_conversation_is_single_operation(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from lib.session_bus import append_session_event, read_session_events
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
+    (repo / "note.txt").write_text("checkpoint\n", encoding="utf-8")
+    snap = snapshot(repo, "s1")
+    append_session_event("before", {}, project_dir=repo, session_id="s1", single_writer=True)
+    append_session_event("after", {}, project_dir=repo, session_id="s1", single_writer=True)
+    (repo / "tracked.txt").write_text("mutated\n", encoding="utf-8")
+    (repo / "note.txt").unlink()
+    (repo / "later.txt").write_text("later\n", encoding="utf-8")
+    preview_path = preview(repo, "s1", snap.tree_sha)
+
+    result = restore(
+        repo,
+        "s1",
+        snap.tree_sha,
+        mode="files_and_conversation",
+        preview_path=preview_path,
+        target_seq=1,
+        yes=True,
+    )
+
+    assert result["event_seq"] == 2
+    assert (repo / "tracked.txt").read_text(encoding="utf-8") == "v1\n"
+    assert (repo / "note.txt").read_text(encoding="utf-8") == "checkpoint\n"
+    assert not (repo / "later.txt").exists()
+    events = read_session_events("s1", project_dir=repo)
+    assert [event["event_type"] for event in events] == ["before", "shadow-git-restore"]
+    assert events[-1]["payload"]["mode"] == "files_and_conversation"
+
+
+def test_snapshot_event_wires_file_tree_sha_into_event_envelope(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from lib.session_bus import read_session_events
+    from lib.shadow_git import snapshot_event
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
+
+    event = snapshot_event(repo, "s1", "governance-check", {"status": "pass"})
+
+    assert event["payload"]["status"] == "pass"
+    assert len(event["payload"]["file_tree_sha"]) == 40
+    assert read_session_events("s1", project_dir=repo)[0]["payload"]["file_tree_sha"] == event["payload"]["file_tree_sha"]
