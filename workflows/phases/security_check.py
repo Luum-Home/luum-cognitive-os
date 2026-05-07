@@ -4,12 +4,11 @@ Checks constitutional gates compliance, hardcoded secrets, and license policy.
 """
 
 import os
-import re
 import subprocess
 
 from lib.agent import prompt_with_retry
 from lib.data_types import AgentPromptRequest
-from lib.shared_phases import BOLD, DIM, GREEN, RED, RESET, YELLOW
+from lib.shared_phases import BOLD, DIM, GREEN, RESET, YELLOW
 from lib.utils import get_project_root, get_service_abs_path
 
 
@@ -118,10 +117,6 @@ def phase_security_check(state, step_label: str, service) -> bool:
     print(f"  {DIM}Checking dependency licenses...{RESET}")
     lang = state.data.service_language
 
-    blocked_licenses = [
-        "AGPL", "SSPL", "BSL", "ELv2", "Commons Clause",
-        "FSL", "Server Side Public License",
-    ]
 
     if lang == "go":
         # Check go.sum for new entries

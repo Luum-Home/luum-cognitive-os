@@ -19,18 +19,25 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lib.agent import prompt_with_retry
 from lib.data_types import AgentPromptRequest
-from lib.shared_phases import BOLD, CYAN, DIM, GREEN, RED, RESET, YELLOW
+from lib.shared_phases import BOLD, DIM, GREEN, RED, RESET, YELLOW
 from lib.utils import get_project_root
 
 
 def run_pipeline(
     service_name: str,
     port: int,
+    service_root: str | None = None,
 ) -> bool:
-    """Create a new Go microservice from template."""
+    """Create a new Go microservice from template.
+
+    service_root: directory under the project root where new services live.
+    Resolution order: explicit arg -> COS_SERVICE_ROOT env -> "services".
+    """
 
     project_root = get_project_root()
-    service_path = f"<consumer-service-5>{service_name}"
+    if service_root is None:
+        service_root = os.environ.get("COS_SERVICE_ROOT", "services")
+    service_path = f"{service_root.rstrip('/')}/{service_name}"
     abs_path = os.path.join(project_root, service_path)
 
     print(f"\n{BOLD}{'=' * 50}{RESET}")
@@ -53,7 +60,7 @@ def run_pipeline(
         f"{service_path}/ in the project monorepo.\n\n"
         f"Port: {port}\n\n"
         f"Follow the existing Go service patterns in the repo "
-        f"(check backend-go/ and <consumer-service-5> for reference). "
+        f"(inspect sibling services under {service_root}/ for reference). "
         f"Create the following structure:\n\n"
         f"```\n"
         f"{service_path}/\n"

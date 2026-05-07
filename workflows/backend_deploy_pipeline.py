@@ -3,7 +3,7 @@ Backend Deploy Pipeline - Deployment workflow for backend services.
 
 Usage:
   uv run .cognitive-os/workflows/run.py deploy --service accounts-go --env staging
-  uv run .cognitive-os/workflows/run.py deploy --service <consumer-codename-a> --env prod
+  uv run .cognitive-os/workflows/run.py deploy --service example-api --env prod
 
 Phases (5 steps):
   1. build      - Compile service (language-aware)
