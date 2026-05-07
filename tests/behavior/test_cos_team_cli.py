@@ -265,3 +265,65 @@ def test_cos_team_transport_plan_cli_exposes_nats_upgrade_mapping(tmp_path: Path
     )
     assert result["transport_plan"]["status"] == "upgrade_target"
     assert result["transport_plan"]["subject_mapping"]["handoffs"] == "cos.teams.release.handoffs.<session_id>"
+
+@pytest.mark.behavior
+def test_cos_team_transport_send_a2a_http_posts_message(tmp_path: Path) -> None:
+    import threading
+    from http.server import BaseHTTPRequestHandler, HTTPServer
+
+    received: dict[str, object] = {}
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_POST(self):  # noqa: N802
+            length = int(self.headers["Content-Length"])
+            received.update(json.loads(self.rfile.read(length)))
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"ok")
+
+        def log_message(self, *args):  # noqa: ANN001
+            return
+
+    server = HTTPServer(("127.0.0.1", 0), Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    project = tmp_path / "project"
+    project.mkdir()
+    try:
+        result = run_cos_team(
+            project,
+            "--project-dir", str(project),
+            "transport-send",
+            "--team", "release",
+            "--backend", "a2a",
+            "--session-id", "worker",
+            "--sender", "lead",
+            "--text", "hello a2a",
+            "--endpoint", f"http://127.0.0.1:{server.server_port}/a2a",
+        )
+    finally:
+        server.shutdown()
+        thread.join(timeout=2)
+
+    assert result["status"] == "sent"
+    assert received["recipient"] == "worker"
+    assert received["message_part"]["text"] == "hello a2a"
+
+
+@pytest.mark.behavior
+def test_cos_team_transport_send_nats_dry_run_plan(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    result = run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "transport-send",
+        "--team", "release",
+        "--backend", "nats",
+        "--session-id", "worker",
+        "--sender", "lead",
+        "--text", "hello nats",
+        "--allow-missing-nats",
+    )
+    assert result["status"] == "planned"
+    assert result["transport_send"]["destination"] == "cos.teams.release.inbox.worker"

@@ -287,3 +287,24 @@ def test_dispatch_sandboxed_inprocess_provider_uses_subprocess_boundary(tmp_path
     assert result.text == "hello isolated"
     assert records[0]["dispatch_gate"]["isolate_inprocess_providers"] is True
     assert records[0]["dispatch_gate"]["sandbox_plan"]["fallback_used"] is True
+
+@pytest.mark.integration
+def test_dispatch_uses_cost_predictor_when_token_estimate_is_present(tmp_path: Path) -> None:
+    records: list[dict] = []
+    with patch.dict(os.environ, {"COGNITIVE_OS_PROJECT_DIR": str(tmp_path), "COGNITIVE_OS_SESSION_ID": "s-cost"}, clear=False):
+        result = dispatch_module.dispatch(
+            "hello",
+            providers=["qwen"],
+            skill_requirements={
+                "session_budget_cap_usd": 1.0,
+                "estimated_input_tokens": 100_000,
+                "estimated_output_tokens": 10_000,
+            },
+            _qwen_fn=lambda *a, **k: _success(cost=0.01),
+            _metric_sink=records.append,
+        )
+    assert result.success is True
+    prediction = records[0]["dispatch_gate"]["cost_prediction"]
+    assert prediction["source"] == "lib.qwen_provider"
+    assert prediction["estimated_cost_usd"] > 0
+    assert records[0]["dispatch_gate"]["estimated_cost_usd"] == prediction["estimated_cost_usd"]
