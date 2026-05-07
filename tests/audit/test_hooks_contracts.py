@@ -223,19 +223,18 @@ def test_no_orphan_hooks(hook_name: str) -> None:
 
 
 @pytest.mark.audit
-@pytest.mark.parametrize("hook_name", sorted(EXPECTED_CODE_DEAD))
-def test_known_code_dead_hooks_stay_missing(hook_name: str) -> None:
+def test_known_code_dead_hooks_stay_missing() -> None:
     """Hooks known code-dead (referenced, not on disk) remain absent.
 
     If someone implements one of these (e.g. creates `auto-verify.sh`), this
-    test fails and forces the scorecard to be re-generated. That is the
-    desired signal — the classification should not silently drift.
+    test fails and forces the scorecard to be re-generated. An empty
+    EXPECTED_CODE_DEAD set is a passing state, not a pytest NOTSET skip.
     """
-    path = HOOKS_DIR / hook_name
-    assert not path.exists(), (
-        f"Hook 'hooks/{hook_name}' now exists on disk but was previously "
-        f"classified as code-dead. Re-run the Capa 3 audit and update "
-        f"docs/architecture/functional-audit/scorecard-hooks.md + EXPECTED_CODE_DEAD."
+    resurrected = [hook_name for hook_name in sorted(EXPECTED_CODE_DEAD) if (HOOKS_DIR / hook_name).exists()]
+    assert not resurrected, (
+        "Previously code-dead hook(s) now exist on disk. Re-run the Capa 3 audit "
+        "and update docs/architecture/functional-audit/scorecard-hooks.md + "
+        f"EXPECTED_CODE_DEAD: {resurrected}"
     )
 
 
