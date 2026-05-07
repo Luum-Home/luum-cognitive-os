@@ -1,5 +1,9 @@
 # ADR-203 — Subagent Capability Contract and Launch Preflight
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted  
@@ -164,3 +168,8 @@ scripts/cos subagent preflight --type Explore --prompt 'Explore read-only and re
 
 The first command must block. The second must pass because parent persistence is
 explicit.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

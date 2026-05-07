@@ -1,5 +1,9 @@
 # ADR-211 — Service-Mode Readiness Gate
 
+## Status
+Proposed
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Proposed  
@@ -65,3 +69,11 @@ scripts/cos-service-readiness-gate --json
 
 The gate must fail if private-content classification, trace joiner, performance
 ledger, or public claim evidence is missing.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
