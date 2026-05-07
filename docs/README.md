@@ -18,6 +18,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-216: Tool Discovery Pre-Use Gate](adrs/ADR-216-tool-discovery-pre-use-gate.md) — manifest-backed Bash gate that blocks ad-hoc tools when COS primitives already exist.
 - [Secret / Sensitive Data Protection Effectiveness Audit — 2026-05-06](reports/secret-protection-effectiveness-audit-2026-05-06.md) — redacted whole-repo scan summary and protection-gap assessment for secrets, env files, and sensitive data.
 - [ADR-215: Cross-Stack Secret Audit Toolchain](adrs/ADR-215-cross-stack-secret-audit-toolchain.md) — gitleaks + trufflehog policy, `cos secret audit`, and release-readiness secret-audit substrate.
+- [ADR-218: History Sanitization Toolchain](adrs/ADR-218-history-sanitization-toolchain.md) — manifest-backed `cos history sanitize --dry-run` primitive for pre-public git-history scrubbing without a new repo.
 - [ADR-213: Agent Preflight Before Stash Snapshot](adrs/ADR-213-agent-preflight-before-stash-snapshot.md) — hook-order invariant preventing blocked Agent launches from hiding WIP in auto-pre-agent stashes.
 - [ADR-212: Cross-Stack License Audit Toolchain](adrs/ADR-212-cross-stack-license-audit-toolchain.md) — Syft+Grype primary scanner, Trivy guarded secondary scanner, and workflow safety policy for pre-launch license/security audits.
 - [Cross-Stack License Audit CLI Manual Test](manual-tests/cross-stack-license-audit-cli.md) — canonical `scripts/cos license audit --json` primitive, expected JSON contract, and test commands.
