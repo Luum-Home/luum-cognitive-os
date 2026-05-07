@@ -36,15 +36,21 @@ Developer --> Cognitive OS --> AI Assistant (any)
 
 2. **Guaranteed quality** — Immutable rules that prevent errors. Mandatory tests. Automatic blocking of dependencies with problematic licenses. Coverage thresholds configurable by industry.
 
-3. **Multiple agents in parallel** — Instead of 1 developer working, 12 simultaneous coordinated agents. What takes months, takes hours. Each agent is a specialist in its task.
+3. **Multiple agents in parallel — without stepping on each other** — Instead of 1 developer, 12 coordinated agents. Cycle-deduplication blocks the #1 production multi-agent failure mode (MAST 2025: 41–87% failure rate from infinite handoff loops; *zero* frameworks prevent it before ours). Worktree-per-write-agent isolation borrowed from Claude Code 2.x / Cursor 3 / Copilot CLI, with an explicit mutex on `git worktree add` to dodge the upstream `.git/config.lock` race ([anthropics/claude-code#34645](https://github.com/anthropics/claude-code/issues/34645)).
 
-4. **Telemetry-guided** — Detects failure patterns and records skill/model outcomes so maintainers can approve safer procedure and routing changes. Automatic mutation is not claimed for v1.
+4. **Replay timeline + restore-by-checkpoint** — Every state-mutating tool call snapshots into an off-repo shadow-git store; every governance event (policy check, blast-radius assessment, audit finding) carries a `file_tree_sha`. Operators can scrub the timeline and restore to any point — files only, conversation only, or both atomically. **No competitor links governance events to file state with restore capability.**
 
-5. **Enterprise security** — Sensitive data detection, dangerous action blocking, complete audit trail. Agents cannot access production, leak secrets, or execute destructive commands.
+5. **Cost & retry safety, by construction** — Sync pre-call budget gate eliminates the runaway-loop class (the November 2025 industry $47,000 incident). Six contradictory retry magic numbers across rules files collapsed to one classifier with deterministic policy per failure type (connection / rate-limit / 5xx / validation / auth / quota / unknown). Idempotency keys on stateful tools eliminate the 15–30% silent side-effect duplication that retry-without-classification ships with.
 
-6. **Works with any tool** — You're not locked into one IDE. Compatible with the 7 most popular editors on the market. Your investment in rules, knowledge, and procedures moves with you.
+6. **Telemetry-guided self-improvement** — Detects failure patterns and records skill/model outcomes so maintainers can approve safer procedure and routing changes. Automatic mutation is not claimed for v1.
 
-7. **Governed automation** — From ticket to reviewed code with explicit quality gates, preservation checks, and operator approval where risk is high.
+7. **Enterprise security** — Sensitive data detection, dangerous action blocking, complete audit trail. Agents cannot access production, leak secrets, or execute destructive commands.
+
+8. **Works with any tool — and ships its own MCP server** — You're not locked into one IDE. Compatible with the 7 most popular editors. The OS itself exposes core primitives (memory search, quality check, status, secret scan) over MCP — every MCP-aware tool (Cursor, Windsurf, Cline, Codex, Claude Code) gets governance access without per-harness adapters.
+
+9. **Manifest-driven governance** — Every primitive declares a schema-versioned manifest under `manifests/`. License audit, secret audit, adoption truth, history sanitization, retry contract, session budget, handoff protocol, sandbox tiers — all canonical CLIs `cos <domain> <verb> --json [--strict]` reading from a single source of truth. Auditable, machine-readable, no policy hidden in shell scripts.
+
+10. **Governed automation** — From ticket to reviewed code with explicit quality gates, preservation checks, and operator approval where risk is high.
 
 ## Success Story
 
@@ -71,9 +77,20 @@ The platform had an Express.js monolith with 170 endpoints, 14 integrations with
 
 ### No direct competitor exists
 
-Cognitive OS combines coding-agent execution, MAPE-K-inspired self-healing patterns, persistent cross-session memory, telemetry-driven improvement proposals, quality governance, and tool-discovery gates in one integrated system.
+Cognitive OS combines coding-agent execution, MAPE-K-inspired self-healing patterns, persistent cross-session memory, telemetry-driven improvement proposals, quality governance, replay-and-restore over a shadow-git substrate, sync cost+retry gating, agent-to-agent handoff with cycle deduplication, and tool-discovery gates in one integrated system.
 
 Comparing Cognitive OS to coding tools (Copilot, Cursor, Aider) is a category error — those are code editors/assistants, not agent operating systems. Cognitive OS can use them as execution backends.
+
+### Where Cognitive OS plugs gaps the upstreams left open
+
+| Upstream gap | Where it surfaces | Cognitive OS answer |
+|---|---|---|
+| Anthropic SDK does not retry connection errors (`ECONNRESET`, `EPIPE`, `ETIMEDOUT`) | [anthropics/claude-code#37077](https://github.com/anthropics/claude-code/issues/37077) | `lib/retry_classifier.py` + `lib/dispatch_gate.py` (ADR-228) |
+| `git worktree add` parallel race on `.git/config.lock` | [anthropics/claude-code#34645](https://github.com/anthropics/claude-code/issues/34645) — closed "not planned" | Worktree mutex in ADR-223 lifecycle reconstruction |
+| LangGraph `RetryPolicy` does not catch Pydantic `ValidationError` | [langchain-ai/langgraph#6027](https://github.com/langchain-ai/langgraph/issues/6027) | Validation-error class in retry classifier with re-prompt-with-schema policy (ADR-228) |
+| Claude Code SDK `rewindFiles()` does not rewind conversation | Documented limitation | ADR-227 + ADR-226 atomic file+conversation truncation |
+| Multi-agent handoff cycles cause 41–87% failure rate in production | MAST 2025 paper on multi-agent system failures | ADR-230 `HandoffEnvelope` + call-chain dedup |
+| No mature framework prevents mid-session MCP server injection | Anthropic closed [anthropics/claude-code#6638](https://github.com/anthropics/claude-code/issues/6638) "not planned" | Deferred-tool-loading + `notifications/tools/list_changed` consumption (ADR-236) |
 
 ### Cognitive OS vs the DIY stack
 

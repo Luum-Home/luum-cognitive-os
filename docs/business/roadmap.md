@@ -13,21 +13,27 @@ The Cognitive OS core is fully operational as a development framework:
 |---|---|---|
 | Infrastructure services | 13 | All operational |
 | Skills (project + global) | 42+ | Production-ready |
-| Hooks | 21 | Production-ready |
-| Rules | 19 | Production-ready |
+| Hooks | 30+ | Production-ready |
+| Rules | 22+ | Production-ready |
 | Agent personas | 16+ | Production-ready |
-| MCP servers | 2 (Engram, Context7) | Running |
+| ADRs (architecture decisions) | 230+ | Tracked, audit-ready |
+| Manifests (schema-versioned) | 20+ canonical YAMLs | Active enforcement |
+| MCP servers | Native COS server (8 tools) + Engram + Context7 | Running |
 | External services | 4 (Langfuse, LiteLLM, NeMo, E2B mock) | Running |
 | Case study | 1 (fintech platform) | ~300x acceleration proven |
-| Documentation | 60+ documents | Complete |
+| Documentation | 70+ documents | Complete |
 
 **What works end-to-end today:**
 - Persistent memory across sessions (Engram)
-- Multi-agent orchestration with fault tolerance
-- Self-improvement feedback loop (error learning -> skill adaptation -> KPI measurement)
-- Quality enforcement via hooks and constitutional gates
-- Cost tracking and model routing
+- Multi-agent orchestration with cycle deduplication and worktree isolation (closes the 41–87% multi-agent failure mode the MAST 2025 paper documents)
+- Replay timeline + restore-by-checkpoint via shadow-git substrate (Devin-parity governance differentiation, no hypervisor)
+- Sync cost + retry gate (eliminates the runaway-loop class behind the November 2025 industry $47K incident)
+- Self-improvement feedback loop (error learning → skill adaptation → KPI measurement)
+- Quality enforcement via 30+ hooks + 22+ rules + 7 constitutional gates
+- Cost tracking and model routing with per-session budget enforcement
 - SRE self-healing
+- Native MCP server exposing core primitives to every MCP-aware tool (Cursor, Windsurf, Cline, Codex, Claude Code) — no per-harness adapters needed
+- Manifest-driven governance: every primitive declares a schema-versioned YAML; `cos <domain> audit --json [--strict]` is the canonical contract
 - Spec-Driven Development workflow (10 phases)
 
 ---
