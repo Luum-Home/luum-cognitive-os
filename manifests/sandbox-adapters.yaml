@@ -1,0 +1,28 @@
+schema_version: sandbox-adapter/v1
+status: active
+owner: platform-safety
+adr: ADR-232
+
+default:
+  mode: opt-in
+  backend_order:
+    linux: [bubblewrap]
+    darwin: [seatbelt]
+  network: false
+  writable_roots: [workspace]
+  fallback_requires_explicit_flag: true
+
+backends:
+  bubblewrap:
+    platform: linux
+    dependency: bwrap
+    footprint: zero-python-deps
+  seatbelt:
+    platform: darwin
+    dependency: sandbox-exec
+    footprint: zero-python-deps
+
+invariants:
+  - no_daemon_required
+  - fallback_is_explicit
+  - default_network_off
