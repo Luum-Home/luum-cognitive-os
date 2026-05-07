@@ -160,7 +160,7 @@ Hooks are shell scripts that fire at specific points in the Claude Code session 
 | onboarding | `<consumer-service-5>onboarding/` | `npx jest --changedSince=HEAD` |
 | <consumer-codename-a> | `mobile/<consumer-codename-a>/` | `npx jest --changedSince=HEAD` |
 | <consumer-service> | `services/<consumer-service>/` | `npx jest --changedSince=HEAD` |
-| <consumer-service-2> | `wallet/<consumer-service-2>/` | `go test ./... -short` |
+| accounts-go | `accounts/accounts-go/` | `go test ./... -short` |
 | mobile app | `mobile/app/` | Reminder only |
 
 **Skipped files**: `.md`, `.json`, `.yml`, `.yaml`, `.env`, `.lock`, `.gitignore`
