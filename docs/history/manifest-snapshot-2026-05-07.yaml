@@ -1,0 +1,62 @@
+schema_version: history-sanitization/v1
+status: active
+owner: platform-safety
+purpose: >
+  Pre-public history sanitization policy for sensitive operator data and local
+  machine paths. Dry-run is safe; execute is operator-only and destructive.
+
+toolchain:
+  primary: git-filter-repo
+  install_hint: bash scripts/install-git-filter-repo.sh
+
+rules:
+  - id: operator-email
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_OPERATOR_EMAIL
+    replacement: 2144218+MatiasNAmendola@users.noreply.github.com
+    required: false
+    rationale: Replace operator personal email in historical blobs without committing the raw email into this manifest.
+  - id: operator-home-prefix
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_HOME_PREFIX
+    replacement: <home>
+    required: false
+    rationale: Replace machine-specific home directory prefixes in historical blobs.
+  - id: repo-absolute-path
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_REPO_PATH
+    replacement: <repo>
+    required: false
+    rationale: Replace absolute local repository paths in historical blobs.
+
+sensitive_history_patterns:
+  - id: macos-user-home-path
+    mode: regex
+    pattern: /U[s]ers/[^/ ]+
+    severity: warn
+    rationale: Local user home paths should not appear in public history.
+  - id: env-file-reference
+    mode: regex
+    pattern: (^|/|\s)\.env($|\s)
+    severity: warn
+    rationale: History references to env files need review before publication.
+
+preserve:
+  - id: license-transition
+    mode: regex
+    pattern: Apache License|Apache 2\.0|Apache-2\.0|FSL-1\.1|FSL-1\.1-MIT|Functional Source License
+    rationale: License-transition evidence is legal/product history; do not auto-scrub unless operator deliberately chooses clean-root public history.
+  - id: scanner-fixtures
+    mode: regex
+    pattern: \[REDACTED\]|deadbeef|FAKEKEYFORTEST
+    rationale: Test fixtures and positive controls must not be sanitized as real secrets.
+
+backup:
+  require_backup_first: true
+  destination_template: .cognitive-os/recovery/pre-history-sanitization-{timestamp}.git
+
+execution:
+  require_env: COS_ALLOW_DESTRUCTIVE_GIT
+  require_env_value: "1"
+  require_interactive_confirmation: true
+  allow_in_service_mode: false
