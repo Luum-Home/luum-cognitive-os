@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)
+**Status**: Accepted — Slices A–D implemented (2026-05-07)
 **Date**: 2026-05-07
 **Related**: ADR-213 (preflight before snapshot), ADR-219 (work ownership), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture tactical mitigation), ADR-226 (event-sourced session bus), ADR-227 (shadow-git checkpoint substrate), ADR-224 (shadow-state snapshots)
 **Source**: `docs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/research/orchestration-gaps/background-agent-patterns.md`, and the operator incident where auto-pre-agent stashes hid WIP after blocked launches.
@@ -54,4 +54,5 @@ Slice A is **opt-in** via `COS_AGENT_LIFECYCLE_MODE=worktree`. This avoids chang
 ## Implementation status
 
 - **2026-05-07 — Slice A implemented**: opt-in worktree-per-write-agent preparation and snapshot suppression markers.
-- **Deferred**: default-on lifecycle mode, automatic cleanup/reaper, branch-per-task policy (ADR-225), shadow-state snapshots (ADR-224/227), cross-harness launch projection.
+- **2026-05-07 — Slices B–D implemented**: worktree lifecycle is default-on unless `COS_AGENT_LIFECYCLE_MODE=stash` disables it; `cleanup_agent_worktrees` plus `cos-agent-worktree-prepare --cleanup` provide the manifest-scoped reaper; `lifecycle_projection` plus `--projection` emits cross-harness launch hints; daemon `--prepare-worktree` defaults to ADR-225 `codex/task/*` branches.
+- **Deferred**: deeper retention integration with ADR-224/227 shadow-state snapshots.
