@@ -504,3 +504,39 @@ def test_falsification_rubber_stamp(git_repo: Path, tmp_path: Path):
         "Real hook should produce restore event on dirty-WT scenario. "
         f"Records: {metrics_after_real}"
     )
+
+
+def test_marker_v2_restores_by_sha_after_stash_position_drift(git_repo: Path):
+    """ADR-221: marker stash_sha survives later stash pushes that shift stash@{N}."""
+    env = _git_env(git_repo)
+    agent_id = "test-agent-sha-drift-008"
+
+    (git_repo / "readme.txt").write_text("operator wip before agent\n")
+    pre_result = _run_pre_hook(git_repo, agent_id, env)
+    assert pre_result.returncode == 0, pre_result.stderr
+
+    marker = git_repo / ".cognitive-os" / "runtime" / f"pre-agent-snapshot-{agent_id}.json"
+    marker_payload = json.loads(marker.read_text())
+    stash_sha = marker_payload.get("stash_sha")
+    assert stash_sha and len(stash_sha) == 40
+    assert marker_payload.get("schema_version") == "pre-agent-snapshot/v2"
+
+    # Push an unrelated later stash so the original is no longer stash@{0}.
+    other = git_repo / "other.txt"
+    other.write_text("base other\n")
+    _run(["git", "add", "other.txt"], cwd=git_repo, env=env)
+    _run(["git", "commit", "-m", "add other"], cwd=git_repo, env=env)
+    other.write_text("manual later stash\n")
+    _run(["git", "stash", "push", "-m", "manual-later-stash", "--", "other.txt"], cwd=git_repo, env=env)
+
+    top_sha = _run(["git", "rev-parse", "stash@{0}"], cwd=git_repo, env=env).stdout.strip()
+    assert top_sha != stash_sha
+
+    post_result = _run_post_hook(git_repo, agent_id, env)
+    assert post_result.returncode == 0, post_result.stderr
+    assert (git_repo / "readme.txt").read_text() == "operator wip before agent\n"
+    assert not marker.exists()
+
+    stash_list = _run(["git", "stash", "list"], cwd=git_repo, env=env).stdout
+    assert "manual-later-stash" in stash_list
+    assert stash_sha not in _run(["git", "stash", "list", "--format=%H"], cwd=git_repo, env=env).stdout
