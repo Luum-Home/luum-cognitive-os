@@ -345,3 +345,5 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **web-crawler** — Fetch and convert web pages to LLM-ready markdown using Crawl4AI. Supports single-page fetch, structured data extraction, and multi-page site crawling.
 - **webhook-trigger** — GitHub webhook server that receives issue events and launches SDD pipelines automatically via ClaudeExecutor.
 - **worktree-triage** — Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.
+- **agent-control** — Send governed bidirectional control and clarification signals between the orchestrator and live agents.
+- **primitive-harness-coverage** — Measure effective agentic primitive implementation by surface so agents do not confuse `SCOPE: both` with equal Claude/Codex/CLI/UI behavior.
