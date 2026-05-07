@@ -12,6 +12,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- **[Research Index](research/INDEX.md)** — navigable catalog of ~325 research/audit/forensics artifacts across `docs/research/`, `docs/reports/`, `docs/architecture/`, `docs/business/`, and (by reference) `.cognitive-os/strategy/research/`. Organized by purpose, not directory: top-level research, the orchestration line (11 gap reports + synthesis + checklist), repo-scout (126 external-tool deep dives + clusters + monitor follow-up), 138 operational reports, architecture and business research-flavored docs, plus other audits. Start here when looking for prior research on any topic.
 - [ADR-219: Work Ownership Liveness Preflight](adrs/ADR-219-work-ownership-liveness-preflight.md) — joined path-level WIP/stash/worktree/claim/process check before agents claim cleanup, merge, or closure safety.
 - `scripts/cos adr resolve N --expect-title TEXT --json` — canonical ADR lookup for preventing stale number/title claims during parallel sessions.
 - [Post-Mortem — State Retention Self-Bite and Retention Controller — 2026-05-06](reports/state-retention-controller-postmortem-2026-05-06.md) — incident analysis and corrective action for retention self-bites.
