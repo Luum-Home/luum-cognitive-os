@@ -1,5 +1,5 @@
 schema_version: event-sourced-session-bus/v1
-status: slice-b-active
+status: slice-c-active
 owner: platform-orchestration
 extends: "ADR-205 Flight Recorder"
 adr: "ADR-226"
@@ -63,7 +63,7 @@ slice_a:
     - gap_detecting_reader
     - counter_recovery
     - fan_out_global_index
-  deferred:
     - event_wrap
+  deferred:
     - migration_tool
     - projections
