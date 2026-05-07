@@ -1,5 +1,5 @@
 schema_version: shadow-git/v1
-status: slice-a-active
+status: active
 owner: platform-orchestration
 adrs:
   - ADR-224
@@ -14,10 +14,17 @@ snapshot:
 restore:
   modes_implemented:
     - files_only
-  modes_deferred:
     - conversation_only
     - files_and_conversation
+  modes_deferred: []
   preview_required: true
   explicit_yes_required: true
 cli:
   command: cos rollback
+
+retention:
+  reaper: manual
+  command: scripts/cos-rollback --prune --max-age-seconds 604800 --json
+  default_max_age_seconds: 604800
+  archive_first: false
+runbook: docs/runbooks/shadow-git-rollback.md

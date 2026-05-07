@@ -140,3 +140,21 @@ def test_snapshot_event_wires_file_tree_sha_into_event_envelope(tmp_path: Path, 
     assert event["payload"]["status"] == "pass"
     assert len(event["payload"]["file_tree_sha"]) == 40
     assert read_session_events("s1", project_dir=repo)[0]["payload"]["file_tree_sha"] == event["payload"]["file_tree_sha"]
+
+
+def test_prune_expired_snapshots_dry_run_and_execute(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    from lib.shadow_git import prune_expired_snapshots
+
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    monkeypatch.setenv("COS_SHADOW_GIT_BASE", str(tmp_path / "shadow"))
+    snap = snapshot(repo, "s-old")
+
+    dry = prune_expired_snapshots(repo, max_age_seconds=0, execute=False)
+    assert dry["count"] == 1
+    assert Path(snap.shadow_repo).exists()
+
+    executed = prune_expired_snapshots(repo, max_age_seconds=0, execute=True)
+    assert executed["candidates"][0]["pruned"] is True
+    assert not Path(snap.shadow_repo).exists()
