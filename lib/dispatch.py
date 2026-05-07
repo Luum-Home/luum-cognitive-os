@@ -47,6 +47,9 @@ from typing import Any, Callable, Optional
 
 from lib.execution_profile import provider_cascade_for_profile, resolve_runtime_execution_profile
 from lib.paths import runtime_project_root_or_cwd
+from lib.dispatch_gate import DispatchGate, ProviderCircuitBreaker
+from lib.session_budget import SessionBudgetExceeded
+from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
 
 # Rate-limit patterns for cascade advance logic. Kept in sync with
 # scripts/orchestrator.py _RATE_LIMIT_PATTERNS and hooks/rate-limit-detector.sh.
@@ -320,6 +323,24 @@ def _try_claude(
     }
 
 
+def _dispatch_budget_cap(skill_req: dict[str, Any]) -> float:
+    raw = skill_req.get("session_budget_cap_usd") or os.environ.get("COS_SESSION_BUDGET_CAP_USD") or "5.0"
+    try:
+        value = float(raw)
+    except (TypeError, ValueError):
+        value = 5.0
+    return max(0.0, value)
+
+
+def _dispatch_estimated_cost(skill_req: dict[str, Any]) -> float:
+    raw = skill_req.get("estimated_cost_usd") or skill_req.get("estimated_usd") or os.environ.get("COS_DISPATCH_ESTIMATED_COST_USD") or "0.0"
+    try:
+        value = float(raw)
+    except (TypeError, ValueError):
+        value = 0.0
+    return max(0.0, value)
+
+
 def dispatch(
     prompt: str,
     providers: list[str] | None = None,
@@ -419,6 +440,105 @@ def dispatch(
     dispatch_id = uuid.uuid4().hex[:12]
     t0 = time.monotonic()
 
+    project_dir = runtime_project_root_or_cwd()
+    session_id_from_env = (
+        os.environ.get("COGNITIVE_OS_SESSION_ID")
+        or os.environ.get("CODEX_SESSION_ID")
+        or os.environ.get("CLAUDE_SESSION_ID")
+        or ""
+    )
+    session_id = session_id_from_env or "dispatch"
+    gate_requested = bool(
+        session_id_from_env
+        or _skill_req.get("session_budget_cap_usd") is not None
+        or _skill_req.get("estimated_cost_usd") is not None
+        or _skill_req.get("estimated_usd") is not None
+        or _skill_req.get("require_sandbox")
+        or _skill_req.get("sandbox_required")
+        or os.environ.get("COS_SESSION_BUDGET_CAP_USD")
+        or os.environ.get("COS_DISPATCH_ESTIMATED_COST_USD")
+    )
+    gate_enabled = os.environ.get("COS_DISABLE_DISPATCH_GATE", "").strip() != "1" and gate_requested
+    dispatch_gate: DispatchGate | None = None
+    budget_pressure: str | None = None
+    cost_signal = ""
+    estimated_cost = _dispatch_estimated_cost(_skill_req)
+    budget_cap = _dispatch_budget_cap(_skill_req)
+
+    sandbox_plan: dict[str, object] | None = None
+    if _skill_req.get("require_sandbox") or _skill_req.get("sandbox_required"):
+        try:
+            sandbox_plan = build_sandbox_command(
+                ["true"],
+                workspace=project_dir,
+                allow_fallback=bool(_skill_req.get("allow_sandbox_fallback", False)),
+            ).to_dict()
+        except (SandboxUnavailable, ValueError) as exc:
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            result = DispatchResult(
+                success=False,
+                error=f"sandbox required but unavailable: {exc}",
+                providers_tried=[],
+                latency_ms=latency_ms,
+                provider_used="none",
+            )
+            (_metric_sink or _log_metric)({
+                "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "dispatch_id": dispatch_id,
+                "providers_requested": providers_requested,
+                "providers_tried": [],
+                "provider_used": result.provider_used,
+                "model": result.model,
+                "task_type": task_type,
+                "skill_name": skill_name,
+                "tokens_in": 0,
+                "tokens_out": 0,
+                "cost_usd": 0.0,
+                "latency_ms": latency_ms,
+                "success": False,
+                "error": result.error[:500],
+                "dispatch_gate": {"sandbox_required": True, "sandbox_plan": None},
+                "skill_routing": None,
+            })
+            return result
+
+    if gate_enabled:
+        dispatch_gate = DispatchGate(project_dir, session_id, cap_usd=budget_cap)
+        try:
+            gate_decision = dispatch_gate.pre_call(estimated_cost)
+            budget_pressure = gate_decision.pressure
+            cost_signal = dispatch_gate.as_context_signal(gate_decision)
+        except SessionBudgetExceeded as exc:
+            latency_ms = int((time.monotonic() - t0) * 1000)
+            result = DispatchResult(
+                success=False,
+                error=str(exc),
+                providers_tried=[],
+                latency_ms=latency_ms,
+                provider_used="budget_gate",
+            )
+            (_metric_sink or _log_metric)({
+                "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                "dispatch_id": dispatch_id,
+                "providers_requested": providers_requested,
+                "providers_tried": [],
+                "provider_used": result.provider_used,
+                "model": result.model,
+                "task_type": task_type,
+                "skill_name": skill_name,
+                "tokens_in": 0,
+                "tokens_out": 0,
+                "cost_usd": 0.0,
+                "latency_ms": latency_ms,
+                "success": False,
+                "error": result.error[:500],
+                "dispatch_gate": {"budget_pressure": "refuse", "estimated_cost_usd": estimated_cost, "cap_usd": budget_cap},
+                "skill_routing": None,
+            })
+            return result
+        if cost_signal:
+            prompt = f"{cost_signal}\n{prompt}"
+
     # Injectable test hooks (production calls _try_qwen / _try_claude)
     qwen_fn = _qwen_fn or _try_qwen
     claude_fn = _claude_fn or _try_claude
@@ -506,6 +626,16 @@ def dispatch(
         except Exception:  # noqa: BLE001
             pass  # instrumentation must never block dispatch
 
+        if gate_enabled:
+            breaker_decision = ProviderCircuitBreaker(project_dir, provider).allow_call()
+            if not breaker_decision.allowed:
+                if verbose:
+                    print(
+                        f"[dispatch] circuit breaker: skipping {provider} — {breaker_decision.reason}",
+                        file=sys.stderr,
+                    )
+                continue
+
         providers_tried.append(provider)
         if verbose:
             prefix = "[dispatch] primary" if not is_fallback else "[dispatch] fallback"
@@ -551,6 +681,13 @@ def dispatch(
                 except Exception:  # noqa: BLE001
                     pass  # instrumentation must never block dispatch
 
+        if gate_enabled and response is not None:
+            failure, _policy = dispatch_gate.classify(response.get("error") or response) if dispatch_gate else (None, None)
+            ProviderCircuitBreaker(project_dir, provider).record_result(
+                success=bool(response.get("success")),
+                failure=failure,
+            )
+
         if response.get("success"):
             break
 
@@ -580,6 +717,12 @@ def dispatch(
             model=response.get("model", ""),
         )
 
+    if dispatch_gate is not None:
+        try:
+            dispatch_gate.record_actual(result.cost_usd)
+        except Exception:  # noqa: BLE001
+            pass
+
     # Metric emission — always, regardless of success
     record = {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -607,6 +750,15 @@ def dispatch(
         "success": result.success,
         "error": result.error[:500] if result.error else "",
         # ADR-050: surface the routing policy that shaped this dispatch
+        "dispatch_gate": {
+            "enabled": gate_enabled,
+            "session_id": session_id,
+            "estimated_cost_usd": estimated_cost,
+            "budget_cap_usd": budget_cap,
+            "budget_pressure": budget_pressure,
+            "sandbox_required": bool(_skill_req.get("require_sandbox") or _skill_req.get("sandbox_required")),
+            "sandbox_plan": sandbox_plan,
+        },
         "skill_routing": {
             "tier": _skill_req.get("tier") if _skill_req else None,
             "execution_profile": _skill_req.get("execution_profile") if _skill_req else None,
