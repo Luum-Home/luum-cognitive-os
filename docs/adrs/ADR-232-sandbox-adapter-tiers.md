@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)  
+**Status**: Accepted — Slices A–B implemented (2026-05-07)  
 **Date**: 2026-05-07  
 **Related**: ADR-223 (worktree-per-write-agent), ADR-227 (shadow-git), ADR-228 (retry/budget), ADR-235 (detached agent daemon)
 
@@ -32,12 +32,17 @@ Implemented Slice A:
 - `manifests/sandbox-adapters.yaml` declares opt-in mode and invariants.
 - Tests cover backend command construction, explicit fallback, CLI smoke, and manifest contract.
 
+Implemented Slice B:
+
+- `lib/dispatch.py` recognizes `skill_requirements={"require_sandbox": true}` / `sandbox_required` and blocks before provider execution unless a native backend is available or `allow_sandbox_fallback` is explicit.
+- Dispatch metrics include the sandbox preflight plan under `dispatch_gate.sandbox_plan`.
+
 Not implemented yet:
 
 - Landlock/seccomp policy generation beyond Bubblewrap CLI flags.
 - E2B / microVM adapter.
 - ConTree branching adapter.
-- Hook/dispatch integration.
+- Sandboxing the LLM/provider HTTP call itself. The current dispatch integration is a truthful preflight boundary, not process isolation for Python provider calls.
 
 ## Hard rules
 
