@@ -12,7 +12,7 @@
 
 The operator's immediate claim needs a precise split:
 
-- **HEAD / tracked `main` now appears clean for `2144218+MatiasNAmendola@users.noreply.github.com`**: `git grep -n "2144218+MatiasNAmendola@users.noreply.github.com" -- .` returned zero matches, and commit `02e97bcd chore(privacy): redact operator email from preserve-manifests` redacted the nine tracked preserve-manifest files.
+- **HEAD / tracked `main` now appears clean for `<operator-email>`**: `git grep -n "<operator-email>" -- .` returned zero matches, and commit `02e97bcd chore(privacy): redact operator email from preserve-manifests` redacted the nine tracked preserve-manifest files.
 - **Git history is still dirty**: history scans still find the operator email in prior commits. That is an ADR-218 history-sanitization problem, not a HEAD working-tree problem.
 - **The WIP-loss class is still real**: three `auto-pre-agent-*` stashes exist locally, all carrying the same license-switch path set. The important failure is not the email's current HEAD state; it is that COS can hide uncommitted work in an auto-stash when an Agent launch is blocked after the snapshot hook runs.
 
