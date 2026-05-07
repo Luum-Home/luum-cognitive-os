@@ -261,6 +261,29 @@ tools:
   scope: user
   syncable: 'no'
   auth_bound: false
+- name: git-filter-repo
+  criticality: optional
+  check: git-filter-repo --version
+  install:
+    macos:
+      manager: brew
+      command: bash scripts/install-git-filter-repo.sh
+    linux:
+      manager: brew
+      command: bash scripts/install-git-filter-repo.sh
+    windows_wsl:
+      manager: pip
+      command: bash scripts/install-git-filter-repo.sh
+  consumed_by:
+  - lib/history_sanitization.py
+  - scripts/cos-history-sanitization
+  category: security
+  profiles:
+  - full
+  scope: system
+  syncable: 'no'
+  auth_bound: false
+  manual_url: https://github.com/newren/git-filter-repo
 - name: semgrep
   criticality: optional
   check: semgrep --version
@@ -432,6 +455,7 @@ profiles:
     - parry-guard
     - promptfoo
     - goreleaser
+    - git-filter-repo
     mcp_servers_recommended:
     - engram
     - aguara
