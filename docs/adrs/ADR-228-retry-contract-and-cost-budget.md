@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — Slices A–E implemented (2026-05-07)
 **Date**: 2026-05-06
 **Related**: ADR-049 (LLM dispatch), ADR-056 (adaptive Agent dispatch), ADR-211 (service mode readiness); depends on ADR-226 (event-sourced session bus)
 **Supersedes**: scattered retry magic numbers in `closed-loop-prompts.md`, `task-dag.md`, `estimation-calibration.md`, `agent-escalation.md`, `responsiveness.md`, `error-learning.md` (six files identified by [`failure-recovery-retry-semantics.md`](../research/orchestration-gaps/failure-recovery-retry-semantics.md))
@@ -243,6 +243,12 @@ The tests must prove:
 8. **Slice H — Operator runbook** at `docs/runbooks/cost-budget-and-retry.md`. Three recovery flows: budget-hit, circuit-open, classifier-unknown.
 
 Total: ~350 LOC + rule consolidation (net-negative bash equivalent).
+
+## Implementation status
+
+- **2026-05-07 — Slices A–E implemented**: `lib/retry_classifier.py`, `lib/session_budget.py`, and `lib/dispatch_gate.py` provide the failure classifier, retry policy lookup, sync pre-call budget gate, post-call accounting, context pressure signals, and idempotency key claims.
+- **Manifests/rule**: `manifests/retry-contract.yaml`, `manifests/session-budget.yaml`, and `rules/retry-contract.md` are the canonical policy surfaces.
+- **Deferred**: full `lib/dispatch.py` integration, provider circuit-breaker state machine beyond the existing generic circuit breaker, cost predictor pricing integration, runbook.
 
 ## Open questions
 

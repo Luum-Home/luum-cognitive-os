@@ -1,0 +1,14 @@
+schema_version: session-budget/v1
+status: active
+owner: platform-orchestration
+defaults:
+  per_session_cap_usd: 5.0
+  per_task_cap_usd: 1.0
+  per_call_cap_usd: 0.20
+ledger:
+  path: .cognitive-os/metrics/session-budgets/{session_id}.json
+  format: json_with_atomic_write
+backpressure:
+  caution_threshold_pct: 70
+  switch_threshold_pct: 90
+  refuse_threshold_pct: 100
