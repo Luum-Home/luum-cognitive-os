@@ -70,9 +70,43 @@ def _has_tracked_modifications(repo: Path) -> bool:
             continue
         # Status codes for tracked files: M, D, A, R, C, U
         # Untracked lines start with "??"
-        if not line.startswith("??") and not line[3:].startswith(".cognitive-os/"):
+        if not line.startswith("??") and not (line[3:] if len(line) > 2 and line[2] == " " else line[2:].strip()).startswith(".cognitive-os/"):
             return True
     return False
+
+
+def _tracked_modified_files(repo: Path) -> list[str]:
+    """Return tracked/staged paths that would be captured by a pre-agent stash."""
+    rc, out, _ = _run(["git", "status", "--porcelain"], cwd=repo)
+    if rc != 0 or not out:
+        return []
+    files: list[str] = []
+    for line in out.splitlines():
+        if not line or line.startswith("??"):
+            continue
+        path = line[3:] if len(line) > 2 and line[2] == " " else line[2:].strip()
+        # Rename entries look like "old -> new"; stash pathspec should target both
+        # endpoints when possible so deleted/renamed state is preserved.
+        candidates = [part.strip() for part in path.split(" -> ")]
+        for candidate in candidates:
+            if candidate and not candidate.startswith(".cognitive-os/") and candidate not in files:
+                files.append(candidate)
+    return files
+
+
+def _stash_tracked_files(repo: Path, message: str, files: list[str]) -> tuple[Optional[str], Optional[str]]:
+    """Stash the explicit tracked path list and return (ref, sha)."""
+    if not files:
+        return None, None
+    rc, _, _ = _run(["git", "stash", "push", "--keep-index", "-m", message, "--", *files], cwd=repo)
+    if rc != 0:
+        return None, None
+    rc2, out2, _ = _run(["git", "stash", "list", "--max-count=1"], cwd=repo)
+    ref = None
+    if rc2 == 0 and out2:
+        candidate = out2.split(":")[0].strip()
+        ref = candidate if candidate else None
+    return ref, resolve_top_stash_sha(repo)
 
 
 def _stash_tracked(repo: Path, message: str) -> tuple[Optional[str], Optional[str]]:
@@ -181,6 +215,136 @@ def _snapshot_size_bytes(snap_dir: Path) -> int:
 
 
 # ─── Public API ───────────────────────────────────────────────────────────────
+
+
+def plan_snapshot(
+    repo: Path,
+    agent_id: str,
+    *,
+    max_file_mb: Optional[int] = DEFAULT_MAX_FILE_MB,
+    max_total_mb: Optional[int] = DEFAULT_MAX_TOTAL_MB,
+) -> dict:
+    """Plan a pre-agent snapshot without mutating git stash state.
+
+    ADR-222 Phase 1: copy untracked files to the snapshot directory and record
+    tracked paths that *would* be stashed later. The function intentionally does
+    not call ``git stash`` and is safe to run before later launch gates.
+    """
+    repo = Path(repo).resolve()
+    timestamp = time.time()
+    ts_str = time.strftime("%Y%m%d-%H%M%S", time.gmtime(timestamp))
+    pid = os.getpid()
+    snapshot_id = f"auto-pre-agent-{agent_id}-{ts_str}-{pid}"
+
+    snapshots_root = repo / SNAPSHOTS_DIR_NAME
+    snap_dir = snapshots_root / snapshot_id
+    snap_dir.mkdir(parents=True, exist_ok=True)
+
+    untracked = _get_untracked_files(repo)
+    tracked_files = _tracked_modified_files(repo)
+    max_file_bytes = None if max_file_mb is None else max_file_mb * 1024 * 1024
+    max_total_bytes = None if max_total_mb is None else max_total_mb * 1024 * 1024
+
+    copied_untracked: list[str] = []
+    skipped_untracked: list[dict] = []
+    copied_bytes = 0
+    status = "ok"
+    if untracked:
+        copied_untracked, skipped_untracked, copied_bytes = _copy_untracked(
+            repo,
+            untracked,
+            snap_dir,
+            max_file_bytes=max_file_bytes,
+            max_total_bytes=max_total_bytes,
+        )
+        if skipped_untracked or len(copied_untracked) < len(untracked):
+            status = "partial"
+    if not copied_untracked and not skipped_untracked and not tracked_files:
+        status = "skip_clean"
+
+    manifest: dict = {
+        "schema_version": "pre-agent-snapshot-plan/v1",
+        "snapshot_id": snapshot_id,
+        "agent_id": agent_id,
+        "timestamp": timestamp,
+        "timestamp_iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(timestamp)),
+        "untracked_files": copied_untracked,
+        "skipped_untracked_files": skipped_untracked,
+        "tracked_files": tracked_files,
+        "tracked_stash_ref": None,
+        "tracked_stash_sha": None,
+        "snapshot_dir": str(snap_dir),
+        "mode": "copy_plan",
+        "status": status,
+        "copied_bytes": copied_bytes,
+        "retention": {"max_file_mb": max_file_mb, "max_total_mb": max_total_mb},
+    }
+    (snap_dir / MANIFEST_FILE).write_text(json.dumps(manifest, indent=2))
+    return manifest
+
+
+def commit_snapshot_plan(repo: Path, plan: dict) -> dict:
+    """Commit an ADR-222 Phase-1 plan by stashing its tracked path list.
+
+    Refuses malformed plans and only mutates git when tracked files exist. The
+    resulting manifest keeps stash SHA as canonical identity per ADR-221.
+    """
+    repo = Path(repo).resolve()
+    if plan.get("schema_version") != "pre-agent-snapshot-plan/v1":
+        raise ValueError("expected pre-agent-snapshot-plan/v1")
+    agent_id = str(plan.get("agent_id") or "")
+    if not agent_id:
+        raise ValueError("plan missing agent_id")
+    files = [str(path) for path in plan.get("tracked_files") or [] if str(path)]
+    stash_ref: Optional[str] = None
+    stash_sha: Optional[str] = None
+    status = str(plan.get("status") or "ok")
+    if files:
+        stash_ref, stash_sha = _stash_tracked_files(repo, f"auto-pre-agent-{agent_id}", files)
+        if stash_sha:
+            status = "stashed"
+        else:
+            status = "partial"
+    elif status == "ok":
+        status = "skip_clean"
+    committed = dict(plan)
+    committed.update({
+        "schema_version": "pre-agent-snapshot/v2",
+        "tracked_stash_ref": stash_ref,
+        "tracked_stash_sha": stash_sha,
+        "mode": "copy",
+        "status": status,
+        "committed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    })
+    snapshot_dir = Path(str(committed.get("snapshot_dir") or ""))
+    if snapshot_dir:
+        snapshot_dir.mkdir(parents=True, exist_ok=True)
+        (snapshot_dir / MANIFEST_FILE).write_text(json.dumps(committed, indent=2))
+    return committed
+
+
+def sweep_snapshot_plans(repo: Path, *, ttl_seconds: int = 300) -> list[str]:
+    """Delete stale ADR-222 plan files that never committed to stash markers."""
+    repo = Path(repo).resolve()
+    runtime = repo / ".cognitive-os" / "runtime"
+    if not runtime.is_dir():
+        return []
+    cutoff = time.time() - ttl_seconds
+    deleted: list[str] = []
+    for plan_path in runtime.glob("pre-agent-plan-*.json"):
+        try:
+            if plan_path.stat().st_mtime >= cutoff:
+                continue
+            data = json.loads(plan_path.read_text())
+            agent_id = str(data.get("agent_id") or plan_path.stem.replace("pre-agent-plan-", ""))
+            marker = runtime / f"pre-agent-snapshot-{agent_id}.json"
+            if marker.exists():
+                continue
+            plan_path.unlink()
+            deleted.append(str(plan_path))
+        except Exception:
+            continue
+    return deleted
 
 
 def create_snapshot(

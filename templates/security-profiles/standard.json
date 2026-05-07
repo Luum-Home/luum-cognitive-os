@@ -350,6 +350,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/orchestrator-skill-invocation-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/agent-launch-confirmed.sh\""
           }
         ]
       }

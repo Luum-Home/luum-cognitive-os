@@ -143,6 +143,7 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 SNAPSHOT_FILE="$SESSIONS_DIR/agent-${AGENT_ID}-snapshot.json"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 MARKER_FILE="$RUNTIME_DIR/pre-agent-snapshot-${AGENT_ID}.json"
+PLAN_FILE="$RUNTIME_DIR/pre-agent-plan-${AGENT_ID}.json"
 
 # ─── Legacy mode ─────────────────────────────────────────────────────────────
 if [ "$LEGACY_MODE" = "1" ]; then
@@ -254,6 +255,7 @@ STASH_SHA=""
 TREE_DIRTY=false
 UNTRACKED_COUNT=0
 SKIPPED_UNTRACKED_COUNT=0
+TRACKED_COUNT=0
 
 if command -v python3 >/dev/null 2>&1; then
   if command -v cos_stash_lock_acquire >/dev/null 2>&1; then
@@ -268,7 +270,7 @@ if command -v python3 >/dev/null 2>&1; then
 import sys, json
 sys.path.insert(0, '$OS_ROOT')
 try:
-    from lib.snapshot_manager import create_snapshot
+    from lib.snapshot_manager import plan_snapshot
     from pathlib import Path
 
     def _read_snapshot_int(key, default):
@@ -292,7 +294,7 @@ try:
                 return int(raw)
         return default
 
-    manifest = create_snapshot(
+    manifest = plan_snapshot(
         Path('$PROJECT_DIR'),
         '$AGENT_ID',
         max_file_mb=_read_snapshot_int('max_file_mb', 50),
@@ -315,22 +317,15 @@ PYEOF
     STASH_SHA=$(echo "$SNAPSHOT_RESULT" | jq -r '.tracked_stash_sha // ""' 2>/dev/null || true)
     UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.untracked_files // []) | length' 2>/dev/null || echo 0)
     SKIPPED_UNTRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.skipped_untracked_files // []) | length' 2>/dev/null || echo 0)
+    TRACKED_COUNT=$(echo "$SNAPSHOT_RESULT" | jq -r '(.tracked_files // []) | length' 2>/dev/null || echo 0)
     TREE_DIRTY=false
-    if [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ] || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null || [ "${SKIPPED_UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
+    if [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ] || [ "${TRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null || [ "${UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null || [ "${SKIPPED_UNTRACKED_COUNT:-0}" -gt 0 ] 2>/dev/null; then
       TREE_DIRTY=true
     fi
     if [ "$SNAPSHOT_STATUS" = "ok" ] && [ "$TREE_DIRTY" = false ]; then
       SNAPSHOT_STATUS="skip_clean"
-    elif [ "$SNAPSHOT_STATUS" = "ok" ] && { [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ]; }; then
-      SNAPSHOT_STATUS="stashed"
-      # ADR-116 P4.3: record stash provenance for auto-reapply on next SessionStart
-      _PROV_FILES=$(git -C "$PROJECT_DIR" stash show --name-only "$STASH_REF" 2>/dev/null | tr '\n' '\n' || true)
-      COGNITIVE_OS_PROJECT_DIR="$PROJECT_DIR" python3 -m stash_provenance record \
-        --stash-ref "$STASH_REF" \
-        --session-id "$SESSION_ID" \
-        --agent-id "$AGENT_ID" \
-        --original-files "$_PROV_FILES" \
-        --created-at "$TIMESTAMP" 2>/dev/null || true
+    elif [ "$SNAPSHOT_STATUS" = "ok" ] && [ "$TREE_DIRTY" = true ]; then
+      SNAPSHOT_STATUS="planned"
     fi
   elif [ -n "$SNAPSHOT_RESULT" ]; then
     SNAPSHOT_STATUS="ok"
@@ -363,16 +358,23 @@ mkdir -p "$(dirname "$METRICS_LOG")" 2>/dev/null || true
 } > "$SNAPSHOT_FILE" 2>/dev/null || true
 
 # Append to metrics JSONL
-METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","stash_sha":"%s","tree_dirty":%s,"untracked_count":%s,"skipped_untracked_count":%s,"mode":"copy"}' \
-  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "${STASH_SHA}" "$TREE_DIRTY" "${UNTRACKED_COUNT:-0}" "${SKIPPED_UNTRACKED_COUNT:-0}")
+METRICS_LINE=$(printf '{"timestamp":"%s","event":"agent_snapshot","agent_id":"%s","session_id":"%s","status":"%s","snapshot_id":"%s","stash_ref":"%s","stash_sha":"%s","tree_dirty":%s,"untracked_count":%s,"skipped_untracked_count":%s,"tracked_count":%s,"mode":"copy"}' \
+  "$TIMESTAMP" "$AGENT_ID" "$SESSION_ID" "$SNAPSHOT_STATUS" "${SNAPSHOT_ID}" "${STASH_REF}" "${STASH_SHA}" "$TREE_DIRTY" "${UNTRACKED_COUNT:-0}" "${SKIPPED_UNTRACKED_COUNT:-0}" "${TRACKED_COUNT:-0}")
 safe_jsonl_append "$METRICS_LOG" "$METRICS_LINE" 2>/dev/null || true
 
-# Write runtime marker so post-agent-snapshot-restore.sh can find the exact stash/snapshot
-if [ -n "$STASH_SHA" ] || [ -n "$STASH_REF" ] || [ -n "$SNAPSHOT_ID" ]; then
+# ADR-222 Phase 1: write a plan, not a stash marker. The later
+# agent-launch-confirmed hook is the only non-legacy path that may mutate git
+# stash. This makes blocked downstream preflight hooks incapable of orphaning an
+# auto-pre-agent stash.
+if [ -n "$SNAPSHOT_ID" ] && [ "$SNAPSHOT_STATUS" != "skip_clean" ]; then
   mkdir -p "$RUNTIME_DIR" 2>/dev/null || true
-  printf '{"schema_version":"pre-agent-snapshot/v2","stash_sha":"%s","stash_ref_at_capture":"%s","stash_ref":"%s","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy"}\n' \
-    "${STASH_SHA//\"/\\\"}" "${STASH_REF//\"/\\\"}" "${STASH_REF//\"/\\\"}" "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" "${SNAPSHOT_ID//\"/\\\"}" \
-    > "$MARKER_FILE" 2>/dev/null || true
+  if command -v jq >/dev/null 2>&1; then
+    printf '%s' "$SNAPSHOT_RESULT" | jq --arg session_id "$SESSION_ID" --arg timestamp "$TIMESTAMP" \
+      '. + {session_id:$session_id, planned_at:$timestamp}' > "$PLAN_FILE" 2>/dev/null || true
+  else
+    printf '{"schema_version":"pre-agent-snapshot-plan/v1","agent_id":"%s","session_id":"%s","timestamp":"%s","snapshot_id":"%s","mode":"copy_plan"}\n' \
+      "$AGENT_ID" "$SESSION_ID" "$TIMESTAMP" "$SNAPSHOT_ID" > "$PLAN_FILE" 2>/dev/null || true
+  fi
 fi
 
 # Always advisory — never block
