@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — slice 1 audit substrate active
 **Date**: 2026-05-06
 **Related**: ADR-212, ADR-215, ADR-208, ADR-211, ADR-031, ADR-206
 **Source**: Operator question — *"falta análisis de si está adoptado ya y de qué forma (esto también debería estar en las primitivas)"*
@@ -101,6 +101,17 @@ The manifest MUST declare:
   ASPIRATIONAL_PLANNED + OVERCLAIMED findings.
 - ADR-208 (Imported Pattern Closure Contract) consumes
   INTEGRATED_UNTRACKED findings as gate inputs at commit time.
+
+## Implementation status — 2026-05-06
+
+Active first slice:
+
+- `manifests/cross-stack-adoption-truth.yaml` declares lockfile, NOTICE, component-sources, inventory, marketing-doc, allowlist, and strict-verdict sources.
+- `lib/cross_stack_adoption_truth.py` parses Python, Go, Node, submodules, NOTICE, component-sources, and external inventory references into `cross-stack-adoption-truth-report/v1`.
+- `scripts/cos-cross-stack-adoption-truth` plus `scripts/cos adoption audit` expose the CLI.
+- `tests/unit/test_cross_stack_adoption_truth.py` and `tests/behavior/test_cross_stack_adoption_truth_cli.py` cover core classifications and live route smoke.
+
+Not yet active: ADR-211 readiness consumption, ADR-206/208 downstream consumption, curated baseline remediation, and `--suggest` snippets for missing component-source entries.
 
 ## Consequences
 
