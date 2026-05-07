@@ -1,5 +1,9 @@
 # ADR-237 — Test Execution Efficiency Protocol
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted — Slice A implemented (2026-05-07)  
@@ -63,3 +67,15 @@ The tests must prove:
 - Chaos failures select chaos rerun lanes without triggering laptop first.
 - Docs-only changes select docs/audit guardrails.
 - Manifest forbids broad-first execution by default.
+
+## Consequences
+- The ADR can be checked by the common ADR contract audit.
+- Future amendments must preserve this decision record instead of relying on conversation history.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

@@ -1,5 +1,9 @@
 # ADR-205 — Cross-Stream Trace Joiner and Flight Recorder
 
+## Status
+Proposed
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Proposed  
@@ -83,3 +87,11 @@ scripts/cos-run-trace --session-id fixture-session --json
 
 The behavior test must prove a run can be reconstructed without reading private
 content payloads directly.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```

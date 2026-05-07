@@ -1,5 +1,9 @@
 # ADR-216 — Tool Discovery Pre-Use Gate
 
+## Status
+Accepted
+
+
 <!-- SCOPE: OS -->
 
 **Status**: Accepted  
@@ -75,3 +79,11 @@ scripts/cos tool-discovery preuse --command 'pip-licenses --format=json' --json
 
 Tests must prove ad-hoc license-audit commands block, canonical COS primitives
 pass, and explicit operator override passes.
+
+## Alternatives rejected
+- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+
+## Verification
+```bash
+python3 -m pytest tests/audit/test_adr_contracts.py -q
+```
