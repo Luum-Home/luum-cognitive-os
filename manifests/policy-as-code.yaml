@@ -1,0 +1,16 @@
+schema_version: policy-eval/v1
+status: active
+owner: platform-safety
+adr: ADR-234
+
+policy_dir: policies
+mode: observe-first
+external_engines:
+  opa: deferred
+  cedar: deferred
+  casbin: deferred
+
+invariants:
+  - no_external_policy_engine_dependency
+  - deny_or_block_wins
+  - default_allow_in_slice_a
