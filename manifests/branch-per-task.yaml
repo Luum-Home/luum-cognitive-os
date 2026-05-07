@@ -1,0 +1,25 @@
+schema_version: branch-per-task/v1
+status: active
+owner: platform-orchestration
+adr: ADR-225
+
+policy:
+  default_mode: observe
+  branch_prefix: codex/task
+  applies_to:
+    - write-agent
+    - cloud-agent
+    - detached-agent
+  read_only_agents: exempt
+
+gates:
+  prelaunch:
+    enabled: false
+    reason: slice_a_library_only_until_worktree_lifecycle_default_on
+  readiness:
+    report: true
+
+invariants:
+  - write_or_cloud_task_has_single_canonical_branch
+  - branch_name_uses_task_id_slug_not_prompt_text
+  - read_only_agents_are_exempt
