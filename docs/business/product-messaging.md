@@ -47,6 +47,16 @@ Supporting lines:
 - **Simple to start, rigorous under the hood.**
 - **Cognitive OS makes AI-assisted development easier to trust.**
 
+### Specific shippable wedges (post-2026-05-07)
+
+These are citable in landing copy, sales decks, or HN posts because each maps to a file path in `main`:
+
+- **"Cycle-deduplication blocks the #1 production multi-agent failure mode."** — MAST 2025 documents 41–87% failure rates from infinite handoff loops; zero frameworks prevent it before ours (ADR-230 in `lib/handoff_dispatcher.py`).
+- **"$47K-incident class structurally impossible."** — sync pre-call budget gate eliminates the runaway-loop class behind the November 2025 industry incident (ADR-228 in `lib/dispatch_gate.py`).
+- **"Replay timeline + restore-by-checkpoint, no hypervisor required."** — shadow-git substrate ships the pattern Cline+Hermes+Kilo+git-shadow proved in production, with governance events as restore-points (ADR-227 in `lib/shadow_git.py` + `cos rollback`).
+- **"Six contradictory retry magic numbers collapsed to one classifier."** — idempotency keys eliminate the 15–30% silent side-effect duplication retry-without-classification ships with industry-wide (ADR-228 + `manifests/retry-contract.yaml`).
+- **"Native MCP server — every MCP-aware tool gets governance access without per-harness adapters."** — FastMCP-based 8-tool surface (ADR-231 in `packages/mcp-server/`).
+
 ## Messaging Principles
 
 When writing README copy, product docs, or pitch material, prefer these
