@@ -88,6 +88,16 @@ def lock_path(project_dir: str | Path | None = None) -> Path:
     return _root(project_dir) / ".cognitive-os" / "sessions" / "events.lock"
 
 
+def event_index_path(project_dir: str | Path | None = None) -> Path:
+    """Return the ADR-226/ADR-205 fan-out event index path."""
+    return _root(project_dir) / ".cognitive-os" / "coordination" / "event-index.jsonl"
+
+
+def event_index_lock_path(project_dir: str | Path | None = None) -> Path:
+    """Return the lock path for the fan-out event index."""
+    return _root(project_dir) / ".cognitive-os" / "coordination" / "event-index.lock"
+
+
 @contextmanager
 def _locked(project_dir: str | Path | None = None) -> Iterator[None]:
     path = lock_path(project_dir)
@@ -287,6 +297,68 @@ def _write_counter(path: Path, seq: int) -> None:
     path.write_text(str(seq) + "\n", encoding="utf-8")
 
 
+@contextmanager
+def _index_locked(project_dir: str | Path | None = None) -> Iterator[None]:
+    path = event_index_lock_path(project_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+def _append_event_index(project_dir: Path, event: dict[str, Any], *, strict_durability: bool = False) -> None:
+    record = {
+        "schema_version": EVENT_STORE_SCHEMA_VERSION,
+        "seq": event["seq"],
+        "session_id": event["session_id"],
+        "event_type": event["event_type"],
+        "ts": event["ts"],
+    }
+    path = event_index_path(project_dir)
+    with _index_locked(project_dir):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+            handle.flush()
+            if strict_durability:
+                os.fsync(handle.fileno())
+
+
+def read_event_index(*, project_dir: str | Path | None = None) -> list[dict[str, Any]]:
+    """Read the fan-out event index and return valid records in file order."""
+    path = event_index_path(project_dir)
+    if not path.is_file():
+        return []
+    records: list[dict[str, Any]] = []
+    for line_number, line in _json_lines(path):
+        if not line.strip():
+            continue
+        try:
+            record = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise EventStreamCorrupt(f"corrupt JSON at {path}:{line_number}") from exc
+        if record.get("schema_version") != EVENT_STORE_SCHEMA_VERSION:
+            raise EventStreamCorrupt(f"unexpected schema_version at {path}:{line_number}")
+        records.append(record)
+    return records
+
+
+def assert_index_consistent(project_dir: str | Path | None, session_id: str) -> None:
+    """Raise if a session stream event is missing from the fan-out index."""
+    session_events = read_session_events(session_id, project_dir=project_dir)
+    index_keys = {
+        (record.get("session_id"), record.get("seq"), record.get("event_type"), record.get("ts"))
+        for record in read_event_index(project_dir=project_dir)
+    }
+    for event in session_events:
+        key = (event.get("session_id"), event.get("seq"), event.get("event_type"), event.get("ts"))
+        if key not in index_keys:
+            raise EventStreamGapDetected(f"missing event-index record for session={key[0]} seq={key[1]}")
+
+
 def append_session_event(
     event_type: str,
     payload: dict[str, Any] | None = None,
@@ -296,6 +368,7 @@ def append_session_event(
     strict_durability: bool = False,
     single_writer: bool = False,
     allow_network_fs: bool = False,
+    fan_out_index: bool = True,
 ) -> dict[str, Any]:
     """Append one ADR-226 v2 event to a per-session stream.
 
@@ -338,6 +411,8 @@ def append_session_event(
             _write_counter(counter, next_seq - 1)
             raise
         _write_counter(counter, next_seq)
+        if fan_out_index:
+            _append_event_index(root, event, strict_durability=strict_durability)
         return event
 
 

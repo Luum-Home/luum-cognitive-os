@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slice A implemented (2026-05-07)
+**Status**: Accepted — Slice B implemented (2026-05-07)
 **Date**: 2026-05-06
 **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a replacement. ADR-205 keeps owning cross-stream trace joining and the flight-recorder retention story; ADR-226 adds three primitives (per-session sequencing, per-session streams, memoized step wrapping) on top of that substrate.
 **Related**: ADR-027 (session_bus baseline), ADR-099 (pre-agent snapshot), ADR-200 (state retention controller), ADR-220 (worktree divergence audit), ADR-221 (stash refs by SHA), ADR-222 (two-phase capture); load-bearing for ADR-227 (shadow-git), ADR-228 (retry+budget), ADR-230 (handoff), ADR-233 (cross-session agent teams)
@@ -231,12 +231,11 @@ Includes:
 
 Excludes (deferred to later slices): fan-out global index, `@event_wrap` decorator, migration tool, projections.
 
-### Slice B — Fan-out global index + perf budget
+### Slice B — Fan-out global index + perf budget — implemented 2026-05-07
 
-After Slice A's baseline measurement lands.
-- Mirror `{seq, session_id, event_type, ts}` to `.cognitive-os/coordination/event-index.jsonl` (extends the ADR-205 flight-recorder index).
-- Propose a p95 append-latency budget grounded in Slice A's measurements; lock the budget into the manifest.
-- Tests T2 (cross-stream consistency), T5 (concurrent writer contention on the index).
+- Mirrors `{seq, session_id, event_type, ts}` to `.cognitive-os/coordination/event-index.jsonl` (extends the ADR-205 flight-recorder index).
+- Initial local p95 budget is recorded in the manifest as `p95_budget_ms: 25`; this is intentionally conservative and must be revisited after a concurrent T6 benchmark.
+- Tests cover cross-stream consistency and missing-index detection.
 
 ### Slice C — `@event_wrap` decorator
 
@@ -260,9 +259,10 @@ After Slice C, before consumer ADRs draft against the substrate.
 
 ## Implementation status
 
-- **2026-05-07 — Slice A implemented**: `lib/session_bus.py` now exposes `append_session_event()`, `read_session_events()`, `recover_session_counter()`, and an `append_event(..., event_store=True)` opt-in path. The slice writes `.cognitive-os/sessions/{session_id}.events.jsonl`, maintains rebuildable `.seq-counters/{session_id}.counter`, rejects unsafe session IDs, refuses unsupported filesystem/platform paths, and provides gap-detecting reads.
-- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the Slice A active contract and defers fan-out index, `@event_wrap`, migration, and projections.
-- **Validation**: focused T1/T3/T4/T6/T10 tests passed locally: `python3 -m pytest tests/unit/test_event_sourced_bus.py tests/behavior/test_event_sourced_bus_smoke.py tests/audit/test_event_sourced_bus_invariants.py tests/benchmark/test_event_sourced_bus_baseline.py tests/unit/test_cross_session_events.py tests/contracts/test_cross_session_event_taxonomy.py -q` → 25 passed; `bash -n hooks/*.sh` passed.
+- **2026-05-07 — Slice A implemented**: `lib/session_bus.py` exposes `append_session_event()`, `read_session_events()`, `recover_session_counter()`, and `append_event(..., event_store=True)`. It writes `.cognitive-os/sessions/{session_id}.events.jsonl`, maintains rebuildable `.seq-counters/{session_id}.counter`, rejects unsafe session IDs, refuses unsupported filesystem/platform paths, and provides gap-detecting reads.
+- **2026-05-07 — Slice B implemented**: appends the ADR-205 fan-out index at `.cognitive-os/coordination/event-index.jsonl`, exposes `read_event_index()` and `assert_index_consistent()`, and adds a measured initial p95 budget (`<=25ms` for the local Slice B append+fanout fixture) in `manifests/event-sourced-session-bus.yaml`.
+- **Manifest**: `manifests/event-sourced-session-bus.yaml` declares the Slice B active contract and defers `@event_wrap`, migration, and projections.
+- **Validation**: focused T1/T2/T3/T4/T6/T10 tests passed locally: `python3 -m pytest tests/unit/test_event_sourced_bus.py tests/behavior/test_event_sourced_bus_smoke.py tests/audit/test_event_sourced_bus_invariants.py tests/benchmark/test_event_sourced_bus_baseline.py tests/unit/test_cross_session_events.py tests/contracts/test_cross_session_event_taxonomy.py -q`; `bash -n hooks/*.sh` passed.
 
 ## Open questions
 

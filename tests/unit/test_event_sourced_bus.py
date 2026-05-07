@@ -99,3 +99,23 @@ def test_concurrent_writers_allocate_gap_free_sequence(tmp_path: Path) -> None:
     events = read_session_events("s1", project_dir=tmp_path)
     assert len(events) == count * 2
     assert [event["seq"] for event in events] == list(range(1, count * 2 + 1))
+
+from lib.session_bus import assert_index_consistent, read_event_index  # noqa: E402
+
+
+def test_append_session_event_fans_out_minimal_index(tmp_path: Path) -> None:
+    first = append_session_event("session-start", {}, project_dir=tmp_path, session_id="s1")
+    second = append_session_event("session-end", {}, project_dir=tmp_path, session_id="s1")
+
+    index = read_event_index(project_dir=tmp_path)
+    assert [row["seq"] for row in index] == [first["seq"], second["seq"]]
+    assert [row["session_id"] for row in index] == ["s1", "s1"]
+    assert set(index[0]) == {"schema_version", "seq", "session_id", "event_type", "ts"}
+    assert_index_consistent(tmp_path, "s1")
+
+
+def test_assert_index_consistent_detects_missing_index_record(tmp_path: Path) -> None:
+    append_session_event("session-start", {}, project_dir=tmp_path, session_id="s1", fan_out_index=False)
+
+    with pytest.raises(EventStreamGapDetected, match="missing event-index record"):
+        assert_index_consistent(tmp_path, "s1")
