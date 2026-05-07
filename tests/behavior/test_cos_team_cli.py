@@ -178,3 +178,90 @@ def test_cos_team_handoff_receive_executes_once(tmp_path: Path) -> None:
         "--once",
     )
     assert second["received"] == []
+
+@pytest.mark.behavior
+def test_cos_team_handoff_receive_runs_external_hook_with_env_and_stdin(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    hook = project / "hook.py"
+    out = project / "hook-output.json"
+    hook.write_text(
+        "import json, os, sys\n"
+        f"json.dump({{'id': os.environ['COS_HANDOFF_ID'], 'to': os.environ['COS_HANDOFF_TO_AGENT'], 'stdin': json.loads(sys.stdin.read())}}, open({str(out)!r}, 'w'))\n"
+    )
+    run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "handoff", "send",
+        "--team", "release",
+        "--from-agent", "lead",
+        "--to-agent", "worker",
+        "--text", "external hook",
+        "--handoff-id", "hook-1",
+    )
+    received = run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "handoff", "receive",
+        "--team", "release",
+        "--session-id", "worker",
+        "--hook-command", f"python3 {hook}",
+        "--once",
+    )
+    assert received["received"][0]["executed"] is True
+    payload = json.loads(out.read_text())
+    assert payload["id"] == "hook-1"
+    assert payload["to"] == "worker"
+    assert payload["stdin"]["handoff_id"] == "hook-1"
+
+
+@pytest.mark.behavior
+def test_cos_team_handoff_receive_timeout_writes_receipt_in_strict_mode(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "handoff", "send",
+        "--team", "release",
+        "--from-agent", "lead",
+        "--to-agent", "worker",
+        "--text", "timeout",
+        "--handoff-id", "timeout-1",
+    )
+    result = subprocess.run(
+        [
+            str(COS), "team", "--json",
+            "--project-dir", str(project),
+            "handoff", "receive",
+            "--team", "release",
+            "--session-id", "worker",
+            "--hook-command", "python3 -c 'import time; time.sleep(2)'",
+            "--timeout-seconds", "1",
+            "--strict",
+            "--once",
+        ],
+        cwd=PROJECT_ROOT,
+        capture_output=True,
+        text=True,
+        timeout=5,
+    )
+    assert result.returncode == 2
+    receipt = project / ".cognitive-os/teams/release/handoff-receipts/timeout-1.json"
+    data = json.loads(receipt.read_text())
+    assert data["exit_code"] == 124
+    assert data["error"] == "receiver_timeout"
+
+@pytest.mark.behavior
+def test_cos_team_transport_plan_cli_exposes_nats_upgrade_mapping(tmp_path: Path) -> None:
+    project = tmp_path / "project"
+    project.mkdir()
+    result = run_cos_team(
+        project,
+        "--project-dir", str(project),
+        "transport-plan",
+        "--team", "release",
+        "--backend", "nats",
+    )
+    assert result["transport_plan"]["status"] == "upgrade_target"
+    assert result["transport_plan"]["subject_mapping"]["handoffs"] == "cos.teams.release.handoffs.<session_id>"

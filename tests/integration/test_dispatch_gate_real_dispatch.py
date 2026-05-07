@@ -200,3 +200,70 @@ def test_dispatch_passes_sandbox_flags_to_claude_executor(tmp_path: Path) -> Non
         )
     assert result.success is True
     assert fake.kwargs == {"sandbox_required": True, "allow_sandbox_fallback": True}
+
+@pytest.mark.integration
+def test_dispatch_retries_connection_failure_before_success_when_gate_enabled(tmp_path: Path) -> None:
+    calls = 0
+    records: list[dict] = []
+
+    def qwen(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        if calls < 3:
+            return _failure()
+        return _success(cost=0.05)
+
+    with patch.dict(
+        os.environ,
+        {
+            "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+            "COGNITIVE_OS_SESSION_ID": "s1",
+            "COS_DISPATCH_RETRY_MAX_SLEEP_SECONDS": "0",
+        },
+        clear=False,
+    ):
+        result = dispatch_module.dispatch(
+            "hello",
+            providers=["qwen"],
+            skill_requirements={"session_budget_cap_usd": 1.0, "estimated_cost_usd": 0.01},
+            _qwen_fn=qwen,
+            _metric_sink=records.append,
+        )
+
+    assert result.success is True
+    assert calls == 3
+    assert records[0]["dispatch_gate"]["provider_attempts"] == {"qwen": 3}
+    assert [event["action"] for event in records[0]["dispatch_gate"]["retry_events"]] == ["retry", "retry"]
+
+
+@pytest.mark.integration
+def test_dispatch_does_not_retry_auth_error_and_opens_circuit(tmp_path: Path) -> None:
+    calls = 0
+    records: list[dict] = []
+
+    def qwen(*args, **kwargs):
+        nonlocal calls
+        calls += 1
+        return {**_failure(), "error": "unauthorized", "status_code": 401}
+
+    with patch.dict(
+        os.environ,
+        {
+            "COGNITIVE_OS_PROJECT_DIR": str(tmp_path),
+            "COGNITIVE_OS_SESSION_ID": "s1",
+            "COS_DISPATCH_RETRY_MAX_SLEEP_SECONDS": "0",
+        },
+        clear=False,
+    ):
+        result = dispatch_module.dispatch(
+            "hello",
+            providers=["qwen"],
+            skill_requirements={"session_budget_cap_usd": 1.0, "estimated_cost_usd": 0.01},
+            _qwen_fn=qwen,
+            _metric_sink=records.append,
+        )
+
+    assert result.success is False
+    assert calls == 1
+    assert records[0]["dispatch_gate"]["retry_events"][0]["action"] == "no_retry"
+    assert records[0]["dispatch_gate"]["retry_events"][0]["failure_class"] == "auth_error"
