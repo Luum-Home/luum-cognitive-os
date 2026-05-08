@@ -1,7 +1,7 @@
 ---
 adr: 245
 title: Chaos Tests Run with Read-Only Production Source
-status: proposed
+status: accepted
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -17,7 +17,7 @@ tags: [testing, safety, chaos, postmortem-2026-05-08]
 
 ## Status
 
-Proposed. Drafted during the 2026-05-08 pre-public readiness session after
+Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, and tests cover restore/remove/ignore behavior plus the original global-verify regression path. Drafted during the 2026-05-08 pre-public readiness session after
 a chaos test was discovered overwriting production source files mid-run.
 Requires operator review before implementation.
 
