@@ -32,6 +32,108 @@ tools that can run from hooks or every N minutes to detect inconsistencies and
 resolve the ADR-239+ backlog without hardcoding sensitive data or manually
 fixing each primitive first.
 
+## Operational complement: loops, not "more care"
+
+The reliability claim for ADR-239+ must not be "agents will be more careful."
+The strongest honest guarantee available in real systems is an automatic control
+loop:
+
+```text
+declarative contract
+→ automatic detector
+→ hook / scheduler / release gate
+→ metrics
+→ remediation queue
+→ separate fix
+→ regression-prevention test
+```
+
+As of 2026-05-08, COS has the skeleton of this loop, but it is not yet closed
+end-to-end. The current `hook-fast` aggregate correctly reports a blocked state
+instead of a false green:
+
+```text
+scripts/cos-control-plane-audit --lane hook-fast --json
+status: block
+15 findings
+11 blockers
+4 warnings
+```
+
+That blocked result is useful evidence: the system already sees that closure
+work remains.
+
+Current surface status:
+
+| Layer | Status |
+|---|---|
+| Primitive coherence detector | Implemented: `scripts/primitive-coherence-audit.py` |
+| ADR-242 through ADR-246 detector | Implemented: `scripts/cos-postmortem-regression-audit` |
+| Manifest-driven checks | Implemented: `manifests/postmortem-regression-audit.yaml` |
+| Lane aggregator | Implemented: `scripts/cos-control-plane-audit` |
+| `hook-fast`, `hourly`, `pre-public` lanes | Implemented: `manifests/control-plane-audits.yaml` |
+| Pre-public risk audit | Exists |
+| State retention audit | Exists |
+| Worktree / ownership audit | Partial |
+| Safe auto-correction | Partial; not generalized |
+| Transactional release freeze | Missing; ADR-246 remains pending |
+| Formal scheduler / hook wiring | Pending |
+
+Prevention map:
+
+| Problem class | Correct prevention | Current detector | Missing closure |
+|---|---|---|---|
+| Agent changes branch without notice | Block branch switching and require an agent worktree | Partial | Integrate into the control-plane loop |
+| Sensitive data reintroduced after sanitization | Pre-public audit, secret scanners, and freeze | Partial | Final rewrite path and freeze |
+| Content rewrite confused with metadata rewrite | Content-only default | Partial | Explicit detector for metadata flags |
+| Agents write during history rewrite | `cos release freeze` | Missing; audit detects the gap | Implement ADR-246 |
+| Reports publish sensitive paths | Output sanitization contract | Partial | Manifest-driven public-report rules |
+| Scripts outside ownership | Ownership manifest and rename detector | Partial | ADR-241 / ownership detector expansion |
+| Noisy false positives | Adversarial pattern tests | Partial | False-positive / false-negative metrics |
+| Stale generated scorecards | Generated-report freshness audit | Partial | Timestamp and source-hash checks |
+| "Closed" claimed while blockers remain | Claim enforcer | Missing; audit detects the gap | Implement ADR-244 |
+| Hook exists but is not wired | Producer-consumer audit | Partial ADR-240 | Expand coverage |
+
+The next maturity step is to move from "audits that an operator can run" to
+"audits that run automatically and block in the right place":
+
+1. `hook-fast` must run before agent launch, before commit, before push, before
+   destructive git operations, and before report publication.
+2. `hourly` must run as a periodic/session-end sweep for drift that is too
+   expensive for the hot path.
+3. `pre-public --strict` must run inside a release-freeze transaction before
+   sanitize, force-push, or publication. Without a freeze, an audit can pass and
+   another agent can dirty the repository seconds later.
+
+Auto-correction is allowed only for safe classes:
+
+| Finding class | Auto-fix policy |
+|---|---|
+| Regenerable stale report | Allowed |
+| Cache, metrics, or runtime garbage | Allowed |
+| Missing generated index | Allowed |
+| Unexpected branch switch | Block; do not auto-fix |
+| History rewrite | Block without a transaction id |
+| Metadata rewrite | Requires explicit operator intent |
+| Sensitive data in history | Propose remediation; require operator approval |
+| Chaos test mutating source | Block; do not silently fix |
+| False "tests pass" claim | Downgrade or block |
+
+The repair loop is therefore:
+
+```text
+detect → propose → apply only if the finding is in a safe class → measure result
+```
+
+It is not "the agent fixes everything by itself."
+
+This doctrine intentionally assumes that the current audit set only scratches
+the surface. Each new incident must become a manifest rule; each rule must emit
+a stable finding; each finding must have a metric; each fix must reduce or clear
+the finding; regressions must re-open the finding; and new classes must be added
+without hardcoding private data. ADR-247 and ADR-248 are the start of that
+meta-system.
+
 ## Decision
 
 Introduce a manifest-driven control-plane audit runner:
