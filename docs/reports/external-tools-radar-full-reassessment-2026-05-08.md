@@ -18,10 +18,12 @@ related_docs:
 
 ## Executive summary
 
-This reassessment restarts from the canonical index
+This reassessment restarts from the current review index
 `docs/reports/external-tools-radar-INDEX.md` and expands the scope from the
-curated 2026-05-08 radar to **nearly every third-party tool mentioned or used
-in the repository**.
+curated 2026-05-08 radar to the broadest repository-derived tool corpus from
+this review wave. "Current review index" means authoritative for this
+2026-05-08 analysis pass, not a permanent or exhaustive claim that no external
+tool exists outside the scanned corpus.
 
 The operator concern is valid: COS should be excellent at integrating and
 governing external tools, not at rebuilding every interesting framework. The
@@ -122,7 +124,7 @@ machine-readable backing evidence.
 
 | Recommendation | Meaning |
 |---|---|
-| ADOPT | Use as canonical mechanism/pattern with clear tests. |
+| ADOPT | Use as the selected mechanism/pattern for this layer, with clear tests and a rollback path. |
 | INTEGRATE | Keep behind adapter/provider/policy wrapper. |
 | KEEP | Current dependency/tool is justified as-is. |
 | MONITOR | Watch or harvest patterns; no implementation now. |
@@ -205,7 +207,7 @@ They should become follow-up issues/ADRs or targeted commits.
 
 ### Memory / RAG
 
-Decision: **Engram remains canonical**. Adopt patterns and benchmarks rather
+Decision: **Engram remains the selected in-repo memory substrate for this wave**. Adopt patterns and benchmarks rather
 than replacing it with a framework.
 
 Recommended staged work:
@@ -266,7 +268,7 @@ licensing can differ from engine licensing. Heavy lanes (`jupyter`,
 ## Required documentation follow-ups
 
 1. **Machine-readable adoption manifest** — `manifests/external-tools-adoption.yaml`.
-   Fields: tool, canonical_id, source reports, adoption kind, license, status,
+   Fields: tool, stable_id, source reports, adoption kind, license, status,
    consumer proof, implementation paths, tests, owner, next action.
 2. **License appendix** — Phoenix ELv2 boundary, Langfuse mixed/MIT posture,
    Semgrep engine-vs-rules, MPL test-only deps, FSL self-package note.
@@ -292,7 +294,10 @@ No runtime adoption should start from this report until the target tool has:
 
 ## Validation notes
 
-This was a mixed automated/manual reassessment. Some upstream currentness checks
-were limited by API rate limits, and some licenses require subpackage-level
-verification before copying code or vendoring data. This report is sufficient to
-prioritize documentation and cleanup work, not sufficient to vendor code blindly.
+This was a mixed automated/manual reassessment over the repository-derived corpus.
+It was not a fresh internet-wide validation of every tool, release, license,
+star count, or maintenance status. Some upstream currentness checks were limited
+by API rate limits, and some licenses require subpackage-level verification
+before copying code or vendoring data. This report is sufficient to prioritize
+documentation and cleanup work; it is not sufficient to vendor code, add a
+runtime dependency, or make public claims without a targeted source check.

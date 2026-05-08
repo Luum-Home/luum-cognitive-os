@@ -50,7 +50,7 @@ per-repo evaluation to a curated radar.
 | Reject ledger | [`docs/blocked-tools.md`](../blocked-tools.md) | REJECT entries (AGPL/SSPL/BUSL per `rules/license-policy.md`) |
 
 **Outcome of Phase 1:** every per-repo evaluation now produces a
-standardized markdown artifact; the radar is the canonical curation surface.
+standardized markdown artifact; the radar is the current curation surface for each review wave.
 
 ---
 
@@ -156,10 +156,12 @@ path.
 
 ### 3.E Full corpus reassessment (2026-05-08)
 
-A broader reassessment expanded beyond the curated radar rows to nearly every
-third-party tool mentioned in git, docs, manifests, dependency files, and
-package manifests. It generated a raw inventory, a deduplicated scope, and a
-consolidated decision report:
+A broader reassessment expanded beyond the curated radar rows to the broadest
+repository-derived third-party tool corpus from this review wave: git, docs,
+manifests, dependency files, and package manifests. It generated a raw
+inventory, a deduplicated scope, and a consolidated decision report. This is
+a review-wave scope statement, not a claim that every public tool or every
+upstream status was freshly revalidated on the internet:
 
 | Path | Role |
 |---|---|

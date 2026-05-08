@@ -33,7 +33,7 @@ work starts.
 
 | Verdict | Meaning | COS default action |
 |---|---|---|
-| ADOPT | External primitive should be the canonical implementation/default for that layer. | Depend on it or call it directly, behind a version/license contract. |
+| ADOPT | External primitive should be the selected implementation/default for that layer. | Depend on it or call it directly, behind a version/license contract and rollback path. |
 | INTEGRATE | External tool is valuable, but must remain behind a COS adapter/provider boundary. | Build adapter + policy wrapper; do not let it become COS source of truth. |
 | BUILD | COS must own this behavior because it is governance, policy, evidence, or product semantics. | Implement in COS; use external ideas only as references. |
 | DEFER | Tool/pattern is interesting but too heavy, immature, or outside local-first scope. | Track in radar; do not add default dependency or roadmap commitment. |
