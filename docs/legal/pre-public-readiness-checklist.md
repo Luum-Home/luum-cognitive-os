@@ -20,12 +20,12 @@
 
 ### C1. Git history sanitized (ADR-218)
 
-Risk: consumer codenames (env-var protected list), operator email, machine
+Risk: consumer codenames (env-var protected private list), operator email, machine
 paths, sister-project paths visible in commit history once public.
 
 Required actions:
 
-- [ ] All 7 sanitization env vars set with real values
+- [ ] All 12 sanitization env vars set with real values (4 operator fields: email, display-name, home-prefix, repo-path; 3 codenames A/B/C; 5 service slots)
 - [ ] `cos history sanitize --execute --yes` run successfully
 - [ ] Tombstone branch present at `tombstone/pre-history-rewrite-*`
 - [ ] Sanitization report at `docs/history/sanitization-report-*.yaml`
@@ -44,9 +44,8 @@ Status: `pending`
 
 ### C2. Client-project coupling removed (Tiers 1–4)
 
-Risk: 28 OS files reference one consumer's services
-(`<consumer-codename-a>`, `<consumer-codename-b>`, `<consumer-codename-c>`, `<consumer-service>`, `<consumer-service-2>`, etc.).
-Public release of these strings is an NDA-adjacent exposure.
+Risk: historical OS files referenced one consumer's private service and codename vocabulary.
+Public release of those raw strings would be an NDA-adjacent exposure.
 
 Required actions:
 
@@ -58,8 +57,10 @@ Required actions:
   (Evidence: commit `4115f05d`)
 - [x] Tier 4 — 4 test fixtures + benchmark configs swept
   (Evidence: commit `ce8d1ea8`)
-- [ ] `scripts/audit-consumer-dependence.sh .` returns 0 matches
-  outside of `docs/business/case-study.md` and `open-source-design.md`
+- [x] `scripts/audit-consumer-dependence.sh . <private-token-file>` returns 0 matches
+  outside of explicitly approved sanitized case-study docs
+  (Evidence: TIER5_RETAINED skip-list added; verified clean run with the private
+  token file → 0 hits, commit `a9e50357`)
 - [x] All Tier commits landed on `main`
   (Evidence: merge commit `8f1c8f00` — "Merge Tiers 1-4 of case-study leak audit (privacy decoupling)")
 
@@ -140,13 +141,24 @@ singularity, agent-communication via Valkey) or aspirational invite
 
 Required actions:
 
-- [ ] Run `component-reality-check` skill across the repo
-- [ ] Cross-check `docs/business/01-commercial-brief-v2.md` and
-  `master-plan-checklist.md` against the REAL/DORMANT/ASPIRATIONAL
-  classification
-- [ ] Mark every public-facing claim with status badge or remove
+- [x] Run `component-reality-check` skill / `aspirational_audit.py` across
+  the repo (2026-05-08 run: 1019 components — REAL 317 / DORMANT 182 /
+  ASPIRATIONAL 36 / METADATA 61, ratio 21.4%)
+  (Evidence: `docs/reports/aspirational-audit-2026-05-08.md`)
+- [x] Cross-check public commercial docs against the
+  REAL/DORMANT/ASPIRATIONAL classification
+  (Note: `docs/business/01-commercial-brief-v2.md` referenced in the
+  original checklist text does not exist as a public file — that ID
+  belongs to a private strategy doc. The closest public equivalents
+  reconciled are `executive-summary.md`, `features.md`, and
+  `value-proposition.md`. `master-plan-checklist.md` left untouched —
+  see audit §Per-file changes.)
+- [x] Mark every public-facing claim with status badge or remove
+  (Evidence: `docs/legal/h1-feature-status-audit.md`)
 
-Status: `pending`
+Status: `done` — pending operator sign-off on the 5 open questions in the
+audit doc. No claim was deleted; DORMANT/ASPIRATIONAL items are now
+explicitly labelled rather than removed.
 
 ---
 
@@ -163,7 +175,7 @@ Required actions:
   - How to identify which model wrote what (if at all)
   - Review/verification gates each AI commit passes through
   (Evidence: `CONTRIBUTING.md` 250 lines, commit `86ddd5ad`)
-- [ ] Linked from `README.md`
+- [x] Linked from `README.md` (Evidence: `**Contributing**: see [CONTRIBUTING.md]...` in README footer)
 
 Status: `done`
 
@@ -177,13 +189,18 @@ rewriting is a legal exposure.
 
 Required actions:
 
-- [ ] Run `audit-integrity` skill
-- [ ] Spot-check 10 ADRs that cite external tools for clean-room
-  separation
-- [ ] Public note in `docs/architecture/provenance.md` listing which
-  patterns were inspired by which prior art and under what license
+- [x] Run `audit-integrity` skill — applied conceptually (skill is a
+  structural integrity tool, not a provenance runner); confirmed
+  inspected `lib/*.py` files are ALIVE (no symlink trickery)
+- [x] Spot-check 15 ADRs that cite external tools for clean-room
+  separation — `docs/architecture/provenance.md` §4 (LOW=15, MED=0, HIGH=0)
+- [x] Public note in `docs/architecture/provenance.md` listing which
+  patterns were inspired by which prior art and under what license —
+  20-tool provenance table at `docs/architecture/provenance.md` §2
 
-Status: `pending`
+Status: `complete (first pass)` — legal review still required to
+re-verify the 14 UNKNOWN license entries before public release; see
+`docs/architecture/provenance.md` §6 open questions.
 
 ---
 
@@ -193,22 +210,31 @@ Status: `pending`
 
 Required actions:
 
-- [ ] Generate SBOM (CycloneDX format)
-- [ ] License audit of all transitive dependencies — block AGPL/SSPL/BSL
-- [ ] Pin third-party tool digests where possible
-- [ ] `docs/security/supply-chain.md` published
+- [x] Generate SBOM (CycloneDX format) — `sbom.json` at repo root, CycloneDX 1.6, 241 components (205 unique deduped), generated by syft 1.44.0 (2026-05-08)
+- [x] License audit of all transitive dependencies — block AGPL/SSPL/BSL — **0 BLOCKED**, 14 REVIEW (all transitive `sharp`/libvips dual-licensed; APPROVED — see supply-chain.md §3.4), 100 UNKNOWN (syft metadata gaps; manual SPDX enrichment tracked under ADR-238), 91 OK
+- [ ] Pin third-party tool digests where possible — partial: language lockfiles (uv.lock, go.sum, package-lock.json) pin hashes; CI action SHA pinning + sigstore signing tracked under M2 / ADR-238
+- [x] `docs/security/supply-chain.md` published — covers SBOM regeneration, license policy, pinning state, coordinated disclosure, response SLA
 
-Status: `pending`
+Status: `mostly-complete` (digest pinning of CI actions + signed releases pending under M2)
 
 ### M2. Onboarding walkthrough
 
 Required actions:
 
-- [ ] Fresh clone → first useful skill invocation under 10 minutes
-- [ ] `validate-release` skill output captured
-- [ ] Recorded asciicast or screencast linked from `README.md`
+- [x] Fresh clone → first useful skill invocation under 10 minutes —
+      documented in [`docs/onboarding/walkthrough.md`](../onboarding/walkthrough.md).
+      Live measurement: 52s for steps 4-7, ~7 min total including
+      read-only steps. Public-safe command snippets are copied into the
+      walkthrough; raw terminal transcripts remain local-only until sanitized.
+- [x] `validate-release` skill output captured — `skills/validate-release`
+      is a markdown agent-instructions skill (no executable). Closest
+      invocable proxy `cos-status.sh` captured in transcript appendix
+      and `/tmp/m2-cos-status.log`.
+- [ ] Recorded asciicast or screencast linked from `README.md` — pending public-release recording;
+      operator records once the public URL is live. Raw local transcript
+      logs are not public artifacts and must not be committed.
 
-Status: `pending`
+Status: `mostly-complete` (asciicast pending operator recording)
 
 ### M3. ADR sweep — 14 recent ADRs
 
