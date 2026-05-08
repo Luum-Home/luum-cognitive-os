@@ -280,3 +280,41 @@ def test_json_output_is_well_formed(tmp_path):
     assert data["dry_run"] is True
     assert isinstance(data["results"], list)
     assert any(r.get("action") == "rm-file" for r in data["results"])
+
+
+def test_tier2_orphan_worktree_with_wip_is_tier3_not_removed(tmp_path):
+    repo = tmp_path / "repo"
+    wt = tmp_path / "orphan-wt"
+    subprocess.run(["git", "init", "--initial-branch=main"], cwd=tmp_path, check=True, stdout=subprocess.DEVNULL)
+    # The repository is tmp_path itself for git, but script root must be repo.
+    # Create a real git repo inside repo so worktree porcelain works naturally.
+    repo.mkdir()
+    subprocess.run(["git", "init", "--initial-branch=main"], cwd=repo, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run(["git", "config", "user.name", "Tester"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "user.email", "tester@example.com"], cwd=repo, check=True)
+    (repo / "README.md").write_text("root\n", encoding="utf-8")
+    subprocess.run(["git", "add", "README.md"], cwd=repo, check=True)
+    subprocess.run(["git", "commit", "-m", "seed"], cwd=repo, check=True, stdout=subprocess.DEVNULL)
+    subprocess.run(["git", "branch", "worktree-agent-orphan"], cwd=repo, check=True)
+    subprocess.run(["git", "worktree", "add", str(wt), "worktree-agent-orphan"], cwd=repo, check=True, stdout=subprocess.DEVNULL)
+    (wt / "wip.txt").write_text("uncommitted\n", encoding="utf-8")
+    # Delete the branch ref while leaving the worktree registered; this creates
+    # the exact orphan+WIP condition Tier 2 must not force-remove.
+    subprocess.run(["git", "update-ref", "-d", "refs/heads/worktree-agent-orphan"], cwd=repo, check=True, stdout=subprocess.DEVNULL)
+    (repo / "scripts").mkdir()
+    target = repo / "scripts" / "cos-cleanup.sh"
+    target.write_bytes(SCRIPT.read_bytes())
+    target.chmod(0o755)
+    audit = repo / ".cognitive-os" / "cleanup-audit.jsonl"
+    audit.parent.mkdir(parents=True)
+    env = os.environ.copy()
+    env["COS_CLEANUP_AUDIT_LOG"] = str(audit)
+    env["COS_CLEANUP_NONINTERACTIVE"] = "1"
+
+    proc = subprocess.run([str(target), "--tier=2", "--apply"], cwd=repo, capture_output=True, text=True, env=env)
+
+    assert proc.returncode == 1, "dirty orphan worktree should become Tier 3 review candidate"
+    assert wt.exists(), "Tier 2 must not force-remove orphan worktree with WIP"
+    assert (wt / "wip.txt").exists()
+    rows = [json.loads(l) for l in audit.read_text().splitlines() if l.strip()]
+    assert any(r["tier"] == 3 and r["action"] == "rm-worktree" and r["result"] == "skipped" for r in rows)

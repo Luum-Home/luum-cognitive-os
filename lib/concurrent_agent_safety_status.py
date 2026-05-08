@@ -108,10 +108,16 @@ def collect_status(project_dir: str | Path = ".") -> ConcurrentAgentSafetyStatus
     locks = {
         "git_index": _collect_git_index_locks(root),
         "edit": _collect_lock_metadata(root / ".cognitive-os" / "runtime" / "edit-locks"),
-        "concurrent_write": _collect_json_lock_files(root / ".cognitive-os" / "sessions" / "locks", root),
         "plan": _collect_lock_metadata(root / ".cognitive-os" / "runtime" / "plan-locks"),
         "resource": _collect_lock_metadata(root / ".cognitive-os" / "runtime" / "resource-leases"),
     }
+    # ADR-238 #3: only emit ``concurrent_write`` when the SO ``sessions/locks``
+    # directory actually exists. On a fresh non-SO consumer project the
+    # directory is absent, and the empty key was leaking into JSON consumers
+    # expecting the canonical 4-key portability schema.
+    concurrent_write_dir = root / ".cognitive-os" / "sessions" / "locks"
+    if concurrent_write_dir.is_dir():
+        locks["concurrent_write"] = _collect_json_lock_files(concurrent_write_dir, root)
 
     return ConcurrentAgentSafetyStatus(
         project_dir=str(root),

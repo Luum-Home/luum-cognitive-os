@@ -312,8 +312,17 @@ tier2_orphan_worktrees() {
       "")
         if [[ -n "$wpath" && -n "$wbranch" ]]; then
           if ! (cd "$ROOT" && git show-ref --verify --quiet "$wbranch"); then
-            orphans+=("$wpath")
-            audit 2 "rm-worktree" "$wpath" "branch $wbranch missing" 0 "ok" ""
+            local dirty=""
+            if [[ -d "$wpath" ]]; then
+              dirty="$(cd "$wpath" && git status --porcelain 2>/dev/null || true)"
+            fi
+            if [[ -n "$dirty" ]]; then
+              TIER3_FOUND=1
+              audit 3 "rm-worktree" "$wpath" "branch $wbranch missing but WIP exists — manual Tier 3 review" 0 "skipped" ""
+            else
+              orphans+=("$wpath")
+              audit 2 "rm-worktree" "$wpath" "branch $wbranch missing and worktree clean" 0 "ok" ""
+            fi
           fi
         fi
         wpath=""; wbranch=""
