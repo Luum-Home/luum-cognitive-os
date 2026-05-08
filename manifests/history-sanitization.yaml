@@ -16,6 +16,12 @@ rules:
     replacement: 2144218+MatiasNAmendola@users.noreply.github.com
     required: false
     rationale: Replace operator personal email in historical blobs without committing the raw email into this manifest.
+  - id: operator-name
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_OPERATOR_NAME
+    replacement: Maintainer
+    required: false
+    rationale: Replace operator personal name in historical commit metadata and blobs without committing the raw name into this manifest.
   - id: operator-home-prefix
     mode: literal
     value_env: COS_HISTORY_SANITIZE_HOME_PREFIX
