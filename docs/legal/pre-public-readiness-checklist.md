@@ -31,12 +31,12 @@ Required actions:
 - [x] Sanitization report at `.cognitive-os/reports/history-sanitization/20260508T042748Z.json` recorded and reviewed
 - [x] Smoke test: codenames + service names + operator email/path → 0 hits across full history
   (post-execute: otra-organizacion/servicio-g/otra-plataforma/servicio-h/servicio-d/servicio-e/servicio-a/servicio-f all 0)
-- [x] Force-push to origin completed (multiple post-execute mailmap rewrites for author identity restoration)
-- [x] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHA
+- [ ] Force-push to origin completed after final local history rewrite
+- [ ] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHA
 
-Evidence: backup mirror at `~/.cognitive-os/recovery/pre-history-sanitization-20260508T042748Z.git`; sanitization report at `.cognitive-os/reports/history-sanitization/`. Authorship rewritten via mailmap to operator's GitHub-noreply identifier for privacy + GitHub attribution; commits also rewritten by filter-repo to align historical authors (Maintainer, Claude, cognitive-os-bot) to that same noreply identifier.
+Evidence: backup mirror at `~/.cognitive-os/recovery/pre-history-sanitization-20260508T042748Z.git`; sanitization report at `.cognitive-os/reports/history-sanitization/`. Local history was rewritten via mailmap/filter-repo to the operator's GitHub-noreply identifier for privacy + GitHub attribution; final remote publication is still pending force-push and tag reattachment.
 
-Status: `done`
+Status: `partial` — local history sanitized; remote force-push and tag reattachment pending.
 
 ---
 

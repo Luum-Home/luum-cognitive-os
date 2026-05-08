@@ -47,7 +47,7 @@ not read as concealment:
    models the human operator runs as a tool. Listing them as co-authors
    would imply a legal authorship relationship that does not exist and
    that the providers themselves do not claim.
-2. **History noise.** Adding `Co-Authored-By: MatiasNAmendola <2144218+MatiasNAmendola@users.noreply.github.com>`
+2. **History noise.** Adding AI-provider `Co-Authored-By` trailers
    to virtually every commit produces a `git log` that is mostly tooling
    metadata and breaks contributor-graph tooling on most forges.
 3. **Conflict with the verified-author model.** The repository records
