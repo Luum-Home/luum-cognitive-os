@@ -25,7 +25,7 @@ paths, sister-project paths visible in commit history once public.
 
 Required actions:
 
-- [ ] All 7 sanitization env vars set with real values
+- [ ] All 12 sanitization env vars set with real values (4 operator fields: email, display-name, home-prefix, repo-path; 3 codenames A/B/C; 5 service slots)
 - [ ] `cos history sanitize --execute --yes` run successfully
 - [ ] Tombstone branch present at `tombstone/pre-history-rewrite-*`
 - [ ] Sanitization report at `docs/history/sanitization-report-*.yaml`
@@ -57,8 +57,10 @@ Required actions:
   (Evidence: commit `4115f05d`)
 - [x] Tier 4 — 4 test fixtures + benchmark configs swept
   (Evidence: commit `ce8d1ea8`)
-- [ ] `scripts/audit-consumer-dependence.sh .` returns 0 matches
+- [x] `scripts/audit-consumer-dependence.sh . <private-token-file>` returns 0 matches
   outside of explicitly approved sanitized case-study docs
+  (Evidence: TIER5_RETAINED skip-list added; verified clean run with the private
+  token file → 0 hits, commit `a9e50357`)
 - [x] All Tier commits landed on `main`
   (Evidence: merge commit `8f1c8f00` — "Merge Tiers 1-4 of case-study leak audit (privacy decoupling)")
 
@@ -173,7 +175,7 @@ Required actions:
   - How to identify which model wrote what (if at all)
   - Review/verification gates each AI commit passes through
   (Evidence: `CONTRIBUTING.md` 250 lines, commit `86ddd5ad`)
-- [ ] Linked from `README.md`
+- [x] Linked from `README.md` (Evidence: `**Contributing**: see [CONTRIBUTING.md]...` in README footer)
 
 Status: `done`
 
