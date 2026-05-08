@@ -13,7 +13,7 @@ All Engram topic keys MUST use one of these prefixes:
 | Prefix | Purpose | Examples |
 |--------|---------|----------|
 | `planning/{change-name}/...` | Proposals, specs, designs, task breakdowns | `planning/auth-refactor/proposal`, `planning/auth-refactor/spec` |
-| `implementation/{service-name}/...` | Code decisions, patterns used, implementation notes | `implementation/<consumer-codename-b>/pagination-pattern`, `implementation/bff/caching-strategy` |
+| `implementation/{service-name}/...` | Code decisions, patterns used, implementation notes | `implementation/example-users/pagination-pattern`, `implementation/bff/caching-strategy` |
 | `docs/{topic}/...` | Documentation decisions, doc structure, writing conventions | `docs/api-reference/structure`, `docs/changelog/format` |
 | `agent/{agent-name}/sidecar` | Per-agent persistent memory (Pattern 4 sidecar) | `agent/sre-agent/sidecar`, `agent/squad-manager/sidecar` |
 | `sre/{container}/{error-type}` | Operational learnings, fixes, incident patterns | `sre/api-server/oom-kill`, `sre/mongodb/connection-timeout` |
@@ -53,7 +53,7 @@ Old SDD flat keys (`sdd/{change}/...`) map to the new prefix system:
 ### Naming Conventions
 
 - Use lowercase kebab-case for all path segments: `planning/auth-refactor/spec` (not `Planning/AuthRefactor/Spec`)
-- Service names match directory names: `<consumer-codename-b>`, `<consumer-codename-a>`, `onboarding`, `payments-service`
+- Service names match directory names: `example-users`, `example-bff`, `onboarding`, `payments-service`
 - Change names match what the user calls them: `add-biometrics`, `refactor-payments`
 - Agent names match their definition in `agents/`: `sre-agent`, `squad-manager`
 
