@@ -384,7 +384,7 @@ def _write_replacements_file(rules: list[dict[str, Any]], target_path: Path) -> 
     sorted_rules = sorted(rules, key=lambda r: -len(str(r.get("value") or "")))
     lines: list[str] = []
     for rule in sorted_rules:
-        value = rule.get("value")
+        value = rule.get("value") or rule.get("pattern")
         replacement = rule.get("replacement")
         if not value or replacement is None:
             continue
@@ -403,7 +403,7 @@ def _write_replacements_file(rules: list[dict[str, Any]], target_path: Path) -> 
 def _literal_replacements(rules: list[dict[str, Any]]) -> list[tuple[bytes, bytes]]:
     replacements: list[tuple[bytes, bytes]] = []
     for rule in sorted(rules, key=lambda r: -len(str(r.get("value") or ""))):
-        value = rule.get("value")
+        value = rule.get("value") or rule.get("pattern")
         replacement = rule.get("replacement")
         if not value or replacement is None or rule.get("mode", "literal") != "literal":
             continue
@@ -474,7 +474,7 @@ def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]])
     """
     remaining: dict[str, int] = {}
     for rule in rules:
-        value = rule.get("value")
+        value = rule.get("value") or rule.get("pattern")
         rule_id = rule.get("id", "unknown")
         if not value:
             remaining[rule_id] = -1
@@ -490,7 +490,10 @@ def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]])
             remaining[rule_id] = -1
             continue
         try:
-            count = proc.stdout.count(str(value))
+            if rule.get("mode") == "regex":
+                count = count_regex(proc.stdout, str(value))
+            else:
+                count = proc.stdout.count(str(value))
         except Exception:
             count = -1
         remaining[rule_id] = count
