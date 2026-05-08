@@ -1128,6 +1128,12 @@ harness:
       matcher: Bash
       scope: os-only
 
+    control-plane-audit-bash:
+      script: hooks/control-plane-audit.sh
+      event: PreToolUse
+      matcher: Bash
+      scope: both
+
     destructive-rm-blocker:
       script: hooks/destructive-rm-blocker.sh
       event: PreToolUse
@@ -1244,6 +1250,12 @@ harness:
       matcher: "Edit|Write|MultiEdit"
       scope: both
 
+    control-plane-audit-edit:
+      script: hooks/control-plane-audit.sh
+      event: PreToolUse
+      matcher: "Edit|Write"
+      scope: both
+
     # ── PreToolUse — Agent ────────────────────────────────────────────────────
     # Codex: OMITTED — Agent matcher not supported by Codex v0.126.0-alpha.8
     dispatch-gate:
@@ -1287,6 +1299,12 @@ harness:
       event: PreToolUse
       matcher: Agent
       scope: os-only
+
+    control-plane-audit-agent:
+      script: hooks/control-plane-audit.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: both
 
     error-pattern-detector:
       script: hooks/error-pattern-detector.sh
@@ -1722,6 +1740,11 @@ harness:
       script: hooks/skill-failure-monitor.sh
       event: Stop
       scope: os-only
+
+    control-plane-audit-hourly:
+      script: hooks/control-plane-audit-hourly.sh
+      event: Stop
+      scope: both
 
     skill-synthesis-scanner:
       script: hooks/skill-synthesis-scanner.sh

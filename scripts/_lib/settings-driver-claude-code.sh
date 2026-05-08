@@ -210,6 +210,7 @@ cc_driver_emit() {
     "hooks/skill-router-bash-gate.sh"           "false" \
     "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/release-guard.sh"                 "false" \
+    "hooks/control-plane-audit.sh"            "false" \
   )
 
   local pre_read
@@ -235,6 +236,7 @@ cc_driver_emit() {
     "hooks/concurrent-write-guard.sh"        "false" \
     "hooks/skill-md-routing-validator.sh"    "false" \
     "hooks/cross-session-event-emit.sh"      "true"  \
+    "hooks/control-plane-audit.sh"           "false" \
   )
 
   local pre_plan_claim
@@ -263,6 +265,7 @@ cc_driver_emit() {
     "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/cross-session-event-emit.sh"      "true"  \
     "hooks/agent-launch-confirmed.sh"        "false" \
+    "hooks/control-plane-audit.sh"           "false" \
   )
 
   local post_all
@@ -373,6 +376,7 @@ cc_driver_emit() {
     "hooks/kpi-trigger.sh"                    "true"  \
     "hooks/engram-crystallize-on-session-end.sh" "true" \
     "hooks/engram-obsidian-export-on-stop.sh" "true" \
+    "hooks/control-plane-audit-hourly.sh"    "false" \
   )
 
   local teammate_idle
