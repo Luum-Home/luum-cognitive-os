@@ -37,18 +37,24 @@ Developer --> Cognitive OS --> AI Assistant (Claude/Cursor/Codex/Gemini)
 
 ## What It Does
 
-| # | Feature | What It Does |
-|---|---------|--------------|
-| 1 | Persistent Memory | Your AI remembers decisions, bugs, and conventions between sessions |
-| 2 | Spec-Driven Development | 10-phase workflow for complex changes |
-| 3 | Quality Control | Immutable gates + configurable rules |
-| 4 | Self-Improvement | Captures errors, detects patterns, improves skills automatically |
-| 5 | Multi-Agent Orchestration | 12+ simultaneous coordinated agents |
-| 6 | Security | Guardrails, dangerous command blocking, audit trails |
-| 7 | Observability and Costs | Traces, metrics, budget caps |
-| 8 | Multi-IDE Portability | Works with 7+ tools via open standards |
-| 9 | Industry Presets | Pre-loaded best practices for fintech, healthcare, e-commerce |
-| 10 | Open-Source Core | FSL-1.1-MIT (source-available, converts to MIT after 2 years), extensible via plugins |
+> Status legend: **REAL** = production-ready and hook-enforced. **DORMANT** = code
+> exists but feature-flagged off / opt-in. **ASPIRATIONAL** = scaffolded, loop
+> not yet closed. Full reconciliation in
+> [`docs/legal/h1-feature-status-audit.md`](../legal/h1-feature-status-audit.md)
+> and [`docs/business/features.md`](features.md).
+
+| # | Feature | Status | What It Does |
+|---|---------|--------|--------------|
+| 1 | Persistent Memory | REAL | Your AI remembers decisions, bugs, and conventions between sessions |
+| 2 | Spec-Driven Development | REAL | 10-phase workflow for complex changes |
+| 3 | Quality Control | REAL | Immutable gates + configurable rules |
+| 4 | Self-Improvement | DORMANT | Captures errors, detects patterns, **proposes** skill and routing updates for human review (autonomous mutation is gated by ADR-201/204/206) |
+| 5 | Multi-Agent Orchestration | REAL | 12+ simultaneous coordinated agents |
+| 6 | Security | REAL | Guardrails, dangerous command blocking, audit trails |
+| 7 | Observability and Costs | REAL | Traces, metrics, budget caps |
+| 8 | Multi-IDE Portability | REAL | Works with 7+ tools via open standards |
+| 9 | Industry Presets | REAL | Pre-loaded best practices for fintech, healthcare, e-commerce |
+| 10 | Open-Source Core | REAL | FSL-1.1-MIT (source-available, converts to MIT after 2 years), extensible via plugins |
 
 ## Proven in Production
 
@@ -95,4 +101,7 @@ Cognitive OS is open-source and contributions are welcome. Visit the repository 
 
 ---
 
-*Cognitive OS: The infrastructure that turns AI assistants into autonomous engineering teams.*
+*Cognitive OS: governance, memory, and orchestration infrastructure that turns AI
+assistants into more disciplined engineering collaborators. Autonomy in the
+self-improvement and self-healing loops is propose-only and human-gated; it is
+not unsupervised.*
