@@ -119,7 +119,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:1, lifecycle-decla
 | `hooks/epic-task-detector.sh` | lab | heuristic:path | medium | so-local-only |  | 22 | add lifecycle/package/projection metadata or keep SO-local |
 | `hooks/error-learning.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 145 | keep maintainer-only or add explicit export path |
 | `hooks/error-pattern-detector.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 51 | keep maintainer-only or add explicit export path |
-| `hooks/error-pipeline.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 47 | keep maintainer-only or add explicit export path |
+| `hooks/error-pipeline.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 50 | keep maintainer-only or add explicit export path |
 | `hooks/git-commit-scope-guard.sh` | memory-lifecycle | lifecycle | high | lifecycle-declared-maintainer | blocking | 21 | keep maintainer-only or add explicit export path |
 | `hooks/git-context-capture.sh` | lab | lifecycle | high | lifecycle-declared-maintainer | sandbox | 37 | keep maintainer-only or add explicit export path |
 | `hooks/global-verify.sh` | memory-lifecycle | heuristic:text | medium | so-local-only |  | 26 | add lifecycle/package/projection metadata or keep SO-local |
