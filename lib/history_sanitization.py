@@ -367,6 +367,49 @@ def _create_backup_mirror(project_dir: Path, backup_path: Path) -> None:
         )
 
 
+
+
+def _snapshot_remotes(project_dir: Path) -> dict[str, dict[str, str]]:
+    """Capture local git remotes before git-filter-repo removes them.
+
+    git-filter-repo intentionally strips remotes to prevent accidental pushes of
+    rewritten history. COS still needs the pre-existing remote URLs in the
+    execute report and, for operator-driven local rewrites, restored locally so
+    subsequent smoke/push steps use the same canonical remote.
+    """
+    proc = git(project_dir, ["remote"])
+    if proc.returncode != 0:
+        return {}
+    remotes: dict[str, dict[str, str]] = {}
+    for name in [line.strip() for line in proc.stdout.splitlines() if line.strip()]:
+        urls: dict[str, str] = {}
+        for kind in ("fetch", "push"):
+            url_proc = git(project_dir, ["remote", "get-url", f"--{kind}", name])
+            if url_proc.returncode == 0 and url_proc.stdout.strip():
+                urls[kind] = url_proc.stdout.strip()
+        if urls:
+            remotes[name] = urls
+    return remotes
+
+
+def _restore_remotes(project_dir: Path, remotes: dict[str, dict[str, str]]) -> list[str]:
+    restored: list[str] = []
+    for name, urls in remotes.items():
+        fetch_url = urls.get("fetch") or urls.get("push")
+        push_url = urls.get("push") or fetch_url
+        if not fetch_url:
+            continue
+        if git(project_dir, ["remote", "get-url", name]).returncode != 0:
+            add = git(project_dir, ["remote", "add", name, fetch_url])
+            if add.returncode != 0:
+                continue
+        else:
+            git(project_dir, ["remote", "set-url", name, fetch_url])
+        if push_url:
+            git(project_dir, ["remote", "set-url", "--push", name, push_url])
+        restored.append(name)
+    return restored
+
 def _write_replacements_file(rules: list[dict[str, Any]], target_path: Path) -> int:
     """Write replacement rules in git-filter-repo's `OLD==>NEW` format.
 
@@ -643,6 +686,7 @@ def execute(
 
     pre_count_proc = git(project, ["rev-list", "--count", "--all"])
     pre_commit_count = int(pre_count_proc.stdout.strip() or "0")
+    pre_remotes = _snapshot_remotes(project)
 
     # 4. Backup mirror (mandatory; backup-or-refuse)
     _create_backup_mirror(project, backup_path)
@@ -663,6 +707,7 @@ def execute(
         # The rules file is intentionally kept for forensic audit (report
         # references it). It can be deleted by the operator post-verify.
         pass
+    restored_remotes = _restore_remotes(project, pre_remotes)
 
     # 7. Capture post-rewrite state
     post_head_proc = git(project, ["rev-parse", "HEAD"])
@@ -714,5 +759,6 @@ def execute(
         "pre_rewrite": {"head": pre_head, "commit_count": pre_commit_count},
         "post_rewrite": {"head": post_head, "commit_count": post_commit_count},
         "remaining_hits": remaining_hits,
+        "remotes_restored": restored_remotes,
         "rules_file": str(rules_file),
     }
