@@ -279,7 +279,7 @@ Status: `partial` (script exists, runbook step not formalized)
 ### L1. Operator personal data leakage check
 
 - [x] No instances of operator email outside intentional contexts
-  (Evidence: history sanitize replaced `<operator-previous-email>` → noreply; tracked-files grep returns 0 hits.)
+  (Evidence: history sanitize replaced the operator private email → GitHub noreply; tracked-files grep returns 0 hits.)
 - [x] No `/Users/<operator>/...` paths in committed files
   (Evidence: tracked-files grep returns 0 hits; only dashboard/.next/ build artifacts contain the path, and `.next/` is gitignored.)
 - [x] No personal MCP server UUIDs in committed examples
