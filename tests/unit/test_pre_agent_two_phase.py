@@ -36,7 +36,9 @@ def test_phase_1_plan_does_not_create_stash(tmp_path: Path) -> None:
     assert _stash_list(repo) == before
     assert plan["schema_version"] == "pre-agent-snapshot-plan/v1"
     assert plan["tracked_files"] == ["tracked.txt"]
+    assert plan["tracked_snapshot_files"] == ["tracked.txt"]
     assert plan["untracked_files"] == ["new.txt"]
+    assert (Path(plan["snapshot_dir"]) / "tracked.txt").read_text(encoding="utf-8") == "dirty\n"
     assert (Path(plan["snapshot_dir"]) / "new.txt").read_text(encoding="utf-8") == "new\n"
 
 

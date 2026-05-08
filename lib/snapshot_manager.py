@@ -145,16 +145,17 @@ def _stash_tracked(repo: Path, message: str) -> tuple[Optional[str], Optional[st
     return ref, resolve_top_stash_sha(repo)
 
 
-def _copy_untracked(
+def _copy_worktree_files(
     repo: Path,
-    untracked: list[str],
+    paths: list[str],
     dest: Path,
     *,
     max_file_bytes: Optional[int] = None,
     max_total_bytes: Optional[int] = None,
+    missing_reason: str = "missing",
 ) -> tuple[list[str], list[dict], int]:
     """
-    Copy untracked files from the WT to dest/, preserving directory structure.
+    Copy working-tree files to dest/, preserving directory structure.
 
     Oversized files or files that would exceed the per-snapshot byte budget are
     skipped and reported in the manifest rather than silently filling the disk.
@@ -164,9 +165,15 @@ def _copy_untracked(
     skipped: list[dict] = []
     copied_bytes = 0
 
-    for rel_path in untracked:
+    for rel_path in paths:
         src = repo / rel_path
         dst = dest / rel_path
+        if not src.exists():
+            skipped.append({"path": rel_path, "reason": missing_reason})
+            continue
+        if not src.is_file():
+            skipped.append({"path": rel_path, "reason": "not_regular_file"})
+            continue
         try:
             size_bytes = src.stat().st_size
         except OSError as exc:
@@ -200,6 +207,60 @@ def _copy_untracked(
             skipped.append({"path": rel_path, "reason": f"copy_failed: {exc}"})
 
     return copied, skipped, copied_bytes
+
+
+def _copy_untracked(
+    repo: Path,
+    untracked: list[str],
+    dest: Path,
+    *,
+    max_file_bytes: Optional[int] = None,
+    max_total_bytes: Optional[int] = None,
+) -> tuple[list[str], list[dict], int]:
+    """Copy untracked files from the WT to dest/, preserving directory structure."""
+    return _copy_worktree_files(
+        repo,
+        untracked,
+        dest,
+        max_file_bytes=max_file_bytes,
+        max_total_bytes=max_total_bytes,
+        missing_reason="missing",
+    )
+
+
+def _copy_tracked_baseline(
+    repo: Path,
+    tracked: list[str],
+    dest: Path,
+    *,
+    max_file_bytes: Optional[int] = None,
+    max_total_bytes: Optional[int] = None,
+) -> tuple[list[str], list[dict], int, list[str]]:
+    """Copy tracked dirty WT content for no-stash plan restores.
+
+    ADR-222 Phase 1 intentionally does not create a stash. A tracked file that
+    is already modified before Agent launch must still round-trip through
+    post-agent verification, so the plan snapshot stores the pre-agent
+    working-tree bytes beside untracked copies. Deleted tracked paths are
+    recorded as deletion baselines.
+    """
+    existing: list[str] = []
+    deleted: list[str] = []
+    for rel_path in tracked:
+        path = repo / rel_path
+        if path.exists():
+            existing.append(rel_path)
+        else:
+            deleted.append(rel_path)
+    copied, skipped, copied_bytes = _copy_worktree_files(
+        repo,
+        existing,
+        dest,
+        max_file_bytes=max_file_bytes,
+        max_total_bytes=max_total_bytes,
+        missing_reason="deleted",
+    )
+    return copied, skipped, copied_bytes, deleted
 
 
 def _snapshot_size_bytes(snap_dir: Path) -> int:
@@ -247,7 +308,11 @@ def plan_snapshot(
 
     copied_untracked: list[str] = []
     skipped_untracked: list[dict] = []
+    copied_tracked: list[str] = []
+    skipped_tracked: list[dict] = []
+    tracked_deleted: list[str] = []
     copied_bytes = 0
+    tracked_copied_bytes = 0
     status = "ok"
     if untracked:
         copied_untracked, skipped_untracked, copied_bytes = _copy_untracked(
@@ -258,6 +323,17 @@ def plan_snapshot(
             max_total_bytes=max_total_bytes,
         )
         if skipped_untracked or len(copied_untracked) < len(untracked):
+            status = "partial"
+    if tracked_files:
+        remaining_total = None if max_total_bytes is None else max(max_total_bytes - copied_bytes, 0)
+        copied_tracked, skipped_tracked, tracked_copied_bytes, tracked_deleted = _copy_tracked_baseline(
+            repo,
+            tracked_files,
+            snap_dir,
+            max_file_bytes=max_file_bytes,
+            max_total_bytes=remaining_total,
+        )
+        if skipped_tracked:
             status = "partial"
     if not copied_untracked and not skipped_untracked and not tracked_files:
         status = "skip_clean"
@@ -271,12 +347,17 @@ def plan_snapshot(
         "untracked_files": copied_untracked,
         "skipped_untracked_files": skipped_untracked,
         "tracked_files": tracked_files,
+        "tracked_snapshot_files": copied_tracked,
+        "tracked_deleted_files": tracked_deleted,
+        "skipped_tracked_files": skipped_tracked,
         "tracked_stash_ref": None,
         "tracked_stash_sha": None,
         "snapshot_dir": str(snap_dir),
         "mode": "copy_plan",
         "status": status,
-        "copied_bytes": copied_bytes,
+        "copied_bytes": copied_bytes + tracked_copied_bytes,
+        "untracked_copied_bytes": copied_bytes,
+        "tracked_copied_bytes": tracked_copied_bytes,
         "retention": {"max_file_mb": max_file_mb, "max_total_mb": max_total_mb},
     }
     (snap_dir / MANIFEST_FILE).write_text(json.dumps(manifest, indent=2))
@@ -568,15 +649,32 @@ def restore_snapshot(
     manifest = json.loads(manifest_path.read_text())
     errors: list[str] = []
     restored_untracked: list[str] = []
+    restored_tracked_files: list[str] = []
     restored_tracked = False
 
-    # Restore untracked files
+    # Restore file copies captured in the snapshot directory.
     all_untracked = manifest.get("untracked_files", [])
-    to_restore_untracked = files if files is not None else all_untracked
+    all_tracked_copies = manifest.get("tracked_snapshot_files", [])
+    all_tracked_deleted = manifest.get("tracked_deleted_files", [])
+    requested = files if files is not None else [*all_untracked, *all_tracked_copies, *all_tracked_deleted]
 
-    for rel_path in to_restore_untracked:
-        if rel_path not in all_untracked:
+    for rel_path in requested:
+        is_untracked = rel_path in all_untracked
+        is_tracked_copy = rel_path in all_tracked_copies
+        is_tracked_deleted = rel_path in all_tracked_deleted
+        if not is_untracked and not is_tracked_copy and not is_tracked_deleted:
             errors.append(f"File not in snapshot: {rel_path}")
+            continue
+        if is_tracked_deleted:
+            dst = repo / rel_path
+            try:
+                if dst.is_dir():
+                    shutil.rmtree(str(dst))
+                elif dst.exists():
+                    dst.unlink()
+                restored_tracked_files.append(rel_path)
+            except Exception as exc:
+                errors.append(f"Failed to restore deleted baseline {rel_path}: {exc}")
             continue
         src = snap_dir / rel_path
         dst = repo / rel_path
@@ -586,7 +684,10 @@ def restore_snapshot(
         try:
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(str(src), str(dst))
-            restored_untracked.append(rel_path)
+            if is_untracked:
+                restored_untracked.append(rel_path)
+            else:
+                restored_tracked_files.append(rel_path)
         except Exception as exc:
             errors.append(f"Failed to restore {rel_path}: {exc}")
 
@@ -620,6 +721,7 @@ def restore_snapshot(
         "snapshot_id": snapshot_id,
         "restored_untracked": restored_untracked,
         "restored_tracked": restored_tracked,
+        "restored_tracked_files": restored_tracked_files,
         "errors": errors,
         "partial": files is not None,
     }
