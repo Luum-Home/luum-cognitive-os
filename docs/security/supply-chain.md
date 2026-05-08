@@ -275,27 +275,69 @@ Counts:
 
 ## 4. Pinning & Provenance Policy
 
-### 4.1 Current state
+### 4.1 Current state — per-language verdict
 
-- **Python:** `uv.lock` pins exact versions and hashes for every transitive
-  dependency. `pyproject.toml` uses `>=` constraints for floor versions; the
-  lockfile is the source of truth. Hash verification is enforced by `uv` on
-  install.
-- **Go:** `go.sum` pins module checksums (h1:) for every `require`d module.
-  Verified by `go mod verify` and the Go module proxy by default.
-- **Node (dashboard):** `package-lock.json` pins exact versions and integrity
-  hashes (`integrity: sha512-...`). Verified by `npm ci`.
-- **Container base images:** None. The project ships as language-native
-  artifacts (Python wheel, Go static binaries, Node app); no Dockerfiles in
-  the release path.
-- **CI workflows:** Per `manifests/cross-stack-license-audit.yaml`, mutable
-  `aquasecurity/trivy-action` references are **forbidden**. Workflows MUST pin
-  third-party actions by full commit SHA.
+| Stack                | Verdict   | Source of truth                                  | Verification command                       |
+| -------------------- | --------- | ------------------------------------------------ | ------------------------------------------ |
+| Python (core + dev)  | pinned    | `uv.lock` (≥1200 sha256 hash entries)            | `uv sync --locked` (refuses on drift)      |
+| Go (root module)     | pinned    | `go.sum` (h1: hashes per module)                 | `go mod verify`                            |
+| Go (`cmd/cos`)       | pinned    | `cmd/cos/go.sum`                                 | `cd cmd/cos && go mod verify`              |
+| Go (`cmd/cos-test`)  | pinned    | `cmd/cos-test/go.sum`                            | `cd cmd/cos-test && go mod verify`         |
+| Node (dashboard)     | pinned    | `dashboard/package-lock.json` (sha512 integrity) | `cd dashboard && npm ci`                   |
+| Node (root)          | n/a       | no runtime deps; postinstall script + bin only   | (no lockfile by design)                    |
+| Third-party CLIs     | partial   | `manifests/dependencies.yaml`                    | per-tool `--version` checks; see §4.3      |
+| GitHub Actions       | partial   | `.github/workflows/cos-binary-release.yml`       | manual SHA pinning audit; see §4.4         |
+| Container base images| n/a       | no Dockerfiles in release path                   | (n/a)                                      |
+
+**Verdict legend:** `pinned` = transitive closure verified by hash on every
+install; `partial` = exact version named but no cryptographic digest pinned by
+the project itself (operator must verify against upstream-published checksums);
+`n/a` = no relevant artifact in the release path.
+
+#### Python — pinned
+
+`uv.lock` pins exact versions and per-distribution `sha256` hashes for every
+transitive dependency. `pyproject.toml` uses `>=` constraints for floor
+versions; the lockfile is the source of truth. Hash verification is enforced
+by `uv` on install. To audit:
+
+```bash
+uv sync --locked --extra testing --extra enforcement
+# refuses to install if any cached wheel disagrees with the lockfile hash
+```
+
+#### Go — pinned
+
+All three Go modules ship a `go.sum` containing `h1:` hashes for each
+`require`d module, both direct and transitive. The Go toolchain verifies these
+on every build via the GOSUMDB transparency log by default. To audit:
+
+```bash
+go mod verify                    # root
+( cd cmd/cos && go mod verify )
+( cd cmd/cos-test && go mod verify )
+```
+
+#### Node (dashboard) — pinned
+
+`dashboard/package-lock.json` pins exact versions and `integrity` hashes
+(`sha512-…`) for every `node_modules/` entry. The dashboard CI uses `npm ci`,
+which refuses to install if a tarball disagrees with the lockfile integrity.
+
+The repo-root `package.json` declares no runtime dependencies (it exists only
+to expose the postinstall script and the `cos` bin shim), so there is no
+root-level lockfile by design.
 
 ### 4.2 Aspirational (tracked, not yet enforced)
 
 - **Sigstore / cosign signing of release artifacts** — planned for the first
-  public release tag (item M2 of `docs/legal/pre-public-readiness-checklist.md`).
+  public release tag. Concrete steps and consumer-side verification commands
+  are documented in `docs/security/release-signing.md`. Currently
+  `git tag -v v0.27.1` reports "no signature found"; this is the documented
+  gap, not tampering.
+- **Detached SBOM signature** — `sbom.json.sig` shipped alongside `sbom.json`.
+  Wired the same release as the first signed tag; see release-signing §3.2
+  step 4.
 - **SLSA provenance attestations** — out of scope for v0.x; revisit at v1.0.
 - **Reproducible builds** — Python wheel reproducibility and Go binary
   determinism are tracked under future ADRs.
