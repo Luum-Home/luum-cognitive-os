@@ -1,0 +1,3680 @@
+{
+  "schema_version": "external-tools-reassessment-scope/v1",
+  "generated_at": "2026-05-08",
+  "item_count": 184,
+  "items": [
+    {
+      "norm": "affaan-m/everything-claude-code",
+      "name": "affaan-m/everything-claude-code",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/deep/affaan-m__everything-claude-code-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "agentapi",
+      "name": "agentapi",
+      "count": 9,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "agentgateway/agentgateway",
+      "name": "agentgateway/agentgateway",
+      "count": 2,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/agentgateway__agentgateway-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "agentscope-ai/agentscope",
+      "name": "agentscope-ai/agentscope",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/deep/agentscope-ai__agentscope-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "agentsmd/agents.md",
+      "name": "agentsmd/agents.md",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "aider-ai/aider",
+      "name": "Aider-AI/aider",
+      "count": 10,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/deep/Aider-AI__aider-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "anomalyco/opencode",
+      "name": "anomalyco/opencode",
+      "count": 9,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/anomalyco__opencode-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "autogen",
+      "name": "AutoGen",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-C-orchestration-2026-05-08.md"
+      ],
+      "confidence": "medium",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "awslabs/agent-squad",
+      "name": "awslabs/agent-squad",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/awslabs__agent-squad-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "beehiveinnovations/pal-mcp-server",
+      "name": "BeehiveInnovations/pal-mcp-server",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md",
+        "docs/research/repo-scout/deep/BeehiveInnovations__pal-mcp-server-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "berriai/litellm",
+      "name": "BerriAI/litellm",
+      "count": 2,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/BerriAI__litellm-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "claude-agent-sdk",
+      "name": "claude-agent-sdk",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "cline/cline",
+      "name": "cline/cline",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/cline__cline-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "coder/agentapi",
+      "name": "coder/agentapi",
+      "count": 7,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-wrappers-templates-2026-05-06.md",
+        "docs/research/repo-scout/deep/coder__agentapi-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "coleam00/archon",
+      "name": "coleam00/Archon",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
+        "docs/research/repo-scout/deep/coleam00__Archon-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "composiohq/agent-orchestrator",
+      "name": "ComposioHQ/agent-orchestrator",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/deep/ComposioHQ__agent-orchestrator-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "continuedev/continue",
+      "name": "continuedev/continue",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/deep/continuedev__continue-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "crewai",
+      "name": "CrewAI",
+      "count": 5,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "crewaiinc/crewai",
+      "name": "crewAIInc/crewAI",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/orchestration-gaps/agent-to-agent-handoff.md",
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/crewAIInc__crewAI-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "dmgrok/agent-skills-directory",
+      "name": "dmgrok/agent_skills_directory",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/research/repo-scout/deep/dmgrok__agent_skills_directory-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "dollspace-gay/openclaudia",
+      "name": "dollspace-gay/OpenClaudia",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/dollspace-gay__OpenClaudia-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "foundationagents/metagpt",
+      "name": "FoundationAgents/MetaGPT",
+      "count": 2,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/FoundationAgents__MetaGPT-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "gepa-ai/gepa",
+      "name": "gepa-ai/gepa",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
+        "docs/research/repo-scout/deep/gepa-ai__gepa-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "internlm/wildclawbench",
+      "name": "InternLM/WildClawBench",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/InternLM__WildClawBench-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "jackchen-me/open-multi-agent",
+      "name": "JackChen-me/open-multi-agent",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "litellm",
+      "name": "litellm",
+      "count": 7,
+      "kinds": [
+        "install-command-tool",
+        "python-package",
+        "tool-term"
+      ],
+      "sources": [
+        "cos-package-install",
+        "package-requirements",
+        "python-requirements",
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md",
+        "packages/advisor-mcp/cos-package.yaml",
+        "packages/advisor-mcp/requirements.txt",
+        "requirements.txt",
+        "requirements/dependency-lanes/llm.txt"
+      ],
+      "confidence": "medium",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "luongnv89/claude-howto",
+      "name": "luongnv89/claude-howto",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/luongnv89__claude-howto-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "maximhq/bifrost",
+      "name": "maximhq/bifrost",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md",
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/maximhq__bifrost-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "microsoft/agent-framework",
+      "name": "microsoft/agent-framework",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-agent-orchestration-2026-05-06.md",
+        "docs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "minimax-ai/minimax-m2",
+      "name": "MiniMax-AI/MiniMax-M2",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/MiniMax-AI__MiniMax-M2-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "musistudio/claude-code-router",
+      "name": "musistudio/claude-code-router",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/deep/musistudio__claude-code-router-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "nousresearch/hermes-agent",
+      "name": "NousResearch/hermes-agent",
+      "count": 9,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/dependencies-license-audit-2026-05-06.md",
+        "docs/reports/docs-execution-latest.json",
+        "docs/reports/docs-execution-latest.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/orchestration-gaps/cost-aware-routing.md",
+        "docs/research/orchestration-gaps/replay-timeline-architectures.md",
+        "docs/research/repo-scout/cluster-agent-research-selfevolve-2026-05-06.md",
+        "docs/research/repo-scout/deep/NousResearch__hermes-agent-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "obra/superpowers",
+      "name": "obra/superpowers",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-swe-2026-05-06.md",
+        "docs/research/repo-scout/deep/obra__superpowers-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "openclaw/openclaw",
+      "name": "openclaw/openclaw",
+      "count": 12,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/deep/openclaw__openclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "openhands/openhands",
+      "name": "OpenHands/OpenHands",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/deep/OpenHands__OpenHands-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "praetorian-inc/augustus",
+      "name": "praetorian-inc/augustus",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "qwenlm/qwen-code",
+      "name": "QwenLM/qwen-code",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/multi-provider-agent-delegation-research-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/QwenLM__qwen-code-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "roocodeinc/roo-code",
+      "name": "RooCodeInc/Roo-Code",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/RooCodeInc__Roo-Code-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "shanraisshan/claude-code-best-practice",
+      "name": "shanraisshan/claude-code-best-practice",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/shanraisshan__claude-code-best-practice-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "sigoden/aichat",
+      "name": "sigoden/aichat",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/sigoden__aichat-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "simonw/llm",
+      "name": "simonw/llm",
+      "count": 8,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/research/repo-scout/deep/simonw__llm-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "snyk/agent-scan",
+      "name": "snyk/agent-scan",
+      "count": 8,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-mcp-extensions-2026-05-06.md",
+        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/research/repo-scout/deep/snyk__agent-scan-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "stanfordnlp/dspy",
+      "name": "stanfordnlp/dspy",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/research/repo-scout/deep/stanfordnlp__dspy-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "swe-agent/swe-agent",
+      "name": "SWE-agent/SWE-agent",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/agentic-mastery-license-weight-dx-matrix.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-agent-swe-2026-05-06.md",
+        "docs/research/repo-scout/deep/SWE-agent__SWE-agent-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "ther1d/shell-gpt",
+      "name": "TheR1D/shell_gpt",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-agent-experimental-A-llm-tooling-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/TheR1D__shell_gpt-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "agents-orchestration-routing"
+    },
+    {
+      "norm": "diff-cover",
+      "name": "diff-cover",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "fastapi",
+      "name": "fastapi",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "github.com/burntsushi/toml",
+      "name": "github.com/BurntSushi/toml",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "import-linter",
+      "name": "import-linter",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "jinja2",
+      "name": "jinja2",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "jupyter",
+      "name": "jupyter",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt",
+        "requirements/dependency-lanes/jupyter.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "luum-cognitive-os",
+      "name": "luum-cognitive-os",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "modernc.org/sqlite",
+      "name": "modernc.org/sqlite",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "mutmut",
+      "name": "mutmut",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "notebook",
+      "name": "notebook",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt",
+        "requirements/dependency-lanes/jupyter.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "numpy",
+      "name": "numpy",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements/dependency-lanes/semantic.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pre-commit",
+      "name": "pre-commit",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest",
+      "name": "pytest",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest-asyncio",
+      "name": "pytest-asyncio",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest-cov",
+      "name": "pytest-cov",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest-rerunfailures",
+      "name": "pytest-rerunfailures",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest-smell",
+      "name": "pytest-smell",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest-timeout",
+      "name": "pytest-timeout",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "pytest-xdist",
+      "name": "pytest-xdist",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "redis",
+      "name": "redis",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt",
+        "requirements/dependency-lanes/llm.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "ruff",
+      "name": "ruff",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "uvicorn",
+      "name": "uvicorn",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "vulture",
+      "name": "vulture",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "foundation-dependencies"
+    },
+    {
+      "norm": "anthropic",
+      "name": "anthropic",
+      "count": 2,
+      "kinds": [
+        "install-command-tool",
+        "python-package"
+      ],
+      "sources": [
+        "cos-package-install",
+        "package-requirements"
+      ],
+      "paths": [
+        "packages/advisor-mcp/cos-package.yaml",
+        "packages/advisor-mcp/requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "bubblewrap",
+      "name": "Bubblewrap",
+      "count": 5,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
+        "docs/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md"
+      ],
+      "confidence": "medium",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "e2b",
+      "name": "E2B",
+      "count": 6,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "fastmcp",
+      "name": "FastMCP",
+      "count": 8,
+      "kinds": [
+        "install-command-tool",
+        "python-package",
+        "tool-term"
+      ],
+      "sources": [
+        "cos-package-install",
+        "package-requirements",
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-B-sandbox-mcp-2026-05-08.md",
+        "docs/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "packages/advisor-mcp/cos-package.yaml",
+        "packages/advisor-mcp/requirements.txt",
+        "packages/mcp-server/cos-package.yaml"
+      ],
+      "confidence": "medium",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "google-generativeai",
+      "name": "google-generativeai",
+      "count": 2,
+      "kinds": [
+        "install-command-tool",
+        "python-package"
+      ],
+      "sources": [
+        "cos-package-install",
+        "package-requirements"
+      ],
+      "paths": [
+        "packages/advisor-mcp/cos-package.yaml",
+        "packages/advisor-mcp/requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "httpx",
+      "name": "httpx",
+      "count": 2,
+      "kinds": [
+        "install-command-tool",
+        "python-package"
+      ],
+      "sources": [
+        "cos-package-install",
+        "package-requirements"
+      ],
+      "paths": [
+        "packages/advisor-mcp/cos-package.yaml",
+        "packages/advisor-mcp/requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "openai",
+      "name": "openai",
+      "count": 3,
+      "kinds": [
+        "install-command-tool",
+        "python-package"
+      ],
+      "sources": [
+        "cos-package-install",
+        "package-requirements",
+        "pyproject"
+      ],
+      "paths": [
+        "packages/advisor-mcp/cos-package.yaml",
+        "packages/advisor-mcp/requirements.txt",
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "opentelemetry-api",
+      "name": "opentelemetry-api",
+      "count": 1,
+      "kinds": [
+        "install-command-tool"
+      ],
+      "sources": [
+        "cos-package-install"
+      ],
+      "paths": [
+        "packages/mcp-server/cos-package.yaml"
+      ],
+      "confidence": "high",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "pyyaml",
+      "name": "pyyaml",
+      "count": 3,
+      "kinds": [
+        "install-command-tool",
+        "python-package"
+      ],
+      "sources": [
+        "cos-package-install",
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "packages/mcp-server/cos-package.yaml",
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "mcp-integration"
+    },
+    {
+      "norm": "codegraphcontext/codegraphcontext",
+      "name": "CodeGraphContext/CodeGraphContext",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/primitive-coverage-backend-benchmark-2026-05.md",
+        "docs/reports/primitive-coverage-backend-benchmark-2026-05-01.json",
+        "docs/reports/primitive-coverage-backend-benchmark-2026-05-01.md",
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/CodeGraphContext__CodeGraphContext-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "cognee",
+      "name": "Cognee",
+      "count": 7,
+      "kinds": [
+        "python-package",
+        "tool-term"
+      ],
+      "sources": [
+        "python-requirements",
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md",
+        "requirements.txt",
+        "requirements/dependency-lanes/memory.txt"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "davidanson/markdownlint-cli2",
+      "name": "DavidAnson/markdownlint-cli2",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
+        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/DavidAnson__markdownlint-cli2-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "deep-polyu/awesome-graphmemory",
+      "name": "DEEP-PolyU/Awesome-GraphMemory",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "devwhodevs/engraph",
+      "name": "devwhodevs/engraph",
+      "count": 2,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/devwhodevs__engraph-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "dspy",
+      "name": "DSPy",
+      "count": 10,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "egdev6/engram-monitor",
+      "name": "egdev6/engram-monitor",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/egdev6__engram-monitor-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "getzep/graphiti",
+      "name": "getzep/graphiti",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/external-tool-adoption-doctrine.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/deep/getzep__graphiti-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "graphiti",
+      "name": "Graphiti",
+      "count": 9,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "hipporag",
+      "name": "HippoRAG",
+      "count": 9,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "hkuds/lightrag",
+      "name": "HKUDS/LightRAG",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/deep/HKUDS__LightRAG-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "langgraph",
+      "name": "LangGraph",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-C-orchestration-2026-05-08.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "letta-ai/letta",
+      "name": "letta-ai/letta",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/letta-ai__letta-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "lightrag",
+      "name": "LightRAG",
+      "count": 9,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "lycheeverse/lychee",
+      "name": "lycheeverse/lychee",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
+        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/lycheeverse__lychee-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "lycheeverse/lychee-action",
+      "name": "lycheeverse/lychee-action",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/primitive-coverage-tooling-research-2026-04.md",
+        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/lycheeverse__lychee-action-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "mempalace/mempalace",
+      "name": "MemPalace/mempalace",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/deep/MemPalace__mempalace-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "memvid/memvid",
+      "name": "memvid/memvid",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/memvid__memvid-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "mibayy/token-savior",
+      "name": "Mibayy/token-savior",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/deep/Mibayy__token-savior-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "microsoft/graphrag",
+      "name": "microsoft/graphrag",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/microsoft__graphrag-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "mirix",
+      "name": "MIRIX",
+      "count": 6,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-monitor-followup-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "mirix-ai/mirix",
+      "name": "Mirix-AI/MIRIX",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/Mirix-AI__MIRIX-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "modernc.org/memory",
+      "name": "modernc.org/memory",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "openai/codex",
+      "name": "openai/codex",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/adrs/ADR-064-harness-agnostic-cognitive-os.md",
+        "docs/adrs/ADR-081-codex-harness-adapter.md",
+        "docs/architecture/cross-tool-task-recovery-research-2026-05.md",
+        "docs/reports/primitive-coverage-latest.json",
+        "docs/research/repo-scout/cluster-agent-codegen-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/openai__codex-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "osu-nlp-group/hipporag",
+      "name": "OSU-NLP-Group/HippoRAG",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/deep/OSU-NLP-Group__HippoRAG-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "ragas",
+      "name": "ragas",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "rohitg00/agentmemory",
+      "name": "rohitg00/agentmemory",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-memory-vector-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/rohitg00__agentmemory-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "safishamsi/graphify",
+      "name": "safishamsi/graphify",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/safishamsi__graphify-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "temporal",
+      "name": "Temporal",
+      "count": 6,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-A-memory-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "topoteretes/cognee",
+      "name": "topoteretes/cognee",
+      "count": 2,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/topoteretes__cognee-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "yifanfeng97/hyper-extract",
+      "name": "yifanfeng97/Hyper-Extract",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-memory-graph-rag-2026-05-06.md",
+        "docs/research/repo-scout/deep/yifanfeng97__Hyper-Extract-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "memory-rag"
+    },
+    {
+      "norm": "arize-phoenix",
+      "name": "arize-phoenix",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements/dependency-lanes/observability.txt"
+      ],
+      "confidence": "high",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "arize-phoenix-otel",
+      "name": "arize-phoenix-otel",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements/dependency-lanes/observability.txt"
+      ],
+      "confidence": "high",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "deepeval",
+      "name": "deepeval",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "langfuse",
+      "name": "Langfuse",
+      "count": 8,
+      "kinds": [
+        "python-package",
+        "tool-term"
+      ],
+      "sources": [
+        "python-requirements",
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-E-observability-debt-2026-05-08.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "requirements.txt"
+      ],
+      "confidence": "medium",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "mlflow",
+      "name": "MLflow",
+      "count": 5,
+      "kinds": [
+        "python-package",
+        "tool-term"
+      ],
+      "sources": [
+        "python-requirements",
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-E-observability-debt-2026-05-08.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "requirements.txt"
+      ],
+      "confidence": "medium",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "mlflow-skinny",
+      "name": "mlflow-skinny",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements/dependency-lanes/observability.txt"
+      ],
+      "confidence": "high",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "opik",
+      "name": "opik",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "phoenix",
+      "name": "Phoenix",
+      "count": 6,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-E-observability-debt-2026-05-08.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md"
+      ],
+      "confidence": "medium",
+      "domain": "observability-eval-optimization"
+    },
+    {
+      "norm": "e2b-dev/infra",
+      "name": "e2b-dev/infra",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/research/repo-scout/deep/e2b-dev__infra-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "sandbox-runtime-testing"
+    },
+    {
+      "norm": "firecracker",
+      "name": "Firecracker",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-08.md"
+      ],
+      "confidence": "medium",
+      "domain": "sandbox-runtime-testing"
+    },
+    {
+      "norm": "testcontainers",
+      "name": "testcontainers",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject",
+        "python-requirements"
+      ],
+      "paths": [
+        "pyproject.toml",
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "sandbox-runtime-testing"
+    },
+    {
+      "norm": "testcontainers/testcontainers-python",
+      "name": "testcontainers/testcontainers-python",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/dependencies-license-audit-2026-05-06.md",
+        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/research/repo-scout/deep/testcontainers__testcontainers-python-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "sandbox-runtime-testing"
+    },
+    {
+      "norm": "grype",
+      "name": "Grype",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-INDEX.md"
+      ],
+      "confidence": "medium",
+      "domain": "security-supply-chain-guardrails"
+    },
+    {
+      "norm": "juliusbrussee/caveman",
+      "name": "JuliusBrussee/caveman",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/dependencies-license-audit-2026-05-06.md",
+        "docs/reports/plugin-caveman-review-2026-04-20.md",
+        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/JuliusBrussee__caveman-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "security-supply-chain-guardrails"
+    },
+    {
+      "norm": "nemoguardrails",
+      "name": "nemoguardrails",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt",
+        "requirements/dependency-lanes/guardrails.txt"
+      ],
+      "confidence": "high",
+      "domain": "security-supply-chain-guardrails"
+    },
+    {
+      "norm": "semgrep/semgrep",
+      "name": "semgrep/semgrep",
+      "count": 3,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-security-supply-2026-05-06.md",
+        "docs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "security-supply-chain-guardrails"
+    },
+    {
+      "norm": "syft",
+      "name": "Syft",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-INDEX.md"
+      ],
+      "confidence": "medium",
+      "domain": "security-supply-chain-guardrails"
+    },
+    {
+      "norm": "aider",
+      "name": "Aider",
+      "count": 10,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-C-orchestration-2026-05-08.md",
+        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "allinurl/goaccess",
+      "name": "allinurl/goaccess",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/allinurl__goaccess-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "antonmedv/fx",
+      "name": "antonmedv/fx",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/antonmedv__fx-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "aristocratos/btop",
+      "name": "aristocratos/btop",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/aristocratos__btop-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "bubble-tea",
+      "name": "Bubble Tea",
+      "count": 6,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-errata.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md"
+      ],
+      "confidence": "medium",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/bubbles",
+      "name": "charmbracelet/bubbles",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__bubbles-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/bubbletea",
+      "name": "charmbracelet/bubbletea",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__bubbletea-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/glamour",
+      "name": "charmbracelet/glamour",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__glamour-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/gum",
+      "name": "charmbracelet/gum",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__gum-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/huh",
+      "name": "charmbracelet/huh",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__huh-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/lipgloss",
+      "name": "charmbracelet/lipgloss",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__lipgloss-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/soft-serve",
+      "name": "charmbracelet/soft-serve",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__soft-serve-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "charmbracelet/vhs",
+      "name": "charmbracelet/vhs",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-charm-go-2026-05-06.md",
+        "docs/research/repo-scout/deep/charmbracelet__vhs-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "clementtsang/bottom",
+      "name": "ClementTsang/bottom",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/ClementTsang__bottom-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "crossterm-rs/crossterm",
+      "name": "crossterm-rs/crossterm",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md",
+        "docs/research/repo-scout/deep/crossterm-rs__crossterm-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "derailed/k9s",
+      "name": "derailed/k9s",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/derailed__k9s-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "dlvhdr/gh-dash",
+      "name": "dlvhdr/gh-dash",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/dlvhdr__gh-dash-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "gitui-org/gitui",
+      "name": "gitui-org/gitui",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/gitui-org__gitui-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "hatoo/oha",
+      "name": "hatoo/oha",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/hatoo__oha-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "jarun/nnn",
+      "name": "jarun/nnn",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/jarun__nnn-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "jesseduffield/lazydocker",
+      "name": "jesseduffield/lazydocker",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/jesseduffield__lazydocker-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "jesseduffield/lazygit",
+      "name": "jesseduffield/lazygit",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/jesseduffield__lazygit-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "junegunn/fzf",
+      "name": "junegunn/fzf",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-cli-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/junegunn__fzf-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "nearai/ironclaw",
+      "name": "nearai/ironclaw",
+      "count": 8,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/nearai__ironclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "nullclaw/nullclaw",
+      "name": "nullclaw/nullclaw",
+      "count": 7,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/nullclaw__nullclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "qhkm/zeptoclaw",
+      "name": "qhkm/zeptoclaw",
+      "count": 7,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/qhkm__zeptoclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "qwibitai/nanoclaw",
+      "name": "qwibitai/nanoclaw",
+      "count": 7,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/qwibitai__nanoclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "ratatui/ratatui",
+      "name": "ratatui/ratatui",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-rust-2026-05-06.md",
+        "docs/research/repo-scout/deep/ratatui__ratatui-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "rich",
+      "name": "rich",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "pyproject"
+      ],
+      "paths": [
+        "pyproject.toml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "sachaos/viddy",
+      "name": "sachaos/viddy",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/sachaos__viddy-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "sipeed/picoclaw",
+      "name": "sipeed/picoclaw",
+      "count": 7,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/sipeed__picoclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "superpowers",
+      "name": "Superpowers",
+      "count": 9,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md",
+        "docs/reports/external-tools-comparative-matrix-2026-05-06.md",
+        "docs/reports/external-tools-inventory-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/reports/external-tools-radar-2026-05-08-traceability.md",
+        "docs/reports/external-tools-radar-2026-05-08.md",
+        "docs/reports/external-tools-radar-INDEX.md",
+        "docs/reports/external-tools-radar-deep-2026-05-06.md",
+        "docs/reports/external-tools-radar-deep-tier2-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "sxyazi/yazi",
+      "name": "sxyazi/yazi",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/sxyazi__yazi-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "textualize/rich",
+      "name": "Textualize/rich",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/Textualize__rich-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "textualize/textual",
+      "name": "Textualize/textual",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-tui-py-other-2026-05-06.md",
+        "docs/research/repo-scout/deep/Textualize__textual-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "tstack/lnav",
+      "name": "tstack/lnav",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/tstack__lnav-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "wagoodman/dive",
+      "name": "wagoodman/dive",
+      "count": 6,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/wagoodman__dive-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "wtfutil/wtf",
+      "name": "wtfutil/wtf",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/wtfutil__wtf-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "yorukot/superfile",
+      "name": "yorukot/superfile",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/yorukot__superfile-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "zellij-org/zellij",
+      "name": "zellij-org/zellij",
+      "count": 5,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md",
+        "docs/research/repo-scout/deep/zellij-org__zellij-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "zeroclaw-labs/zeroclaw",
+      "name": "zeroclaw-labs/zeroclaw",
+      "count": 8,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/remote-control-plane-alternatives-2026-05-05.md",
+        "docs/reports/surface-5-tui-ui-candidates-2026-05-05.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/zeroclaw-labs__zeroclaw-2026-05-06.md",
+        "manifests/remote-control-plane-alternatives.yaml"
+      ],
+      "confidence": "high",
+      "domain": "tui-cli-devtools"
+    },
+    {
+      "norm": "crawl4ai",
+      "name": "crawl4ai",
+      "count": 2,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt",
+        "requirements/dependency-lanes/crawling.txt"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "github.com/dustin/go-humanize",
+      "name": "github.com/dustin/go-humanize",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "github.com/google/uuid",
+      "name": "github.com/google/uuid",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "github.com/mattn/go-isatty",
+      "name": "github.com/mattn/go-isatty",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "github.com/ncruces/go-strftime",
+      "name": "github.com/ncruces/go-strftime",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "github.com/remyoudompheng/bigfft",
+      "name": "github.com/remyoudompheng/bigfft",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "golang.org/x/sys",
+      "name": "golang.org/x/sys",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "langchain",
+      "name": "LangChain",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-inventory-2026-05-06.md"
+      ],
+      "confidence": "medium",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "mattpocock/skills",
+      "name": "mattpocock/skills",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/primitives-and-tools-audit-2026-05-05.md",
+        "docs/research/repo-scout/cluster-skills-prompts-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/mattpocock__skills-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "memu",
+      "name": "memu",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements.txt"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "modernc.org/libc",
+      "name": "modernc.org/libc",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "modernc.org/mathutil",
+      "name": "modernc.org/mathutil",
+      "count": 1,
+      "kinds": [
+        "go-module"
+      ],
+      "sources": [
+        "go-mod"
+      ],
+      "paths": [
+        "go.mod"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "nashsu/autocli",
+      "name": "nashsu/AutoCLI",
+      "count": 2,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/nashsu__AutoCLI-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "nats",
+      "name": "NATS",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-08.md"
+      ],
+      "confidence": "medium",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "opa",
+      "name": "OPA",
+      "count": 1,
+      "kinds": [
+        "tool-term"
+      ],
+      "sources": [
+        "radar-term"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-08.md"
+      ],
+      "confidence": "medium",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "sentence-transformers",
+      "name": "sentence-transformers",
+      "count": 1,
+      "kinds": [
+        "python-package"
+      ],
+      "sources": [
+        "python-requirements"
+      ],
+      "paths": [
+        "requirements/dependency-lanes/semantic.txt"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "smykla-skalski/klaudiush",
+      "name": "smykla-skalski/klaudiush",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/architecture/cos-dispatch/README.md",
+        "docs/research/repo-scout/cluster-cli-claw-derivatives-2026-05-06.md",
+        "docs/research/repo-scout/monitor-followup/smykla-skalski__klaudiush-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    },
+    {
+      "norm": "unclecode/crawl4ai",
+      "name": "unclecode/crawl4ai",
+      "count": 4,
+      "kinds": [
+        "repository",
+        "repository-ref"
+      ],
+      "sources": [
+        "doc-github-ref",
+        "repo-scout-cluster-ref",
+        "repo-scout-file"
+      ],
+      "paths": [
+        "docs/reports/external-tools-radar-2026-05-06.md",
+        "docs/research/repo-scout/cluster-browser-automation-2026-05-06.md",
+        "docs/research/repo-scout/deep/unclecode__crawl4ai-2026-05-06.md"
+      ],
+      "confidence": "high",
+      "domain": "uncategorized"
+    }
+  ]
+}
