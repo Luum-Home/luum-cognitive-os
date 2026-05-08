@@ -104,7 +104,7 @@ The honest comparison is against the stack you would need to build and maintain 
 | Quality gates | Custom CI/CD pipeline | 44 rules + 41 hooks |
 | Metrics & KPIs | Grafana + custom dashboards | Built-in telemetry plus reviewed calibration proposals |
 | Tool discovery | Manual research | Weekly auto-scan |
-| Self-improvement | Doesn't exist | Built-in (feedback loops) |
+| Self-improvement | Doesn't exist | Propose-only feedback loops (DORMANT — captures errors and drafts skill/routing updates for human approval; autonomous mutation gated by ADR-201/204/206) |
 | Cost tracking | Manual | Built-in per-skill/model |
 | Multi-agent teams | CrewAI / AutoGen (separate tool) | Squads (built-in) |
 | Phase governance | Manual process | 4-phase lifecycle |
