@@ -251,10 +251,18 @@ Status: `pending`
 
 ### L2. Worktree / temp-path leakage check
 
-- [ ] `git worktree list` outputs in docs scrubbed of
+- [x] `git worktree list` outputs in docs scrubbed of
   `/private/var/folders/...` paths
+- [x] `.claude/worktrees/agent-*` paths scrubbed
+- [x] `.cos-agent-worktrees/luum-agent-os/task-desc-*` paths scrubbed
+- [x] `/tmp/cos-validation-capsules/...` paths scrubbed
 
-Status: `pending`
+Evidence: Full grep audit found 0 actual leaked paths in scope.
+Code-logic uses of these prefixes in `scripts/cos-registry.sh` and
+`scripts/cos_init.py` are intentional and were left untouched.
+Report: `docs/legal/operator-paths-scrub-report.md`
+
+Status: `done`
 
 ---
 
