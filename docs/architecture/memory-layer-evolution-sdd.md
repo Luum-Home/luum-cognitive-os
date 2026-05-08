@@ -1,6 +1,6 @@
 ---
 title: Memory Layer Evolution SDD
-status: draft-before-implementation
+status: sdd-started
 date: 2026-05-08
 source_index: docs/reports/external-tools-radar-INDEX.md
 source_reports:
@@ -9,6 +9,13 @@ related_tools: [Graphiti, LightRAG, HippoRAG, MIRIX, DSPy]
 ---
 
 # Memory Layer Evolution SDD
+
+## SDD kickoff
+
+Wave 2 has started as SDD change `memory-layer-evolution`. The executable plan
+lives at `.cognitive-os/plans/architecture/memory-layer-evolution-wave2.md`.
+Implementation starts with benchmark Slice 0 only; Engram schema/retrieval
+defaults stay unchanged until the benchmark fixtures exist and pass.
 
 ## Goal
 
