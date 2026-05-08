@@ -1,0 +1,273 @@
+#!/usr/bin/env python3
+"""Read-only regression audit for postmortem ADRs 242-246.
+
+This tool intentionally detects the bug classes described by the ADRs without
+repairing the primitives. It is a guardrail against future reintroduction, not a
+one-off manual cleanup.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Iterable
+
+SCHEMA_VERSION = "postmortem-regression-audit/v1"
+
+
+@dataclass
+class Finding:
+    severity: str
+    code: str
+    adr: str
+    message: str
+    path: str | None = None
+    details: dict[str, Any] | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        out: dict[str, Any] = {
+            "severity": self.severity,
+            "code": self.code,
+            "adr": self.adr,
+            "message": self.message,
+        }
+        if self.path:
+            out["path"] = self.path
+        if self.details:
+            out["details"] = self.details
+        return out
+
+
+def read(path: Path) -> str:
+    try:
+        return path.read_text(encoding="utf-8", errors="replace")
+    except FileNotFoundError:
+        return ""
+
+
+def rel(path: Path, root: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return str(path)
+
+
+def git_root(start: Path) -> Path:
+    proc = subprocess.run(
+        ["git", "-C", str(start), "rev-parse", "--show-toplevel"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if proc.returncode == 0 and proc.stdout.strip():
+        return Path(proc.stdout.strip()).resolve()
+    return start.resolve()
+
+
+def iter_files(root: Path, dirs: Iterable[str], suffixes: tuple[str, ...]) -> Iterable[Path]:
+    for dirname in dirs:
+        base = root / dirname
+        if not base.exists():
+            continue
+        for path in base.rglob("*"):
+            if path.is_file() and path.suffix in suffixes and ".git" not in path.parts:
+                yield path
+
+
+def audit_adr_242(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    wrapper = root / "scripts" / "cos-filter-repo-wrap.sh"
+    if not wrapper.exists():
+        findings.append(
+            Finding(
+                "block",
+                "filter-repo-wrapper-missing",
+                "ADR-242",
+                "Governed history rewrite wrapper is missing; direct git-filter-repo calls can drop remotes and rerun non-idempotently.",
+                "scripts/cos-filter-repo-wrap.sh",
+            )
+        )
+    targets = list(iter_files(root, ("lib", "scripts", "hooks"), (".py", ".sh")))
+    direct_hits: list[str] = []
+    for path in targets:
+        if path == wrapper:
+            continue
+        text = read(path)
+        if re.search(r"\bgit\s+filter-repo\b|\[\s*['\"]git['\"]\s*,\s*['\"]filter-repo['\"]", text):
+            direct_hits.append(rel(path, root))
+    for hit in direct_hits:
+        findings.append(
+            Finding(
+                "block",
+                "direct-filter-repo-callsite",
+                "ADR-242",
+                "History rewrite path calls git filter-repo directly instead of the governed wrapper.",
+                hit,
+            )
+        )
+    return findings
+
+
+def audit_adr_243(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    py = root / "scripts" / "push_collision_detect.py"
+    sh = root / "hooks" / "_lib" / "push-collision-check.sh"
+    combined = read(py) + "\n" + read(sh)
+    required_tokens = ["last-rewrite.json", "pre_head", "post_head", "rules_hash", "ttl_seconds"]
+    missing = [token for token in required_tokens if token not in combined]
+    if missing:
+        findings.append(
+            Finding(
+                "block",
+                "post-rewrite-push-exception-missing",
+                "ADR-243",
+                "Push collision detector does not consume the post-rewrite marker required to avoid broad --no-verify bypasses.",
+                "scripts/push_collision_detect.py",
+                {"missing_tokens": missing},
+            )
+        )
+    return findings
+
+
+def audit_adr_244(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    hook = root / "hooks" / "claim-validator.sh"
+    gate = root / "scripts" / "orchestrator_claim_gate.py"
+    rules = root / "rules" / "trust-score.md"
+    text = read(hook) + "\n" + read(gate) + "\n" + read(rules)
+    if "verification:" not in text:
+        findings.append(
+            Finding(
+                "block",
+                "trust-report-verification-field-missing",
+                "ADR-244",
+                "Trust report schema/gate does not require a structured verification field for high-stakes claims.",
+                "rules/trust-score.md",
+            )
+        )
+    if re.search(r"tests? .*manual verification|warning only \(not blocking\)|flag for manual verification", text, re.I):
+        findings.append(
+            Finding(
+                "warn",
+                "claim-validator-advisory-language-present",
+                "ADR-244",
+                "Claim validation still contains advisory-only language; high-stakes claims may be scored instead of enforced.",
+                "hooks/claim-validator.sh",
+            )
+        )
+    if not (root / "tests" / "behavior" / "test_claim_enforcer.py").exists():
+        findings.append(
+            Finding(
+                "block",
+                "claim-enforcer-behavior-tests-missing",
+                "ADR-244",
+                "No behavior tests prove high-stakes claims are downgraded or blocked when cited verification fails.",
+                "tests/behavior/test_claim_enforcer.py",
+            )
+        )
+    return findings
+
+
+CHAOS_WRITE_RE = re.compile(
+    r"(?P<expr>(?:write_text|write_bytes|open\s*\([^\n]*(?:['\"]w['\"]|['\"]a['\"])|shutil\.(?:copy|copy2|move)|os\.rename|Path\([^\n]*\)\.(?:rename|replace)))",
+    re.I,
+)
+PROTECTED_PATH_RE = re.compile(r"(?:lib|scripts|hooks)/[A-Za-z0-9_./-]+")
+
+
+def audit_adr_245(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    conftest = root / "tests" / "chaos" / "conftest.py"
+    if not conftest.exists() or "chaos_readonly_workspace" not in read(conftest):
+        findings.append(
+            Finding(
+                "block",
+                "chaos-readonly-fixture-missing",
+                "ADR-245",
+                "Chaos lane lacks an autouse read-only production-source guard for lib/, scripts/, and hooks/.",
+                "tests/chaos/conftest.py",
+            )
+        )
+    for path in iter_files(root, ("tests/chaos",), (".py",)):
+        for lineno, line in enumerate(read(path).splitlines(), start=1):
+            if CHAOS_WRITE_RE.search(line) and PROTECTED_PATH_RE.search(line):
+                findings.append(
+                    Finding(
+                        "block",
+                        "chaos-test-writes-protected-source",
+                        "ADR-245",
+                        "Chaos test appears to write/copy/rename protected production source. Use a fixture copy or injection instead.",
+                        rel(path, root),
+                        {"line": lineno},
+                    )
+                )
+    return findings
+
+
+def audit_adr_246(root: Path) -> list[Finding]:
+    findings: list[Finding] = []
+    required = [
+        root / "scripts" / "cos-release-freeze",
+        root / "lib" / "release_freeze.py",
+        root / "manifests" / "release-freeze.yaml",
+        root / "tests" / "behavior" / "test_release_freeze.py",
+    ]
+    for path in required:
+        if not path.exists():
+            findings.append(
+                Finding(
+                    "block",
+                    "release-freeze-artifact-missing",
+                    "ADR-246",
+                    "Release transaction freeze artifact is missing; destructive/public operations still lack a stable transaction boundary.",
+                    rel(path, root),
+                )
+            )
+    return findings
+
+
+def audit(root: Path) -> dict[str, Any]:
+    findings: list[Finding] = []
+    findings.extend(audit_adr_242(root))
+    findings.extend(audit_adr_243(root))
+    findings.extend(audit_adr_244(root))
+    findings.extend(audit_adr_245(root))
+    findings.extend(audit_adr_246(root))
+    block = sum(1 for f in findings if f.severity == "block")
+    warn = sum(1 for f in findings if f.severity == "warn")
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "status": "block" if block else "warn" if warn else "pass",
+        "repo": str(root),
+        "summary": {"block": block, "warn": warn, "findings": len(findings)},
+        "findings": [f.to_dict() for f in findings],
+        "policy": "Read-only detector for ADR-242..ADR-246 bug classes; do not repair primitives before detection.",
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Audit postmortem ADR-242..ADR-246 regression classes without mutating primitives.")
+    parser.add_argument("--project-dir", type=Path, default=Path.cwd())
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--strict", action="store_true", help="Treat warnings as failures.")
+    args = parser.parse_args()
+    root = git_root(args.project_dir)
+    report = audit(root)
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"postmortem regression audit: {report['status']}")
+        for finding in report["findings"]:
+            print(f"[{finding['severity']}] {finding['adr']} {finding['code']}: {finding['message']}")
+    if report["summary"]["block"]:
+        return 1
+    if args.strict and report["summary"]["warn"]:
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
