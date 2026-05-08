@@ -164,7 +164,7 @@ Each block follows C4. Effort sizes: S = ≤2 days, M = 2–5 days, L = 5–15 d
 - **Footprint**: OS repo small (changes in `lib/dispatch.py` + sub-agent prompt composition) · Implementing projects no impact · Service mode no impact · Docker +0 MB
 - **Test tiers**: T1 ✅ T2 ✅ T3 ✅ T4 ✅ T5 ✅ T6 ✅ T7 ⬜ T8 ✅ T9 ⬜ T10 ⬜
 - **Effort**: S
-- **Leverage**: MEDIUM — 85% token reduction reported, no surface expansion
+- **Leverage**: MEDIUM — 85% token reduction reported upstream (Anthropic); not yet measured locally in `.cognitive-os/metrics/`. Surface unchanged.
 - **ADR candidate**: yes — **ADR-236** (Phase 3; **explicitly extends ADR-216 tool-discovery pre-use gate**, does not create a parallel discovery loop. Could fold into ADR-231 MCP server as a sibling concern.)
 
 ---
@@ -223,7 +223,7 @@ Documented as conscious non-coverage; tracked for re-evaluation on operator sign
 | CRDT-based merging | Code is non-commutative; nobody uses CRDT for agent merges | n/a — anti-recommendation |
 | Hypervisor sandboxes (Firecracker) as primary | Operationally expensive; Bubblewrap closes 80% at zero cost | E2BAdapter as Tier-3 opt-in covers the remaining cases |
 | OPA / Rego policy engine | Single-operator OS doesn't need ABAC complexity | Multi-tenant deployment |
-| Mid-session MCP server injection | "Not planned" upstream (Anthropic); deferred-loading covers ~85% | Track Anthropic spec changes |
+| Mid-session MCP server injection | "Not planned" upstream (Anthropic); deferred-loading reportedly covers ~85% (upstream figure, unmeasured locally) | Track Anthropic spec changes |
 | Temporal / Cadence durable workflows | Heavy external dep violates C2 | `@event_wrap` covers MVP determinism need |
 | NATS JetStream cross-session bus | Heavy external dep violates C2 default; documented as Tier-3 future only | If file-IPC contention measured > X% in production |
 

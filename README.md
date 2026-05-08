@@ -23,7 +23,7 @@ unverified completions.
 Before Cognitive OS: your coding agent can silently fabricate a passing test
 result, overwrite a working file with a broken one, claim "done" without
 verifying, or exhaust your API budget in an unchecked loop. After Cognitive
-OS: a 14-layer safety mesh ([details](docs/safety-mesh.md): 11 fire as PreTool/PostTool hooks, 3 are library/conditional) intercepts each failure mode at the right lifecycle
+OS: a 14-layer safety mesh ([details](docs/safety-mesh.md): 12 fire as PreTool/PostTool hooks, 2 are library/conditional) intercepts each failure mode at the right lifecycle
 point — before launch, after completion, or on retry exhaustion.
 
 Concrete examples of what it prevents:
@@ -33,8 +33,9 @@ Concrete examples of what it prevents:
 - **Unchecked destructive ops** — `blast-radius.sh` warns before a task
   touches more than a safe scope; `auto-rollback-trigger.sh` reverts on
   retry exhaustion (Layers 2 + 11).
-- **Unverified completions** — `trust-score-validator.sh` requires a scored
-  Trust Report with evidence before an agent can close a task (Layer 8).
+- **Unverified completions** — `trust-score-validator.sh` validates that
+  agents produce a scored Trust Report with evidence and logs the score to
+  metrics for review (Layer 8, advisory in current profile).
 - **Runaway cost loops** — `rate-limiter.sh` caps tool calls, agent spawns,
   and hourly spend before they overflow (Layer 4).
 

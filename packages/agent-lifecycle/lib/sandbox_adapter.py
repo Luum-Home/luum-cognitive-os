@@ -101,6 +101,12 @@ def build_sandbox_command(
             "--dev", "/dev",
             "--proc", "/proc",
             "--chdir", workspace_path,
+            "--die-with-parent",
+            "--unshare-pid",
+            "--unshare-uts",
+            "--unshare-ipc",
+            "--unshare-cgroup-try",
+            "--new-session",
         ]
         if not network:
             wrapped.append("--unshare-net")

@@ -77,13 +77,13 @@ The solution, announced January 14, 2026, is the Tool Search Tool (`tool_search_
 4. The API returns `tool_reference` blocks pointing to 3-5 matching tools.
 5. Those references expand into full definitions inline in the conversation — appended as `tool_reference` blocks, not modifying the system prompt prefix (preserving prompt caching).
 
-Performance impact measured by Anthropic:
+Performance impact measured **by Anthropic upstream** (numbers below have not yet been independently measured against our own `.cognitive-os/metrics/`):
 
 | Metric | Full Upfront Loading | With Tool Search |
 |--------|---------------------|------------------|
 | Token cost (50+ tools) | ~77K tokens | ~8.7K tokens |
-| Token reduction | baseline | 85% |
-| Tool selection accuracy (Opus 4.5) | 79.5% | 88.1% |
+| Token reduction | baseline | 85% (upstream figure) |
+| Tool selection accuracy (Opus 4.5) | 79.5% | 88.1% (upstream figure) |
 | Maximum catalog size | — | 10,000 tools |
 
 This is **just-in-time context expansion**, not dynamic server registration. The tool definitions are all declared at session initialization; what changes is *when* they enter the context window.
@@ -238,7 +238,7 @@ The gap is that COS has no mechanism to:
 
 **Priority**: High. **Effort**: S.
 
-COS agents should adopt Anthropic's `defer_loading: true` + ToolSearch pattern for any session that connects to MCP servers with more than ~10 tools. The token savings (85% reduction) and accuracy improvement (from 79.5% to 88.1%) are proven at production scale.
+COS agents should adopt Anthropic's `defer_loading: true` + ToolSearch pattern for any session that connects to MCP servers with more than ~10 tools. The token savings (85% reduction reported by Anthropic upstream — not yet measured locally) and accuracy improvement (from 79.5% to 88.1%, upstream figures) are reported at production scale; local instrumentation is tracked as follow-up.
 
 Implementation path:
 - The `add-mcp` skill and session initialization code should emit tool definitions with `defer_loading: true` by default for all but 3-5 frequently-used core tools.
