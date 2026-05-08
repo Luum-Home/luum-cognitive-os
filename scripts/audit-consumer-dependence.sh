@@ -69,6 +69,22 @@ else
 fi
 
 # Choose grep tool.
+# Paths intentionally retained as case-study material (Tier 5 of the
+# pre-public-readiness audit). These files name consumer tokens deliberately
+# and are not subject to scrubbing.
+TIER5_RETAINED=(
+  "docs/business/case-study.md"
+  "docs/business/open-source-design.md"
+)
+
+is_tier5_retained() {
+  local rel="${1#$CONSUMER_REPO/}"
+  for keep in "${TIER5_RETAINED[@]}"; do
+    [[ "$rel" == "$keep" ]] && return 0
+  done
+  return 1
+}
+
 if command -v rg >/dev/null 2>&1; then
   search() {
     rg --no-config --hidden \
@@ -94,11 +110,20 @@ echo
 
 for tok in "${TOKENS[@]}"; do
   [[ -z "$tok" ]] && continue
-  mapfile -t hits < <(search "$tok")
+  mapfile -t raw_hits < <(search "$tok")
+  hits=()
+  retained=0
+  for h in "${raw_hits[@]}"; do
+    if is_tier5_retained "$h"; then
+      retained=$((retained + 1))
+    else
+      hits+=("$h")
+    fi
+  done
   count=${#hits[@]}
   if (( count > 0 )); then
     total_matches=$((total_matches + count))
-    printf 'TOKEN %-25s  %d files\n' "\"$tok\"" "$count"
+    printf 'TOKEN %-25s  %d files (+%d Tier5-retained, ignored)\n' "\"$tok\"" "$count" "$retained"
     for sample in "${hits[@]:0:3}"; do
       printf '    %s\n' "${sample#$CONSUMER_REPO/}"
     done
