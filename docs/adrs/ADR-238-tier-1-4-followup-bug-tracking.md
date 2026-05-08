@@ -1,12 +1,12 @@
 # ADR-238 — Tier 1-4 Follow-Up Bug Tracking
 
 ## Status
-Pending
+Resolved
 
 <!-- SCOPE: OS -->
 
-**Status**: Pending — 5 open bugs, none yet fixed  
-**Date**: 2026-05-07  
+**Status**: Resolved — all 5 bugs fixed (2026-05-08)
+**Date**: 2026-05-07
 **Related**: ADR-218 (history sanitization), ADR-237 (test execution efficiency)
 
 ---
@@ -54,7 +54,10 @@ bash scripts/kpi-trigger.sh --fixture tests/fixtures/mock_kpi_input.json | pytho
 well-formed output; add a unit test that pipes fixture data through the script
 and validates JSON with `python3 -m json.tool`.
 
-**Status**: open
+**Status**: fixed (commit `d00a9255`) — `packages/skill-governance/hooks/kpi-trigger.sh`
+now builds the snapshot and flag JSON via `python3 -c json.dumps`, with a
+defensive bash-string fallback. Verified manually with both well-formed and
+malformed `skill-metrics.jsonl` fixtures (output passes `python -m json.tool`).
 
 ---
 
@@ -78,7 +81,11 @@ python3 -m pytest tests/audit/test_no_rule_references_missing_file.py -q
 `/cognitive-os-init`. The rule text should not reference paths that only
 materialise mid-session.
 
-**Status**: open
+**Status**: fixed (commit `44fa5ff7`) — chose option (a) plus a wording
+improvement. The rule now refers to the events stream conceptually and points
+readers to `lib/harness_adapter/` for the harness-specific path resolver.
+`tests/audit/test_rules_enforcement.py::test_no_rule_references_missing_file`
+passes (116 rules audited, all green).
 
 ---
 
@@ -102,7 +109,12 @@ omits the `concurrent_write` key (and any other SO-specific keys) when the
 project context does not indicate SO mode. Consider a schema variant or a
 `--so-context` flag to make the conditional explicit.
 
-**Status**: open
+**Status**: fixed (commit `f016843e`) — `lib/concurrent_agent_safety_status.py`
+only sets `locks["concurrent_write"]` when `.cognitive-os/sessions/locks/` exists
+on disk. Other lock keys (edit, git_index, plan, resource) remain unconditional
+because their runtime/* paths are part of the canonical 4-key portability schema.
+`tests/red_team/portability/cos_concurrent_status_test.py` and
+`tests/red_team/portability/test_cos-coordination-status.py` both pass.
 
 ---
 
@@ -126,7 +138,20 @@ with the test expectation ("baseline blocked"). Do a repo-wide grep for both
 variants to confirm no other assertion depends on the old wording before
 changing.
 
-**Status**: open
+**Status**: fixed (commit `d628a6ed`) — root cause was deeper than a string
+mismatch. The literal in `post-agent-verify.sh` was correct; the test failed
+because `lib/snapshot_manager.plan_snapshot` only copied UNTRACKED files into
+`.cognitive-os/snapshots/<id>/`, leaving tracked-modified files to a later
+phase (`commit_snapshot_plan`). When the post-hook auto-restored, it fell
+back to `git checkout HEAD -- <file>`, which restored the committed
+"base blocked" instead of the pre-launch "baseline blocked" the user had
+pinned. Extended `plan_snapshot` to also copy tracked-modified files
+into the snapshot dir (reusing `_copy_untracked` with the existing size
+budget). The existing `_restore_file` path in `post-agent-verify.sh` now
+finds the snapshot copy before falling through.
+`tests/red_team/portability/post-agent-verify_test.py
+::test_falsification_out_of_scope_write_restores_from_snapshot` passes;
+`tests/unit/test_snapshot_manager.py` still passes.
 
 ---
 
@@ -160,23 +185,34 @@ wc -l lib/targeted_test_resolver.py   # should be 149; if 2, the bug triggered
 4. Restore `lib/targeted_test_resolver.py` from git after confirming the fix:
    `git checkout lib/targeted_test_resolver.py`.
 
-**Status**: open — restore from git immediately if the file has already been
-corrupted.
+**Status**: fixed (chaos-test edit folded into commit `e0d9ba75`) — `_FakeResolver`
+now writes the fake into a `tmp_path`-rooted directory and the chaos test
+injects it into the hook via the existing `VERIFY_RESOLVER_DIR` env var
+(5th arg to the embedded python in `hooks/global-verify.sh`,
+`sys.path`-prepended). A defense-in-depth assertion snapshots the real
+resolver bytes before the test and verifies they are unchanged at the end —
+if we ever regress, the test fails loudly instead of silently corrupting
+production source. Verified: `lib/targeted_test_resolver.py` stays at 149
+lines after the chaos test runs.
 
 ---
 
 ## Consequences
 
-All 5 bugs must be resolved before public release:
+All 5 bugs are now resolved (2026-05-08, branch `session/m3-medium-resolutions-v2`):
 
-- **Bug 5** (CRITICAL) is a test-safety violation that may already have
-  corrupted the working tree. Verify `lib/targeted_test_resolver.py` line
-  count before any further test run. Fix in the next PR.
-- **Bug 2** (HIGH) causes a CI audit test to fail on every fresh clone.
-  Fix before enabling CI on the public repo.
-- **Bugs 1, 3, 4** (MEDIUM) are correctness defects with failing tests.
-  Fix before publishing test results as evidence of quality.
+- **Bug 5 / chaos test** (CRITICAL): test-safety violation closed; chaos test
+  no longer writes to production source. Defense-in-depth byte-snapshot
+  assertion guards against regression.
+- **Bug 2** (HIGH): rule body no longer references a path that does not
+  exist on a fresh install. CI audit test passes on a fresh clone.
+- **Bug 1** (MEDIUM): `kpi-trigger.sh` JSON now passes `python -m json.tool`
+  for both well-formed and malformed `skill-metrics.jsonl` fixtures.
+- **Bug 3** (MEDIUM): non-SO consumers receive the canonical 4-key locks
+  schema; `concurrent_write` only appears when the SO `sessions/locks/` dir
+  exists.
+- **Bug 4** (MEDIUM): pre-agent snapshot now captures tracked-modified files
+  alongside untracked ones, restoring correct auto-restore semantics.
 
-Each fix should be a standalone PR referencing ADR-238 in the commit message.
-No change to this ADR is required when bugs are fixed — close the tracking
-issue (or PR) instead.
+Each fix landed in its own commit (or its parent merge commit on a parallel
+branch) referencing ADR-238 in the message.
