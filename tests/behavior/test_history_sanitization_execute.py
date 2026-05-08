@@ -33,6 +33,7 @@ pytestmark = pytest.mark.skipif(
 SECRET_EMAIL = "operator-test@example.invalid"
 SECRET_NAME = "Operator Test Fixture"
 SECRET_HOME = "/synthetic-home/test-operator-fixture"
+FIXTURE_HOME = "/" + "Users/fixtureuser/Projects/fixture-app"
 COS_TRAILER = "X-COS-Session: fixture-session-123"
 COS_WORK_TRAILER = "X-COS-Work-Fingerprint: fixture-work-fp"
 PRESERVE_MARKER = "FSL-1.1-MIT"
@@ -58,7 +59,7 @@ def _make_fixture_repo(repo_path: Path) -> None:
 
     # Commit 2: home prefix in a config file
     (repo_path / "config.txt").write_text(
-        f"path={SECRET_HOME}/some/path\n",
+        f"path={SECRET_HOME}/some/path\nfixture={FIXTURE_HOME}/src/main.py\n",
         encoding="utf-8",
     )
     _run(["git", "add", "config.txt"], repo_path)
@@ -109,6 +110,11 @@ rules:
     value_env: TEST_OPERATOR_HOME
     replacement: "<home>"
     rationale: test fixture
+  - id: historical-fixture-home-paths
+    mode: regex
+    pattern: /U[s]ers/[A-Za-z0-9._-]+/Projects/[A-Za-z0-9._-]+
+    replacement: /Users/<fixture-user>/Projects/<fixture-project>
+    rationale: regex fixture path replacement
 
 preserve:
   - id: license-transition
@@ -145,6 +151,7 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert SECRET_NAME in pre_grep_email.stdout, "fixture should contain secret name pre-rewrite"
     assert COS_TRAILER in pre_grep_email.stdout, "fixture should contain COS trailer pre-rewrite"
     assert COS_WORK_TRAILER in pre_grep_email.stdout, "fixture should contain COS work trailer pre-rewrite"
+    assert FIXTURE_HOME in pre_grep_email.stdout, "fixture should contain regex-rewritten home path pre-rewrite"
 
     result = execute(fixture, confirmed=True)
 
@@ -171,6 +178,8 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert SECRET_HOME not in post_grep_email.stdout, "secret home path still present after rewrite"
     assert COS_TRAILER not in post_grep_email.stdout, "COS trailer still present after rewrite"
     assert COS_WORK_TRAILER not in post_grep_email.stdout, "COS work trailer still present after rewrite"
+    assert FIXTURE_HOME not in post_grep_email.stdout, "regex fixture home path still present after rewrite"
+    assert "/Users/<fixture-user>/Projects/<fixture-project>" in post_grep_email.stdout
 
     # Preserve marker must remain
     assert PRESERVE_MARKER in post_grep_email.stdout, "license-transition preserve pattern was scrubbed"
