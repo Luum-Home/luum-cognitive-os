@@ -6,6 +6,10 @@
 **Scope**: ADRs 218–236 and the implementation files they introduced
 **Audience**: Adversarial IP/legal reviewer; release management; future maintainers
 
+**Related policy**: Public AI-assistance and authorship policy lives in
+[`CONTRIBUTING.md`](../../CONTRIBUTING.md). This audit covers clean-room/prior-art
+provenance; it does not turn AI tools into commit authors.
+
 > Reader posture assumed: hostile patent or copyright counsel asking *"did you actually write this code or did you copy it?"* This document tries to answer honestly, including weaknesses.
 
 ---

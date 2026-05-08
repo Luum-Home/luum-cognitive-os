@@ -142,7 +142,15 @@ class TestAncestryGateFailure:
         eid = enqueue("session/gate-fail", "gate-session", queue_path=queue_file)
 
         fake_git = _make_fake_git(tmp_path, ancestry_fails=True)
-        result = _run_worker(tmp_path, queue_file, fake_git_dir=fake_git)
+        # Disable auto-rebase so the ancestry failure surfaces as a hard gate fail.
+        # (Default COS_QUEUE_AUTO_REBASE=1 would otherwise auto-recover and the
+        # worker would exit 0 — see scripts/cos-merge-queue-worker.sh:gate_ancestry.)
+        result = _run_worker(
+            tmp_path,
+            queue_file,
+            fake_git_dir=fake_git,
+            extra_env={"COS_QUEUE_AUTO_REBASE": "0"},
+        )
 
         # Worker should exit non-zero.
         assert result.returncode != 0, (

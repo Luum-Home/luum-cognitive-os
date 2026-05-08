@@ -435,11 +435,11 @@ Cognitive OS Cloud
 What exists today, battle-tested on a real-world platform:
 
 - [x] `cognitive-os.yaml` — declarative configuration
-- [x] Skills system — versioned, discoverable, auto-improving
+- [x] Skills system — versioned, discoverable, with governed improvement proposals
 - [x] Hooks — pre/post tool use, error capture, metrics
 - [x] Engram — persistent memory across sessions
 - [x] Squad definitions — YAML-based agent organization
-- [x] SRE agent — auto-repair with 4-tier escalation
+- [x] SRE agent — governed repair workflow with 4-tier escalation
 - [x] Quality gates — configurable per project
 - [x] Model routing — cost-optimized model selection
 - [x] Error learning — pattern detection and skill adaptation

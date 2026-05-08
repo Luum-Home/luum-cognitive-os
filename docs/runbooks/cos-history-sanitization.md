@@ -33,7 +33,7 @@ the dry-run will warn for each unresolved rule.
 | Env var | Purpose | Replacement (literal) |
 | --- | --- | --- |
 | `COS_HISTORY_SANITIZE_OPERATOR_EMAIL` | operator personal email | `2144218+MatiasNAmendola@users.noreply.github.com` |
-| `COS_HISTORY_SANITIZE_OPERATOR_NAME` | operator personal name in historical metadata | `MatiasNAmendola` |
+| `COS_HISTORY_SANITIZE_OPERATOR_NAME` | operator personal name in historical content and commit messages | `MatiasNAmendola` |
 | `COS_HISTORY_SANITIZE_HOME_PREFIX` | machine home prefix (e.g. `/Users/<name>`) | `<home>` |
 | `COS_HISTORY_SANITIZE_REPO_PATH` | absolute repo path | `<repo>` |
 | `COS_HISTORY_SANITIZE_CONSUMER_CODENAME_A` | consumer-project codename A | `<consumer-codename-a>` |
@@ -48,6 +48,20 @@ the dry-run will warn for each unresolved rule.
 The authoritative list is the `value_env:` entries under `rules:` in
 `manifests/history-sanitization.yaml`. The smoke script reads that file
 directly so it stays in sync with the manifest automatically.
+
+### 1.1.1 Metadata boundary
+
+ADR-218 is content-only by default. Author and committer names/emails are
+human provenance and are preserved unless the operator explicitly enables a
+metadata-scoped rewrite:
+
+```bash
+export COS_HISTORY_SANITIZE_METADATA=1  # only with explicit operator consent
+```
+
+Do not set this flag for ordinary pre-public content scrubbing. If a
+collaborator wants privacy, migrate that collaborator's commits to a GitHub
+noreply address through an explicit consented flow, not through a broad sweep.
 
 ### 1.2 Where to confirm them
 
@@ -108,7 +122,8 @@ python3 scripts/cos-history-sanitization --execute
 
 The CLI prompts for the literal string `REWRITE` before touching git. Any
 other input aborts cleanly. Use `--yes` ONLY in CI; operator-driven runs
-must type the confirmation.
+must type the confirmation. In the default content-only mode, the rewrite does
+not change `git log --format='%an <%ae>'` output.
 
 ### 2.2 Expected runtime
 

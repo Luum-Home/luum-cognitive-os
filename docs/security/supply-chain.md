@@ -153,23 +153,32 @@ licenses are classified into four buckets:
 | **UNKNOWN** | Metadata missing/ambiguous; manual classification required           | (any package without SPDX or classifier metadata)   |
 | **BLOCKED** | Forbidden; release blocker                                            | AGPL-1.0/3.0, SSPL-1.0, BUSL-1.1 (Business Source)  |
 
-### 3.2 Results (snapshot 2026-05-08)
+### 3.2 Results (snapshot 2026-05-08, post-H3 resolution)
 
 Source: `sbom.json` post-dedup, enriched with installed PyPI classifier
-metadata from `.venv/`.
+metadata from `.venv/` and the per-component operator decisions recorded in
+[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
 
 | Status      | Count |
 | ----------- | -----:|
 | **BLOCKED** |     0 |
-| **REVIEW**  |    14 |
-| **UNKNOWN** |   100 |
-| **OK**      |    91 |
-| **TOTAL**   |   205 |
+| **REVIEW**  |    15 |
+| **UNKNOWN** |     0 |
+| **OK**      |   186 |
+| **TOTAL**   |   201 |
 
-OK distribution: MIT 49, Apache-2.0 22, BSD-3-Clause 13, MPL-2.0 3, ISC 3,
-PSF-2.0 1, 0BSD 1, CC-BY-4.0 1.
+The previously reported 100 UNKNOWN entries (pypi 39, golang 57,
+github-actions 3, npm 1) were each individually classified against their
+upstream `LICENSE` file in the H3 resolution document. Outcome: 99 → OK,
+1 → REVIEW (`chardet` LGPL-2.1-or-later, dynamically-linked pure-Python lib,
+APPROVED with notice retention — same disposition pattern as
+`@img/sharp-libvips-*`). 0 → BLOCKED. The TOTAL change (205 → 201) reflects
+collapsing six own-project file artifacts under a single first-party row.
 
-UNKNOWN distribution by ecosystem: pypi 39, golang 57, github-actions 3, npm 1.
+Note: a fresher syft snapshot taken alongside the H3 audit reports 186 raw
+UNKNOWN rows (157 unique by name+version) due to multi-go.mod scanning. The
+license posture is identical: 0 BLOCKED. See the H3 resolution document for
+the row-by-row table.
 
 ### 3.3 BLOCKED — none
 
@@ -210,11 +219,16 @@ under LGPL — standard practice for the entire Node ecosystem using `sharp`.
 The dashboard package is OPTIONAL and not a runtime dependency of `luum-cognitive-os`
 itself. Operators who do not deploy the dashboard never pull these binaries.
 
-### 3.5 UNKNOWN — 100 entries
+### 3.5 UNKNOWN — 0 entries (resolved 2026-05-08)
 
-UNKNOWN status reflects gaps in package metadata that `syft` could not resolve
-without doing an online lookup. None of the UNKNOWN entries have been
-identified as actually problematic; they are syft metadata-discovery gaps:
+All previously-UNKNOWN entries have been individually classified in
+[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
+The summary below is preserved for historical context — the resolution
+document is now the system-of-record.
+
+Pre-resolution status reflected gaps in package metadata that `syft` could
+not resolve without doing an online lookup. None of the UNKNOWN entries were
+actually problematic; they were syft metadata-discovery gaps:
 
 - **39 PyPI** — packages whose `License` field is empty in `METADATA` and that
   carry no `License ::` classifier. All 39 are well-known projects with public
@@ -235,10 +249,14 @@ identified as actually problematic; they are syft metadata-discovery gaps:
 - **1 npm** — `cos-dashboard@0.1.0` is the project's own dashboard root
   package; it is not a third-party dependency.
 
-**Action:** Open a tracked task in ADR-238 to enrich SBOM with explicit SPDX
-identifiers for all UNKNOWN entries before the first public release tag.
-Until then, this document records the manual classification above and the
-release-readiness gate counts UNKNOWN as a soft warning, not a blocker.
+**Resolution (2026-05-08):** every UNKNOWN entry was individually
+classified against its upstream `LICENSE` file. See
+[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md)
+for the per-row table (name, version, registry URL, LICENSE URL, resolved
+SPDX, bucket). Outcome: 99 OK, 1 REVIEW (`chardet`), 0 BLOCKED. Automated
+SBOM SPDX-enrichment (`cyclonedx-py environment`, `cyclonedx-gomod mod`
+post-`go mod download`) remains tracked under ADR-238 to eliminate the
+manual classification step in future regenerations.
 
 ### 3.6 OK — 91 entries
 
@@ -257,27 +275,69 @@ Counts:
 
 ## 4. Pinning & Provenance Policy
 
-### 4.1 Current state
+### 4.1 Current state — per-language verdict
 
-- **Python:** `uv.lock` pins exact versions and hashes for every transitive
-  dependency. `pyproject.toml` uses `>=` constraints for floor versions; the
-  lockfile is the source of truth. Hash verification is enforced by `uv` on
-  install.
-- **Go:** `go.sum` pins module checksums (h1:) for every `require`d module.
-  Verified by `go mod verify` and the Go module proxy by default.
-- **Node (dashboard):** `package-lock.json` pins exact versions and integrity
-  hashes (`integrity: sha512-...`). Verified by `npm ci`.
-- **Container base images:** None. The project ships as language-native
-  artifacts (Python wheel, Go static binaries, Node app); no Dockerfiles in
-  the release path.
-- **CI workflows:** Per `manifests/cross-stack-license-audit.yaml`, mutable
-  `aquasecurity/trivy-action` references are **forbidden**. Workflows MUST pin
-  third-party actions by full commit SHA.
+| Stack                | Verdict   | Source of truth                                  | Verification command                       |
+| -------------------- | --------- | ------------------------------------------------ | ------------------------------------------ |
+| Python (core + dev)  | pinned    | `uv.lock` (≥1200 sha256 hash entries)            | `uv sync --locked` (refuses on drift)      |
+| Go (root module)     | pinned    | `go.sum` (h1: hashes per module)                 | `go mod verify`                            |
+| Go (`cmd/cos`)       | pinned    | `cmd/cos/go.sum`                                 | `cd cmd/cos && go mod verify`              |
+| Go (`cmd/cos-test`)  | pinned    | `cmd/cos-test/go.sum`                            | `cd cmd/cos-test && go mod verify`         |
+| Node (dashboard)     | pinned    | `dashboard/package-lock.json` (sha512 integrity) | `cd dashboard && npm ci`                   |
+| Node (root)          | n/a       | no runtime deps; postinstall script + bin only   | (no lockfile by design)                    |
+| Third-party CLIs     | partial   | `manifests/dependencies.yaml`                    | per-tool `--version` checks; see §4.3      |
+| GitHub Actions       | partial   | `.github/workflows/cos-binary-release.yml`       | manual SHA pinning audit; see §4.4         |
+| Container base images| n/a       | no Dockerfiles in release path                   | (n/a)                                      |
+
+**Verdict legend:** `pinned` = transitive closure verified by hash on every
+install; `partial` = exact version named but no cryptographic digest pinned by
+the project itself (operator must verify against upstream-published checksums);
+`n/a` = no relevant artifact in the release path.
+
+#### Python — pinned
+
+`uv.lock` pins exact versions and per-distribution `sha256` hashes for every
+transitive dependency. `pyproject.toml` uses `>=` constraints for floor
+versions; the lockfile is the source of truth. Hash verification is enforced
+by `uv` on install. To audit:
+
+```bash
+uv sync --locked --extra testing --extra enforcement
+# refuses to install if any cached wheel disagrees with the lockfile hash
+```
+
+#### Go — pinned
+
+All three Go modules ship a `go.sum` containing `h1:` hashes for each
+`require`d module, both direct and transitive. The Go toolchain verifies these
+on every build via the GOSUMDB transparency log by default. To audit:
+
+```bash
+go mod verify                    # root
+( cd cmd/cos && go mod verify )
+( cd cmd/cos-test && go mod verify )
+```
+
+#### Node (dashboard) — pinned
+
+`dashboard/package-lock.json` pins exact versions and `integrity` hashes
+(`sha512-…`) for every `node_modules/` entry. The dashboard CI uses `npm ci`,
+which refuses to install if a tarball disagrees with the lockfile integrity.
+
+The repo-root `package.json` declares no runtime dependencies (it exists only
+to expose the postinstall script and the `cos` bin shim), so there is no
+root-level lockfile by design.
 
 ### 4.2 Aspirational (tracked, not yet enforced)
 
 - **Sigstore / cosign signing of release artifacts** — planned for the first
-  public release tag (item M2 of `docs/legal/pre-public-readiness-checklist.md`).
+  public release tag. Concrete steps and consumer-side verification commands
+  are documented in `docs/security/release-signing.md`. Currently
+  `git tag -v v0.27.1` reports "no signature found"; this is the documented
+  gap, not tampering.
+- **Detached SBOM signature** — `sbom.json.sig` shipped alongside `sbom.json`.
+  Wired the same release as the first signed tag; see release-signing §3.2
+  step 4.
 - **SLSA provenance attestations** — out of scope for v0.x; revisit at v1.0.
 - **Reproducible builds** — Python wheel reproducibility and Go binary
   determinism are tracked under future ADRs.

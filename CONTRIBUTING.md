@@ -2,96 +2,53 @@
 
 ## TL;DR
 
-This project is heavily AI-assisted. Most code is drafted by AI agents
-(Claude, Codex, Qwen) running under the Cognitive OS orchestration
-framework that this repo itself implements, and every commit passes
-through hook-based quality gates plus explicit human approval before it
-lands. This document explains how that works, how to contribute, and a
-few conventions that might otherwise look strange — most notably, why
-we do not add AI-provider `Co-Authored-By` trailers.
+Cognitive OS is built with AI-assisted development. AI coding agents draft,
+review, and refactor substantial parts of the codebase, but public authorship
+metadata stays human: commit authors, sign-offs, and contributor records identify
+the people who submit and take responsibility for the work.
 
-The tone aims to be matter-of-fact, and claims here are intended to be
-verifiable from the repo.
+We do not invent provider identities, fake bot authors, or add trailers such as
+`Co-authored-by: Claude`. AI involvement is disclosed here and, where available,
+tracked through project provenance and session records instead of pretending that
+a model is a legal contributor.
 
-## 1. Who writes the code
+## 1. AI assistance and authorship policy
 
-Honest disclosure:
+This repository uses AI systems including Claude, Codex, Qwen, and other tools as
+implementation assistants. The policy is:
 
-- The **majority** of commits are produced by AI coding agents —
-  primarily Anthropic's Claude (Opus, Sonnet, Haiku tiers), OpenAI's
-  Codex, and Alibaba's Qwen — operating under the Cognitive OS
-  orchestration framework. Yes, the same framework whose source lives in
-  this repo. The project dogfoods itself.
-- Every commit passes through human-in-the-loop review gates before it
-  is pushed to `main`:
-  - **Pre-commit and pre-push hooks** enforce portability, scope
-    markers, a destructive-git blocker, license/secret scanning, and
-    repository-specific contracts. See `hooks/` and `.githooks/`.
-  - **Agent self-verification** — agents must provide a Trust Report
-    (evidence-based confidence assessment) with their output. See
-    `rules/trust-score.md`.
-  - **Human operator review** — a human reviews the diff and approves
-    the push. The operator is the legal author of the commit.
-- Reviewer identity model: at the time of writing, a single human
-  operator (the repository maintainer) reviews and approves all merges
-  to `main`. The model will expand as the project takes on additional
-  maintainers, and this section will be updated when that happens.
+- **AI-assisted, human-reviewed.** AI output is treated as draft work. A human
+  contributor is responsible for reviewing, testing, accepting, and submitting it.
+- **No provider-invented identities.** Do not create commit authors, GitHub users,
+  bot names, email addresses, or signatures that imply an AI provider or model is
+  a real contributor.
+- **No fake AI co-author trailers.** Do not add `Co-authored-by: Claude`,
+  `Co-authored-by: Codex`, provider support addresses, or similar trailers for AI
+  systems. If a real human co-authored the change, normal human co-author metadata
+  is fine.
+- **Authorship metadata is contributor metadata.** `Author`, `Committer`,
+  `Signed-off-by`, and `Co-authored-by` fields are for humans or accountable
+  organizations that actually submit work under the project license.
+- **Provenance lives outside fake authorship.** When Cognitive OS provenance is
+  enabled, local hooks and session records may capture AI/tool usage for audit and
+  debugging. Published commits should still present verified contributor metadata.
 
-## 2. Why we do not use `Co-Authored-By` for AI agents
+For clean-room and prior-art provenance notes, see
+[`docs/architecture/provenance.md`](docs/architecture/provenance.md).
 
-A deliberate choice, not an oversight. The rationale, so the absence is
-not read as concealment:
-
-1. **Authorship in the legal sense.** Anthropic, OpenAI, and Alibaba do
-   not author code that this project ships. They provide statistical
-   models the human operator runs as a tool. Listing them as co-authors
-   would imply a legal authorship relationship that does not exist and
-   that the providers themselves do not claim.
-2. **History noise.** Adding AI-provider `Co-Authored-By` trailers
-   to virtually every commit produces a `git log` that is mostly tooling
-   metadata and breaks contributor-graph tooling on most forges.
-3. **Conflict with the verified-author model.** The repository records
-   AI provenance through a structured side-channel rather than commit
-   trailers (see ADR-088). Mixing the two channels would create two
-   sources of truth that could disagree.
-
-The project does **not** hide AI involvement; it records it explicitly,
-just outside the public commit-author channel:
-
-- **Session trajectories.** When a Cognitive OS session is active,
-  `.cognitive-os/sessions/` records the agent trajectory for the work
-  that produced the change.
-- **Commit provenance hook.** Local development can add `X-COS-*`
-  provenance trailers via `.githooks/prepare-commit-msg` and
-  `scripts/commit_provenance.py`; pre-public history sanitization strips
-  those trailers from published commits so session IDs do not leak.
-- **Audit script.** Run `python3 scripts/commit_provenance.py --help`
-  to see the attribution algorithm. The script's docstring documents the
-  priority order it walks (PPID chain, environment variables, fallback
-  heuristics) and links to ADR-088 for known limitations.
-
-The private trajectory data is the intended starting point for AI-vs-human
-auditing. A dedicated whole-history public reporting CLI is aspirational;
-published commit authorship remains the verified human-operator channel.
-
-## 3. How to contribute
+## 2. How to contribute
 
 Outside contributions are welcome.
 
-1. **Issue first** for non-trivial work — open one describing the
-   problem and the proposed approach (Bug Report or Feature Request
-   template). This avoids wasted effort if the change conflicts with
-   in-flight work or undocumented design decisions.
-2. **Fork and branch** from `main`. Branch naming is informal but
-   descriptive — `fix/hook-timing-race`, `feat/llm-dispatch-qwen-fallback`.
-3. **Pull request** against `main`. Reference the issue and any relevant
-   ADRs. Smaller PRs get reviewed faster.
-4. **DCO sign-off required** on every commit (see section 7).
-5. **Pre-commit hooks will run.** Do not bypass with `--no-verify`
-   without operator approval. They catch real issues.
-6. **Tests.** Behaviour changes require tests. At minimum, run the tests
-   covering the paths you touched. Lanes documented in
-   `.cognitive-os/test-lanes.yaml`.
+1. **Issue first** for non-trivial work. Describe the problem and proposed
+   approach so maintainers can flag conflicts with in-flight changes.
+2. **Fork and branch** from `main`. Use a descriptive branch name such as
+   `fix/hook-timing-race` or `feat/llm-dispatch-fallback`.
+3. **Open a pull request** against `main`. Reference the issue and relevant ADRs.
+4. **Sign off every commit** with DCO metadata. Use `git commit -s`.
+5. **Do not bypass hooks** with `--no-verify` unless a maintainer explicitly asks.
+6. **Test the paths you touched.** Behaviour changes require tests; docs-only
+   changes need enough validation to prove links and formatting are sane.
 
 ### Development setup
 
@@ -100,150 +57,99 @@ Outside contributions are welcome.
 git clone https://github.com/YOUR_USERNAME/luum-cognitive-os.git
 cd luum-cognitive-os
 
-# (Optional) Start infrastructure for full integration testing
+# Optional: start infrastructure for full integration testing
 docker compose -f docker-compose.cognitive-os.yml up -d
 
 # Run the full suite
 bash scripts/run-all-tests.sh
 ```
 
-Review timing is best-effort. The maintainer is currently one person and
-this is not a funded project. Reasonable PRs typically get a first
-response within a few days; nothing more is promised here.
+Review timing is best-effort. This is currently a maintainer-led project, not a
+funded support channel.
 
-## 4. Code style
+## 3. Code style
 
-Enforced by lint, `tests/audit/`, and hooks. Full ruleset in `rules/`:
+Enforced by lint, `tests/audit/`, and hooks. Full rules live in `rules/`.
 
-- **Python**: `snake_case` filenames in `scripts/`, `lib/`, and
-  `packages/*/lib/`. See `rules/python-naming.md`. Hyphens in Python
-  filenames break pytest collection and are blocked by
-  `tests/audit/test_python_naming.py`.
-- **Bash**: `kebab-case` filenames, `snake_case` functions inside.
-  See `rules/bash-naming.md`. Enforced by `tests/audit/test_bash_naming.py`.
-  Use `#!/usr/bin/env bash`, `set -euo pipefail`, quote variables.
-- **Go**: `gofmt -l` clean, `go vet ./...` clean. Local CI gate; see
-  ADR-131.
-- **YAML**: 2-space indentation; comments explain *why*, not *what*.
-- **Markdown**: Skills follow the `SKILL.md` format with frontmatter;
-  rules follow the `rules/*.md` format. Lines under 120 characters.
-- **No `TODO` or `FIXME` without a tracking reference** (issue ID, ADR
-  number, or ticket). See `rules/agent-quality.md`. Naked TODOs become
-  forgotten TODOs.
-- **Tests required for behaviour changes.** Pure refactors and docs
-  changes are exempt.
+- **Python**: `snake_case` filenames in `scripts/`, `lib/`, and `packages/*/lib/`.
+- **Bash**: `kebab-case` filenames, `snake_case` functions, `#!/usr/bin/env bash`,
+  `set -euo pipefail`, and quoted variables.
+- **Go**: `gofmt` and `go vet ./...` clean.
+- **YAML**: 2-space indentation; comments explain why, not what.
+- **Markdown**: keep lines readable, prefer links to duplicated policy text.
+- **No naked `TODO` or `FIXME`.** Use a tracked issue, ADR, or ticket reference.
+- **Tests required for behaviour changes.** Pure refactors and docs changes are
+  exempt from new tests when existing validation is sufficient.
 
 ### Architecture boundary
 
-Cognitive OS has a strict separation between **core** and
-**project-specific** code:
+Cognitive OS separates portable OS primitives from project-specific extensions:
 
 | Directory | Scope | Rule |
 |-----------|-------|------|
-| `.cognitive-os/` | Universal framework | Must work for ANY project. No project-specific references. |
-| `.claude/` | Project-specific | Tied to a specific project. Generated by `/cognitive-os-init`. |
-| Root `rules/`, `skills/`, `hooks/` | Core source content | Product runtime content projected into installed environments. |
+| `.cognitive-os/` | Universal framework | Must work for any project; no project-specific references. |
+| `.claude/` | Project-specific | Generated by `/cognitive-os-init`; tied to one project. |
+| Root `rules/`, `skills/`, `hooks/` | Core source | Runtime agentic primitives. |
 
-Before submitting: is the change in the right tier? Will it work for
-Go, Node, Python, Rust, and any other stack? Are you adding a
-dependency that breaks portability?
+Before submitting, ask: is the change in the right tier, and will it remain
+portable across Go, Node, Python, Rust, and other stacks?
 
-## 5. Commit message conventions
+## 4. Commit message conventions
 
-Conventional Commits, loosely:
+Use Conventional Commits loosely:
 
-- **Prefix**: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`,
-  `tooling:`, plus a few project-specific prefixes you will see in
-  `git log` (`adr:`, `audit:`).
-- **Imperative mood**: `add X`, not `added X` or `adds X`.
-- **Subject line under 72 characters.** The body explains *why* the change
-  was made, not *what* was changed (the diff already shows the what).
-- **Reference ADRs and issues** in the body where applicable
-  (`See ADR-088`, `Closes #42`).
-- **Do not add `Co-Authored-By:` for AI agents** (see section 2). The
-  X-COS provenance trailers are added automatically by the prepare-commit
-  hook.
-- **Do add `Signed-off-by:` for DCO** (section 7). `git commit -s`
-  appends it for you.
+- Prefix with `feat:`, `fix:`, `refactor:`, `docs:`, `test:`, `chore:`,
+  `tooling:`, `adr:`, or `audit:`.
+- Use imperative mood: `add X`, not `added X`.
+- Keep the subject under 72 characters when practical.
+- Explain why in the body; the diff already shows what changed.
+- Reference ADRs and issues when relevant.
+- Add `Signed-off-by:` for the DCO.
+- Do not add AI-provider `Co-authored-by` trailers.
 
-## 6. Testing
+## 5. Testing
 
-Contributions should include tests when applicable:
+Useful lanes:
 
-- **Unit and contract tests**: `python3 -m pytest tests/unit tests/contracts -q`
-- **Behaviour tests**: `python3 -m pytest tests/behavior -q`
-- **Go core tests**: `go test ./internal/provider/... ./internal/validator/... ./pkg/hook/...`
-- **Full suite**: `bash scripts/run-all-tests.sh`
+```bash
+python3 -m pytest tests/unit tests/contracts -q
+python3 -m pytest tests/behavior -q
+go test ./internal/provider/... ./internal/validator/... ./pkg/hook/...
+bash scripts/run-all-tests.sh
+```
 
-Run the full suite before submitting if your change touches anything
-beyond docs.
+Run the full suite before submitting changes that touch runtime code, hooks,
+provider dispatch, portability, security, or release tooling.
 
-## 7. The DCO (Developer Certificate of Origin)
+## 6. Developer Certificate of Origin
 
 This project uses the
-[Developer Certificate of Origin](https://developercertificate.org/)
-rather than a CLA. By adding `Signed-off-by:` to your commit, you certify
-that you have the right to submit the contribution under the project's
-license. Add it with `git commit -s` (or `-sa` to also stage tracked
-changes and sign in one step).
+[Developer Certificate of Origin](https://developercertificate.org/) instead of a
+CLA. By adding `Signed-off-by:` to your commit, you certify that you have the
+right to submit the contribution under the project license. Use `git commit -s`.
 
-The DCO text is short and worth reading at the link above. Short
-version: you wrote it (or have permission to contribute it), you
-understand it is going into a public open-source project, and you are
-fine with that.
+## 7. Reporting AI-generated bugs
 
-## 8. AI tools used
+Reports of AI-characteristic failures are welcome, especially:
 
-Listed for transparency, not endorsement:
+- hallucinated APIs or imports;
+- stale references after refactors;
+- plausible but wrong logic;
+- fabricated citations to ADRs, issues, or commits.
 
-- **Claude** (Opus / Sonnet / Haiku) by Anthropic — primary orchestration
-  and implementation.
-- **Codex** by OpenAI — secondary implementation and code review.
-- **Qwen** by Alibaba — used as the primary tier in the LLM dispatcher to
-  preserve Claude budget; see ADR-049 and `scripts/orchestrator.py`.
+Please tag these reports `ai-bug` so they can be tracked and used to improve
+prompts, hooks, and tests.
 
-The Cognitive OS orchestration layer is **provider-agnostic by design**.
-Switching, replacing, or adding providers is supported through
-configuration (`cognitive-os.yaml` and `lib/dispatch.py`). The list above
-reflects what the maintainer happens to use; nothing in the architecture
-favours any specific provider, and this project does not endorse any
-vendor's reliability or capability claims.
+## 8. Questions and disclosures
 
-## 9. Reporting AI-generated bugs
-
-This is a bug category the project specifically welcomes reports on,
-because the failure modes are characteristic and worth tracking:
-
-- **Hallucinated APIs** — code that calls a function or imports a module
-  that does not exist (or no longer exists in the current version).
-- **Stale references after refactor** — code, docs, or tests still
-  pointing at the old name, path, or signature.
-- **Confidently-wrong code** — looks reasonable on a skim, falls apart
-  on inspection (off-by-one, wrong default, plausible-but-incorrect
-  algorithm).
-- **Plausible-but-fabricated citations** — references to ADRs, issues,
-  or commits that do not exist.
-
-When filing one of these, please tag the issue `ai-bug` so the rate can
-be tracked over time and fed back into prompt and hook design.
-
-## 10. Where to ask questions
-
-- **Issues**: open one on the GitHub repository for bug reports, feature
-  requests, and design questions. Include OS, shell, active harness
-  (Claude Code, Codex, Cursor, etc.), and steps to reproduce. Attach
-  relevant logs from `.cognitive-os/metrics/` if applicable.
-- **Email**: `2144218+MatiasNAmendola@users.noreply.github.com` for matters that are not
-  appropriate for a public issue (security disclosure, licensing
-  questions, etc.).
+- **Issues**: use GitHub issues for bug reports, feature requests, and design
+  questions. Include OS, shell, active harness, reproduction steps, and relevant
+  `.cognitive-os/metrics/` logs when applicable.
+- **Email**: `2144218+MatiasNAmendola@users.noreply.github.com` for security,
+  licensing, or other matters that should not start in a public issue.
 
 ## License
 
-By contributing, you agree your contributions will be licensed under
-FSL-1.1-MIT. After the 2-year change date, your contributions
-automatically convert to MIT along with the rest of the project.
-
----
-
-If something here is unclear, or you think a policy should be different,
-opening an issue to debate it is a perfectly valid contribution.
+By contributing, you agree your contributions will be licensed under FSL-1.1-MIT.
+After the 2-year change date, your contributions automatically convert to MIT
+along with the rest of the project.

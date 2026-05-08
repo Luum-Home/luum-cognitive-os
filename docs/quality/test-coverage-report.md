@@ -11,7 +11,7 @@
 
 ## Executive Summary
 
-This repository has approximately **17,519 collected Python tests** plus three Go test trees. Across the suites that completed within the harness window, results are mixed: **all Go suites pass green** (root module, `cmd/cos`, `cmd/cos-test`); **`go vet` is clean**; **`gofmt -l` flags one pre-existing file**; the **portability red-team lane** ran to completion with **160 passed / 5 failed** (5 known-flaky/infra failures, none related to the recent privacy-decoupling tier work); the **audit lane** and the **full `pytest` collection** both hit aggregate-level resource exhaustion (per-test 30 s `pytest-timeout` triggered inside `glob.scandir(...)` and inside subprocess-heavy architecture tests respectively), which blocks single-shot completion of those suites at default settings. **`ruff check`** reports **1,494 lint findings** (1,277 unused-import `F401`, 217 unused-local `F841`) — none are runtime errors but the volume is significant for a public release. **No genuine product regressions were identified in the green suites.**
+This repository has approximately **17,519 collected Python tests** plus three Go test trees. Across the suites that completed within the harness window, results are mixed: **all Go suites pass green** (root module, `cmd/cos`, `cmd/cos-test`); **`go vet` is clean**; **`gofmt -l` flags one pre-existing file**; the **portability red-team lane** is now **165 passed / 0 failed** (the 5 failures from the 2026-05-07 audit have all been resolved — 4 by upstream commits, 1 by `tests/red_team/portability/test_cos-merge-queue-worker.py` setting `COS_QUEUE_AUTO_REBASE=0` to pin the gate-fail path); the **audit lane** and the **full `pytest` collection** both hit aggregate-level resource exhaustion (per-test 30 s `pytest-timeout` triggered inside `glob.scandir(...)` and inside subprocess-heavy architecture tests respectively), which blocks single-shot completion of those suites at default settings. **`ruff check`** reports **1,494 lint findings** (1,277 unused-import `F401`, 217 unused-local `F841`) — none are runtime errors but the volume is significant for a public release. **No genuine product regressions were identified in the green suites.**
 
 A reader cloning this repo and running `pytest -q` today will see the same collection error and will see the timeout strike before the suite completes; the per-suite reproduction commands in the **Reproduction** section below are what we recommend documenting in CONTRIBUTING.md before publishing.
 
@@ -24,7 +24,7 @@ A reader cloning this repo and running `pytest -q` today will see the same colle
 | Python — full pytest            | `pytest -q --tb=no`                                                                      | 17,519 collected | n/a (interrupted) | n/a | n/a | 1 (collection) | 199 s before interrupt | **INCOMPLETE** — collection interrupt + per-test timeouts |
 | Python — full pytest (relaxed)  | `pytest -q --tb=line --continue-on-collection-errors --deselect tests/architecture/test_wiring.py::test_no_new_unwired_libs --ignore=tests/audit -n 8` | ~16,800 (after deselects/ignores) | not finished within harness window | — | — | — | >12 min and ongoing | **PARTIAL** — see "Known long-runners" below |
 | Python — `tests/audit/`         | `pytest -q tests/audit/`                                                                  | unknown (~2k partial) | ~1,500+ pass observed (20% mark hit) | n/a | n/a | 1 (`pytest-timeout` inside `glob.scandir`) | timeout-killed at ~5 min | **INCOMPLETE** — single test exceeds 30 s default timeout |
-| Python — `tests/red_team/portability/` | `pytest -q tests/red_team/portability/`                                                | 165 | **160** | **5** | 0 | 0 | 288 s (4:48) | **PASS WITH FAILURES** |
+| Python — `tests/red_team/portability/` | `pytest -q tests/red_team/portability/`                                                | 165 | **165** | **0** | 0 | 0 | 62 s | **PASS** (resolved 2026-05-08) |
 | Go — root module                | `go test ./...`                                                                          | (cached) | all green | 0 | — | 0 | <1 s (cached) | **PASS** |
 | Go — `cmd/cos`                  | `cd cmd/cos && go test ./...`                                                            | (cached) | all green | 0 | — | 0 | <1 s (cached) | **PASS** |
 | Go — `cmd/cos-test`             | `cd cmd/cos-test && go test ./...`                                                       | (cached) | all green | 0 | — | 0 | <1 s (cached) | **PASS** |
@@ -45,7 +45,18 @@ These do not appear to be product bugs, but they prevent the full suite from com
 
 ## Failure Inventory
 
-### Python — `tests/red_team/portability/` (5 failures)
+### Python — `tests/red_team/portability/` (0 failures — resolved 2026-05-08)
+
+> **Update 2026-05-08:** the lane is fully green (165/165). The historical
+> failure inventory below is preserved for audit traceability. Resolutions:
+> #1 (`concurrent_write` key), #3–#5 (coordination-status timeouts), and
+> the snapshot-restore drift were addressed by upstream commits between
+> 2026-05-07 and 2026-05-08; #2 (ancestry-gate proof) was fixed by pinning
+> `COS_QUEUE_AUTO_REBASE=0` in the test env so the gate-fail path is
+> actually exercised (the worker's auto-rebase otherwise recovers and the
+> test returncode would be 0).
+
+### Historical failure inventory (5 failures — 2026-05-07)
 
 1. **`cos_concurrent_status_test.py::test_empty_non_so_project_emits_json`**
 

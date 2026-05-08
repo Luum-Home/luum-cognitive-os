@@ -54,8 +54,11 @@ shape but with stricter destructive-op gating:
 4. **Backed by `git-filter-repo`** (not `git filter-branch`, which is
    deprecated and footgun-rich).
 5. **Manifest declaration**: `manifests/history-sanitization.yaml`.
-6. **Schema-versioned report**: `history-sanitization-report/v1`.
-7. **Implementation**: `lib/history_sanitization.py` +
+6. **Content-only by default**: author/committer names and emails are human
+   provenance and are **not** rewritten unless the operator explicitly sets
+   `COS_HISTORY_SANITIZE_METADATA=1` for a metadata-scoped rule.
+7. **Schema-versioned report**: `history-sanitization-report/v1`.
+8. **Implementation**: `lib/history_sanitization.py` +
    `scripts/cos-history-sanitization` Python entrypoint.
 
 ## What the manifest declares
@@ -65,7 +68,14 @@ schema_version: history-sanitization/v1
 status: active
 owner: platform-safety
 
-# Each rule: substitution applied to all commit content via git-filter-repo --replace-text
+# Each rule: substitution applied to commit content via git-filter-repo --replace-text.
+# Commit author/committer metadata is preserved unless a rule declares
+# scope: metadata and COS_HISTORY_SANITIZE_METADATA=1 is set.
+metadata_rewrite:
+  default: false
+  require_env: COS_HISTORY_SANITIZE_METADATA
+  require_env_value: "1"
+
 text_replacements:
   - pattern: "$COS_HISTORY_SANITIZE_OPERATOR_EMAIL"
     replacement: "2144218+MatiasNAmendola@users.noreply.github.com"
@@ -112,7 +122,8 @@ cos history sanitize --execute
   -> requires COS_ALLOW_DESTRUCTIVE_GIT=1 (ADR-055b)
   -> requires explicit y/n prompt confirmation (ALWAYS, even with env var)
   -> creates the backup mirror
-  -> runs git-filter-repo for real
+  -> runs git-filter-repo for real, content-only by default
+  -> preserves author/committer metadata unless COS_HISTORY_SANITIZE_METADATA=1
   -> emits the same report + writes a tombstone commit on a new branch
      `history-sanitization-{timestamp}` pointing at the post-rewrite HEAD
   -> tells operator: "force-push required to publish; do this BEFORE first
@@ -125,6 +136,10 @@ cos history sanitize --execute
 - **`--execute` requires operator-in-the-loop**, no headless service-mode
   invocation. ADR-211 service-mode readiness explicitly **does not** include
   history sanitization in its automation lane.
+- **Author/committer metadata is preserved by default**. Do not erase human
+  commit emails or names with broad mailmap-style rewrites. Metadata-scoped
+  rewrites require `COS_HISTORY_SANITIZE_METADATA=1` and explicit operator
+  consent.
 - **Run only ONCE pre-public-launch**. Subsequent leaks are addressed by
   rotating the leaked credential and adding a manifest entry; never by a
   second history rewrite (collaborators with clones get permanent drift
@@ -235,9 +250,10 @@ new public remote. Never repeat after public availability.
 - Should `cos history sanitize` automatically generate the GitHub redirect
   notice ("we rewrote history pre-public; old SHAs invalid") for the launch
   blog post? Could be a `--launch-notice` flag emitting markdown.
-- Should the manifest support `commit_metadata_replacements` (committer
-  name/email rewrites) in addition to text replacements? Initial answer:
-  defer; out of scope until evidence of need.
+- `commit_metadata_replacements` are deliberately gated. The manifest may mark
+  a rule `scope: metadata`, but execution blocks unless
+  `COS_HISTORY_SANITIZE_METADATA=1` is set. Default public-readiness rewrites
+  remain content-only to preserve human authorship.
 - Integration with `git-crypt` or transparent-encryption alternatives:
   defer; this ADR addresses pre-public scrubbing, not ongoing private
   collaboration.

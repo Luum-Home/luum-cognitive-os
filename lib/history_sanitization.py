@@ -94,6 +94,38 @@ def history_scan_timeout_seconds(manifest: dict[str, Any]) -> float:
     return max(0.1, value)
 
 
+def metadata_rewrite_enabled(manifest: dict[str, Any]) -> bool:
+    """Return whether author/committer metadata rewrites are explicitly enabled.
+
+    ADR-218 defaults to content-only rewrites. Commit author names/emails are
+    human provenance and must not be changed by broad history sanitation unless
+    the operator opts in with COS_HISTORY_SANITIZE_METADATA=1 (or an equivalent
+    manifest-configured env var).
+    """
+    config = manifest.get("metadata_rewrite") or {}
+    require_env = str(config.get("require_env", "COS_HISTORY_SANITIZE_METADATA"))
+    require_value = str(config.get("require_env_value", "1"))
+    return os.environ.get(require_env) == require_value
+
+
+def metadata_scope_findings(manifest: dict[str, Any]) -> list[Finding]:
+    """Block metadata-scoped rules unless metadata rewrite is explicit."""
+    if metadata_rewrite_enabled(manifest):
+        return []
+    findings: list[Finding] = []
+    for rule in manifest.get("rules", []) or []:
+        if str(rule.get("scope", "content")) in {"metadata", "commit-metadata", "all"}:
+            findings.append(
+                Finding(
+                    "block",
+                    "metadata-rewrite-not-enabled",
+                    f"Rule {rule.get('id')} declares metadata scope, but metadata rewrite is disabled. Set COS_HISTORY_SANITIZE_METADATA=1 only with explicit operator consent.",
+                    rule_id=str(rule.get("id")),
+                )
+            )
+    return findings
+
+
 def count_history(project_dir: Path, pattern: str, *, mode: str, timeout_seconds: float | None = None) -> CountResult:
     """Count commits whose patches indicate a historical content match.
 
@@ -249,6 +281,7 @@ def build_report(project_dir: Path, *, mode: str = "dry-run") -> dict[str, Any]:
     tool = tool_status()
     if not tool["installed"]:
         findings.append(Finding("warn", "git-filter-repo-missing", "git-filter-repo is not installed; execute mode cannot run until installed."))
+    findings.extend(metadata_scope_findings(manifest))
     if mode == "execute":
         required_env = (manifest.get("execution") or {}).get("require_env", "COS_ALLOW_DESTRUCTIVE_GIT")
         required_value = str((manifest.get("execution") or {}).get("require_env_value", "1"))
@@ -474,25 +507,28 @@ def _metadata_message_callback(replacements: list[tuple[bytes, bytes]]) -> str:
     )
 
 
-def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]]) -> subprocess.CompletedProcess[str]:
+def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]], manifest: dict[str, Any]) -> subprocess.CompletedProcess[str]:
     replacements = _literal_replacements(rules)
-    email_callback = f"return {_bytes_replace_expression('email', replacements)}"
-    name_callback = f"return {_bytes_replace_expression('name', replacements)}"
     message_callback = _metadata_message_callback(replacements)
-    proc = subprocess.run(
-        [
-            "git",
-            "filter-repo",
-            "--replace-text",
-            str(rules_file),
+    cmd = ["git", "filter-repo"]
+    if metadata_rewrite_enabled(manifest):
+        email_callback = f"return {_bytes_replace_expression('email', replacements)}"
+        name_callback = f"return {_bytes_replace_expression('name', replacements)}"
+        cmd.extend([
             "--email-callback",
             email_callback,
             "--name-callback",
             name_callback,
-            "--message-callback",
-            message_callback,
-            "--force",
-        ],
+        ])
+    cmd.extend([
+        "--replace-text",
+        str(rules_file),
+        "--message-callback",
+        message_callback,
+        "--force",
+    ])
+    proc = subprocess.run(
+        cmd,
         cwd=str(project_dir),
         text=True,
         capture_output=True,
@@ -508,6 +544,17 @@ def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, 
     return proc
 
 
+def _verification_haystack(project_dir: Path, *, include_author_metadata: bool) -> str:
+    pretty = "fuller" if include_author_metadata else "format:%B"
+    proc = subprocess.run(
+        ["git", "log", "--all", f"--pretty={pretty}", "-p", "--no-color"],
+        cwd=str(project_dir),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    return proc.stdout if proc.returncode == 0 else ""
+
 def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]]) -> dict[str, int]:
     """Run grep against post-rewrite history and metadata for each replacement source.
 
@@ -516,27 +563,21 @@ def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]])
     Caller decides whether to treat non-zero remaining counts as failure.
     """
     remaining: dict[str, int] = {}
+    include_author_metadata = metadata_rewrite_enabled(load_manifest(project_dir))
+    haystack = _verification_haystack(project_dir, include_author_metadata=include_author_metadata)
+    if not haystack:
+        return {str(rule.get("id", "unknown")): -1 for rule in rules}
     for rule in rules:
         value = rule.get("value") or rule.get("pattern")
         rule_id = rule.get("id", "unknown")
         if not value:
             remaining[rule_id] = -1
             continue
-        proc = subprocess.run(
-            ["git", "log", "--all", "--pretty=fuller", "-p"],
-            cwd=str(project_dir),
-            text=True,
-            capture_output=True,
-            check=False,
-        )
-        if proc.returncode != 0:
-            remaining[rule_id] = -1
-            continue
         try:
             if rule.get("mode") == "regex":
-                count = count_regex(proc.stdout, str(value))
+                count = count_regex(haystack, str(value))
             else:
-                count = proc.stdout.count(str(value))
+                count = haystack.count(str(value))
         except Exception:
             count = -1
         remaining[rule_id] = count
@@ -702,7 +743,7 @@ def execute(
 
     # 6. Run filter-repo (THE destructive step)
     try:
-        _run_filter_repo(project, rules_file, replacement_rules)
+        _run_filter_repo(project, rules_file, replacement_rules, manifest)
     finally:
         # The rules file is intentionally kept for forensic audit (report
         # references it). It can be deleted by the operator post-verify.
@@ -761,4 +802,5 @@ def execute(
         "remaining_hits": remaining_hits,
         "remotes_restored": restored_remotes,
         "rules_file": str(rules_file),
+        "metadata_rewrite_enabled": metadata_rewrite_enabled(manifest),
     }

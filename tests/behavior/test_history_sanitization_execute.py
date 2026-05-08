@@ -176,18 +176,23 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     fsck = _run(["git", "fsck", "--no-progress"], backup_path)
     assert fsck.returncode == 0, f"backup mirror fsck failed: {fsck.stderr}"
 
-    # Post-rewrite history must NOT contain the secret email or home path
-    post_grep_email = _run(["git", "log", "--all", "--pretty=fuller", "-p"], fixture)
-    assert SECRET_EMAIL not in post_grep_email.stdout, "secret email still present after rewrite"
-    assert SECRET_NAME not in post_grep_email.stdout, "secret name still present after rewrite"
-    assert SECRET_HOME not in post_grep_email.stdout, "secret home path still present after rewrite"
-    assert COS_TRAILER not in post_grep_email.stdout, "COS trailer still present after rewrite"
-    assert COS_WORK_TRAILER not in post_grep_email.stdout, "COS work trailer still present after rewrite"
-    assert FIXTURE_HOME not in post_grep_email.stdout, "regex fixture home path still present after rewrite"
-    assert "/Users/<fixture-user>/Projects/<fixture-project>" in post_grep_email.stdout
+    # Post-rewrite content and commit messages must NOT contain configured
+    # sensitive values, but author/committer metadata is preserved by default.
+    post_content = _run(["git", "log", "--all", "--pretty=format:%B", "-p", "--no-color"], fixture)
+    assert SECRET_EMAIL not in post_content.stdout, "secret email still present in content after rewrite"
+    assert SECRET_NAME not in post_content.stdout, "secret name still present in content after rewrite"
+    assert SECRET_HOME not in post_content.stdout, "secret home path still present in content after rewrite"
+    assert COS_TRAILER not in post_content.stdout, "COS trailer still present after rewrite"
+    assert COS_WORK_TRAILER not in post_content.stdout, "COS work trailer still present after rewrite"
+    assert FIXTURE_HOME not in post_content.stdout, "regex fixture home path still present after rewrite"
+    assert "/Users/<fixture-user>/Projects/<fixture-project>" in post_content.stdout
+
+    authors = _run(["git", "log", "--all", "--format=%an <%ae>"], fixture).stdout
+    assert f"{SECRET_NAME} <{SECRET_EMAIL}>" in authors
+    assert result["metadata_rewrite_enabled"] is False
 
     # Preserve marker must remain
-    assert PRESERVE_MARKER in post_grep_email.stdout, "license-transition preserve pattern was scrubbed"
+    assert PRESERVE_MARKER in post_content.stdout, "license-transition preserve pattern was scrubbed"
 
     # Report file exists, is JSON, and has schema_version
     report_path = Path(result["report_path"])
@@ -199,6 +204,31 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert payload["verification"]["commit_count_preserved"] is True
     assert payload["verification"]["all_replacements_resolved_to_zero"] is True
 
+
+
+def test_execute_metadata_rewrite_requires_explicit_env(tmp_path, monkeypatch) -> None:
+    fixture = tmp_path / "fixture-repo"
+    _make_fixture_repo(fixture)
+    _write_fixture_manifest(fixture)
+    _run(["git", "add", "manifests/history-sanitization.yaml"], fixture)
+    _run(["git", "commit", "-m", "add sanitize manifest"], fixture)
+
+    monkeypatch.setenv("TEST_OPERATOR_EMAIL", SECRET_EMAIL)
+    monkeypatch.setenv("TEST_OPERATOR_NAME", SECRET_NAME)
+    monkeypatch.setenv("TEST_OPERATOR_HOME", SECRET_HOME)
+    monkeypatch.setenv("COS_ALLOW_DESTRUCTIVE_GIT", "1")
+    monkeypatch.setenv("COS_HISTORY_SANITIZE_METADATA", "1")
+    fake_home = tmp_path / "fake-home"
+    fake_home.mkdir()
+    monkeypatch.setenv("HOME", str(fake_home))
+
+    result = execute(fixture, confirmed=True)
+
+    authors = _run(["git", "log", "--all", "--format=%an <%ae>"], fixture).stdout
+    assert SECRET_EMAIL not in authors
+    assert SECRET_NAME not in authors
+    assert "Maintainer <2144218+MatiasNAmendola@users.noreply.github.com>" in authors
+    assert result["metadata_rewrite_enabled"] is True
 
 def test_execute_refuses_without_confirmation(tmp_path) -> None:
     fixture = tmp_path / "fixture-repo"
