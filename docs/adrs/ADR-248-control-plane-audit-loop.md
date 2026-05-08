@@ -237,3 +237,18 @@ The control-plane runner now persists the loop state, not just stdout:
 Each finding receives a stable id derived from lane, audit id, ADR, code, message, and path/primitive. Metrics include findings by ADR, new/resolved counts, recurrence count, time-to-remediate for resolved findings, and false-positive rate from explicit labels in `.cognitive-os/tasks/control-plane-remediation-labels.jsonl`.
 
 Automatic correction is intentionally gated. The runner supports `--apply-safe-fixes`, but it only executes commands declared under `remediation.safe_fixes` whose `safe_class` appears in `remediation.safe_classes`. The default manifest declares safe classes but no fixes. This preserves the doctrine: detect → propose → apply only if safe class → measure result.
+
+
+## Future primitive safety boundary
+
+ADR-248 consumes detectors; it does not make undeclared primitives safe by
+itself. A new skill/hook/rule/script/daemon/repair command is protected by the
+control loop only after ADR-240 or a sibling manifest declares its owner,
+lifecycle, read/write surfaces, mutability, ordering edges, bypasses, external
+tool boundaries, and tests. Otherwise the runner can only catch generic classes
+that already exist in a detector.
+
+This is deliberate: the guarantee is not “any new primitive is automatically
+safe.” The guarantee is “any new primitive that goes through the declarative
+registration contract becomes auditable, measurable, queueable, and eligible
+for safe-class remediation if explicitly allowed.”

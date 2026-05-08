@@ -80,6 +80,56 @@ read-only and may legitimately report current warnings or blockers. Remediation
 commits must be separate from detector commits and should reference the finding
 code they resolve.
 
+
+## Boundary: future primitives are safe only after registration
+
+This audit is a meta-system, not magic. It prevents regressions for primitive
+classes and mutable surfaces that are declared in manifests. A brand-new skill,
+hook, rule, script, daemon, repair command, or audit can still destabilize COS if
+it introduces an undeclared write surface, lifecycle, bypass, ordering edge, or
+external tool boundary.
+
+Therefore every new or promoted agentic primitive must have a machine-readable
+registration contract before it is treated as governed:
+
+```yaml
+primitive:
+  id: example
+  kind: hook | skill | rule | script | daemon | audit | repair
+  owner: platform-safety
+  lifecycle: active | manual_trigger | opt_in | deprecated
+  mutates: true | false
+  reads:
+    - path/or/surface
+  writes:
+    - path/or/surface
+  surfaces:
+    - existing.surface.id
+  bypasses:
+    - optional-bypass-id
+  ordering:
+    before: []
+    after: []
+  external_tools: []
+  tests:
+    - tests/unit/test_example.py
+```
+
+The current implementation enforces several registration slices already:
+
+- active hooks must be projected into settings;
+- manual/future/deprecated/demoted hooks must not be auto-registered;
+- multi-writer surfaces need an owner, allowance, and protocol;
+- declared ordering constraints must match the actual hook chain;
+- declared primitive invocation cycles need an explicit recursion boundary;
+- external tool boundaries need owner, SPDX license, adapter, callers, and
+  failure policy.
+
+What it does **not** guarantee is safety for an undeclared new primitive. The
+operational rule is: if an incident reveals a new class, add it to a manifest,
+make it emit a stable finding, add metrics through ADR-248, and only then decide
+whether a safe-class auto-fix is allowed.
+
 ## Slice B — recursion and third-party tool boundaries
 
 Primitive coherence also covers recursive control-plane loops. A primitive may
