@@ -77,6 +77,52 @@ unstable mode:
 
 The anti-pattern is **mixing path consistency with branch ownership**.
 
+## Causal primitive review
+
+This decision follows a direct review of the primitives and scripts that made
+branch-shift possible or attractive to agents. The root issue was not one bad
+script; it was a composition bug across otherwise reasonable safety layers.
+
+### Why agents believed branch creation was allowed
+
+Agents had multiple signals that made branch creation look like the responsible
+choice:
+
+- protected-branch guards discourage committing directly to `main`;
+- ADR-116 and ADR-225 describe per-session / branch-per-task isolation;
+- `scripts/cos-session-branch.sh` can create and switch to a session branch;
+- merge-queue and preserve-branch docs normalize temporary branches as a
+  recoverability tool;
+- `main_worktree` made the cwd look canonical, so the agent did not see a
+  boundary between path correctness and branch ownership.
+
+Given those signals, an agent trying not to overwrite the orchestrator or peer
+agents could rationally create a branch. The system bug was allowing that
+branch to be created **inside the shared operator worktree**.
+
+### Script and primitive roles
+
+| Primitive/script | Role in the old model | Correct interpretation after this ADR |
+|---|---|---|
+| `cognitive-os.yaml` `sub_agent_cwd` | selected the cwd injected into agents | `isolated_worktree` is the only safe default for concurrent write agents |
+| `hooks/agent-working-dir-inject.sh` | injected `main_worktree` as a stable path | must not inject a shared cwd in isolated mode; ADR-223 prelaunch owns the path |
+| `hooks/agent-bash-cwd-enforcer.sh` | rewrote git commands back to main | legacy single-agent compatibility only; must stand down for isolated worktrees |
+| `hooks/agent-prelaunch.sh` | task claims and optional worktree lifecycle | canonical place to prepare write-agent worktrees |
+| `scripts/cos-agent-worktree-prepare` | creates dedicated worktree/branch | correct primitive for branch-per-agent isolation |
+| `scripts/cos-session-branch.sh` | creates/switches a session branch | acceptable only with explicit operator intent or non-shared worktree context |
+| `scripts/cos-branch-task-check` | checks branch/task naming | naming check, not isolation by itself |
+| `hooks/branch-ownership-lock.sh` | locks writes on current branch | cannot authorize prior branch switches; complementary, not sufficient |
+| `hooks/destructive-git-blocker.sh` | blocks destructive git operations | must also block branch context changes as governed mutations |
+
+### Doctrine clarified
+
+- Path consistency means agents use the expected repository tree.
+- Branch ownership means each writer has an isolated `HEAD` and index.
+- `main_worktree` gave path consistency by sacrificing branch ownership.
+- Branch-per-task without worktree-per-agent still mutates the shared `HEAD`.
+- Therefore concurrent write agents need `worktree per write agent`, with branch
+  naming layered on top.
+
 ## Decision
 
 Default sub-agent cwd policy is now:
