@@ -167,3 +167,26 @@ were the files updated.
       per-file changes, and open questions
 
 H1 ready to flip to `done` once operator signs off on the open questions.
+
+## Operator sign-off (2026-05-08)
+
+1. **Date-stamp on Multi-Agent Orchestration claim** — accept as-is.
+   `docs/business/case-study.md` is the linked evidence; adding a
+   date-stamped run note can ride on a future case-study refresh.
+   Decision: **no change for v1.0**.
+2. **features.md row 15 / §10 numbering drift** — defer to a separate
+   doc-cleanup pass after public launch (re-numbering exceeds H1 scope).
+   Decision: **defer post-launch**.
+3. **master-plan-checklist.md `01-commercial-brief-v2` reference** —
+   intentional separation. The private strategy doc stays private; no
+   sanitized public version planned for v1.0.
+   Decision: **keep as-is**.
+4. **"14-layer safety mesh" wording** — accepted with a footnote on the
+   README claim pointing at `docs/safety-mesh.md`. The doc itself
+   already discloses each layer's mechanism honestly.
+   Decision: **footnote added in this commit (see README.md).**
+5. **21.4% DORMANT+ASPIRATIONAL ratio** — informational only. No
+   public-facing claim depends on it.
+   Decision: **no change**.
+
+All 5 open questions resolved. H1 closes.

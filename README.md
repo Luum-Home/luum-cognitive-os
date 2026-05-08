@@ -19,7 +19,7 @@ unverified completions.
 Before Cognitive OS: your coding agent can silently fabricate a passing test
 result, overwrite a working file with a broken one, claim "done" without
 verifying, or exhaust your API budget in an unchecked loop. After Cognitive
-OS: a 14-layer safety mesh intercepts each failure mode at the right lifecycle
+OS: a 14-layer safety mesh ([details](docs/safety-mesh.md): 11 fire as PreTool/PostTool hooks, 3 are library/conditional) intercepts each failure mode at the right lifecycle
 point — before launch, after completion, or on retry exhaustion.
 
 Concrete examples of what it prevents:
