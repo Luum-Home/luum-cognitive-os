@@ -85,7 +85,7 @@ General rules: `should_[result]_when_[condition]` naming, AAA pattern, mock only
 
 Checks all service health endpoints and infrastructure status. Steps:
 1. Docker container status
-2. HTTP health endpoints (BFF, <consumer-codename-b>, <consumer-codename-c>, onboarding, gateway, auth-provider)
+2. HTTP health endpoints (BFF, example-users, example-auth, onboarding, gateway, auth-provider)
 3. Infrastructure probes (MySQL ping, MongoDB ping, Redis ping, RabbitMQ API)
 4. Structured report with OK/DOWN status per service
 5. Troubleshooting suggestions for failures
