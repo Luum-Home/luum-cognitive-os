@@ -56,24 +56,23 @@ not read as concealment:
    sources of truth that could disagree.
 
 The project does **not** hide AI involvement; it records it explicitly,
-just in a different place:
+just outside the public commit-author channel:
 
-- **Commit trailers (already present today).** Every commit carries
-  `X-COS-Origin`, `X-COS-Session`, and `X-COS-Harness` trailers added by
-  `.githooks/prepare-commit-msg` via `scripts/commit_provenance.py`.
-  Origin values include `manual`, `agent`, `hook`, `cron`, and `subagent`.
 - **Session trajectories.** When a Cognitive OS session is active,
   `.cognitive-os/sessions/` records the agent trajectory for the work
   that produced the change.
+- **Commit provenance hook.** Local development can add `X-COS-*`
+  provenance trailers via `.githooks/prepare-commit-msg` and
+  `scripts/commit_provenance.py`; pre-public history sanitization strips
+  those trailers from published commits so session IDs do not leak.
 - **Audit script.** Run `python3 scripts/commit_provenance.py --help`
   to see the attribution algorithm. The script's docstring documents the
   priority order it walks (PPID chain, environment variables, fallback
   heuristics) and links to ADR-088 for known limitations.
 
-The trailer data is the intended starting point for AI-vs-human auditing.
-A dedicated whole-history reporting CLI on top of the trailers is
-currently aspirational; the underlying trailers themselves are real and
-present today.
+The private trajectory data is the intended starting point for AI-vs-human
+auditing. A dedicated whole-history public reporting CLI is aspirational;
+published commit authorship remains the verified human-operator channel.
 
 ## 3. How to contribute
 

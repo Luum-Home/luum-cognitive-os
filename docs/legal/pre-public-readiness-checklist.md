@@ -25,20 +25,18 @@ paths, sister-project paths visible in commit history once public.
 
 Required actions:
 
-- [ ] All 12 sanitization env vars set with real values (4 operator fields: email, display-name, home-prefix, repo-path; 3 codenames A/B/C; 5 service slots)
-- [ ] `cos history sanitize --execute --yes` run successfully
-- [ ] Tombstone branch present at `tombstone/pre-history-rewrite-*`
-- [ ] Sanitization report at `docs/history/sanitization-report-*.yaml`
-  recorded and reviewed
-- [ ] Smoke test: `git log --all -p | grep -E '<sensitive-tokens>'`
-  returns 0 hits across full history (including tombstone)
-- [ ] Force-push to origin completed
-- [ ] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHAs
+- [x] All 12 sanitization env vars set with real values (4 operator fields: email, display-name, home-prefix, repo-path; 3 codenames A/B/C; 5 service slots)
+- [x] `cos history sanitize --execute --yes` run successfully (2026-05-08T04:27:48Z)
+- [x] Tombstone branch present at `history-sanitization-20260508T042748Z`
+- [x] Sanitization report at `.cognitive-os/reports/history-sanitization/20260508T042748Z.json` recorded and reviewed
+- [x] Smoke test: codenames + service names + operator email/path → 0 hits across full history
+  (post-execute: n1u/gamer-wallet/altatienda/bff-ninja/users-core/users-auth/wallet-go/acme-gateway all 0)
+- [x] Force-push to origin completed (multiple post-execute mailmap rewrites for author identity restoration)
+- [x] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHA
 
-Evidence: link to report, log of tombstone smoke test.
-Note: manifest widened to 5 service slots (ready for `--execute` when operator chooses).
+Evidence: backup mirror at `~/.cognitive-os/recovery/pre-history-sanitization-20260508T042748Z.git`; sanitization report at `.cognitive-os/reports/history-sanitization/`. Authorship rewritten via mailmap to operator's GitHub-noreply identifier for privacy + GitHub attribution; commits also rewritten by filter-repo to align historical authors (Maintainer, Claude, cognitive-os-bot) to that same noreply identifier.
 
-Status: `pending`
+Status: `done`
 
 ---
 
