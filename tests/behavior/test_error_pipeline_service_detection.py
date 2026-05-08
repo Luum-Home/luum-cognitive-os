@@ -102,12 +102,12 @@ def test_custom_service_map_first_match_wins(tmp_path):
 
 
 def test_no_fallback_table_when_map_missing(tmp_path):
-    """Old hardcoded names (<consumer-codename-b>, <consumer-codename-a>, etc.) are NOT detected
+    """Legacy hardcoded service names are NOT detected
     when no service-map is present and no cd <dir> token appears. This is
     the regression guard for the Tier-1 portability refactor."""
-    out = _run_detect(tmp_path, cmd="go test ./<consumer-codename-b>/...")
+    out = _run_detect(tmp_path, cmd="go test ./legacy-service-alpha/...")
     # Without a service-map and without a `cd <dir>`, we get unknown -- the
-    # previous hardcoded fallback would have returned "<consumer-codename-b>".
+    # previous hardcoded fallback would have returned the legacy service name.
     assert out == "unknown"
 
 

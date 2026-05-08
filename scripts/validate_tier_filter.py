@@ -35,9 +35,23 @@ from lib.ref_key_loader import expand, find_ref_keys  # noqa: E402
 # Constants
 # ---------------------------------------------------------------------------
 
-_SESSION_DIR = Path(
-    "~/.claude/projects/-Users-matias-nahuel-amendola-Projects-luum-luum-agent-os"
-).expanduser()
+def _resolve_session_dir() -> Path:
+    """Derive the Claude Code project-key for this repo without hardcoding paths.
+
+    Claude Code stores per-project sessions under
+    ``~/.claude/projects/<slug>`` where ``<slug>`` is the absolute path of
+    the project directory with ``/`` replaced by ``-`` (and a leading ``-``).
+    Computing it from the runtime project root keeps this script portable —
+    no operator-specific home path is committed.
+    """
+    override = os.environ.get("COS_SESSION_DIR")
+    if override:
+        return Path(override).expanduser()
+    slug = "-" + str(_PROJECT_ROOT).replace("/", "-")
+    return Path("~/.claude/projects").expanduser() / slug
+
+
+_SESSION_DIR = _resolve_session_dir()
 
 _LEARNINGS_LOG = _PROJECT_ROOT / ".cognitive-os" / "metrics" / "session-learnings.jsonl"
 
