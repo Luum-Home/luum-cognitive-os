@@ -1,0 +1,30 @@
+schema_version: memory-retrieval-benchmark/v1
+status: active
+owner: memory-layer-evolution
+adr: Wave-2-memory-layer-evolution
+purpose: >-
+  Deterministic Slice 0 benchmark for memory retrieval changes. This manifest
+  must be green before Engram schema or retrieval defaults change.
+fixture_dir: tests/fixtures/memory_retrieval
+metrics:
+  top_k: 5
+  required:
+    - precision_at_k
+    - temporal_correctness
+    - source_support
+    - multi_hop_success
+    - p95_latency_ms
+fixtures:
+  - id: temporal-contradiction-license-policy
+    class: temporal_contradiction
+    file: temporal_contradiction_license_policy.json
+  - id: multi-hop-adr-implementation-test
+    class: multi_hop
+    file: multi_hop_adr_implementation_test.json
+  - id: procedural-runbook-current
+    class: procedural_query
+    file: procedural_runbook_current.json
+policy:
+  non_mutating: true
+  default_strategy: oracle_fixture
+  blocks_schema_changes_until_green: true

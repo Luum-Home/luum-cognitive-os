@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+"""Run the Wave 2 Slice 0 memory retrieval benchmark."""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT_FOR_IMPORTS = Path(__file__).resolve().parents[1]
+if str(ROOT_FOR_IMPORTS) not in sys.path:
+    sys.path.insert(0, str(ROOT_FOR_IMPORTS))
+
+from lib.memory_retrieval_benchmark import run_benchmark  # noqa: E402
+
+DEFAULT_MANIFEST = Path("manifests/memory-retrieval-benchmark.yaml")
+
+
+def repo_root(start: Path) -> Path:
+    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False)
+    if proc.returncode == 0 and proc.stdout.strip():
+        return Path(proc.stdout.strip()).resolve()
+    return start.resolve()
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    parser.add_argument("--candidate-results", default=None, help="Optional JSONL retrieval results to evaluate instead of oracle fixture output.")
+    parser.add_argument("--top-k", type=int, default=None)
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+
+    root = repo_root(Path(args.project_dir))
+    manifest = Path(args.manifest)
+    if not manifest.is_absolute():
+        manifest = root / manifest
+    candidate_results = Path(args.candidate_results) if args.candidate_results else None
+    if candidate_results and not candidate_results.is_absolute():
+        candidate_results = root / candidate_results
+
+    report = run_benchmark(manifest, candidate_results_path=candidate_results, top_k=args.top_k)
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        summary = report["summary"]
+        print(f"memory-retrieval-benchmark: {report['status']} fixtures={summary['fixtures']} passed={summary['passed']} block={summary['block']}")
+        for result in report["results"]:
+            marker = "PASS" if result["passed"] else "FAIL"
+            print(f"[{marker}] {result['fixture_id']} strategy={result['strategy']} precision@k={result['precision_at_k']}")
+            for finding in result["findings"]:
+                print(f"  - {finding['severity']} {finding['code']}: {finding['message']}")
+    return 1 if report["summary"]["block"] else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
