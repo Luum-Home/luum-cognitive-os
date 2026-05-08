@@ -6,7 +6,6 @@ and TypeScript (drizzle/typeorm) services.
 """
 
 import os
-import subprocess
 
 from lib.shared_phases import BOLD, DIM, GREEN, RED, RESET, YELLOW
 from lib.utils import get_service_abs_path

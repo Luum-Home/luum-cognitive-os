@@ -3,7 +3,7 @@ Backend Feature Pipeline - Orchestrator for creating new features in any backend
 
 Usage:
   uv run .cognitive-os/workflows/run.py feature --service accounts-go --ticket DEV-1234
-  uv run .cognitive-os/workflows/run.py feature --service <consumer-codename-a> --ticket DEV-1234 --description "Add user endpoint"
+  uv run .cognitive-os/workflows/run.py feature --service example-api --ticket DEV-1234 --description "Add user endpoint"
   uv run .cognitive-os/workflows/run.py resume --workflow-id abc12345
   uv run .cognitive-os/workflows/run.py resume --workflow-id abc12345 --start-from build
 

@@ -73,22 +73,77 @@ if [ -z "$ERROR_TYPE" ] && echo "$COMMAND" | grep -qiE 'go\s+build|gradlew\s+bui
   fi
 fi
 
+# Service detection is config-driven. Operator places a YAML map at
+# .cognitive-os/private/service-map.yaml (gitignored, operator-provided).
+# Format:
+#
+#   services:
+#     - name: my-api
+#       match: 'my-api|my\\.api'   # ERE matched against command + working_directory
+#
+# If the file is absent, detection falls back to the basename of the first
+# `cd <dir>` token in the command. No downstream service identifiers are
+# hardcoded here, so the OS works for any consumer.
+# Template: templates/service-map.example.yaml
 detect_service() {
   local cmd="$1" input="$2"
-  if echo "$cmd" | grep -qi '<consumer-codename-b>'; then echo "<consumer-codename-b>"; return; fi
-  if echo "$cmd" | grep -qi '<consumer-codename-c>'; then echo "<consumer-codename-c>"; return; fi
-  if echo "$cmd" | grep -qi 'onboarding'; then echo "onboarding"; return; fi
-  if echo "$cmd" | grep -qiE '<consumer-codename-a>|bff'; then echo "<consumer-codename-a>"; return; fi
-  if echo "$cmd" | grep -qiE '<consumer-service>|monolith'; then echo "<consumer-service>"; return; fi
-  if echo "$cmd" | grep -qi 'mobile/app'; then echo "mobile-app"; return; fi
   local work_dir
   work_dir=$(echo "$input" | jq -r '.tool_input.working_directory // empty' 2>/dev/null)
-  if [ -n "$work_dir" ]; then
-    case "$work_dir" in
-      *<consumer-codename-b>*) echo "<consumer-codename-b>"; return ;; *<consumer-codename-c>*) echo "<consumer-codename-c>"; return ;;
-      *onboarding*) echo "onboarding"; return ;; *<consumer-codename-a>*) echo "<consumer-codename-a>"; return ;;
-      *<consumer-service>*) echo "<consumer-service>"; return ;; *mobile/app*) echo "mobile-app"; return ;;
-    esac
+  local haystack="$cmd $work_dir"
+
+  local map_file="${COS_SERVICE_MAP_FILE:-$PROJECT_DIR/.cognitive-os/private/service-map.yaml}"
+  if [ -f "$map_file" ]; then
+    local matched
+    matched=$(MAP_FILE="$map_file" HAYSTACK="$haystack" python3 - <<'PYINNER'
+import os, re, sys
+path = os.environ.get("MAP_FILE", "")
+hay = os.environ.get("HAYSTACK", "")
+try:
+    with open(path, "r", encoding="utf-8") as f:
+        text = f.read()
+except OSError:
+    sys.exit(0)
+name = None
+pat = None
+def try_match(n, p):
+    if not n or not p:
+        return None
+    try:
+        if re.search(p, hay, re.IGNORECASE):
+            return n
+    except re.error:
+        return None
+    return None
+for raw in text.splitlines():
+    s = raw.strip()
+    if not s or s.startswith("#"):
+        continue
+    m = re.match(r"-\s*name:\s*(.+?)\s*$", s)
+    if m:
+        r = try_match(name, pat)
+        if r:
+            print(r); sys.exit(0)
+        name = m.group(1).strip().strip('"').strip("'")
+        pat = None
+        continue
+    m = re.match(r"match:\s*(.+?)\s*$", s)
+    if m:
+        pat = m.group(1).strip().strip('"').strip("'")
+        continue
+r = try_match(name, pat)
+if r:
+    print(r)
+PYINNER
+)
+    if [ -n "$matched" ]; then echo "$matched"; return; fi
+  fi
+
+  # Fallback: basename of first `cd <dir>` arg in the command. No client knowledge.
+  local cd_target
+  cd_target=$(echo "$cmd" | grep -oE 'cd[[:space:]]+[^[:space:]&|;]+' | head -1 | sed -E 's/^cd[[:space:]]+//')
+  if [ -n "$cd_target" ]; then
+    local seg; seg=$(basename "$cd_target")
+    if [ -n "$seg" ] && [ "$seg" != "/" ] && [ "$seg" != "." ]; then echo "$seg"; return; fi
   fi
   echo "unknown"
 }
