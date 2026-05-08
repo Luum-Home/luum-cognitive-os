@@ -826,3 +826,5 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 
 - [ADR-111: Core/Consumer Boundary for Concurrent-Agent Safety](adrs/ADR-111-core-consumer-concurrency-safety-boundary.md)
 - [Concurrent-Agent Safety Core/Consumer Contract](architecture/concurrency-safety-core-consumer-contract.md)
+
+- [External Tool Intelligence Plane and Project Overlays](architecture/external-tool-intelligence-plane.md) — separates COS-level deep radar from lightweight consumer-project overlays.
