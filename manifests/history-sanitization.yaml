@@ -59,6 +59,30 @@ rules:
     replacement: <consumer-service>
     required: false
     rationale: Replace consumer-project service name used in worked examples (workflows/, docs/hooks.md, packages/verification-audit/, tests/arena/) before the rename to a generic service name landed.
+  - id: consumer-service-name-2
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE_2
+    replacement: <consumer-service-2>
+    required: false
+    rationale: Second consumer-project service slot. Tier 1-4 audit (2026-05-07) revealed 256 history references across 5 distinct consumer service names; one slot is insufficient.
+  - id: consumer-service-name-3
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE_3
+    replacement: <consumer-service-3>
+    required: false
+    rationale: Third consumer-project service slot.
+  - id: consumer-service-name-4
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE_4
+    replacement: <consumer-service-4>
+    required: false
+    rationale: Fourth consumer-project service slot.
+  - id: consumer-service-name-5
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE_5
+    replacement: <consumer-service-5>
+    required: false
+    rationale: Fifth consumer-project service slot. Five total slots cover <consumer-codename-b>, <consumer-codename-c>, <consumer-service>, <consumer-service-2>, and one historical service-name (the original consumer-service-name slot covers the sixth).
 
 sensitive_history_patterns:
   - id: macos-user-home-path
