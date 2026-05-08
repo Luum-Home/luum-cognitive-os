@@ -8,6 +8,13 @@ purpose: >
 registration:
   classification_manifest: manifests/hook-registration-classification.yaml
   legacy_checker: scripts/check_hook_registration.py
+  active_statuses:
+    - active
+  must_not_be_registered_statuses:
+    - manual_trigger
+    - future
+    - deprecated
+    - demoted
   intentional_absent_statuses:
     - candidate_promote
     - conditional_opt_in

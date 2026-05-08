@@ -84,6 +84,21 @@ def hook_chain(settings: dict[str, Any], event: str, matcher: str | None) -> lis
     return chain
 
 
+
+
+def registered_hooks(settings: dict[str, Any]) -> set[str]:
+    hooks: set[str] = set()
+    for groups in (settings.get("hooks", {}) or {}).values():
+        for group in groups or []:
+            for hook in group.get("hooks", []) or []:
+                command = str(hook.get("command", ""))
+                for match in re.findall(r"/hooks/([A-Za-z0-9_.-]+\.sh)", command):
+                    hooks.add(match)
+                for match in re.findall(r"\bhooks/([A-Za-z0-9_.-]+\.sh)", command):
+                    hooks.add(match)
+    return hooks
+
+
 def check_ordering(repo: Path, manifest: dict[str, Any]) -> list[Finding]:
     settings = load_yaml(repo / ".claude" / "settings.json")
     findings: list[Finding] = []
@@ -230,6 +245,46 @@ def _cycle_path(graph: dict[str, list[str]]) -> list[str] | None:
     return None
 
 
+
+
+def check_classification_projection(repo: Path, manifest: dict[str, Any]) -> list[Finding]:
+    """Detect classification/settings contradictions directly.
+
+    This closes the inverse of the legacy-checker disagreement: an active hook
+    must be projected, and a manual/opt-in hook must not silently appear in
+    lifecycle settings unless classified as projected_elsewhere/active.
+    """
+    reg = manifest.get("registration") or {}
+    settings = load_yaml(repo / ".claude" / "settings.json")
+    registered = registered_hooks(settings)
+    classes = classification_map(repo, manifest)
+    active_statuses = set(reg.get("active_statuses", ["active"]) or [])
+    inactive_statuses = set(reg.get("must_not_be_registered_statuses", ["manual_trigger", "future", "deprecated", "demoted"]) or [])
+    findings: list[Finding] = []
+    for name, status in sorted(classes.items()):
+        if status in active_statuses and name not in registered:
+            findings.append(
+                Finding(
+                    "block",
+                    "active-hook-not-registered",
+                    "Classification manifest marks hook active, but settings do not register it.",
+                    primitive=f"hooks/{name}",
+                    details={"classification_status": status},
+                )
+            )
+        if status in inactive_statuses and name in registered:
+            findings.append(
+                Finding(
+                    "block",
+                    "inactive-hook-registered",
+                    "Classification manifest marks hook manual/future/deprecated/demoted, but settings register it automatically.",
+                    primitive=f"hooks/{name}",
+                    details={"classification_status": status},
+                )
+            )
+    return findings
+
+
 def check_primitive_graph(manifest: dict[str, Any]) -> list[Finding]:
     """Detect declared primitive invocation cycles.
 
@@ -307,6 +362,7 @@ def audit(repo: Path, manifest_path: Path) -> dict[str, Any]:
     findings.extend(check_ordering(repo, manifest))
     findings.extend(check_surfaces(manifest))
     findings.extend(check_registration_disagreement(repo, manifest))
+    findings.extend(check_classification_projection(repo, manifest))
     findings.extend(check_primitive_graph(manifest))
     findings.extend(check_external_tool_boundaries(manifest))
     block_count = sum(1 for f in findings if f.severity == "block")

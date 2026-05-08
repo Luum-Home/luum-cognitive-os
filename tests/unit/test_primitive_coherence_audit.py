@@ -189,3 +189,57 @@ external_tool_boundaries:
 
     assert payload["status"] == "block"
     assert any(f["code"] == "external-tool-boundary-incomplete" for f in payload["findings"])
+
+
+def test_blocks_active_classification_not_registered(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '{"hooks": {}}')
+    _write(repo / "manifests" / "hook-registration-classification.yaml", '''entries:
+  - path: hooks/agent-control-inbound-guard.sh
+    status: active
+    rationale: must be projected
+    next_action: keep active
+''')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+registration:
+  classification_manifest: manifests/hook-registration-classification.yaml
+  active_statuses: [active]
+  must_not_be_registered_statuses: [manual_trigger, future, deprecated, demoted]
+surfaces: []
+ordering_constraints: []
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert any(f["code"] == "active-hook-not-registered" for f in payload["findings"])
+
+
+def test_blocks_manual_trigger_registered_in_settings(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '''{
+      "hooks": {"Stop": [{"matcher": "", "hooks": [
+        {"command": "bash hooks/state-retention-audit.sh"}
+      ]}]}
+    }''')
+    _write(repo / "manifests" / "hook-registration-classification.yaml", '''entries:
+  - path: hooks/state-retention-audit.sh
+    status: manual_trigger
+    rationale: explicit operator only
+    next_action: keep manual
+''')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+registration:
+  classification_manifest: manifests/hook-registration-classification.yaml
+  active_statuses: [active]
+  must_not_be_registered_statuses: [manual_trigger, future, deprecated, demoted]
+surfaces: []
+ordering_constraints: []
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert any(f["code"] == "inactive-hook-registered" for f in payload["findings"])
