@@ -1,0 +1,387 @@
+schema_version: agent-orchestration-adapters/v1
+status: active
+owner: platform-orchestration
+purpose: 'Keep agent orchestration behind explicit adapters so COS owns governance,
+  safety, ownership, release freeze, receipts, budgets, and telemetry while community
+  orchestration frameworks can be adopted without becoming the hot-path source of
+  truth.
+
+  '
+policy:
+  default_adapter: cos_file_ipc_minimal
+  core_must_not_import_optional_orchestration_stacks: true
+  orchestration_frameworks_are_adapters: true
+  cos_owns:
+  - policy_and_safety_gates
+  - ownership_and_liveness
+  - release_freeze
+  - event_receipts
+  - budget_retry_circuit_breaker
+  - telemetry_and_remediation_queue
+  - cross_harness_normalization
+  launch_paths_must_pass:
+  - ADR-223
+  - ADR-246
+  handoff_paths_must_pass:
+  - ADR-230
+  - ADR-233
+  provider_calls_must_pass:
+  - ADR-228
+forbidden_core_imports:
+- module: langgraph
+  rationale: optional state-graph framework; use adapter/lab only
+- module: autogen
+  rationale: optional multi-agent framework; use adapter/lab only
+- module: crewai
+  rationale: optional crew/flow framework; use adapter/lab only
+- module: openai_agents
+  rationale: optional provider framework; use adapter/lab only
+- module: agents
+  rationale: ambiguous provider framework root; use adapter/lab only
+- module: semantic_kernel
+  rationale: optional agent/orchestration framework; use adapter/lab only
+adapters:
+- id: cos_file_ipc_minimal
+  status: active
+  default: true
+  implementation:
+  - lib/agent_team.py
+  - lib/agent_team_transport.py
+  license_spdx: project
+  footprint: zero-extra-deps-local-file-ipc
+  hot_path_allowed: true
+  community_pattern: file-backed local-first session/team coordination
+  benchmark_required: true
+- id: cos_handoff_envelope
+  status: active
+  default: false
+  implementation:
+  - lib/handoff_envelope.py
+  - lib/handoff_dispatcher.py
+  license_spdx: project
+  footprint: zero-extra-deps-local
+  hot_path_allowed: true
+  community_pattern: typed handoff envelope, cycle dedup, receipts
+  benchmark_required: true
+- id: cos_dispatch_gate
+  status: active
+  default: false
+  implementation:
+  - lib/dispatch_gate.py
+  - lib/dispatch.py
+  - lib/retry_classifier.py
+  - lib/session_budget.py
+  license_spdx: project
+  footprint: zero-extra-deps-local
+  hot_path_allowed: true
+  community_pattern: budget/retry/circuit-breaker/idempotency gate
+  benchmark_required: true
+- id: cos_detached_daemon
+  status: opt-in
+  default: false
+  implementation:
+  - lib/agent_daemon.py
+  - scripts/cos-agent-daemon
+  license_spdx: project
+  footprint: local-opt-in-process
+  hot_path_allowed: false
+  community_pattern: tmux/file-sentinel detached agent runner
+  benchmark_required: true
+- id: openai_agents_sdk
+  status: candidate
+  default: false
+  implementation: null
+  license_spdx: MIT
+  footprint: optional-provider-sdk
+  hot_path_allowed: false
+  community_pattern: agents, handoffs, sessions, tracing, guardrails
+  references:
+  - https://openai.github.io/openai-agents-python/
+  - https://openai.github.io/openai-agents-python/handoffs/
+  benchmark_required: true
+- id: langgraph
+  status: candidate
+  default: false
+  implementation: null
+  license_spdx: MIT
+  footprint: optional-python-graph-runtime
+  hot_path_allowed: false
+  community_pattern: graph/state machine multi-agent orchestration
+  references:
+  - https://langchain-ai.github.io/langgraph/concepts/multi_agent/
+  - https://docs.langchain.com/oss/python/langchain/multi-agent
+  benchmark_required: true
+- id: autogen
+  status: lab
+  default: false
+  implementation: null
+  license_spdx: MIT
+  footprint: optional-python-multi-agent-runtime
+  hot_path_allowed: false
+  community_pattern: multi-agent conversations and group chat
+  references:
+  - https://microsoft.github.io/autogen/stable/
+  benchmark_required: true
+- id: crewai
+  status: lab
+  default: false
+  implementation: null
+  license_spdx: MIT
+  footprint: optional-python-agent-flow-runtime
+  hot_path_allowed: false
+  community_pattern: crews, tasks, flows, and process orchestration
+  references:
+  - https://docs.crewai.com/
+  benchmark_required: true
+core_surfaces:
+- id: agent_lifecycle
+  owner_adr: ADR-223
+  kind: launch_boundary
+  implementations:
+  - hooks/agent-prelaunch.sh
+  - scripts/cos-agent-worktree-prepare
+  - scripts/cos-worktree-sweeper.sh
+  - lib/agent_lifecycle.py
+  required_tests:
+  - tests/behavior/test_agent_lifecycle_worktree_mode.py
+  required_receipts:
+  - agent-prelaunch
+  - worktree-marker
+- id: worktree_divergence
+  owner_adr: ADR-220
+  kind: liveness_audit
+  implementations:
+  - lib/worktree_audit.py
+  - scripts/cos-worktree-audit
+  required_tests:
+  - tests/behavior/test_worktree_divergence_audit.py
+  required_receipts:
+  - worktree-audit-report
+- id: release_freeze
+  owner_adr: ADR-246
+  kind: destructive_operation_boundary
+  implementations:
+  - lib/release_freeze.py
+  - scripts/cos-release-freeze
+  required_tests:
+  - tests/behavior/test_release_freeze.py
+  required_receipts:
+  - release-freeze-transaction
+- id: dispatch_gate
+  owner_adr: ADR-228
+  kind: provider_call_boundary
+  implementations:
+  - lib/dispatch_gate.py
+  - lib/dispatch.py
+  - lib/retry_classifier.py
+  - lib/session_budget.py
+  required_tests:
+  - tests/integration/test_dispatch_gate_real_dispatch.py
+  - tests/unit/test_dispatch_gate.py
+  - tests/unit/test_retry_classifier.py
+  - tests/unit/test_session_budget.py
+  required_receipts:
+  - dispatch-gate-decision
+  - session-budget-event
+- id: handoff
+  owner_adr: ADR-230
+  kind: handoff_boundary
+  implementations:
+  - lib/handoff_envelope.py
+  - lib/handoff_dispatcher.py
+  required_tests:
+  - tests/unit/test_handoff_dispatcher.py
+  - tests/behavior/test_handoff_dispatcher_flow.py
+  - tests/chaos/test_handoff_receiver_kill_mid_dispatch.py
+  required_receipts:
+  - handoff-receipt
+  - handoff-cycle-detected
+- id: cross_session_team
+  owner_adr: ADR-233
+  kind: cross_session_transport
+  implementations:
+  - lib/agent_team.py
+  - lib/agent_team_transport.py
+  required_tests:
+  - tests/behavior/test_agent_team_file_ipc_flow.py
+  - tests/integration/test_agent_team_cross_harness_contract.py
+  - tests/unit/test_agent_team_transport.py
+  required_receipts:
+  - team-task-event
+  - inbox-message
+- id: detached_agent_daemon
+  owner_adr: ADR-235
+  kind: optional_runner
+  implementations:
+  - lib/agent_daemon.py
+  - scripts/cos-agent-daemon
+  required_tests:
+  - tests/unit/test_agent_daemon.py
+  - tests/behavior/test_cos_agent_daemon_cli.py
+  required_receipts:
+  - detached-agent-event
+core_file_allowlist:
+- lib/agent_bus.py
+- lib/agent_bus_metrics.py
+- lib/agent_context_injector.py
+- lib/agent_control_policy.py
+- lib/agent_daemon.py
+- lib/agent_dashboard.py
+- lib/agent_health_monitor.py
+- lib/agent_lifecycle.py
+- lib/agent_message_bus.py
+- lib/agent_output_extractor.py
+- lib/agent_output_monitor.py
+- lib/agent_output_to_bus.py
+- lib/agent_permissions.py
+- lib/agent_progress_tracker.py
+- lib/agent_redirect_protocol.py
+- lib/agent_runner.py
+- lib/agent_team.py
+- lib/agent_team_transport.py
+- lib/agent_trajectory.py
+- lib/budget_calculator.py
+- lib/concurrent_agent_safety_status.py
+- lib/context_budget.py
+- lib/context_budget_monitor.py
+- lib/dead_letter_queue.py
+- lib/dispatch.py
+- lib/dispatch_cost_predictor.py
+- lib/dispatch_gate.py
+- lib/dispatch_helper.py
+- lib/dispatch_model_advisor.py
+- lib/dispatch_optimizer.py
+- lib/file_mutation_queue.py
+- lib/handoff_dispatcher.py
+- lib/handoff_envelope.py
+- lib/merge_queue.py
+- lib/openai_compatible_agent_loop.py
+- lib/queue_advisor.py
+- lib/queue_drainer.py
+- lib/queue_rebase.py
+- lib/qwen_agent_loop.py
+- lib/rate_limit_queue_migration.py
+- lib/release_freeze.py
+- lib/request_queue.py
+- lib/retry_classifier.py
+- lib/retry_scheduler.py
+- lib/retry_tracker.py
+- lib/review_agent.py
+- lib/session_budget.py
+- lib/session_bus.py
+- lib/session_coordination.py
+- lib/session_hygiene.py
+- lib/session_lifecycle.py
+- lib/session_parser.py
+- lib/session_state.py
+- lib/session_watchdog_lib.py
+- lib/token_budget_monitor.py
+- lib/work_queue.py
+- lib/worktree_audit.py
+- packages/adaptive-workflow/lib/token_budget_monitor.py
+- packages/agent-coordination/lib/agent_bus.py
+- packages/agent-coordination/lib/agent_dashboard.py
+- packages/agent-coordination/lib/merge_queue.py
+- packages/agent-coordination/lib/queue_rebase.py
+- packages/agent-lifecycle/lib/agent_daemon.py
+- packages/agent-lifecycle/lib/agent_permissions.py
+- packages/agent-lifecycle/lib/agent_team.py
+- packages/agent-lifecycle/lib/agent_team_transport.py
+- packages/agent-lifecycle/lib/dispatch_cost_predictor.py
+- packages/agent-lifecycle/lib/dispatch_gate.py
+- packages/agent-lifecycle/lib/event_projections/handoff_chain.py
+- packages/agent-lifecycle/lib/event_projections/retry_classifier.py
+- packages/agent-lifecycle/lib/handoff_dispatcher.py
+- packages/agent-lifecycle/lib/handoff_envelope.py
+- packages/agent-lifecycle/lib/harness_adapter/dispatch.py
+- packages/agent-lifecycle/lib/retry_classifier.py
+- packages/agent-lifecycle/lib/retry_tracker.py
+- packages/agent-lifecycle/lib/review_agent.py
+- packages/agent-lifecycle/lib/session_budget.py
+- packages/context-optimization/lib/session_state.py
+- packages/session-parser/lib/session_parser.py
+- packages/session-parser/tests/test_session_parser.py
+unmanifested_core_file_scan:
+  scopes:
+  - lib
+  filename_regex: (agent|handoff|dispatch|retry|budget|daemon|team|freeze|worktree|session|queue|worker)
+  allowed_suffixes:
+  - .py
+benchmark:
+  script: scripts/agent-orchestration-benchmark.py
+  status_policy:
+    required_failures_block: true
+    known_gap_failures_warn: true
+  fixtures:
+  - id: write-agent-worktree-no-stash
+    required: true
+    rationale: Write-agent launch must use worktree mode and suppress auto-stash snapshots.
+    evidence_tests:
+    - tests/behavior/test_agent_lifecycle_worktree_mode.py
+    required_patterns:
+    - test_agent_prelaunch_worktree_mode_prepares_context_without_stash
+    - test_pre_agent_snapshot_suppressed_for_agent_worktree_marker
+    - test_agent_prelaunch_defaults_to_worktree_mode
+  - id: worktree-divergence-audited
+    required: true
+    rationale: Divergent worktrees must be detected before launch/destructive operations.
+    evidence_tests:
+    - tests/behavior/test_worktree_divergence_audit.py
+    required_patterns:
+    - stale_worktree_dirty_path
+    - behind_without_local_overlap
+  - id: release-freeze-active-claim-blocks
+    required: true
+    rationale: Release/history operations must not proceed while active agent claims
+      exist.
+    evidence_tests:
+    - tests/behavior/test_release_freeze.py
+    required_patterns:
+    - active
+    - claim
+    - block
+  - id: handoff-cycle-detected
+    required: true
+    rationale: Multi-agent handoff cycles must be detected rather than looping.
+    evidence_tests:
+    - tests/behavior/test_handoff_dispatcher_flow.py
+    required_patterns:
+    - HandoffCycleDetected
+    - cycle
+  - id: receiver-kill-mid-dispatch-receipt
+    required: true
+    rationale: Receiver death mid-dispatch must persist a failure receipt.
+    evidence_tests:
+    - tests/chaos/test_handoff_receiver_kill_mid_dispatch.py
+    required_patterns:
+    - SIGKILL
+    - persists_failure_receipt
+  - id: dispatch-budget-pre-call-refusal
+    required: true
+    rationale: Budget/sandbox gates must refuse before provider calls when preconditions
+      fail.
+    evidence_tests:
+    - tests/integration/test_dispatch_gate_real_dispatch.py
+    required_patterns:
+    - refuses_before_provider_call
+    - open_circuit_breaker
+    - sandbox_required
+  - id: file-ipc-cross-session-flow
+    required: true
+    rationale: Default local adapter must prove cross-session file IPC without external
+      services.
+    evidence_tests:
+    - tests/behavior/test_agent_team_file_ipc_flow.py
+    required_patterns:
+    - two_session_file_ipc_flow
+    - inbox
+    - events
+  - id: external-framework-adapters-declared
+    required: true
+    rationale: Community frameworks remain declared candidates/lab adapters, not direct
+      core imports.
+    evidence_tests:
+    - tests/unit/test_agent_orchestration_boundary_audit.py
+    required_patterns:
+    - forbidden-core-orchestration-import
+    - unmanifested-orchestration-core-file

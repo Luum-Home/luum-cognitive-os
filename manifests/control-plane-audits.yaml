@@ -33,6 +33,7 @@ lanes:
       - primitive-behavior
       - postmortem-regressions
       - skill-router-retrieval
+      - agent-orchestration-boundary
   hourly:
     description: Periodic local sweep for primitive drift and postmortem regressions.
     max_seconds: 60
@@ -41,6 +42,7 @@ lanes:
       - primitive-behavior
       - postmortem-regressions
       - skill-router-retrieval
+      - agent-orchestration-boundary
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -50,6 +52,7 @@ lanes:
       - postmortem-regressions
       - skill-router-retrieval
       - pre-public-risk
+      - agent-orchestration-boundary
 
 audits:
   primitive-coherence:
@@ -84,4 +87,10 @@ audits:
     sensitive_value_sources:
       env_prefixes:
         - COS_HISTORY_SANITIZE_
+    mutates: false
+  agent-orchestration-boundary:
+    adr: ADR-251
+    command: [python3, scripts/agent-orchestration-boundary-audit.py, --json]
+    expected_schema: agent-orchestration-boundary-audit/v1
+    consumes_sensitive_values: false
     mutates: false
