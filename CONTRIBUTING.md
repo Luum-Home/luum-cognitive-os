@@ -8,7 +8,7 @@ framework that this repo itself implements, and every commit passes
 through hook-based quality gates plus explicit human approval before it
 lands. This document explains how that works, how to contribute, and a
 few conventions that might otherwise look strange — most notably, why
-we do not add `Co-Authored-By: Claude` trailers.
+we do not add AI-provider `Co-Authored-By` trailers.
 
 The tone aims to be matter-of-fact, and claims here are intended to be
 verifiable from the repo.
