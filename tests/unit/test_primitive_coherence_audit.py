@@ -110,3 +110,43 @@ ordering_constraints: []
     assert payload["status"] == "block"
     assert any(f["code"] == "surface-multi-writer-without-allowance" for f in payload["findings"])
     assert any(f["code"] == "surface-multi-writer-without-protocol" for f in payload["findings"])
+
+
+def test_blocks_unclassified_unregistered_hook(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '{"hooks": {}}')
+    _write(repo / "scripts" / "check_hook_registration.py", '''#!/usr/bin/env python3
+print("UNREGISTERED hooks (1):")
+print("  - mystery-hook.sh  (missing: settings_json)")
+''')
+    (repo / "scripts" / "check_hook_registration.py").chmod(0o755)
+    _write(repo / "manifests" / "hook-registration-classification.yaml", 'entries: []\n')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+registration:
+  classification_manifest: manifests/hook-registration-classification.yaml
+  legacy_checker: scripts/check_hook_registration.py
+  intentional_absent_statuses: [opt_in, manual_trigger, future]
+surfaces: []
+ordering_constraints: []
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert payload["returncode"] == 1
+    assert any(f["code"] == "unclassified-unregistered-hook" for f in payload["findings"])
+
+
+def test_current_repo_audit_is_read_only_and_machine_readable() -> None:
+    proc = subprocess.run(
+        ["python3", str(SCRIPT), "--project-dir", str(SCRIPT.parents[1]), "--json"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert proc.stdout, proc.stderr
+    payload = json.loads(proc.stdout)
+    assert payload["schema_version"] == "primitive-coherence-audit/v1"
+    assert payload["policy"] == "Read-only. Detect contradictions; do not auto-repair primitives."
+    assert "findings" in payload

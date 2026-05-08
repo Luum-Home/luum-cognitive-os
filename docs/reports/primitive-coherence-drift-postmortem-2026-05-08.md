@@ -156,6 +156,107 @@ Without a manifest, a future profile regeneration can reintroduce the bug.
 8. **Docs/status claims cannot say implemented if the primitive is only
    advisory or unregistered.**
 
+
+## Detection-before-repair doctrine
+
+The corrective action is deliberately **not** "fix every primitive and then run
+an audit that reports green." That would reproduce the same failure mode in a
+more polished form: humans and agents would repair the symptom, then use the
+absence of findings as proof that the system was coherent.
+
+The doctrine for ADR-240 is the opposite:
+
+1. **Freeze the observed contradictions as evidence.** The first audit must be
+   able to report the contradictions that exist now, including noisy or
+   embarrassing ones.
+2. **Do not auto-repair in Slice A.** A detector that edits settings, manifests,
+   branches, or history is another mutating primitive and would need its own
+   coherence contract before it is safe.
+3. **Separate primitive correction from detector validation.** A future fix can
+   resolve a finding only after the finding has a stable code, test fixture, and
+   expected remediation path.
+4. **Preserve false positives as design feedback.** If the detector flags a
+   modelling issue (for example, confusing a CLI wrapper and a Python library as
+   independent writers), that is still useful: it proves the ownership model is
+   underspecified.
+5. **Every suppression needs rationale.** Findings may be downgraded only by a
+   manifest entry that explains why the state is intentional, who owns it, and
+   what would promote it to active enforcement.
+
+This matters because the OS is already rich in partial gates. The failure was
+not absence of gates; it was absence of a gate that can compare the assumptions
+of other gates.
+
+## First-run evidence to preserve
+
+The initial current-repo audit is expected to be non-green. That is not a
+failure of ADR-240; it is its proof-of-life.
+
+Observed first-run classes:
+
+1. **Registration checker / classification disagreement.** The legacy hook
+   registration checker reports `ai-provider-identity-guard.sh` and
+   `session-end-cleanup.sh` as missing, while
+   `manifests/hook-registration-classification.yaml` classifies both as
+   intentional conditional opt-ins. The system therefore has two authorities
+   that disagree about whether the same primitive is broken or intentionally
+   absent.
+2. **Ordering reference to a non-projected capability hook.** The coherence
+   manifest declares that `subagent-capability-preflight.sh` should precede
+   `agent-launch-confirmed.sh`, but the hook is currently classified as
+   `manual_trigger` and absent from the Agent hook chain. That is a real
+   product-state distinction: the primitive exists, but the runtime launch path
+   does not consume it.
+3. **History rewrite ownership modelling gap.** The first manifest draft lists
+   both `scripts/cos-history-sanitization` and `lib/history_sanitization.py` as
+   writers of the same destructive history surface. In practice one may be a CLI
+   wrapper and the other the implementation library, but the manifest has not
+   yet expressed that relationship. The audit should surface this ambiguity
+   instead of silently assuming it is safe.
+
+These findings should be resolved in separate commits after the detector is
+trusted, not hidden inside the detector commit.
+
+## Why existing primitives did not catch this class
+
+| Existing primitive | What it catches | Why it missed primitive coherence drift |
+|---|---|---|
+| Primitive duplication audit | Duplicate names, overlapping files, repeated concepts | Duplication is not contradiction; two unique primitives can still undo each other |
+| Hook registration checker | Hooks absent from profiles/settings | It does not consume the classification manifest as an authority of intentional absence |
+| State retention audit | Stale ledgers, stashes, runtime artifacts | It does not know whether the state producer is still alive or which launch path created it |
+| Work ownership inventory | Branches, stashes, worktrees, liveness | It is a point-in-time inventory, not a general contract for all mutable surfaces |
+| Pre-public risk audit | Public-release leaks and reputational blockers | It checks publishability, not whether runtime primitives have coherent ownership |
+| ADR/readiness docs | Human-readable intent | Intent without an executable invariant drifts under concurrent agents |
+
+## New invariant family
+
+ADR-240 introduces a new invariant family: **primitive coherence invariants**.
+These are neither unit tests nor policy docs. They are executable assertions
+about relationships between primitives.
+
+Examples:
+
+- `agent-prelaunch.sh` must appear before `pre-agent-snapshot.sh` in Agent
+  `PreToolUse` order.
+- A hook classified as `manual_trigger` must not be reported as an accidental
+  unregistered hook without mentioning its classification.
+- A surface with multiple writers must declare a write protocol, ownership, and
+  allowed multi-writer semantics.
+- A primitive that exists only as a manual trigger must not be claimed as active
+  runtime enforcement.
+
+## Operational rule for future fixes
+
+For every primitive-coherence finding, use this sequence:
+
+1. Record the finding code and current evidence.
+2. Add or update a failing fixture that represents the incoherence.
+3. Fix the primitive, manifest, profile, or docs in a separate commit.
+4. Re-run the audit and show that only the intended finding changed.
+5. If the fix downgrades rather than removes the finding, document the owner,
+   promotion condition, and expiry/review date.
+
+
 ## Decision
 
 Create **ADR-240 — Primitive Coherence Audit and Ownership Manifest** and an
