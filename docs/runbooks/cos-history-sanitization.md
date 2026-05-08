@@ -51,17 +51,20 @@ directly so it stays in sync with the manifest automatically.
 
 ### 1.1.1 Metadata boundary
 
-ADR-218 is content-only by default. Author and committer names/emails are
-human provenance and are preserved unless the operator explicitly enables a
-metadata-scoped rewrite:
+ADR-218 is blob content-only by default. Commit messages and author/committer
+names/emails are human provenance and are preserved unless the operator
+explicitly enables a scoped rewrite:
 
 ```bash
 export COS_HISTORY_SANITIZE_METADATA=1  # only with explicit operator consent
+export COS_HISTORY_SANITIZE_COMMIT_MESSAGES=1  # only with explicit operator consent
 ```
 
 Do not set this flag for ordinary pre-public content scrubbing. If a
 collaborator wants privacy, migrate that collaborator's commits to a GitHub
 noreply address through an explicit consented flow, not through a broad sweep.
+Do not set the commit-message flag for ordinary blob scrubbing either; use it
+only when the operator explicitly chooses to rewrite commit trailers/messages.
 
 ### 1.2 Where to confirm them
 
@@ -122,8 +125,8 @@ python3 scripts/cos-history-sanitization --execute
 
 The CLI prompts for the literal string `REWRITE` before touching git. Any
 other input aborts cleanly. Use `--yes` ONLY in CI; operator-driven runs
-must type the confirmation. In the default content-only mode, the rewrite does
-not change `git log --format='%an <%ae>'` output.
+must type the confirmation. In the default blob-only mode, the rewrite does
+not change `git log --format='%an <%ae>'` or `git log --format='%B'` output.
 
 ### 2.2 Expected runtime
 

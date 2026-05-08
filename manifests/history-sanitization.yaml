@@ -9,6 +9,16 @@ toolchain:
   primary: git-filter-repo
   install_hint: bash scripts/install-git-filter-repo.sh
 
+metadata_rewrite:
+  default: false
+  require_env: COS_HISTORY_SANITIZE_METADATA
+  require_env_value: "1"
+
+commit_message_rewrite:
+  default: false
+  require_env: COS_HISTORY_SANITIZE_COMMIT_MESSAGES
+  require_env_value: "1"
+
 rules:
   - id: operator-email
     mode: literal

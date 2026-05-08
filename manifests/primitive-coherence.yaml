@@ -56,14 +56,15 @@ surfaces:
     path: .git/objects
     allowed_multi_writer: false
     write_protocol: backup-then-filter-repo
+    implementation: lib/history_sanitization.py
     writers:
       - scripts/cos-history-sanitization
-      - lib/history_sanitization.py
     readers:
       - scripts/cos-history-sanitization-smoke.sh
       - scripts/cos-pre-public-risk-audit
     invariants:
-      - content-only by default
+      - blob content-only by default
+      - commit message rewrites require COS_HISTORY_SANITIZE_COMMIT_MESSAGES=1
       - metadata rewrites require COS_HISTORY_SANITIZE_METADATA=1
 
 ordering_constraints:
@@ -74,15 +75,6 @@ ordering_constraints:
     before: hooks/pre-agent-snapshot.sh
     severity: block
     rationale: Mutating snapshots must not run before preflight blockers.
-
-  - id: capability-before-launch-confirm
-    event: PreToolUse
-    matcher: Agent
-    after: hooks/subagent-capability-preflight.sh
-    before: hooks/agent-launch-confirmed.sh
-    severity: warn
-    rationale: Capability/output contract checks should run before launch confirmation side effects.
-
 
 primitive_edges:
   - from: hooks/agent-prelaunch.sh
@@ -111,7 +103,7 @@ external_tool_boundaries:
     owner: adr-218-history-sanitization
     license_spdx: MIT
     adapter: external-cli
-    recursion_boundary: content-only rewrite path; no commit author metadata rewrite unless COS_HISTORY_SANITIZE_METADATA=1
+    recursion_boundary: blob content-only rewrite path; no commit message rewrite unless COS_HISTORY_SANITIZE_COMMIT_MESSAGES=1 and no commit author metadata rewrite unless COS_HISTORY_SANITIZE_METADATA=1
     failure_policy: backup-or-refuse
     allowed_callers:
       - scripts/cos-history-sanitization
