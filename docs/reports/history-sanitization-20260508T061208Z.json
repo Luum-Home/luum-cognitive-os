@@ -1,0 +1,115 @@
+{
+  "backup_mirror": "<redacted-local-backup-mirror>",
+  "boundary_tag_recommended": "v0.27.1-pre-history-rewrite",
+  "executed_at": "20260508T061208Z",
+  "policy": "Rewrite executed. The backup mirror is the rollback path. Operator must (1) verify counts above, (2) re-tag versions onto post-rewrite equivalent SHAs, (3) copy this report to docs/reports/, (4) write disclosure doc, (5) force-push origin/main only after 1-4.",
+  "policy_reference": "docs/adrs/ADR-218-history-sanitization-toolchain.md",
+  "post_rewrite": {
+    "commit_count": 2440,
+    "head": "db846adb6290456b431bfc191b08543f56a2e8d7"
+  },
+  "pre_rewrite": {
+    "commit_count": 2440,
+    "head": "2d99d40a3382232f9ab3f32e85cdd89b777670bb"
+  },
+  "replacements": [
+    {
+      "expected_hits": null,
+      "id": "operator-email",
+      "mode": "literal",
+      "remaining_hits": 0,
+      "replacement": "2144218+MatiasNAmendola@users.noreply.github.com"
+    },
+    {
+      "expected_hits": null,
+      "id": "operator-name",
+      "mode": "literal",
+      "remaining_hits": 0,
+      "replacement": "MatiasNAmendola"
+    },
+    {
+      "expected_hits": null,
+      "id": "operator-home-prefix",
+      "mode": "literal",
+      "remaining_hits": 0,
+      "replacement": "<home>"
+    },
+    {
+      "expected_hits": null,
+      "id": "repo-absolute-path",
+      "mode": "literal",
+      "remaining_hits": 0,
+      "replacement": "<repo>"
+    },
+    {
+      "expected_hits": null,
+      "id": "historical-fixture-home-paths",
+      "mode": "regex",
+      "remaining_hits": 0,
+      "replacement": "/Users/<fixture-user>/Projects/<fixture-project>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-codename-a",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-codename-a>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-codename-b",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-codename-b>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-codename-c",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-codename-c>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-service-name",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-service>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-service-name-2",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-service-2>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-service-name-3",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-service-3>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-service-name-4",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-service-4>"
+    },
+    {
+      "expected_hits": null,
+      "id": "consumer-service-name-5",
+      "mode": "literal",
+      "remaining_hits": -1,
+      "replacement": "<consumer-service-5>"
+    }
+  ],
+  "rules_written_to_filter_file": 5,
+  "schema_version": "history-sanitization-report/v1",
+  "tombstone_branch": "history-sanitization-20260508T061208Z",
+  "verification": {
+    "all_replacements_resolved_to_zero": false,
+    "commit_count_preserved": true
+  }
+}

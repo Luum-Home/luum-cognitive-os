@@ -6,7 +6,7 @@ from pathlib import Path
 import yaml
 
 import lib.history_sanitization as hs
-from lib.history_sanitization import build_report, load_manifest, normalize_pattern, preserve_conflicts, resolved_rules
+from lib.history_sanitization import build_report, load_manifest, metadata_rewrite_enabled, normalize_pattern, preserve_conflicts, resolved_rules
 
 MACOS_HOME = "/" + "Users/example/dev/project"
 
@@ -89,6 +89,39 @@ def test_history_scan_timeout_is_reported_without_hanging(tmp_path: Path, monkey
     assert any(finding["code"] == "history-scan-timeout" for finding in report["findings"])
     assert any(hit["timed_out"] is True and hit["hit_count"] is None for hit in report["sensitive_hits"])
 
+
+
+def test_metadata_rewrite_is_disabled_by_default_and_requires_env(monkeypatch) -> None:
+    monkeypatch.delenv("COS_HISTORY_SANITIZE_METADATA", raising=False)
+    assert metadata_rewrite_enabled({}) is False
+    monkeypatch.setenv("COS_HISTORY_SANITIZE_METADATA", "1")
+    assert metadata_rewrite_enabled({}) is True
+
+
+def test_metadata_scoped_rule_blocks_without_metadata_env(tmp_path: Path, monkeypatch) -> None:
+    manifest = {
+        "schema_version": "history-sanitization/v1",
+        "rules": [
+            {
+                "id": "operator-author-email",
+                "mode": "literal",
+                "scope": "metadata",
+                "value_env": "COS_HISTORY_SANITIZE_OPERATOR_EMAIL",
+                "replacement": "2144218+MatiasNAmendola@users.noreply.github.com",
+            }
+        ],
+        "sensitive_history_patterns": [],
+        "preserve": [],
+        "execution": {"require_env": "COS_ALLOW_DESTRUCTIVE_GIT", "require_env_value": "1"},
+    }
+    repo = _make_repo(tmp_path, manifest)
+    monkeypatch.setenv("COS_HISTORY_SANITIZE_OPERATOR_EMAIL", "test@example.com")
+    monkeypatch.delenv("COS_HISTORY_SANITIZE_METADATA", raising=False)
+
+    report = build_report(repo, mode="execute")
+
+    assert report["status"] == "block"
+    assert any(f["code"] == "metadata-rewrite-not-enabled" for f in report["findings"])
 
 def test_execute_without_destructive_env_blocks(tmp_path: Path, monkeypatch) -> None:
     repo = _make_repo(tmp_path)

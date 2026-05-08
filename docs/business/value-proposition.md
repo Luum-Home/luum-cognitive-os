@@ -24,7 +24,7 @@ Developer --> Cognitive OS --> AI Assistant (any)
     | Memory                    |  Remembers everything between sessions
     | Quality Control           |  Gates impossible to bypass
     | Orchestration             |  12+ agents in parallel
-    | Self-Improvement          |  Learns from its mistakes
+    | Self-Improvement          |  Proposes improvements for review
     | Security                  |  Enterprise-grade protection
     | Observability             |  Real-time metrics and costs
     +---------------------------+
@@ -131,7 +131,7 @@ rm -rf .cognitive-os-repo
 claude
 > /cognitive-os-init
 
-# Start coding with memory, quality gates, and self-improvement
+# Start coding with memory, quality gates, and governed improvement proposals
 # Works with any MCP-compatible tool: claude, cursor, codex, gemini
 ```
 
@@ -146,4 +146,4 @@ Cognitive OS is licensed under [FSL-1.1-MIT](../../LICENSE) — source-available
 
 ---
 
-*Cognitive OS: The infrastructure that turns AI assistants into autonomous engineering teams.*
+*Cognitive OS: The infrastructure that turns AI assistants into governed engineering teams.*
