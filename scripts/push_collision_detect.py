@@ -270,6 +270,57 @@ def detect_collisions(
     return collisions
 
 
+
+
+# ---------------------------------------------------------------------------
+# ADR-243 post-rewrite marker exception
+# ---------------------------------------------------------------------------
+
+
+def _parse_utc(value: str) -> datetime | None:
+    try:
+        return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+def load_last_rewrite_marker(root: Path) -> dict[str, object] | None:
+    marker = root / ".cognitive-os" / "runtime" / "last-rewrite.json"
+    try:
+        payload = json.loads(marker.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    if payload.get("schema_version") != "cos-last-rewrite/v1":
+        return None
+    return payload
+
+
+def upstream_head(root: Path, upstream: str) -> str | None:
+    proc = _run_git(root, ["rev-parse", upstream])
+    if proc.returncode != 0:
+        return None
+    return proc.stdout.strip()
+
+
+def post_rewrite_exception_applies(root: Path, upstream: str) -> tuple[bool, dict[str, object]]:
+    marker = load_last_rewrite_marker(root)
+    if not marker:
+        return False, {"reason": "marker-missing"}
+    expires_at = _parse_utc(str(marker.get("expires_at", "")))
+    if not expires_at or datetime.now(timezone.utc) > expires_at:
+        return False, {"reason": "marker-expired", "marker": marker}
+    local_proc = _run_git(root, ["rev-parse", "HEAD"])
+    local_head = local_proc.stdout.strip() if local_proc.returncode == 0 else None
+    remote_head = upstream_head(root, upstream)
+    expected_post = str(marker.get("post_head", ""))
+    expected_pre = str(marker.get("pre_head", ""))
+    if local_head != expected_post:
+        return False, {"reason": "local-head-mismatch", "local_head": local_head, "expected_post": expected_post}
+    if remote_head != expected_pre:
+        return False, {"reason": "upstream-head-mismatch", "upstream_head": remote_head, "expected_pre": expected_pre}
+    return True, {"reason": "post-rewrite-marker-match", "rules_hash": marker.get("rules_hash"), "pre_head": expected_pre, "post_head": expected_post, "ttl_seconds": marker.get("ttl_seconds")}
+
+
 # ---------------------------------------------------------------------------
 # Metrics
 # ---------------------------------------------------------------------------
@@ -332,6 +383,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     collisions = detect_collisions(root, args.upstream, args.since, args.threshold)
 
+    exception_ok, exception_details = post_rewrite_exception_applies(root, args.upstream)
+
     if args.metrics:
         write_metrics(root, collisions, mode)
 
@@ -342,10 +395,17 @@ def main(argv: Sequence[str] | None = None) -> int:
             print("push-collision-check: PASS — no subject collisions detected")
         return 0
 
+    if exception_ok:
+        if args.json:
+            print(json.dumps({"ok": True, "post_rewrite_exception": exception_details, "collisions": [asdict(c) for c in collisions]}, indent=2))
+        else:
+            print("push-collision-check: PASS — post-rewrite marker matches; subject collisions audited as rewrite artifacts")
+        return 0
+
     if args.json:
         print(
             json.dumps(
-                {"ok": False, "collisions": [asdict(c) for c in collisions]},
+                {"ok": False, "post_rewrite_exception": exception_details, "collisions": [asdict(c) for c in collisions]},
                 indent=2,
             )
         )
@@ -353,7 +413,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     block = False
     for c in collisions:
         print(f"push-collision-check: [{c.severity().upper()}] {c.message()}", file=sys.stderr)
-        if c.severity() == "block" and mode == "block":
+        if mode == "block" and c.severity() in {"block", "warn"}:
             block = True
 
     if block:

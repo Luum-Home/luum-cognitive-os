@@ -1,7 +1,7 @@
 ---
 adr: 243
 title: Post-Rewrite Push-Collision Check Exception
-status: proposed
+status: accepted
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -18,10 +18,7 @@ tags: [history-rewrite, push-gates, dx, postmortem-2026-05-08]
 
 ## Status
 
-Proposed. Drafted during the 2026-05-08 pre-public readiness session after
-the push-collision-check repeatedly blocked legitimate post-rewrite force
-pushes, driving the operator to `--no-verify`. Requires operator review
-before implementation. Companion to ADR-242.
+Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching post-rewrite subject collisions without disabling other push gates.
 
 ## Context
 
