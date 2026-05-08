@@ -70,6 +70,23 @@ Result: `status=block`, `passed=0/3`, `block=3`, `temporal_correct=1/3`, `source
 
 Implication for ordering: M1 has the highest immediate delta because temporal validity/supersession fixes two of three blocking fixtures. M3 is second because explicit path/support-chain retrieval fixes the multi-hop fixture. M2 should wait until M1/M3 provide the schema/graph signals it can rank. M4 remains last as taxonomy/backfill overlay.
 
+
+### Benchmark-local Wave 2 modes
+
+The first implementation pass landed non-default benchmark-local modes instead
+of production Engram changes. This preserves `strategy=current` while proving
+the expected deltas:
+
+| Mode | Status | Reported effect |
+|---|---:|---|
+| `temporal-local` | 🟡 benchmark-local | fixes stale temporal blockers; leaves multi-hop blocker |
+| `graph-path-local` | 🟡 benchmark-local | passes all Slice 0 fixtures by adding relation support chains |
+| `dual-level-local` | 🟡 benchmark-local | preserves pass with entity/topic scoring shape |
+| `memory-class-local` | 🟡 benchmark-local | preserves pass with memory class overlay |
+
+Production Engram defaults remain unchanged until an explicit follow-up ports
+M1/M3 behind a non-default runtime flag and passes the same benchmark.
+
 **Acceptance criteria** (proposed, to confirm at `/sdd-new memory-layer-evolution`):
 - Schema migration is idempotent and reversible.
 - Existing Engram queries return identical results pre/post-migration when bi-temporal fields default to `created_at`/`superseded_at`.

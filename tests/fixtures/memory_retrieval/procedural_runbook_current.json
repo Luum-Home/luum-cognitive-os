@@ -1,18 +1,41 @@
 {
-  "id": "procedural-runbook-current",
   "class": "procedural_query",
-  "query": "How should a maintainer start Wave 2 memory work safely?",
-  "observations": [
-    {"id": "runbook-memory-slice0", "type": "procedure", "title": "Memory Slice 0 first", "content": "Create benchmark fixtures and runner before changing Engram schema or retrieval defaults."},
-    {"id": "chat-memory-idea", "type": "conversation", "title": "Exploratory memory idea", "content": "Maybe switch memory retrieval immediately."}
-  ],
-  "relations": [
-    {"from": "runbook-memory-slice0", "to": "chat-memory-idea", "type": "supersedes"}
-  ],
   "expected": {
-    "must_include": ["runbook-memory-slice0"],
+    "must_include": [
+      "runbook-memory-slice0"
+    ],
     "must_rank_above": [
-      {"higher": "runbook-memory-slice0", "lower": "chat-memory-idea"}
+      {
+        "higher": "runbook-memory-slice0",
+        "lower": "chat-memory-idea"
+      }
     ]
-  }
+  },
+  "id": "procedural-runbook-current",
+  "observations": [
+    {
+      "content": "Create benchmark fixtures and runner before changing Engram schema or retrieval defaults.",
+      "id": "runbook-memory-slice0",
+      "memory_class": "procedural",
+      "source_episode": "procedural-runbook-current",
+      "title": "Memory Slice 0 first",
+      "type": "procedure"
+    },
+    {
+      "content": "Maybe switch memory retrieval immediately.",
+      "id": "chat-memory-idea",
+      "memory_class": "episodic",
+      "source_episode": "procedural-runbook-current",
+      "title": "Exploratory memory idea",
+      "type": "conversation"
+    }
+  ],
+  "query": "How should a maintainer start Wave 2 memory work safely?",
+  "relations": [
+    {
+      "from": "runbook-memory-slice0",
+      "to": "chat-memory-idea",
+      "type": "supersedes"
+    }
+  ]
 }

@@ -111,3 +111,30 @@ def test_current_local_baseline_exposes_wave2_delta() -> None:
     codes = {finding["code"] for finding in report["findings"]}
     assert "stale-temporal-answer" in codes
     assert "unsupported-multi-hop-chain" in codes
+
+
+def test_m1_temporal_local_resolves_temporal_delta_but_not_multihop() -> None:
+    report = run_benchmark(MANIFEST, strategy="temporal-local")
+
+    assert report["status"] == "block"
+    assert report["summary"]["temporal_correct"] == report["summary"]["fixtures"]
+    codes = {finding["code"] for finding in report["findings"]}
+    assert "stale-temporal-answer" not in codes
+    assert "unsupported-multi-hop-chain" in codes
+
+
+def test_m3_graph_path_local_resolves_all_slice0_blockers() -> None:
+    report = run_benchmark(MANIFEST, strategy="graph-path-local")
+
+    assert report["status"] == "pass"
+    assert report["summary"]["passed"] == report["summary"]["fixtures"]
+    assert report["summary"]["source_supported"] == report["summary"]["fixtures"]
+
+
+def test_m2_m4_modes_preserve_slice0_pass_and_add_memory_classes() -> None:
+    dual = run_benchmark(MANIFEST, strategy="dual-level-local")
+    overlay = run_benchmark(MANIFEST, strategy="memory-class-local")
+
+    assert dual["status"] == "pass"
+    assert overlay["status"] == "pass"
+    assert any(result["memory_classes"] for result in overlay["results"])

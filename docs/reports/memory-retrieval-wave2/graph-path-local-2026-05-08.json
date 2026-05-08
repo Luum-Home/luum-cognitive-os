@@ -1,0 +1,85 @@
+{
+  "candidate_results": null,
+  "findings": [],
+  "manifest": "manifests/memory-retrieval-benchmark.yaml",
+  "results": [
+    {
+      "class": "temporal_contradiction",
+      "findings": [],
+      "fixture_id": "temporal-contradiction-license-policy",
+      "latency_ms": 0.0,
+      "memory_classes": {
+        "obs-current-license-blocklist": "semantic",
+        "obs-old-license-allow-bsl": "semantic"
+      },
+      "passed": true,
+      "precision_at_k": 0.2,
+      "retrieved_ids": [
+        "obs-current-license-blocklist",
+        "obs-old-license-allow-bsl"
+      ],
+      "source_supported": true,
+      "strategy": "graph-path-local",
+      "support_chain": [],
+      "temporal_correct": true
+    },
+    {
+      "class": "multi_hop",
+      "findings": [],
+      "fixture_id": "multi-hop-adr-implementation-test",
+      "latency_ms": 0.0,
+      "memory_classes": {
+        "decision-adr-210": "semantic",
+        "file-lib-fleet-confidence": "procedural",
+        "test-fleet-confidence-export": "procedural"
+      },
+      "passed": true,
+      "precision_at_k": 0.6,
+      "retrieved_ids": [
+        "decision-adr-210",
+        "test-fleet-confidence-export",
+        "file-lib-fleet-confidence"
+      ],
+      "source_supported": true,
+      "strategy": "graph-path-local",
+      "support_chain": [
+        "decision-adr-210",
+        "file-lib-fleet-confidence",
+        "test-fleet-confidence-export"
+      ],
+      "temporal_correct": true
+    },
+    {
+      "class": "procedural_query",
+      "findings": [],
+      "fixture_id": "procedural-runbook-current",
+      "latency_ms": 0.0,
+      "memory_classes": {
+        "chat-memory-idea": "episodic",
+        "runbook-memory-slice0": "procedural"
+      },
+      "passed": true,
+      "precision_at_k": 0.2,
+      "retrieved_ids": [
+        "runbook-memory-slice0",
+        "chat-memory-idea"
+      ],
+      "source_supported": true,
+      "strategy": "graph-path-local",
+      "support_chain": [],
+      "temporal_correct": true
+    }
+  ],
+  "schema_version": "memory-retrieval-benchmark-report/v1",
+  "status": "pass",
+  "strategy": "graph-path-local",
+  "summary": {
+    "block": 0,
+    "fixtures": 3,
+    "p95_latency_ms": 0.0,
+    "passed": 3,
+    "precision_at_k_avg": 0.3333,
+    "source_supported": 3,
+    "temporal_correct": 3
+  }
+}
