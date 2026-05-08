@@ -69,6 +69,8 @@ PLACEHOLDER_HOOK_NAMES = {
 # fails if a NEW orphan appears or a listed orphan disappears without updating
 # this file.
 KNOWN_ORPHANS = {
+    "ai-provider-identity-guard.sh",
+    "session-end-cleanup.sh",
     "adaptive-bypass.sh",
     "agent-bus-monitor.sh",
     "agent-output-verifier.sh",
