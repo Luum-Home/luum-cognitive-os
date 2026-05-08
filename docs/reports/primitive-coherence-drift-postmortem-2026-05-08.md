@@ -319,6 +319,38 @@ Slice A should detect:
   audit.
 - Running the audit on the current repo produces machine-readable JSON.
 
+
+
+## Release transaction gap discovered after first coherence slice
+
+The primitive-coherence class also appears at release time. The 2026-05-08
+pre-public session showed that destructive/public operations need a transaction
+boundary, not just more individual hooks.
+
+Concrete observed failures:
+
+| Failure | Case | Why primitive coherence matters |
+|---|---|---|
+| Branch changes by agents | Commits landed on `fix/c4-portability-test-failures` while the operator expected `main` | Branch identity is a control-plane surface; a branch switch changes where every later commit lands |
+| Sensitive data after sanitize | A readiness doc reintroduced the private email after a sanitize pass | Sanitization is not stable unless new writes are frozen or rechecked before publish |
+| Content/metadata rewrite confusion | ADR-218 originally allowed paths that could touch author metadata | Content rewrite and author identity are different surfaces and need different permissions |
+| Concurrent agent writes during force-push prep | Gates repeatedly saw dirty working trees while agents were still active | A release gate result is stale if another writer can mutate the repo before publish |
+| Security reports causing leaks | A report embedded local path patterns while documenting leaks | Report generation is itself a write surface and needs output sanitization boundaries |
+| Script rename outside ownership | `scripts/audit_engram_topic_keys.py` appeared while the hyphenated script was deleted | Concurrent ownership drift can create duplicate primitives or hide deletions |
+| Noisy pre-public audit | Provider identity regex caught markdown table text before being narrowed | Gates must distinguish blocker evidence from reviewable warnings or operators stop trusting them |
+| Scorecard drift | Hook count docs diverged from actual hook count | Audit artifacts must be regenerated from current state, not trusted as static truth |
+| “Closed” claims with blockers alive | Agents reported done while dirty-tree or history-token blockers remained | Completion claims must depend on final gate receipts, not agent self-report |
+| Primitive-exists fallacy | Hooks existed but were not always wired into every path | A producer without a consumer is not enforcement |
+
+Corrective architectural action: ADR-246 proposes `cos release freeze`, a short
+release transaction mode that pauses new writes, records a transaction id, runs
+pre-public and primitive-coherence gates against a stable snapshot, and only then
+allows content-only sanitize, post-rewrite force-push, tag update, or publication.
+
+This is deliberately stronger than “run the audit again.” The failure pattern is
+that audits were run while the state was still changing. A release transaction
+makes the audited state the state that gets published.
+
 ## Follow-up work
 
 - Add manifest coverage for git control-plane surfaces.
