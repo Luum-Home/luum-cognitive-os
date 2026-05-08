@@ -34,7 +34,7 @@ The repository ships `sbom.json` at the root in **CycloneDX 1.6 JSON** format
 | Source                    | `dir:.` (project root, excluding vendored/plugin/build directories)|
 | Source name / version     | `luum-cognitive-os` / `0.27.1` (from `pyproject.toml`)             |
 | Component count           | 241 (raw); 205 unique deduped library components                   |
-| SHA-256                   | `2a3fb4322381f931da78bd2355a7f9e41457ed7586785bb48c4e8b2b9a7c9adb` |
+| SHA-256                   | `5b5bf0307998983b7cd1b531877d4c119d52183079408cc680e414c3635673e0` |
 
 The SHA-256 above is the literal checksum of `sbom.json` at the time this
 document was committed. The committed SBOM is sanitized to use repository-relative
