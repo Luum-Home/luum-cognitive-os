@@ -1,0 +1,201 @@
+---
+title: Post-Mortem — Primitive Coherence Drift and Self-Biting Control Plane
+status: accepted
+severity: HIGH
+date: 2026-05-08
+scope: cognitive-os-control-plane
+tags: [postmortem, primitive-coherence, hooks, governance, agentic-primitives]
+---
+
+# Post-Mortem — Primitive Coherence Drift and Self-Biting Control Plane
+
+## Executive summary
+
+Cognitive OS accumulated many useful agentic primitives: hooks, rules, skills,
+state ledgers, readiness gates, retention reapers, worktree guards, history
+sanitizers, router audits, and pre-public checks. The failure pattern observed
+across the 2026-05-06 to 2026-05-08 release-preparation sessions is not that
+individual primitives were useless. Most of them were locally reasonable.
+
+The failure pattern is that **locally-correct primitives became globally
+incoherent** because no single machine-readable contract declared:
+
+- which primitive owns a surface;
+- which primitive may write that surface;
+- which primitive may reap, restore, or rewrite it;
+- which primitive consumes another primitive's output;
+- which hook must run before another hook;
+- which unregistered primitive is intentionally opt-in versus accidentally
+  orphaned;
+- which bypass environment variables are mutually dangerous;
+- which public claim says “implemented” while the enforcing hook/script is only
+  advisory.
+
+We call this failure mode **primitive coherence drift**.
+
+## Severity
+
+**HIGH.** No final code loss was confirmed in the latest stabilized state, but
+multiple incidents required manual forensic reconstruction. The risk is
+structural: a future agent or automation can silently undo, hide, duplicate, or
+misreport work even when each individual primitive believes it is enforcing a
+valid rule.
+
+## Impact
+
+Observed impact included:
+
+1. **Hidden or confusing WIP state.** Earlier auto-pre-agent stash behavior hid
+   work after preflight blocked and post-restore did not run.
+2. **Branch destination confusion.** A background agent switched branch context,
+   committed on a feature branch, and required reflog/log reconstruction before
+   merge back to `main`.
+3. **History sanitization regression risk.** Public-history cleanup removed
+   sensitive content, but later docs reintroduced the same token in a new
+   commit, requiring another content-only rewrite.
+4. **Metadata boundary confusion.** ADR-218 initially mixed content rewrites and
+   author/committer metadata rewrites; the operator explicitly rejected broad
+   author-email deletion.
+5. **Registration classifier disagreement.** A hook can be intentionally
+   `opt_in` in `manifests/hook-registration-classification.yaml` while another
+   checker still reports it as simply “unregistered”.
+6. **Producer-without-consumer drift.** Several tools existed but were not wired
+   into the flows that needed them until after failures were observed.
+7. **Audit-document drift.** Scorecards and counts became stale when hook files
+   changed.
+8. **Capability contract mismatch.** Read-only/explore agents were launched for
+   tasks requiring file artifacts.
+
+## Timeline of representative incidents
+
+| Date | Incident | Coherence failure |
+|---|---|---|
+| 2026-05-06 | Auto-pre-agent stashes blocked later agents | Safety snapshot had no complete retention/reaper lifecycle |
+| 2026-05-06 | Explore agents could not write requested reports | Agent capability contract not compared against output requirements |
+| 2026-05-06 | Skill router repeatedly suggested inappropriate skills | Router confidence had no negative-evidence/reject-class feedback loop |
+| 2026-05-06 | Secret tooling existed but was not protecting all paths | Producer existed without mandatory consumer/gate |
+| 2026-05-08 | Agent committed on unexpected branch | Branch switch was not treated as a governed control-plane mutation |
+| 2026-05-08 | History sanitizer touched metadata by default | Content rewrite and author metadata rewrite shared one primitive path |
+| 2026-05-08 | Hook count/readiness docs drifted | Audit docs lacked automatic count/coherence enforcement |
+
+## Root cause
+
+### Primary root cause — no primitive coherence contract
+
+The OS has primitive-specific contracts, but lacks a cross-primitive contract.
+For example:
+
+- state retention declares TTLs and reapers;
+- hook registration declares projection status;
+- work ownership joins stashes/worktrees/claims;
+- history sanitization declares replacements;
+- public-risk audit checks publishability.
+
+None of these artifacts answer: “if primitive A writes a surface that primitive B
+reads and primitive C reaps, are their assumptions coherent?”
+
+### Secondary root cause — authority is implicit
+
+Many primitives implicitly own a domain:
+
+- git branch context;
+- commit destination;
+- commit content;
+- author metadata;
+- agent launch state;
+- runtime snapshots;
+- task ledgers;
+- public release readiness.
+
+Implicit ownership is not enough when agents can run concurrently and when hooks
+are regenerated by profile scripts. Authority needs to be declared.
+
+### Tertiary root cause — ordering constraints are encoded by position, not policy
+
+The old auto-stash failure was an ordering failure: a mutating snapshot ran
+before a blocker. We fixed that one ordering in `.claude/settings.json`, but the
+system still lacks a general testable ordering policy such as:
+
+```yaml
+hooks/pre-agent-snapshot.sh must run after hooks/agent-prelaunch.sh
+```
+
+Without a manifest, a future profile regeneration can reintroduce the bug.
+
+## What went well
+
+- The repo already had many useful partial audits: primitive duplication,
+  state retention, hook registration classification, work ownership, pre-public
+  risk, readiness gates.
+- The incidents left enough metrics, reports, reflog entries, and git history to
+  reconstruct what happened.
+- Recent fixes hardened individual domains: branch-switch blocking, content-only
+  history rewrite default, public sanitization disclosure, pre-public risk gate.
+
+## What went poorly
+
+- We repeatedly fixed symptoms before naming the cross-primitive class.
+- Agents and operators treated “primitive exists” as equivalent to “primitive is
+  wired into the relevant flow”.
+- Some reports said “done” while another gate still had blockers.
+- Multiple tools could write or mutate the same family of surfaces without a
+  shared owner manifest.
+- Existing registration checks and classification manifests could disagree about
+  intentional opt-in status.
+
+## Invariants we need
+
+1. **Every mutable surface has an owner.**
+2. **Every writer is declared.**
+3. **Multi-writer surfaces declare a protocol** (`append-jsonl`, `atomic-json`,
+   `lock-required`, `directory-owned`, etc.).
+4. **Mutating hooks run after blockers.**
+5. **Manual/opt-in primitives are not reported as accidental missing.**
+6. **Active primitives have at least one consumer.**
+7. **Destructive or metadata-affecting bypasses are explicit and auditable.**
+8. **Docs/status claims cannot say implemented if the primitive is only
+   advisory or unregistered.**
+
+## Decision
+
+Create **ADR-240 — Primitive Coherence Audit and Ownership Manifest** and an
+initial `scripts/primitive-coherence-audit.py` implementation. The first slice
+must detect incoherence; it must not silently repair it. This is intentional:
+we want the audit to prove it can see contradictions before we teach it to
+rewrite manifests or settings.
+
+## Immediate scope
+
+Slice A should detect:
+
+1. Hook registration checker versus classification manifest disagreement.
+2. Dangerous hook ordering inversions.
+3. Multi-writer surfaces in the new coherence manifest without an explicit
+   multi-writer protocol.
+
+## Out of scope for Slice A
+
+- Auto-fixing `.claude/settings.json`.
+- Rewriting hook registration manifests.
+- Reaping state.
+- Changing history.
+- Changing author metadata.
+- Broad semantic proof of every public claim.
+
+## Acceptance criteria
+
+- A fixture where `pre-agent-snapshot.sh` appears before `agent-prelaunch.sh`
+  fails the coherence audit.
+- A fixture where a hook is classified `opt_in` but the legacy registration
+  checker reports it as missing produces a disagreement finding.
+- A fixture with two writers on a non-multi-writer surface fails the coherence
+  audit.
+- Running the audit on the current repo produces machine-readable JSON.
+
+## Follow-up work
+
+- Add manifest coverage for git control-plane surfaces.
+- Add bypass conflict checks.
+- Integrate into `cos-pre-public-risk-audit` and release readiness.
+- Add docs/code status consistency checks for ADR “Implemented” claims.
+- Add consumer checks for producer-without-consumer primitives.
