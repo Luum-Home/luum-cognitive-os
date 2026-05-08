@@ -8,5 +8,9 @@ MSG_FILE="$1"
 [ -n "$MSG_FILE" ] || exit 0
 [ -f "$MSG_FILE" ] || exit 0
 
+if [ "${COS_DISABLE_COMMIT_PROVENANCE:-0}" = "1" ]; then
+  exit 0
+fi
+
 python3 "$REPO_DIR/scripts/commit_provenance.py" "$MSG_FILE" 2>/dev/null || true
 exit 0
