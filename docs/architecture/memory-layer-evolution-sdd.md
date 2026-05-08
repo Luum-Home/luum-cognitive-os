@@ -14,8 +14,9 @@ related_tools: [Graphiti, LightRAG, HippoRAG, MIRIX, DSPy]
 
 Wave 2 has started as SDD change `memory-layer-evolution`. The executable plan
 lives at `.cognitive-os/plans/architecture/memory-layer-evolution-wave2.md`.
-Implementation starts with benchmark Slice 0 only; Engram schema/retrieval
-defaults stay unchanged until the benchmark fixtures exist and pass.
+Slice 0 benchmark substrate is implemented. Engram schema/retrieval
+defaults stay unchanged until Slice 1 explicitly preserves `strategy=current`
+compatibility and passes the benchmark gate.
 
 ## Goal
 

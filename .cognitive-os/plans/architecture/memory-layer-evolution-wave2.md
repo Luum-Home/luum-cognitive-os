@@ -135,13 +135,26 @@ The next coding task is **Slice 0 only**:
 
 Do not touch Engram storage schema or retrieval defaults until Slice 0 is green.
 
+## Slice 0 implementation note
+
+Slice 0 landed as a non-mutating benchmark harness:
+
+- `manifests/memory-retrieval-benchmark.yaml` declares fixture classes and metrics.
+- `tests/fixtures/memory_retrieval/` contains deterministic temporal, procedural, and multi-hop fixtures.
+- `lib/memory_retrieval_benchmark.py` evaluates candidate retrieval rows.
+- `scripts/cos-memory-benchmark` runs the benchmark and blocks on required fixture failures.
+- `tests/unit/test_memory_retrieval_benchmark.py` proves stale temporal answers and unsupported multi-hop chains fail.
+
+Engram schema and retrieval defaults remain unchanged. The next allowed step is
+Slice 1 additive schema design/implementation, with `strategy=current` preserved.
+
 ## Definition of Done for SDD start
 
 - [x] Doctrine status verified as accepted.
 - [x] Design doc exists and is linked.
 - [x] SDD plan created with Slice 0/1/2/3 ordering.
 - [x] Radar tracker updated to show SDD started.
-- [ ] Slice 0 benchmark implementation merged.
+- [x] Slice 0 benchmark implementation merged.
 - [ ] Slice 1 schema migration merged.
 - [ ] Slice 2 retrieval modes merged.
 - [ ] Slice 3 default decision recorded.

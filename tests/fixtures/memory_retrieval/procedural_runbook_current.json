@@ -1,0 +1,18 @@
+{
+  "id": "procedural-runbook-current",
+  "class": "procedural_query",
+  "query": "How should a maintainer start Wave 2 memory work safely?",
+  "observations": [
+    {"id": "runbook-memory-slice0", "type": "procedure", "title": "Memory Slice 0 first", "content": "Create benchmark fixtures and runner before changing Engram schema or retrieval defaults."},
+    {"id": "chat-memory-idea", "type": "conversation", "title": "Exploratory memory idea", "content": "Maybe switch memory retrieval immediately."}
+  ],
+  "relations": [
+    {"from": "runbook-memory-slice0", "to": "chat-memory-idea", "type": "supersedes"}
+  ],
+  "expected": {
+    "must_include": ["runbook-memory-slice0"],
+    "must_rank_above": [
+      {"higher": "runbook-memory-slice0", "lower": "chat-memory-idea"}
+    ]
+  }
+}
