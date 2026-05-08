@@ -14,6 +14,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Recent tech-radar governance additions
 
 - [External Tools Radar Index](reports/external-tools-radar-INDEX.md) — chronological entry point for the tech-radar corpus and adoption pipeline.
+- [External Tools Radar Full Reassessment — 2026-05-08](reports/external-tools-radar-full-reassessment-2026-05-08.md) — full-corpus reassessment of 1762 third-party-tool mentions into a 184-item deduplicated scope with ADOPT/INTEGRATE/KEEP/MONITOR/DEFER/REJECT/REMOVE decisions.
 - [External Tool Adoption Doctrine](architecture/external-tool-adoption-doctrine.md) — doctrine for when COS should adopt, integrate, build, defer, or reject third-party tools.
 - [External Tool Adapter Taxonomy](architecture/external-tool-adapter-taxonomy.md) — canonical adoption kinds: dependency, CLI adapter, schema port, algorithm port, testdata vendor, operator-installed, and pattern-only.
 - [External Tools Radar 2026-05-08 Errata](reports/external-tools-radar-2026-05-08-errata.md) — append-only corrections for stale radar/cross-check statements.

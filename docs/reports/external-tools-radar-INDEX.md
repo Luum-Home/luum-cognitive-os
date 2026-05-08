@@ -153,6 +153,26 @@ the target item has an adoption kind, license/footprint posture, owner, source
 report, consumer proof target, acceptance criteria, and rollback/deprecation
 path.
 
+
+### 3.E Full corpus reassessment (2026-05-08)
+
+A broader reassessment expanded beyond the curated radar rows to nearly every
+third-party tool mentioned in git, docs, manifests, dependency files, and
+package manifests. It generated a raw inventory, a deduplicated scope, and a
+consolidated decision report:
+
+| Path | Role |
+|---|---|
+| [`docs/reports/external-tools-master-inventory-2026-05-08.md`](external-tools-master-inventory-2026-05-08.md) | Raw generated inventory: 1762 mentions / 822 normalized items |
+| [`docs/reports/external-tools-master-inventory-2026-05-08.json`](external-tools-master-inventory-2026-05-08.json) | Machine-readable raw inventory |
+| [`docs/reports/external-tools-reassessment-scope-2026-05-08.md`](external-tools-reassessment-scope-2026-05-08.md) | Deduplicated high/medium-confidence scope: 184 items in 9 domains |
+| [`docs/reports/external-tools-reassessment-scope-2026-05-08.json`](external-tools-reassessment-scope-2026-05-08.json) | Machine-readable reassessment scope |
+| [`docs/reports/external-tools-radar-full-reassessment-2026-05-08.md`](external-tools-radar-full-reassessment-2026-05-08.md) | Consolidated ADOPT/INTEGRATE/KEEP/MONITOR/DEFER/REJECT/REMOVE report |
+
+**Outcome:** the next implementation pass should start with cleanup/action
+items identified by the full reassessment: LiteLLM, Langfuse, `memu`,
+`pytest-smell`, heavy-lane posture, and the external-tools adoption manifest.
+
 ### 3.C License audit (cross-cutting)
 
 Adoption decisions now gated by license compliance, formalized through:
