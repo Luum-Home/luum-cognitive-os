@@ -68,6 +68,15 @@ ordering_constraints:
     severity: block
 ```
 
+## Detection-before-repair rule
+
+ADR-240 must first detect live contradictions before any agent “cleans them up.”
+A green audit is not valuable if it was achieved by manually correcting the
+primitives before the detector learned the failure shape. Slice A is therefore
+read-only and may legitimately report current warnings or blockers. Remediation
+commits must be separate from detector commits and should reference the finding
+code they resolve.
+
 ## Slice A checks
 
 1. **Ordering inversion**
