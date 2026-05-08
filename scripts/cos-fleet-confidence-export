@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.fleet_confidence import export_fleet_confidence  # noqa: E402
+
+
+def repo_root(start: Path) -> Path:
+    cur = start.resolve()
+    for candidate in [cur, *cur.parents]:
+        if (candidate / ".git").exists():
+            return candidate
+    return cur
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Export ADR-210 sanitized fleet confidence rows.")
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--manifest", default="manifests/fleet-confidence-schema.yaml")
+    parser.add_argument("--input", default=None)
+    parser.add_argument("--dry-run", action="store_true", default=True)
+    parser.add_argument("--json", action="store_true", help="Emit JSON (default).")
+    args = parser.parse_args()
+    project = repo_root(Path(args.project_dir))
+    manifest = Path(args.manifest)
+    if not manifest.is_absolute():
+        manifest = project / manifest
+    input_path = Path(args.input) if args.input else None
+    if input_path and not input_path.is_absolute():
+        input_path = project / input_path
+    payload = export_fleet_confidence(project, manifest_path=manifest, input_path=input_path, dry_run=args.dry_run)
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 1 if payload["status"] == "block" else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

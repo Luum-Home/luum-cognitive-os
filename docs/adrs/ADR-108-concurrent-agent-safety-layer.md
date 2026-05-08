@@ -2,14 +2,14 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — implemented through safety mesh, worktree isolation, release freeze, and control-plane audits
 **Date**: 2026-05-02
 **Author**: Maintainer + Cognitive OS
 **Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file coordination), ADR-105 (bilateral claim verification), ADR-106 (multi-session safety primitives), [Concurrent Agent Safety Master](../architecture/concurrent-agent-safety-master.md), [Concurrent Agent Scenario Test Matrix](../architecture/concurrent-agent-scenario-test-matrix.md), [Concurrent Agent Safety Testbed Plan](../../.cognitive-os/plans/architecture/concurrent-agent-safety-testbed-plan.md)
 
 ## Status
 
-Proposed. This ADR decides the layer and invariants. Implementation is tracked in the testbed plan and must be proven by automated tests, not manual checks.
+Accepted. This ADR decides the layer and invariants. The layer is implemented through safety mesh tests, worktree isolation, branch ownership, release freeze, claim gates, and control-plane audits; future additions extend the layer rather than keeping this ADR proposed.
 
 ## Relationship to adjacent safety ADRs
 

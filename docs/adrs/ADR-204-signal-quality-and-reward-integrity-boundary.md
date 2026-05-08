@@ -1,12 +1,12 @@
 # ADR-204 — Signal Quality and Reward Integrity Boundary
 
 ## Status
-Proposed
+Accepted — implemented
 
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-031, ADR-083, ADR-134, ADR-135, ADR-188, ADR-201  
 **Source**: `.cognitive-os/strategy/research/01-origin-archeology.md`, `.cognitive-os/strategy/research/07-skill-ecosystem-evolution.md`, `.cognitive-os/strategy/research/08-self-improvement-roadmap.md`

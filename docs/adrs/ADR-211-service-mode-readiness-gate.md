@@ -1,12 +1,12 @@
 # ADR-211 — Service-Mode Readiness Gate
 
 ## Status
-Proposed
+Accepted — initial readiness gate implemented
 
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — initial readiness gate implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-193, ADR-194, ADR-196, ADR-198, ADR-201, ADR-202, ADR-204, ADR-205, ADR-209  
 **Source**: `.cognitive-os/strategy/research/08-self-improvement-roadmap.md`, `.cognitive-os/strategy/02-pre-launch-playbook.md`

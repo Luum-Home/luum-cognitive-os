@@ -1,0 +1,26 @@
+schema_version: fleet-confidence-schema/v1
+status: active
+owner: platform-safety
+adr: ADR-210
+policy:
+  export_requires_opt_in: true
+  allowed_content_classes: [sanitized-export]
+  forbidden_content_classes: [secret-never-touch, local-only, same-user-harness, project-private]
+  requires_redaction_receipt: true
+  requires_provenance_receipt: true
+  dry_run_default: true
+required_fields:
+  - primitive_id
+  - primitive_version
+  - outcome_class
+  - confidence_band
+  - verification_class
+  - environment_class
+  - tenant_project_hash
+  - content_class
+  - redaction_receipt
+  - provenance_receipt
+  - opt_in
+confidence_bands: [low, medium, high]
+outcome_classes: [success, failure, regression, neutral]
+verification_classes: [unit, integration, behavior, smoke, manual, audit]

@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed (retroactive backfill 2026-04-30)
+**Status**: Accepted — propose-only self-improvement loop implemented across ADR-201/204/248
 **Date**: 2026-04-29
 **Author**: Maintainer
 **Related**: ADR-074 (Tier-0 learning loop closure), ADR-075 (stage-2 selective expansion)
@@ -12,7 +12,7 @@
 
 ## Status
 
-Proposed (retroactive backfill 2026-04-30).
+Accepted. The detect → propose → verify → approve boundary is implemented by the maintainer/proposal/reward/control-plane primitives; autonomous runtime mutation remains out of scope unless explicitly opted in.
 
 ---
 

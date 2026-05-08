@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — executed 2026-04-30 by Session A
 **Date**: 2026-04-30
 **Author**: Maintainer
 **Related**: ADR-082 (plan locations), ADR-087 (ADR namespace), ADR-088 (provenance trailer),

@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — umbrella; implemented rows recorded below
 **Date**: 2026-04-30
 **Author**: Maintainer
 **Related**: ADR-057 (harness-agnostic core), ADR-064 (cross-harness authoring),
@@ -12,7 +12,7 @@ ADR-074 (Tier-0 learning loop), ADR-076 (skill-tier frontmatter), ADR-078 (mid-t
 
 ## Status
 
-Proposed umbrella. ADR-081 prerequisite is satisfied; remaining open work is tracked item-by-item in the implementation status table.
+Accepted umbrella. ADR-081 prerequisite is satisfied; implemented and future rows are tracked item-by-item in the implementation status table.
 
 ## Relationship to memory ADRs
 

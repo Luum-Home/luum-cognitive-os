@@ -2,14 +2,14 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — primitives implemented or superseded by newer safety boundaries
 **Date**: 2026-05-02
 **Author**: Maintainer
 **Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-098 (multi-agent file coordination), ADR-104 (startup circuit breaker), `docs/incidents/2026-05-02-false-done-compounding.md`
 
 ## Status
 
-Proposed. Policy definition and primitive specifications. Implementation of each primitive is tracked as a separate task.
+Accepted. The stash alarm, plan lock, claim/provenance-adjacent guards, and bilateral claim gate are implemented or superseded by newer safety boundaries. Commit provenance trailers are no longer required for public history; commit provenance is handled by explicit opt-in provenance controls instead of mandatory X-COS trailers.
 
 ## Relationship to ADR-108 and ADR-111
 

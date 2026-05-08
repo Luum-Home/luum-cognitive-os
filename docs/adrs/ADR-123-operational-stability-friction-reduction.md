@@ -1,7 +1,7 @@
 ---
 adr: 123
 title: Operational Stability and Friction Reduction Program
-status: proposed
+status: implemented
 date: 2026-05-02
 supersedes: []
 superseded_by: null
@@ -17,7 +17,7 @@ tags: [stability, friction-reduction, guards, maturity]
 
 ## Status
 
-Proposed — 2026-05-02
+Implemented — 2026-05-08 status sync
 
 ## Context
 

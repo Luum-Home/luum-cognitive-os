@@ -1,5 +1,7 @@
 # ADR-240: Primitive Coherence Audit and Ownership Manifest
 
+status: accepted
+
 ## Status
 
 Accepted — Slice A implemented.

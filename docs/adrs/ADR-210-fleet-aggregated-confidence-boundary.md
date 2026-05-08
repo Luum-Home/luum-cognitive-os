@@ -1,12 +1,12 @@
 # ADR-210 — Fleet-Aggregated Confidence Boundary
 
 ## Status
-Proposed
+Accepted — Slice A dry-run exporter implemented
 
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — Slice A dry-run exporter implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-136, ADR-201, ADR-202, ADR-204, ADR-209  
 **Source**: `.cognitive-os/strategy/research/06-external-patterns-benchmark.md`, `.cognitive-os/strategy/research/08-self-improvement-roadmap.md`
@@ -67,6 +67,17 @@ customer environment without local approval and local experiment contract.
 3. Add ADR-202 guard: only `sanitized-export` can leave.
 4. Add cloud import contract later; no local dependency on cloud.
 5. Add bias/coverage fields to summaries.
+
+## Implementation status
+
+Slice A is implemented as a local dry-run exporter:
+
+- `manifests/fleet-confidence-schema.yaml` declares the export contract.
+- `lib/fleet_confidence.py` validates rows and strips raw content classes from export rows.
+- `scripts/cos-fleet-confidence-export` emits JSON only and defaults to dry-run.
+- `tests/unit/test_fleet_confidence_export.py` proves `local-only` and missing opt-in/receipts block export.
+
+No cloud import exists in this slice. Fleet confidence remains local, opt-in, and sanitized-export-only.
 
 ## Acceptance criteria
 

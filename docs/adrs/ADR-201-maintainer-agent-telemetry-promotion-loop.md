@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — Slice A propose-only loop implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-031, ADR-083, ADR-090, ADR-095, ADR-134, ADR-135, ADR-146, ADR-147, ADR-164, ADR-199, ADR-200  
 **Report**: `docs/reports/self-improvement-maintainer-agent-gap-2026-05-06.md`
@@ -338,8 +338,7 @@ allowed write paths, tests, rollback plan, and outcome-failure protocol.
 
 ## Status
 
-Proposed. Implementation should start narrow and remain propose-only until the
-performance ledger and smoke tests are stable.
+Accepted — Slice A implemented. The SQLite performance ledger, signal-quality quarantine, `PromoteFromTelemetry`, `cos-promote-from-telemetry`, and `cos-maintainer-agent --once --dry-run` are present and tested. Scheduled automation and mutation remain future/opt-in.
 
 ## Verification
 ```bash

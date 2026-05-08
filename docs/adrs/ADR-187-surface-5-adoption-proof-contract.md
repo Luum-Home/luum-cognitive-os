@@ -1,10 +1,10 @@
 ---
 adr: 187
 title: Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI
-status: proposed
+status: superseded
 date: 2026-05-06
 supersedes: []
-superseded_by: null
+superseded_by: ADR-192
 extends: []
 decision_inputs: [ADR-172, ADR-173]
 implementation_files:
@@ -19,8 +19,7 @@ tags: [ui, surface-5, adoption-gate, source-proof, governance]
 
 ## Status
 
-**Proposed** — this is a contract for a future adoption decision, not an
-adoption decision itself.
+**Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather than leaving ADR-187 proposed.
 
 ## Context
 

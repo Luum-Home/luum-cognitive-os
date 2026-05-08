@@ -2,14 +2,14 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed
+**Status**: Accepted — initial doctor and behavior tests shipped
 **Date**: 2026-05-02
 **Author**: Maintainer + Cognitive OS
 **Related**: ADR-088 (provenance markers), ADR-089 (multi-session git coordination), ADR-106 (multi-session safety primitives), ADR-108 (concurrent agent safety layer), [Preserve Branch Governance Report](../reports/preserve-branch-governance-2026-05-02.md), [Preserve Branch Lifecycle](../architecture/preserve-branch-lifecycle.md)
 
 ## Status
 
-Proposed. Initial doctor and behavior tests are part of the first implementation slice.
+Accepted. Initial doctor and behavior tests are part of the implemented preserve-branch governance slice; future cleanup/reaper behavior extends this ADR.
 
 ## Relationship to ADR-108 and ADR-111
 

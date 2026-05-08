@@ -1,12 +1,12 @@
 # ADR-205 — Cross-Stream Trace Joiner and Flight Recorder
 
 ## Status
-Proposed
+Accepted — implemented
 
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-033, ADR-086, ADR-190, ADR-193, ADR-196, ADR-201  
 **Source**: `.cognitive-os/strategy/research/04-telemetry-action-gap.md`, `.cognitive-os/strategy/research/08-self-improvement-roadmap.md`

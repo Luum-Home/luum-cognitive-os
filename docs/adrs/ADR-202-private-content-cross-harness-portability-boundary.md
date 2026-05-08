@@ -2,7 +2,7 @@
 
 <!-- SCOPE: OS -->
 
-**Status**: Proposed  
+**Status**: Accepted — conservative manifest and audit substrate implemented  
 **Date**: 2026-05-06  
 **Related**: ADR-008, ADR-081, ADR-111, ADR-124, ADR-136, ADR-190, ADR-193, ADR-194, ADR-196, ADR-201  
 **Report**: `docs/reports/private-content-portability-gap-2026-05-06.md`
@@ -234,7 +234,7 @@ action suggestions.
 
 ## Status
 
-Proposed. This ADR fills the private-content gap left implicit by ADR-008 and
+Accepted — conservative manifest and audit substrate implemented. This ADR fills the private-content gap left implicit by ADR-008 and
 must be reconciled before treating cloud/headless service portability as safe by
 default.
 
