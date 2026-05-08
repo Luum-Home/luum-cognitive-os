@@ -228,6 +228,32 @@ trusted, not hidden inside the detector commit.
 | Pre-public risk audit | Public-release leaks and reputational blockers | It checks publishability, not whether runtime primitives have coherent ownership |
 | ADR/readiness docs | Human-readable intent | Intent without an executable invariant drifts under concurrent agents |
 
+## Recursion and third-party tool adoption
+
+This class also includes **recursive primitive activation**. A hook can call a
+script, the script can call a CLI, the CLI can trigger git hooks or another COS
+entrypoint, and the system can accidentally re-enter the same control-plane
+path. That is how a governance layer becomes self-biting: it is not only wrong
+ordering, it is unbounded re-entry.
+
+The fix is not to rebuild every market tool as a COS-native primitive. The fix
+is to adopt tools behind explicit adapter boundaries. `git`, `git-filter-repo`,
+Trivy, Syft/Grype, Gitleaks, TruffleHog, and similar tools should remain external
+when they are better than what COS can build. But each external tool needs a
+small contract: owner, license, allowed callers, failure policy, and recursion
+boundary.
+
+This prevents two opposite failures:
+
+1. **Reinventing the wheel.** Agents reach for ad-hoc scripts because the OS did
+   not declare the existing tool boundary.
+2. **Recursive self-bite.** Hooks/scripts call external tools that re-enter COS
+   or mutate git/state without an explicit no-reentry contract.
+
+ADR-240 Slice B starts with manifest-declared primitive edges and external tool
+boundaries. It is intentionally conservative: it detects declared cycles and
+incomplete tool boundaries before attempting broad shell parsing.
+
 ## New invariant family
 
 ADR-240 introduces a new invariant family: **primitive coherence invariants**.

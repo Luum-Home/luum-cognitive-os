@@ -150,3 +150,42 @@ def test_current_repo_audit_is_read_only_and_machine_readable() -> None:
     assert payload["schema_version"] == "primitive-coherence-audit/v1"
     assert payload["policy"] == "Read-only. Detect contradictions; do not auto-repair primitives."
     assert "findings" in payload
+
+
+def test_blocks_declared_primitive_recursion_cycle(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '{"hooks": {}}')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+surfaces: []
+ordering_constraints: []
+primitive_edges:
+  - from: hooks/a.sh
+    to: scripts/b.py
+  - from: scripts/b.py
+    to: hooks/a.sh
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert any(f["code"] == "primitive-recursion-cycle" for f in payload["findings"])
+
+
+def test_blocks_incomplete_external_tool_boundary(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '{"hooks": {}}')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+surfaces: []
+ordering_constraints: []
+external_tool_boundaries:
+  - tool: trivy
+    owner: supply-chain-audit
+    license_spdx: Apache-2.0
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert any(f["code"] == "external-tool-boundary-incomplete" for f in payload["findings"])

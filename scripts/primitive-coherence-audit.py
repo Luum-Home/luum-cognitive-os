@@ -198,12 +198,117 @@ def check_registration_disagreement(repo: Path, manifest: dict[str, Any]) -> lis
     return findings
 
 
+
+
+def _cycle_path(graph: dict[str, list[str]]) -> list[str] | None:
+    """Return one directed cycle from graph, if present."""
+    visiting: set[str] = set()
+    visited: set[str] = set()
+    stack: list[str] = []
+
+    def dfs(node: str) -> list[str] | None:
+        visiting.add(node)
+        stack.append(node)
+        for nxt in graph.get(node, []):
+            if nxt in visiting:
+                idx = stack.index(nxt)
+                return stack[idx:] + [nxt]
+            if nxt not in visited:
+                found = dfs(nxt)
+                if found:
+                    return found
+        visiting.remove(node)
+        visited.add(node)
+        stack.pop()
+        return None
+
+    for node in sorted(graph):
+        if node not in visited:
+            found = dfs(node)
+            if found:
+                return found
+    return None
+
+
+def check_primitive_graph(manifest: dict[str, Any]) -> list[Finding]:
+    """Detect declared primitive invocation cycles.
+
+    This is intentionally based on a manifest, not a speculative shell parser.
+    Static code scanning can be added later, but Slice B starts with explicit
+    edges so recursion contracts are reviewable.
+    """
+    edges = manifest.get("primitive_edges", []) or []
+    graph: dict[str, list[str]] = {}
+    findings: list[Finding] = []
+    for edge in edges:
+        src = str(edge.get("from", "")).strip()
+        dst = str(edge.get("to", "")).strip()
+        if not src or not dst:
+            findings.append(
+                Finding(
+                    "block",
+                    "primitive-edge-incomplete",
+                    "Primitive graph edge must declare both from and to.",
+                    details={"edge": edge},
+                )
+            )
+            continue
+        if edge.get("recursion_allowed", False):
+            continue
+        graph.setdefault(src, []).append(dst)
+        graph.setdefault(dst, graph.get(dst, []))
+    cycle = _cycle_path(graph)
+    if cycle:
+        findings.append(
+            Finding(
+                "block",
+                "primitive-recursion-cycle",
+                "Declared primitive invocation graph contains a recursion cycle without an explicit recursion boundary.",
+                primitive=cycle[0],
+                details={"cycle": cycle},
+            )
+        )
+    return findings
+
+
+def check_external_tool_boundaries(manifest: dict[str, Any]) -> list[Finding]:
+    """Validate third-party tool boundaries declared in the coherence manifest."""
+    findings: list[Finding] = []
+    required = {"tool", "owner", "license_spdx", "adapter", "recursion_boundary", "failure_policy"}
+    for boundary in manifest.get("external_tool_boundaries", []) or []:
+        missing = sorted(field for field in required if not boundary.get(field))
+        tool = str(boundary.get("tool", "unknown"))
+        if missing:
+            findings.append(
+                Finding(
+                    "block",
+                    "external-tool-boundary-incomplete",
+                    "External tool boundary is missing required fields; do not consume third-party tools as implicit primitives.",
+                    primitive=tool,
+                    details={"missing": missing, "boundary": boundary},
+                )
+            )
+        allowed_callers = boundary.get("allowed_callers", []) or []
+        if not allowed_callers:
+            findings.append(
+                Finding(
+                    "warn",
+                    "external-tool-boundary-has-no-callers",
+                    "External tool boundary declares no allowed_callers; adoption may be documented but unused.",
+                    primitive=tool,
+                )
+            )
+    return findings
+
+
 def audit(repo: Path, manifest_path: Path) -> dict[str, Any]:
     manifest = load_yaml(manifest_path)
     findings: list[Finding] = []
     findings.extend(check_ordering(repo, manifest))
     findings.extend(check_surfaces(manifest))
     findings.extend(check_registration_disagreement(repo, manifest))
+    findings.extend(check_primitive_graph(manifest))
+    findings.extend(check_external_tool_boundaries(manifest))
     block_count = sum(1 for f in findings if f.severity == "block")
     warn_count = sum(1 for f in findings if f.severity == "warn")
     return {

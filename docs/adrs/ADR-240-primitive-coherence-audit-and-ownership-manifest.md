@@ -1,6 +1,9 @@
 # ADR-240: Primitive Coherence Audit and Ownership Manifest
 
-**Status**: Accepted — Slice A implemented  
+## Status
+
+Accepted — Slice A implemented.
+
 **Date**: 2026-05-08  
 **Owner**: platform-safety  
 **Related**: ADR-149, ADR-199, ADR-200, ADR-211, ADR-218, ADR-219, ADR-238  
@@ -77,6 +80,29 @@ read-only and may legitimately report current warnings or blockers. Remediation
 commits must be separate from detector commits and should reference the finding
 code they resolve.
 
+## Slice B — recursion and third-party tool boundaries
+
+Primitive coherence also covers recursive control-plane loops. A primitive may
+invoke another primitive, a script may wrap a hook, and a hook may call a
+third-party tool that eventually re-enters COS. That is safe only when the edge
+has an explicit recursion boundary.
+
+ADR-240 therefore treats external tools as adapter boundaries, not as implicit
+new primitives. This lets COS adopt market tools such as `git`, `git-filter-repo`,
+`trivy`, `syft`, or `gitleaks` without reinventing them, while still requiring:
+
+- an owner;
+- SPDX license;
+- adapter name;
+- allowed callers;
+- failure policy;
+- recursion boundary.
+
+The audit blocks declared primitive invocation cycles unless the manifest marks
+that edge as explicitly recursion-safe. It also blocks incomplete external tool
+boundaries, because consuming a third-party CLI without a boundary recreates the
+same producer-without-consumer problem at the tool layer.
+
 ## Slice A checks
 
 1. **Ordering inversion**
@@ -101,6 +127,12 @@ code they resolve.
 - Do not rewrite git history.
 - Do not modify author/committer metadata.
 - Do not infer ownership from prose alone.
+
+## Alternatives rejected
+
+- **Continue with independent per-primitive checkers only** — rejected because the incident class is cross-primitive contradiction, not local primitive absence. Independent checkers can each be green while their combined guidance is unsafe.
+- **Auto-repair contradictions immediately** — rejected because repair before detection hides the failure shape and can mutate state incorrectly. Slice A must stay read-only and make contradictions observable first.
+- **Encode ownership only in prose ADRs** — rejected because agents and scripts need machine-readable ownership, writers, and ordering constraints to catch drift before runtime.
 
 ## Consequences
 
@@ -134,3 +166,10 @@ Negative:
 - ADR status versus implementation/test consistency.
 - Static write-surface discovery over hooks/scripts.
 - Integration into `scripts/cos-pre-public-risk-audit`.
+- Static discovery of undeclared third-party CLI usage once the declared boundary model is stable.
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_primitive_coherence_audit.py tests/audit/test_adr_contracts.py -q
+```

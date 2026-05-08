@@ -82,3 +82,36 @@ ordering_constraints:
     before: hooks/agent-launch-confirmed.sh
     severity: warn
     rationale: Capability/output contract checks should run before launch confirmation side effects.
+
+
+primitive_edges:
+  - from: hooks/agent-prelaunch.sh
+    to: scripts/state_retention_audit.py
+    kind: invokes
+    recursion_allowed: false
+    rationale: Prelaunch may ask state retention for inventory; state retention must not launch agents.
+  - from: scripts/cos-pre-public-risk-audit
+    to: scripts/primitive-coherence-audit.py
+    kind: invokes
+    recursion_allowed: false
+    rationale: Pre-public risk may consume coherence audit results; coherence audit must remain read-only and must not invoke pre-public risk.
+
+external_tool_boundaries:
+  - tool: git
+    owner: git-control-plane
+    license_spdx: GPL-2.0-only
+    adapter: system-git-cli
+    recursion_boundary: hooks must call git through governed shell paths; git commands must not spawn COS hooks directly
+    failure_policy: fail-closed for destructive git, fail-open only for read-only inventory
+    allowed_callers:
+      - hooks/destructive-git-blocker.sh
+      - scripts/cos-history-sanitization
+      - scripts/primitive-coherence-audit.py
+  - tool: git-filter-repo
+    owner: adr-218-history-sanitization
+    license_spdx: MIT
+    adapter: external-cli
+    recursion_boundary: content-only rewrite path; no commit author metadata rewrite unless COS_HISTORY_SANITIZE_METADATA=1
+    failure_policy: backup-or-refuse
+    allowed_callers:
+      - scripts/cos-history-sanitization
