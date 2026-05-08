@@ -159,6 +159,16 @@ runbook: [`docs/runbooks/run-cos-in-docker.md`](docs/runbooks/run-cos-in-docker.
 **Supported harnesses**: Claude Code, Codex, Cursor. Add a one-file adapter for
 any harness that supports lifecycle hooks.
 
+**Feature status legend**: capabilities throughout the docs are tagged
+**REAL** (production, hook-enforced), **DORMANT** (code present but
+feature-flagged off / opt-in), or **ASPIRATIONAL** (scaffolded, loop not
+yet closed). The reconciliation lives in
+[`docs/legal/h1-feature-status-audit.md`](docs/legal/h1-feature-status-audit.md);
+the public-facing matrix in [`docs/business/features.md`](docs/business/features.md)
+is annotated. In particular, "self-improvement" and "self-healing"
+(MAPE-K, singularity) are propose-only and human-gated — autonomous
+production mutation is **not** claimed.
+
 **Roadmap**: [docs/roadmap.md](docs/roadmap.md)
 
 **Research catalog**: [docs/research/INDEX.md](docs/research/INDEX.md) — navigable index of ~325 research artifacts (prior-art reports, gap analyses, external-tool deep dives, operational audits, postmortems).
