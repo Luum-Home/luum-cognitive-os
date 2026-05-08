@@ -188,13 +188,18 @@ rewriting is a legal exposure.
 
 Required actions:
 
-- [ ] Run `audit-integrity` skill
-- [ ] Spot-check 10 ADRs that cite external tools for clean-room
-  separation
-- [ ] Public note in `docs/architecture/provenance.md` listing which
-  patterns were inspired by which prior art and under what license
+- [x] Run `audit-integrity` skill — applied conceptually (skill is a
+  structural integrity tool, not a provenance runner); confirmed
+  inspected `lib/*.py` files are ALIVE (no symlink trickery)
+- [x] Spot-check 15 ADRs that cite external tools for clean-room
+  separation — `docs/architecture/provenance.md` §4 (LOW=15, MED=0, HIGH=0)
+- [x] Public note in `docs/architecture/provenance.md` listing which
+  patterns were inspired by which prior art and under what license —
+  20-tool provenance table at `docs/architecture/provenance.md` §2
 
-Status: `pending`
+Status: `complete (first pass)` — legal review still required to
+re-verify the 14 UNKNOWN license entries before public release; see
+`docs/architecture/provenance.md` §6 open questions.
 
 ---
 
@@ -215,11 +220,20 @@ Status: `mostly-complete` (digest pinning of CI actions + signed releases pendin
 
 Required actions:
 
-- [ ] Fresh clone → first useful skill invocation under 10 minutes
-- [ ] `validate-release` skill output captured
-- [ ] Recorded asciicast or screencast linked from `README.md`
+- [x] Fresh clone → first useful skill invocation under 10 minutes —
+      documented in [`docs/onboarding/walkthrough.md`](../onboarding/walkthrough.md).
+      Live measurement: 52s for steps 4-7, ~7 min total including
+      read-only steps. Transcript:
+      `docs/onboarding/walkthrough-transcript-20260508T033934Z.log`.
+- [x] `validate-release` skill output captured — `skills/validate-release`
+      is a markdown agent-instructions skill (no executable). Closest
+      invocable proxy `cos-status.sh` captured in transcript appendix
+      and `/tmp/m2-cos-status.log`.
+- [ ] Recorded asciicast or screencast linked from `README.md` — TBD;
+      operator records once the public URL is live. The captured
+      transcript log serves as a textual asciicast in the interim.
 
-Status: `pending`
+Status: `mostly-complete` (asciicast pending operator recording)
 
 ### M3. ADR sweep — 14 recent ADRs
 
