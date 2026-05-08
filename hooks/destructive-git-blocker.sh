@@ -21,6 +21,7 @@
 #   - git branch -D (force-delete)
 #   - git rebase (any form; mutates history/worktree state)
 #   - git pull --rebase (shared-worktree rebase/reset hazard)
+#   - git switch / git checkout branch changes (unannounced branch context changes)
 #   - git commit / git push from protected main/master branches
 #   - git push --force / git push -f  (force-push, 2026-05-02 extension)
 #     NOTE: --force-with-lease is intentionally NOT blocked (safer alternative)
@@ -38,6 +39,7 @@
 #   - Per-command: append `--allow-force-push` token (force-push-specific bypass)
 #   - Per-session: export COS_ALLOW_DESTRUCTIVE_GIT=1
 #   - Protected branch write bypass: export COS_ALLOW_MAIN_BRANCH_WRITE=1
+#   - Branch context switch bypass: export COS_ALLOW_BRANCH_SWITCH=1
 #
 # Bypass contexts (SO-internal — block does not apply):
 #   - CI=1 (CI environment)
@@ -224,6 +226,15 @@ if sub == "pull" and "--rebase" in args:
     emit("destructive", "git pull --rebase", 1)
 if sub == "checkout" and "--" in args:
     emit("destructive", "git checkout --")
+if sub == "checkout" and "--" not in args:
+    # Any non pathspec-disambiguated checkout can move HEAD/branch context or
+    # discard paths without the explicit `--` form. Block so agents cannot
+    # silently move commits to an unexpected branch.
+    if args and not any(arg in {"--help", "-h"} for arg in args):
+        emit("branch_context_change", "git checkout branch/context")
+if sub == "switch":
+    if not any(arg in {"--help", "-h"} for arg in args):
+        emit("branch_context_change", "git switch")
 if sub == "clean" and any(arg.startswith("-") and "f" in arg for arg in args):
     emit("destructive", "git clean -f")
 if sub == "restore":
@@ -334,6 +345,8 @@ if [ "$FIRST_HIT_TYPE" = "force_push" ]; then
   OP_NAME="git push --force"
 elif [ "$FIRST_HIT_TYPE" = "protected_branch_write" ]; then
   OP_NAME="git ${PROTECTED_BRANCH_HIT#git } on ${PROTECTED_BRANCH}"
+elif [ "$FIRST_HIT_TYPE" = "branch_context_change" ] && [ -n "$SEMANTIC_OP_NAME" ]; then
+  OP_NAME="$SEMANTIC_OP_NAME"
 elif [ -n "$SEMANTIC_OP_NAME" ]; then
   OP_NAME="$SEMANTIC_OP_NAME"
 else
@@ -372,6 +385,8 @@ _op_rationale() {
       echo "force-deletes branches with unmerged commits; recovery requires reflog lookup";;
     "git rebase")
       echo "rewrites local history and mutates the worktree; use an isolated session branch/worktree and explicit approval";;
+    "git switch"|"git checkout branch/context")
+      echo "changes the branch context where future commits land; announce the branch change or use scripts/cos-session-branch.sh with explicit operator approval";;
     "git push --force")
       echo "force-push rewrites remote history; can permanently destroy commits other collaborators depend on; use --force-with-lease for a safer alternative";;
     *" on main"|*" on master")
@@ -403,6 +418,10 @@ _has_allow_main_branch_flag() {
   echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-main-branch($|[[:space:]])'
 }
 
+_has_allow_branch_switch_flag() {
+  echo "$COMMAND" | grep -Eq '(^|[[:space:]])--allow-branch-switch($|[[:space:]])'
+}
+
 # SO-internal bypass contexts (not user-initiated destructive ops)
 _is_bypass_context() {
   [ "${CI:-}" = "1" ]                      && return 0
@@ -421,6 +440,12 @@ _has_session_override() {
 _has_main_branch_override() {
   [ "${COS_ALLOW_MAIN_BRANCH_WRITE:-}" = "1" ] && return 0
   _has_allow_main_branch_flag && return 0
+  return 1
+}
+
+_has_branch_switch_override() {
+  [ "${COS_ALLOW_BRANCH_SWITCH:-}" = "1" ] && return 0
+  _has_allow_branch_switch_flag && return 0
   return 1
 }
 
@@ -451,16 +476,23 @@ if _is_bypass_context && ! _git_blocker_is_agent_context; then
 fi
 
 # Explicit override — allow with audit log
-if _has_session_override || _has_allow_flag || _has_allow_force_push_flag || { [ "$FIRST_HIT_TYPE" = "protected_branch_write" ] && _has_main_branch_override; }; then
+if _has_session_override || _has_allow_flag || _has_allow_force_push_flag || { [ "$FIRST_HIT_TYPE" = "protected_branch_write" ] && _has_main_branch_override; } || { [ "$FIRST_HIT_TYPE" = "branch_context_change" ] && _has_branch_switch_override; }; then
   override_reason="session_env"
   _has_allow_flag && override_reason="inline_flag"
   _has_allow_force_push_flag && override_reason="inline_flag_force_push"
   if [ "$FIRST_HIT_TYPE" = "protected_branch_write" ] && _has_main_branch_override; then
     override_reason="main_branch_override"
   fi
+  if [ "$FIRST_HIT_TYPE" = "branch_context_change" ] && _has_branch_switch_override; then
+    override_reason="branch_switch_override"
+  fi
   echo "" >&2
   echo "=== DESTRUCTIVE-GIT-BLOCKER: OVERRIDE ACCEPTED ===" >&2
-  echo "Destructive op '$OP_NAME' allowed via $override_reason override." >&2
+  if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
+    echo "Branch context change '$OP_NAME' allowed via $override_reason override." >&2
+  else
+    echo "Destructive op '$OP_NAME' allowed via $override_reason override." >&2
+  fi
   echo "Command: $COMMAND" >&2
   echo "" >&2
   ENTRY=$(printf '{"timestamp":"%s","event":"override","reason":"%s","agent_id":"%s","op":"%s","command":"%s"}' \
@@ -569,12 +601,20 @@ if _git_blocker_is_agent_context; then
   # Agent context → BLOCK exit 1 (backward compat with existing tests)
   echo "" >&2
   echo "=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (agent context) ===" >&2
-  echo "BLOCKED: destructive git op '$OP_NAME' requires explicit user approval." >&2
+  if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
+    echo "BLOCKED: branch context change '$OP_NAME' requires explicit user approval." >&2
+  else
+    echo "BLOCKED: destructive git op '$OP_NAME' requires explicit user approval." >&2
+  fi
   echo "Rationale: $RATIONALE" >&2
   echo "Use Edit tool to revert specific lines manually, or escalate to the user." >&2
   echo "Agent: $AGENT_ID" >&2
   echo "Command: $COMMAND" >&2
-  echo "Override: set COS_ALLOW_DESTRUCTIVE_GIT=1 or append --allow-destructive to the command." >&2
+  if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
+    echo "Override: set COS_ALLOW_BRANCH_SWITCH=1 or append --allow-branch-switch to the command." >&2
+  else
+    echo "Override: set COS_ALLOW_DESTRUCTIVE_GIT=1 or append --allow-destructive to the command." >&2
+  fi
   echo "Reference: ADR-003, ADR-055b (hooks/destructive-git-blocker.sh)" >&2
   echo "" >&2
 
@@ -588,7 +628,11 @@ fi
 # User context → BLOCK exit 2 (ADR-055b — elevation from warn-only)
 echo "" >&2
 echo "=== DESTRUCTIVE-GIT-BLOCKER: BLOCKED (user context) ===" >&2
-echo "BLOCKED: destructive git op '$OP_NAME' is blocked by default (ADR-055b, r5-stash-residue)." >&2
+if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
+  echo "BLOCKED: branch context change '$OP_NAME' is blocked by default; silent switches make commits land on unexpected branches." >&2
+else
+  echo "BLOCKED: destructive git op '$OP_NAME' is blocked by default (ADR-055b, r5-stash-residue)." >&2
+fi
 echo "Rationale: $RATIONALE" >&2
 echo "Command: $COMMAND" >&2
 echo "" >&2
@@ -602,6 +646,10 @@ fi
 if [ "$FIRST_HIT_TYPE" = "protected_branch_write" ]; then
   echo "     OR:           append --allow-main-branch, or export COS_ALLOW_MAIN_BRANCH_WRITE=1" >&2
   echo "     SAFER:        bash scripts/cos-session-branch.sh --slug <task> --switch" >&2
+fi
+if [ "$FIRST_HIT_TYPE" = "branch_context_change" ]; then
+  echo "     OR:           append --allow-branch-switch, or export COS_ALLOW_BRANCH_SWITCH=1" >&2
+  echo "     SAFER:        announce previous branch, target branch, reason, and expected commit destination first" >&2
 fi
 echo "  2. Session env:   export COS_ALLOW_DESTRUCTIVE_GIT=1 (this shell only)" >&2
 echo "" >&2

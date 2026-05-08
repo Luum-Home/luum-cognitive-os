@@ -55,6 +55,7 @@
 
 ## 4. CI and Validation Integrity
 
+- [x] Silent branch switches are covered by [Post-Mortem — Silent Agent Branch Switch and Unexpected Commit Destination — 2026-05-08](../reports/silent-agent-branch-switch-postmortem-2026-05-08.md), `hooks/destructive-git-blocker.sh`, and unit tests that block unaudited `git switch` / `git checkout <branch>` context changes.
 - [x] Default CI covers representative Python product tests.
 - [x] Default CI covers Go kernel and provider tests.
 - [x] Default CI covers representative contract tests.

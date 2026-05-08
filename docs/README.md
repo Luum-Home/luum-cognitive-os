@@ -12,6 +12,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [Post-Mortem — Silent Agent Branch Switch and Unexpected Commit Destination — 2026-05-08](reports/silent-agent-branch-switch-postmortem-2026-05-08.md) — branch context switch forensics and the Bash-layer guard that blocks unaudited `git switch`/`git checkout <branch>` before commits land on unexpected branches.
 - **[Research Index](research/INDEX.md)** — navigable catalog of ~325 research/audit/forensics artifacts across `docs/research/`, `docs/reports/`, `docs/architecture/`, `docs/business/`, and (by reference) `.cognitive-os/strategy/research/`. Organized by purpose, not directory: top-level research, the orchestration line (11 gap reports + synthesis + checklist), repo-scout (126 external-tool deep dives + clusters + monitor follow-up), 138 operational reports, architecture and business research-flavored docs, plus other audits. Start here when looking for prior research on any topic.
 - [ADR-219: Work Ownership Liveness Preflight](adrs/ADR-219-work-ownership-liveness-preflight.md) — joined path-level WIP/stash/worktree/claim/process check before agents claim cleanup, merge, or closure safety.
 - `scripts/cos adr resolve N --expect-title TEXT --json` — canonical ADR lookup for preventing stale number/title claims during parallel sessions.

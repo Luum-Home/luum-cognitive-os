@@ -28,6 +28,7 @@ SCRUB_VARS = (
     "PYTEST_CURRENT_TEST",
     "COS_GIT_BYPASS",
     "COS_ALLOW_DESTRUCTIVE_GIT",
+    "COS_ALLOW_BRANCH_SWITCH",
     "CLAUDE_AGENT_ID",
     "COGNITIVE_OS_SESSION_ID",
     "ORCHESTRATOR_MODE",
@@ -105,6 +106,58 @@ def test_user_context_blocks_destructive_op(
     assert "BLOCKED" in result.stderr
     assert expected_op_fragment in result.stderr
 
+
+
+# ---------------------------------------------------------------------------
+# Branch context changes must not happen silently
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "command,expected_op_fragment",
+    [
+        ("git switch fix/c4-portability-test-failures", "git switch"),
+        ("git switch -c fix/c4-portability-test-failures", "git switch"),
+        ("git checkout fix/c4-portability-test-failures", "git checkout branch/context"),
+        ("git checkout -b fix/c4-portability-test-failures", "git checkout branch/context"),
+    ],
+)
+def test_branch_context_changes_are_blocked_by_default(
+    tmp_path: Path, command: str, expected_op_fragment: str
+):
+    """Agents must not silently change branches before committing work."""
+    result = _run(command, tmp_path)
+    assert result.returncode == 2, (
+        f"expected branch context block for `{command}`, got {result.returncode}\n"
+        f"stderr={result.stderr}"
+    )
+    assert "BLOCKED" in result.stderr
+    assert "branch context change" in result.stderr
+    assert expected_op_fragment in result.stderr
+    assert "COS_ALLOW_BRANCH_SWITCH" in result.stderr
+
+
+def test_branch_context_change_inline_override_is_audited(tmp_path: Path):
+    result = _run(
+        "git switch fix/c4-portability-test-failures --allow-branch-switch",
+        tmp_path,
+    )
+    assert result.returncode == 0, result.stderr
+    assert "OVERRIDE ACCEPTED" in result.stderr
+    log = tmp_path / ".cognitive-os" / "metrics" / "git-op-blocks.jsonl"
+    entry = json.loads(log.read_text().splitlines()[-1])
+    assert entry["event"] == "override"
+    assert entry["reason"] == "branch_switch_override"
+
+
+def test_branch_context_change_env_override_is_audited(tmp_path: Path):
+    result = _run(
+        "git checkout fix/c4-portability-test-failures",
+        tmp_path,
+        extra_env={"COS_ALLOW_BRANCH_SWITCH": "1"},
+    )
+    assert result.returncode == 0, result.stderr
+    assert "OVERRIDE ACCEPTED" in result.stderr
 
 # ---------------------------------------------------------------------------
 # Override mechanisms
