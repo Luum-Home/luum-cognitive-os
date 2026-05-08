@@ -223,3 +223,17 @@ The initial hook-fast Agent-only wiring has been expanded into the full ADR-248 
 - `hooks/control-plane-audit-hourly.sh` runs the `hourly` lane on Stop/session-end with a 3600-second cooldown.
 - `lib/release_freeze.py` now includes the `control_plane_pre_public` check, which executes `scripts/cos-control-plane-audit --lane pre-public --json --strict` inside the release freeze transaction.
 - `.claude/settings.json`, `templates/security-profiles/*.json`, and `scripts/apply-efficiency-profile.sh` all project the hooks so they do not become producer-without-consumer artifacts.
+
+
+## Implementation note — 2026-05-08 remediation queue and metrics
+
+The control-plane runner now persists the loop state, not just stdout:
+
+- Latest report: `.cognitive-os/reports/control-plane/latest.json`
+- Remediation queue: `.cognitive-os/tasks/control-plane-remediation.jsonl`
+- Metrics stream: `.cognitive-os/metrics/control-plane-audit.jsonl`
+- Runtime state: `.cognitive-os/runtime/control-plane-audit/findings-state.json`
+
+Each finding receives a stable id derived from lane, audit id, ADR, code, message, and path/primitive. Metrics include findings by ADR, new/resolved counts, recurrence count, time-to-remediate for resolved findings, and false-positive rate from explicit labels in `.cognitive-os/tasks/control-plane-remediation-labels.jsonl`.
+
+Automatic correction is intentionally gated. The runner supports `--apply-safe-fixes`, but it only executes commands declared under `remediation.safe_fixes` whose `safe_class` appears in `remediation.safe_classes`. The default manifest declares safe classes but no fixes. This preserves the doctrine: detect → propose → apply only if safe class → measure result.
