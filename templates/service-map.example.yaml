@@ -1,0 +1,47 @@
+# Cognitive OS — Service-map template (error-pipeline hook)
+#
+# This file is the operator-side configuration for service detection in
+# hooks/error-pipeline.sh. The hook attributes errors to a service so it
+# can fingerprint, dedupe, and route auto-repair attempts. Without this
+# map (and absent a `cd <dir>` token in the failing command), errors are
+# logged with service="unknown" — that is harmless, just less useful.
+#
+# === Where to install ===
+#
+# Copy this file to:
+#
+#     .cognitive-os/private/service-map.yaml
+#
+# That path is gitignored (per top-level .gitignore: `.cognitive-os/*`),
+# so your service identifiers never enter git history.
+#
+# Override the path with COS_SERVICE_MAP_FILE if you keep config elsewhere.
+#
+# === Format ===
+#
+# A list of `services` entries. Each entry has:
+#   name:  the label written into error-learning.jsonl / repair-outcomes.jsonl
+#   match: an extended regex (ERE) tested case-insensitively against the
+#          failing command + the tool_input.working_directory
+#
+# Matching is first-hit-wins, top to bottom. Put more specific patterns
+# above more general ones.
+#
+# === Example contents (REPLACE BEFORE USE) ===
+#
+# services:
+#   - name: payments-api
+#     match: 'payments-api|payments\.api'
+#
+#   - name: billing-worker
+#     match: 'billing-worker|workers/billing'
+#
+#   - name: web-frontend
+#     match: 'web|frontend'
+#
+# === If no map is provided ===
+#
+# The hook falls back to the basename of any `cd <dir>` token in the
+# failing command. So `cd services/orders && go test` is attributed to
+# "orders" automatically. Define the map only when you want stable,
+# canonical service names rather than directory-derived ones.
