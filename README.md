@@ -162,3 +162,5 @@ any harness that supports lifecycle hooks.
 **Roadmap**: [docs/roadmap.md](docs/roadmap.md)
 
 **Research catalog**: [docs/research/INDEX.md](docs/research/INDEX.md) — navigable index of ~325 research artifacts (prior-art reports, gap analyses, external-tool deep dives, operational audits, postmortems).
+
+**Contributing**: see [CONTRIBUTING.md](CONTRIBUTING.md) — AI-authorship policy, commit conventions, DCO sign-off.
