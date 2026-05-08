@@ -1,7 +1,7 @@
 ---
 adr: 242
 title: git-filter-repo Wrapper Preserves Remote and Refuses Non-Idempotent Re-Runs
-status: proposed
+status: accepted
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -17,9 +17,7 @@ tags: [history-rewrite, governance, recovery, postmortem-2026-05-08]
 
 ## Status
 
-Proposed. Drafted during the 2026-05-08 pre-public readiness session after
-repeated remote loss and inconsistent rewrites during history-sanitization
-runs. Requires operator review before implementation.
+Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sanitization.py` delegates to it.
 
 ## Context
 

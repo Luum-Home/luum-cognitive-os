@@ -108,6 +108,20 @@ def metadata_rewrite_enabled(manifest: dict[str, Any]) -> bool:
     return os.environ.get(require_env) == require_value
 
 
+def commit_message_rewrite_enabled(manifest: dict[str, Any]) -> bool:
+    """Return whether commit message rewrites are explicitly enabled.
+
+    ADR-218's default execution boundary is blob content only. Commit messages
+    are repository provenance, so stripping COS trailers or replacing literal
+    values in messages requires a separate operator opt-in from author/committer
+    metadata rewrites.
+    """
+    config = manifest.get("commit_message_rewrite") or {}
+    require_env = str(config.get("require_env", "COS_HISTORY_SANITIZE_COMMIT_MESSAGES"))
+    require_value = str(config.get("require_env_value", "1"))
+    return os.environ.get(require_env) == require_value
+
+
 def metadata_scope_findings(manifest: dict[str, Any]) -> list[Finding]:
     """Block metadata-scoped rules unless metadata rewrite is explicit."""
     if metadata_rewrite_enabled(manifest):
@@ -120,6 +134,24 @@ def metadata_scope_findings(manifest: dict[str, Any]) -> list[Finding]:
                     "block",
                     "metadata-rewrite-not-enabled",
                     f"Rule {rule.get('id')} declares metadata scope, but metadata rewrite is disabled. Set COS_HISTORY_SANITIZE_METADATA=1 only with explicit operator consent.",
+                    rule_id=str(rule.get("id")),
+                )
+            )
+    return findings
+
+
+def commit_message_scope_findings(manifest: dict[str, Any]) -> list[Finding]:
+    """Block commit-message-scoped rules unless message rewrite is explicit."""
+    if commit_message_rewrite_enabled(manifest):
+        return []
+    findings: list[Finding] = []
+    for rule in manifest.get("rules", []) or []:
+        if str(rule.get("scope", "content")) in {"message", "commit-message", "all"}:
+            findings.append(
+                Finding(
+                    "block",
+                    "commit-message-rewrite-not-enabled",
+                    f"Rule {rule.get('id')} declares commit-message scope, but commit message rewrite is disabled. Set COS_HISTORY_SANITIZE_COMMIT_MESSAGES=1 only with explicit operator consent.",
                     rule_id=str(rule.get("id")),
                 )
             )
@@ -282,6 +314,7 @@ def build_report(project_dir: Path, *, mode: str = "dry-run") -> dict[str, Any]:
     if not tool["installed"]:
         findings.append(Finding("warn", "git-filter-repo-missing", "git-filter-repo is not installed; execute mode cannot run until installed."))
     findings.extend(metadata_scope_findings(manifest))
+    findings.extend(commit_message_scope_findings(manifest))
     if mode == "execute":
         required_env = (manifest.get("execution") or {}).get("require_env", "COS_ALLOW_DESTRUCTIVE_GIT")
         required_value = str((manifest.get("execution") or {}).get("require_env_value", "1"))
@@ -299,7 +332,7 @@ def build_report(project_dir: Path, *, mode: str = "dry-run") -> dict[str, Any]:
         "preserve_hits": scan_result["preserve_hits"],
         "preserve_conflicts": scan_result["preserve_conflicts"],
         "findings": [finding.to_dict() for finding in findings],
-        "policy": "Dry-run is non-mutating. Execute requires backup, COS_ALLOW_DESTRUCTIVE_GIT=1, and explicit operator confirmation.",
+        "policy": "Dry-run is non-mutating. Execute is blob-content-only by default and requires backup, COS_ALLOW_DESTRUCTIVE_GIT=1, and explicit operator confirmation.",
     }
 
 
@@ -507,26 +540,39 @@ def _metadata_message_callback(replacements: list[tuple[bytes, bytes]]) -> str:
     )
 
 
-def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]], manifest: dict[str, Any]) -> subprocess.CompletedProcess[str]:
+def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]], manifest: dict[str, Any], backup_path: Path | None = None) -> subprocess.CompletedProcess[str]:
     replacements = _literal_replacements(rules)
-    message_callback = _metadata_message_callback(replacements)
-    cmd = ["git", "filter-repo"]
+    passthrough: list[str] = []
     if metadata_rewrite_enabled(manifest):
         email_callback = f"return {_bytes_replace_expression('email', replacements)}"
         name_callback = f"return {_bytes_replace_expression('name', replacements)}"
-        cmd.extend([
+        passthrough.extend([
             "--email-callback",
             email_callback,
             "--name-callback",
             name_callback,
         ])
-    cmd.extend([
-        "--replace-text",
+    if commit_message_rewrite_enabled(manifest):
+        message_callback = _metadata_message_callback(replacements)
+        passthrough.extend([
+            "--message-callback",
+            message_callback,
+        ])
+    wrapper = project_dir / "scripts" / "cos-filter-repo-wrap.sh"
+    if not wrapper.exists():
+        wrapper = Path(__file__).resolve().parents[1] / "scripts" / "cos-filter-repo-wrap.sh"
+    cmd = [
+        "bash",
+        str(wrapper),
+        "--project-dir",
+        str(project_dir),
+        "--rules",
         str(rules_file),
-        "--message-callback",
-        message_callback,
-        "--force",
-    ])
+    ]
+    if backup_path is not None:
+        cmd.extend(["--backup-mirror", str(backup_path)])
+    cmd.append("--")
+    cmd.extend(passthrough)
     proc = subprocess.run(
         cmd,
         cwd=str(project_dir),
@@ -537,15 +583,24 @@ def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, 
     if proc.returncode != 0:
         raise SanitizationError(
             "filter-repo-failed",
-            f"git filter-repo --replace-text failed (rc={proc.returncode}): "
+            f"governed filter-repo wrapper failed (rc={proc.returncode}): "
             f"{proc.stderr.strip()[:600] or proc.stdout.strip()[:600]}. "
             f"The repo may be in a partially-rewritten state; restore from the backup mirror.",
         )
     return proc
 
-
-def _verification_haystack(project_dir: Path, *, include_author_metadata: bool) -> str:
-    pretty = "fuller" if include_author_metadata else "format:%B"
+def _verification_haystack(
+    project_dir: Path,
+    *,
+    include_author_metadata: bool,
+    include_commit_messages: bool,
+) -> str:
+    if include_author_metadata:
+        pretty = "fuller"
+    elif include_commit_messages:
+        pretty = "format:%B"
+    else:
+        pretty = "format:"
     proc = subprocess.run(
         ["git", "log", "--all", f"--pretty={pretty}", "-p", "--no-color"],
         cwd=str(project_dir),
@@ -563,8 +618,14 @@ def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]])
     Caller decides whether to treat non-zero remaining counts as failure.
     """
     remaining: dict[str, int] = {}
-    include_author_metadata = metadata_rewrite_enabled(load_manifest(project_dir))
-    haystack = _verification_haystack(project_dir, include_author_metadata=include_author_metadata)
+    manifest = load_manifest(project_dir)
+    include_author_metadata = metadata_rewrite_enabled(manifest)
+    include_commit_messages = commit_message_rewrite_enabled(manifest)
+    haystack = _verification_haystack(
+        project_dir,
+        include_author_metadata=include_author_metadata,
+        include_commit_messages=include_commit_messages,
+    )
     if not haystack:
         return {str(rule.get("id", "unknown")): -1 for rule in rules}
     for rule in rules:
@@ -644,7 +705,9 @@ def _write_post_execute_report(
             "commit_count_preserved": pre_commit_count == post_commit_count,
         },
         "policy": (
-            "Rewrite executed. The backup mirror is the rollback path. "
+            "Rewrite executed. Default policy is blob content-only; commit "
+            "messages and author/committer metadata require explicit scoped "
+            "operator opt-in. The backup mirror is the rollback path. "
             "Operator must (1) verify counts above, (2) re-tag versions onto post-rewrite "
             "equivalent SHAs, (3) copy this report to docs/reports/, (4) write disclosure doc, "
             "(5) force-push origin/main only after 1-4."
@@ -703,6 +766,8 @@ def execute(
 
     # 2. Resolve rules (same source of truth as dry-run)
     replacement_rules, rule_findings = resolved_rules(manifest)
+    rule_findings.extend(metadata_scope_findings(manifest))
+    rule_findings.extend(commit_message_scope_findings(manifest))
     if any(f.severity == "block" for f in rule_findings):
         first_block = next(f for f in rule_findings if f.severity == "block")
         raise SanitizationError(
@@ -743,7 +808,7 @@ def execute(
 
     # 6. Run filter-repo (THE destructive step)
     try:
-        _run_filter_repo(project, rules_file, replacement_rules, manifest)
+        _run_filter_repo(project, rules_file, replacement_rules, manifest, backup_path)
     finally:
         # The rules file is intentionally kept for forensic audit (report
         # references it). It can be deleted by the operator post-verify.
@@ -803,4 +868,5 @@ def execute(
         "remotes_restored": restored_remotes,
         "rules_file": str(rules_file),
         "metadata_rewrite_enabled": metadata_rewrite_enabled(manifest),
+        "commit_message_rewrite_enabled": commit_message_rewrite_enabled(manifest),
     }
