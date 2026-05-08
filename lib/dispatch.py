@@ -32,6 +32,61 @@ Metrics schema (one JSONL line per dispatch):
 
 Written to `.cognitive-os/metrics/llm-dispatch.jsonl` (appended, never truncated
 — rotation handled by hooks/metrics-rotation.sh).
+
+----------------------------------------------------------------------------
+ORDERING CONTRACT (ADR-220 M3 sweep finding)
+----------------------------------------------------------------------------
+
+`lib/dispatch.py` is the single integration point for four ADRs that all
+landed in the 226–236 batch. Each ADR owns a phase of `dispatch()`; the
+phases run in a fixed order before any provider call is made. Future
+amendments to this file MUST preserve the order below.
+
+Phase order (executed top-to-bottom inside `dispatch()`):
+
+  1. ADR-236  — Deferred tool loading + ToolSearch
+                (`plan_tool_loading`, `toolsearch_index`,
+                 `provider_native_defer_payload`)
+                Computes the prompt-injected tool index and tool-loading
+                metadata. Runs first because it shapes the prompt before
+                any gating can estimate cost.
+
+  2. ADR-232  — Sandbox preflight
+                (`build_sandbox_command`, `SandboxUnavailable`)
+                If `skill_requirements.require_sandbox` is set, build the
+                sandbox plan and refuse the dispatch up-front when the
+                native backend is missing and `allow_sandbox_fallback` is
+                not explicit. Runs before the cost gate so a refused
+                dispatch never debits the session budget.
+
+  3. ADR-228  — Retry contract + cost session budget
+                (`DispatchGate`, `ProviderCircuitBreaker`,
+                 `SessionBudgetExceeded`, `_retry_sleep_seconds`)
+                Pre-call gate evaluates estimated cost against the
+                session cap; bounded retry loop wraps the cascade.
+                Runs after sandbox preflight so a sandbox-blocked call
+                does not consume a retry attempt.
+
+  4. ADR-226  — Event-sourced session bus
+                (metrics emission to `.cognitive-os/metrics/llm-dispatch.jsonl`)
+                Every dispatch attempt — success, failure, retry — emits
+                one event line. Runs LAST in each attempt so the event
+                record reflects the post-call state including any
+                ADR-228 retry/circuit-breaker decisions.
+
+Test guard: `tests/architecture/test_dispatch_ordering_contract.py`
+parses this file's import order and the `dispatch()` body and asserts
+the four phases appear in 236 → 232 → 228 → 226 order. Reordering the
+phases (or adding a fifth ADR touchpoint without updating this docstring
+and the test) is a contract violation.
+
+If a future ADR needs to insert a new phase, the rules are:
+
+- Insert the new phase, do not replace an existing one.
+- Update this docstring with the new phase's number and rationale.
+- Update the architecture test with the new expected order.
+- Cite this docstring from the new ADR's "Decision" section so future
+  readers can trace responsibility.
 """
 
 from __future__ import annotations

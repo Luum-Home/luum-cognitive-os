@@ -176,7 +176,21 @@ if [ "$TRAILER_COUNT" -gt 0 ]; then
 fi
 
 # ────────────────────────────────────────────────────────────────────────────
-# 8. Promises without backing ("will support", "coming soon")
+# 8. AI-provider-looking invented emails / co-author trailers
+# Agents can hallucinate public provider identities. This is not a secret, but
+# it damages authorship transparency and GitHub attribution.
+# ────────────────────────────────────────────────────────────────────────────
+if [ -x "scripts/ai-provider-identity-guard" ]; then
+  AI_ID_JSON=$(scripts/ai-provider-identity-guard --project-dir "$PROJECT_ROOT" --tracked --json 2>/dev/null || true)
+  AI_ID_COUNT=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("finding_count", 0))' <<< "$AI_ID_JSON" 2>/dev/null || echo 0)
+  if [ "$AI_ID_COUNT" -gt 0 ]; then
+    SAMPLE=$(python3 -c 'import json,sys; r=json.load(sys.stdin); print(";".join(f"{f["path"]}:{f["line"]}" for f in r.get("findings", [])[:3]))' <<< "$AI_ID_JSON" 2>/dev/null || echo "run scripts/ai-provider-identity-guard")
+    emit "BLOCK" "ai-provider-invented-identity" "$AI_ID_COUNT" "$SAMPLE"
+  fi
+fi
+
+# ────────────────────────────────────────────────────────────────────────────
+# 9. Promises without backing ("will support", "coming soon")
 # ────────────────────────────────────────────────────────────────────────────
 PROMISES=$(grep -rinE "\b(will support|coming soon|to be added|future support|planned support)\b" \
            docs/business/ docs/competitive-landscape.md \
@@ -188,7 +202,7 @@ if [ "$PROMISES_COUNT" -gt 0 ]; then
 fi
 
 # ────────────────────────────────────────────────────────────────────────────
-# 9. Dead code refs (commented-out "old approach")
+# 10. Dead code refs (commented-out "old approach")
 # ────────────────────────────────────────────────────────────────────────────
 DEAD_CODE=$(git grep -nE '^\s*#\s*(old|deprecated|removed|legacy|dead code|TODO remove)' \
             -- '*.py' '*.sh' '*.go' \
@@ -202,7 +216,7 @@ if [ "$DEAD_COUNT" -gt 0 ]; then
 fi
 
 # ────────────────────────────────────────────────────────────────────────────
-# 10. Optional: codespell typo scan if installed
+# 11. Optional: codespell typo scan if installed
 # ────────────────────────────────────────────────────────────────────────────
 if command -v codespell >/dev/null 2>&1; then
   TYPOS=$(codespell --skip='.git,.venv,node_modules,.cognitive-os,reference,*.lock' \
@@ -216,7 +230,7 @@ if command -v codespell >/dev/null 2>&1; then
 fi
 
 # ────────────────────────────────────────────────────────────────────────────
-# 11. Optional: vale weasel-word scan if installed
+# 12. Optional: vale weasel-word scan if installed
 # ────────────────────────────────────────────────────────────────────────────
 if command -v vale >/dev/null 2>&1; then
   VALE_COUNT=$(vale --output line README.md docs/business/ 2>/dev/null \
@@ -227,7 +241,7 @@ if command -v vale >/dev/null 2>&1; then
 fi
 
 # ────────────────────────────────────────────────────────────────────────────
-# 12. Optional: lychee broken-link scan if installed
+# 13. Optional: lychee broken-link scan if installed
 # ────────────────────────────────────────────────────────────────────────────
 if command -v lychee >/dev/null 2>&1; then
   BROKEN=$(lychee --no-progress --offline README.md docs/ 2>&1 \

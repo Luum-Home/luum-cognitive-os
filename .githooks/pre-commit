@@ -61,6 +61,13 @@ if [ -f "$COS_ROOT/scripts/check_absolute_paths.py" ]; then
   fi
 fi
 
+# --- Gate 1d: Block AI-provider-looking invented author/contact identities ---
+if [ -x "$COS_ROOT/scripts/ai-provider-identity-guard" ]; then
+  if ! "$COS_ROOT/scripts/ai-provider-identity-guard" --project-dir "$COS_ROOT" --staged; then
+    exit 1
+  fi
+fi
+
 # --- Gate 1c: Dependency adoption evidence (ADR-208) ---
 if [ "${COS_ALLOW_DEP_ADOPTION_BYPASS:-0}" = "1" ]; then
   echo "WARNING: COS_ALLOW_DEP_ADOPTION_BYPASS=1 skips dependency adoption gate"
