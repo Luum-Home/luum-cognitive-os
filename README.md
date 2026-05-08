@@ -1,5 +1,9 @@
 # Cognitive OS
 
+> **Read first:** [TRANSPARENCY.md](TRANSPARENCY.md) — what changed before
+> public flip, what was preserved, and how to verify any claim in this
+> repository against your own clone.
+
 [![CI](https://img.shields.io/badge/CI-local%20(ADR--131)-blue.svg)](docs/adrs/ADR-131-local-ci-migration.md)
 [![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-orange.svg)](docs/legal/license-faq.md)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)

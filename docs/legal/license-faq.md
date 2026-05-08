@@ -7,6 +7,10 @@
 >
 > This FAQ is explanatory only. The repository [`LICENSE`](../../LICENSE) file
 > is authoritative if this document and the license text differ.
+>
+> **See also:** [`TRANSPARENCY.md`](../../TRANSPARENCY.md) — the public-launch
+> transparency disclosure (covers the Apache-2.0 → FSL-1.1-MIT timeline in §2
+> and the manifest preserve-rule that pins these license strings).
 
 Cognitive OS moved from an Apache-2.0 pre-launch/default license posture to
 FSL-1.1-MIT for the public launch. This page explains that choice plainly:

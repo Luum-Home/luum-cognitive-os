@@ -36,6 +36,10 @@ implementation assistants. The policy is:
 For clean-room and prior-art provenance notes, see
 [`docs/architecture/provenance.md`](docs/architecture/provenance.md).
 
+For the public-launch transparency disclosure (history rewrite, license
+transition, build-provenance posture, dogfood property), see
+[`TRANSPARENCY.md`](TRANSPARENCY.md).
+
 ## 2. How to contribute
 
 Outside contributions are welcome.
