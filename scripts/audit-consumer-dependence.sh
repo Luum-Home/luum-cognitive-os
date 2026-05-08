@@ -44,28 +44,35 @@ if [[ ! -d "$CONSUMER_REPO" ]]; then
   exit 2
 fi
 
-# Default tokens are public-safe placeholders. For real consumer audits, pass
-# a private token file with the literal strings that would break consumer tooling
-# if renamed without an alias.
-DEFAULT_TOKENS=(
-  "consumer-alpha"
-  "consumer-beta"
-  "service-alpha"
-  "service-beta"
-  "Consumer Alpha"
-  "example-services/"
-  "services/example"
-  "service-gamma"
-  "service-alpha-go"
-)
-if [[ -n "$TOKEN_FILE" ]]; then
-  if [[ ! -f "$TOKEN_FILE" ]]; then
-    echo "error: token file not found: $TOKEN_FILE" >&2
-    exit 2
-  fi
-  mapfile -t TOKENS < <(grep -vE '^\s*(#|$)' "$TOKEN_FILE")
-else
-  TOKENS=("${DEFAULT_TOKENS[@]}")
+# By design this script ships NO default token list. The committed source
+# would either embed the real consumer codenames (privacy leak) or embed
+# placeholder strings (which then fire spurious matches against any file
+# that legitimately names those placeholders, e.g. manifests/, runbooks/,
+# the script itself). The operator MUST point this script at a private
+# token file — typically the same one that drives Gate 1 — via:
+#
+#     scripts/audit-consumer-dependence.sh <consumer-repo> .cognitive-os/private/blocked-strings.txt
+#
+# If COS_AUDIT_TOKEN_FILE is set, it is used as the default when no
+# explicit path is passed.
+if [[ -z "$TOKEN_FILE" ]]; then
+  TOKEN_FILE="${COS_AUDIT_TOKEN_FILE:-}"
+fi
+if [[ -z "$TOKEN_FILE" ]]; then
+  echo "error: no token file. Pass one as the second argument or set" >&2
+  echo "       COS_AUDIT_TOKEN_FILE. Typical value:" >&2
+  echo "         .cognitive-os/private/blocked-strings.txt" >&2
+  echo "       (gitignored; same file Gate 1 reads)." >&2
+  exit 2
+fi
+if [[ ! -f "$TOKEN_FILE" ]]; then
+  echo "error: token file not found: $TOKEN_FILE" >&2
+  exit 2
+fi
+mapfile -t TOKENS < <(grep -vE '^\s*(#|$)' "$TOKEN_FILE")
+if (( ${#TOKENS[@]} == 0 )); then
+  echo "error: token file has no usable entries: $TOKEN_FILE" >&2
+  exit 2
 fi
 
 # Choose grep tool.
