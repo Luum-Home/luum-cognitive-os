@@ -18,8 +18,9 @@ surfaces it.
 
 1. **Invoke the suggested skill** — preferred. Launch the skill via the Skill
    tool, or pass `Load skills/<skill-name>/SKILL.md` to a sub-agent prompt.
-   The hook detects this signal automatically (also via the
-   `skill-invoked` event in `.cognitive-os/sessions/events.jsonl`).
+   The hook detects this signal automatically (also via a `skill-invoked`
+   event on the session events stream — exact storage path is harness-specific
+   and resolved by the active adapter; see `lib/harness_adapter/`).
 
 2. **Invoke a strictly stronger skill** that subsumes the suggested one
    (e.g. `/research-protocol` instead of `/repo-scout` when the contract is
