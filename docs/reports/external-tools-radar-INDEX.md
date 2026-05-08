@@ -175,6 +175,11 @@ upstream status was freshly revalidated on the internet:
 items identified by the full reassessment: LiteLLM, Langfuse, `memu`,
 `pytest-smell`, heavy-lane posture, and the external-tools adoption manifest.
 
+**ADR implementation:** [`docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md`](../adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md)
+lands the manifest/overlay/audit/render/research-check substrate for this
+phase. ADR-253 is already reserved as the squads tombstone, so the external-tool
+intelligence plane uses ADR-254.
+
 ### 3.C License audit (cross-cutting)
 
 Adoption decisions now gated by license compliance, formalized through:

@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.external_tool_intelligence import audit_adoption, repo_root, write_json
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Audit external-tool adoption manifest against dependencies and project overlay.")
+    parser.add_argument("--repo", default=".")
+    parser.add_argument("--manifest", default="manifests/external-tools-adoption.yaml")
+    parser.add_argument("--overlay", default=None)
+    parser.add_argument("--strict", action="store_true")
+    parser.add_argument("--json", action="store_true", help="Emit JSON (default).")
+    args = parser.parse_args()
+    root = repo_root(Path(args.repo))
+    manifest = root / args.manifest if not Path(args.manifest).is_absolute() else Path(args.manifest)
+    overlay = None
+    if args.overlay:
+        overlay = root / args.overlay if not Path(args.overlay).is_absolute() else Path(args.overlay)
+    else:
+        default_overlay = root / ".cognitive-os" / "external-tools-overlay.yaml"
+        overlay = default_overlay if default_overlay.exists() else None
+    payload = audit_adoption(root, manifest, overlay, strict=args.strict)
+    print(write_json(payload), end="")
+    return 1 if payload["status"] == "block" and args.strict else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

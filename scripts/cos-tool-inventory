@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.external_tool_intelligence import inventory, markdown_inventory, repo_root, write_json
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Generate repository-derived external tool inventory.")
+    parser.add_argument("--repo", default=".")
+    parser.add_argument("--json", action="store_true", help="Emit JSON (default).")
+    parser.add_argument("--markdown", action="store_true", help="Emit Markdown.")
+    parser.add_argument("--no-docs", action="store_true", help="Only scan dependency manifests.")
+    args = parser.parse_args()
+    root = repo_root(Path(args.repo))
+    payload = inventory(root, include_docs=not args.no_docs)
+    if args.markdown:
+        print(markdown_inventory(payload), end="")
+    else:
+        print(write_json(payload), end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

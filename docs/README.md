@@ -828,3 +828,6 @@ No AGPL, SSPL, BSL, or ELv2 components are permitted. See [Blocked Tools](blocke
 - [Concurrent-Agent Safety Core/Consumer Contract](architecture/concurrency-safety-core-consumer-contract.md)
 
 - [External Tool Intelligence Plane and Project Overlays](architecture/external-tool-intelligence-plane.md) — separates COS-level deep radar from lightweight consumer-project overlays.
+
+- [External Tools Adoption Manifest](../manifests/external-tools-adoption.yaml) — machine-readable COS tool adoption ledger used by ADR-254 audits.
+- [ADR-254 External Tool Intelligence Plane](adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md) — COS central radar plus lightweight project overlay decision.

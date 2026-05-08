@@ -1,0 +1,295 @@
+schema_version: external-tools-adoption/v1
+status: active
+owner: platform-safety
+source_documents:
+  - docs/architecture/external-tool-intelligence-plane.md
+  - docs/architecture/external-tool-adoption-doctrine.md
+  - docs/architecture/external-tool-adapter-taxonomy.md
+  - docs/reports/external-tools-radar-full-reassessment-2026-05-08.md
+policy:
+  consumer_projects_use_overlay: true
+  overlay_template: templates/external-tools-overlay.yaml
+  require_waiver_for_contradictions: true
+  adopt_requires_consumer_proof: true
+  remove_must_not_be_direct_dependency: true
+  research_check_required_for_new_runtime_dependency: true
+  public_claim_requires_targeted_source_check: true
+
+tools:
+  - id: pyyaml
+    name: PyYAML
+    domain: foundation
+    verdict: KEEP
+    adoption_kind: dependency
+    license: MIT
+    package_names: [pyyaml]
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: true, docker_runtime: true}
+    evidence: {consumers: [scripts/cos-tool-adoption-audit], tests: [tests/unit/test_external_tool_intelligence.py]}
+    status: active
+  - id: jinja2
+    name: Jinja2
+    domain: foundation
+    verdict: KEEP
+    adoption_kind: dependency
+    license: BSD-3-Clause
+    package_names: [jinja2]
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: true, docker_runtime: true}
+    evidence: {consumers: [], tests: []}
+    status: active
+  - id: rich
+    name: Rich
+    domain: cli-tui
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: MIT
+    package_names: [rich]
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml], tests: []}
+    status: active
+  - id: fastapi
+    name: FastAPI
+    domain: service
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: MIT
+    package_names: [fastapi]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml, requirements.txt], tests: []}
+    status: optional
+  - id: uvicorn
+    name: Uvicorn
+    domain: service
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: BSD-3-Clause
+    package_names: [uvicorn]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml, requirements.txt], tests: []}
+    status: optional
+  - id: openai-sdk
+    name: OpenAI Python SDK
+    domain: provider-routing
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [openai]
+    source_of_truth: {adr: docs/adrs/ADR-049-provider-routing-and-fallback.md}
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [lib/qwen_provider.py, pyproject.toml], tests: []}
+    status: active
+  - id: claude-agent-sdk
+    name: Claude Agent SDK
+    domain: agent-orchestration
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: MIT
+    package_names: [claude-agent-sdk]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml], tests: []}
+    status: optional
+  - id: pytest
+    name: pytest
+    domain: testing
+    verdict: KEEP
+    adoption_kind: dependency
+    license: MIT
+    package_names: [pytest, pytest-asyncio, pytest-timeout, pytest-xdist, pytest-rerunfailures, pytest-cov]
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [tests], tests: [tests]}
+    status: active
+  - id: mutmut
+    name: mutmut
+    domain: testing
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: BSD-3-Clause
+    package_names: [mutmut]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: false, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml], tests: []}
+    status: optional
+  - id: pytest-smell
+    name: pytest-smell
+    domain: testing
+    verdict: REMOVE
+    adoption_kind: dependency
+    license: UNKNOWN
+    package_names: [pytest-smell]
+    source_of_truth: {report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    evidence: {consumers: [], tests: []}
+    status: cleanup_required
+  - id: testcontainers
+    name: testcontainers
+    domain: testing
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: MIT
+    package_names: [testcontainers]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: false, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml, requirements.txt], tests: [tests/integration]}
+    status: optional
+  - id: redis-client
+    name: redis-py
+    domain: messaging
+    verdict: DEFER
+    adoption_kind: dependency
+    license: MIT
+    package_names: [redis]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: optional
+  - id: opik
+    name: Opik
+    domain: observability-eval
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [opik]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: optional
+  - id: langfuse
+    name: Langfuse
+    domain: observability
+    verdict: REMOVE
+    adoption_kind: dependency
+    license: MIT
+    package_names: [langfuse]
+    source_of_truth: {report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    evidence: {consumers: [], tests: []}
+    status: cleanup_required
+  - id: mlflow
+    name: MLflow
+    domain: observability-eval
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [mlflow]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: optional
+  - id: cognee
+    name: Cognee
+    domain: memory-rag
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [cognee]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: optional
+  - id: memu
+    name: memU
+    domain: memory-rag
+    verdict: REMOVE
+    adoption_kind: dependency
+    license: UNKNOWN
+    package_names: [memu]
+    source_of_truth: {report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    evidence: {consumers: [], tests: []}
+    status: verify_package_then_cleanup
+  - id: nemoguardrails
+    name: NeMo Guardrails
+    domain: guardrails
+    verdict: DEFER
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [nemoguardrails]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: heavy_optional
+  - id: jupyter
+    name: Jupyter
+    domain: notebooks
+    verdict: DEFER
+    adoption_kind: dependency
+    license: BSD-3-Clause
+    package_names: [jupyter, notebook]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: false, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: heavy_optional
+  - id: crawl4ai
+    name: Crawl4AI
+    domain: web-crawling
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [crawl4ai]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: []}
+    status: optional
+  - id: litellm
+    name: LiteLLM
+    domain: provider-routing
+    verdict: REMOVE
+    adoption_kind: dependency
+    license: MIT
+    package_names: [litellm]
+    source_of_truth: {adr: docs/adrs/ADR-049-provider-routing-and-fallback.md, report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    evidence: {consumers: [], tests: []}
+    status: cleanup_required
+  - id: deepeval
+    name: DeepEval
+    domain: eval
+    verdict: ADOPT
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [deepeval]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: [tests]}
+    status: optional
+  - id: ragas
+    name: RAGAS
+    domain: eval
+    verdict: ADOPT
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [ragas]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [requirements.txt], tests: [tests]}
+    status: optional
+  - id: enforcement-tools
+    name: Enforcement tools
+    domain: enforcement
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: MIXED
+    package_names: [pre-commit, ruff, vulture, import-linter, diff-cover]
+    allowed_surfaces: {os_repo: optional, consumer_projects: optional, service_mode: false, docker_runtime: optional}
+    evidence: {consumers: [pyproject.toml], tests: []}
+    status: optional
+  - id: go-toml
+    name: BurntSushi/toml
+    domain: foundation
+    verdict: KEEP
+    adoption_kind: dependency
+    license: MIT
+    package_names: [github.com/BurntSushi/toml]
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [go.mod], tests: []}
+    status: active
+  - id: modernc-sqlite
+    name: modernc.org/sqlite
+    domain: storage
+    verdict: KEEP
+    adoption_kind: dependency
+    license: BSD-3-Clause
+    package_names: [modernc.org/sqlite]
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    evidence: {consumers: [go.mod], tests: []}
+    status: active
+  - id: fastmcp
+    name: FastMCP
+    domain: mcp
+    verdict: INTEGRATE
+    adoption_kind: dependency
+    license: Apache-2.0
+    package_names: [fastmcp]
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-full-reassessment-2026-05-08.md, deep_dive: docs/reports/external-tools-deep-dive/fastmcp.md}
+    allowed_surfaces: {os_repo: true, consumer_projects: optional, service_mode: optional, docker_runtime: optional}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [packages/mcp-server/cos_mcp.py], tests: [tests/unit/test_cos_mcp_server.py]}
+    status: active

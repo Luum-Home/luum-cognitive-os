@@ -1,0 +1,21 @@
+schema_version: cos-project-tool-overlay/v1
+inherits:
+  from_os_radar: true
+  os_version: v0.27.x
+project_constraints:
+  no_daemons: true
+  no_network_default: true
+  allowed_licenses: [MIT, Apache-2.0, BSD-3-Clause]
+local_tools:
+  - id: semgrep
+    source: os-radar
+    local_status: enabled
+    reason: security scanning in CI
+    evidence:
+      config: .semgrep.yml
+      ci_job: security-scan
+  - id: custom-internal-tool
+    source: project-only
+    local_status: assess
+    requires_deep_research: true
+waivers: []
