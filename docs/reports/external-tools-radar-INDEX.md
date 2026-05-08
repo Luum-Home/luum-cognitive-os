@@ -2,7 +2,7 @@
 report_type: external-tools-radar-index
 date: 2026-05-08
 purpose: chronological narrative of how the Cognitive OS has analysed external tools since project origin
-related_adrs: [ADR-065, ADR-212, ADR-247]
+related_adrs: [ADR-065, ADR-212, ADR-247, ADR-250, ADR-251, ADR-252, ADR-253]
 ---
 
 # External Tools Radar — Chronological Index
@@ -21,7 +21,7 @@ For the full research corpus (not just tool analyses) see
 ## Phase 0 — Origin (2026-03 → 2026-04 mid)
 
 Pre-pipeline exploration. Manual evaluations driven by specific questions
-("can we replace X?", "is Y a competitor?"). No standard format yet.
+("can we replace X?", "is Y a competitor?"). No standard format yet. Dates in this phase are narrative anchors unless a commit provenance table says otherwise.
 
 | Date | Artifact | Why it exists |
 |---|---|---|
@@ -65,7 +65,7 @@ Single largest research push in the project.
 | Path | Files | Role |
 |---|---:|---|
 | [`docs/research/repo-scout/`](../research/repo-scout/) | 126 | Per-repo evaluations, organized by cluster |
-| └─ `clusters/cluster-*-2026-05-06.md` | 20 | Shallow theme-grouped scouts (input to radar) |
+| └─ `cluster-*-2026-05-06.md` | 20 | Shallow theme-grouped scouts directly under `docs/research/repo-scout/` (input to radar) |
 | └─ `deep/*-2026-05-06.md` | 63 | Deep audits of pass-to-deep candidates |
 | └─ `monitor-followup/*-2026-05-06.md` | 43 | Tier-2 / monitor-only candidates |
 
@@ -128,6 +128,31 @@ adapter exists with regression coverage".
 | [`docs/runbooks/postmortem-regression-audit.md`](../runbooks/postmortem-regression-audit.md) | Operational runbook |
 | [`docs/adrs/ADR-253-tombstone-squads.md`](../adrs/ADR-253-tombstone-squads.md) | First tombstone surfaced by the cross-check (closes squads supersedence gap) |
 
+
+### 3.D Post-review errata + adoption doctrine (2026-05-08)
+
+A follow-up review of this index, the 2026-05-08 radar, commits, and wiring
+found that the corpus was strategically useful but needed a stricter boundary
+between **adopting tools**, **integrating tools**, and **building COS governance**.
+These documents must be read before implementing Wave 2 / Wave 3 items:
+
+| Path | Role |
+|---|---|
+| [`docs/reports/external-tools-radar-2026-05-08-errata.md`](external-tools-radar-2026-05-08-errata.md) | Append-only errata for stale radar/cross-check claims |
+| [`docs/reports/external-tools-radar-2026-05-08-traceability.md`](external-tools-radar-2026-05-08-traceability.md) | Commit/provenance and consumer-proof review |
+| [`docs/reports/claim-debt-audit-2026-05-08.md`](claim-debt-audit-2026-05-08.md) | Manual first pass of the radar claim-debt column |
+| [`docs/architecture/external-tool-adoption-doctrine.md`](../architecture/external-tool-adoption-doctrine.md) | Product doctrine: adopt commodity mechanisms, build governance semantics |
+| [`docs/architecture/external-tool-adapter-taxonomy.md`](../architecture/external-tool-adapter-taxonomy.md) | Adoption kinds: dependency, CLI adapter, schema port, algorithm port, testdata vendor, operator-installed, pattern-only |
+| [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | Design-first contract for Graphiti/LightRAG/HippoRAG/MIRIX memory bundle |
+| [`docs/architecture/repo-map-context-selector.md`](../architecture/repo-map-context-selector.md) | Aider-style repo-map adoption boundary for COS context selection |
+| [`docs/architecture/harness-golden-fixtures.md`](../architecture/harness-golden-fixtures.md) | agentapi fixture/testdata adoption boundary |
+| [`docs/skills/skill-description-use-when-migration.md`](../skills/skill-description-use-when-migration.md) | Superpowers-style `Use when` description migration plan |
+
+**Outcome:** no new runtime implementation should start from the radar until
+the target item has an adoption kind, license/footprint posture, owner, source
+report, consumer proof target, acceptance criteria, and rollback/deprecation
+path.
+
 ### 3.C License audit (cross-cutting)
 
 Adoption decisions now gated by license compliance, formalized through:
@@ -158,4 +183,16 @@ above; older sections are not rewritten. Each future edition lists:
 3. Outputs (radar + deep + cross-check files with their stable paths).
 4. Outcome in one line (what changed in the adoption decision).
 
-Re-run `git log --diff-filter=A --format="%ad %h %s" --date=short -- "docs/reports/external-tools-*" "docs/research/repo-scout/" "docs/research/orchestration-gaps/"` to validate this index against actual git history.
+Re-run this broader provenance command to validate this index against actual git history:
+
+```bash
+git log --diff-filter=A --format="%ad %h %s" --date=short -- \
+  "docs/reports/external-tools-*" \
+  "docs/reports/cross-check-*-2026-05-08.md" \
+  "docs/research/repo-scout/" \
+  "docs/research/orchestration-gaps/" \
+  "docs/adrs/ADR-247-*" \
+  "docs/adrs/ADR-253-*" \
+  "manifests/postmortem-regression-audit.yaml" \
+  "docs/runbooks/postmortem-regression-audit.md"
+```

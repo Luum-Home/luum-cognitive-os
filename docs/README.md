@@ -10,6 +10,20 @@ The durable product promise is: make coding agents governable, verifiable, and p
 
 The repo still contains ambitious future architecture for squads, manager agents, dashboards, and control planes. Those surfaces are useful design material, but they are not first-contact product promises until backed by repeatable demos, tests, and operator workflows.
 
+
+## Recent tech-radar governance additions
+
+- [External Tools Radar Index](reports/external-tools-radar-INDEX.md) — chronological entry point for the tech-radar corpus and adoption pipeline.
+- [External Tool Adoption Doctrine](architecture/external-tool-adoption-doctrine.md) — doctrine for when COS should adopt, integrate, build, defer, or reject third-party tools.
+- [External Tool Adapter Taxonomy](architecture/external-tool-adapter-taxonomy.md) — canonical adoption kinds: dependency, CLI adapter, schema port, algorithm port, testdata vendor, operator-installed, and pattern-only.
+- [External Tools Radar 2026-05-08 Errata](reports/external-tools-radar-2026-05-08-errata.md) — append-only corrections for stale radar/cross-check statements.
+- [External Tools Radar 2026-05-08 Traceability](reports/external-tools-radar-2026-05-08-traceability.md) — commit/provenance and consumer-proof review.
+- [Claim Debt Audit — External Tools Radar 2026-05-08](reports/claim-debt-audit-2026-05-08.md) — manual first pass of the claim-debt column requested by the radar.
+- [Memory Layer Evolution SDD](architecture/memory-layer-evolution-sdd.md) — design-first boundary for Graphiti, LightRAG, HippoRAG, MIRIX, and DSPy memory-related work.
+- [Repo Map Context Selector](architecture/repo-map-context-selector.md) — Aider-style repo-map adoption boundary for COS context selection.
+- [Harness Golden Fixtures](architecture/harness-golden-fixtures.md) — agentapi fixture/testdata adoption boundary.
+- [Skill Description “Use when” Migration](skills/skill-description-use-when-migration.md) — Superpowers-style skill trigger migration plan.
+
 ## Key Documents
 
 - [ADR-248: Control-Plane Audit Loop for ADR-239+ Primitive Drift](adrs/ADR-248-control-plane-audit-loop.md) — manifest-driven lane aggregator and automatic-loop doctrine: declarative contract → detector → hook/scheduler/release gate → metrics → remediation queue → separate fix → regression test.
@@ -23,7 +37,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - `scripts/cos adr resolve N --expect-title TEXT --json` — canonical ADR lookup for preventing stale number/title claims during parallel sessions.
 - [Post-Mortem — State Retention Self-Bite and Retention Controller — 2026-05-06](reports/state-retention-controller-postmortem-2026-05-06.md) — incident analysis and corrective action for retention self-bites.
 - [ADR-216: Tool Discovery Pre-Use Gate](adrs/ADR-216-tool-discovery-pre-use-gate.md) — manifest-backed Bash gate that blocks ad-hoc tools when COS primitives already exist.
-- [Secret / Sensitive Data Protection Effectiveness Audit — 2026-05-06](reports/secret-protection-effectiveness-audit-2026-05-06.md) — redacted whole-repo scan summary and protection-gap assessment for secrets, env files, and sensitive data.
+- [Secret / Sensitive Data Protection Effectiveness Audit — 2026-05-06](reports/secret-protection-effectiveness-2026-05-06.md) — redacted whole-repo scan summary and protection-gap assessment for secrets, env files, and sensitive data.
 - [ADR-215: Cross-Stack Secret Audit Toolchain](adrs/ADR-215-cross-stack-secret-audit-toolchain.md) — gitleaks + trufflehog policy, `cos secret audit`, and release-readiness secret-audit substrate.
 - [ADR-217: Cross-Stack Adoption Truth Audit](adrs/ADR-217-cross-stack-adoption-truth-audit.md) — `cos adoption audit --json` primitive reconciling lockfiles, NOTICE, component-sources, inventories, and marketing docs.
 - [ADR-218: History Sanitization Toolchain](adrs/ADR-218-history-sanitization-toolchain.md) — manifest-backed `cos history sanitize --dry-run` primitive for pre-public git-history scrubbing without a new repo.
