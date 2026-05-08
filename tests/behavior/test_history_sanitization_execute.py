@@ -34,6 +34,7 @@ SECRET_EMAIL = "operator-test@example.invalid"
 SECRET_NAME = "Operator Test Fixture"
 SECRET_HOME = "/synthetic-home/test-operator-fixture"
 COS_TRAILER = "X-COS-Session: fixture-session-123"
+COS_WORK_TRAILER = "X-COS-Work-Fingerprint: fixture-work-fp"
 PRESERVE_MARKER = "FSL-1.1-MIT"
 
 
@@ -53,7 +54,7 @@ def _make_fixture_repo(repo_path: Path) -> None:
         encoding="utf-8",
     )
     _run(["git", "add", "README.md"], repo_path)
-    _run(["git", "commit", "-m", "initial commit with operator email", "-m", COS_TRAILER], repo_path)
+    _run(["git", "commit", "-m", "initial commit with operator email", "-m", COS_TRAILER, "-m", COS_WORK_TRAILER], repo_path)
 
     # Commit 2: home prefix in a config file
     (repo_path / "config.txt").write_text(
@@ -143,6 +144,7 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert SECRET_EMAIL in pre_grep_email.stdout, "fixture should contain secret email pre-rewrite"
     assert SECRET_NAME in pre_grep_email.stdout, "fixture should contain secret name pre-rewrite"
     assert COS_TRAILER in pre_grep_email.stdout, "fixture should contain COS trailer pre-rewrite"
+    assert COS_WORK_TRAILER in pre_grep_email.stdout, "fixture should contain COS work trailer pre-rewrite"
 
     result = execute(fixture, confirmed=True)
 
@@ -168,6 +170,7 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert SECRET_NAME not in post_grep_email.stdout, "secret name still present after rewrite"
     assert SECRET_HOME not in post_grep_email.stdout, "secret home path still present after rewrite"
     assert COS_TRAILER not in post_grep_email.stdout, "COS trailer still present after rewrite"
+    assert COS_WORK_TRAILER not in post_grep_email.stdout, "COS work trailer still present after rewrite"
 
     # Preserve marker must remain
     assert PRESERVE_MARKER in post_grep_email.stdout, "license-transition preserve pattern was scrubbed"

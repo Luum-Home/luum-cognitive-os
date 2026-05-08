@@ -420,13 +420,11 @@ def _bytes_replace_expression(var_name: str, replacements: list[tuple[bytes, byt
 
 def _metadata_message_callback(replacements: list[tuple[bytes, bytes]]) -> str:
     replaced = _bytes_replace_expression("message", replacements)
-    prefixes = (b"X-COS-Origin:", b"X-COS-Session:", b"X-COS-Harness:")
     return (
         f"msg = {replaced}\n"
         "lines = []\n"
-        f"blocked = {prefixes!r}\n"
         "for line in msg.splitlines(keepends=True):\n"
-        "    if line.startswith(blocked):\n"
+        "    if line.startswith(b'X-COS-'):\n"
         "        continue\n"
         "    lines.append(line)\n"
         "return b''.join(lines)"
