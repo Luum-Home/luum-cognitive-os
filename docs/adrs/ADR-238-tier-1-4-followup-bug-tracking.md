@@ -44,7 +44,7 @@ comma produced by ad-hoc string concatenation in bash.
 
 **Reproducer**:
 ```bash
-python3 -m pytest tests/unit/ -k "kpi_trigger" -q
+python3 -m pytest tests/behavior/test_self_improvement.py -k kpi_trigger -q
 # or, if no unit test yet:
 bash scripts/kpi-trigger.sh --fixture tests/fixtures/mock_kpi_input.json | python3 -m json.tool
 ```
@@ -239,7 +239,7 @@ branch) referencing ADR-238 in the message.
 Each bug has an explicit reproducer command in its registry entry. The
 fix commits cite the bug number; the test suite gates regression:
 
-- Bug 1: `pytest tests/unit/ -k kpi_trigger` (passes; commit `d00a9255`)
+- Bug 1: `pytest tests/behavior/test_self_improvement.py -k kpi_trigger` (passes; commit `d00a9255`)
 - Bug 2: `pytest tests/audit/test_rules_enforcement.py -k missing_file` (passes; commit `44fa5ff7`)
 - Bug 3: `pytest tests/red_team/portability/cos_concurrent_status_test.py` (5/5; commit `f016843e`)
 - Bug 4: `pytest tests/red_team/portability/post-agent-verify_test.py` (4/4; commit `4b18b25d`)
@@ -249,3 +249,18 @@ fix commits cite the bug number; the test suite gates regression:
 
 Whole-project verification: `pytest tests/red_team/portability/ -q` reports
 **165/165 PASS** as of 2026-05-08 (closes C4 portability lane).
+
+
+### Verification one-liner
+
+To re-validate all 5 fixes from a clean checkout:
+
+```bash
+pytest tests/behavior/test_self_improvement.py -k kpi_trigger -q && \
+pytest tests/audit/test_rules_enforcement.py -k missing_file -q && \
+pytest tests/red_team/portability/cos_concurrent_status_test.py -q && \
+pytest tests/red_team/portability/post-agent-verify_test.py -q && \
+pytest tests/chaos/test_global_verify_regression_catches.py -q && \
+test "$(wc -l < lib/targeted_test_resolver.py)" -eq 149 && \
+echo "ADR-238 all 5 bugs verified"
+```

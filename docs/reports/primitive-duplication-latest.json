@@ -35,6 +35,21 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:1e097ac9340f",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_cleanup_preserved_wip.py::utc_stamp",
+      "pair_key": "scripts/cos_cleanup_preserved_wip.py::utc_stamp :: scripts/state_retention_audit.py::stamp",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/state_retention_audit.py::stamp",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:a53e91434110",
       "kind": "python-function-repeat",
       "left": "scripts/cos_credential_safe_run.py::_load_manifest",
@@ -95,6 +110,36 @@
       "common_home": "lib/",
       "confidence": 0.86,
       "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:efb282f89a44",
+      "kind": "python-function-repeat",
+      "left": "scripts/cos_task_claims.py::read_json",
+      "pair_key": "scripts/cos_task_claims.py::read_json :: scripts/state_retention_audit.py::read_json",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/state_retention_audit.py::read_json",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:3f2b06593d17",
+      "kind": "python-function-repeat",
+      "left": "scripts/private_content_audit.py::repo_root",
+      "pair_key": "scripts/private_content_audit.py::repo_root :: scripts/subagent_launch_preflight.py::repo_root",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/subagent_launch_preflight.py::repo_root",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
       "finding_id": "python-function-repeat:b0a09dbc1c53",
       "kind": "python-function-repeat",
       "left": "scripts/project_shell_ci.py::load_manifest",
@@ -102,6 +147,21 @@
       "rationale": "Python functions have identical normalized AST bodies",
       "recommendation": "extract-common-python-helper",
       "right": "scripts/proof_drill_select.py::load_registry",
+      "severity": "medium",
+      "similarity": 1.0
+    },
+    {
+      "classification": "candidate",
+      "common_home": "lib/",
+      "confidence": 0.86,
+      "consumer_relevance": "so-local-first",
+      "finding_id": "python-function-repeat:37355dc082f1",
+      "kind": "python-function-repeat",
+      "left": "scripts/project_shell_ci.py::load_manifest",
+      "pair_key": "scripts/project_shell_ci.py::load_manifest :: scripts/state_retention_audit.py::load_manifest",
+      "rationale": "Python functions have identical normalized AST bodies",
+      "recommendation": "extract-common-python-helper",
+      "right": "scripts/state_retention_audit.py::load_manifest",
       "severity": "medium",
       "similarity": 1.0
     }
@@ -127,16 +187,16 @@
   "schema_version": "primitive-duplication-audit.v1",
   "summary": {
     "by_common_home": {
-      "lib/": 7
+      "lib/": 11
     },
     "by_consumer_relevance": {
-      "so-local-first": 7
+      "so-local-first": 11
     },
     "by_kind": {
-      "python-function-repeat": 7
+      "python-function-repeat": 11
     },
-    "files_scanned": 816,
-    "findings": 7
+    "files_scanned": 874,
+    "findings": 11
   },
-  "timestamp": "2026-05-06T08:19:39.162979+00:00"
+  "timestamp": "2026-05-08T06:56:39.491315+00:00"
 }

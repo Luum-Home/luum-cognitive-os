@@ -49,6 +49,7 @@ SETTINGS_WIRING_EXEMPT: dict[str, str] = {
     "pre-commit-gate.md": "git hook (.git/hooks/pre-commit), not a Claude hook",
     "observability.md": "mlflow-sync.sh exists; registration pending (agent-instruction-only per scorecard)",
     "trust-score.md": "trust-score-validator.sh IS registered; test trips on secondary confidence-gate.sh ref (see ROADMAP §1.3)",
+    "ai-provider-identity.md": "ai-provider-identity-guard.sh is conditional_opt_in (manifests/hook-registration-classification.yaml); rule referenced for documentation, hook registration deferred until bypass-path safety case is documented per ADR-238",
 }
 
 

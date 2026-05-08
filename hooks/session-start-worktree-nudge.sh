@@ -95,7 +95,7 @@ done < <(git -C "$CWD" worktree list --porcelain 2>/dev/null || true)
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 [ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 
-POLICY="main_worktree"  # default assumption
+POLICY="isolated_worktree"  # default assumption
 if [ -f "$CONFIG_FILE" ]; then
   extracted=$(grep -A5 '^orchestration:' "$CONFIG_FILE" 2>/dev/null \
     | grep 'sub_agent_cwd:' \
@@ -127,12 +127,14 @@ Sub-agents inherit this cwd. Commits from agents WILL land on branch
 before each git command.
 
 Suggestions:
-  1. Launch Claude Code from main instead:
+  1. Prefer orchestration.sub_agent_cwd: isolated_worktree so write agents get
+       dedicated ADR-223 worktrees and never shift the operator worktree HEAD.
+  2. Launch Claude Code from main for direct operator commits:
        cd ${MAIN_WORKTREE:-<main-path>} && claude
-  2. OR: trust the agent-bash-cwd-enforcer hook to catch git commands
-       (advisory only — can be ignored by sub-agents)
-  3. OR: set orchestration.sub_agent_cwd: current in cognitive-os.yaml
-       if you WANT commits to land on this worktree branch
+  3. Use legacy orchestration.sub_agent_cwd: main_worktree only for single-agent
+       sessions where rewriting git commands back to main is intentional.
+  4. Set orchestration.sub_agent_cwd: current only if you WANT commits to land
+       on this worktree branch.
 
 Current policy (cognitive-os.yaml orchestration.sub_agent_cwd): $POLICY
 

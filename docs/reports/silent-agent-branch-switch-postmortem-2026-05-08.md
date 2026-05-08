@@ -177,6 +177,7 @@ is lost.
 
 ## Follow-up recommendations
 
+- ADR-239 converts the incident response into an accepted architecture decision: `isolated_worktree` is the default for write agents, and `main_worktree` is legacy single-agent mode.
 - Consider a git native `pre-commit` companion that rejects commits when the
   branch changed after session start without a COS receipt. The current hook
   protects tool-mediated Bash commands, not arbitrary external terminals.

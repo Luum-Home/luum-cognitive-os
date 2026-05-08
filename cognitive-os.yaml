@@ -573,10 +573,11 @@ model_capability:
 orchestration:
   # Controls which working directory is injected into sub-agent prompts by
   # agent-working-dir-inject.sh (PreToolUse:Agent).
-  # current      — no injection; sub-agent inherits the parent's cwd (worktree if inside one)
-  # main_worktree — resolve the main-branch worktree via `git worktree list` and inject it
-  # branch       — inject the primary worktree for the current branch
-  sub_agent_cwd: main_worktree   # current | main_worktree | branch
+  # isolated_worktree — default: write agents get dedicated ADR-223 worktrees via agent-prelaunch; no main HEAD shift
+  # current          — no injection; sub-agent inherits the parent's cwd (worktree if inside one)
+  # main_worktree    — legacy: resolve and inject main branch worktree; unsafe with 2+ write agents
+  # branch           — inject the primary worktree for the current branch
+  sub_agent_cwd: isolated_worktree   # isolated_worktree | current | main_worktree | branch
 
 efficiency:
   # STATUS: implemented

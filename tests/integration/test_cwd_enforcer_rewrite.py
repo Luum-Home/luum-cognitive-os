@@ -148,6 +148,32 @@ def repo(tmp_path: Path):
     return main_path, worktree_path, shim
 
 
+def test_isolated_worktree_policy_does_not_rewrite_to_main(tmp_path: Path) -> None:
+    """Default isolated_worktree mode must not collapse agent commits back to main."""
+    main_path = tmp_path / "main"
+    main_path.mkdir()
+    _init_repo(main_path)
+    _make_yaml(main_path, "isolated_worktree")
+    worktree_path = tmp_path / "agent-worktree"
+    worktree_path.mkdir()
+    shim = _fake_git_shim(tmp_path, str(main_path))
+
+    rc, output = _run_enforcer(
+        main_path,
+        'git commit -m "agent work"',
+        cwd=str(worktree_path),
+        git_shim=shim,
+    )
+
+    assert rc == 0
+    assert output == {}, f"isolated_worktree should not emit updatedInput, got: {output}"
+    metrics_file = main_path / ".cognitive-os" / "metrics" / "cwd-enforcer.jsonl"
+    assert metrics_file.exists()
+    entries = [json.loads(l) for l in metrics_file.read_text().splitlines() if l.strip()]
+    assert entries[-1]["event"] == "skip_policy"
+    assert "isolated_worktree" in entries[-1]["detail"]
+
+
 # ── Test 1: git commit from worktree → rewritten ─────────────────────────────
 
 def test_git_commit_from_worktree_is_rewritten(repo) -> None:

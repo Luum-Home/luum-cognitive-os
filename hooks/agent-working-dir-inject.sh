@@ -5,10 +5,11 @@
 # to, and write files under, the correct directory.
 #
 # Policy is driven by cognitive-os.yaml → orchestration.sub_agent_cwd:
-#   current       — no injection (sub-agent inherits parent cwd as-is)
-#   main_worktree — resolve the worktree whose branch is the repo default branch
-#                   (origin/HEAD short-name, fallback: "main"). Inject its path.
-#   branch        — inject the primary worktree for the currently-checked-out branch.
+#   isolated_worktree — no cwd injection here; agent-prelaunch prepares and injects
+#                       a dedicated ADR-223 worktree for write-capable agents.
+#   current           — no injection (sub-agent inherits parent cwd as-is)
+#   main_worktree     — legacy: resolve the default-branch worktree and inject it.
+#   branch            — inject the primary worktree for the currently-checked-out branch.
 #
 # Output: hookSpecificOutput.additionalContext JSON on stdout (Claude Code native).
 # Graceful degradation: exits 0 silently on any failure; logs reason to
@@ -98,7 +99,7 @@ fi
 CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
 [ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
 
-POLICY="main_worktree"  # safe default
+POLICY="isolated_worktree"  # safe default: agent-prelaunch owns write-agent isolation
 if [ -f "$CONFIG_FILE" ]; then
   in_orchestration=0
   while IFS= read -r line; do
@@ -119,9 +120,9 @@ else
   exit 0
 fi
 
-# ── Handle policy=current: no injection ─────────────────────────────────────
-if [ "$POLICY" = "current" ]; then
-  log_event "skip" "policy=current"
+# ── Handle policies that intentionally do not inject a shared cwd ───────────
+if [ "$POLICY" = "current" ] || [ "$POLICY" = "isolated_worktree" ]; then
+  log_event "skip" "policy=$POLICY"
   exit 0
 fi
 

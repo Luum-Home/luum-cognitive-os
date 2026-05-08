@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 # SCOPE: both
-# PreToolUse hook on Bash — rewrites git operations issued from a non-main cwd
-# so the command targets the correct worktree transparently.
+# PreToolUse hook on Bash — legacy main_worktree policy rewriter.
+# Rewrites git operations issued from a non-main cwd only when
+# cognitive-os.yaml orchestration.sub_agent_cwd=main_worktree.
 #
-# Problem: sub-agents inherit the orchestrator's cwd (a worktree). If they run
-# `git commit` without `git -C <main>` or `cd <main> &&`, the commit lands on
-# the worktree branch instead of main.
+# Problem: sub-agents inherit or receive a cwd. In legacy main_worktree mode,
+# `git commit` without `git -C <main>` or `cd <main> &&` may land on the wrong
+# branch. In isolated_worktree mode this hook must stand down so it does not
+# collapse dedicated agent worktrees back into the operator worktree.
 #
 # Behaviour (Layer 3 — command rewrite):
 #   - Reads tool_input.command from stdin (Claude Code PreToolUse:Bash payload)
@@ -83,6 +85,27 @@ fi
 BASH_CMD=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty' 2>/dev/null || true)
 
 if [ -z "$BASH_CMD" ]; then
+  exit 0
+fi
+
+# ── Respect orchestration cwd policy ─────────────────────────────────────────
+# Only the legacy main_worktree policy rewrites git commands back to the main
+# worktree. The default isolated_worktree policy lets ADR-223 per-agent
+# worktrees own commit isolation and prevents branch-shift races on main HEAD.
+CONFIG_FILE="$PROJECT_DIR/cognitive-os.yaml"
+[ ! -f "$CONFIG_FILE" ] && CONFIG_FILE="$PROJECT_DIR/.cognitive-os/cognitive-os.yaml"
+POLICY="isolated_worktree"
+if [ -f "$CONFIG_FILE" ]; then
+  extracted=$(grep -A8 '^orchestration:' "$CONFIG_FILE" 2>/dev/null \
+    | grep 'sub_agent_cwd:' \
+    | head -1 \
+    | sed 's/.*sub_agent_cwd:[[:space:]]*//' \
+    | sed 's/[[:space:]]*#.*//' \
+    | tr -d '[:space:]' || true)
+  [ -n "$extracted" ] && POLICY="$extracted"
+fi
+if [ "$POLICY" != "main_worktree" ]; then
+  log_event "skip_policy" "policy=$POLICY"
   exit 0
 fi
 

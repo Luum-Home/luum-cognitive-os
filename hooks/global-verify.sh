@@ -207,7 +207,22 @@ def get_changed_files():
 def emit_event(event_type, payload, severity="info"):
     """Emit a MetricEvent to verify-events.jsonl if lib.metric_event is available."""
     try:
-        from lib.metric_event import MetricEvent, append_event
+        try:
+            from lib.metric_event import MetricEvent, append_event
+        except Exception:
+            # VERIFY_RESOLVER_DIR may inject a fake ``lib`` package for
+            # targeted_test_resolver. Load metric_event from the real project
+            # path so resolver test doubles do not suppress verification metrics.
+            import importlib.util
+            metric_path = project_dir / "lib" / "metric_event.py"
+            spec = importlib.util.spec_from_file_location("cos_real_metric_event", metric_path)
+            if spec is None or spec.loader is None:
+                raise
+            module = importlib.util.module_from_spec(spec)
+            sys.modules[spec.name] = module
+            spec.loader.exec_module(module)
+            MetricEvent = module.MetricEvent
+            append_event = module.append_event
         p = project_dir / ".cognitive-os" / "metrics" / "verify-events.jsonl"
         ev = MetricEvent(source="global-verify", event_type=event_type, severity=severity, payload=payload)
         append_event(str(p), ev)

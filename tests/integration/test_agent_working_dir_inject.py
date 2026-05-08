@@ -243,6 +243,18 @@ def test_current_policy_no_injection(tmp_path: Path) -> None:
     assert context == "", f"Expected no context for policy=current, got: {context!r}"
 
 
+def test_isolated_worktree_policy_defers_to_agent_prelaunch(tmp_path: Path) -> None:
+    """Policy isolated_worktree → no shared cwd injection; ADR-223 prelaunch owns it."""
+    _init_bare_repo(tmp_path)
+    _make_yaml(tmp_path, "isolated_worktree")
+
+    result = _run_hook(tmp_path)
+
+    assert result.returncode == 0, f"Hook exited {result.returncode}; stderr={result.stderr}"
+    context = _parse_context(result)
+    assert context == "", f"Expected no shared cwd context for isolated_worktree, got: {context!r}"
+
+
 # ---------------------------------------------------------------------------
 # Test 3: branch policy injects current branch worktree path
 # ---------------------------------------------------------------------------
