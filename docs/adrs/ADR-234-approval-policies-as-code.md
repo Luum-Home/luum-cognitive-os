@@ -20,6 +20,32 @@ COS has many shell hooks with embedded allow/deny logic. Research recommended a 
 
 Introduce `policies/*.yaml` with a small local evaluator. Slice A is intentionally simple: glob-style matching over action fields, deny/block precedence, and default-allow to avoid breaking existing hooks during migration.
 
+### Default tier (enforceable)
+
+The default policy tier is **MIGRATION-COMPATIBLE LOCAL EVALUATOR, DEFAULT-ALLOW, BLOCK-WINS**. This is the contract `lib/policy_eval.py` enforces today:
+
+| Dimension | Default behaviour | Enforcement point |
+|---|---|---|
+| **Engine** | COS-native YAML evaluator. OPA/Cedar/Casbin are NOT loaded at the default tier; activation requires a separate ADR. | `lib/policy_eval.py` |
+| **Default verdict** | `allow` when no rule matches. This is intentional — it preserves migration compatibility while hooks land per-policy fallbacks. | `lib/policy_eval.py::evaluate()` |
+| **Precedence** | `block`/`deny` > `ask`/`warn` > `allow`. Multiple matching rules: most-restrictive verdict wins. | `lib/policy_eval.py::evaluate()` |
+| **When activated** | Per-hook opt-in. Each migrated hook (`hooks/destructive-rm-blocker.sh`, `hooks/protected-config-write-guard.sh`) calls `cos-policy-eval` *before* its legacy parser. Legacy parser remains as fallback until per-hook parity tests cover the policy. | `hooks/*.sh` migration sites |
+| **Settings projection** | PLAN-ONLY. `cos-policy-settings-projection` emits PreToolUse hook plans for Claude Code / Codex consumers but never mutates user-global `settings.json`. Operator copies the plan manually. | `scripts/cos-policy-settings-projection` |
+| **Owner** | platform-safety. New policy bundles require a new YAML under `policies/` plus an entry in `manifests/policy-as-code.yaml`. | This ADR + manifest |
+
+**Bundles shipped by default** (Slice A–C):
+
+- `policies/destructive-bash.yaml` — wired into `hooks/destructive-rm-blocker.sh`.
+- `policies/protected-config-write.yaml` — wired into `hooks/protected-config-write-guard.sh`.
+
+No other policy bundle is loaded by default. Adding a third bundle requires
+both a YAML file under `policies/` and a hook (or other consumer) that calls
+the evaluator — per the project rule "no metadata without consuming code".
+
+**Enforceability**: `tests/audit/test_adr_contracts.py` plus the per-hook
+unit/behavior suites cover each row. The default-tier contract is therefore
+testable, not descriptive.
+
 ## Implementation status (2026-05-07)
 
 Implemented Slice A:

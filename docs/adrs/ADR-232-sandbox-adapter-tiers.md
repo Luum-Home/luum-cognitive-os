@@ -26,6 +26,25 @@ Slice A supports:
 - macOS `sandbox-exec` / Seatbelt when available.
 - explicit `allow_fallback` for tests/local machines without the backend.
 
+### Default tier (enforceable)
+
+The default sandbox tier is **OPT-IN, NATIVE-ONLY, NO-FALLBACK**. This is the
+contract `lib/dispatch.py` enforces today and the contract `lib/sandbox_adapter.py`
+guarantees:
+
+| Dimension | Default behaviour | Enforcement point |
+|---|---|---|
+| **When activated** | Only when caller sets `skill_requirements.require_sandbox=true` (or `sandbox_required=true`). The default for every other dispatch path is sandbox-OFF. | `lib/dispatch.py` (sandbox preflight, ~line 580) |
+| **Backend selection** | Linux → `bwrap`; macOS → `sandbox-exec`. Selected at runtime by `build_sandbox_command()`; no manifest override at the default tier. | `lib/sandbox_adapter.py` |
+| **When backend missing** | `SandboxUnavailable` raised; dispatch returns success=false unless caller *explicitly* set `allow_sandbox_fallback=true`. There is no implicit fallback to unsandboxed execution. | `lib/dispatch.py` (sandbox preflight catches `SandboxUnavailable`) |
+| **Network** | OFF. Network is enabled only on the explicit out-of-process provider-call path (Slice D), where the provider needs egress for its API. | `lib/sandbox_adapter.py` (`build_sandbox_command` defaults) |
+| **MicroVM / ConTree** | Disabled by default. Activated only when `COS_SANDBOX_MICROVM_RUNNER` / `COS_SANDBOX_CONTREE_RUNNER` env is set AND `--backend microvm\|contree` is passed. No default-install dependency on Firecracker/Kata/E2B. | `scripts/cos-sandbox-run`, `build_sandbox_command(..., backend=...)` |
+| **Owner** | platform-orchestration. Changes to the default tier require a new ADR (or amendment to this one) plus an update to `manifests/sandbox-adapters.yaml`. | This ADR + manifest |
+
+**Enforceability**: `tests/audit/test_adr_contracts.py` and the slice-A unit
+tests exercise each row above. The default-tier contract is therefore
+testable, not descriptive.
+
 ## Implementation status (2026-05-07)
 
 Implemented Slice A:
