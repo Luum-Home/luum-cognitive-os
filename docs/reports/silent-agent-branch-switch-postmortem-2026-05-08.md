@@ -99,6 +99,48 @@ wants an isolated branch. The helper is not the problem; the missing guard was
 that equivalent raw git branch switches could occur without an auditable
 operator acknowledgement.
 
+### Behavioral root cause — agents inferred that branch creation was the safer option
+
+The incident was not merely an agent taking an arbitrary liberty. The local
+governance surface gave the agent a plausible but wrong inference path:
+
+1. Direct commits to `main`/`master` are discouraged or blocked by git-safety
+   primitives.
+2. Branch-per-task and per-session branch doctrine tell write agents that
+   isolated history is safer than shared history.
+3. `scripts/cos-session-branch.sh` exists and explicitly supports creating and
+   switching to `session/<id>-<slug>` branches.
+4. `orchestration.sub_agent_cwd=main_worktree` placed multiple agents in the
+   same worktree, so a branch switch that looked local to one agent actually
+   shifted the shared `HEAD` for every agent and the orchestrator.
+5. Before this response, raw `git switch` / `git checkout <branch>` was not
+   classified as a governed mutation, so the technical layer did not contradict
+   the agent's inferred plan.
+
+The likely agent intent was defensive: avoid stepping on `main`, the
+orchestrator, or peer agents. The failure was that the available defensive move
+was **branch-per-agent inside a shared worktree**, which is not isolation. It is
+a shared control-plane mutation.
+
+### Primitive composition failure — individually valid primitives formed an unsafe topology
+
+The reviewed primitives/scripts created a contradictory operating model:
+
+| Surface | Intended safety property | How it contributed to this failure |
+|---|---|---|
+| `cognitive-os.yaml` `sub_agent_cwd=main_worktree` | stable absolute paths for sub-agents | collapsed all write agents onto one `HEAD` and `.git/index` |
+| `hooks/agent-working-dir-inject.sh` | tell agents where to operate | injected a shared worktree path instead of a per-agent worktree path |
+| `hooks/agent-bash-cwd-enforcer.sh` | prevent commits from the wrong cwd | rewrote git operations toward the shared main worktree in legacy mode |
+| `hooks/direct-main-guard.sh` / protected-branch policy | prevent casual direct-main writes | increased pressure to create a side branch |
+| ADR-225 `scripts/cos-branch-task-check` | align write work with a task branch | made branch-per-task conceptually correct but did not create worktree isolation by itself |
+| ADR-223 `hooks/agent-prelaunch.sh` + `scripts/cos-agent-worktree-prepare` | provide real write-agent isolation | was the correct primitive, but the old cwd policy still encoded `main_worktree` as normal |
+| ADR-182 `hooks/branch-ownership-lock.sh` | single-writer lock on current branch | locked after branch context was already shifted; it could not prove the shift was authorized |
+| ADR-094 `hooks/destructive-git-blocker.sh` | block destructive git mutations | did not originally treat branch context changes as control-plane mutations |
+
+The corrected doctrine is: **branch isolation requires worktree isolation**. A
+branch created inside the operator's shared worktree is not an isolated agent
+workspace because it still mutates the shared `HEAD` and index.
+
 ## Corrective actions implemented
 
 ### 1. Block branch context changes by default
