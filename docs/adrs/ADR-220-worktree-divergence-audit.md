@@ -41,12 +41,16 @@ Adopt a manifest-backed worktree-divergence audit primitive, mirroring the ADR-2
 
 1. **Canonical CLI**: `cos worktree audit [--json] [--strict] [--against <ref>]`.
 2. **Default reference**: `origin/main` if present; falls back to `main`; falls back to `HEAD@{upstream}`.
-3. **Manifest declaration**: `manifests/worktree-audit.yaml`.
+3. **Manifest declaration**: deferred. Slice A intentionally embeds the ruleset (thresholds, finding categories, allowlist semantics) directly in `lib/worktree_audit.py` rather than shipping `manifests/worktree-audit.yaml`. The manifest schema below is documented as the *target* shape but is not loaded at runtime; promoting it to a real manifest is gated on a second consumer that needs to read the same rules out-of-process. Per project rule "no metadata without consuming code" we do not ship the YAML file until that consumer exists.
 4. **Schema-versioned report**: `worktree-audit-report/v1`.
 5. **Implementation**: `lib/worktree_audit.py` + `scripts/cos-worktree-audit` Python entrypoint, hooked into the `cos worktree` shell dispatch.
 6. **Integration**: ADR-116 governed preflight calls `cos worktree audit --strict` as an *additional* check; BLOCK findings prevent agent launch with a clear remediation hint.
 
-## What the manifest declares
+## What the manifest *would* declare (target shape, not yet loaded)
+
+The block below is the manifest schema we will ship the day a second
+out-of-process consumer needs the ruleset. Until then, `lib/worktree_audit.py`
+embeds the equivalent constants directly.
 
 ```yaml
 schema_version: worktree-audit/v1
@@ -188,8 +192,8 @@ The tests must prove:
 
 ## Implementation slices
 
-1. `manifests/worktree-audit.yaml` skeleton with the rule set above.
-2. `lib/worktree_audit.py` — manifest validator + the five comparison functions (ahead/behind, path-changed-on-ref, modified-in-wt, cross-worktree-overlap, reapply-risk).
+1. ~~`manifests/worktree-audit.yaml` skeleton with the rule set above.~~ Deferred (see Decision §3): rules embedded in `lib/worktree_audit.py` until a second consumer needs the manifest.
+2. `lib/worktree_audit.py` — embedded ruleset + the five comparison functions (ahead/behind, path-changed-on-ref, modified-in-wt, cross-worktree-overlap, reapply-risk).
 3. `scripts/cos-worktree-audit` + `cos worktree` shell dispatch.
 4. Unit tests (manifest validation, threshold logic, finding-shape, allowlist).
 5. Behavior tests (fixture repo with controlled divergence; assert categories fire correctly).
