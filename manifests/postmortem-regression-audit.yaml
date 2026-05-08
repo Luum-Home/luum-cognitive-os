@@ -4,6 +4,48 @@ owner: platform-safety
 policy: detect-first-repair-second
 
 checks:
+
+  - id: bypass-resolver-missing
+    adr: ADR-241
+    type: required_paths
+    severity: block
+    message: Shared bypass resolver is missing; hooks may keep divergent bypass semantics.
+    paths:
+      - hooks/_lib/bypass-resolver.sh
+      - docs/security/bypass-cheatsheet.md
+      - tests/behavior/test_bypass_resolver.py
+
+  - id: bypass-target-hook-not-using-resolver
+    adr: ADR-241
+    type: required_tokens
+    severity: block
+    message: ADR-241 target hooks must call cos_bypass_allows instead of owning bespoke bypass parsing.
+    files:
+      - hooks/destructive-git-blocker.sh
+      - hooks/direct-main-guard.sh
+      - hooks/git-commit-scope-guard.sh
+      - hooks/branch-ownership-lock.sh
+      - hooks/orchestrator-claim-gate.sh
+      - hooks/_lib/push-collision-check.sh
+    tokens:
+      - cos_bypass_allows
+
+  - id: legacy-bypass-env-direct-read-in-target-hooks
+    adr: ADR-241
+    type: forbidden_pattern
+    severity: block
+    message: Target hooks must not read legacy bypass envs directly; aliases belong in hooks/_lib/bypass-resolver.sh.
+    scope:
+      - hooks/destructive-git-blocker.sh
+      - hooks/direct-main-guard.sh
+      - hooks/git-commit-scope-guard.sh
+      - hooks/branch-ownership-lock.sh
+      - hooks/orchestrator-claim-gate.sh
+      - hooks/_lib/push-collision-check.sh
+    suffixes: [.sh]
+    pattern: >-
+      \${(?:COS_ALLOW_DESTRUCTIVE_GIT|COS_BYPASS_COMMIT_GUARD|COS_ALLOW_MAIN_BRANCH_WRITE|COS_ALLOW_BRANCH_SWITCH|COS_ALLOW_RESET_OVER_WIP|COS_ALLOW_DIRECT_PUSH|COS_ALLOW_DIRECT_MAIN|COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE|DISABLE_HOOK_PUSH_COLLISION_CHECK)
+
   - id: filter-repo-wrapper-missing
     adr: ADR-242
     type: required_paths

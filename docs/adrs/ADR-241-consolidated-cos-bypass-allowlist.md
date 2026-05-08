@@ -1,7 +1,7 @@
 ---
 adr: 241
 title: Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist
-status: proposed
+status: accepted
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -22,9 +22,7 @@ tags: [governance, hooks, dx, postmortem-2026-05-08]
 
 ## Status
 
-Proposed. Drafted during the 2026-05-08 pre-public readiness session as a
-corrective response to bypass-env sprawl observed across the gate-hook layer.
-Requires operator review before implementation.
+Accepted — Slice A implemented. Shared resolver, cheatsheet, target hook integration, and behavior tests are active; broad ecosystem bypass consolidation remains future expansion.
 
 ## Context
 

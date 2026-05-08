@@ -4,10 +4,11 @@
 
 set -uo pipefail
 
+[ -f "$(dirname "$0")/_lib/bypass-resolver.sh" ] && source "$(dirname "$0")/_lib/bypass-resolver.sh"
 if [[ "${DISABLE_HOOK_BRANCH_OWNERSHIP_LOCK:-0}" == "1" || "${DISABLE_HOOK_BRANCH_OWNERSHIP_LOCK:-}" == "true" ]]; then
   exit 0
 fi
-if [[ "${COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE:-0}" == "1" ]]; then
+if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows branch_ownership; then
   exit 0
 fi
 

@@ -7,8 +7,13 @@
 # ADR-105 high-stakes claims without independent repo evidence.
 set -uo pipefail
 
+[ -f "$(dirname "$0")/_lib/bypass-resolver.sh" ] && source "$(dirname "$0")/_lib/bypass-resolver.sh"
+
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 MODE="${COS_ORCHESTRATOR_CLAIM_GATE_MODE:-block}"
+if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows claim_gate; then
+  MODE="warn"
+fi
 INPUT="$(cat)"
 [ -z "$INPUT" ] && exit 0
 command -v jq >/dev/null 2>&1 || exit 0

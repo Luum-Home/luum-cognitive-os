@@ -427,24 +427,24 @@ _is_bypass_context() {
   [ "${CI:-}" = "1" ]                      && return 0
   [ "${CI:-}" = "true" ]                   && return 0
   [ -n "${PYTEST_CURRENT_TEST:-}" ]        && return 0
-  [ "${COS_GIT_BYPASS:-}" = "1" ]          && return 0
+  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows destructive_git && return 0
   return 1
 }
 
 # Session-wide override
 _has_session_override() {
-  [ "${COS_ALLOW_DESTRUCTIVE_GIT:-}" = "1" ] && return 0
+  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows destructive_git && return 0
   return 1
 }
 
 _has_main_branch_override() {
-  [ "${COS_ALLOW_MAIN_BRANCH_WRITE:-}" = "1" ] && return 0
+  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows main_branch_write && return 0
   _has_allow_main_branch_flag && return 0
   return 1
 }
 
 _has_branch_switch_override() {
-  [ "${COS_ALLOW_BRANCH_SWITCH:-}" = "1" ] && return 0
+  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows branch_switch && return 0
   _has_allow_branch_switch_flag && return 0
   return 1
 }
@@ -453,7 +453,7 @@ _has_branch_switch_override() {
 # COS_ALLOW_RESET_OVER_WIP=1 explicitly allows the op over WIP, logs the bypass
 # to BYPASS_LOG with the WIP file list for forensic trail.
 _has_wip_reset_override() {
-  [ "${COS_ALLOW_RESET_OVER_WIP:-}" = "1" ] && return 0
+  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows reset_over_wip && return 0
   return 1
 }
 

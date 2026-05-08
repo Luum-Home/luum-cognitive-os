@@ -4,6 +4,7 @@
 # Local policy: agents block on main/master commits; direct main pushes block
 # unless they are executed by the governed merge queue or explicit emergency env.
 set -uo pipefail
+[ -f "$(dirname "$0")/_lib/bypass-resolver.sh" ] && source "$(dirname "$0")/_lib/bypass-resolver.sh"
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 INPUT=""
@@ -219,7 +220,7 @@ fi
 case "$BRANCH" in main|master) ;; *) exit 0 ;; esac
 actor="$(_actor)"
 if [ "$ACTION" = "push" ]; then
-  if [ "${COS_ALLOW_DIRECT_PUSH:-0}" = "1" ]; then
+  if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows direct_push; then
     if ! reason="$(_require_bypass_reason direct-push)"; then exit 2; fi
     _audit_direct_main_bypass "push" "$BRANCH" "$reason" "$actor"
     _emit_vcs_receipt "vcs.bypass" "verified" "direct-main-guard" "direct-push-bypass"
@@ -235,7 +236,7 @@ if [ "$ACTION" = "push" ]; then
   _emit_vcs_receipt "vcs.push.blocked" "verified" "direct-main-guard" "direct-push-blocked"
   exit 2
 fi
-if [ "${COS_ALLOW_DIRECT_MAIN:-0}" = "1" ]; then
+if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows direct_main; then
   if ! reason="$(_require_bypass_reason direct-commit)"; then exit 2; fi
   _audit_direct_main_bypass "commit" "$BRANCH" "$reason" "$actor"
   _emit_vcs_receipt "vcs.bypass" "verified" "direct-main-guard" "direct-commit-bypass"

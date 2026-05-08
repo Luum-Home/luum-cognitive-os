@@ -104,7 +104,7 @@ fi
 
 # ── Emergency bypass ─────────────────────────────────────────────────────────
 
-if [ "${COS_BYPASS_COMMIT_GUARD:-}" = "1" ]; then
+if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows commit_guard; then
   AUDIT="$PROJECT_DIR/.cognitive-os/runtime/agent-audit-trail.jsonl"
   mkdir -p "$(dirname "$AUDIT")" 2>/dev/null || true
   printf '{"ts":"%s","event":"commit-guard-bypassed","session":"%s","command":%s}\n' \

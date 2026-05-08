@@ -24,6 +24,8 @@
 
 set -uo pipefail
 
+[ -f "$(dirname "${BASH_SOURCE[0]}")/bypass-resolver.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/bypass-resolver.sh"
+
 # ---------------------------------------------------------------------------
 # Guard: only define functions when sourced; run main when executed directly
 # ---------------------------------------------------------------------------
@@ -42,7 +44,7 @@ run_push_collision_check() {
     # Honour per-hook disable env
     local disable_key="DISABLE_HOOK_PUSH_COLLISION_CHECK"
     local disable_val="${!disable_key:-}"
-    if [ "$disable_val" = "true" ] || [ "$disable_val" = "1" ]; then
+    if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows push_collision; then
         return 0
     fi
 
