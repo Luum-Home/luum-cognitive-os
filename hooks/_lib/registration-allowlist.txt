@@ -226,3 +226,9 @@ cosd-intent-submit.sh
 # 2026-05-07: ADR-199/200 state-retention audit wrapper is manual/session-retention
 # only; it can archive/reap state and must not be projected into every profile.
 state-retention-audit.sh
+
+# 2026-05-08: ADR-238 conditional opt-in hooks. The classification manifest
+# owns their lifecycle; the legacy text scanner cannot represent conditional
+# projection, so keep them allowlisted until promoted to active profiles.
+ai-provider-identity-guard.sh
+session-end-cleanup.sh

@@ -6,7 +6,15 @@ from pathlib import Path
 import yaml
 
 import lib.history_sanitization as hs
-from lib.history_sanitization import build_report, load_manifest, metadata_rewrite_enabled, normalize_pattern, preserve_conflicts, resolved_rules
+from lib.history_sanitization import (
+    build_report,
+    commit_message_rewrite_enabled,
+    load_manifest,
+    metadata_rewrite_enabled,
+    normalize_pattern,
+    preserve_conflicts,
+    resolved_rules,
+)
 
 MACOS_HOME = "/" + "Users/example/dev/project"
 
@@ -98,6 +106,13 @@ def test_metadata_rewrite_is_disabled_by_default_and_requires_env(monkeypatch) -
     assert metadata_rewrite_enabled({}) is True
 
 
+def test_commit_message_rewrite_is_disabled_by_default_and_requires_env(monkeypatch) -> None:
+    monkeypatch.delenv("COS_HISTORY_SANITIZE_COMMIT_MESSAGES", raising=False)
+    assert commit_message_rewrite_enabled({}) is False
+    monkeypatch.setenv("COS_HISTORY_SANITIZE_COMMIT_MESSAGES", "1")
+    assert commit_message_rewrite_enabled({}) is True
+
+
 def test_metadata_scoped_rule_blocks_without_metadata_env(tmp_path: Path, monkeypatch) -> None:
     manifest = {
         "schema_version": "history-sanitization/v1",
@@ -122,6 +137,32 @@ def test_metadata_scoped_rule_blocks_without_metadata_env(tmp_path: Path, monkey
 
     assert report["status"] == "block"
     assert any(f["code"] == "metadata-rewrite-not-enabled" for f in report["findings"])
+
+
+def test_commit_message_scoped_rule_blocks_without_message_env(tmp_path: Path, monkeypatch) -> None:
+    manifest = {
+        "schema_version": "history-sanitization/v1",
+        "rules": [
+            {
+                "id": "internal-trailer",
+                "mode": "literal",
+                "scope": "commit-message",
+                "pattern": "X-COS-Session:",
+                "replacement": "",
+            }
+        ],
+        "sensitive_history_patterns": [],
+        "preserve": [],
+        "execution": {"require_env": "COS_ALLOW_DESTRUCTIVE_GIT", "require_env_value": "1"},
+    }
+    repo = _make_repo(tmp_path, manifest)
+    monkeypatch.delenv("COS_HISTORY_SANITIZE_COMMIT_MESSAGES", raising=False)
+
+    report = build_report(repo, mode="execute")
+
+    assert report["status"] == "block"
+    assert any(f["code"] == "commit-message-rewrite-not-enabled" for f in report["findings"])
+
 
 def test_execute_without_destructive_env_blocks(tmp_path: Path, monkeypatch) -> None:
     repo = _make_repo(tmp_path)

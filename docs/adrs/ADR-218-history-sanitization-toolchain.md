@@ -54,9 +54,9 @@ shape but with stricter destructive-op gating:
 4. **Backed by `git-filter-repo`** (not `git filter-branch`, which is
    deprecated and footgun-rich).
 5. **Manifest declaration**: `manifests/history-sanitization.yaml`.
-6. **Content-only by default**: author/committer names and emails are human
-   provenance and are **not** rewritten unless the operator explicitly sets
-   `COS_HISTORY_SANITIZE_METADATA=1` for a metadata-scoped rule.
+6. **Blob content-only by default**: author/committer names, emails, and
+   commit messages are human provenance and are **not** rewritten unless the
+   operator explicitly sets the matching opt-in env var for that scope.
 7. **Schema-versioned report**: `history-sanitization-report/v1`.
 8. **Implementation**: `lib/history_sanitization.py` +
    `scripts/cos-history-sanitization` Python entrypoint.
@@ -68,12 +68,16 @@ schema_version: history-sanitization/v1
 status: active
 owner: platform-safety
 
-# Each rule: substitution applied to commit content via git-filter-repo --replace-text.
-# Commit author/committer metadata is preserved unless a rule declares
-# scope: metadata and COS_HISTORY_SANITIZE_METADATA=1 is set.
+# Each default rule is applied only to blob content via git-filter-repo
+# --replace-text. Commit messages and author/committer metadata are preserved
+# unless a rule declares that scope and the matching env var is set.
 metadata_rewrite:
   default: false
   require_env: COS_HISTORY_SANITIZE_METADATA
+  require_env_value: "1"
+commit_message_rewrite:
+  default: false
+  require_env: COS_HISTORY_SANITIZE_COMMIT_MESSAGES
   require_env_value: "1"
 
 text_replacements:
@@ -122,7 +126,8 @@ cos history sanitize --execute
   -> requires COS_ALLOW_DESTRUCTIVE_GIT=1 (ADR-055b)
   -> requires explicit y/n prompt confirmation (ALWAYS, even with env var)
   -> creates the backup mirror
-  -> runs git-filter-repo for real, content-only by default
+  -> runs git-filter-repo for real, blob content-only by default
+  -> preserves commit messages unless COS_HISTORY_SANITIZE_COMMIT_MESSAGES=1
   -> preserves author/committer metadata unless COS_HISTORY_SANITIZE_METADATA=1
   -> emits the same report + writes a tombstone commit on a new branch
      `history-sanitization-{timestamp}` pointing at the post-rewrite HEAD
@@ -140,6 +145,9 @@ cos history sanitize --execute
   commit emails or names with broad mailmap-style rewrites. Metadata-scoped
   rewrites require `COS_HISTORY_SANITIZE_METADATA=1` and explicit operator
   consent.
+- **Commit messages are preserved by default**. Stripping `X-COS-*` trailers
+  or replacing sensitive values in commit messages requires
+  `COS_HISTORY_SANITIZE_COMMIT_MESSAGES=1` and explicit operator consent.
 - **Run only ONCE pre-public-launch**. Subsequent leaks are addressed by
   rotating the leaked credential and adding a manifest entry; never by a
   second history rewrite (collaborators with clones get permanent drift
@@ -250,10 +258,11 @@ new public remote. Never repeat after public availability.
 - Should `cos history sanitize` automatically generate the GitHub redirect
   notice ("we rewrote history pre-public; old SHAs invalid") for the launch
   blog post? Could be a `--launch-notice` flag emitting markdown.
-- `commit_metadata_replacements` are deliberately gated. The manifest may mark
-  a rule `scope: metadata`, but execution blocks unless
-  `COS_HISTORY_SANITIZE_METADATA=1` is set. Default public-readiness rewrites
-  remain content-only to preserve human authorship.
+- `commit_metadata_replacements` and `commit_message_replacements` are
+  deliberately gated. The manifest may mark a rule `scope: metadata` or
+  `scope: commit-message`, but execution blocks unless the matching opt-in env
+  var is set. Default public-readiness rewrites remain blob-only to preserve
+  human authorship and commit-message provenance.
 - Integration with `git-crypt` or transparent-encryption alternatives:
   defer; this ADR addresses pre-public scrubbing, not ongoing private
   collaboration.
