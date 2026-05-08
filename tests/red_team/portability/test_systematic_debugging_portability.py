@@ -13,15 +13,15 @@ DEFENSE = REFS_DIR / "defense-in-depth.md"
 ROOT_CAUSE = REFS_DIR / "root-cause-tracing.md"
 
 LEAKED_TOKENS = (
-    "<consumer-codename-a>",
-    "<consumer-codename-b>",
-    "<consumer-codename-c>",
-    "<consumer-service>",
-    "<consumer-service-3>",
-    "<consumer-service-2>",
-    "<consumer-service-4>",
-    "<consumer-service-5>",
-    "services/acme",
+    "consumer-alpha",
+    "consumer-beta",
+    "service-alpha",
+    "service-beta",
+    "Consumer Alpha",
+    "service-gamma",
+    "service-alpha-go",
+    "example-services/",
+    "services/example",
 )
 
 
@@ -44,7 +44,7 @@ def test_no_consumer_tokens_in_skill_source() -> None:
 
 def test_falsification_guard_detects_seeded_token(tmp_path: Path) -> None:
     decoy = tmp_path / "DECOY.md"
-    decoy.write_text("<consumer-service-3> routes to <consumer-codename-b>", encoding="utf-8")
+    decoy.write_text("Consumer Alpha routes to service-alpha", encoding="utf-8")
     text = decoy.read_text(encoding="utf-8")
     leaks = [tok for tok in LEAKED_TOKENS if tok in text]
     assert leaks, "falsification probe failed: seeded tokens not caught"

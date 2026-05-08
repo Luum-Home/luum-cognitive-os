@@ -14,15 +14,15 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 RULE = REPO_ROOT / "rules" / "engram-organization.md"
 
 LEAKED_TOKENS = (
-    "<consumer-codename-b>",
-    "<consumer-codename-c>",
-    "<consumer-codename-a>",
-    "<consumer-service>",
-    "<consumer-service-3>",
-    "<consumer-service-2>",
-    "<consumer-service-4>",
-    "<consumer-service-5>",
-    "services/acme",
+    "consumer-beta",
+    "service-alpha",
+    "consumer-alpha",
+    "service-beta",
+    "Consumer Alpha",
+    "service-gamma",
+    "service-alpha-go",
+    "example-services/",
+    "services/example",
 )
 
 
