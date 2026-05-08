@@ -1,0 +1,112 @@
+from __future__ import annotations
+
+import json
+import subprocess
+from pathlib import Path
+
+SCRIPT = Path(__file__).resolve().parents[2] / "scripts" / "primitive-coherence-audit.py"
+
+
+def _write(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def _run(repo: Path, manifest: Path) -> dict:
+    proc = subprocess.run(
+        ["python3", str(SCRIPT), "--project-dir", str(repo), "--manifest", str(manifest), "--json"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert proc.stdout, proc.stderr
+    payload = json.loads(proc.stdout)
+    payload["returncode"] = proc.returncode
+    return payload
+
+
+def _repo(tmp_path: Path) -> Path:
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    subprocess.run(["git", "init", "--initial-branch=main"], cwd=repo, check=True, stdout=subprocess.DEVNULL)
+    return repo
+
+
+def test_blocks_mutating_snapshot_before_preflight(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '''{
+      "hooks": {"PreToolUse": [{"matcher": "Agent", "hooks": [
+        {"command": "bash hooks/pre-agent-snapshot.sh"},
+        {"command": "bash hooks/agent-prelaunch.sh"}
+      ]}]}
+    }''')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+surfaces: []
+ordering_constraints:
+  - id: agent-prelaunch-before-snapshot
+    event: PreToolUse
+    matcher: Agent
+    after: hooks/agent-prelaunch.sh
+    before: hooks/pre-agent-snapshot.sh
+    severity: block
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert payload["returncode"] == 1
+    assert any(f["code"] == "ordering-mutator-before-blocker" for f in payload["findings"])
+
+
+def test_warns_when_legacy_registration_checker_ignores_opt_in_classification(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '{"hooks": {}}')
+    _write(repo / "scripts" / "check_hook_registration.py", '''#!/usr/bin/env python3
+print("UNREGISTERED hooks (1):")
+print("  - session-end-cleanup.sh  (missing: settings_json)")
+''')
+    (repo / "scripts" / "check_hook_registration.py").chmod(0o755)
+    _write(repo / "manifests" / "hook-registration-classification.yaml", '''entries:
+  - path: hooks/session-end-cleanup.sh
+    status: opt_in
+    rationale: intentionally optional
+    next_action: keep opt-in
+''')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+registration:
+  classification_manifest: manifests/hook-registration-classification.yaml
+  legacy_checker: scripts/check_hook_registration.py
+  intentional_absent_statuses: [opt_in, manual_trigger, future]
+surfaces: []
+ordering_constraints: []
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "warn"
+    assert payload["returncode"] == 0
+    assert any(f["code"] == "registration-checker-classification-disagreement" for f in payload["findings"])
+
+
+def test_blocks_multi_writer_surface_without_allowance(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    _write(repo / ".claude" / "settings.json", '{"hooks": {}}')
+    manifest = repo / "manifests" / "primitive-coherence.yaml"
+    _write(manifest, '''schema_version: primitive-coherence/v1
+surfaces:
+  - id: git.branch_context
+    owner: git-control-plane
+    allowed_multi_writer: false
+    writers:
+      - hooks/a.sh
+      - hooks/b.sh
+ordering_constraints: []
+''')
+
+    payload = _run(repo, manifest)
+
+    assert payload["status"] == "block"
+    assert any(f["code"] == "surface-multi-writer-without-allowance" for f in payload["findings"])
+    assert any(f["code"] == "surface-multi-writer-without-protocol" for f in payload["findings"])

@@ -1,0 +1,84 @@
+schema_version: primitive-coherence/v1
+status: active
+owner: platform-safety
+purpose: >
+  Declare cross-primitive ownership, write surfaces, and ordering constraints so
+  locally-correct hooks/scripts do not become globally incoherent.
+
+registration:
+  classification_manifest: manifests/hook-registration-classification.yaml
+  legacy_checker: scripts/check_hook_registration.py
+  intentional_absent_statuses:
+    - candidate_promote
+    - conditional_opt_in
+    - demoted
+    - deprecated
+    - future
+    - git_or_manual
+    - internal_helper
+    - manual_trigger
+    - opt_in
+    - projected_elsewhere
+
+surfaces:
+  - id: agent.launch_snapshot
+    kind: launch-state
+    owner: agent-lifecycle
+    path: .cognitive-os/runtime
+    allowed_multi_writer: true
+    write_protocol: lock-required
+    writers:
+      - hooks/pre-agent-snapshot.sh
+      - hooks/post-agent-snapshot-restore.sh
+    readers:
+      - hooks/agent-prelaunch.sh
+      - hooks/agent-launch-confirmed.sh
+    invariants:
+      - mutating snapshots must never run before blocking preflight
+
+  - id: git.branch_context
+    kind: control-plane
+    owner: destructive-git-blocker
+    path: .git/HEAD
+    allowed_multi_writer: false
+    write_protocol: git-command-gated
+    writers:
+      - hooks/destructive-git-blocker.sh
+    readers:
+      - hooks/branch-ownership-lock.sh
+      - hooks/direct-main-guard.sh
+    invariants:
+      - branch switches require explicit operator approval
+
+  - id: history.content_rewrite
+    kind: destructive-history
+    owner: adr-218-history-sanitization
+    path: .git/objects
+    allowed_multi_writer: false
+    write_protocol: backup-then-filter-repo
+    writers:
+      - scripts/cos-history-sanitization
+      - lib/history_sanitization.py
+    readers:
+      - scripts/cos-history-sanitization-smoke.sh
+      - scripts/cos-pre-public-risk-audit
+    invariants:
+      - content-only by default
+      - metadata rewrites require COS_HISTORY_SANITIZE_METADATA=1
+
+ordering_constraints:
+  - id: agent-prelaunch-before-snapshot
+    event: PreToolUse
+    matcher: Agent
+    after: hooks/agent-prelaunch.sh
+    before: hooks/pre-agent-snapshot.sh
+    severity: block
+    rationale: Mutating snapshots must not run before preflight blockers.
+
+  - id: capability-before-launch-confirm
+    event: PreToolUse
+    matcher: Agent
+    after: hooks/subagent-capability-preflight.sh
+    before: hooks/agent-launch-confirmed.sh
+    severity: warn
+    rationale: Capability/output contract checks should run before launch confirmation side effects.
