@@ -223,6 +223,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/network-egress-guard.sh\""
           },
           {
@@ -320,6 +324,10 @@
       {
         "matcher": "Edit|Write",
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit.sh\""
+          },
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/project-docs-convention.sh\""
@@ -767,6 +775,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/cross-session-event-emit.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit-hourly.sh\""
           },
           {
             "type": "command",

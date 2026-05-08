@@ -195,6 +195,10 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit.sh\""
+          },
+          {
+            "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/network-egress-guard.sh\""
           },
           {
@@ -279,6 +283,10 @@
       {
         "matcher": "Edit|Write",
         "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit.sh\""
+          },
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/secret-detector.sh\""
@@ -594,6 +602,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-retention-audit.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit-hourly.sh\""
           }
         ]
       },

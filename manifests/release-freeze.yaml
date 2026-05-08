@@ -40,6 +40,10 @@ checks:
     enabled: false
     command: [python3, scripts/primitive-coherence-audit.py, --json]
     rationale: Optional in Slice A tests; control-plane audit captures this lane separately.
+  control_plane_pre_public:
+    enabled: true
+    command: [scripts/cos-control-plane-audit, --lane, pre-public, --json, --strict]
+    rationale: ADR-248 release/public operations require strict pre-public control-plane audit inside the freeze transaction.
 
 guards:
   history_sanitization:

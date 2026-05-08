@@ -249,7 +249,7 @@ def prepare(project_dir: Path, manifest_path: Path | None = None) -> dict[str, A
         checks.append(result)
         findings.extend(new_findings)
     manifest_checks = manifest.get("checks") or {}
-    for name in ("pre_public_risk_audit", "primitive_coherence"):
+    for name in ("pre_public_risk_audit", "primitive_coherence", "control_plane_pre_public"):
         result, new_findings = _run_optional_command(root, name, manifest_checks.get(name, {}) or {})
         checks.append(result)
         findings.extend(new_findings)

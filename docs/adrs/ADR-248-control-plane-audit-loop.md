@@ -97,13 +97,9 @@ Prevention map:
 The next maturity step is to move from "audits that an operator can run" to
 "audits that run automatically and block in the right place":
 
-1. `hook-fast` must run before agent launch, before commit, before push, before
-   destructive git operations, and before report publication.
-2. `hourly` must run as a periodic/session-end sweep for drift that is too
-   expensive for the hot path.
-3. `pre-public --strict` must run inside a release-freeze transaction before
-   sanitize, force-push, or publication. Without a freeze, an audit can pass and
-   another agent can dirty the repository seconds later.
+1. `hook-fast` runs through `hooks/control-plane-audit.sh` before agent launch, before commit/push/destructive git commands, and before public report writes. The hook filters payloads so unrelated Bash/Edit calls do not pay the audit cost.
+2. `hourly` runs through `hooks/control-plane-audit-hourly.sh` on Stop/session-end with cooldown, emitting metrics without making session cleanup brittle.
+3. `pre-public --strict` runs inside `cos release freeze` via `manifests/release-freeze.yaml` before sanitize, force-push, or publication. Without a freeze, an audit can pass and another agent can dirty the repository seconds later.
 
 Auto-correction is allowed only for safe classes:
 
@@ -217,3 +213,13 @@ Negative:
 python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_postmortem_regression_audit.py tests/audit/test_adr_contracts.py -q
 scripts/cos-control-plane-audit --lane hook-fast --json
 ```
+
+
+## Implementation note — 2026-05-08 full loop wiring
+
+The initial hook-fast Agent-only wiring has been expanded into the full ADR-248 loop:
+
+- `hooks/control-plane-audit.sh` filters hook payloads and runs `scripts/cos-control-plane-audit --lane hook-fast --json` before Agent launches, `git commit`, `git push`, destructive git commands, and public report/document writes under `docs/reports/`, `docs/history/`, and `docs/business/`.
+- `hooks/control-plane-audit-hourly.sh` runs the `hourly` lane on Stop/session-end with a 3600-second cooldown.
+- `lib/release_freeze.py` now includes the `control_plane_pre_public` check, which executes `scripts/cos-control-plane-audit --lane pre-public --json --strict` inside the release freeze transaction.
+- `.claude/settings.json`, `templates/security-profiles/*.json`, and `scripts/apply-efficiency-profile.sh` all project the hooks so they do not become producer-without-consumer artifacts.
