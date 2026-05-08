@@ -31,12 +31,12 @@ Required actions:
 - [x] Sanitization report at `.cognitive-os/reports/history-sanitization/20260508T042748Z.json` recorded and reviewed
 - [x] Smoke test: codenames + service names + operator email/path → 0 hits across full history
   (post-execute: n1u/gamer-wallet/altatienda/bff-ninja/users-core/users-auth/wallet-go/acme-gateway all 0)
-- [ ] Force-push to origin completed after final local history rewrite
-- [ ] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHA
+- [x] Force-push to origin completed after final local history rewrite (origin/main = `db846adb`, matches local HEAD)
+- [x] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHA on origin (`7b989099`)
 
-Evidence: backup mirror at `~/.cognitive-os/recovery/pre-history-sanitization-20260508T042748Z.git`; sanitization report at `.cognitive-os/reports/history-sanitization/`. Local history was rewritten via mailmap/filter-repo to the operator's GitHub-noreply identifier for privacy + GitHub attribution; final remote publication is still pending force-push and tag reattachment.
+Evidence: backup mirror at `~/.cognitive-os/recovery/pre-history-sanitization-20260508T042748Z.git`; sanitization report at `.cognitive-os/reports/history-sanitization/`. Local history rewritten via mailmap/filter-repo to operator's GitHub-noreply identifier for privacy + GitHub attribution. Force-pushed and tag reattached to origin.
 
-Status: `partial` — local history sanitized; remote force-push and tag reattachment pending.
+Status: `done`
 
 ---
 
@@ -156,9 +156,10 @@ Required actions:
 - [x] Mark every public-facing claim with status badge or remove
   (Evidence: `docs/legal/h1-feature-status-audit.md`)
 
-Status: `done` — pending operator sign-off on the 5 open questions in the
-audit doc. No claim was deleted; DORMANT/ASPIRATIONAL items are now
-explicitly labelled rather than removed.
+Status: `done` — operator signed off on the 5 open questions
+(2026-05-08, see `docs/legal/h1-feature-status-audit.md` §Operator sign-off).
+README footnote added for "14-layer safety mesh" claim pointing at
+`docs/safety-mesh.md`.
 
 ---
 
@@ -198,9 +199,13 @@ Required actions:
   patterns were inspired by which prior art and under what license —
   20-tool provenance table at `docs/architecture/provenance.md` §2
 
-Status: `complete (first pass)` — legal review still required to
-re-verify the 14 UNKNOWN license entries before public release; see
-`docs/architecture/provenance.md` §6 open questions.
+Status: `complete (first pass)` — provenance audit shipped: 20 prior-art
+tools cataloged, 15 ADRs spot-checked, 0 HIGH-severity findings, 0 smoking
+guns of literal copy-paste. Operator decision: ship under FSL-1.1-MIT with
+the audit on record. **Legal review of the 14 UNKNOWN license entries
+remains as a recommended (non-blocking) post-launch action** — these are
+SPDX metadata gaps in transitive deps, not new license risk. Tracked in
+`docs/architecture/provenance.md` §6 and `docs/security/supply-chain.md`.
 
 ---
 
@@ -243,12 +248,16 @@ cross-references, prose drift very likely. Hostile readers will find them.
 
 Required actions:
 
-- [ ] Manual reviewer pass over ADR-218 through ADR-236
-- [ ] Cross-references valid (no broken `[ADR-NNN]` links)
-- [ ] Status, owner, decision-summary present and consistent
+- [x] Manual reviewer pass over ADR-218 through ADR-238
+  (Evidence: `docs/legal/m3-adr-sweep-report.md` — 21 ADRs reviewed, 1 CRITICAL [fixed], 0 HIGH, 4 MEDIUM [all resolved], ~16 LOW [logged].)
+- [x] Cross-references valid (no broken `[ADR-NNN]` links)
+  (Evidence: per-ADR table in m3-adr-sweep-report.md §5 confirms each cross-ref resolves.)
+- [x] Status, owner, decision-summary present and consistent
+  (Evidence: ADR-228 self-contradiction fixed; ADR-220/224/232/234 follow-ups closed.)
 - [ ] Topic keys in Engram match canonical filenames
+  (Deferred — engram store was scrubbed in C5; topic-key audit is post-launch hygiene.)
 
-Status: `pending`
+Status: `done` — manual sweep complete; engram topic-key consistency deferred to post-launch.
 
 ### M4. Sanitize tombstone smoke test
 
@@ -269,11 +278,14 @@ Status: `partial` (script exists, runbook step not formalized)
 
 ### L1. Operator personal data leakage check
 
-- [ ] No instances of operator email outside intentional contexts
-- [ ] No `/Users/<operator>/...` paths in committed files
-- [ ] No personal MCP server UUIDs in committed examples
+- [x] No instances of operator email outside intentional contexts
+  (Evidence: history sanitize replaced `<operator-previous-email>` → noreply; tracked-files grep returns 0 hits.)
+- [x] No `/Users/<operator>/...` paths in committed files
+  (Evidence: tracked-files grep returns 0 hits; only dashboard/.next/ build artifacts contain the path, and `.next/` is gitignored.)
+- [x] No personal MCP server UUIDs in committed examples
+  (Evidence: scope-marker portability tests + L1 audit report at `docs/legal/operator-data-scan.md`.)
 
-Status: `pending`
+Status: `done`
 
 ### L2. Worktree / temp-path leakage check
 
