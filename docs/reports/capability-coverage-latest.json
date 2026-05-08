@@ -1,0 +1,433 @@
+{
+  "findings": [],
+  "manifest": "manifests/capability-coverage.yaml",
+  "matrix": [
+    {
+      "consumer_count": 1,
+      "id": "handoff-envelope-cycle-dedup",
+      "implementation_count": 2,
+      "known_gaps": [],
+      "label": "Agent handoff envelope and cycle deduplication",
+      "owner_adr": "ADR-230",
+      "primitive_types": [
+        "lib",
+        "protocol"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 3,
+      "score": 100,
+      "test_count": 3
+    },
+    {
+      "consumer_count": 1,
+      "id": "mcp-server-surface",
+      "implementation_count": 2,
+      "known_gaps": [
+        "streamable-http-transport-and-external-registration-remain-opt-in"
+      ],
+      "label": "MCP server surface for COS primitives",
+      "owner_adr": "ADR-231",
+      "primitive_types": [
+        "mcp",
+        "adapter"
+      ],
+      "public_claim": false,
+      "reality_level": "PARTIAL",
+      "receipt_count": 1,
+      "score": 95,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 2,
+      "id": "sandbox-adapter-tiers",
+      "implementation_count": 3,
+      "known_gaps": [
+        "microvm-and-contree-adapters-are-not-default"
+      ],
+      "label": "Sandbox adapter tiers",
+      "owner_adr": "ADR-232",
+      "primitive_types": [
+        "adapter",
+        "sandbox"
+      ],
+      "public_claim": false,
+      "reality_level": "PARTIAL",
+      "receipt_count": 1,
+      "score": 95,
+      "test_count": 3
+    },
+    {
+      "consumer_count": 1,
+      "id": "cross-session-agent-team-file-ipc",
+      "implementation_count": 2,
+      "known_gaps": [],
+      "label": "Cross-session agent-team file IPC",
+      "owner_adr": "ADR-233",
+      "primitive_types": [
+        "lib",
+        "file-ipc"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 3,
+      "score": 100,
+      "test_count": 3
+    },
+    {
+      "consumer_count": 1,
+      "id": "approval-policies-as-code",
+      "implementation_count": 2,
+      "known_gaps": [
+        "not-all-legacy-hooks-migrated-to-policy-yaml"
+      ],
+      "label": "Approval policies as code",
+      "owner_adr": "ADR-234",
+      "primitive_types": [
+        "policy",
+        "script"
+      ],
+      "public_claim": false,
+      "reality_level": "PARTIAL",
+      "receipt_count": 1,
+      "score": 95,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 1,
+      "id": "detached-agent-daemon",
+      "implementation_count": 2,
+      "known_gaps": [
+        "launchd-systemd-activation-is-opt-in"
+      ],
+      "label": "Detached agent daemon",
+      "owner_adr": "ADR-235",
+      "primitive_types": [
+        "daemon",
+        "cli"
+      ],
+      "public_claim": false,
+      "reality_level": "PARTIAL",
+      "receipt_count": 2,
+      "score": 95,
+      "test_count": 2
+    },
+    {
+      "consumer_count": 1,
+      "id": "deferred-tool-loading-toolsearch",
+      "implementation_count": 1,
+      "known_gaps": [
+        "provider-native-defer-loading-depends-on-provider-api"
+      ],
+      "label": "Deferred tool loading and ToolSearch",
+      "owner_adr": "ADR-236",
+      "primitive_types": [
+        "adapter",
+        "dispatch"
+      ],
+      "public_claim": false,
+      "reality_level": "PARTIAL",
+      "receipt_count": 2,
+      "score": 95,
+      "test_count": 2
+    },
+    {
+      "consumer_count": 2,
+      "id": "test-execution-efficiency",
+      "implementation_count": 4,
+      "known_gaps": [],
+      "label": "Test execution efficiency protocol",
+      "owner_adr": "ADR-237",
+      "primitive_types": [
+        "script",
+        "skill",
+        "manifest"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 1,
+      "score": 100,
+      "test_count": 2
+    },
+    {
+      "consumer_count": 1,
+      "id": "tier-1-4-followup-bug-tracking",
+      "implementation_count": 1,
+      "known_gaps": [],
+      "label": "Tier 1-4 follow-up bug tracking",
+      "owner_adr": "ADR-238",
+      "primitive_types": [
+        "tracking"
+      ],
+      "public_claim": false,
+      "reality_level": "RESOLVED",
+      "receipt_count": 1,
+      "score": 90,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 2,
+      "id": "isolated-worktree-write-agents",
+      "implementation_count": 5,
+      "known_gaps": [],
+      "label": "Isolated worktree default for write agents",
+      "owner_adr": "ADR-239",
+      "primitive_types": [
+        "hook",
+        "script",
+        "worktree"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 3,
+      "score": 100,
+      "test_count": 4
+    },
+    {
+      "consumer_count": 2,
+      "id": "primitive-coherence-audit",
+      "implementation_count": 2,
+      "known_gaps": [],
+      "label": "Primitive coherence audit and ownership manifest",
+      "owner_adr": "ADR-240",
+      "primitive_types": [
+        "manifest",
+        "audit"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 3,
+      "id": "consolidated-bypass-allowlist",
+      "implementation_count": 5,
+      "known_gaps": [
+        "broad-ecosystem-bypass-consolidation-remains-future-expansion"
+      ],
+      "label": "Consolidated COS bypass allowlist",
+      "owner_adr": "ADR-241",
+      "primitive_types": [
+        "hook-lib",
+        "governance"
+      ],
+      "public_claim": false,
+      "reality_level": "PARTIAL",
+      "receipt_count": 2,
+      "score": 95,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 1,
+      "id": "git-filter-repo-wrapper",
+      "implementation_count": 2,
+      "known_gaps": [],
+      "label": "git-filter-repo wrapper preserves remote and refuses unsafe reruns",
+      "owner_adr": "ADR-242",
+      "primitive_types": [
+        "script",
+        "history-rewrite"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 1,
+      "id": "post-rewrite-push-collision-exception",
+      "implementation_count": 3,
+      "known_gaps": [],
+      "label": "Post-rewrite push-collision exception",
+      "owner_adr": "ADR-243",
+      "primitive_types": [
+        "hook-lib",
+        "script"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 1,
+      "id": "trust-report-claim-validator",
+      "implementation_count": 4,
+      "known_gaps": [],
+      "label": "Trust report claim validator enforcement",
+      "owner_adr": "ADR-244",
+      "primitive_types": [
+        "hook",
+        "script",
+        "rule"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 1,
+      "id": "chaos-readonly-production-source",
+      "implementation_count": 3,
+      "known_gaps": [],
+      "label": "Chaos tests read-only production source",
+      "owner_adr": "ADR-245",
+      "primitive_types": [
+        "test-fixture",
+        "runbook"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 2,
+      "id": "release-transaction-freeze",
+      "implementation_count": 3,
+      "known_gaps": [],
+      "label": "Release transaction freeze",
+      "owner_adr": "ADR-246",
+      "primitive_types": [
+        "script",
+        "lib",
+        "manifest"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 2
+    },
+    {
+      "consumer_count": 2,
+      "id": "postmortem-regression-audits",
+      "implementation_count": 3,
+      "known_gaps": [],
+      "label": "Manifest-driven postmortem regression audits",
+      "owner_adr": "ADR-247",
+      "primitive_types": [
+        "manifest",
+        "audit"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 2,
+      "id": "control-plane-audit-loop",
+      "implementation_count": 2,
+      "known_gaps": [],
+      "label": "Control-plane audit loop",
+      "owner_adr": "ADR-248",
+      "primitive_types": [
+        "manifest",
+        "audit",
+        "metrics"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 8,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 2,
+      "id": "primitive-behavioral-proof",
+      "implementation_count": 2,
+      "known_gaps": [],
+      "label": "Primitive behavioral proof and anti-overfit tests",
+      "owner_adr": "ADR-249",
+      "primitive_types": [
+        "manifest",
+        "audit"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    },
+    {
+      "consumer_count": 2,
+      "id": "skill-router-retrieval-boundary",
+      "implementation_count": 3,
+      "known_gaps": [],
+      "label": "Skill router retrieval adapter boundary",
+      "owner_adr": "ADR-250",
+      "primitive_types": [
+        "manifest",
+        "audit",
+        "benchmark"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 2
+    },
+    {
+      "consumer_count": 2,
+      "id": "agent-orchestration-boundary",
+      "implementation_count": 3,
+      "known_gaps": [],
+      "label": "Agent orchestration adapter boundary",
+      "owner_adr": "ADR-251",
+      "primitive_types": [
+        "manifest",
+        "audit",
+        "benchmark"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 2
+    },
+    {
+      "consumer_count": 2,
+      "id": "capability-coverage-matrix",
+      "implementation_count": 4,
+      "known_gaps": [],
+      "label": "Capability coverage matrix and feature reality ledger",
+      "owner_adr": "ADR-252",
+      "primitive_types": [
+        "manifest",
+        "audit",
+        "generated-report"
+      ],
+      "public_claim": false,
+      "reality_level": "REAL",
+      "receipt_count": 2,
+      "score": 100,
+      "test_count": 1
+    }
+  ],
+  "outputs": {
+    "latest_json": "docs/reports/capability-coverage-latest.json",
+    "matrix_md": "docs/capabilities/MATRIX.md"
+  },
+  "schema_version": "capability-coverage/v1",
+  "status": "pass",
+  "summary": {
+    "block": 0,
+    "capabilities": 23,
+    "coverage_max": 252,
+    "coverage_min": 230,
+    "findings": 0,
+    "partial": 6,
+    "public_claims": 0,
+    "real": 16,
+    "warn": 0
+  }
+}

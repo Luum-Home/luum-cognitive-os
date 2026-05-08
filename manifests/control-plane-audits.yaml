@@ -34,6 +34,7 @@ lanes:
       - postmortem-regressions
       - skill-router-retrieval
       - agent-orchestration-boundary
+      - capability-coverage
   hourly:
     description: Periodic local sweep for primitive drift and postmortem regressions.
     max_seconds: 60
@@ -43,6 +44,7 @@ lanes:
       - postmortem-regressions
       - skill-router-retrieval
       - agent-orchestration-boundary
+      - capability-coverage
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -53,6 +55,7 @@ lanes:
       - skill-router-retrieval
       - pre-public-risk
       - agent-orchestration-boundary
+      - capability-coverage
 
 audits:
   primitive-coherence:
@@ -92,5 +95,11 @@ audits:
     adr: ADR-251
     command: [python3, scripts/agent-orchestration-boundary-audit.py, --json]
     expected_schema: agent-orchestration-boundary-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  capability-coverage:
+    adr: ADR-252
+    command: [python3, scripts/cos-capability-matrix, --json]
+    expected_schema: capability-coverage/v1
     consumes_sensitive_values: false
     mutates: false

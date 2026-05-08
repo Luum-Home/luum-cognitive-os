@@ -1,0 +1,321 @@
+schema_version: capability-coverage/v1
+status: active
+owner: platform-safety
+purpose: >
+  Single generated source of truth for COS feature reality: claim -> ADR ->
+  implementation -> consumer/wiring -> tests -> receipts/audits -> reality.
+policy:
+  adr_coverage:
+    min: 230
+    max: 252
+    require_accepted_or_resolved_adr_covered: true
+  public_claim_allowed_levels: [REAL, PARTIAL, RESOLVED]
+  real_requires:
+    implementation: true
+    consumers: true
+    tests: true
+    receipt_or_audit: true
+  non_real_requires_known_gaps: true
+  generated_outputs:
+    matrix_md: docs/capabilities/MATRIX.md
+    latest_json: docs/reports/capability-coverage-latest.json
+
+capabilities:
+  - id: handoff-envelope-cycle-dedup
+    label: Agent handoff envelope and cycle deduplication
+    owner_adr: ADR-230
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [lib, protocol]
+    implementation: [lib/handoff_envelope.py, lib/handoff_dispatcher.py]
+    consumers: [scripts/cos]
+    tests: [tests/unit/test_handoff_dispatcher.py, tests/behavior/test_handoff_dispatcher_flow.py, tests/chaos/test_handoff_receiver_kill_mid_dispatch.py]
+    receipts: [handoff-receipt, handoff-cycle-detected]
+    control_plane_audits: [agent-orchestration-boundary]
+    known_gaps: []
+
+  - id: mcp-server-surface
+    label: MCP server surface for COS primitives
+    owner_adr: ADR-231
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [mcp, adapter]
+    implementation: [packages/mcp-server/cos_mcp.py, packages/mcp-server/cos-package.yaml]
+    consumers: [packages/mcp-server/cos-package.yaml]
+    tests: [tests/unit/test_cos_mcp_server.py]
+    receipts: [mcp-tool-call]
+    control_plane_audits: []
+    known_gaps: [streamable-http-transport-and-external-registration-remain-opt-in]
+
+  - id: sandbox-adapter-tiers
+    label: Sandbox adapter tiers
+    owner_adr: ADR-232
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [adapter, sandbox]
+    implementation: [lib/sandbox_adapter.py, manifests/sandbox-adapters.yaml, scripts/cos-sandbox-run]
+    consumers: [lib/dispatch.py, scripts/cos-sandbox-run]
+    tests: [tests/unit/test_sandbox_adapter.py, tests/behavior/test_sandbox_run_cli.py, tests/audit/test_sandbox_adapter_manifest.py]
+    receipts: [sandbox-run-report]
+    control_plane_audits: []
+    known_gaps: [microvm-and-contree-adapters-are-not-default]
+
+  - id: cross-session-agent-team-file-ipc
+    label: Cross-session agent-team file IPC
+    owner_adr: ADR-233
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [lib, file-ipc]
+    implementation: [lib/agent_team.py, lib/agent_team_transport.py]
+    consumers: [scripts/cos]
+    tests: [tests/behavior/test_agent_team_file_ipc_flow.py, tests/integration/test_agent_team_cross_harness_contract.py, tests/unit/test_agent_team_transport.py]
+    receipts: [team-task-event, inbox-message]
+    control_plane_audits: [agent-orchestration-boundary]
+    known_gaps: []
+
+  - id: approval-policies-as-code
+    label: Approval policies as code
+    owner_adr: ADR-234
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [policy, script]
+    implementation: [lib/policy_eval.py, scripts/cos-policy-eval]
+    consumers: [scripts/cos-policy-eval]
+    tests: [tests/unit/test_policy_eval.py]
+    receipts: [policy-decision]
+    control_plane_audits: []
+    known_gaps: [not-all-legacy-hooks-migrated-to-policy-yaml]
+
+  - id: detached-agent-daemon
+    label: Detached agent daemon
+    owner_adr: ADR-235
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [daemon, cli]
+    implementation: [lib/agent_daemon.py, scripts/cos-agent-daemon]
+    consumers: [scripts/cos-agent-daemon]
+    tests: [tests/unit/test_agent_daemon.py, tests/behavior/test_cos_agent_daemon_cli.py]
+    receipts: [detached-agent-event]
+    control_plane_audits: [agent-orchestration-boundary]
+    known_gaps: [launchd-systemd-activation-is-opt-in]
+
+  - id: deferred-tool-loading-toolsearch
+    label: Deferred tool loading and ToolSearch
+    owner_adr: ADR-236
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [adapter, dispatch]
+    implementation: [packages/agent-lifecycle/lib/deferred_tool_loading.py]
+    consumers: [lib/dispatch.py]
+    tests: [tests/unit/test_deferred_tool_loading.py, tests/integration/test_dispatch_gate_real_dispatch.py]
+    receipts: [toolsearch-index-injected]
+    control_plane_audits: [skill-router-retrieval]
+    known_gaps: [provider-native-defer-loading-depends-on-provider-api]
+
+  - id: test-execution-efficiency
+    label: Test execution efficiency protocol
+    owner_adr: ADR-237
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [script, skill, manifest]
+    implementation: [manifests/test-execution-efficiency.yaml, lib/test_efficiency_planner.py, scripts/cos-test-efficiency-plan, .codex/skills/test-efficiency/SKILL.md]
+    consumers: [scripts/cos-test-efficiency-plan, .codex/skills/test-efficiency/SKILL.md]
+    tests: [tests/unit/test_test_efficiency_planner.py, tests/behavior/test_cos_test_efficiency_plan_cli.py]
+    receipts: [test-efficiency-plan]
+    control_plane_audits: []
+    known_gaps: []
+
+  - id: tier-1-4-followup-bug-tracking
+    label: Tier 1-4 follow-up bug tracking
+    owner_adr: ADR-238
+    reality_level: RESOLVED
+    public_claim: false
+    primitive_types: [tracking]
+    implementation: [docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md]
+    consumers: [docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md]
+    tests: [tests/audit/test_adr_contracts.py]
+    receipts: [resolved-adr]
+    control_plane_audits: []
+    known_gaps: []
+
+  - id: isolated-worktree-write-agents
+    label: Isolated worktree default for write agents
+    owner_adr: ADR-239
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [hook, script, worktree]
+    implementation: [hooks/agent-working-dir-inject.sh, hooks/agent-bash-cwd-enforcer.sh, hooks/agent-prelaunch.sh, hooks/destructive-git-blocker.sh, scripts/cos-agent-worktree-prepare]
+    consumers: [hooks/agent-prelaunch.sh, hooks/destructive-git-blocker.sh]
+    tests: [tests/behavior/test_agent_lifecycle_worktree_mode.py, tests/integration/test_agent_working_dir_inject.py, tests/integration/test_cwd_enforcer_rewrite.py, tests/unit/test_destructive_git_block.py]
+    receipts: [agent-prelaunch, worktree-marker]
+    control_plane_audits: [agent-orchestration-boundary]
+    known_gaps: []
+
+  - id: primitive-coherence-audit
+    label: Primitive coherence audit and ownership manifest
+    owner_adr: ADR-240
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit]
+    implementation: [manifests/primitive-coherence.yaml, scripts/primitive-coherence-audit.py]
+    consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
+    tests: [tests/unit/test_primitive_coherence_audit.py]
+    receipts: [.cognitive-os/reports/control-plane/latest.json]
+    control_plane_audits: [primitive-coherence]
+    known_gaps: []
+
+  - id: consolidated-bypass-allowlist
+    label: Consolidated COS bypass allowlist
+    owner_adr: ADR-241
+    reality_level: PARTIAL
+    public_claim: false
+    primitive_types: [hook-lib, governance]
+    implementation: [hooks/_lib/bypass-resolver.sh, docs/security/bypass-cheatsheet.md, hooks/destructive-git-blocker.sh, hooks/branch-ownership-lock.sh, hooks/orchestrator-claim-gate.sh]
+    consumers: [hooks/destructive-git-blocker.sh, hooks/branch-ownership-lock.sh, hooks/orchestrator-claim-gate.sh]
+    tests: [tests/behavior/test_bypass_resolver.py]
+    receipts: [bypass-decision]
+    control_plane_audits: [postmortem-regressions]
+    known_gaps: [broad-ecosystem-bypass-consolidation-remains-future-expansion]
+
+  - id: git-filter-repo-wrapper
+    label: git-filter-repo wrapper preserves remote and refuses unsafe reruns
+    owner_adr: ADR-242
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [script, history-rewrite]
+    implementation: [scripts/cos-filter-repo-wrap.sh, lib/history_sanitization.py]
+    consumers: [lib/history_sanitization.py]
+    tests: [tests/behavior/test_filter_repo_wrap.py]
+    receipts: [.cognitive-os/recovery]
+    control_plane_audits: [postmortem-regressions]
+    known_gaps: []
+
+  - id: post-rewrite-push-collision-exception
+    label: Post-rewrite push-collision exception
+    owner_adr: ADR-243
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [hook-lib, script]
+    implementation: [hooks/_lib/push-collision-check.sh, scripts/push_collision_detect.py, lib/history_sanitization.py]
+    consumers: [hooks/_lib/push-collision-check.sh]
+    tests: [tests/behavior/test_push_collision_post_rewrite.py]
+    receipts: [.cognitive-os/runtime/last-rewrite.json]
+    control_plane_audits: [postmortem-regressions]
+    known_gaps: []
+
+  - id: trust-report-claim-validator
+    label: Trust report claim validator enforcement
+    owner_adr: ADR-244
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [hook, script, rule]
+    implementation: [hooks/claim-validator.sh, scripts/claim_enforcer.py, scripts/orchestrator_claim_gate.py, rules/trust-score.md]
+    consumers: [hooks/claim-validator.sh]
+    tests: [tests/behavior/test_claim_enforcer.py]
+    receipts: [claim-validation-result]
+    control_plane_audits: [postmortem-regressions]
+    known_gaps: []
+
+  - id: chaos-readonly-production-source
+    label: Chaos tests read-only production source
+    owner_adr: ADR-245
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [test-fixture, runbook]
+    implementation: [tests/chaos/conftest.py, tests/chaos/test_global_verify_regression_catches.py, docs/runbooks/chaos-test-isolation.md]
+    consumers: [tests/chaos/conftest.py]
+    tests: [tests/chaos/test_global_verify_regression_catches.py]
+    receipts: [chaos-readonly-workspace]
+    control_plane_audits: [postmortem-regressions]
+    known_gaps: []
+
+  - id: release-transaction-freeze
+    label: Release transaction freeze
+    owner_adr: ADR-246
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [script, lib, manifest]
+    implementation: [scripts/cos-release-freeze, lib/release_freeze.py, manifests/release-freeze.yaml]
+    consumers: [scripts/cos-release-freeze, lib/history_sanitization.py]
+    tests: [tests/behavior/test_release_freeze.py, tests/unit/test_release_freeze_control_plane.py]
+    receipts: [.cognitive-os/runtime/release-freeze]
+    control_plane_audits: [primitive-behavior]
+    known_gaps: []
+
+  - id: postmortem-regression-audits
+    label: Manifest-driven postmortem regression audits
+    owner_adr: ADR-247
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit]
+    implementation: [manifests/postmortem-regression-audit.yaml, scripts/cos-postmortem-regression-audit, docs/runbooks/postmortem-regression-audit.md]
+    consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
+    tests: [tests/unit/test_postmortem_regression_audit.py]
+    receipts: [.cognitive-os/reports/control-plane/latest.json]
+    control_plane_audits: [postmortem-regressions]
+    known_gaps: []
+
+  - id: control-plane-audit-loop
+    label: Control-plane audit loop
+    owner_adr: ADR-248
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit, metrics]
+    implementation: [manifests/control-plane-audits.yaml, scripts/cos-control-plane-audit]
+    consumers: [hooks/agent-prelaunch.sh, scripts/cos-control-plane-audit]
+    tests: [tests/unit/test_control_plane_audit.py]
+    receipts: [.cognitive-os/reports/control-plane/latest.json, .cognitive-os/tasks/control-plane-remediation.jsonl, .cognitive-os/metrics/control-plane-audit.jsonl]
+    control_plane_audits: [primitive-coherence, primitive-behavior, postmortem-regressions, skill-router-retrieval, agent-orchestration-boundary]
+    known_gaps: []
+
+  - id: primitive-behavioral-proof
+    label: Primitive behavioral proof and anti-overfit tests
+    owner_adr: ADR-249
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit]
+    implementation: [manifests/primitive-behavior-contracts.yaml, scripts/primitive-behavior-audit.py]
+    consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
+    tests: [tests/unit/test_primitive_behavior_audit.py]
+    receipts: [.cognitive-os/reports/control-plane/latest.json]
+    control_plane_audits: [primitive-behavior]
+    known_gaps: []
+
+  - id: skill-router-retrieval-boundary
+    label: Skill router retrieval adapter boundary
+    owner_adr: ADR-250
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit, benchmark]
+    implementation: [manifests/skill-router-retrieval.yaml, scripts/skill-router-retrieval-audit.py, scripts/skill-router-benchmark.py]
+    consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
+    tests: [tests/unit/test_skill_router_retrieval_audit.py, tests/unit/test_skill_router_benchmark.py]
+    receipts: [.cognitive-os/reports/control-plane/latest.json]
+    control_plane_audits: [skill-router-retrieval]
+    known_gaps: []
+
+  - id: agent-orchestration-boundary
+    label: Agent orchestration adapter boundary
+    owner_adr: ADR-251
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit, benchmark]
+    implementation: [manifests/agent-orchestration-adapters.yaml, scripts/agent-orchestration-boundary-audit.py, scripts/agent-orchestration-benchmark.py]
+    consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
+    tests: [tests/unit/test_agent_orchestration_boundary_audit.py, tests/unit/test_agent_orchestration_benchmark.py]
+    receipts: [.cognitive-os/reports/control-plane/latest.json]
+    control_plane_audits: [agent-orchestration-boundary]
+    known_gaps: []
+
+  - id: capability-coverage-matrix
+    label: Capability coverage matrix and feature reality ledger
+    owner_adr: ADR-252
+    reality_level: REAL
+    public_claim: false
+    primitive_types: [manifest, audit, generated-report]
+    implementation: [manifests/capability-coverage.yaml, scripts/cos-capability-matrix, docs/capabilities/MATRIX.md, docs/reports/capability-coverage-latest.json]
+    consumers: [scripts/cos-control-plane-audit, manifests/control-plane-audits.yaml]
+    tests: [tests/unit/test_capability_matrix.py]
+    receipts: [docs/reports/capability-coverage-latest.json]
+    control_plane_audits: [capability-coverage]
+    known_gaps: []

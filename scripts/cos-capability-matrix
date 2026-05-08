@@ -1,0 +1,304 @@
+#!/usr/bin/env python3
+"""Generate and audit the ADR-252 Capability Coverage Matrix."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import re
+import subprocess
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+SCHEMA_VERSION = "capability-coverage/v1"
+DEFAULT_MANIFEST = Path("manifests/capability-coverage.yaml")
+LEVELS = {"REAL", "PARTIAL", "ROADMAP", "LAB", "DORMANT", "DEPRECATED", "RESOLVED"}
+
+
+@dataclass
+class Finding:
+    severity: str
+    code: str
+    message: str
+    capability: str | None = None
+    path: str | None = None
+    details: dict[str, Any] | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        payload: dict[str, Any] = {"severity": self.severity, "code": self.code, "message": self.message}
+        if self.capability:
+            payload["capability"] = self.capability
+        if self.path:
+            payload["path"] = self.path
+        if self.details:
+            payload["details"] = self.details
+        return payload
+
+
+def repo_root(start: Path) -> Path:
+    proc = subprocess.run(["git", "-C", str(start), "rev-parse", "--show-toplevel"], text=True, capture_output=True, check=False)
+    if proc.returncode == 0 and proc.stdout.strip():
+        return Path(proc.stdout.strip()).resolve()
+    return start.resolve()
+
+
+def load_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def _as_list(value: Any) -> list[Any]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return value
+    return [value]
+
+
+def _rel_exists(repo: Path, rel: str) -> bool:
+    if rel.startswith(".") and not rel.startswith("./"):
+        # Runtime dotpaths such as .cognitive-os/reports/... are receipts, not
+        # committed files. Their presence is validated by the producing audit.
+        return True
+    return (repo / rel).exists()
+
+
+def accepted_adr_numbers(repo: Path, low: int, high: int) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for path in sorted((repo / "docs" / "adrs").glob("ADR-*.md")):
+        match = re.match(r"ADR-(\d+)", path.name)
+        if not match:
+            continue
+        number = int(match.group(1))
+        if number < low or number > high:
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")[:1200].lower()
+        if "status: accepted" in text or "**status**: accepted" in text or "## status\naccepted" in text or "**status**: resolved" in text:
+            result[f"ADR-{number}"] = path.relative_to(repo).as_posix()
+    return result
+
+
+def normalize_capability(cap: dict[str, Any]) -> dict[str, Any]:
+    item = dict(cap)
+    for key in ["primitive_types", "implementation", "consumers", "tests", "receipts", "control_plane_audits", "known_gaps"]:
+        item[key] = [str(v) for v in _as_list(item.get(key))]
+    item["public_claim"] = bool(item.get("public_claim", False))
+    item["reality_level"] = str(item.get("reality_level", "")).upper()
+    return item
+
+
+def capability_score(cap: dict[str, Any]) -> int:
+    score = 0
+    if cap.get("owner_adr"):
+        score += 15
+    if cap.get("implementation"):
+        score += 20
+    if cap.get("consumers"):
+        score += 20
+    if cap.get("tests"):
+        score += 20
+    if cap.get("receipts") or cap.get("control_plane_audits"):
+        score += 15
+    if cap.get("reality_level") == "REAL" and not cap.get("known_gaps"):
+        score += 10
+    elif cap.get("known_gaps"):
+        score += 5
+    return min(score, 100)
+
+
+def generated_payload(repo: Path, manifest_path: Path) -> tuple[dict[str, Any], list[Finding]]:
+    manifest = load_yaml(manifest_path)
+    findings: list[Finding] = []
+    if manifest.get("schema_version") != "capability-coverage/v1":
+        findings.append(Finding("block", "manifest-schema-mismatch", "Capability coverage manifest schema_version is missing or unsupported.", path=str(manifest_path)))
+    policy = manifest.get("policy") or {}
+    coverage = policy.get("adr_coverage") or {}
+    low, high = int(coverage.get("min", 0)), int(coverage.get("max", 0))
+    raw_caps = list(manifest.get("capabilities", []) or [])
+    caps = [normalize_capability(c) for c in raw_caps]
+
+    ids: set[str] = set()
+    owner_adrs: dict[str, list[str]] = {}
+    public_allowed = set(policy.get("public_claim_allowed_levels", ["REAL", "PARTIAL", "RESOLVED"]) or [])
+    real_requires = policy.get("real_requires") or {}
+
+    for cap in caps:
+        cid = str(cap.get("id", ""))
+        if not cid:
+            findings.append(Finding("block", "capability-id-missing", "Capability declaration is missing id."))
+            continue
+        if cid in ids:
+            findings.append(Finding("block", "capability-id-duplicate", "Capability id is duplicated.", capability=cid))
+        ids.add(cid)
+        level = cap.get("reality_level")
+        if level not in LEVELS:
+            findings.append(Finding("block", "reality-level-invalid", "Capability has invalid reality_level.", capability=cid, details={"level": level}))
+        owner = str(cap.get("owner_adr", ""))
+        if not owner:
+            findings.append(Finding("block", "owner-adr-missing", "Capability must declare owner_adr.", capability=cid))
+        else:
+            owner_adrs.setdefault(owner, []).append(cid)
+            adr_path = repo / "docs" / "adrs"
+            if not list(adr_path.glob(f"{owner}-*.md")) and not (adr_path / f"{owner}.md").exists():
+                findings.append(Finding("block", "owner-adr-file-missing", "Capability owner_adr file does not exist.", capability=cid, details={"owner_adr": owner}))
+        if cap.get("public_claim") and level not in public_allowed:
+            findings.append(Finding("block", "public-claim-invalid-reality", "Public capability claim cannot use this reality level.", capability=cid, details={"level": level}))
+        if level != "REAL" and level not in {"RESOLVED", "DEPRECATED"} and not cap.get("known_gaps"):
+            findings.append(Finding("block", "non-real-known-gaps-missing", "Non-REAL capability must declare known_gaps.", capability=cid))
+        if level == "REAL":
+            if real_requires.get("implementation", True) and not cap.get("implementation"):
+                findings.append(Finding("block", "real-implementation-missing", "REAL capability must declare implementation paths.", capability=cid))
+            if real_requires.get("consumers", True) and not cap.get("consumers"):
+                findings.append(Finding("block", "real-consumer-missing", "REAL capability must declare consumers/wiring.", capability=cid))
+            if real_requires.get("tests", True) and not cap.get("tests"):
+                findings.append(Finding("block", "real-tests-missing", "REAL capability must declare tests.", capability=cid))
+            if real_requires.get("receipt_or_audit", True) and not (cap.get("receipts") or cap.get("control_plane_audits")):
+                findings.append(Finding("block", "real-receipt-or-audit-missing", "REAL capability must declare receipts or control-plane audits.", capability=cid))
+        for field in ["implementation", "consumers", "tests"]:
+            for rel in cap.get(field, []):
+                if not _rel_exists(repo, rel):
+                    findings.append(Finding("block", f"{field}-path-missing", f"Declared {field} path does not exist.", capability=cid, path=rel))
+
+    if coverage.get("require_accepted_or_resolved_adr_covered", False) and low and high:
+        for adr, path in accepted_adr_numbers(repo, low, high).items():
+            if adr not in owner_adrs:
+                findings.append(Finding("block", "accepted-adr-uncovered", "Accepted/resolved ADR in coverage range is missing from capability matrix.", path=path, details={"owner_adr": adr}))
+
+    caps_sorted = sorted(caps, key=lambda c: (str(c.get("owner_adr", "")), str(c.get("id", ""))))
+    matrix_rows = []
+    for cap in caps_sorted:
+        matrix_rows.append(
+            {
+                "id": cap.get("id"),
+                "label": cap.get("label"),
+                "owner_adr": cap.get("owner_adr"),
+                "reality_level": cap.get("reality_level"),
+                "public_claim": cap.get("public_claim"),
+                "score": capability_score(cap),
+                "primitive_types": cap.get("primitive_types"),
+                "implementation_count": len(cap.get("implementation", [])),
+                "consumer_count": len(cap.get("consumers", [])),
+                "test_count": len(cap.get("tests", [])),
+                "receipt_count": len(cap.get("receipts", [])) + len(cap.get("control_plane_audits", [])),
+                "known_gaps": cap.get("known_gaps"),
+            }
+        )
+
+    report = {
+        "schema_version": SCHEMA_VERSION,
+        "status": "pass",  # set by audit after generated-staleness findings are known
+        "manifest": str(manifest_path.relative_to(repo)) if manifest_path.is_relative_to(repo) else str(manifest_path),
+        "summary": {
+            "capabilities": len(caps),
+            "real": sum(1 for c in caps if c.get("reality_level") == "REAL"),
+            "partial": sum(1 for c in caps if c.get("reality_level") == "PARTIAL"),
+            "public_claims": sum(1 for c in caps if c.get("public_claim")),
+            "coverage_min": low,
+            "coverage_max": high,
+        },
+        "matrix": matrix_rows,
+    }
+    return report, findings
+
+
+def render_matrix_md(report: dict[str, Any]) -> str:
+    lines = [
+        "# Capability Coverage Matrix",
+        "",
+        "> Generated by `scripts/cos-capability-matrix --write`. Do not edit by hand.",
+        "",
+        f"Schema: `{report['schema_version']}`",
+        "",
+        "| Capability | ADR | Reality | Public | Score | Impl | Consumers | Tests | Receipts/Audits | Known gaps |",
+        "|---|---:|---|---:|---:|---:|---:|---:|---:|---|",
+    ]
+    for row in report["matrix"]:
+        gaps = ", ".join(row.get("known_gaps") or []) or "—"
+        lines.append(
+            f"| `{row['id']}` — {row.get('label') or ''} | {row['owner_adr']} | {row['reality_level']} | {str(row['public_claim']).lower()} | {row['score']} | {row['implementation_count']} | {row['consumer_count']} | {row['test_count']} | {row['receipt_count']} | {gaps} |"
+        )
+    lines.extend(["", "## Summary", "", "```json", json.dumps(report["summary"], indent=2, sort_keys=True), "```", ""])
+    return "\n".join(lines)
+
+
+def sha256_text(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def audit(repo: Path, manifest_path: Path, *, check_generated: bool = False) -> dict[str, Any]:
+    report, findings = generated_payload(repo, manifest_path)
+    manifest = load_yaml(manifest_path)
+    outputs = ((manifest.get("policy") or {}).get("generated_outputs") or {})
+    matrix_rel = str(outputs.get("matrix_md", "docs/capabilities/MATRIX.md"))
+    latest_rel = str(outputs.get("latest_json", "docs/reports/capability-coverage-latest.json"))
+    report["outputs"] = {"matrix_md": matrix_rel, "latest_json": latest_rel}
+
+    def apply_findings(current: list[Finding]) -> None:
+        items = [f.to_dict() for f in current]
+        block = sum(1 for f in items if f["severity"] == "block")
+        warn = sum(1 for f in items if f["severity"] == "warn")
+        report["status"] = "block" if block else "warn" if warn else "pass"
+        report["summary"].update({"block": block, "warn": warn, "findings": len(items)})
+        report["findings"] = items
+
+    # First compute the report exactly as --write would persist it, before any
+    # generated-staleness findings are added. Otherwise the check is circular:
+    # detecting staleness changes the JSON being compared.
+    apply_findings(findings)
+    expected_report = {**report, "findings": []}
+    matrix_text = render_matrix_md(expected_report)
+    latest_text = json.dumps(expected_report, indent=2, sort_keys=True) + "\n"
+
+    if check_generated:
+        existing_matrix = (repo / matrix_rel).read_text(encoding="utf-8", errors="replace") if (repo / matrix_rel).exists() else ""
+        existing_latest = (repo / latest_rel).read_text(encoding="utf-8", errors="replace") if (repo / latest_rel).exists() else ""
+        if sha256_text(existing_matrix) != sha256_text(matrix_text):
+            findings.append(Finding("block", "generated-matrix-stale", "Generated capability matrix markdown is stale. Run scripts/cos-capability-matrix --write.", path=matrix_rel))
+        if sha256_text(existing_latest) != sha256_text(latest_text):
+            findings.append(Finding("block", "generated-report-stale", "Generated capability coverage JSON report is stale. Run scripts/cos-capability-matrix --write.", path=latest_rel))
+        apply_findings(findings)
+    return report
+
+
+def write_outputs(repo: Path, manifest_path: Path) -> dict[str, Any]:
+    report = audit(repo, manifest_path, check_generated=False)
+    outputs = report["outputs"]
+    matrix_path = repo / outputs["matrix_md"]
+    latest_path = repo / outputs["latest_json"]
+    clean_report = dict(report)
+    clean_report["status"] = "pass" if not clean_report.get("findings") else clean_report["status"]
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    latest_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_path.write_text(render_matrix_md(clean_report), encoding="utf-8")
+    latest_path.write_text(json.dumps({**clean_report, "findings": []}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return report
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", default=".")
+    parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--write", action="store_true")
+    parser.add_argument("--check-generated", action="store_true")
+    args = parser.parse_args()
+    root = repo_root(Path(args.project_dir))
+    manifest = Path(args.manifest)
+    if not manifest.is_absolute():
+        manifest = root / manifest
+    report = write_outputs(root, manifest) if args.write else audit(root, manifest, check_generated=args.check_generated)
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"capability-coverage: {report['status']} {report['summary']}")
+        for finding in report.get("findings", []):
+            print(f"[{finding['severity']}] {finding['code']}: {finding['message']}")
+    return 1 if report["summary"].get("block", 0) else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
