@@ -20,13 +20,13 @@ TEMPLATE = REPO_ROOT / "templates" / "service-map.example.yaml"
 # Curated list of identifiers that must NOT appear in the hook source
 # after the Tier 1 refactor. Reappearance falsifies the portability claim.
 LEAKED_TOKENS = (
-    "<consumer-codename-b>",
-    "<consumer-codename-c>",
+    "consumer-beta",
+    "service-alpha",
     "onboarding",
-    "<consumer-codename-a>",
-    "<consumer-service>",
+    "consumer-alpha",
+    "service-beta",
     "monolith",
-    "<consumer-service-2>",
+    "service-gamma",
 )
 
 

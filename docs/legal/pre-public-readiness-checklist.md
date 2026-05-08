@@ -20,7 +20,7 @@
 
 ### C1. Git history sanitized (ADR-218)
 
-Risk: consumer codenames (env-var protected list), operator email, machine
+Risk: consumer codenames (env-var protected private list), operator email, machine
 paths, sister-project paths visible in commit history once public.
 
 Required actions:
@@ -44,9 +44,8 @@ Status: `pending`
 
 ### C2. Client-project coupling removed (Tiers 1–4)
 
-Risk: 28 OS files reference one consumer's services
-(`<consumer-codename-a>`, `<consumer-codename-b>`, `<consumer-codename-c>`, `<consumer-service>`, `<consumer-service-2>`, etc.).
-Public release of these strings is an NDA-adjacent exposure.
+Risk: historical OS files referenced one consumer's private service and codename vocabulary.
+Public release of those raw strings would be an NDA-adjacent exposure.
 
 Required actions:
 
@@ -59,7 +58,7 @@ Required actions:
 - [x] Tier 4 — 4 test fixtures + benchmark configs swept
   (Evidence: commit `ce8d1ea8`)
 - [ ] `scripts/audit-consumer-dependence.sh .` returns 0 matches
-  outside of `docs/business/case-study.md` and `open-source-design.md`
+  outside of explicitly approved sanitized case-study docs
 - [x] All Tier commits landed on `main`
   (Evidence: merge commit `8f1c8f00` — "Merge Tiers 1-4 of case-study leak audit (privacy decoupling)")
 
@@ -223,15 +222,15 @@ Required actions:
 - [x] Fresh clone → first useful skill invocation under 10 minutes —
       documented in [`docs/onboarding/walkthrough.md`](../onboarding/walkthrough.md).
       Live measurement: 52s for steps 4-7, ~7 min total including
-      read-only steps. Transcript:
-      `docs/onboarding/walkthrough-transcript-20260508T033934Z.log`.
+      read-only steps. Public-safe command snippets are copied into the
+      walkthrough; raw terminal transcripts remain local-only until sanitized.
 - [x] `validate-release` skill output captured — `skills/validate-release`
       is a markdown agent-instructions skill (no executable). Closest
       invocable proxy `cos-status.sh` captured in transcript appendix
       and `/tmp/m2-cos-status.log`.
-- [ ] Recorded asciicast or screencast linked from `README.md` — TBD;
-      operator records once the public URL is live. The captured
-      transcript log serves as a textual asciicast in the interim.
+- [ ] Recorded asciicast or screencast linked from `README.md` — pending public-release recording;
+      operator records once the public URL is live. Raw local transcript
+      logs are not public artifacts and must not be committed.
 
 Status: `mostly-complete` (asciicast pending operator recording)
 

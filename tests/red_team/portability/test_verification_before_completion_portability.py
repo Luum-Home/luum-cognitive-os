@@ -11,15 +11,15 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SKILL = REPO_ROOT / "packages" / "verification-audit" / "skills" / "verification-before-completion" / "SKILL.md"
 
 LEAKED_TOKENS = (
-    "<consumer-codename-a>",
-    "<consumer-codename-b>",
-    "<consumer-codename-c>",
-    "<consumer-service>",
-    "<consumer-service-3>",
-    "<consumer-service-2>",
-    "<consumer-service-4>",
-    "<consumer-service-5>",
-    "services/acme",
+    "consumer-alpha",
+    "consumer-beta",
+    "service-alpha",
+    "service-beta",
+    "Consumer Alpha",
+    "service-gamma",
+    "service-alpha-go",
+    "example-services/",
+    "services/example",
 )
 
 
@@ -39,7 +39,7 @@ def test_no_consumer_tokens_in_skill_source() -> None:
 def test_falsification_guard_detects_seeded_token(tmp_path: Path) -> None:
     """Falsification probe: if we deliberately seed a leak, the gate must fail."""
     decoy = tmp_path / "DECOY.md"
-    decoy.write_text("This file mentions <consumer-codename-a> for the test.", encoding="utf-8")
+    decoy.write_text("This file mentions consumer-alpha for the test.", encoding="utf-8")
     text = decoy.read_text(encoding="utf-8")
     leaks = [tok for tok in LEAKED_TOKENS if tok in text]
     assert leaks, "falsification probe failed: known leak token was not detected"

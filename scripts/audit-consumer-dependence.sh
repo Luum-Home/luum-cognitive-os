@@ -44,20 +44,20 @@ if [[ ! -d "$CONSUMER_REPO" ]]; then
   exit 2
 fi
 
-# Default tokens — the literal strings the OS currently emits/detects that
-# would break consumer tooling if renamed without an alias.
+# Default tokens are public-safe placeholders. For real consumer audits, pass
+# a private token file with the literal strings that would break consumer tooling
+# if renamed without an alias.
 DEFAULT_TOKENS=(
-  "<consumer-codename-a>"
-  "<consumer-codename-b>"
-  "<consumer-codename-c>"
-  "<consumer-service>"
-  "<consumer-service-3>"
-  "<consumer-service-5>"
-  "services/acme"
-  "<consumer-service-2>"
-  "<consumer-service-4>"
+  "consumer-alpha"
+  "consumer-beta"
+  "service-alpha"
+  "service-beta"
+  "Consumer Alpha"
+  "example-services/"
+  "services/example"
+  "service-gamma"
+  "service-alpha-go"
 )
-
 if [[ -n "$TOKEN_FILE" ]]; then
   if [[ ! -f "$TOKEN_FILE" ]]; then
     echo "error: token file not found: $TOKEN_FILE" >&2
