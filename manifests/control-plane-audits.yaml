@@ -30,18 +30,21 @@ lanes:
     max_seconds: 20
     audits:
       - primitive-coherence
+      - primitive-behavior
       - postmortem-regressions
   hourly:
     description: Periodic local sweep for primitive drift and postmortem regressions.
     max_seconds: 60
     audits:
       - primitive-coherence
+      - primitive-behavior
       - postmortem-regressions
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
     audits:
       - primitive-coherence
+      - primitive-behavior
       - postmortem-regressions
       - pre-public-risk
 
@@ -50,6 +53,12 @@ audits:
     adr: ADR-240
     command: [python3, scripts/primitive-coherence-audit.py, --json]
     expected_schema: primitive-coherence-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  primitive-behavior:
+    adr: ADR-249
+    command: [python3, scripts/primitive-behavior-audit.py, --json]
+    expected_schema: primitive-behavior-audit/v1
     consumes_sensitive_values: false
     mutates: false
   postmortem-regressions:

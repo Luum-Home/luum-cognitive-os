@@ -1,0 +1,143 @@
+schema_version: primitive-behavior-contracts/v1
+status: active
+owner: platform-safety
+purpose: >
+  Declare behavioral proof requirements for critical governance primitives so
+  tests prove runtime behavior and fail-closed semantics, not just file presence
+  or manifest wiring.
+policy:
+  minimum_for_critical_primitives:
+    - at_least_one_falsification_probe
+    - runtime_execution_or_public_api_call
+    - fail_closed_assertion
+    - boundary_or_positive_control_when_relevant
+  overfit_smells_warn_only:
+    - existence_only
+    - syntax_only
+    - manifest_only
+
+contracts:
+  - id: branch-switch-blocker
+    adr: ADR-239
+    primitive: hooks/destructive-git-blocker.sh
+    criticality: high
+    proof_tests:
+      - tests/unit/test_destructive_git_block.py
+      - tests/behavior/test_destructive_git_blocker.py
+    required_evidence:
+      - id: branch-switch-falsification
+        description: Test includes branch/context switch attempts, not only checkout pathspec restore.
+        patterns:
+          - 'git switch'
+          - 'git checkout fix/c4-portability-test-failures'
+      - id: fail-closed-assertion
+        description: Test asserts the blocker rejects the unsafe operation.
+        patterns:
+          - 'returncode\s*==\s*[12]'
+          - 'BLOCKED'
+      - id: explicit-bypass-boundary
+        description: Test covers the explicit operator bypass surface.
+        patterns:
+          - 'COS_ALLOW_BRANCH_SWITCH'
+          - '--allow-branch-switch'
+
+  - id: pre-public-sensitive-data-gate
+    adr: ADR-218
+    primitive: scripts/cos-pre-public-risk-audit
+    criticality: high
+    proof_tests:
+      - tests/behavior/test_pre_public_risk_audit.py
+    required_evidence:
+      - id: configured-token-falsification
+        patterns:
+          - 'COS_HISTORY_SANITIZE_OPERATOR_EMAIL'
+          - 'configured-sensitive-token-in-history'
+      - id: internal-trailer-falsification
+        patterns:
+          - 'X-COS-Session'
+          - 'x-cos-trailers-in-history'
+      - id: provider-identity-falsification
+        patterns:
+          - 'noreply@anthropic\.com'
+          - 'fake-or-provider-author-metadata'
+      - id: human-author-preservation
+        patterns:
+          - 'human@example\.com'
+          - 'preserve'
+
+  - id: history-sanitization-content-only
+    adr: ADR-218
+    primitive: lib/history_sanitization.py
+    criticality: high
+    proof_tests:
+      - tests/unit/test_history_sanitization.py
+      - tests/behavior/test_history_sanitization_execute.py
+    required_evidence:
+      - id: content-rewrite-falsification
+        patterns:
+          - 'SECRET_EMAIL not in post_content'
+          - 'secret email still present in content after rewrite'
+      - id: author-metadata-preserved
+        patterns:
+          - 'SECRET_NAME.*SECRET_EMAIL'
+          - 'metadata_rewrite_enabled.*False'
+      - id: metadata-rewrite-explicit-flag
+        patterns:
+          - 'COS_HISTORY_SANITIZE_METADATA'
+          - 'test_execute_metadata_rewrite_requires_explicit_env'
+      - id: commit-message-boundary
+        patterns:
+          - 'commit_message_rewrite_enabled.*False'
+          - 'X-COS-Session'
+
+  - id: release-freeze-transaction-boundary
+    adr: ADR-246
+    primitive: scripts/cos-release-freeze
+    criticality: high
+    proof_tests:
+      - tests/behavior/test_release_freeze.py
+      - tests/unit/test_release_freeze_control_plane.py
+    required_evidence:
+      - id: dirty-tree-falsification
+        patterns:
+          - 'test_prepare_blocks_dirty_worktree'
+          - 'working-tree-dirty'
+      - id: active-claim-falsification
+        patterns:
+          - 'test_prepare_blocks_active_task_claim'
+          - 'active-task-claims'
+      - id: transaction-mismatch-falsification
+        patterns:
+          - 'release-freeze-transaction-required'
+          - 'wrong-id'
+      - id: receipt-flow-positive-control
+        patterns:
+          - 'begin\('
+          - 'end\('
+          - 'status\(repo\)'
+
+  - id: hook-registration-classification-projection
+    adr: ADR-240
+    primitive: scripts/primitive-coherence-audit.py
+    criticality: high
+    proof_tests:
+      - tests/unit/test_primitive_coherence_audit.py
+      - tests/audit/test_hook_registration_classification.py
+      - tests/behavior/test_pre_commit_hook_registration.py
+    required_evidence:
+      - id: active-hook-not-registered-falsification
+        patterns:
+          - 'active-hook-not-registered'
+          - 'status:\s*active'
+      - id: inactive-hook-registered-falsification
+        patterns:
+          - 'inactive-hook-registered'
+          - 'manual_trigger'
+      - id: checker-disagreement-falsification
+        patterns:
+          - 'registration-checker-classification-disagreement'
+          - 'intentionally optional'
+      - id: real-profile-source-boundary
+        patterns:
+          - 'security profile JSON source of truth'
+          - 'standard\.json'
