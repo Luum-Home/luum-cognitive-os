@@ -23,7 +23,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 
 | Metric | Count | Notes |
 |---|---|---|
-| Total hook files on disk (`hooks/*.sh`) | **216** | Flat invocable hook scripts under `hooks/` |
+| Total hook files on disk (`hooks/*.sh`) | **218** | Flat invocable hook scripts under `hooks/` |
 | Library helpers (`hooks/_lib/*.sh`) | **13** | Sourced by other hooks, not invocable directly (cache.sh, common.sh, etc.) |
 | Invocable hooks (`hooks/*.sh`, excl. `_lib/`) | **118** (flat list) | `_lib/` is a subdir, so counts unchanged |
 | **Functional-wired** (full profile) | **55** | Registered in `.claude/settings.json` |
@@ -355,3 +355,5 @@ architecturally meaningful (closes the PITER Evaluate→Refine edge).
 - `scripts/apply-efficiency-profile.sh` — profile tier source of truth
 - `.claude/settings.json` — current wiring (full profile)
 - `hooks/self-install.sh` — installation entrypoint (the orchestrator for hook discovery)
+- `hooks/ai-provider-identity-guard.sh` — standalone provenance/identity guard invoked by git hooks and scripts, not lifecycle-projected
+- `hooks/session-end-cleanup.sh` — optional SessionEnd cleanup hook; intentionally unregistered until cleanup tier policy is default-on

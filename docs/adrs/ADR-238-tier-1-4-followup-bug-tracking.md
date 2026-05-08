@@ -216,3 +216,36 @@ All 5 bugs are now resolved (2026-05-08, branch `session/m3-medium-resolutions-v
 
 Each fix landed in its own commit (or its parent merge commit on a parallel
 branch) referencing ADR-238 in the message.
+
+## Alternatives rejected
+
+- **Track each bug as a separate ADR (ADR-237b through ADR-237f).**
+  Rejected: 5 thematically-linked follow-up bugs from a single audit pass
+  fragment poorly across the ADR catalog and bloat numbering. A single
+  consolidated ADR with a Bug Registry section keeps the audit chain
+  navigable and lets each fix commit cite a single canonical ID.
+- **File 5 GitHub issues instead of an ADR.**
+  Rejected: this project does not use the issue tracker as the canonical
+  decision record (see ADR-088 provenance model). ADRs are the durable
+  audit surface; issues are ephemeral. Critical/HIGH severity findings
+  belong in ADRs.
+- **Auto-fix in the same commit as discovery.**
+  Rejected: separation of concerns. Discovery happens during a focused
+  audit (Tier 1-4 leak audit) where landing fixes inline would smear scope
+  and complicate review. Tracking-then-fixing keeps each step verifiable.
+
+## Verification
+
+Each bug has an explicit reproducer command in its registry entry. The
+fix commits cite the bug number; the test suite gates regression:
+
+- Bug 1: `pytest tests/unit/ -k kpi_trigger` (passes; commit `d00a9255`)
+- Bug 2: `pytest tests/audit/test_rules_enforcement.py -k missing_file` (passes; commit `44fa5ff7`)
+- Bug 3: `pytest tests/red_team/portability/cos_concurrent_status_test.py` (5/5; commit `f016843e`)
+- Bug 4: `pytest tests/red_team/portability/post-agent-verify_test.py` (4/4; commit `4b18b25d`)
+- Bug 5: `pytest tests/chaos/test_global_verify_regression_catches.py` then
+  `wc -l lib/targeted_test_resolver.py` (must equal 149 — defense-in-depth
+  byte-snapshot in the chaos test asserts this; commit `e0d9ba75`)
+
+Whole-project verification: `pytest tests/red_team/portability/ -q` reports
+**165/165 PASS** as of 2026-05-08 (closes C4 portability lane).

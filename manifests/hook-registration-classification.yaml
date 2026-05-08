@@ -3,6 +3,18 @@ scope: top-level hooks/*.sh absent from .claude/settings.json after ADR-144 proj
 contract: Every unregistered top-level hook must appear here with status, rationale,
   and next_action.
 entries:
+- path: hooks/ai-provider-identity-guard.sh
+  status: opt_in
+  rationale: ADR-238 follow-up — blocks invented AI-provider identities at commit
+    time. Wired into the public-rewrites bypass path; not registered globally
+    because it would conflict with non-AI-assisted workflows.
+  next_action: Promote to active once the bypass-path safety case is documented.
+- path: hooks/session-end-cleanup.sh
+  status: opt_in
+  rationale: ADR-238 follow-up — runs cos-cleanup tier-1 (low-risk auto cleanup)
+    on session close. Operator action — not registered by default to avoid silent
+    state mutation on every session.
+  next_action: Promote to active after operator opt-in via cognitive-os.yaml.
 - path: hooks/adr-detector.sh
   status: future
   rationale: ADR-reference prompt detection is planned for UserPromptSubmit; no default
