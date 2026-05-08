@@ -3,6 +3,27 @@ status: active
 owner: platform-safety
 policy: detect-first-remediate-second
 
+outputs:
+  latest_report: .cognitive-os/reports/control-plane/latest.json
+  remediation_queue: .cognitive-os/tasks/control-plane-remediation.jsonl
+  metrics_stream: .cognitive-os/metrics/control-plane-audit.jsonl
+  state_file: .cognitive-os/runtime/control-plane-audit/findings-state.json
+
+metrics:
+  - findings_by_adr
+  - time_to_detect
+  - time_to_remediate
+  - recurrence_count
+  - false_positive_rate
+
+remediation:
+  doctrine: detect -> propose -> apply only declared safe classes -> measure result
+  safe_classes:
+    - stale-generated-report
+    - missing-generated-index
+    - cache-runtime-garbage
+  safe_fixes: {}
+
 lanes:
   hook-fast:
     description: Fast non-mutating checks safe for lifecycle hooks.

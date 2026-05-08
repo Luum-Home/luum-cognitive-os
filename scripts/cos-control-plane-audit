@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
 """Run manifest-declared control-plane audits by lane.
 
-This is the scheduler/aggregator layer for ADR-239+ follow-up audits. It is
-read-only: commands declared here must report JSON and must not mutate state.
+ADR-248 control loop:
+  detect -> propose -> apply only declared safe classes -> measure result
+
+The runner is still audit-first. It writes metrics/reports/queue entries, but it
+only mutates repo state for auto-remediation when --apply-safe-fixes is passed
+and the manifest declares a safe class plus a concrete command.
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import subprocess
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -17,6 +23,21 @@ import yaml
 
 SCHEMA_VERSION = "control-plane-audit-run/v1"
 DEFAULT_MANIFEST = Path("manifests/control-plane-audits.yaml")
+STATE_VERSION = "control-plane-audit-state/v1"
+QUEUE_VERSION = "control-plane-remediation/v1"
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def parse_utc(value: str | None) -> float | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return None
 
 
 def git_root(start: Path) -> Path:
@@ -30,6 +51,21 @@ def load_yaml(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
     return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def append_jsonl(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(payload, sort_keys=True) + "\n")
 
 
 def run_audit(root: Path, audit_id: str, spec: dict[str, Any], timeout: float) -> dict[str, Any]:
@@ -84,6 +120,170 @@ def run_audit(root: Path, audit_id: str, spec: dict[str, Any], timeout: float) -
     }
 
 
+def _finding_identity(lane: str, audit: dict[str, Any], finding: dict[str, Any]) -> str:
+    core = {
+        "lane": lane,
+        "audit": audit.get("id"),
+        "adr": audit.get("adr") or finding.get("adr"),
+        "code": finding.get("code") or finding.get("id"),
+        "message": finding.get("message"),
+        "path": finding.get("path") or finding.get("primitive") or finding.get("file"),
+        "rule": finding.get("rule_id") or finding.get("id"),
+    }
+    raw = json.dumps(core, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+
+
+def enrich_findings(report: dict[str, Any]) -> list[dict[str, Any]]:
+    enriched: list[dict[str, Any]] = []
+    lane = str(report.get("lane", "unknown"))
+    for audit in report.get("audits", []) or []:
+        for finding in audit.get("findings", []) or []:
+            item = dict(finding)
+            item.setdefault("adr", audit.get("adr"))
+            item["audit_id"] = audit.get("id")
+            item["lane"] = lane
+            item["stable_id"] = _finding_identity(lane, audit, item)
+            enriched.append(item)
+    return enriched
+
+
+def remediation_dirs(root: Path) -> dict[str, Path]:
+    return {
+        "runtime": root / ".cognitive-os" / "runtime" / "control-plane-audit",
+        "reports": root / ".cognitive-os" / "reports" / "control-plane",
+        "metrics": root / ".cognitive-os" / "metrics",
+        "tasks": root / ".cognitive-os" / "tasks",
+    }
+
+
+def load_labels(root: Path) -> dict[str, str]:
+    labels: dict[str, str] = {}
+    path = remediation_dirs(root)["tasks"] / "control-plane-remediation-labels.jsonl"
+    if not path.exists():
+        return labels
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        sid = payload.get("stable_id")
+        label = payload.get("label")
+        if sid and label:
+            labels[str(sid)] = str(label)
+    return labels
+
+
+def update_state_and_metrics(root: Path, report: dict[str, Any], *, write_state: bool) -> dict[str, Any]:
+    now = utc_now()
+    now_ts = parse_utc(now) or time.time()
+    dirs = remediation_dirs(root)
+    state_path = dirs["runtime"] / "findings-state.json"
+    previous = load_json(state_path)
+    previous_findings: dict[str, Any] = previous.get("findings", {}) if isinstance(previous.get("findings"), dict) else {}
+    current = {finding["stable_id"]: finding for finding in enrich_findings(report)}
+    labels = load_labels(root)
+
+    active_state: dict[str, Any] = {}
+    new_entries: list[dict[str, Any]] = []
+    recurrences = 0
+    for stable_id, finding in current.items():
+        old = previous_findings.get(stable_id, {})
+        first_seen = old.get("first_seen_at") or now
+        occurrence_count = int(old.get("occurrence_count", 0)) + 1
+        recurrence_count = int(old.get("recurrence_count", 0))
+        if old.get("status") == "resolved":
+            recurrence_count += 1
+            recurrences += 1
+        state_item = {
+            "stable_id": stable_id,
+            "status": "active",
+            "first_seen_at": first_seen,
+            "last_seen_at": now,
+            "occurrence_count": occurrence_count,
+            "recurrence_count": recurrence_count,
+            "adr": finding.get("adr"),
+            "audit_id": finding.get("audit_id"),
+            "code": finding.get("code") or finding.get("id"),
+            "severity": finding.get("severity"),
+            "message": finding.get("message"),
+            "label": labels.get(stable_id),
+        }
+        active_state[stable_id] = state_item
+        if not old or old.get("status") == "resolved":
+            new_entries.append({
+                "schema_version": QUEUE_VERSION,
+                "event": "proposed",
+                "created_at": now,
+                "stable_id": stable_id,
+                "adr": state_item["adr"],
+                "audit_id": state_item["audit_id"],
+                "code": state_item["code"],
+                "severity": state_item["severity"],
+                "message": state_item["message"],
+                "safe_class": None,
+                "status": "queued",
+            })
+
+    resolved_entries: list[dict[str, Any]] = []
+    for stable_id, old in previous_findings.items():
+        if stable_id in current:
+            continue
+        if old.get("status") == "active":
+            first_ts = parse_utc(old.get("first_seen_at")) or now_ts
+            resolved_entries.append({
+                "stable_id": stable_id,
+                "adr": old.get("adr"),
+                "code": old.get("code"),
+                "time_to_remediate_seconds": round(now_ts - first_ts, 3),
+            })
+            old = dict(old)
+            old["status"] = "resolved"
+            old["resolved_at"] = now
+            old["time_to_remediate_seconds"] = round(now_ts - first_ts, 3)
+            active_state[stable_id] = old
+        else:
+            active_state[stable_id] = old
+
+    label_values = list(labels.values())
+    labeled = len(label_values)
+    false_positive = sum(1 for value in label_values if value == "false-positive")
+    by_adr: dict[str, int] = {}
+    for item in current.values():
+        adr = str(item.get("adr") or "unknown")
+        by_adr[adr] = by_adr.get(adr, 0) + 1
+
+    metrics = {
+        "schema_version": "control-plane-audit-metrics/v1",
+        "timestamp": now,
+        "lane": report.get("lane"),
+        "status": report.get("status"),
+        "findings_total": len(current),
+        "findings_by_adr": by_adr,
+        "new_findings": len(new_entries),
+        "resolved_findings": len(resolved_entries),
+        "recurrence_count": recurrences,
+        "false_positive_rate": (false_positive / labeled) if labeled else 0.0,
+        "labeled_findings": labeled,
+        "time_to_remediate": resolved_entries,
+    }
+
+    report.setdefault("control_plane_metrics", metrics)
+    report["findings_enriched"] = list(current.values())
+    report["remediation_queue_path"] = str(dirs["tasks"] / "control-plane-remediation.jsonl")
+    report["latest_report_path"] = str(dirs["reports"] / "latest.json")
+
+    if write_state:
+        dirs["runtime"].mkdir(parents=True, exist_ok=True)
+        state_path.write_text(json.dumps({"schema_version": STATE_VERSION, "updated_at": now, "findings": active_state}, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        dirs["reports"].mkdir(parents=True, exist_ok=True)
+        (dirs["reports"] / "latest.json").write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        append_jsonl(dirs["metrics"] / "control-plane-audit.jsonl", metrics)
+        for entry in new_entries:
+            append_jsonl(dirs["tasks"] / "control-plane-remediation.jsonl", entry)
+    return metrics
+
+
 def run_lane(root: Path, manifest: dict[str, Any], lane_name: str) -> dict[str, Any]:
     lanes = manifest.get("lanes", {}) or {}
     audits = manifest.get("audits", {}) or {}
@@ -109,8 +309,55 @@ def run_lane(root: Path, manifest: dict[str, Any], lane_name: str) -> dict[str, 
         "lane": lane_name,
         "summary": {"block": block, "warn": warn, "findings": findings, "audits": len(results)},
         "audits": results,
-        "policy": "Read-only control-plane audit aggregation for ADR-239+ loops.",
+        "policy": "detect -> propose -> apply only declared safe classes -> measure; no autonomous broad fixes.",
     }
+
+
+def safe_fix_specs(manifest: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    remediation = manifest.get("remediation") or {}
+    safe_classes = set(str(item) for item in remediation.get("safe_classes", []) or [])
+    specs: dict[str, dict[str, Any]] = {}
+    for fix_id, spec in (remediation.get("safe_fixes") or {}).items():
+        safe_class = str(spec.get("safe_class", ""))
+        code = str(spec.get("finding_code", ""))
+        if safe_class in safe_classes and code:
+            item = dict(spec)
+            item["id"] = fix_id
+            specs[code] = item
+    return specs
+
+
+def apply_safe_fixes(root: Path, manifest: dict[str, Any], report: dict[str, Any]) -> list[dict[str, Any]]:
+    specs = safe_fix_specs(manifest)
+    applied: list[dict[str, Any]] = []
+    if not specs:
+        return applied
+    for finding in report.get("findings_enriched", enrich_findings(report)):
+        code = str(finding.get("code") or finding.get("id") or "")
+        spec = specs.get(code)
+        if not spec:
+            continue
+        cmd = [str(part) for part in spec.get("command", [])]
+        if not cmd:
+            applied.append({"id": spec.get("id"), "status": "skipped", "reason": "missing-command", "finding": finding.get("stable_id")})
+            continue
+        before = len(enrich_findings(report))
+        proc = subprocess.run(cmd, cwd=str(root), text=True, capture_output=True, check=False, timeout=float(spec.get("timeout_seconds", 30)))
+        measured = run_lane(root, manifest, str(report.get("lane", "hook-fast")))
+        after = len(enrich_findings(measured))
+        applied.append({
+            "schema_version": "control-plane-safe-fix/v1",
+            "id": spec.get("id"),
+            "safe_class": spec.get("safe_class"),
+            "finding_code": code,
+            "finding_stable_id": finding.get("stable_id"),
+            "status": "applied" if proc.returncode == 0 else "failed",
+            "returncode": proc.returncode,
+            "stdout_tail": proc.stdout[-1000:],
+            "stderr_tail": proc.stderr[-1000:],
+            "measurement": {"before_findings": before, "after_findings": after, "reduced": after < before},
+        })
+    return applied
 
 
 def main() -> int:
@@ -120,16 +367,30 @@ def main() -> int:
     parser.add_argument("--lane", default="hook-fast", choices=["hook-fast", "hourly", "pre-public"])
     parser.add_argument("--json", action="store_true")
     parser.add_argument("--strict", action="store_true", help="Treat warnings as failures.")
+    parser.add_argument("--no-write-state", action="store_true", help="Do not write latest report, metrics, or remediation queue.")
+    parser.add_argument("--apply-safe-fixes", action="store_true", help="Apply only manifest-declared safe_class remediations, then measure.")
     args = parser.parse_args()
     root = git_root(args.project_dir)
     manifest_path = args.manifest or (root / DEFAULT_MANIFEST)
-    report = run_lane(root, load_yaml(manifest_path), args.lane)
+    manifest = load_yaml(manifest_path)
+    report = run_lane(root, manifest, args.lane)
+    update_state_and_metrics(root, report, write_state=not args.no_write_state)
+    if args.apply_safe_fixes:
+        fixes = apply_safe_fixes(root, manifest, report)
+        report["safe_fixes"] = fixes
+        if fixes:
+            # Re-run after fixes and refresh metrics/report. This is the measure step.
+            report = run_lane(root, manifest, args.lane)
+            report["safe_fixes"] = fixes
+            update_state_and_metrics(root, report, write_state=not args.no_write_state)
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
         print(f"control-plane audit {args.lane}: {report['status']}")
         for audit in report.get("audits", []):
             print(f"- {audit['id']}: {audit['status']} {audit['summary']}")
+        if report.get("remediation_queue_path"):
+            print(f"remediation queue: {report['remediation_queue_path']}")
     if report["summary"].get("block", 0):
         return 1
     if args.strict and report["summary"].get("warn", 0):
