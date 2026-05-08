@@ -342,6 +342,71 @@ root-level lockfile by design.
 - **Reproducible builds** — Python wheel reproducibility and Go binary
   determinism are tracked under future ADRs.
 
+### 4.3 Third-party CLI tool digests
+
+The project depends on third-party CLI tools enumerated in
+`manifests/dependencies.yaml`. Operators install these via `brew`, `apt`,
+`pip`, `npm`, or `go install` — each of which has its own digest model. The
+project itself does **not** redistribute these binaries; the table below
+records the canonical install path and the verification step the operator
+should run before trusting the binary.
+
+| Tool              | Criticality | Install path (per manifest)                              | Operator verification                                  |
+| ----------------- | ----------- | -------------------------------------------------------- | ------------------------------------------------------ |
+| `jq`              | required    | `brew install jq` / `apt-get install jq`                 | OS package manager signature verification             |
+| `git`             | required    | `brew install git` / `apt-get install git`               | OS package manager signature verification             |
+| `uv`              | required    | `brew install uv` / Astral installer                     | uv release page sha256 against shasum                 |
+| `python3`         | required    | platform installer; ≥3.11                                | OS package manager signature verification             |
+| `engram`          | recommended | `brew install gentleman-programming/tap/engram`          | brew tap signature verification                       |
+| `gh`              | recommended | `brew install gh` / `apt-get install gh`                 | OS package manager signature verification             |
+| `docker`          | optional    | docker-desktop installer                                 | upstream Docker Inc. signed installer                 |
+| `aguara`          | optional    | `go install github.com/garagon/aguara@latest`            | Go module proxy GOSUMDB                               |
+| `mcp-scan`        | optional    | `pip install --user mcp-scan`                            | PyPI sha256 (with `pip --require-hashes` if pinned)   |
+| `git-filter-repo` | optional    | `bash scripts/install-git-filter-repo.sh`                | upstream `git-filter-repo` SHA256SUMS                 |
+| `semgrep`         | optional    | `brew install semgrep` / `pip install --user semgrep`    | OS package manager / PyPI sha256                      |
+| `parry-guard`     | optional    | `brew install vaporif/tap/parry-guard`                   | brew tap signature verification                       |
+| `promptfoo`       | optional    | `npm install -g promptfoo`                               | npm registry integrity hash (sha512)                  |
+| `garak`           | optional    | `pip install --user garak`                               | PyPI sha256                                           |
+| `goreleaser`      | recommended | `bash scripts/install-goreleaser.sh --install`           | goreleaser release page sha256 (script verifies)      |
+| `syft`            | required for SBOM regen | `brew install syft` / upstream installer     | anchore release page sha256                           |
+| `grype`           | required for vuln scan  | `brew install grype` / upstream installer    | anchore release page sha256                           |
+
+**Honest gap:** the project does not currently ship a frozen-digest manifest
+for these CLIs. The exact version pinned by the manifest is the version the
+operator runs at install time; once installed, the binary is what the OS
+package manager or upstream installer delivered. To upgrade the posture,
+`manifests/dependencies.yaml` would need a `pinned_version` + `sha256` field
+per tool, populated from the upstream release page on each bump. Tracked as
+follow-up under ADR-238.
+
+For reproducibility-critical operators: `syft` and `grype` are the two CLIs
+that materially affect SBOM provenance. Pin the exact upstream versions:
+
+```bash
+SYFT_VERSION=v1.44.0     # what generated the committed sbom.json
+GRYPE_VERSION=v0.86.1    # known-compatible scanner
+syft version | head -1
+grype version | head -1
+```
+
+If local versions diverge from these, regenerate the SBOM and update §1.2.
+
+### 4.4 GitHub Actions pinning
+
+Per `manifests/cross-stack-license-audit.yaml`, mutable
+`aquasecurity/trivy-action` references are **forbidden**. Production
+workflows MUST pin third-party actions by full commit SHA.
+
+**Honest current state:** `.github/workflows/cos-binary-release.yml` (the
+only enabled workflow at the time of writing) pins to floating major tags
+(`actions/checkout@v4`, `actions/setup-go@v5`,
+`goreleaser/goreleaser-action@v6`). This is not full-SHA pinning. It is
+acceptable for a pre-public-release posture because the actions are
+first-party (`actions/*`) or maintainer-trusted (`goreleaser/*`), but it is
+not auditor-grade and is called out as a known gap. Tracked under ADR-238
+follow-up; the migration to full-SHA pins is a 5-minute mechanical change
+once a release-signing runbook lands.
+
 ---
 
 ## 5. Verifying an SBOM Matches a Release
