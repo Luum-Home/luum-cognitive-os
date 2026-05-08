@@ -33,6 +33,7 @@ the dry-run will warn for each unresolved rule.
 | Env var | Purpose | Replacement (literal) |
 | --- | --- | --- |
 | `COS_HISTORY_SANITIZE_OPERATOR_EMAIL` | operator personal email | `2144218+MatiasNAmendola@users.noreply.github.com` |
+| `COS_HISTORY_SANITIZE_OPERATOR_NAME` | operator personal name in historical metadata | `MatiasNAmendola` |
 | `COS_HISTORY_SANITIZE_HOME_PREFIX` | machine home prefix (e.g. `/Users/<name>`) | `<home>` |
 | `COS_HISTORY_SANITIZE_REPO_PATH` | absolute repo path | `<repo>` |
 | `COS_HISTORY_SANITIZE_CONSUMER_CODENAME_A` | consumer-project codename A | `<consumer-codename-a>` |
