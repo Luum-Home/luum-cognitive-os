@@ -31,7 +31,9 @@ pytestmark = pytest.mark.skipif(
 
 
 SECRET_EMAIL = "operator-test@example.invalid"
+SECRET_NAME = "Operator Test Fixture"
 SECRET_HOME = "/synthetic-home/test-operator-fixture"
+COS_TRAILER = "X-COS-Session: fixture-session-123"
 PRESERVE_MARKER = "FSL-1.1-MIT"
 
 
@@ -42,8 +44,8 @@ def _run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
 def _make_fixture_repo(repo_path: Path) -> None:
     repo_path.mkdir(parents=True, exist_ok=True)
     _run(["git", "init", "--initial-branch=main"], repo_path)
-    _run(["git", "config", "user.email", "test@fixture.invalid"], repo_path)
-    _run(["git", "config", "user.name", "Fixture Tester"], repo_path)
+    _run(["git", "config", "user.email", SECRET_EMAIL], repo_path)
+    _run(["git", "config", "user.name", SECRET_NAME], repo_path)
 
     # Commit 1: secret email in a tracked file
     (repo_path / "README.md").write_text(
@@ -51,7 +53,7 @@ def _make_fixture_repo(repo_path: Path) -> None:
         encoding="utf-8",
     )
     _run(["git", "add", "README.md"], repo_path)
-    _run(["git", "commit", "-m", "initial commit with operator email"], repo_path)
+    _run(["git", "commit", "-m", "initial commit with operator email", "-m", COS_TRAILER], repo_path)
 
     # Commit 2: home prefix in a config file
     (repo_path / "config.txt").write_text(
@@ -96,6 +98,11 @@ rules:
     value_env: TEST_OPERATOR_EMAIL
     replacement: 2144218+MatiasNAmendola@users.noreply.github.com
     rationale: test fixture
+  - id: operator-name
+    mode: literal
+    value_env: TEST_OPERATOR_NAME
+    replacement: Maintainer
+    rationale: test fixture
   - id: operator-home-prefix
     mode: literal
     value_env: TEST_OPERATOR_HOME
@@ -120,6 +127,7 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     _run(["git", "commit", "-m", "add sanitize manifest"], fixture)
 
     monkeypatch.setenv("TEST_OPERATOR_EMAIL", SECRET_EMAIL)
+    monkeypatch.setenv("TEST_OPERATOR_NAME", SECRET_NAME)
     monkeypatch.setenv("TEST_OPERATOR_HOME", SECRET_HOME)
     monkeypatch.setenv("COS_ALLOW_DESTRUCTIVE_GIT", "1")
     # Redirect backup destination to tmp so we don't pollute ~/.cognitive-os
@@ -131,8 +139,10 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     pre_count = int(pre_count_proc.stdout.strip())
     assert pre_count == 4, f"fixture should have 4 commits (3 content + manifest), got {pre_count}"
 
-    pre_grep_email = _run(["git", "log", "--all", "--pretty=format:", "-p"], fixture)
+    pre_grep_email = _run(["git", "log", "--all", "--pretty=fuller", "-p"], fixture)
     assert SECRET_EMAIL in pre_grep_email.stdout, "fixture should contain secret email pre-rewrite"
+    assert SECRET_NAME in pre_grep_email.stdout, "fixture should contain secret name pre-rewrite"
+    assert COS_TRAILER in pre_grep_email.stdout, "fixture should contain COS trailer pre-rewrite"
 
     result = execute(fixture, confirmed=True)
 
@@ -153,9 +163,11 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert fsck.returncode == 0, f"backup mirror fsck failed: {fsck.stderr}"
 
     # Post-rewrite history must NOT contain the secret email or home path
-    post_grep_email = _run(["git", "log", "--all", "--pretty=format:", "-p"], fixture)
+    post_grep_email = _run(["git", "log", "--all", "--pretty=fuller", "-p"], fixture)
     assert SECRET_EMAIL not in post_grep_email.stdout, "secret email still present after rewrite"
+    assert SECRET_NAME not in post_grep_email.stdout, "secret name still present after rewrite"
     assert SECRET_HOME not in post_grep_email.stdout, "secret home path still present after rewrite"
+    assert COS_TRAILER not in post_grep_email.stdout, "COS trailer still present after rewrite"
 
     # Preserve marker must remain
     assert PRESERVE_MARKER in post_grep_email.stdout, "license-transition preserve pattern was scrubbed"
@@ -190,6 +202,7 @@ def test_execute_refuses_with_dirty_worktree(tmp_path, monkeypatch) -> None:
 
     monkeypatch.setenv("COS_ALLOW_DESTRUCTIVE_GIT", "1")
     monkeypatch.setenv("TEST_OPERATOR_EMAIL", SECRET_EMAIL)
+    monkeypatch.setenv("TEST_OPERATOR_NAME", SECRET_NAME)
     monkeypatch.setenv("TEST_OPERATOR_HOME", SECRET_HOME)
     monkeypatch.setenv("HOME", str(tmp_path / "fake-home"))
     (tmp_path / "fake-home").mkdir()
@@ -205,6 +218,7 @@ def test_execute_refuses_without_destructive_env(tmp_path, monkeypatch) -> None:
     _write_fixture_manifest(fixture)
     monkeypatch.delenv("COS_ALLOW_DESTRUCTIVE_GIT", raising=False)
     monkeypatch.setenv("TEST_OPERATOR_EMAIL", SECRET_EMAIL)
+    monkeypatch.setenv("TEST_OPERATOR_NAME", SECRET_NAME)
     monkeypatch.setenv("TEST_OPERATOR_HOME", SECRET_HOME)
     monkeypatch.setenv("HOME", str(tmp_path / "fake-home"))
     (tmp_path / "fake-home").mkdir()

@@ -400,9 +400,58 @@ def _write_replacements_file(rules: list[dict[str, Any]], target_path: Path) -> 
     return len(lines)
 
 
-def _run_filter_repo(project_dir: Path, rules_file: Path) -> subprocess.CompletedProcess[str]:
+def _literal_replacements(rules: list[dict[str, Any]]) -> list[tuple[bytes, bytes]]:
+    replacements: list[tuple[bytes, bytes]] = []
+    for rule in sorted(rules, key=lambda r: -len(str(r.get("value") or ""))):
+        value = rule.get("value")
+        replacement = rule.get("replacement")
+        if not value or replacement is None or rule.get("mode", "literal") != "literal":
+            continue
+        replacements.append((str(value).encode("utf-8"), str(replacement).encode("utf-8")))
+    return replacements
+
+
+def _bytes_replace_expression(var_name: str, replacements: list[tuple[bytes, bytes]]) -> str:
+    expr = var_name
+    for old, new in replacements:
+        expr += f".replace({old!r}, {new!r})"
+    return expr
+
+
+def _metadata_message_callback(replacements: list[tuple[bytes, bytes]]) -> str:
+    replaced = _bytes_replace_expression("message", replacements)
+    prefixes = (b"X-COS-Origin:", b"X-COS-Session:", b"X-COS-Harness:")
+    return (
+        f"msg = {replaced}\n"
+        "lines = []\n"
+        f"blocked = {prefixes!r}\n"
+        "for line in msg.splitlines(keepends=True):\n"
+        "    if line.startswith(blocked):\n"
+        "        continue\n"
+        "    lines.append(line)\n"
+        "return b''.join(lines)"
+    )
+
+
+def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]]) -> subprocess.CompletedProcess[str]:
+    replacements = _literal_replacements(rules)
+    email_callback = f"return {_bytes_replace_expression('email', replacements)}"
+    name_callback = f"return {_bytes_replace_expression('name', replacements)}"
+    message_callback = _metadata_message_callback(replacements)
     proc = subprocess.run(
-        ["git", "filter-repo", "--replace-text", str(rules_file), "--force"],
+        [
+            "git",
+            "filter-repo",
+            "--replace-text",
+            str(rules_file),
+            "--email-callback",
+            email_callback,
+            "--name-callback",
+            name_callback,
+            "--message-callback",
+            message_callback,
+            "--force",
+        ],
         cwd=str(project_dir),
         text=True,
         capture_output=True,
@@ -419,7 +468,7 @@ def _run_filter_repo(project_dir: Path, rules_file: Path) -> subprocess.Complete
 
 
 def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]]) -> dict[str, int]:
-    """Run grep against post-rewrite history for each replacement source.
+    """Run grep against post-rewrite history and metadata for each replacement source.
 
     Each remaining hit count must be 0 (or close to 0 for regex rules with
     intentional partial matches) for the rewrite to be considered complete.
@@ -433,7 +482,7 @@ def _verify_replacements_applied(project_dir: Path, rules: list[dict[str, Any]])
             remaining[rule_id] = -1
             continue
         proc = subprocess.run(
-            ["git", "log", "--all", "--pretty=format:", "-p"],
+            ["git", "log", "--all", "--pretty=fuller", "-p"],
             cwd=str(project_dir),
             text=True,
             capture_output=True,
@@ -608,7 +657,7 @@ def execute(
 
     # 6. Run filter-repo (THE destructive step)
     try:
-        _run_filter_repo(project, rules_file)
+        _run_filter_repo(project, rules_file, replacement_rules)
     finally:
         # The rules file is intentionally kept for forensic audit (report
         # references it). It can be deleted by the operator post-verify.

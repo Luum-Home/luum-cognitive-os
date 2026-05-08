@@ -16,6 +16,12 @@ rules:
     replacement: 2144218+MatiasNAmendola@users.noreply.github.com
     required: false
     rationale: Replace operator personal email in historical blobs without committing the raw email into this manifest.
+  - id: operator-name
+    mode: literal
+    value_env: COS_HISTORY_SANITIZE_OPERATOR_NAME
+    replacement: Maintainer
+    required: false
+    rationale: Replace operator personal name in historical commit metadata and blobs without committing the raw name into this manifest.
   - id: operator-home-prefix
     mode: literal
     value_env: COS_HISTORY_SANITIZE_HOME_PREFIX
@@ -82,7 +88,7 @@ rules:
     value_env: COS_HISTORY_SANITIZE_CONSUMER_SERVICE_5
     replacement: <consumer-service-5>
     required: false
-    rationale: Fifth consumer-project service slot. Five total slots cover <consumer-codename-b>, <consumer-codename-c>, <consumer-service>, <consumer-service-2>, and one historical service-name (the original consumer-service-name slot covers the sixth).
+    rationale: Fifth consumer-project service slot. Multiple slots cover the private service-name set found by the Tier 1-4 audit without committing those raw values to this manifest.
 
 sensitive_history_patterns:
   - id: macos-user-home-path
