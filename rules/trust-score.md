@@ -58,6 +58,25 @@ The first line uses a deterministic key=value format for reliable extraction by 
 
 The `---` separator divides the header from the human-readable body. Parsing library: `lib/trust_report_parser.py`.
 
+### Structured Verification Field
+
+High-stakes completion or test claims MUST include a machine-readable `verification:` line in the Trust Report body. The ADR-244 claim enforcer reruns this command in a fresh process before accepting the completion.
+
+Trigger examples:
+
+- `4 tests passed`
+- `fixed #123`
+- `all green`
+
+Allowed forms:
+
+```text
+verification: python3 -m pytest tests/behavior/test_claim_enforcer.py -q
+verification: manual
+```
+
+`verification: manual` is only for non-shell evidence such as UI/design review; it is allowed but recorded as a quality signal. If a shell command is cited and exits non-zero, the completion is blocked and downgraded to `partial`.
+
 ### Legacy Format Support
 
 The parser also accepts the old format without the header line (a `TRUST REPORT:` block with `Score: XX/100`). New agents MUST use the header format. Legacy reports are parsed on a best-effort basis.

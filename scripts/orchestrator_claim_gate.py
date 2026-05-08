@@ -5,7 +5,9 @@
 The gate is intentionally harness-agnostic: Claude/Codex hooks can call it from a
 Bash PreToolUse surface, and agents can run it directly before committing or
 pushing. It does not trust sub-agent supplied commands; it re-runs deterministic
-repo verifiers against staged plans and commit/push claims.
+repo verifiers against staged plans and commit/push claims. High-stakes
+agent completions use scripts/claim_enforcer.py and require verification:
+evidence in the Trust Report.
 """
 from __future__ import annotations
 

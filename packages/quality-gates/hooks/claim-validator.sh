@@ -4,9 +4,9 @@
 # Claim Validator — verifies agent claims against filesystem reality
 # PostToolUse hook on Agent
 # Detects file-related claims (created/modified/wrote) and verifies they exist.
-# Detects test count claims and flags them for manual verification.
+# Detects test count claims and enforces structured verification evidence.
 # Logs hallucinations to metrics/hallucinations.jsonl.
-# Phase-aware: BLOCK in production/maintenance, WARN in reconstruction/stabilization.
+# File hallucination checks remain phase-aware; ADR-244 high-stakes verification blocks independently.
 set -uo pipefail
 # ADR-028 §584: respect killswitch flag — non-critical hooks early-exit when set.
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
@@ -67,6 +67,25 @@ if [ -n "$SESSION_ID" ]; then
 fi
 mkdir -p "$METRICS_DIR" 2>/dev/null
 
+# ADR-244: high-stakes Trust Report claims require a structured verification: field.
+# Passing shell verification allows completion; failing verification blocks and
+# emits downgraded_status=partial in the JSON audit trail.
+if command -v python3 >/dev/null 2>&1; then
+  RESPONSE_TMP=$(mktemp 2>/dev/null || printf '/tmp/cos-claim-enforcer-response-%s' "$$")
+  printf '%s' "$RESPONSE" > "$RESPONSE_TMP" 2>/dev/null || true
+  ENFORCER_OUT=$(python3 "$PROJECT_DIR/scripts/claim_enforcer.py" --project-dir "$PROJECT_DIR" --response-file "$RESPONSE_TMP" --metrics --json 2>/dev/null || true)
+  ENFORCER_OK=$(printf '%s' "$ENFORCER_OUT" | jq -r '.ok // true' 2>/dev/null || printf 'true')
+  ENFORCER_STATUS=$(printf '%s' "$ENFORCER_OUT" | jq -r '.status // "noop"' 2>/dev/null || printf 'noop')
+  rm -f "$RESPONSE_TMP" 2>/dev/null || true
+  if [ "$ENFORCER_OK" = "false" ]; then
+    echo "" >&2
+    echo "=== ADR-244 CLAIM ENFORCER: BLOCK ($ENFORCER_STATUS) ===" >&2
+    printf '%s' "$ENFORCER_OUT" | jq -r '.findings[]? | "- [" + .severity + "] " + .code + ": " + .message' >&2 2>/dev/null || true
+    echo "High-stakes completed/test claims must provide verification: <command> that exits 0, or verification: manual for non-shell evidence." >&2
+    echo "=== END ADR-244 CLAIM ENFORCER ===" >&2
+    exit 2
+  fi
+fi
 
 # ADR-108: require durable approval evidence for extracted high-stakes claims.
 # In reconstruction/stabilization this is advisory; in production/maintenance it blocks.
@@ -123,7 +142,7 @@ if [ "$APPROVAL_MISSING" -gt 0 ]; then
     echo "Approval evidence required in $PHASE phase — blocking agent result." >&2
     exit 2
   fi
-  echo "Phase is $PHASE — warning only (not blocking)." >&2
+  echo "Phase is $PHASE — advisory path; production/maintenance block." >&2
   echo "=== END ADR-108 APPROVAL LEDGER ===" >&2
 fi
 
@@ -151,11 +170,11 @@ if [ -n "$FILE_CLAIMS" ]; then
   done <<< "$FILE_CLAIMS"
 fi
 
-# Check test count claims (flag for manual verification, don't run tests)
+# Check test count claims (ADR-244 enforcer handles structured verification)
 TEST_CLAIM=$(echo "$RESPONSE" | grep -oiE '[0-9]+ tests? (pass|collect|succeed|ran)' | head -1 || true)
 if [ -n "$TEST_CLAIM" ]; then
   CLAIMED_COUNT=$(echo "$TEST_CLAIM" | grep -oE '[0-9]+')
-  echo "CLAIM: Agent says '$TEST_CLAIM' — verify with: python3 -m pytest --collect-only -q 2>/dev/null | tail -1" >&2
+  echo "CLAIM: Agent says '$TEST_CLAIM' — ADR-244 expects verification: <command> in the Trust Report." >&2
 fi
 
 # Report results
@@ -184,7 +203,7 @@ if [ "$HALLUCINATIONS" -gt 0 ]; then
     fi
     exit 2
   else
-    echo "Phase is $PHASE — warning only (not blocking)." >&2
+    echo "Phase is $PHASE — advisory path; production/maintenance block." >&2
     echo "=== END CLAIM VALIDATOR ===" >&2
     echo ""
   fi

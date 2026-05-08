@@ -1,7 +1,7 @@
 ---
 adr: 244
 title: Trust Report Claim-Validator Must Enforce, Not Advise
-status: proposed
+status: accepted
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -18,7 +18,7 @@ tags: [trust, agent-quality, verification-gates, postmortem-2026-05-08]
 
 ## Status
 
-Proposed. Drafted during the 2026-05-08 pre-public readiness session after
+Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` blocks failed verification, and behavior tests cover pass/fail/manual/no-op paths. Drafted during the 2026-05-08 pre-public readiness session after
 multiple agent completions reported "fixed" or "tests pass" while the
 referenced commands immediately contradicted the claim. Requires operator
 review before implementation.
