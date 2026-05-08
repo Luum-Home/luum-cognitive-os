@@ -1,7 +1,7 @@
 # ADR-228 — Retry Contract + Cost Session Budget (consolidated)
 
 ## Status
-Tombstone
+Accepted — Slices A–F implemented (2026-05-07)
 
 
 <!-- SCOPE: OS -->
