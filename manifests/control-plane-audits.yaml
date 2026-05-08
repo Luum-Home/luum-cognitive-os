@@ -32,6 +32,7 @@ lanes:
       - primitive-coherence
       - primitive-behavior
       - postmortem-regressions
+      - skill-router-retrieval
   hourly:
     description: Periodic local sweep for primitive drift and postmortem regressions.
     max_seconds: 60
@@ -39,6 +40,7 @@ lanes:
       - primitive-coherence
       - primitive-behavior
       - postmortem-regressions
+      - skill-router-retrieval
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -46,6 +48,7 @@ lanes:
       - primitive-coherence
       - primitive-behavior
       - postmortem-regressions
+      - skill-router-retrieval
       - pre-public-risk
 
 audits:
@@ -65,6 +68,12 @@ audits:
     adr: ADR-247
     command: [python3, scripts/cos-postmortem-regression-audit, --json]
     expected_schema: postmortem-regression-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  skill-router-retrieval:
+    adr: ADR-250
+    command: [python3, scripts/skill-router-retrieval-audit.py, --json]
+    expected_schema: skill-router-retrieval-audit/v1
     consumes_sensitive_values: false
     mutates: false
   pre-public-risk:

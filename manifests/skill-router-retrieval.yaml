@@ -1,0 +1,159 @@
+schema_version: skill-router-retrieval/v1
+status: active
+owner: platform-routing
+purpose: >
+  Keep skill-router retrieval/ranking behind explicit adapters so COS owns
+  governance policy while community retrieval patterns can be adopted without
+  inflating the default hook/runtime footprint.
+
+policy:
+  core_router: lib/skill_router.py
+  default_adapter: regex_frontmatter
+  core_must_not_import_optional_retrieval_stacks: true
+  cos_owns_policy_guards:
+    - dangerous_skill_negative_context
+    - profile_scope
+    - harness_scope
+    - bypass_policy
+    - telemetry
+    - confidence_experiments
+  retrieval_must_be_adapterized: true
+  confidence_changes_require_benchmark: true
+
+forbidden_core_imports:
+  - module: langchain
+    rationale: heavy optional ecosystem; use adapter/lab only
+  - module: llama_index
+    rationale: heavy optional ecosystem; use adapter/lab only
+  - module: haystack
+    rationale: heavy optional ecosystem; use adapter/lab only
+  - module: sentence_transformers
+    rationale: heavy semantic stack; use opt-in adapter only
+  - module: faiss
+    rationale: native/vector dependency; use opt-in adapter only
+  - module: chromadb
+    rationale: service/vector dependency; use opt-in adapter only
+
+adapters:
+  - id: regex_frontmatter
+    status: active
+    default: true
+    implementation: lib/skill_router.py
+    license_spdx: project
+    footprint: zero-extra-deps
+    hot_path_allowed: true
+    community_pattern: regex/frontmatter self-description
+    benchmark_required: true
+
+  - id: bm25_local
+    status: candidate
+    default: false
+    implementation: null
+    license_spdx: TBD
+    footprint: lightweight-local
+    hot_path_allowed: possible-after-measurement
+    community_pattern: sparse keyword retrieval / BM25
+    benchmark_required: true
+
+  - id: provider_toolsearch
+    status: candidate
+    default: false
+    implementation: packages/agent-lifecycle/lib/deferred_tool_loading.py
+    license_spdx: provider-api
+    footprint: provider-native
+    hot_path_allowed: provider-dependent
+    community_pattern: deferred tool loading / tool search
+    references:
+      - https://openai.github.io/openai-agents-js/guides/tools/
+    benchmark_required: true
+
+  - id: llamaindex_router
+    status: lab
+    default: false
+    implementation: null
+    license_spdx: MIT
+    footprint: heavy-python-optional
+    hot_path_allowed: false
+    community_pattern: RouterRetriever / ToolRetrieverRouterQueryEngine
+    references:
+      - https://docs.llamaindex.ai/en/stable/module_guides/querying/router/
+    benchmark_required: true
+
+  - id: haystack_retriever
+    status: lab
+    default: false
+    implementation: null
+    license_spdx: Apache-2.0
+    footprint: heavy-python-optional
+    hot_path_allowed: false
+    community_pattern: BM25/vector retrievers over document stores
+    references:
+      - https://docs.haystack.deepset.ai/v2.9/docs/retrievers
+    benchmark_required: true
+
+  - id: langchain_retriever
+    status: lab
+    default: false
+    implementation: null
+    license_spdx: MIT
+    footprint: heavy-js-python-optional
+    hot_path_allowed: false
+    community_pattern: retriever abstraction, BM25/hybrid/remote retrievers
+    references:
+      - https://reference.langchain.com/javascript/langchain-community/retrievers
+    benchmark_required: true
+
+benchmark:
+  script: scripts/skill-router-benchmark.py
+  status_policy:
+    required_failures_block: true
+    known_gap_failures_warn: true
+  fixtures:
+    - id: fp-auto-rollback-meta
+      prompt: "Ignoro la sugerencia del router /auto-rollback (0.95), dogfood evidence"
+      expected: none
+      required: true
+      rationale: Mentioning dangerous rollback as router critique must not become intent.
+
+    - id: fp-deep-research-write-meta
+      prompt: "el router sugirió /deep-research para escritura de archivos"
+      expected: none
+      required: true
+      rationale: Mentioning a false-positive research suggestion must not route.
+
+    - id: fp-auto-refine-meta
+      prompt: "Ignoro /auto-refine 0.95 para síntesis; router mal calibrado"
+      expected: none
+      required: true
+      rationale: Mentioning auto-refine as miscalibration must not route.
+
+    - id: fp-self-improve-meta
+      prompt: "Ignoro /self-improve 0.95 para Write batch; dogfood evidence"
+      expected: none
+      required: true
+      rationale: Mentioning self-improve as dogfood evidence must not route.
+
+    - id: repo-forensics-positive
+      prompt: "necesito investigar este repo https://github.com/foo/bar"
+      expected_command: /repo-forensics
+      required: true
+      rationale: GitHub repo analysis should route to repo-forensics.
+
+    - id: security-audit-positive
+      prompt: "hagamos un security audit de secrets del repo"
+      expected_command: /security-audit
+      required: true
+      rationale: Security audit wording should route to security-audit.
+
+    - id: code-review-positive
+      prompt: "hace code review de este diff"
+      expected_command: /code-review
+      required: true
+      rationale: Code review wording should route to code-review.
+
+    - id: add-skill-known-gap
+      prompt: "necesito crear una nueva skill para auditoría"
+      expected_command: /add-skill
+      required: false
+      known_gap: true
+      rationale: Current regex router may over-route to /sdd-new; benchmark must expose this gap without blocking unrelated work.
