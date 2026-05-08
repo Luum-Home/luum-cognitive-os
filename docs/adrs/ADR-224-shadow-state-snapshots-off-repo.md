@@ -1,46 +1,87 @@
-# ADR-224 — Shadow-State Snapshots, Off-Repo
+# ADR-224 — Tombstone (consolidated into ADR-227)
+
+status: tombstone
 
 ## Status
-Accepted
+Tombstone
 
 
 <!-- SCOPE: OS -->
 
-**Status**: Accepted — Slices A–C implemented with ADR-227 (2026-05-07)
-**Date**: 2026-05-07
-**Related**: ADR-223 (worktree-per-write-agent), ADR-226 (event-sourced session bus), ADR-227 (shadow-git checkpoint substrate)
-**Source**: Cline/Hermes/Kilo/git-shadow pattern research; implemented clean-room under FSL-1.1-MIT.
+**Status**: Tombstone — consolidated into ADR-227 (2026-05-08)
+**Date**: 2026-05-07 (original); tombstoned 2026-05-08
+**Related**: ADR-227 (shadow-git checkpoint substrate — canonical authority)
 
 ---
 
+## Reason
+
+ADR-224 was originally proposed as the operator-facing "safety net boundary"
+around ADR-227's shadow-git substrate. The M3 ADR sweep (2026-05-08) found
+that every decision ADR-224 carried was already a hard rule in ADR-227:
+
+| ADR-224 hard rule | Where it lives in ADR-227 |
+|---|---|
+| Snapshot storage never inside the project worktree | "Bare repo never enters user's project tree" hard rule |
+| Snapshot does not touch `.git/index` or `git stash` | "`GIT_INDEX_FILE` isolation is mandatory" hard rule |
+| Restore requires preview + explicit confirmation | "Restore is opt-in and gated" hard rule + diff-preview contract |
+| Conversation truncation uses ADR-227 modes | Atomic restore semantics §`restore_atomic` |
+
+Splitting these into two ADRs forced a "thin wrapper" shape (311 words, the
+shortest non-tombstone in the 218–238 batch) that mostly deferred to ADR-227.
+The decision to consolidate mirrors the precedent set by ADR-229 (cost-budget
+ADR consolidated into ADR-228).
+
+## Canonical authority
+
+See **[ADR-227 — Shadow-Git Checkpoint Substrate](ADR-227-shadow-git-checkpoint-substrate.md)**. The "safety-net boundary" semantics are
+documented under ADR-227's "Hard rules" and "Atomic restore semantics"
+sections.
+
+## Slot policy
+
+- ADR-224 is reserved as a tombstone. Do not reuse the number for unrelated
+  work.
+- Future work on shadow-state safety boundaries extends ADR-227 in place or
+  supersedes it; it does not re-occupy ADR-224.
+- This mirrors the precedent set by ADR-229 (cost-budget consolidation into
+  ADR-228) and ADR-214 (vacated for parallel-session collision).
+
+## Implementation pointer
+
+- `lib/shadow_git.py` — substrate (owned by ADR-227)
+- `scripts/cos-rollback` — preview/restore CLI (owned by ADR-227)
+- `manifests/shadow-git.yaml` — retention declaration (owned by ADR-227)
+- `docs/runbooks/shadow-git-rollback.md` — operator runbook (owned by ADR-227)
+
+No code or manifest moved as part of this consolidation; only the ADR record
+was tombstoned. Cross-references in other ADRs (223, 227) that name ADR-224
+remain valid as historical pointers.
+
 ## Context
-
-ADR-227 provides the storage substrate: a bare shadow git repository outside the project that can snapshot and restore filesystem state. ADR-224 defines the safety-net boundary around that substrate.
-
-The safety net must not recreate the bug class that prompted ADR-223: mutating the operator worktree through `git stash` as part of agent setup. Shadow-state snapshots are off-repo and opt-in; they do not hide WIP and do not mutate `git stash`.
+This ADR was backfilled into the ADR-067 section contract after the
+consolidation decision had been recorded. The original context remains in git
+history (see commit prior to tombstone); this section exists so the ADR can be
+audited uniformly under the contract audit.
 
 ## Decision
-
-Use ADR-227 shadow-git as the only default safety-net substrate for future rollback/replay work. Store snapshot object databases outside the project tree, keyed by project/session, and expose restore only through preview-gated APIs/CLI.
-
-## Hard rules
-
-- Snapshot storage is never inside the project worktree.
-- Snapshot creation does not touch `.git/index` or `git stash`.
-- Restore requires preview first and explicit operator confirmation/`--yes`.
-- Conversation truncation and combined restore use ADR-227 modes; filesystem-only remains available only for operator repair.
-
-## Implementation status
-
-- **2026-05-07 — Slice A implemented**: `lib/shadow_git.py` stores bare repos off-repo and supports snapshot, preview, files-only restore, and prune. `scripts/cos-rollback` exposes preview/restore. Tests cover no-stash/no-index mutation and round-trip restore.
-- **2026-05-07 — Slices B–C implemented**: `docs/runbooks/shadow-git-rollback.md` documents capture/preview/restore/prune flows; `manifests/shadow-git.yaml` declares retention; `scripts/cos-rollback --prune` dry-runs or executes TTL cleanup for off-repo session stores.
+Tombstone ADR-224. ADR-227 is the canonical authority for shadow-state
+snapshot semantics, including the operator-facing safety boundary that
+ADR-224 originally tried to scope.
 
 ## Consequences
 - The ADR can be checked by the common ADR contract audit.
-- Future amendments must preserve this decision record instead of relying on conversation history.
+- Future amendments must preserve this decision record instead of relying on
+  conversation history.
+- No implementation impact: ADR-224's slices A–C were always implemented as
+  part of ADR-227's slice plan.
 
 ## Alternatives rejected
-- Leave the decision as conversation-only or strategy-only documentation — rejected because ADR-067 requires executable decision records with auditable verification.
+- Reusing this ADR number for a different decision — rejected because
+  tombstones preserve numbering provenance and prevent contradictory
+  references.
+- Expanding ADR-224 with additional decision content — rejected because no
+  unique decision exists; every hard rule is already in ADR-227.
 
 ## Verification
 ```bash
