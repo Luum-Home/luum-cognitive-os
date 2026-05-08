@@ -9,22 +9,15 @@ in the rule body.
 from __future__ import annotations
 
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _token_loader import load_blocked_tokens  # noqa: E402
+
+tokens, _source_label = load_blocked_tokens()
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 RULE = REPO_ROOT / "rules" / "engram-organization.md"
-
-LEAKED_TOKENS = (
-    "consumer-beta",
-    "service-alpha",
-    "consumer-alpha",
-    "service-beta",
-    "Consumer Alpha",
-    "service-gamma",
-    "service-alpha-go",
-    "example-services/",
-    "services/example",
-)
-
 
 def test_rule_exists() -> None:
     assert RULE.exists(), "rules/engram-organization.md is missing"
@@ -32,8 +25,9 @@ def test_rule_exists() -> None:
 
 def test_rule_contains_no_consumer_tokens() -> None:
     """Falsification probe: rule must not embed client service names."""
+    tokens, source_label = load_blocked_tokens()
     text = RULE.read_text(encoding="utf-8")
-    found = sorted({tok for tok in LEAKED_TOKENS if tok in text})
+    found = sorted({tok for tok in tokens if tok in text})
     assert not found, (
         f"rules/engram-organization.md leaks consumer tokens: {found}. "
         "Tier 3 of the case-study leak audit (see "
