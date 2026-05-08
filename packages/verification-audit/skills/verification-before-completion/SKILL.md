@@ -72,17 +72,35 @@ Skip any step = lying, not verifying
 
 | Service | Verification Command | Path |
 |---------|---------------------|------|
-| <consumer-service-3> | `yarn test` | `mobile/<consumer-codename-a>` |
-| Onboarding | `yarn test` | `<consumer-service-5>onboarding` |
-| <consumer-codename-b> (unit) | `make utest` | `<consumer-service-5><consumer-codename-b>/<consumer-codename-b>` |
-| <consumer-codename-b> (all) | `make test` | `<consumer-service-5><consumer-codename-b>/<consumer-codename-b>` |
-| <consumer-codename-c> | `make test` | `<consumer-service-5><consumer-codename-c>/<consumer-codename-c>` |
-| monolith | `yarn test` | `services/<consumer-service>` |
-| <consumer-service-2> | `go test ./...` | `<consumer-service-2>` |
-| contracts | `npx hardhat test` | contracts directory |
-| Mobile App | `yarn test` | `mobile/app` |
+| `<service-a>` (Node BFF) | `yarn test` | `<path/to/service-a>` |
+| `<service-b>` (Node) | `yarn test` | `<path/to/service-b>` |
+| `<service-c>` unit (JVM) | `make utest` | `<path/to/service-c>` |
+| `<service-c>` all (JVM) | `make test` | `<path/to/service-c>` |
+| `<service-d>` (JVM) | `make test` | `<path/to/service-d>` |
+| `<service-e>` (Node monolith) | `yarn test` | `<path/to/service-e>` |
+| `<service-f>` (Go) | `go test ./...` | `<path/to/service-f>` |
+| `<service-g>` (smart contracts) | `npx hardhat test` | `<path/to/contracts>` |
+| `<service-h>` (mobile) | `yarn test` | `<path/to/mobile-app>` |
 
 **For multi-service changes, verify ALL affected services.**
+
+## Configuring for Your Project
+
+The table above is illustrative -- generic placeholders, NOT real services. To
+customise verification for your repo without leaking service names into the
+OS, copy the example template and fill in your own services in a gitignored
+location:
+
+```
+cp templates/verification-commands.example.yaml .cognitive-os/private/verification-commands.yaml
+```
+
+`.cognitive-os/*` is gitignored (per the top-level `.gitignore`), so your
+service identifiers stay out of git history. The schema is documented in
+`templates/verification-commands.example.yaml`. Tooling that reads this
+config (e.g. orchestrator preflight checks, agent verification gates) MUST
+fail open (warn, not block) when the file is absent -- Cognitive OS itself
+ships no service inventory.
 
 ## Red Flags - STOP
 

@@ -16,10 +16,10 @@ uv run python run.py services
 uv run python run.py feature --service accounts-go --ticket DEV-1234
 
 # Run a bug fix pipeline
-uv run python run.py bug --service <consumer-codename-a> --ticket BUG-567
+uv run python run.py bug --service example-api --ticket BUG-567
 
 # Run a database migration
-uv run python run.py migration --service <consumer-service-4> --description "add transfers table"
+uv run python run.py migration --service example-go-service --description "add transfers table"
 
 # Deploy a service
 uv run python run.py deploy --service accounts-go --env staging

@@ -41,18 +41,18 @@ Sync flow:
 |---|---|---|
 | Docker configs | `docker-compose*.yml` | All container definitions |
 | Auth realm config | `IDP/idp/localhost/` | Realm config + Terraform |
-| Local env init | `<consumer-service-5>local-env-initializer/` | Init scripts |
+| Local env init | `services/local-env-initializer/` | Init scripts |
 
 ### Code
 
 | Component | Location | What it contains |
 |---|---|---|
-| BFF | `mobile/<consumer-codename-a>/` | NestJS gateway |
+| BFF | `mobile/example-bff/` | NestJS gateway |
 | Mobile app | `mobile/app/` | React Native/Expo |
-| Users Core | `<consumer-service-5><consumer-codename-b>/` | Spring Boot |
-| Users Auth | `<consumer-service-5><consumer-codename-c>/` | Spring Boot |
-| Onboarding | `<consumer-service-5>onboarding/` | NestJS |
-| Monolith | `services/<consumer-service>/` | Express.js |
+| Users Core | `services/example-users/` | Spring Boot |
+| Users Auth | `services/example-auth/` | Spring Boot |
+| Onboarding | `services/onboarding/` | NestJS |
+| Monolith | `services/example-gateway/` | Express.js |
 | Smart contracts | `contracts-ozv5/` | Solidity |
 | Scripts | `scripts/` | Automation (sync, import, onboarding, health checks) |
 

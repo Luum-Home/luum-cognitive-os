@@ -6,7 +6,7 @@ import time
 from lib.agent import prompt_with_retry
 from lib.data_types import AgentPromptRequest
 from lib.file_parser import extract_plan_file
-from lib.shared_phases import BOLD, DIM, GREEN, RED, RESET, YELLOW
+from lib.shared_phases import BOLD, GREEN, RED, RESET
 from lib.utils import get_project_root
 
 # Max age in seconds for a plan file to be considered "just created"

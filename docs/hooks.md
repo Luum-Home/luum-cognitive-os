@@ -116,7 +116,7 @@ Hooks are shell scripts that fire at specific points in the Claude Code session 
 | Docker | `docker-compose.yml` at root |
 | MongoDB, MySQL, Redis, RabbitMQ | Referenced in `docker-compose*.yml` |
 | Clean Architecture | `domain/` + `infrastructure/` or `usecases/` directories |
-| WireMock, TestContainers | Referenced in `<consumer-service-5>` |
+| WireMock, TestContainers | Referenced in `services/` |
 
 **Output**: JSON file at `.claude/detected-stack.json` with boolean flags per technology.
 
@@ -155,12 +155,12 @@ Hooks are shell scripts that fire at specific points in the Claude Code session 
 
 | Service | Path Pattern | Action |
 |---------|-------------|--------|
-| <consumer-codename-b> | `<consumer-service-5><consumer-codename-b>/` | Reminder only (Java too slow for auto-run) |
-| <consumer-codename-c> | `<consumer-service-5><consumer-codename-c>/` | Reminder only (Java too slow for auto-run) |
-| onboarding | `<consumer-service-5>onboarding/` | `npx jest --changedSince=HEAD` |
-| <consumer-codename-a> | `mobile/<consumer-codename-a>/` | `npx jest --changedSince=HEAD` |
-| <consumer-service> | `services/<consumer-service>/` | `npx jest --changedSince=HEAD` |
-| accounts-go | `accounts/accounts-go/` | `go test ./... -short` |
+| example-users | `services/example-users/` | Reminder only (Java too slow for auto-run) |
+| example-auth | `services/example-auth/` | Reminder only (Java too slow for auto-run) |
+| onboarding | `services/onboarding/` | `npx jest --changedSince=HEAD` |
+| example-bff | `mobile/example-bff/` | `npx jest --changedSince=HEAD` |
+| example-gateway | `services/example-gateway/` | `npx jest --changedSince=HEAD` |
+| accounts-go | `wallet/accounts-go/` | `go test ./... -short` |
 | mobile app | `mobile/app/` | Reminder only |
 
 **Skipped files**: `.md`, `.json`, `.yml`, `.yaml`, `.env`, `.lock`, `.gitignore`

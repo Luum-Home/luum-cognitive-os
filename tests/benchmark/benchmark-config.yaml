@@ -55,7 +55,7 @@ benchmarks:
 
   - id: "add-endpoint"
     name: "Add endpoint to existing service"
-    prompt: "Add a GET /api/v1/user/:id/preferences endpoint to <consumer-codename-b> that returns user notification preferences."
+    prompt: "Add a GET /api/v1/user/:id/preferences endpoint to service-a that returns user notification preferences."
     metrics:
       - name: endpoint_works
         type: boolean
@@ -91,7 +91,7 @@ benchmarks:
 
   - id: "cross-service-feature"
     name: "Implement cross-service feature"
-    prompt: "When a user changes their email, notify via push notification AND update the Keycloak record. This involves <consumer-codename-b>, notifications, and <consumer-codename-c> services."
+    prompt: "When a user changes their email, notify via push notification AND update the Keycloak record. This involves service-a, notifications, and service-b services."
     metrics:
       - name: services_touched
         type: count
