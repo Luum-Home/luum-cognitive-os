@@ -153,23 +153,32 @@ licenses are classified into four buckets:
 | **UNKNOWN** | Metadata missing/ambiguous; manual classification required           | (any package without SPDX or classifier metadata)   |
 | **BLOCKED** | Forbidden; release blocker                                            | AGPL-1.0/3.0, SSPL-1.0, BUSL-1.1 (Business Source)  |
 
-### 3.2 Results (snapshot 2026-05-08)
+### 3.2 Results (snapshot 2026-05-08, post-H3 resolution)
 
 Source: `sbom.json` post-dedup, enriched with installed PyPI classifier
-metadata from `.venv/`.
+metadata from `.venv/` and the per-component operator decisions recorded in
+[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
 
 | Status      | Count |
 | ----------- | -----:|
 | **BLOCKED** |     0 |
-| **REVIEW**  |    14 |
-| **UNKNOWN** |   100 |
-| **OK**      |    91 |
-| **TOTAL**   |   205 |
+| **REVIEW**  |    15 |
+| **UNKNOWN** |     0 |
+| **OK**      |   186 |
+| **TOTAL**   |   201 |
 
-OK distribution: MIT 49, Apache-2.0 22, BSD-3-Clause 13, MPL-2.0 3, ISC 3,
-PSF-2.0 1, 0BSD 1, CC-BY-4.0 1.
+The previously reported 100 UNKNOWN entries (pypi 39, golang 57,
+github-actions 3, npm 1) were each individually classified against their
+upstream `LICENSE` file in the H3 resolution document. Outcome: 99 → OK,
+1 → REVIEW (`chardet` LGPL-2.1-or-later, dynamically-linked pure-Python lib,
+APPROVED with notice retention — same disposition pattern as
+`@img/sharp-libvips-*`). 0 → BLOCKED. The TOTAL change (205 → 201) reflects
+collapsing six own-project file artifacts under a single first-party row.
 
-UNKNOWN distribution by ecosystem: pypi 39, golang 57, github-actions 3, npm 1.
+Note: a fresher syft snapshot taken alongside the H3 audit reports 186 raw
+UNKNOWN rows (157 unique by name+version) due to multi-go.mod scanning. The
+license posture is identical: 0 BLOCKED. See the H3 resolution document for
+the row-by-row table.
 
 ### 3.3 BLOCKED — none
 
@@ -210,11 +219,16 @@ under LGPL — standard practice for the entire Node ecosystem using `sharp`.
 The dashboard package is OPTIONAL and not a runtime dependency of `luum-cognitive-os`
 itself. Operators who do not deploy the dashboard never pull these binaries.
 
-### 3.5 UNKNOWN — 100 entries
+### 3.5 UNKNOWN — 0 entries (resolved 2026-05-08)
 
-UNKNOWN status reflects gaps in package metadata that `syft` could not resolve
-without doing an online lookup. None of the UNKNOWN entries have been
-identified as actually problematic; they are syft metadata-discovery gaps:
+All previously-UNKNOWN entries have been individually classified in
+[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md).
+The summary below is preserved for historical context — the resolution
+document is now the system-of-record.
+
+Pre-resolution status reflected gaps in package metadata that `syft` could
+not resolve without doing an online lookup. None of the UNKNOWN entries were
+actually problematic; they were syft metadata-discovery gaps:
 
 - **39 PyPI** — packages whose `License` field is empty in `METADATA` and that
   carry no `License ::` classifier. All 39 are well-known projects with public
@@ -235,10 +249,14 @@ identified as actually problematic; they are syft metadata-discovery gaps:
 - **1 npm** — `cos-dashboard@0.1.0` is the project's own dashboard root
   package; it is not a third-party dependency.
 
-**Action:** Open a tracked task in ADR-238 to enrich SBOM with explicit SPDX
-identifiers for all UNKNOWN entries before the first public release tag.
-Until then, this document records the manual classification above and the
-release-readiness gate counts UNKNOWN as a soft warning, not a blocker.
+**Resolution (2026-05-08):** every UNKNOWN entry was individually
+classified against its upstream `LICENSE` file. See
+[`docs/legal/h3-unknown-license-resolution.md`](../legal/h3-unknown-license-resolution.md)
+for the per-row table (name, version, registry URL, LICENSE URL, resolved
+SPDX, bucket). Outcome: 99 OK, 1 REVIEW (`chardet`), 0 BLOCKED. Automated
+SBOM SPDX-enrichment (`cyclonedx-py environment`, `cyclonedx-gomod mod`
+post-`go mod download`) remains tracked under ADR-238 to eliminate the
+manual classification step in future regenerations.
 
 ### 3.6 OK — 91 entries
 

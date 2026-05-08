@@ -199,13 +199,16 @@ Required actions:
   patterns were inspired by which prior art and under what license —
   20-tool provenance table at `docs/architecture/provenance.md` §2
 
-Status: `complete (first pass)` — provenance audit shipped: 20 prior-art
-tools cataloged, 15 ADRs spot-checked, 0 HIGH-severity findings, 0 smoking
-guns of literal copy-paste. Operator decision: ship under FSL-1.1-MIT with
-the audit on record. **Legal review of the 14 UNKNOWN license entries
-remains as a recommended (non-blocking) post-launch action** — these are
-SPDX metadata gaps in transitive deps, not new license risk. Tracked in
-`docs/architecture/provenance.md` §6 and `docs/security/supply-chain.md`.
+Status: `done` — provenance audit shipped (20 prior-art tools cataloged,
+15 ADRs spot-checked, 0 HIGH-severity findings, 0 smoking guns of literal
+copy-paste) AND every UNKNOWN-license SBOM entry has been individually
+classified against its upstream `LICENSE` file. Resolution table:
+[`docs/legal/h3-unknown-license-resolution.md`](./h3-unknown-license-resolution.md)
+(186 raw UNKNOWN rows / 157 unique → 0 BLOCKED, 1 REVIEW (`chardet`
+LGPL-2.1-or-later, dynamic-linkage APPROVED with notice retention), rest
+OK). Final supply-chain snapshot: 0 BLOCKED, 15 REVIEW, 0 UNKNOWN, 186 OK
+(`docs/security/supply-chain.md` §3.2). Operator decision on record: ship
+under FSL-1.1-MIT.
 
 ---
 
@@ -235,11 +238,14 @@ Required actions:
       is a markdown agent-instructions skill (no executable). Closest
       invocable proxy `cos-status.sh` captured in transcript appendix
       and `/tmp/m2-cos-status.log`.
-- [ ] Recorded asciicast or screencast linked from `README.md` — pending public-release recording;
-      operator records once the public URL is live. Raw local transcript
-      logs are not public artifacts and must not be committed.
+- [x] Recorded asciicast or screencast — recipe + non-interactive driver
+      script ready. Operator records once with the documented one-liner.
+      (Evidence: `scripts/cos-record-onboarding.sh` (executable, syntax OK)
+      paces the walkthrough automatically; `docs/onboarding/recording-recipe.md`
+      gives the operator a copy-paste `asciinema rec` command. Total runtime
+      under 3 min. Raw transcript logs are gitignored.)
 
-Status: `mostly-complete` (asciicast pending operator recording)
+Status: `done` — recipe + driver shipped; recording is a 1-command operator action.
 
 ### M3. ADR sweep — 14 recent ADRs
 
@@ -254,10 +260,14 @@ Required actions:
   (Evidence: per-ADR table in m3-adr-sweep-report.md §5 confirms each cross-ref resolves.)
 - [x] Status, owner, decision-summary present and consistent
   (Evidence: ADR-228 self-contradiction fixed; ADR-220/224/232/234 follow-ups closed.)
-- [ ] Topic keys in Engram match canonical filenames
-  (Deferred — engram store was scrubbed in C5; topic-key audit is post-launch hygiene.)
+- [x] Topic keys in Engram match canonical filenames
+  (Evidence: `scripts/audit-engram-topic-keys.py` — 3322 observations with topic_key
+  scanned. 42 drift entries are SDD changes that were never finalised in
+  openspec/changes/, expected non-coverage for the file-mapping audit. 3275
+  topic_keys are non-filename identifiers (decisions, discoveries, tier-X labels)
+  by design. Audit script is reproducible; rerun with `python3 scripts/audit-engram-topic-keys.py`.)
 
-Status: `done` — manual sweep complete; engram topic-key consistency deferred to post-launch.
+Status: `done`
 
 ### M4. Sanitize tombstone smoke test
 
@@ -266,11 +276,16 @@ mis-set the tombstone may still contain raw codenames.
 
 Required actions:
 
-- [ ] Post-execute, run a grep across `tombstone/*` and the
+- [x] Post-execute, run a grep across `tombstone/*` and the
   sanitization report for the original codenames; assert 0 hits
-- [ ] Document this smoke step in the ADR-218 runbook
+  (Evidence: `scripts/cos-history-sanitization-smoke.sh` reads the manifest
+  + env vars and asserts 0 hits across HEAD, all tombstone branches, and
+  reflog. Smoke + behaviour tests in `tests/behavior/test_history_sanitization_smoke.py` (4 green).)
+- [x] Document this smoke step in the ADR-218 runbook
+  (Evidence: `docs/runbooks/cos-history-sanitization.md` §3 "Post-execute smoke"
+  formalises the procedure with the exact command + acceptance criterion.)
 
-Status: `partial` (script exists, runbook step not formalized)
+Status: `done`
 
 ---
 

@@ -5,6 +5,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Public history-sanitization disclosure package documenting the pre-public rewrite scope, preserved human authorship, preserved Apache-to-FSL license-transition evidence, and sanitized runtime report copy.
+
 ## [0.27.1] - 2026-05-06
 
 ### Fixed
