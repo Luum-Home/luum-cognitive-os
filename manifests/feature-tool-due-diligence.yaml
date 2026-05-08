@@ -1,0 +1,74 @@
+schema_version: feature-tool-due-diligence/v1
+status: active
+owner: platform-safety
+policy:
+  build_requires_due_diligence: true
+  require_external_candidates: true
+  require_source_links: true
+  require_benchmark_or_rationale: true
+  scratch_cache: .cognitive-os/external-source-cache
+  deepwiki_url_template: https://deepwiki.com/{owner}/{repo}
+  external_health_sources:
+    deps_dev: https://docs.deps.dev/api/v3/
+    openssf_scorecard: https://github.com/ossf/scorecard
+features:
+  - capability_id: skill-router-retrieval-boundary
+    feature_label: Skill router retrieval and adapter boundary
+    owner_adr: ADR-250
+    decision: BUILD
+    rationale: COS owns dangerous-skill rejection and governance semantics; external retrieval can inform adapters but not own routing policy.
+    maintenance_cost: medium
+    benchmark: manifests/skill-router-retrieval.yaml
+    candidates:
+      - tool_id: dspy
+        verdict: INTEGRATE
+        source_links: [https://github.com/stanfordnlp/dspy]
+        deepwiki_url: https://deepwiki.com/stanfordnlp/dspy
+        license: MIT
+        reason_not_build_replacement: Optimizes typed LM programs, not policy-owned runtime skill routing.
+      - tool_id: superpowers
+        verdict: INTEGRATE
+        source_links: [https://github.com/obra/superpowers]
+        deepwiki_url: https://deepwiki.com/obra/superpowers
+        license: UNKNOWN
+        reason_not_build_replacement: Methodology source for skills, not COS router implementation.
+  - capability_id: agent-orchestration-boundary
+    feature_label: Agent orchestration governance boundary
+    owner_adr: ADR-251
+    decision: BUILD
+    rationale: COS owns worktree, ownership, claims, receipts, and release-freeze semantics; frameworks remain adapters/lab-only.
+    maintenance_cost: high
+    benchmark: manifests/agent-orchestration-adapters.yaml
+    candidates:
+      - tool_id: langgraph
+        verdict: INTEGRATE
+        source_links: [https://github.com/langchain-ai/langgraph]
+        deepwiki_url: https://deepwiki.com/langchain-ai/langgraph
+        license: MIT
+        reason_not_build_replacement: Useful workflow framework but does not own local worktree/branch/release governance.
+      - tool_id: autogen
+        verdict: DEFER
+        source_links: [https://github.com/microsoft/autogen]
+        deepwiki_url: https://deepwiki.com/microsoft/autogen
+        license: MIT
+        reason_not_build_replacement: Multi-agent framework is heavier than local-first governance layer.
+  - capability_id: capability-coverage-matrix
+    feature_label: Capability coverage and feature reality ledger
+    owner_adr: ADR-252
+    decision: BUILD
+    rationale: COS-specific claim/reality ledger maps ADRs, implementations, tests, receipts, and public claims; external tools provide health signals but not this semantic join.
+    maintenance_cost: medium
+    benchmark: manifests/capability-coverage.yaml
+    candidates:
+      - tool_id: openssf-scorecard
+        verdict: INTEGRATE
+        source_links: [https://github.com/ossf/scorecard]
+        deepwiki_url: https://deepwiki.com/ossf/scorecard
+        license: Apache-2.0
+        reason_not_build_replacement: Scores OSS health; does not map COS feature reality to ADR/test/receipt truth.
+      - tool_id: deps-dev
+        verdict: INTEGRATE
+        source_links: [https://github.com/google/deps.dev, https://docs.deps.dev/api/v3/]
+        deepwiki_url: https://deepwiki.com/google/deps.dev
+        license: Apache-2.0
+        reason_not_build_replacement: Provides package metadata; not COS capability truth.

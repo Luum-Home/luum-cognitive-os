@@ -101,3 +101,13 @@ def test_cos_memory_benchmark_cli_json_smoke() -> None:
     report = json.loads(proc.stdout)
     assert report["status"] == "pass"
     assert report["summary"]["fixtures"] >= 3
+
+
+def test_current_local_baseline_exposes_wave2_delta() -> None:
+    report = run_benchmark(MANIFEST, strategy="current-local")
+
+    assert report["strategy"] == "current-local"
+    assert report["status"] == "block"
+    codes = {finding["code"] for finding in report["findings"]}
+    assert "stale-temporal-answer" in codes
+    assert "unsupported-multi-hop-chain" in codes

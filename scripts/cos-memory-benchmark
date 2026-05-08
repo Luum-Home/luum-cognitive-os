@@ -29,6 +29,7 @@ def main() -> int:
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
     parser.add_argument("--candidate-results", default=None, help="Optional JSONL retrieval results to evaluate instead of oracle fixture output.")
+    parser.add_argument("--strategy", choices=["oracle", "current-local"], default="oracle", help="Fixture-local strategy when --candidate-results is omitted.")
     parser.add_argument("--top-k", type=int, default=None)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
@@ -41,7 +42,7 @@ def main() -> int:
     if candidate_results and not candidate_results.is_absolute():
         candidate_results = root / candidate_results
 
-    report = run_benchmark(manifest, candidate_results_path=candidate_results, top_k=args.top_k)
+    report = run_benchmark(manifest, candidate_results_path=candidate_results, top_k=args.top_k, strategy=args.strategy)
     if args.json:
         print(json.dumps(report, indent=2, sort_keys=True))
     else:

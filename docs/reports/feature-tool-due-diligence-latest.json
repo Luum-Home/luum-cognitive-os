@@ -1,0 +1,129 @@
+{
+  "capability_manifest": "manifests/capability-coverage.yaml",
+  "findings": [
+    {
+      "capability_id": "handoff-envelope-cycle-dedup",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "mcp-server-surface",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "sandbox-adapter-tiers",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "cross-session-agent-team-file-ipc",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "approval-policies-as-code",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "detached-agent-daemon",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "deferred-tool-loading-toolsearch",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "test-execution-efficiency",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "isolated-worktree-write-agents",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "primitive-coherence-audit",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "consolidated-bypass-allowlist",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "git-filter-repo-wrapper",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "post-rewrite-push-collision-exception",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "trust-report-claim-validator",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "chaos-readonly-production-source",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "release-transaction-freeze",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "postmortem-regression-audits",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "control-plane-audit-loop",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    },
+    {
+      "capability_id": "primitive-behavioral-proof",
+      "code": "missing-feature-due-diligence",
+      "message": "Capability lacks feature-to-external-tool due-diligence record; required before new public BUILD claims or major custom expansion.",
+      "severity": "warn"
+    }
+  ],
+  "manifest": "manifests/feature-tool-due-diligence.yaml",
+  "schema_version": "feature-tool-due-diligence-audit/v1",
+  "status": "warn",
+  "summary": {
+    "block": 0,
+    "build_like_capabilities": 22,
+    "findings": 19,
+    "records": 3,
+    "warn": 19
+  }
+}

@@ -14,13 +14,11 @@ uvicorn>=0.23
 
 # === Observability (ADOPT) ===
 opik>=1.0                    # LLM tracing, evaluation, monitoring (cloud: comet.com)
-langfuse>=3.0                # LLM observability — v3 OTEL-based API
 mlflow>=2.0                  # MIGRATED FROM DOCKER: replaces langfuse-web + 5 dep containers. Run: mlflow server --backend-store-uri sqlite:///mlflow.db
 
 # === Memory (ADOPT) ===
 cognee>=0.1                  # Knowledge graph memory
 # cognee[server]             # Uncomment to run as server
-memu>=2.0                    # MIGRATED FROM DOCKER: replaces memu container (was pip-installed in Docker anyway). Run: python -m memu.server
 
 # === Guardrails (ADOPT) ===
 nemoguardrails>=0.10         # MIGRATED FROM DOCKER: replaces nemo-guardrails container. Use RailsConfig + LLMRails in-process.
@@ -33,7 +31,6 @@ notebook>=7.0                # Jupyter notebook interface
 crawl4ai>=0.8.0                # LLM-ready web crawling (Apache 2.0, by UncleCode)
 
 # === LLM Routing ===
-litellm>=1.0                 # Multi-provider LLM proxy (MIGRATED FROM DOCKER: run as library or `litellm --config config.yaml`)
 
 # === Agent Testing (ADOPT) ===
 deepeval>=1.0                # LLM unit testing, trajectory eval, 60+ metrics

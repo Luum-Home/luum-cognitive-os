@@ -42,7 +42,6 @@ testing = [
     # wrapper so resource-pressure flakes don't cascade into red CI.
     "pytest-rerunfailures>=15.0",
     "mutmut>=3.0",
-    "pytest-smell>=1.0",
     # testcontainers: used for ephemeral Valkey in @pytest.mark.integration tests.
     # RedisContainer("valkey/valkey:7.2.4") provides an isolated Valkey instance
     # so integration tests don't depend on OrbStack being up.

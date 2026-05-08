@@ -62,6 +62,14 @@ Candidate change name: `memory-layer-evolution`. Bundled because the four items 
 
 **Required ordering**: M1 (schema) before M2/M3/M4 (consumers). M2 and M3 can run in parallel once M1 lands. M4 is overlay, lands last.
 
+### Slice 0 baseline — current local retrieval
+
+Baseline report: [`docs/reports/memory-retrieval-baseline-current-local-2026-05-08.json`](memory-retrieval-baseline-current-local-2026-05-08.json).
+
+Result: `status=block`, `passed=0/3`, `block=3`, `temporal_correct=1/3`, `source_supported=2/3`. The current lexical/Jaccard-style baseline fails both temporal freshness and explicit multi-hop support-chain requirements.
+
+Implication for ordering: M1 has the highest immediate delta because temporal validity/supersession fixes two of three blocking fixtures. M3 is second because explicit path/support-chain retrieval fixes the multi-hop fixture. M2 should wait until M1/M3 provide the schema/graph signals it can rank. M4 remains last as taxonomy/backfill overlay.
+
 **Acceptance criteria** (proposed, to confirm at `/sdd-new memory-layer-evolution`):
 - Schema migration is idempotent and reversible.
 - Existing Engram queries return identical results pre/post-migration when bi-temporal fields default to `created_at`/`superseded_at`.

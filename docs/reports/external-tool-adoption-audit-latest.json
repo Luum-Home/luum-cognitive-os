@@ -1,0 +1,61 @@
+{
+  "direct_dependencies": {
+    "go.mod": [
+      "github.com/burntsushi/toml",
+      "modernc.org/sqlite"
+    ],
+    "pyproject.toml": [
+      "claude-agent-sdk",
+      "diff-cover",
+      "fastapi",
+      "import-linter",
+      "jinja2",
+      "mutmut",
+      "openai",
+      "pre-commit",
+      "pytest",
+      "pytest-asyncio",
+      "pytest-cov",
+      "pytest-rerunfailures",
+      "pytest-timeout",
+      "pytest-xdist",
+      "pyyaml",
+      "rich",
+      "ruff",
+      "testcontainers",
+      "uvicorn",
+      "vulture"
+    ],
+    "requirements.txt": [
+      "cognee",
+      "crawl4ai",
+      "deepeval",
+      "fastapi",
+      "jinja2",
+      "jupyter",
+      "mlflow",
+      "nemoguardrails",
+      "notebook",
+      "opik",
+      "pytest",
+      "pytest-asyncio",
+      "pytest-timeout",
+      "pytest-xdist",
+      "pyyaml",
+      "ragas",
+      "redis",
+      "testcontainers",
+      "uvicorn"
+    ]
+  },
+  "findings": [],
+  "manifest": "manifests/external-tools-adoption.yaml",
+  "overlay": null,
+  "schema_version": "external-tool-adoption-audit/v1",
+  "status": "pass",
+  "summary": {
+    "block": 0,
+    "findings": 0,
+    "warn": 0
+  }
+}

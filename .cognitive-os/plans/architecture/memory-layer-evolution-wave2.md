@@ -67,6 +67,32 @@ suite that can fail a proposed memory algorithm.
   multi-hop success, p95 latency, and token/cost delta.
 - Failing benchmark cases become named regression tests before algorithm work.
 
+
+## Slice 0 baseline result
+
+Current local baseline command:
+
+```bash
+scripts/cos-memory-benchmark --strategy current-local --json \
+  > docs/reports/memory-retrieval-baseline-current-local-2026-05-08.json
+```
+
+Result summary:
+
+- status: `block`
+- passed: `0/3`
+- blocks: `3`
+- temporal correctness: `1/3`
+- source support: `2/3`
+
+The baseline fails two temporal freshness checks and the explicit multi-hop
+support-chain check. Therefore the next implementation order is:
+
+1. M1 temporal schema/validity/supersession support;
+2. M3 graph path/PPR or equivalent explicit support-chain retrieval;
+3. M2 dual-level ranking after schema/path signals exist;
+4. M4 memory class overlay last.
+
 ## Slice 1 — Additive schema
 
 Add nullable fields without changing default behavior:

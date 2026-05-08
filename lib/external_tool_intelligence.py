@@ -66,6 +66,15 @@ def normalize_tool_id(value: str) -> str:
     return value
 
 
+def _display_path(path: Path | None) -> str | None:
+    if path is None:
+        return None
+    try:
+        return str(path.resolve().relative_to(Path.cwd().resolve()))
+    except ValueError:
+        return str(path)
+
+
 def repo_root(start: Path) -> Path:
     cur = start.resolve()
     for candidate in [cur, *cur.parents]:
@@ -274,8 +283,8 @@ def audit_adoption(root: Path, manifest_path: Path, overlay_path: Path | None = 
         "schema_version": AUDIT_SCHEMA,
         "status": "block" if block else "warn" if warn else "pass",
         "summary": {"block": block, "warn": warn, "findings": len(finding_dicts)},
-        "manifest": str(manifest_path),
-        "overlay": str(overlay_path) if overlay_path else None,
+        "manifest": _display_path(manifest_path),
+        "overlay": _display_path(overlay_path),
         "direct_dependencies": deps_by_file,
         "findings": finding_dicts,
     }

@@ -1,0 +1,20 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import argparse, sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
+from lib.feature_tool_due_diligence import repo_root, scan_due_diligence, write_json
+
+def main() -> int:
+    p=argparse.ArgumentParser(description="Audit feature-to-external-tool due diligence records.")
+    p.add_argument("--repo", default=".")
+    p.add_argument("--manifest", default="manifests/feature-tool-due-diligence.yaml")
+    p.add_argument("--capabilities", default="manifests/capability-coverage.yaml")
+    p.add_argument("--strict", action="store_true")
+    p.add_argument("--json", action="store_true")
+    a=p.parse_args(); root=repo_root(Path(a.repo))
+    report=scan_due_diligence(root, root/a.manifest if not Path(a.manifest).is_absolute() else Path(a.manifest), root/a.capabilities if not Path(a.capabilities).is_absolute() else Path(a.capabilities))
+    print(write_json(report), end="")
+    return 1 if a.strict and report["status"] == "block" else 0
+if __name__ == "__main__": raise SystemExit(main())

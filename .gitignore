@@ -124,3 +124,6 @@ cos_mutation.sqlite
 .cognitive-os/coordination/*.lock
 .cognitive-os/coordination/agent-messages-archive/
 .cognitive-os/metrics/context-budget.jsonl
+
+# ADR-255: external source snapshots for due diligence, never tracked
+.cognitive-os/external-source-cache/

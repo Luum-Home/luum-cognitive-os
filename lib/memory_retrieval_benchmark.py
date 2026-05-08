@@ -8,6 +8,7 @@ defaults for the Wave 2 memory-layer-evolution SDD.
 from __future__ import annotations
 
 import json
+import re
 import statistics
 from dataclasses import dataclass
 from pathlib import Path
@@ -48,6 +49,15 @@ def load_yaml(path: Path) -> dict[str, Any]:
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def display_path(path: Path | None) -> str | None:
+    if path is None:
+        return None
+    try:
+        return str(path.resolve().relative_to(Path.cwd().resolve()))
+    except ValueError:
+        return str(path)
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -91,10 +101,42 @@ def oracle_result_for_fixture(fixture: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def candidate_map(fixtures: list[dict[str, Any]], candidate_rows: list[dict[str, Any]] | None) -> dict[str, dict[str, Any]]:
-    if candidate_rows is None:
-        return {fixture["id"]: oracle_result_for_fixture(fixture) for fixture in fixtures}
-    return {str(row.get("fixture_id")): row for row in candidate_rows}
+def _tokens(text: str) -> set[str]:
+    return {token for token in re.findall(r"[a-z0-9]+", text.lower()) if len(token) > 2}
+
+
+def current_local_result_for_fixture(fixture: dict[str, Any]) -> dict[str, Any]:
+    """Approximate the current Engram retrieval baseline on fixture-local rows.
+
+    The current local baseline mirrors the existing COS memory retriever shape:
+    lexical search plus Jaccard reranking over title/content. It is intentionally
+    fixture-local and non-mutating because Slice 0 must not write synthetic rows
+    into the operator's Engram database.
+    """
+    query_tokens = _tokens(str(fixture.get("query", "")))
+    scored = []
+    for obs in fixture.get("observations", []) or []:
+        haystack = f"{obs.get('title', '')} {obs.get('content', '')}"
+        obs_tokens = _tokens(haystack)
+        union = query_tokens | obs_tokens
+        score = (len(query_tokens & obs_tokens) / len(union)) if union else 0.0
+        scored.append((score, str(obs.get("id", ""))))
+    scored.sort(key=lambda item: (-item[0], item[1]))
+    return {
+        "fixture_id": fixture["id"],
+        "strategy": "current-local-fts-jaccard",
+        "retrieved_ids": [obs_id for _score, obs_id in scored if obs_id],
+        "support_chain": [],
+        "latency_ms": 0.0,
+    }
+
+
+def candidate_map(fixtures: list[dict[str, Any]], candidate_rows: list[dict[str, Any]] | None, *, strategy: str = "oracle") -> dict[str, dict[str, Any]]:
+    if candidate_rows is not None:
+        return {str(row.get("fixture_id")): row for row in candidate_rows}
+    if strategy == "current-local":
+        return {fixture["id"]: current_local_result_for_fixture(fixture) for fixture in fixtures}
+    return {fixture["id"]: oracle_result_for_fixture(fixture) for fixture in fixtures}
 
 
 def _rank(retrieved_ids: list[str], target: str) -> int | None:
@@ -174,12 +216,12 @@ def evaluate_fixture(fixture: dict[str, Any], candidate: dict[str, Any], *, top_
     }
 
 
-def run_benchmark(manifest_path: Path, *, candidate_results_path: Path | None = None, top_k: int | None = None) -> dict[str, Any]:
+def run_benchmark(manifest_path: Path, *, candidate_results_path: Path | None = None, top_k: int | None = None, strategy: str = "oracle") -> dict[str, Any]:
     manifest = load_yaml(manifest_path)
     top = int(top_k or manifest.get("metrics", {}).get("top_k", DEFAULT_TOP_K) or DEFAULT_TOP_K)
     fixtures = load_fixtures(manifest, manifest_path)
     candidate_rows = load_jsonl(candidate_results_path) if candidate_results_path else None
-    candidates = candidate_map(fixtures, candidate_rows)
+    candidates = candidate_map(fixtures, candidate_rows, strategy=strategy)
     results = []
     findings = []
     for fixture in fixtures:
@@ -212,8 +254,9 @@ def run_benchmark(manifest_path: Path, *, candidate_results_path: Path | None = 
     return {
         "schema_version": SCHEMA_VERSION,
         "status": "block" if block_count else "pass",
-        "manifest": str(manifest_path),
-        "candidate_results": str(candidate_results_path) if candidate_results_path else None,
+        "manifest": display_path(manifest_path),
+        "candidate_results": display_path(candidate_results_path),
+        "strategy": strategy if not candidate_results_path else "candidate-results",
         "summary": {
             "fixtures": len(results),
             "passed": sum(1 for result in results if result["passed"]),
