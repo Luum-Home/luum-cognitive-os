@@ -29,7 +29,7 @@ def main() -> int:
     parser.add_argument("--project-dir", default=".")
     parser.add_argument("--manifest", default=str(DEFAULT_MANIFEST))
     parser.add_argument("--candidate-results", default=None, help="Optional JSONL retrieval results to evaluate instead of oracle fixture output.")
-    parser.add_argument("--strategy", choices=["oracle", "current-local"], default="oracle", help="Fixture-local strategy when --candidate-results is omitted.")
+    parser.add_argument("--strategy", choices=["oracle", "current-local", "temporal-local", "graph-path-local", "dual-level-local", "memory-class-local"], default="oracle", help="Fixture-local strategy when --candidate-results is omitted.")
     parser.add_argument("--top-k", type=int, default=None)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()

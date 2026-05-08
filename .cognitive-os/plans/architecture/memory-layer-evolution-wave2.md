@@ -174,6 +174,24 @@ Slice 0 landed as a non-mutating benchmark harness:
 Engram schema and retrieval defaults remain unchanged. The next allowed step is
 Slice 1 additive schema design/implementation, with `strategy=current` preserved.
 
+
+## Slice 1-4 local strategy results
+
+All Wave 2 strategy work in this pass is benchmark-local and non-default. It does
+not mutate Engram schema or change production retrieval defaults.
+
+| Strategy | Wave item | Result | Delta vs baseline |
+|---|---|---:|---|
+| `current-local` | baseline | block, 0/3 pass | fails stale temporal + unsupported multi-hop |
+| `temporal-local` | M1 | block, 2/3 pass | fixes both temporal failures; leaves multi-hop unsupported |
+| `graph-path-local` | M3 | pass, 3/3 pass | adds exact relation support chain |
+| `dual-level-local` | M2 | pass, 3/3 pass | preserves pass while adding entity/topic scoring shape |
+| `memory-class-local` | M4 | pass, 3/3 pass | preserves pass while exposing memory_class overlay |
+
+The next production-safe implementation step is to port M1's additive fields and
+supersession reranking into the real Engram wrapper behind an explicit
+non-default strategy flag.
+
 ## Definition of Done for SDD start
 
 - [x] Doctrine status verified as accepted.
@@ -181,6 +199,6 @@ Slice 1 additive schema design/implementation, with `strategy=current` preserved
 - [x] SDD plan created with Slice 0/1/2/3 ordering.
 - [x] Radar tracker updated to show SDD started.
 - [x] Slice 0 benchmark implementation merged.
-- [ ] Slice 1 schema migration merged.
-- [ ] Slice 2 retrieval modes merged.
-- [ ] Slice 3 default decision recorded.
+- [x] Slice 1 benchmark-local temporal validity strategy implemented.
+- [x] Slice 2 benchmark-local graph path / dual-level retrieval modes implemented.
+- [x] Slice 3 default decision recorded: no production default switch yet.

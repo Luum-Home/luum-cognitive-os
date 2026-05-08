@@ -28,3 +28,16 @@ policy:
   non_mutating: true
   default_strategy: oracle_fixture
   blocks_schema_changes_until_green: true
+
+strategies:
+  current-local: current lexical/Jaccard baseline, no temporal or graph path support
+  temporal-local: M1 validity/supersession-aware reranking, non-default
+  graph-path-local: M1 + M3 explicit relation path support, non-default
+  dual-level-local: M1 + M3 + M2 entity/topic scoring, non-default
+  memory-class-local: M1 + M3 + M2 + M4 memory_class overlay, non-default
+additive_schema_fields:
+  - valid_from
+  - valid_to
+  - source_episode
+  - memory_class
+  - supersedes relation

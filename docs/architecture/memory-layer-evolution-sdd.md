@@ -18,6 +18,13 @@ Slice 0 benchmark substrate is implemented. Engram schema/retrieval
 defaults stay unchanged until Slice 1 explicitly preserves `strategy=current`
 compatibility and passes the benchmark gate.
 
+## Benchmark-local Wave 2 modes
+
+Slice 1-4 strategy modes are implemented in the benchmark harness only:
+`temporal-local`, `graph-path-local`, `dual-level-local`, and
+`memory-class-local`. They prove the intended deltas without mutating Engram
+storage or changing production defaults.
+
 ## Goal
 
 Design the Wave 2 memory bundle before touching Engram or Cognee code. The

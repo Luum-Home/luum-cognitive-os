@@ -1,34 +1,47 @@
 {
-  "id": "temporal-contradiction-license-policy",
   "class": "temporal_contradiction",
-  "query": "What is the current license posture for blocked runtime dependencies?",
+  "expected": {
+    "must_include": [
+      "obs-current-license-blocklist"
+    ],
+    "must_rank_above": [
+      {
+        "higher": "obs-current-license-blocklist",
+        "lower": "obs-old-license-allow-bsl"
+      }
+    ]
+  },
+  "id": "temporal-contradiction-license-policy",
   "observations": [
     {
-      "id": "obs-old-license-allow-bsl",
-      "type": "decision",
-      "title": "Old permissive dependency rule",
+      "content": "Older exploratory note incorrectly allowed BSL-like licenses for runtime dependencies. Superseded.",
       "created_at": "2026-04-01T00:00:00Z",
+      "id": "obs-old-license-allow-bsl",
+      "memory_class": "semantic",
+      "source_episode": "temporal-contradiction-license-policy",
+      "title": "Old permissive dependency rule",
+      "type": "decision",
       "valid_from": "2026-04-01T00:00:00Z",
-      "valid_to": "2026-05-08T00:00:00Z",
-      "content": "Older exploratory note incorrectly allowed BSL-like licenses for runtime dependencies. Superseded."
+      "valid_to": "2026-05-08T00:00:00Z"
     },
     {
-      "id": "obs-current-license-blocklist",
-      "type": "decision",
-      "title": "Current license allowlist/blocklist",
+      "content": "Current doctrine allows MIT/BSD/Apache/ISC/MPL-2.0/Unlicense/0BSD/Zlib and blocks AGPL/SSPL/BSL/Commons Clause/GPL at runtime.",
       "created_at": "2026-05-08T00:00:00Z",
+      "id": "obs-current-license-blocklist",
+      "memory_class": "semantic",
+      "source_episode": "temporal-contradiction-license-policy",
+      "title": "Current license allowlist/blocklist",
+      "type": "decision",
       "valid_from": "2026-05-08T00:00:00Z",
-      "valid_to": null,
-      "content": "Current doctrine allows MIT/BSD/Apache/ISC/MPL-2.0/Unlicense/0BSD/Zlib and blocks AGPL/SSPL/BSL/Commons Clause/GPL at runtime."
+      "valid_to": null
     }
   ],
+  "query": "What is the current license posture for blocked runtime dependencies?",
   "relations": [
-    {"from": "obs-current-license-blocklist", "to": "obs-old-license-allow-bsl", "type": "supersedes"}
-  ],
-  "expected": {
-    "must_include": ["obs-current-license-blocklist"],
-    "must_rank_above": [
-      {"higher": "obs-current-license-blocklist", "lower": "obs-old-license-allow-bsl"}
-    ]
-  }
+    {
+      "from": "obs-current-license-blocklist",
+      "to": "obs-old-license-allow-bsl",
+      "type": "supersedes"
+    }
+  ]
 }

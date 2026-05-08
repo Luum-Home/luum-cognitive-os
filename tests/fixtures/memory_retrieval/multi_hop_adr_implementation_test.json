@@ -1,18 +1,55 @@
 {
-  "id": "multi-hop-adr-implementation-test",
   "class": "multi_hop",
-  "query": "Show the evidence chain that ADR-210 has an implementation and tests.",
-  "observations": [
-    {"id": "decision-adr-210", "type": "decision", "title": "ADR-210 accepted", "content": "ADR-210 fleet confidence boundary is accepted for Slice A."},
-    {"id": "file-lib-fleet-confidence", "type": "implementation", "title": "lib/fleet_confidence.py", "content": "Fleet confidence exporter validates sanitized opt-in rows."},
-    {"id": "test-fleet-confidence-export", "type": "test", "title": "tests/unit/test_fleet_confidence_export.py", "content": "Tests block local-only content and missing receipts."}
-  ],
-  "relations": [
-    {"from": "decision-adr-210", "to": "file-lib-fleet-confidence", "type": "implemented_by"},
-    {"from": "file-lib-fleet-confidence", "to": "test-fleet-confidence-export", "type": "verified_by"}
-  ],
   "expected": {
-    "must_include": ["decision-adr-210", "file-lib-fleet-confidence", "test-fleet-confidence-export"],
-    "required_chain": ["decision-adr-210", "file-lib-fleet-confidence", "test-fleet-confidence-export"]
-  }
+    "must_include": [
+      "decision-adr-210",
+      "file-lib-fleet-confidence",
+      "test-fleet-confidence-export"
+    ],
+    "required_chain": [
+      "decision-adr-210",
+      "file-lib-fleet-confidence",
+      "test-fleet-confidence-export"
+    ]
+  },
+  "id": "multi-hop-adr-implementation-test",
+  "observations": [
+    {
+      "content": "ADR-210 fleet confidence boundary is accepted for Slice A.",
+      "id": "decision-adr-210",
+      "memory_class": "semantic",
+      "source_episode": "multi-hop-adr-implementation-test",
+      "title": "ADR-210 accepted",
+      "type": "decision"
+    },
+    {
+      "content": "Fleet confidence exporter validates sanitized opt-in rows.",
+      "id": "file-lib-fleet-confidence",
+      "memory_class": "procedural",
+      "source_episode": "multi-hop-adr-implementation-test",
+      "title": "lib/fleet_confidence.py",
+      "type": "implementation"
+    },
+    {
+      "content": "Tests block local-only content and missing receipts.",
+      "id": "test-fleet-confidence-export",
+      "memory_class": "procedural",
+      "source_episode": "multi-hop-adr-implementation-test",
+      "title": "tests/unit/test_fleet_confidence_export.py",
+      "type": "test"
+    }
+  ],
+  "query": "Show the evidence chain that ADR-210 has an implementation and tests.",
+  "relations": [
+    {
+      "from": "decision-adr-210",
+      "to": "file-lib-fleet-confidence",
+      "type": "implemented_by"
+    },
+    {
+      "from": "file-lib-fleet-confidence",
+      "to": "test-fleet-confidence-export",
+      "type": "verified_by"
+    }
+  ]
 }
