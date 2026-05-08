@@ -37,6 +37,7 @@ FIXTURE_HOME = "/" + "Users/fixtureuser/Projects/fixture-app"
 COS_TRAILER = "X-COS-Session: fixture-session-123"
 COS_WORK_TRAILER = "X-COS-Work-Fingerprint: fixture-work-fp"
 PRESERVE_MARKER = "FSL-1.1-MIT"
+REMOTE_URL = "git@example.invalid:fixture/repo.git"
 
 
 def _run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
@@ -48,6 +49,7 @@ def _make_fixture_repo(repo_path: Path) -> None:
     _run(["git", "init", "--initial-branch=main"], repo_path)
     _run(["git", "config", "user.email", SECRET_EMAIL], repo_path)
     _run(["git", "config", "user.name", SECRET_NAME], repo_path)
+    _run(["git", "remote", "add", "origin", REMOTE_URL], repo_path)
 
     # Commit 1: secret email in a tracked file
     (repo_path / "README.md").write_text(
@@ -159,6 +161,9 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert result["pre_rewrite"]["commit_count"] == pre_count
     assert result["post_rewrite"]["commit_count"] == pre_count
     assert result["pre_rewrite"]["head"] != result["post_rewrite"]["head"]
+    assert "origin" in result["remotes_restored"]
+    restored_origin = _run(["git", "remote", "get-url", "origin"], fixture)
+    assert restored_origin.stdout.strip() == REMOTE_URL
 
     # Tombstone branch exists and points at post-rewrite HEAD
     branch_check = _run(["git", "rev-parse", result["tombstone_branch"]], fixture)
