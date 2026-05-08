@@ -1,0 +1,268 @@
+#!/usr/bin/env python3
+"""Pre-public repository risk audit.
+
+Non-destructive release-readiness wrapper for reputation/transparency checks.
+It deliberately does NOT rewrite git history and it treats commit author emails
+as preserved human metadata unless an explicit finding says otherwise.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
+
+SCHEMA_VERSION = "pre-public-risk-audit/v1"
+
+TOKEN_ENV_VARS = [
+    "COS_HISTORY_SANITIZE_OPERATOR_EMAIL",
+    "COS_HISTORY_SANITIZE_OPERATOR_NAME",
+    "COS_HISTORY_SANITIZE_HOME_PREFIX",
+    "COS_HISTORY_SANITIZE_REPO_PATH",
+    "COS_HISTORY_SANITIZE_CONSUMER_CODENAME_A",
+    "COS_HISTORY_SANITIZE_CONSUMER_CODENAME_B",
+    "COS_HISTORY_SANITIZE_CONSUMER_CODENAME_C",
+    "COS_HISTORY_SANITIZE_CONSUMER_SERVICE",
+    "COS_HISTORY_SANITIZE_CONSUMER_SERVICE_2",
+    "COS_HISTORY_SANITIZE_CONSUMER_SERVICE_3",
+    "COS_HISTORY_SANITIZE_CONSUMER_SERVICE_4",
+    "COS_HISTORY_SANITIZE_CONSUMER_SERVICE_5",
+]
+
+PROVIDER_IDENTITY_RE = re.compile(
+    r"(?i)(^|[<\s])(?:claude|anthropic|codex|openai|qwen|gemini|copilot|cursor|windsurf)"
+    r"[^\n<>]*<[A-Z0-9._%+-]+@[A-Z0-9.-]*(?:anthropic|openai|google|github|cursor|windsurf|qwen)[A-Z0-9.-]*>"
+)
+
+X_COS_RE = re.compile(r"^X-COS-(Origin|Session|Harness):", re.MULTILINE)
+
+
+@dataclass
+class Finding:
+    severity: str
+    code: str
+    message: str
+    count: int = 0
+    sample: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        out: dict[str, Any] = {
+            "severity": self.severity,
+            "code": self.code,
+            "message": self.message,
+            "count": self.count,
+        }
+        if self.sample:
+            out["sample"] = self.sample
+        return out
+
+
+def run(repo: Path, args: list[str], *, timeout: float | None = None) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=timeout,
+    )
+
+
+def repo_root(start: Path) -> Path:
+    proc = subprocess.run(
+        ["git", "-C", str(start), "rev-parse", "--show-toplevel"],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        raise SystemExit(f"not a git repository: {start}")
+    return Path(proc.stdout.strip()).resolve()
+
+
+def tracked_history(repo: Path) -> str:
+    proc = run(repo, ["log", "--all", "--pretty=fuller", "-p", "--no-color"])
+    return proc.stdout if proc.returncode == 0 else ""
+
+
+def commit_bodies(repo: Path) -> str:
+    proc = run(repo, ["log", "--all", "--pretty=format:%B"])
+    return proc.stdout if proc.returncode == 0 else ""
+
+
+def author_lines(repo: Path) -> list[str]:
+    proc = run(repo, ["log", "--all", "--format=%an <%ae>"])
+    if proc.returncode != 0:
+        return []
+    return sorted(set(line.strip() for line in proc.stdout.splitlines() if line.strip()))
+
+
+def add(finding_list: list[Finding], severity: str, code: str, message: str, count: int = 0, sample: str | None = None) -> None:
+    finding_list.append(Finding(severity, code, message, count, sample))
+
+
+def audit(repo: Path) -> dict[str, Any]:
+    findings: list[Finding] = []
+    checks: dict[str, Any] = {}
+
+    status_proc = run(repo, ["status", "--porcelain"])
+    dirty_lines = [line for line in status_proc.stdout.splitlines() if line.strip()]
+    checks["working_tree_clean"] = not dirty_lines
+    if dirty_lines:
+        add(
+            findings,
+            "block",
+            "working-tree-dirty",
+            "Working tree has uncommitted changes; freeze/commit before any public rewrite or force-push.",
+            len(dirty_lines),
+            ";".join(dirty_lines[:5]),
+        )
+
+    history = tracked_history(repo)
+    bodies = commit_bodies(repo)
+
+    resolved_tokens: list[dict[str, Any]] = []
+    for env_name in TOKEN_ENV_VARS:
+        value = os.environ.get(env_name, "")
+        if not value:
+            continue
+        count = history.count(value)
+        resolved_tokens.append({"env_var": env_name, "hits": count})
+        if count:
+            add(
+                findings,
+                "block",
+                "configured-sensitive-token-in-history",
+                f"Configured sensitive token from {env_name} still appears in reachable git history.",
+                count,
+                env_name,
+            )
+    checks["resolved_sensitive_tokens"] = resolved_tokens
+
+    x_cos_count = len(X_COS_RE.findall(bodies))
+    checks["x_cos_trailers"] = x_cos_count
+    if x_cos_count:
+        add(
+            findings,
+            "block",
+            "x-cos-trailers-in-history",
+            "Internal COS session/harness trailers remain in commit bodies.",
+            x_cos_count,
+            "X-COS-*",
+        )
+
+    provider_matches = PROVIDER_IDENTITY_RE.findall(history)
+    # findall only returns capture groups; use finditer for count/sample
+    provider_iter = list(PROVIDER_IDENTITY_RE.finditer(history))
+    checks["provider_identity_residue"] = len(provider_iter)
+    if provider_iter:
+        sample = provider_iter[0].group(0).strip()[:160]
+        add(
+            findings,
+            "block",
+            "ai-provider-invented-identity-residue",
+            "AI-provider-looking invented identity appears in history or tracked content.",
+            len(provider_iter),
+            sample,
+        )
+
+    authors = author_lines(repo)
+    checks["authors"] = authors
+    fake_author_matches = [a for a in authors if PROVIDER_IDENTITY_RE.search(a) or "maintainer@example.com" in a]
+    if fake_author_matches:
+        add(
+            findings,
+            "block",
+            "fake-or-provider-author-metadata",
+            "Commit author metadata contains fake/provider-looking identities; review before publishing.",
+            len(fake_author_matches),
+            ";".join(fake_author_matches[:5]),
+        )
+    checks["commit_author_email_policy"] = "preserve-human-author-emails; do-not-auto-rewrite"
+
+    docs_history = repo / "docs" / "history"
+    docs_reports = repo / "docs" / "reports"
+    required_evidence = {
+        "docs/history/README.md": docs_history / "README.md",
+        "docs/history/manifest-snapshot-*.yaml": list(docs_history.glob("manifest-snapshot-*.yaml")),
+        "docs/history/pre-sanitization-sha-inventory-*.txt": list(docs_history.glob("pre-sanitization-sha-inventory-*.txt")),
+        "docs/reports/history-sanitization-*.json": list(docs_reports.glob("history-sanitization-*.json")),
+    }
+    evidence_state: dict[str, bool] = {}
+    for label, path_or_list in required_evidence.items():
+        ok = bool(path_or_list) if isinstance(path_or_list, list) else path_or_list.exists()
+        evidence_state[label] = ok
+        if not ok:
+            add(
+                findings,
+                "warn",
+                "history-sanitization-disclosure-gap",
+                f"Missing public history-sanitization disclosure evidence: {label}.",
+                1,
+                label,
+            )
+    checks["history_sanitization_disclosure_evidence"] = evidence_state
+
+    license_faq_candidates = [
+        repo / "docs" / "legal" / "license-faq.md",
+        repo / "docs" / "legal" / "LICENSE-FAQ.md",
+        repo / "docs" / "license-faq.md",
+    ]
+    license_faq_ok = any(p.exists() for p in license_faq_candidates)
+    checks["license_faq_present"] = license_faq_ok
+    if not license_faq_ok:
+        add(
+            findings,
+            "warn",
+            "license-switch-faq-missing",
+            "No public license FAQ found for Apache-to-FSL positioning; this is a reputational risk, not a code leak.",
+            1,
+            "docs/legal/license-faq.md",
+        )
+
+    block_count = sum(1 for f in findings if f.severity == "block")
+    warn_count = sum(1 for f in findings if f.severity == "warn")
+    status = "block" if block_count else "warn" if warn_count else "pass"
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "status": status,
+        "repo": str(repo),
+        "policy": {
+            "destructive": False,
+            "commit_author_emails": "preserve; never auto-rewrite without explicit operator consent",
+            "history_rewrite": "not performed by this script",
+        },
+        "summary": {"block": block_count, "warn": warn_count, "findings": len(findings)},
+        "checks": checks,
+        "findings": [f.to_dict() for f in findings],
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Non-destructive pre-public reputation/transparency risk audit.")
+    parser.add_argument("--repo", type=Path, default=Path.cwd())
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--strict", action="store_true", help="Treat warnings as failures.")
+    args = parser.parse_args()
+
+    repo = repo_root(args.repo)
+    report = audit(repo)
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(f"pre-public risk audit: {report['status']}")
+        for finding in report["findings"]:
+            print(f"[{finding['severity']}] {finding['code']}: {finding['message']} ({finding['count']})")
+    if report["summary"]["block"]:
+        return 1
+    if args.strict and report["summary"]["warn"]:
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
