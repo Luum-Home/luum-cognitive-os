@@ -1,7 +1,7 @@
 ---
 title: External Tool Adoption Doctrine
 date: 2026-05-08
-status: proposed-doctrine
+status: accepted
 source_index: docs/reports/external-tools-radar-INDEX.md
 source_reports:
   - docs/reports/external-tools-radar-2026-05-08.md
@@ -10,10 +10,13 @@ source_reports:
   - docs/reports/cross-check-C-orchestration-2026-05-08.md
   - docs/reports/cross-check-D-codegen-skills-tui-2026-05-08.md
   - docs/reports/cross-check-E-observability-debt-2026-05-08.md
-related_adrs: [ADR-058, ADR-065, ADR-192, ADR-212, ADR-247, ADR-250, ADR-251, ADR-252, ADR-253]
+related_adrs: [ADR-058, ADR-065, ADR-192, ADR-212, ADR-247, ADR-250, ADR-251, ADR-252, ADR-253, ADR-254]
 ---
 
 # External Tool Adoption Doctrine
+
+> **Status note**: ADR-254 ratifies this doctrine as accepted for the External Tool Intelligence Plane.
+> New runtime adoption still requires the ADR-254 manifest/audit/research-check path.
 
 ## Why this exists
 
