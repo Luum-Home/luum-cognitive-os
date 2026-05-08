@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# prepare-commit-msg — add COS provenance trailers to every local commit.
+# prepare-commit-msg — optionally add COS provenance trailers to local commits.
 set -uo pipefail
 
 REPO_DIR=$(git rev-parse --show-toplevel 2>/dev/null || exit 0)
@@ -9,6 +9,12 @@ MSG_FILE="$1"
 [ -f "$MSG_FILE" ] || exit 0
 
 if [ "${COS_DISABLE_COMMIT_PROVENANCE:-0}" = "1" ]; then
+  exit 0
+fi
+
+# Public-history default: do not write session identifiers into commit bodies.
+# Operators can opt in locally when they explicitly want trailer provenance.
+if [ "${COS_ENABLE_COMMIT_PROVENANCE:-0}" != "1" ]; then
   exit 0
 fi
 
