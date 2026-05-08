@@ -128,7 +128,7 @@ DEFAULT_HOOKS="error-pipeline.sh session-init.sh host-tool-doctor.sh session-cle
   clarification-gate.sh blast-radius.sh scope-proportionality.sh
   error-pattern-detector.sh auto-refine.sh auto-verify.sh dod-gate.sh
   trust-score-validator.sh skill-metrics-tracker.sh inject-phase-context.sh stack-detector.sh
-  pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh
+  pre-compaction-flush.sh rate-limiter.sh large-file-advisor.sh secret-detector.sh content-policy.sh ai-provider-identity-guard.sh
   confidentiality-enforcer.sh
   doc-sync-detector.sh auto-checkpoint.sh claim-validator.sh direct-main-guard.sh orchestrator-claim-gate.sh plan-claim-validator.sh completion-gate.sh
   clarification-interceptor.sh agent-checkpoint.sh session-sanity.sh

@@ -1,0 +1,62 @@
+schema_version: ai-provider-identity-policy/v1
+status: active
+owner: platform-safety
+purpose: >
+  Prevent AI agents from inventing public authorship/contact identities for
+  model providers. AI assistance is disclosed through COS provenance and
+  session artifacts, not provider-looking email addresses or co-author trailers.
+
+blocked_email_domains:
+  - anthropic.com
+  - openai.com
+  - qwen.ai
+  - qwenlm.ai
+  - alibaba.com
+  - deepmind.com
+  - google.com
+  - cursor.com
+  - windsurf.com
+  - cognition.ai
+
+blocked_email_local_parts:
+  - noreply
+  - no-reply
+  - bot
+  - agent
+  - assistant
+  - ai
+  - claude
+  - codex
+  - chatgpt
+  - openai
+  - anthropic
+  - qwen
+  - gemini
+  - copilot
+  - cursor
+  - windsurf
+  - devin
+
+provider_names:
+  - claude
+  - codex
+  - chatgpt
+  - openai
+  - anthropic
+  - qwen
+  - gemini
+  - copilot
+  - cursor
+  - windsurf
+  - devin
+
+allowed_emails:
+  - 2144218+MatiasNAmendola@users.noreply.github.com
+  - noreply@github.com
+
+allowed_paths:
+  - tests/
+  - .cognitive-os/recovery/
+  - .cognitive-os/private/
+
+severity: block
