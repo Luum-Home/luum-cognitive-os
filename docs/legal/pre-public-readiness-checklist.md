@@ -140,13 +140,24 @@ singularity, agent-communication via Valkey) or aspirational invite
 
 Required actions:
 
-- [ ] Run `component-reality-check` skill across the repo
-- [ ] Cross-check `docs/business/01-commercial-brief-v2.md` and
-  `master-plan-checklist.md` against the REAL/DORMANT/ASPIRATIONAL
-  classification
-- [ ] Mark every public-facing claim with status badge or remove
+- [x] Run `component-reality-check` skill / `aspirational_audit.py` across
+  the repo (2026-05-08 run: 1019 components — REAL 317 / DORMANT 182 /
+  ASPIRATIONAL 36 / METADATA 61, ratio 21.4%)
+  (Evidence: `docs/reports/aspirational-audit-2026-05-08.md`)
+- [x] Cross-check public commercial docs against the
+  REAL/DORMANT/ASPIRATIONAL classification
+  (Note: `docs/business/01-commercial-brief-v2.md` referenced in the
+  original checklist text does not exist as a public file — that ID
+  belongs to a private strategy doc. The closest public equivalents
+  reconciled are `executive-summary.md`, `features.md`, and
+  `value-proposition.md`. `master-plan-checklist.md` left untouched —
+  see audit §Per-file changes.)
+- [x] Mark every public-facing claim with status badge or remove
+  (Evidence: `docs/legal/h1-feature-status-audit.md`)
 
-Status: `pending`
+Status: `done` — pending operator sign-off on the 5 open questions in the
+audit doc. No claim was deleted; DORMANT/ASPIRATIONAL items are now
+explicitly labelled rather than removed.
 
 ---
 

@@ -5,29 +5,46 @@
 
 ---
 
+## Status legend
+
+Each feature row carries a status marker. Read these as honesty markers, not
+quality judgments — `DORMANT` and `ASPIRATIONAL` items often have working code
+behind a feature flag or are documented as next-cycle work.
+
+- **REAL** — production-ready, hook-enforced or covered by unit/behaviour tests
+  and wired into the default flow
+- **DORMANT** — code exists and is exercised by tests, but feature-flagged off
+  or only active under a specific harness/profile (the user must opt in)
+- **ASPIRATIONAL** — design and partial scaffolding exist; the loop is not yet
+  closed end-to-end. Tracked as future work, not as a shipped capability
+
+Source of truth: `rules/RULES-COMPACT.md`, weekly aspirational audit at
+`docs/reports/aspirational-audit-*.md`, full reconciliation at
+`docs/legal/h1-feature-status-audit.md`.
+
 ## Feature Overview
 
-| # | Feature | What It Does | Impact |
-|---|---------|--------------|--------|
-| 1 | Persistent Memory | Cross-session knowledge retention | AI never forgets decisions, bugs, or conventions |
-| 2 | Spec-Driven Development | Structured 10-phase workflow for complex changes | Features are planned, specified, and verified — not just coded |
-| 3 | Quality Control | 7 immutable gates + configurable rules | Quality guaranteed by infrastructure, not by willpower |
-| 4 | Self-Improvement Loop | Captures errors, detects patterns, improves skills | The system gets smarter with every session |
-| 5 | Multi-Agent Orchestration | 12+ simultaneous agents with cycle-deduplication and worktree isolation | Closes the #1 multi-agent production failure mode (MAST 2025) |
-| 6 | Replay Timeline & Restore-by-Checkpoint | Shadow-git substrate; every governance event carries a `file_tree_sha` | Devin-parity rewind without VM snapshots; governance-as-restore-point — unique |
-| 7 | Sync Cost + Retry Gate | Pre-call budget enforcement, retry classifier, idempotency keys, circuit breaker | Closes the runaway-loop class (Nov 2025 industry $47K incident) |
-| 8 | Agent-to-Agent Handoff Protocol | Typed `HandoffEnvelope` with call-chain dedup and permission intersection | Prevents the 41–87% production failure rate cycles cause |
-| 9 | Security and Compliance | NeMo Guardrails, PII masking, credential management | Enterprise security from day one |
-| 10 | Observability and Cost Control | Per-session JSONL streams, OpenTelemetry MCP semconv, budget caps | Know exactly how much your AI costs |
-| 11 | Developer Experience | 27+ skills, 30+ hooks, 22+ rules, 16+ agent personas | Specialized expertise for every task |
-| 12 | Multi-IDE Portability + MCP Server | 7+ IDE adapters PLUS native MCP server exposing core primitives | Your investment moves with you; every MCP-aware tool gets governance access |
-| 13 | Sandbox Adapter Tiers | Bubblewrap (Linux) / Seatbelt (macOS) OS-native default; E2B/microVM opt-in | 80% of accidental-destruction threat closed at zero new dep cost |
-| 14 | Detached Agent Daemon | Local-first long-running agents via tmux + worktree + file-sentinel | "Fire and forget" UX without going cloud |
-| 15 | SRE and Self-Healing | Autonomous monitoring with known-fix database | AI fixes problems while you sleep |
-| 16 | Industry Presets | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
-| 17 | Automation Workflows | End-to-end pipelines: from ticket to deployed code | Full automation from idea to production |
-| 18 | Manifest-Driven Governance | Every primitive declares a schema-versioned YAML | Auditable, machine-readable, no policy hidden in shell scripts |
-| 19 | Open-Source Core | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
+| # | Feature | Status | What It Does | Impact |
+|---|---------|--------|--------------|--------|
+| 1 | Persistent Memory | REAL | Cross-session knowledge retention | AI never forgets decisions, bugs, or conventions |
+| 2 | Spec-Driven Development | REAL | Structured 10-phase workflow for complex changes | Features are planned, specified, and verified — not just coded |
+| 3 | Quality Control | REAL | 7 immutable gates + configurable rules | Quality guaranteed by infrastructure, not by willpower |
+| 4 | Self-Improvement Loop | DORMANT | Captures errors, detects patterns, proposes skill/routing updates for human review | Closed-loop autonomous mutation is gated by ADR-201/204/206; the propose-only slice is implemented |
+| 5 | Multi-Agent Orchestration | REAL | 12+ simultaneous agents with cycle-deduplication and worktree isolation | Closes the #1 multi-agent production failure mode (MAST 2025) |
+| 6 | Replay Timeline & Restore-by-Checkpoint | REAL | Shadow-git substrate; every governance event carries a `file_tree_sha` | Devin-parity rewind without VM snapshots; governance-as-restore-point |
+| 7 | Sync Cost + Retry Gate | REAL | Pre-call budget enforcement, retry classifier, idempotency keys, circuit breaker | Closes the runaway-loop class |
+| 8 | Agent-to-Agent Handoff Protocol | REAL | Typed `HandoffEnvelope` with call-chain dedup and permission intersection | Addresses cycle-driven multi-agent failure modes |
+| 9 | Security and Compliance | REAL | Hook-enforced credential blocking, secret detector, content policy; NeMo Guardrails available as opt-in | Defense-in-depth, hook-enforced |
+| 10 | Observability and Cost Control | REAL | Per-session JSONL streams, OpenTelemetry MCP semconv, budget caps | Know exactly how much your AI costs |
+| 11 | Developer Experience | REAL | 27+ skills, 30+ hooks, 22+ rules, 16+ agent personas | Specialized expertise for every task |
+| 12 | Multi-IDE Portability + MCP Server | REAL | 7+ IDE adapters PLUS native MCP server exposing core primitives | Your investment moves with you; every MCP-aware tool gets governance access |
+| 13 | Sandbox Adapter Tiers | REAL | Bubblewrap (Linux) / Seatbelt (macOS) OS-native default; E2B/microVM opt-in | 80% of accidental-destruction threat closed at zero new dep cost |
+| 14 | Detached Agent Daemon | REAL | Local-first long-running agents via tmux + worktree + file-sentinel | "Fire and forget" UX without going cloud |
+| 15 | SRE and Self-Healing | DORMANT | Advisory monitoring + remediation registry with governed (human-approved) execution | MAPE-K-inspired loop is documented and partially wired; no autonomous production mutation. RULES marks `singularity` as `(inactive)` and `MAPE-K(inactive)` |
+| 16 | Industry Presets | REAL | Templates for fintech, healthcare, e-commerce, SaaS | Pre-loaded best practices |
+| 17 | Automation Workflows | DORMANT | End-to-end pipelines from ticket to deployed code | Pipeline templates exist; "ticket-to-prod" turnkey path is operator-assembled, not pre-wired |
+| 18 | Manifest-Driven Governance | REAL | Every primitive declares a schema-versioned YAML | Auditable, machine-readable, no policy hidden in shell scripts |
+| 19 | Open-Source Core | REAL | FSL-1.1-MIT core + plugin system (converts to MIT after 2 years) | Try for free, contribute, and benefit |
 
 ---
 
@@ -110,7 +127,10 @@ Quality gates enforced by infrastructure, not by hope.
 
 ## 4. Self-Improvement Loop
 
-The system gets smarter with every session.
+**Status: DORMANT (propose-only).** The detect/draft loop captures errors and
+proposes skill/routing changes. Promotion to runtime mutation is gated by
+ADR-201/204/206 and requires human approval. "Autonomous self-improvement" is
+**not** claimed for v1.
 
 ```
 Agents execute tasks
