@@ -1,0 +1,139 @@
+---
+adr: 243
+title: Post-Rewrite Push-Collision Check Exception
+status: proposed
+date: 2026-05-08
+supersedes: []
+superseded_by: null
+extends: [ADR-094, ADR-242]
+implementation_files:
+  - hooks/_lib/push-collision-check.sh
+  - scripts/push_collision_detect.py
+  - lib/history_sanitization.py
+  - tests/behavior/test_push_collision_post_rewrite.py
+tier: maintainer
+tags: [history-rewrite, push-gates, dx, postmortem-2026-05-08]
+---
+# ADR-243: Post-Rewrite Push-Collision Check Exception
+
+## Status
+
+Proposed. Drafted during the 2026-05-08 pre-public readiness session after
+the push-collision-check repeatedly blocked legitimate post-rewrite force
+pushes, driving the operator to `--no-verify`. Requires operator review
+before implementation. Companion to ADR-242.
+
+## Context
+
+After a history rewrite (mailmap, sanitize, or text replacement), every
+commit on the rewritten branch has the same subject line as before but a
+new SHA. The push-collision-check primitive
+(`hooks/_lib/push-collision-check.sh` plus
+`scripts/push_collision_detect.py`) treats subject-identical commits with
+divergent SHAs as a strong signal of accidental duplicate commits and
+blocks the push.
+
+This is correct in normal operation. After a deliberate rewrite, it is a
+false positive, and a high-cost one: there can be hundreds of subject
+collisions on a single rewrite, and there is no way to acknowledge them
+in a single gesture.
+
+Observed symptoms on 2026-05-08:
+
+- Force-push after `cos-history-sanitization --execute` was blocked by
+  push-collision-check on every rewritten commit.
+- The documented bypass envs only worked when pre-set in the harness env;
+  inline `DISABLE_HOOK_PUSH_COLLISION_CHECK=1 git push` did not reach the
+  PreToolUse hook (the same root issue ADR-241 addresses).
+- The operator fell back to `git push --no-verify --force-with-lease`,
+  which discarded *every* push-time protection (commit signing checks,
+  branch ownership lock, merge-queue gates), not only the collision check.
+- No audit trail recorded that a rewrite had occurred, so a separate
+  reviewer could not distinguish a benign post-rewrite force-push from
+  a destructive one.
+
+## Decision
+
+Introduce a "post-rewrite mode" that the rewrite path writes and the
+push-collision check reads.
+
+1. **Write side.** `lib/history_sanitization.py` (and the wrapper from
+   ADR-242) writes `.cognitive-os/runtime/last-rewrite.json` containing:
+   - `pre_head` — the SHA of `HEAD` before the rewrite,
+   - `post_head` — the SHA of `HEAD` after the rewrite,
+   - `rewritten_at` — ISO-8601 timestamp,
+   - `ttl_seconds` — default 86400 (24 hours),
+   - `rules_hash` — the same hash ADR-242 records.
+2. **Read side.** `hooks/_lib/push-collision-check.sh` and
+   `scripts/push_collision_detect.py` consult this file before raising
+   collisions. The post-rewrite exception applies if and only if all of:
+   - the file exists and is within `ttl_seconds`,
+   - the local `HEAD` SHA equals `post_head`,
+   - the upstream `HEAD` SHA equals `pre_head` (i.e. the push is the
+     expected first push of the rewrite),
+   - the colliding commits are within the rewrite's commit range.
+3. **Audit, do not silence.** When the exception applies, the check still
+   logs every collision to `agent-heartbeat.jsonl` with the rewrite hash
+   as correlation, so the audit trail is preserved. The hook returns
+   success rather than failure.
+4. **Marker lifecycle.** The marker is cleared on first successful push or
+   when its TTL expires, whichever is sooner. A subsequent rewrite
+   overwrites it.
+
+## Alternatives rejected
+
+- **Always allow force-push after a rewrite without an audit entry** —
+  rejected because it removes the operator's ability to retrospectively
+  see that subject-identical commits were intentional, not accidental.
+- **Require the operator to pass `--allow-rewrite` on the push command** —
+  rejected because most operators reach for `--no-verify` first; the goal
+  is to remove the incentive to bypass *all* gates to avoid one.
+- **Cache acknowledged collisions in Engram and ask interactively per
+  commit** — rejected because rewrites can produce hundreds of collisions
+  and an interactive loop is a worse UX than a documented marker file.
+- **Disable push-collision-check entirely after any rewrite for the life
+  of the branch** — rejected because the protection should re-engage as
+  soon as the rewrite is upstream, which is what the marker TTL achieves.
+
+## Consequences
+
+### Positive
+
+- Force-push after a deliberate rewrite no longer requires `--no-verify`,
+  so the other push-time protections stay engaged.
+- The audit trail still records the colliding commit set, with a
+  correlation hash that links it to the rewrite that produced it.
+- Reviewers can distinguish a post-rewrite push from a regression because
+  the marker file is part of the recovery artifact set from ADR-242.
+
+### Negative
+
+- A 24-hour TTL is a window in which a non-rewrite force-push could match
+  the marker conditions and be admitted; the conjunction
+  (`pre_head` upstream + `post_head` local + commit range) makes this
+  narrow but not impossible.
+- One more file under `.cognitive-os/runtime/` to manage at session end.
+- Two hooks (the bash and python paths) must stay in sync on the
+  exception logic.
+
+## Acceptance criteria
+
+1. After `cos-history-sanitization --execute`,
+   `.cognitive-os/runtime/last-rewrite.json` exists with all required
+   fields and a future `expires_at`.
+2. With the marker present and matching, `git push --force-with-lease`
+   succeeds without `--no-verify` even when subject collisions exist.
+3. Without the marker, push-collision-check still blocks on the same
+   collisions.
+4. After a successful push, the marker is cleared.
+5. `tests/behavior/test_push_collision_post_rewrite.py` covers:
+   marker-match success, marker-expired fallback, marker-mismatch
+   fallback, audit-entry presence on success.
+
+## Verification
+
+```bash
+python3 -m pytest tests/behavior/test_push_collision_post_rewrite.py -q
+test -f .cognitive-os/runtime/last-rewrite.json && \
+  python3 -c "import json,sys; json.load(open('.cognitive-os/runtime/last-rewrite.json'))"
+```
