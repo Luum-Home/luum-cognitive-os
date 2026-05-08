@@ -1,0 +1,114 @@
+schema_version: postmortem-regression-audit/v1
+status: active
+owner: platform-safety
+policy: detect-first-repair-second
+
+checks:
+  - id: filter-repo-wrapper-missing
+    adr: ADR-242
+    type: required_paths
+    severity: block
+    message: Governed history rewrite wrapper is missing; direct git-filter-repo calls can drop remotes and rerun non-idempotently.
+    paths:
+      - scripts/cos-filter-repo-wrap.sh
+
+  - id: direct-filter-repo-callsite
+    adr: ADR-242
+    type: forbidden_pattern
+    severity: block
+    message: History rewrite path calls git filter-repo directly instead of the governed wrapper.
+    scope: [lib, scripts, hooks]
+    suffixes: [.py, .sh]
+    pattern: "\\bgit\\s+filter-repo\\b|\\[\\s*['\"]git['\"]\\s*,\\s*['\"]filter-repo['\"]"
+    allow_paths:
+      - scripts/cos-filter-repo-wrap.sh
+
+  - id: post-rewrite-push-exception-missing
+    adr: ADR-243
+    type: required_tokens
+    severity: block
+    message: Push collision detector does not consume the post-rewrite marker required to avoid broad --no-verify bypasses.
+    files:
+      - scripts/push_collision_detect.py
+      - hooks/_lib/push-collision-check.sh
+    tokens:
+      - last-rewrite.json
+      - pre_head
+      - post_head
+      - rules_hash
+      - ttl_seconds
+
+  - id: trust-report-verification-field-missing
+    adr: ADR-244
+    type: required_tokens
+    severity: block
+    message: Trust report schema/gate does not require a structured verification field for high-stakes claims.
+    files:
+      - hooks/claim-validator.sh
+      - scripts/orchestrator_claim_gate.py
+      - rules/trust-score.md
+    tokens:
+      - "verification:"
+
+  - id: claim-validator-advisory-language-present
+    adr: ADR-244
+    type: forbidden_pattern
+    severity: warn
+    message: Claim validation still contains advisory-only language; high-stakes claims may be scored instead of enforced.
+    scope:
+      - hooks/claim-validator.sh
+      - scripts/orchestrator_claim_gate.py
+      - rules/trust-score.md
+    suffixes: [.py, .sh, .md]
+    pattern: "tests? .*manual verification|warning only \\(not blocking\\)|flag for manual verification"
+
+  - id: claim-enforcer-behavior-tests-missing
+    adr: ADR-244
+    type: required_paths
+    severity: block
+    message: No behavior tests prove high-stakes claims are downgraded or blocked when cited verification fails.
+    paths:
+      - tests/behavior/test_claim_enforcer.py
+
+  - id: chaos-readonly-fixture-missing
+    adr: ADR-245
+    type: required_tokens
+    severity: block
+    message: Chaos lane lacks an autouse read-only production-source guard for lib/, scripts/, and hooks/.
+    files:
+      - tests/chaos/conftest.py
+    tokens:
+      - chaos_readonly_workspace
+
+  - id: chaos-test-writes-protected-source
+    adr: ADR-245
+    type: forbidden_line_pair
+    severity: block
+    message: Chaos test appears to write/copy/rename protected production source. Use a fixture copy or injection instead.
+    scope: [tests/chaos]
+    suffixes: [.py]
+    line_pattern: "write_text|write_bytes|open\\s*\\([^\\n]*(?:['\"]w['\"]|['\"]a['\"])|shutil\\.(?:copy|copy2|move)|os\\.rename|Path\\([^\\n]*\\)\\.(?:rename|replace)"
+    same_line_pattern: "(?:lib|scripts|hooks)/[A-Za-z0-9_./-]+"
+
+  - id: release-freeze-artifact-missing
+    adr: ADR-246
+    type: required_paths
+    severity: block
+    message: Release transaction freeze artifact is missing; destructive/public operations still lack a stable transaction boundary.
+    paths:
+      - scripts/cos-release-freeze
+      - lib/release_freeze.py
+      - manifests/release-freeze.yaml
+      - tests/behavior/test_release_freeze.py
+
+external_tools:
+  - tool: git-filter-repo
+    owner: adr-242-history-rewrite-wrapper
+    license_spdx: MIT
+    adapter: scripts/cos-filter-repo-wrap.sh
+    allowed_callers:
+      - lib/history_sanitization.py
+    failure_policy: backup-or-refuse
+    recursion_boundary: no COS hook invocation from filter-repo subprocess
+    input_sensitivity: repository history and replacement rules
+    output_sanitization: redact configured private values before publishing reports

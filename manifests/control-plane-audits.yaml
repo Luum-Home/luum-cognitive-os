@@ -1,0 +1,48 @@
+schema_version: control-plane-audits/v1
+status: active
+owner: platform-safety
+policy: detect-first-remediate-second
+
+lanes:
+  hook-fast:
+    description: Fast non-mutating checks safe for lifecycle hooks.
+    max_seconds: 20
+    audits:
+      - primitive-coherence
+      - postmortem-regressions
+  hourly:
+    description: Periodic local sweep for primitive drift and postmortem regressions.
+    max_seconds: 60
+    audits:
+      - primitive-coherence
+      - postmortem-regressions
+  pre-public:
+    description: Pre-public release-readiness sweep.
+    max_seconds: 180
+    audits:
+      - primitive-coherence
+      - postmortem-regressions
+      - pre-public-risk
+
+audits:
+  primitive-coherence:
+    adr: ADR-240
+    command: [python3, scripts/primitive-coherence-audit.py, --json]
+    expected_schema: primitive-coherence-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  postmortem-regressions:
+    adr: ADR-247
+    command: [python3, scripts/cos-postmortem-regression-audit, --json]
+    expected_schema: postmortem-regression-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  pre-public-risk:
+    adr: ADR-218
+    command: [python3, scripts/cos-pre-public-risk-audit, --json]
+    expected_schema: pre-public-risk-audit/v1
+    consumes_sensitive_values: true
+    sensitive_value_sources:
+      env_prefixes:
+        - COS_HISTORY_SANITIZE_
+    mutates: false
