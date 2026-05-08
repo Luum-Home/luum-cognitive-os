@@ -1,6 +1,7 @@
 """ADR-218 history sanitization dry-run and safety checks."""
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -656,6 +657,44 @@ def _create_tombstone_branch(project_dir: Path, ts: str) -> str:
     return branch_name
 
 
+
+
+def _sha256_file(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def _write_last_rewrite_marker(
+    project_dir: Path,
+    *,
+    pre_head: str,
+    post_head: str,
+    rules_hash: str,
+    ts: str,
+    ttl_seconds: int = 86400,
+) -> Path:
+    marker = project_dir / ".cognitive-os" / "runtime" / "last-rewrite.json"
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    from datetime import datetime, timezone, timedelta
+    # ts is compact UTC from _utc_timestamp; keep original plus ISO fields.
+    rewritten_at = datetime.now(timezone.utc)
+    payload = {
+        "schema_version": "cos-last-rewrite/v1",
+        "pre_head": pre_head,
+        "post_head": post_head,
+        "rewritten_at": rewritten_at.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "expires_at": (rewritten_at + timedelta(seconds=ttl_seconds)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "ttl_seconds": ttl_seconds,
+        "rules_hash": rules_hash,
+        "history_sanitization_timestamp": ts,
+    }
+    marker.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return marker
+
+
 def _write_post_execute_report(
     project_dir: Path,
     *,
@@ -832,13 +871,17 @@ def execute(
             "filter-repo did not change HEAD — replacement rules may not have matched anything.",
         )
 
-    # 8. Verify replacements applied
+    # 8. Write post-rewrite marker for ADR-243 push-collision exception
+    rules_hash = _sha256_file(rules_file)
+    last_rewrite_marker = _write_last_rewrite_marker(project, pre_head=pre_head, post_head=post_head, rules_hash=rules_hash, ts=ts)
+
+    # 9. Verify replacements applied
     remaining_hits = _verify_replacements_applied(project, replacement_rules)
 
-    # 9. Tombstone branch
+    # 10. Tombstone branch
     tombstone_branch = _create_tombstone_branch(project, ts)
 
-    # 10. Write report
+    # 11. Write report
     report_path = _write_post_execute_report(
         project,
         ts=ts,
@@ -867,6 +910,8 @@ def execute(
         "remaining_hits": remaining_hits,
         "remotes_restored": restored_remotes,
         "rules_file": str(rules_file),
+        "last_rewrite_marker": str(last_rewrite_marker),
+        "rules_hash": rules_hash,
         "metadata_rewrite_enabled": metadata_rewrite_enabled(manifest),
         "commit_message_rewrite_enabled": commit_message_rewrite_enabled(manifest),
     }
