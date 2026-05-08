@@ -83,8 +83,10 @@ Required actions:
   - Comparison vs Apache 2.0 in concrete terms
   - What downstream consumers should plan for
   (Evidence: `docs/legal/license-faq.md` exists, 2634 words, commit `418fb217`)
-- [ ] `LICENSE` and `NOTICE` files match the FAQ
-- [ ] `README.md` links to the FAQ from the license badge
+- [x] `LICENSE` and `NOTICE` files match the FAQ
+  (Evidence: LICENSE is FSL-1.1-MIT canonical text + "Copyright 2026 Luum" + 2-year MIT-conversion clause; NOTICE attributes third-party deps; FAQ §1–§2 describes the same identifiers/conversion window/copyright holder.)
+- [x] `README.md` links to the FAQ from the license badge
+  (Evidence: README.md:4 badge href = `docs/legal/license-faq.md`; footer also retains direct `LICENSE` link.)
 
 Status: `done`
 

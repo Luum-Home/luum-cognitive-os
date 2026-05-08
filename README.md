@@ -1,7 +1,7 @@
 # Cognitive OS
 
 [![CI](https://img.shields.io/badge/CI-local%20(ADR--131)-blue.svg)](docs/adrs/ADR-131-local-ci-migration.md)
-[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-orange.svg)](LICENSE)
+[![License: FSL-1.1-MIT](https://img.shields.io/badge/License-FSL--1.1--MIT-orange.svg)](docs/legal/license-faq.md)
 [![Version](https://img.shields.io/badge/version-0.1.0-green.svg)](CHANGELOG.md)
 <!-- BADGES:START -->
 ![Dogfood Score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/.cognitive-os/metrics/badges/dogfood.json)
