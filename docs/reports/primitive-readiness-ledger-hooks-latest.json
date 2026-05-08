@@ -19317,11 +19317,11 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 10,
-        "doc": 21,
+        "doc": 22,
         "hook": 1,
         "rule": 1,
         "script": 5,
-        "test": 9
+        "test": 11
       },
       "consumers": [
         {
@@ -19434,6 +19434,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/legal/pre-public-readiness-checklist.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/onboarding-wizard-design.md"
         },
         {
@@ -19482,6 +19486,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_error_pipeline_service_detection.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_hook_architecture.py"
         },
         {
@@ -19495,6 +19503,10 @@
         {
           "family": "test",
           "path": "tests/hooks/test_hook_graceful_degradation.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_error-pipeline.py"
         },
         {
           "family": "test",
@@ -19519,8 +19531,8 @@
         "hook_consumers:1",
         "rule_consumers:1",
         "script_consumers:5",
-        "test_consumers:9",
-        "doc_consumers:21",
+        "test_consumers:11",
+        "doc_consumers:22",
         "config_consumers:10"
       ],
       "family": "hooks",
@@ -19533,7 +19545,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 47
+      "total_consumers": 50
     },
     {
       "confidence": "high",
