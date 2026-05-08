@@ -164,3 +164,5 @@ any harness that supports lifecycle hooks.
 **Research catalog**: [docs/research/INDEX.md](docs/research/INDEX.md) — navigable index of ~325 research artifacts (prior-art reports, gap analyses, external-tool deep dives, operational audits, postmortems).
 
 **Contributing**: see [CONTRIBUTING.md](CONTRIBUTING.md) — AI-authorship policy, commit conventions, DCO sign-off.
+
+**License**: FSL-1.1-MIT — see [LICENSE](LICENSE) and the [License FAQ](docs/legal/license-faq.md).
