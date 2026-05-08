@@ -32,3 +32,28 @@ python3 -m pytest tests/unit/test_postmortem_regression_audit.py -q
 ## Current expected state
 
 During the 2026-05-08 implementation session the audit is expected to report blockers because ADR-242 through ADR-246 are newly proposed/partially implemented. That non-green result is useful: it is the baseline proving the detector sees the classes before repairs land.
+
+## ADR-247: manifest-driven rule source
+
+The long-term contract is manifest-driven. The script is the generic engine; the
+ADR mapping, paths, forbidden patterns, required artifacts, and external tool
+adapter declarations belong in manifests.
+
+Sensitive values must not be hardcoded in either the script or the manifest.
+Use environment-variable names or local-only/gitignored manifests for private
+values, then publish placeholders in reports.
+
+Recommended manifest path:
+
+```text
+manifests/postmortem-regression-audit.yaml
+```
+
+Recommended external-tool stance:
+
+- adopt mature tools such as Gitleaks, TruffleHog, git-filter-repo, pre-commit,
+  Conftest/OPA, and GitHub branch protection;
+- declare them as adapters with owner, SPDX license, allowed callers, failure
+  policy, recursion boundary, input sensitivity, and output sanitization;
+- do not rebuild those tools inside COS unless the market tool fails a declared
+  requirement.
