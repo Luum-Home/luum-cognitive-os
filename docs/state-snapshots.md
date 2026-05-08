@@ -17,7 +17,7 @@ Devbox is installed at `~/.local/bin/devbox`. The project config is at `devbox.j
 |---------|---------|---------|
 | go | 1.25 | Go monorepo services |
 | nodejs | 20 | BFF, onboarding, monolith, mobile |
-| jdk | 17 | <consumer-codename-b>, <consumer-codename-c> (Spring Boot) |
+| jdk | 17 | example-users, example-auth (Spring Boot) |
 | python | 3.11 | Scripts, ML, data processing |
 | docker-compose | latest | Infrastructure orchestration |
 | jq | latest | JSON processing in hooks/scripts |
