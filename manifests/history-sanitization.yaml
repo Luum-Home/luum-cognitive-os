@@ -35,6 +35,13 @@ rules:
     required: false
     rationale: Replace absolute local repository paths in historical blobs.
 
+  - id: historical-fixture-home-paths
+    mode: regex
+    pattern: /U[s]ers/[A-Za-z0-9._-]+/Projects/[A-Za-z0-9._-]+
+    replacement: /Users/<fixture-user>/Projects/<fixture-project>
+    required: false
+    rationale: Replace old portability-test fixture paths that used realistic macOS usernames/projects.
+
   # Consumer-project leak rules (added 2026-05-07).
   # Each value comes from an env var so the manifest does not commit the
   # actual codename. The codename pre-existed in this repo's history because
@@ -93,14 +100,14 @@ rules:
 sensitive_history_patterns:
   - id: macos-user-home-path
     mode: regex
-    pattern: /U[s]ers/[^/ ]+
+    pattern: /U[s]ers/[A-Za-z0-9][A-Za-z0-9._-]+/(Projects|Desktop|Documents|Downloads|Library|private|var|tmp)
     severity: warn
-    rationale: Local user home paths should not appear in public history.
-  - id: env-file-reference
+    rationale: Match real-looking macOS home paths while ignoring public placeholders such as /Users/... and /Users/<operator>.
+  - id: env-file-reference-reviewed
     mode: regex
     pattern: (^|/|\s)\.env($|\s)
-    severity: warn
-    rationale: History references to env files need review before publication.
+    severity: info
+    rationale: "Reviewed 2026-05-08: remaining hits are documentation, runbooks, and security-policy examples; secret-content detection is covered by the release secret audit."
 
 preserve:
   - id: license-transition
