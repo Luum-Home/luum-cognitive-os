@@ -214,6 +214,14 @@ case "$SUBCMD" in
     echo "cos: unknown history subcommand '${2:-}'. Try: cos history sanitize [--dry-run|--execute] [--json]" >&2
     exit 1
     ;;
+  release)
+    if [ "${2:-}" = "freeze" ]; then
+      shift 2
+      exec "$SCRIPT_DIR/cos-release-freeze" --project-dir "$PROJECT_ROOT" "$@"
+    fi
+    echo "cos: unknown release subcommand '${2:-}'. Try: cos release freeze --prepare|--begin|--status|--end" >&2
+    exit 1
+    ;;
   public-claim)
     if [ "${2:-}" = "gate" ]; then
       shift 2
@@ -370,6 +378,8 @@ Usage:
   cos adoption audit [--json|--strict]   Audit ADR-217 lockfile/NOTICE/docs adoption truth
   cos history sanitize [--dry-run|--execute] [--json]
                                          Audit ADR-218 pre-public git history sanitization plan
+  cos release freeze --prepare|--begin|--status|--end
+                                         Create/check ADR-246 release transaction freeze receipts
   cos public-claim gate [--json]        Block unbacked ADR-206 public autonomous/self-improvement claims
   cos observe run [--session-id ID|--run-id ID] [--json]
   cos rollback --session-id ID --snapshot|--preview|--restore [--tree-sha SHA] [--yes]

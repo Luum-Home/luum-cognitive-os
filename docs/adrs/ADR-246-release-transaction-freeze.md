@@ -1,7 +1,7 @@
 ---
 adr: 246
 title: Release Transaction Freeze for Destructive and Public-State Operations
-status: proposed
+status: accepted
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -18,7 +18,7 @@ tags: [release, history-rewrite, force-push, freeze, multi-agent-safety, postmor
 
 ## Status
 
-Proposed. Drafted after the 2026-05-08 pre-public readiness session exposed a
+Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitive-os/runtime/release-freeze/`; history sanitization refuses during an active freeze unless `COS_RELEASE_TRANSACTION_ID` matches. Drafted after the 2026-05-08 pre-public readiness session exposed a
 repeated pattern: agents and hooks could keep producing new state while the
 operator was preparing history rewrites, force-pushes, public sanitization, and
 release-readiness gates.

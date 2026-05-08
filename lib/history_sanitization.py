@@ -798,6 +798,12 @@ def execute(
     # 1. Pre-conditions
     _check_filter_repo_installed()
     _check_destructive_env(manifest)
+    try:
+        from lib.release_freeze import assert_history_sanitize_allowed
+
+        assert_history_sanitize_allowed(project)
+    except RuntimeError as exc:
+        raise SanitizationError("release-freeze-transaction-required", str(exc)) from exc
     _check_clean_worktree(project)
 
     backup_path = _backup_destination(project, ts)

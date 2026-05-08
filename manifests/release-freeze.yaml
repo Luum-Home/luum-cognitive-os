@@ -1,0 +1,48 @@
+schema_version: release-freeze/v1
+status: active
+owner: release-safety
+
+expected_branch: main
+runtime_dir: .cognitive-os/runtime/release-freeze
+report_dir: .cognitive-os/reports/release-freeze
+active_marker: .cognitive-os/runtime/release-freeze/active.json
+
+allowed_operations:
+  - content-history-sanitize
+  - post-rewrite-force-push
+  - tag-update
+  - public-publish
+
+checks:
+  clean_worktree:
+    enabled: true
+    allowlisted_paths: []
+  branch:
+    enabled: true
+  task_claims:
+    enabled: true
+    paths:
+      - .cognitive-os/tasks/active-claims.json
+      - .cognitive-os/tasks/active-tasks.json
+  agent_heartbeats:
+    enabled: true
+    paths:
+      - .cognitive-os/metrics/agent-heartbeat.jsonl
+    stale_after_seconds: 900
+  daemon_processes:
+    enabled: false
+    rationale: Slice A is read-only; process inspection becomes active in a later slice.
+  pre_public_risk_audit:
+    enabled: false
+    command: [scripts/cos-pre-public-risk-audit, --strict, --json]
+    rationale: Optional in Slice A tests; release operators can enable before public launch.
+  primitive_coherence:
+    enabled: false
+    command: [python3, scripts/primitive-coherence-audit.py, --json]
+    rationale: Optional in Slice A tests; control-plane audit captures this lane separately.
+
+guards:
+  history_sanitization:
+    require_transaction_env: COS_RELEASE_TRANSACTION_ID
+  metadata_rewrite:
+    allow_by_default: false

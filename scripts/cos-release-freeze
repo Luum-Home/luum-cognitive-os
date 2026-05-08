@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""CLI for ADR-246 release transaction freeze."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib import release_freeze  # noqa: E402
+
+
+def emit(payload: dict, as_json: bool) -> None:
+    if as_json:
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return
+    op = payload.get("operation")
+    print(f"release freeze {op}: {payload.get('status')}")
+    if payload.get("transaction_id"):
+        print(f"  transaction: {payload['transaction_id']}")
+    for finding in payload.get("findings", [])[:20]:
+        print(f"[{finding.get('severity')}] {finding.get('code')}: {finding.get('message')}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="ADR-246 release transaction freeze")
+    parser.add_argument("--project-dir", type=Path, default=ROOT)
+    parser.add_argument("--manifest", type=Path, default=None)
+    parser.add_argument("--prepare", action="store_true")
+    parser.add_argument("--begin", action="store_true")
+    parser.add_argument("--status", action="store_true")
+    parser.add_argument("--end", action="store_true")
+    parser.add_argument("--reason", default="release-operation")
+    parser.add_argument("--transaction-id", default="")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+
+    modes = [args.prepare, args.begin, args.status, args.end]
+    if sum(1 for m in modes if m) != 1:
+        parser.error("choose exactly one of --prepare, --begin, --status, --end")
+
+    if args.prepare:
+        payload = release_freeze.prepare(args.project_dir, args.manifest)
+    elif args.begin:
+        payload = release_freeze.begin(args.project_dir, reason=args.reason, manifest_path=args.manifest)
+    elif args.status:
+        payload = release_freeze.status(args.project_dir, args.manifest)
+    else:
+        if not args.transaction_id:
+            parser.error("--end requires --transaction-id")
+        payload = release_freeze.end(args.project_dir, transaction_id=args.transaction_id, manifest_path=args.manifest)
+    emit(payload, args.json)
+    return 2 if payload.get("status") == "block" else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
