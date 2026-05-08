@@ -275,6 +275,8 @@ def append_provenance(message: str, *, session: str, kind: str, harness: str) ->
 def apply_to_file(message_file: Path, *, repo: Path | None = None) -> None:
     if os.environ.get("COS_DISABLE_COMMIT_PROVENANCE") == "1":
         return
+    if os.environ.get("COS_ENABLE_COMMIT_PROVENANCE") != "1":
+        return
     repo = repo or resolve_repo()
     # Single find_owning_context() call; results fed to all three fields so
     # there is no risk of different lookup results per field.

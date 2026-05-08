@@ -304,7 +304,7 @@ class TestPublicApiDelegation:
             result = cp.infer_harness(repo)
         assert result == "codex"
 
-    def test_apply_to_file_uses_chain(self, tmp_path):
+    def test_apply_to_file_uses_chain(self, tmp_path, monkeypatch):
         sessions_dir = tmp_path / ".cognitive-os" / "sessions"
         sessions_dir.mkdir(parents=True)
         repo = tmp_path
@@ -315,6 +315,7 @@ class TestPublicApiDelegation:
 
         msg_file = tmp_path / "COMMIT_EDITMSG"
         msg_file.write_text("Initial commit\n")
+        monkeypatch.setenv("COS_ENABLE_COMMIT_PROVENANCE", "1")
 
         with patch.object(cp, "walk_parents", return_value=[fake_pid]):
             with patch.object(cp, "resolve_repo", return_value=repo):

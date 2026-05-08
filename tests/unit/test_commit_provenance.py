@@ -34,6 +34,7 @@ def test_apply_to_file_reads_current_session_marker(tmp_path: Path, monkeypatch)
     msg.write_text("fix: thing\n")
     monkeypatch.delenv("COGNITIVE_OS_SESSION_ID", raising=False)
     monkeypatch.setenv("CODEX_PROJECT_DIR", str(repo))
+    monkeypatch.setenv("COS_ENABLE_COMMIT_PROVENANCE", "1")
 
     commit_provenance.apply_to_file(msg, repo=repo)
 
@@ -59,13 +60,30 @@ def test_prepare_commit_msg_hook_adds_trailers_in_real_git_repo(tmp_path: Path) 
     (repo / "scripts" / "commit_provenance.py").chmod(0o755)
     (repo / "file.txt").write_text("hello\n")
     subprocess.run(["git", "add", "."], cwd=repo, check=True)
-    env = {**os.environ, "COGNITIVE_OS_SESSION_ID": "git-session", "COGNITIVE_OS_HARNESS": "codex"}
+    env = {
+        **os.environ,
+        "COS_ENABLE_COMMIT_PROVENANCE": "1",
+        "COGNITIVE_OS_SESSION_ID": "git-session",
+        "COGNITIVE_OS_HARNESS": "codex",
+    }
 
     subprocess.run(["git", "commit", "-m", "feat: provenance"], cwd=repo, env=env, check=True, stdout=subprocess.DEVNULL)
 
     body = subprocess.check_output(["git", "log", "-1", "--format=%B"], cwd=repo, text=True)
     assert "X-COS-Origin: kind=orchestrator session=git-session harness=codex" in body
     assert "X-COS-Session: git-session" in body
+
+
+
+def test_apply_to_file_is_off_by_default(tmp_path: Path, monkeypatch) -> None:
+    msg = tmp_path / "COMMIT_EDITMSG"
+    msg.write_text("fix: public-history-default\n")
+    monkeypatch.delenv("COS_ENABLE_COMMIT_PROVENANCE", raising=False)
+    monkeypatch.setenv("COGNITIVE_OS_SESSION_ID", "should-not-appear")
+
+    commit_provenance.apply_to_file(msg, repo=tmp_path)
+
+    assert msg.read_text() == "fix: public-history-default\n"
 
 
 def test_apply_to_file_respects_disable_env(tmp_path: Path, monkeypatch) -> None:
