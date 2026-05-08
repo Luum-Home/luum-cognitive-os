@@ -358,3 +358,35 @@ makes the audited state the state that gets published.
 - Integrate into `cos-pre-public-risk-audit` and release readiness.
 - Add docs/code status consistency checks for ADR “Implemented” claims.
 - Add consumer checks for producer-without-consumer primitives.
+
+## Incident closure status — 2026-05-08
+
+The table below records the current state of the incident classes that motivated
+ADR-240 through ADR-248. It intentionally distinguishes closed enforcement from
+mitigated/detected boundaries and from remaining future hardening.
+
+| Incident | Status | Evidence |
+|---|---|---|
+| Agents changing branch without notice | ✅ Closed for governed flow | `hooks/destructive-git-blocker.sh` blocks `git switch` and `git checkout <branch>` unless the operator uses an explicit bypass. ADR-239 documents isolated write worktrees as the default direction. |
+| Sensitive data reintroduced after sanitize | 🟢 Detected/blocked; final rewrite remains an operator decision | `scripts/cos-pre-public-risk-audit` currently passes with 0 findings. If a configured token appears again, pre-public gates block. A final content-only rewrite is still an explicit publication operation, not an automatic repair. |
+| Confusion between content rewrite and metadata rewrite | ✅ Closed | ADR-218 now defaults to blob content-only. Author/committer metadata requires `COS_HISTORY_SANITIZE_METADATA=1`; commit-message rewrite requires its own explicit flag. Tests cover the boundary. |
+| Concurrent agents writing during rewrite/force-push preparation | ✅ Closed as a transaction boundary | ADR-246 `cos release freeze` creates a release transaction. The pre-public control-plane lane runs inside the freeze, and active task claims/heartbeats block the operation. |
+| Reports with sensitive paths or patterns | 🟢 Mitigated by pre-public/report-publish gates | `hook-fast` runs before writes to `docs/reports/`, `docs/history/`, and `docs/business/`; `cos-pre-public-risk-audit` currently passes. |
+| Agent created/renamed scripts outside ownership | 🟡 Improved, not universally closed | `primitive-coherence-audit` now detects producer/consumer, hook registration, and classification projection contradictions. A universal ownership manifest for arbitrary script renames/moves is still future work. |
+| Pre-public false positive on provider identity | ✅ Mitigated | `cos-pre-public-risk-audit` currently passes. The identity guard was narrowed to real email-shaped provider identities, not markdown tables like `active <30d`. |
+| Docs/scorecards desynchronized from repo state | 🟢 Mitigated | Control-plane latest report, metrics stream, remediation queue, and tests now make stale findings observable. No current findings were observed in the latest audit run. |
+| Agents announced “closed” while blockers remained | ✅ Closed for high-stakes claims | ADR-244 `scripts/claim_enforcer.py` requires a structured `verification:` field and blocks/downgrades failed verification. `verification: manual` is allowed but audited. |
+| “Hook exists” treated as “hook is wired” | ✅ Closed for hook class | `primitive-coherence-audit`, `scripts/check_hook_registration.py`, and hook classification projection now enforce both directions: active hooks must be registered, and manual/future/deprecated/demoted hooks must not be auto-registered. |
+
+Latest verification command set:
+
+```bash
+python3 scripts/primitive-coherence-audit.py --json
+python3 scripts/cos-postmortem-regression-audit --json
+scripts/cos-control-plane-audit --lane pre-public --json --strict
+python3 scripts/cos-pre-public-risk-audit --json
+```
+
+Expected current result: all pass with zero findings. If a future incident class
+appears, it must become a manifest rule with a stable finding code, metrics, and
+a regression test before any safe-class remediation is considered.

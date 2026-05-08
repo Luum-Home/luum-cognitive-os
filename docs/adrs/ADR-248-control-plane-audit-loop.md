@@ -252,3 +252,8 @@ This is deliberate: the guarantee is not “any new primitive is automatically
 safe.” The guarantee is “any new primitive that goes through the declarative
 registration contract becomes auditable, measurable, queueable, and eligible
 for safe-class remediation if explicitly allowed.”
+
+
+## Incident closure status
+
+The incident-by-incident closure table is maintained in `docs/reports/primitive-coherence-drift-postmortem-2026-05-08.md` under “Incident closure status — 2026-05-08”.
