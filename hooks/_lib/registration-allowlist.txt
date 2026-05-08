@@ -232,3 +232,8 @@ state-retention-audit.sh
 # projection, so keep them allowlisted until promoted to active profiles.
 ai-provider-identity-guard.sh
 session-end-cleanup.sh
+
+# 2026-05-08: ADR-248 control-plane audit is wired directly in .claude/settings.json
+# for the main reconstruction profile. The legacy profile scanner cannot model
+# manifest lanes yet, so keep it allowlisted until profile projection grows lane support.
+control-plane-audit.sh

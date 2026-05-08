@@ -77,7 +77,7 @@ Current surface status:
 | Worktree / ownership audit | Partial |
 | Safe auto-correction | Partial; not generalized |
 | Transactional release freeze | Missing; ADR-246 remains pending |
-| Formal scheduler / hook wiring | Pending |
+| Formal scheduler / hook wiring | Implemented for `hook-fast` on Agent PreToolUse via `hooks/control-plane-audit.sh`; broader hourly scheduler remains future work |
 
 Prevention map:
 
