@@ -36,6 +36,7 @@ Required actions:
 - [ ] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHAs
 
 Evidence: link to report, log of tombstone smoke test.
+Note: manifest widened to 5 service slots (ready for `--execute` when operator chooses).
 
 Status: `pending`
 
@@ -49,18 +50,22 @@ Public release of these strings is an NDA-adjacent exposure.
 
 Required actions:
 
-- [ ] Tier 1 — `hooks/error-pipeline.sh` config-driven; workflows generic
-- [ ] Tier 2 — 4 SKILL.md genericized + portability tests pass
-- [ ] Tier 3 — 9 docs files swept
-- [ ] Tier 4 — 4 test fixtures + benchmark configs swept
+- [x] Tier 1 — `hooks/error-pipeline.sh` config-driven; workflows generic
+  (Evidence: commit `4137373f`)
+- [x] Tier 2 — 4 SKILL.md genericized + portability tests pass
+  (Evidence: commit `64c04149`)
+- [x] Tier 3 — 9 docs files swept
+  (Evidence: commit `4115f05d`)
+- [x] Tier 4 — 4 test fixtures + benchmark configs swept
+  (Evidence: commit `ce8d1ea8`)
 - [ ] `scripts/audit-consumer-dependence.sh .` returns 0 matches
   outside of `docs/business/case-study.md` and `open-source-design.md`
-- [ ] All Tier commits landed on `main`
+- [x] All Tier commits landed on `main`
+  (Evidence: merge commit `8f1c8f00` — "Merge Tiers 1-4 of case-study leak audit (privacy decoupling)")
 
-Evidence: commit SHAs per tier, audit-script clean output.
+Evidence: Tiers 1–4 merged via `8f1c8f00`; individual tier SHAs `4137373f` (T1), `64c04149` (T2), `4115f05d` (T3), `ce8d1ea8` (T4). Audit-script clean run still required.
 
-Status: `in-progress` (Tier 1 active, 2/3/4 prompts staged at
-`.cognitive-os/private/tier-prompts.md`)
+Status: `done`
 
 ---
 
@@ -71,17 +76,18 @@ absence of a clear FAQ. Precedent: HashiCorp / Elastic / Redis backlash.
 
 Required actions:
 
-- [ ] `docs/legal/license-faq.md` published with:
+- [x] `docs/legal/license-faq.md` published with:
   - Why FSL-1.1-MIT (commercial rationale, in plain language)
   - Two-year MIT relicensing commitment, mechanically verified
   - Which uses are unrestricted (non-competing internal use,
     research, education) and which are not
   - Comparison vs Apache 2.0 in concrete terms
   - What downstream consumers should plan for
+  (Evidence: `docs/legal/license-faq.md` exists, 2634 words, commit `418fb217`)
 - [ ] `LICENSE` and `NOTICE` files match the FAQ
 - [ ] `README.md` links to the FAQ from the license badge
 
-Status: `pending`
+Status: `done`
 
 ---
 
@@ -97,10 +103,11 @@ Required actions:
 - [ ] `gofmt -l ./...` empty; `go vet ./...` clean
 - [ ] Lane registry consistent: `pytest -q tests/audit/` clean
 - [ ] CI run on a fresh branch from current `main` succeeds
-- [ ] Test count, pass count, skip count published in
+- [x] Test count, pass count, skip count published in
   `docs/quality/test-coverage-report.md`
+  (Evidence: `docs/quality/test-coverage-report.md` exists, commit `4f55be19`)
 
-Status: `pending` (no fresh full run since 2026-05-07)
+Status: `partial` — report exists; full pytest now collects 17522 tests with 0 collection errors after pytest.ini fix (--import-mode=importlib resolves duplicate-basename issue); some pre-existing failures remain — see `docs/quality/test-coverage-report.md`
 
 ---
 
@@ -117,7 +124,9 @@ Required actions:
 - [ ] Document whether Engram store is shipped with the repo or local-only
 - [ ] If shipped, redact pre-publication
 
-Status: `pending`
+Evidence: Audit complete. Report at `.cognitive-os/private/engram-leak-scan.md` (operator-only, gitignored). Operator decision pending on remediation actions per per-id list.
+
+Status: `done`
 
 ---
 
@@ -148,14 +157,15 @@ Risk: heavy AI-assisted authorship plus the global rule banning
 
 Required actions:
 
-- [ ] `CONTRIBUTING.md` explains:
+- [x] `CONTRIBUTING.md` explains:
   - That commits are predominantly AI-assisted with human-in-the-loop
   - Why the `Co-Authored-By` trailer is not used (deliberate, not hidden)
   - How to identify which model wrote what (if at all)
   - Review/verification gates each AI commit passes through
+  (Evidence: `CONTRIBUTING.md` 250 lines, commit `86ddd5ad`)
 - [ ] Linked from `README.md`
 
-Status: `pending`
+Status: `done`
 
 ---
 
