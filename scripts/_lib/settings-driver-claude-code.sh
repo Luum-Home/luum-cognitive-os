@@ -215,6 +215,7 @@ cc_driver_emit() {
 
   local pre_read
   pre_read=$(_cc_hook_group "PreToolUse" "Read" \
+    "hooks/document-ingest-guard.sh" "false" \
     "hooks/large-file-advisor.sh" "false" \
   )
 
@@ -270,6 +271,7 @@ cc_driver_emit() {
 
   local post_all
   post_all=$(_cc_hook_group "PostToolUse" "" \
+    "hooks/context-watchdog.sh"       "false" \
     "hooks/rate-limit-detector.sh"    "false" \
     "hooks/tool-sequence-capture.sh"  "false" \
     "hooks/aci-observation-capture.sh" "false" \

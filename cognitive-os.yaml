@@ -1096,6 +1096,12 @@ harness:
       matcher: ""
       scope: os-only
 
+    document-ingest-guard:
+      script: hooks/document-ingest-guard.sh
+      event: PreToolUse
+      matcher: Read
+      scope: both
+
     large-file-advisor:
       script: hooks/large-file-advisor.sh
       event: PreToolUse
@@ -1389,9 +1395,9 @@ harness:
       script: hooks/context-watchdog.sh
       event: PostToolUse
       matcher: ""
-      async: true
-      scope: os-only
-      default_projection: false
+      async: false
+      scope: both
+      default_projection: true
 
     rate-limit-detector:
       script: hooks/rate-limit-detector.sh

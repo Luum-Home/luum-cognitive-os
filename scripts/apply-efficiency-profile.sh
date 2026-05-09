@@ -139,12 +139,12 @@ run_claude_code_driver() {
     aci-observation-capture.sh trust-score-validator.sh auto-repair-dispatcher.sh dequeue-notify.sh state-heartbeat.sh \
     skill-usage-tracker.sh kpi-trigger.sh teammate-idle.sh \
     task-created.sh session-sanity.sh validation-lock-cleanup.sh session-start-stash-reapply.sh promotion-proposer-weekly.sh validator-soak-weekly.sh \
-    error-learning.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
+    error-learning.sh document-ingest-guard.sh large-file-advisor.sh auto-refine.sh dod-gate.sh \
     destructive-git-blocker.sh untracked-work-preservation-guard.sh branch-ownership-lock.sh symlink-mutation-guard.sh scope-marker-portability-gate.sh auto-verify.sh private-mode-gate.sh \
     private-mode-metrics-gate.sh session-end-reap.sh control-plane-audit-hourly.sh state-retention-audit.sh skill-tracker.sh stash-budget-warn.sh \
     post-git-orphan-notifier.sh skill-router-bash-gate.sh orchestrator-skill-invocation-gate.sh release-guard.sh prompt-quality-llm.sh token-budget-monitor.sh adaptive-bypass.sh \
     assumption-tracker.sh scope-proportionality.sh scope-creep-detector.sh consequence-evaluator.sh auto-skill-generator.sh engram-obsidian-export-on-stop.sh branch-ownership-release.sh \
-    skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
+    skill-router-prompt-suggest.sh cross-session-peer-context.sh agent-message-inbox-context.sh rule-router-prompt-suggest.sh adr-relevance-suggest.sh context-budget-meter.sh context-watchdog.sh orchestrator-decision-trace.sh skill-md-routing-validator.sh cross-session-event-emit.sh rule-md-routing-validator.sh research-quality-validator.sh skill-post-execution-analysis.sh \
 ; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
@@ -202,10 +202,11 @@ echo "  PreCompact: pre-compaction-flush.sh"
 echo "  PreToolUse *: protected-config-write-guard.sh, cosd-auth-guard.sh, agent-control-inbound-guard.sh, session-heartbeat.sh, lethal-trifecta-gate.sh"
 echo "  PreToolUse Bash: network-egress-guard.sh, rate-limit-precheck.sh, agent-bash-cwd-enforcer.sh, rate-limiter.sh, control-plane-audit.sh, destructive-rm-blocker.sh, destructive-git-blocker.sh, untracked-work-preservation-guard.sh, branch-ownership-lock.sh, symlink-mutation-guard.sh, scope-marker-portability-gate.sh, skill-router-bash-gate.sh, release-guard.sh, git-commit-scope-guard.sh, direct-main-guard.sh, cross-session-coordination-guard.sh, agent-message-inbox-guard.sh, orchestrator-claim-gate.sh, pre-commit-content-hash-dedupe.sh"
 echo "  PreToolUse engram write tools: private-mode-gate.sh"
+echo "  PreToolUse Read: document-ingest-guard.sh, large-file-advisor.sh"
 echo "  PreToolUse Bash|Edit|Write: secret-detector.sh (redaction); Edit|Write also runs project-docs-convention.sh, edit-lock-pre-tool.sh, concurrent-write-guard.sh, plan-claim-validator.sh, skill-md-routing-validator.sh"
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, control-plane-audit.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh, agent-launch-confirmed.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
-echo "  PostToolUse *: rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
+echo "  PostToolUse *: context-watchdog.sh, rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh, post-git-orphan-notifier.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
 echo "  PostToolUse Edit|Write: content-policy.sh, ai-provider-identity-guard.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, scope-creep-detector.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"

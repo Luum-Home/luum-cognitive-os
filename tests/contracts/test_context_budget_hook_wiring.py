@@ -41,3 +41,21 @@ def test_subagent_context_injector_is_accounted() -> None:
     text = (REPO / "hooks" / "subagent-context-injector.sh").read_text(encoding="utf-8")
     assert "context_budget_lib.sh" in text
     assert "context_budget_filter_json" in text
+
+
+def test_context_watchdog_registered_in_post_tool_use() -> None:
+    settings = json.loads((REPO / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    groups = settings["hooks"]["PostToolUse"]
+    commands = [hook["command"] for group in groups for hook in group.get("hooks", [])]
+    assert any("context-watchdog.sh" in command for command in commands)
+
+
+def test_document_ingest_guard_registered_before_large_file_advisor() -> None:
+    settings = json.loads((REPO / ".claude" / "settings.json").read_text(encoding="utf-8"))
+    read_groups = [group for group in settings["hooks"]["PreToolUse"] if group.get("matcher") == "Read"]
+    assert read_groups, "Read PreToolUse group missing"
+    commands = [hook["command"] for hook in read_groups[0].get("hooks", [])]
+    joined = "\n".join(commands)
+    assert "document-ingest-guard.sh" in joined
+    assert "large-file-advisor.sh" in joined
+    assert joined.index("document-ingest-guard.sh") < joined.index("large-file-advisor.sh")
