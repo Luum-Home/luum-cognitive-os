@@ -1,0 +1,15 @@
+{
+  "display_name": "Windsurf",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "windsurf",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "ide-rules-or-wrapper",
+  "proof_level": "none",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".windsurf/rules",
+    ".windsurf/mcp.json"
+  ],
+  "status": "planned"
+}

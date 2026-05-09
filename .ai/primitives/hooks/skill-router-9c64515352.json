@@ -91,6 +91,89 @@
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "skill_route_available",
+        "dependency_update_bypass",
+        "tool_discovery_bypass"
+      ]
+    },
+    "contract_id": "skill-router",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/skill-routing.jsonl"
+      ],
+      "proof_tests": [
+        "tests/contracts/test_skill_router_invariant.py",
+        "tests/contracts/test_skill_router_coverage.py",
+        "tests/behavior/test_skill_router_bash_gate.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "install-update-risk",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Route raw shell/tool activity toward the appropriate COS skill or block high-risk bypasses.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Bash hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "Codex Bash hook plus governed guard where available"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "ci-enforced",
+        "surface": "shell/CI audit and routing checks"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "route_skill",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "command_patterns": [
+        "dependency manager upgrades",
+        "known ad-hoc tool choices with existing COS primitives",
+        "commands matching high-confidence skill routing patterns"
+      ],
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
   "portable_id": "skill-router",
   "projection_targets": [
     ".claude/settings.json",

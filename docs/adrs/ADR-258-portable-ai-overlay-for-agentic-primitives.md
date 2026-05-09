@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted — due-diligence complete, generated overlay implementation started
+Accepted — generated overlay implemented; canonical migration intentionally deferred
 
 **Date:** 2026-05-09  
 **Owner:** platform-safety  
@@ -109,25 +109,31 @@ Implementation:
 
 ### Phase 2 — adapter projection proof
 
-Generate host adapter readmes/manifests for Claude, Codex, Cursor, Windsurf,
-Copilot, Kiro, and OpenCode. Do not claim runtime enforcement for advisory hosts.
+Implemented. Host adapter README files and `adapter.json` manifests are generated
+under `.ai/adapters/*/`. They expose declared fidelity and do not claim runtime
+enforcement for advisory hosts.
 
 ### Phase 3 — enrich all lifecycle primitives with full portable contracts
 
-The initial generator already exports all lifecycle primitives as generated `.ai`
-reference rows. Phase 3 upgrades those rows from lifecycle-only metadata into
-full portable primitive contracts in batches, with risk classes and consumer
-impact reports.
+Implemented as generated portable contract views. Registry-backed rows use
+`manifests/primitive-contracts.yaml`; all other lifecycle rows receive
+`primitive-lifecycle-derived` portable contract views with explicit warnings that
+they must be promoted into the registry before claiming full contract-registry
+governance.
 
 ### Phase 4 — consumer fleet impact
 
-Run consumer fleet audit and report which projects would receive `.ai` overlay
-files, instruction files, hooks, or adapter docs.
+Implemented by `scripts/portable_ai_consumer_impact.py` and
+`docs/reports/portable-ai-consumer-impact-latest.md`. The report is read-only and
+keeps canonical migration blocked. Current consumer-fleet status may be `warn`
+when unrelated external adoption evidence remains unsigned; that warning must not
+be hidden or forged.
 
 ### Phase 5 — consider canonical migration
 
-Only after generator, conformance, adapters, and consumer proof are stable should
-COS revisit whether `.ai/` becomes canonical rather than generated.
+Decision: deferred. `.ai/` remains generated and non-canonical. A future ADR is
+required before migration because consumer proof and optional VERSA-style
+conformance must remain explicit.
 
 
 ## Due-diligence addendum

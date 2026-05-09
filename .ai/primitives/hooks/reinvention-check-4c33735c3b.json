@@ -93,6 +93,89 @@
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "possible_reinvention",
+        "existing_primitive_candidate"
+      ]
+    },
+    "contract_id": "reinvention-check",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/reinvention-checks.jsonl"
+      ],
+      "proof_tests": [
+        "tests/contracts/test_reinvention_check.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Warn before creating duplicate primitives, docs, or implementation patterns when existing COS surfaces likely apply.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse write/edit hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "governed Edit/Write runner when available; otherwise advisory"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future tool.execute.before plugin adapter for edit/write tools"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "ci-enforced",
+        "surface": "repository audit/test lane"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_tool_target",
+      "search_existing_primitives",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "before_tool_call",
+      "target_patterns": [
+        "skills/**/SKILL.md",
+        "rules/**/*.md",
+        "hooks/**/*.sh",
+        "scripts/**",
+        "docs/adrs/ADR-*.md"
+      ],
+      "tool_intent": "write_or_edit",
+      "tools": [
+        "Write",
+        "Edit",
+        "MultiEdit"
+      ]
+    }
+  },
   "portable_id": "reinvention-check",
   "projection_targets": [
     ".claude/settings.json",

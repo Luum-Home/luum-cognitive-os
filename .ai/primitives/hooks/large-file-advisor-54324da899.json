@@ -84,6 +84,80 @@
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "advise",
+      "reason_codes": [
+        "large_file_read",
+        "context_budget_risk"
+      ]
+    },
+    "contract_id": "large-file-advisor",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/large-file-reads.jsonl"
+      ],
+      "proof_tests": [
+        "tests/behavior/test_hooks_batch1.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Advise targeted reads before loading large files into model context.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Read hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "governed read wrapper when available; otherwise advisory"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future tool.execute.before plugin adapter for read tools"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "no default CI read-tool equivalent"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_read_target_metadata",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "file_size_threshold_bytes": 40000,
+      "kind": "before_tool_call",
+      "tool_intent": "read_file",
+      "tools": [
+        "Read"
+      ]
+    }
+  },
   "portable_id": "large-file-advisor",
   "projection_targets": [
     ".claude/settings.json",

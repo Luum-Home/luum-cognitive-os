@@ -32,6 +32,52 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "ADR tier/profile claims audit with regression tests",
+      "evidence_commands": [
+        "scripts/cos-tier-claim-audit --json",
+        "python3 -m pytest tests/audit/test_adr_tier_claims.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "ADR tier/profile claims audit with regression tests",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-tier-claim-audit",
+        "scripts/cos_tier_claim_audit.py",
+        "docs/adrs/ADR-133-expansion-without-monsterization.md"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/cos-tier-claim-audit",
   "projection_targets": [
     "scripts/cos-tier-claim-audit",

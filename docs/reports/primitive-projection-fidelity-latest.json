@@ -1,0 +1,596 @@
+{
+  "generated_at": "2026-05-09T19:49:36+00:00",
+  "items": [
+    {
+      "consumer_fleet_impact": "install-update-risk",
+      "contract_id": "destructive-git-blocker",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Block destructive Git operations before execution.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "PreToolUse Bash hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "Codex Bash hook plus governed guard where available",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "OpenCode permissions plus future tool.execute.before plugin adapter",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "ci-enforced",
+          "declared_surface": "shell/CI policy command lane",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/destructive-git-blocker.sh"
+    },
+    {
+      "consumer_fleet_impact": "install-update-risk",
+      "contract_id": "destructive-rm-blocker",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Block destructive recursive file erasure and truncation patterns before execution.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "PreToolUse Bash hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "Codex Bash hook plus governed guard where available",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "OpenCode permissions plus future tool.execute.before plugin adapter",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "ci-enforced",
+          "declared_surface": "shell/CI policy command lane",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/destructive-rm-blocker.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "reinvention-check",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Warn before creating duplicate primitives, docs, or implementation patterns when existing COS surfaces likely apply.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "PreToolUse write/edit hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "governed Edit/Write runner when available; otherwise advisory",
+          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "gap"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future tool.execute.before plugin adapter for edit/write tools",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "ci-enforced",
+          "declared_surface": "repository audit/test lane",
+          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "gap"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/reinvention-check.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "large-file-advisor",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Advise targeted reads before loading large files into model context.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "PreToolUse Read hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "governed read wrapper when available; otherwise advisory",
+          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "gap"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future tool.execute.before plugin adapter for read tools",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "no default CI read-tool equivalent",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/large-file-advisor.sh"
+    },
+    {
+      "consumer_fleet_impact": "install-update-risk",
+      "contract_id": "skill-router",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Route raw shell/tool activity toward the appropriate COS skill or block high-risk bypasses.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "PreToolUse Bash hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "Codex Bash hook plus governed guard where available",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "OpenCode permissions plus future tool.execute.before plugin adapter",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "ci-enforced",
+          "declared_surface": "shell/CI audit and routing checks",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/skill-router-bash-gate.sh"
+    }
+  ],
+  "purpose": "Join primitive contracts to observed harness coverage without treating declared contracts as runtime proof.",
+  "schema_version": "primitive-projection-fidelity.v1",
+  "summary": {
+    "aligned": 22,
+    "contracts": 5,
+    "gaps": 3,
+    "pending_runtime_smoke": 5,
+    "projection_rows": 30,
+    "unknown": 0
+  }
+}

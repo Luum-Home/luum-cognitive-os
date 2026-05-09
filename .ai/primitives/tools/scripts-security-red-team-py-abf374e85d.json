@@ -32,6 +32,53 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.",
+      "evidence_commands": [
+        "python3 -m py_compile scripts/security_red_team.py",
+        "python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py -q"
+      ],
+      "metrics": [
+        ".cognitive-os/reports/security-red-team-latest.json"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/security_red_team.py",
+        "manifests/security-red-team.yaml"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/security_red_team.py",
   "projection_targets": [
     "scripts/security_red_team.py",

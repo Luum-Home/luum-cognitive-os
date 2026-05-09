@@ -1,0 +1,15 @@
+{
+  "display_name": "Qwen Code",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "qwen-code",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "qwen-project-settings-context-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".qwen/settings.json",
+    "QWEN.md"
+  ],
+  "status": "implemented"
+}

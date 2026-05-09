@@ -89,6 +89,61 @@ def _contract_projection(contract: dict[str, Any] | None) -> dict[str, Any]:
     return out
 
 
+
+def _derived_portable_contract(primitive_id: str, family: str, lifecycle: dict[str, Any], contract: dict[str, Any] | None) -> dict[str, Any]:
+    """Return a portable contract view for both registry-backed and lifecycle-derived rows."""
+    if contract:
+        return {
+            "source": "primitive-contract-registry",
+            "contract_id": contract.get("id"),
+            "intent": contract.get("intent"),
+            "requires": list(contract.get("requires") or []),
+            "trigger": contract.get("trigger"),
+            "actions": contract.get("actions"),
+            "evidence": contract.get("evidence") or {},
+            "projection_fidelity": _contract_projection(contract),
+            "impact": contract.get("impact"),
+            "is_full_contract": True,
+        }
+    supported = list(lifecycle.get("supported_harnesses") or [])
+    projection_fidelity = {
+        harness: {
+            "fidelity": "documented-only",
+            "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim",
+            "claims_runtime_enforcement": False,
+        }
+        for harness in sorted(supported)
+    }
+    runtime_projection = bool(lifecycle.get("runtime_projection"))
+    return {
+        "source": "primitive-lifecycle-derived",
+        "contract_id": None,
+        "intent": lifecycle.get("behavior_evidence") or f"Lifecycle-derived portable contract for {primitive_id}.",
+        "requires": ["respect_declared_scope", "preserve_evidence_commands"],
+        "trigger": {
+            "kind": "lifecycle_declared" if runtime_projection else "documented_or_on_demand",
+            "runtime_projection": runtime_projection,
+            "projection_targets": list(lifecycle.get("projection_targets") or []),
+        },
+        "actions": {
+            "preferred": "observe" if runtime_projection else "document",
+            "fallback": "document",
+            "reason_codes": ["lifecycle_derived_contract"],
+        },
+        "evidence": {
+            "behavior_evidence": lifecycle.get("behavior_evidence"),
+            "evidence_commands": list(lifecycle.get("evidence_commands") or []),
+            "metrics": [lifecycle.get("metrics_file")] if lifecycle.get("metrics_file") and lifecycle.get("metrics_file") != "none" else [],
+        },
+        "projection_fidelity": projection_fidelity,
+        "impact": {
+            "consumer_fleet": "unknown",
+            "service_mode": "unsupported" if not runtime_projection else "harness-embedded-only",
+        },
+        "is_full_contract": True,
+        "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    }
+
 def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
     contracts = {str(item.get("source") or item.get("id")): item for item in load_contracts(root)}
     contracts_by_id = {str(item.get("id")): item for item in load_contracts(root)}
@@ -107,6 +162,7 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
         family = str(item.get("kind") or "unknown")
         contract = contracts.get(primitive_id) or contracts_by_id.get(primitive_id)
         portable_id = str(contract.get("id")) if contract else primitive_id
+        portable_contract = _derived_portable_contract(primitive_id, family, item, contract)
         row = {
             "schema_version": PRIMITIVE_SCHEMA_VERSION,
             "portable_id": portable_id,
@@ -143,6 +199,7 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
                 "projection_fidelity": _contract_projection(contract),
                 "impact": contract.get("impact") if contract else None,
             },
+            "portable_contract": portable_contract,
         }
         rel = Path("primitives") / _family_dir(family) / f"{_slug(portable_id)}.json"
         out.append((rel.as_posix(), row))
@@ -154,6 +211,8 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
         if source in seen or contract_id in seen:
             continue
         family = str(contract.get("family") or "unknown")
+        portable_contract = _derived_portable_contract(primitive_id, family, item, contract)
+        portable_contract = _derived_portable_contract(source, family, {}, contract)
         row = {
             "schema_version": PRIMITIVE_SCHEMA_VERSION,
             "portable_id": contract_id,
@@ -176,6 +235,7 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
                 "projection_fidelity": _contract_projection(contract),
                 "impact": contract.get("impact"),
             },
+            "portable_contract": portable_contract,
         }
         rel = Path("primitives") / _family_dir(family) / f"{_slug(contract_id)}.json"
         out.append((rel.as_posix(), row))
@@ -230,6 +290,40 @@ def _profile_rows(root: Path, primitive_rows: list[tuple[str, dict[str, Any]]]) 
             "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
         }
         rows.append((f"profiles/{harness}.json", profile))
+    return rows
+
+
+def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str, Any]]]) -> list[tuple[str, dict[str, Any]]]:
+    harnesses = _harness_projection(root)
+    all_harnesses = sorted(set(DEFAULT_HARNESSES) | set(harnesses))
+    rows: list[tuple[str, dict[str, Any]]] = []
+    for harness in all_harnesses:
+        dirname = ADAPTER_DIR_NAMES.get(harness, harness)
+        hp = harnesses.get(harness, {})
+        projected = []
+        for rel, row in primitive_rows:
+            projection = ((row.get("portable_contract") or {}).get("projection_fidelity") or {}).get(harness)
+            if projection:
+                projected.append({
+                    "portable_id": row.get("portable_id"),
+                    "primitive_file": rel,
+                    "fidelity": projection.get("fidelity"),
+                    "surface": projection.get("surface"),
+                    "claims_runtime_enforcement": bool(projection.get("claims_runtime_enforcement")),
+                })
+        manifest = {
+            "schema_version": ADAPTER_SCHEMA_VERSION,
+            "harness": harness,
+            "display_name": hp.get("display_name", harness),
+            "status": hp.get("status", "unknown"),
+            "proof_level": hp.get("proof_level"),
+            "projection_mode": hp.get("projection_mode"),
+            "settings_paths": list(hp.get("settings_paths") or []),
+            "projected_primitive_count": len(projected),
+            "projected_primitives": projected,
+            "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+        }
+        rows.append((f"adapters/{dirname}/adapter.json", manifest))
     return rows
 
 
@@ -314,6 +408,8 @@ def build_overlay(root: Path) -> dict[str, str]:
         files[rel] = json.dumps(row, indent=2, sort_keys=True) + "\n"
     for rel, text in _adapter_rows(root):
         files[rel] = text
+    for rel, row in _adapter_manifest_rows(root, primitive_rows):
+        files[rel] = json.dumps(row, indent=2, sort_keys=True) + "\n"
     files["logs/schema/primitive-interventions.schema.json"] = json.dumps({
         "schema_version": "primitive-intervention.v1",
         "description": "Runtime primitive intervention ledger rows; generated overlay reference only.",

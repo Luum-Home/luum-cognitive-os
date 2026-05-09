@@ -32,6 +32,53 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "self-evolving doctrine proposal generator with unit tests",
+      "evidence_commands": [
+        "scripts/cos-doctrine-proposer --profile core --json",
+        "python3 -m pytest tests/unit/test_doctrine_proposer.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "self-evolving doctrine proposal generator with unit tests",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-doctrine-proposer",
+        "scripts/cos_doctrine_proposer.py",
+        "lib/doctrine_proposer.py",
+        "docs/adrs/ADR-135-self-evolving-doctrine-proposals.md"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/cos-doctrine-proposer",
   "projection_targets": [
     "scripts/cos-doctrine-proposer",

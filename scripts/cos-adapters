@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Consumer UX for ADR-256/258 adapter surfaces."""
+from __future__ import annotations
+
+import argparse
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+def _load_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return data if isinstance(data, dict) else {}
+
+
+def _profiles(root: Path) -> list[dict[str, Any]]:
+    profiles_dir = root / ".ai" / "profiles"
+    rows = []
+    for path in sorted(profiles_dir.glob("*.json")):
+        data = _load_json(path)
+        if data:
+            rows.append(data)
+    return rows
+
+
+def list_adapters(root: Path) -> dict[str, Any]:
+    adapters = []
+    for profile in _profiles(root):
+        adapter_dir = root / ".ai" / str(profile.get("adapter_directory", ""))
+        manifest = adapter_dir / "adapter.json"
+        adapters.append({
+            "harness": profile.get("harness"),
+            "display_name": profile.get("display_name"),
+            "status": profile.get("status"),
+            "proof_level": profile.get("proof_level"),
+            "adapter_directory": profile.get("adapter_directory"),
+            "adapter_manifest_exists": manifest.exists(),
+            "projected_primitive_count": _load_json(manifest).get("projected_primitive_count", 0),
+        })
+    return {"schema_version": "cos-adapters-list.v1", "adapter_count": len(adapters), "adapters": adapters}
+
+
+def verify_adapters(root: Path) -> dict[str, Any]:
+    listed = list_adapters(root)
+    findings = []
+    for adapter in listed["adapters"]:
+        if not adapter["adapter_manifest_exists"]:
+            findings.append({"severity": "fail", "id": "missing-adapter-manifest", "harness": adapter["harness"]})
+        if adapter.get("proof_level") == "structural" and adapter.get("projected_primitive_count", 0) < 0:
+            findings.append({"severity": "fail", "id": "invalid-projected-count", "harness": adapter["harness"]})
+    return {
+        "schema_version": "cos-adapters-verify.v1",
+        "status": "fail" if any(f["severity"] == "fail" for f in findings) else "pass",
+        "adapter_count": listed["adapter_count"],
+        "findings": findings,
+    }
+
+
+def install_adapter(root: Path, harness: str, *, execute: bool) -> dict[str, Any]:
+    profiles = {str(row.get("harness")): row for row in _profiles(root)}
+    if harness not in profiles:
+        return {"schema_version": "cos-adapters-install.v1", "status": "fail", "harness": harness, "reason": "unknown harness"}
+    profile = profiles[harness]
+    receipt = {
+        "schema_version": "cos-adapters-install.v1",
+        "status": "planned" if not execute else "installed-overlay-receipt",
+        "harness": harness,
+        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "adapter_directory": profile.get("adapter_directory"),
+        "proof_level": profile.get("proof_level"),
+        "note": "This command verifies the generated .ai adapter surface. Host-specific file mutation remains delegated to existing harness projection drivers.",
+    }
+    if execute:
+        metrics = root / ".cognitive-os" / "metrics"
+        metrics.mkdir(parents=True, exist_ok=True)
+        with (metrics / "adapter-install-receipts.jsonl").open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(receipt, sort_keys=True) + "\n")
+    return receipt
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", type=Path, default=Path.cwd())
+    parser.add_argument("command", choices=["list", "verify", "install"])
+    parser.add_argument("harness", nargs="?")
+    parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--json", action="store_true")
+    args = parser.parse_args()
+    root = args.project_dir.resolve()
+    if args.command == "list":
+        report = list_adapters(root)
+    elif args.command == "verify":
+        report = verify_adapters(root)
+    else:
+        if not args.harness:
+            parser.error("install requires HARNESS")
+        report = install_adapter(root, args.harness, execute=args.execute)
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        if args.command == "list":
+            print(f"adapters: {report['adapter_count']}")
+            for row in report["adapters"]:
+                print(f"- {row['harness']}: {row['status']} proof={row['proof_level']} primitives={row['projected_primitive_count']}")
+        else:
+            print(f"{args.command}: {report.get('status')} harness={report.get('harness', '*')}")
+    return 0 if report.get("status") != "fail" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

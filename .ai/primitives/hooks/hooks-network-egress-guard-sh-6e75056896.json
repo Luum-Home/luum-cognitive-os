@@ -33,6 +33,54 @@
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "PreToolUse Bash guard blocks exfiltration-shaped external network commands unless COS_ALLOW_NETWORK_EGRESS is explicitly enabled.",
+      "evidence_commands": [
+        "bash -n hooks/network-egress-guard.sh",
+        "python3 -m py_compile scripts/network_egress_guard.py",
+        "python3 -m pytest tests/security/test_boundary_enforcement_p0.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "PreToolUse Bash guard blocks exfiltration-shaped external network commands unless COS_ALLOW_NETWORK_EGRESS is explicitly enabled.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "lifecycle_declared",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/network-egress-guard.sh",
+        "scripts/network_egress_guard.py",
+        "manifests/network-egress-policy.yaml"
+      ],
+      "runtime_projection": true
+    }
+  },
   "portable_id": "hooks/network-egress-guard.sh",
   "projection_targets": [
     ".claude/settings.json",

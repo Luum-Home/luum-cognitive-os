@@ -1,0 +1,1219 @@
+{
+  "display_name": "Claude Code",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "claude",
+  "projected_primitive_count": 172,
+  "projected_primitives": [
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "native-lifecycle-enforced",
+      "portable_id": "destructive-git-blocker",
+      "primitive_file": "primitives/hooks/destructive-git-blocker-007838bdb8.json",
+      "surface": "PreToolUse Bash hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "native-lifecycle-enforced",
+      "portable_id": "destructive-rm-blocker",
+      "primitive_file": "primitives/hooks/destructive-rm-blocker-3a720397ee.json",
+      "surface": "PreToolUse Bash hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/aci-observation-capture.sh",
+      "primitive_file": "primitives/hooks/hooks-aci-observation-capture-sh-6aa741f7c6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/adaptive-bypass.sh",
+      "primitive_file": "primitives/hooks/hooks-adaptive-bypass-sh-0ae98b3c55.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/adr-relevance-suggest.sh",
+      "primitive_file": "primitives/hooks/hooks-adr-relevance-suggest-sh-09b00570eb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/adr-section-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-adr-section-validator-sh-a0d0d75d08.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-bash-cwd-enforcer.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-bash-cwd-enforcer-sh-fef2e72d04.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-checkpoint.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-checkpoint-sh-460aee63d3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-control-inbound-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-control-inbound-guard-sh-8552d8d82d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-launch-confirmed.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-launch-confirmed-sh-6036492273.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-message-inbox-context.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-message-inbox-context-sh-cb9f4f6403.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-message-inbox-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-message-inbox-guard-sh-e144aefa71.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-prelaunch.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-prelaunch-sh-8703710305.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-working-dir-inject.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-working-dir-inject-sh-b27e7f3af6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/aspirational-audit-weekly.sh",
+      "primitive_file": "primitives/hooks/hooks-aspirational-audit-weekly-sh-2480cb7be8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/assumption-tracker.sh",
+      "primitive_file": "primitives/hooks/hooks-assumption-tracker-sh-e4387a3678.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/audit-id-enricher.sh",
+      "primitive_file": "primitives/hooks/hooks-audit-id-enricher-sh-2d8339d129.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/auto-checkpoint.sh",
+      "primitive_file": "primitives/hooks/hooks-auto-checkpoint-sh-2fa2a2d470.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/auto-refine.sh",
+      "primitive_file": "primitives/hooks/hooks-auto-refine-sh-8de92050a7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/auto-repair-dispatcher.sh",
+      "primitive_file": "primitives/hooks/hooks-auto-repair-dispatcher-sh-60a81063eb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/auto-rollback-trigger.sh",
+      "primitive_file": "primitives/hooks/hooks-auto-rollback-trigger-sh-144c1bd450.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/auto-skill-generator.sh",
+      "primitive_file": "primitives/hooks/hooks-auto-skill-generator-sh-7b64380dcd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/auto-verify.sh",
+      "primitive_file": "primitives/hooks/hooks-auto-verify-sh-10ea70ec35.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/blast-radius.sh",
+      "primitive_file": "primitives/hooks/hooks-blast-radius-sh-4d05d66c77.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/branch-ownership-lock.sh",
+      "primitive_file": "primitives/hooks/hooks-branch-ownership-lock-sh-7715fd5f6b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/branch-ownership-release.sh",
+      "primitive_file": "primitives/hooks/hooks-branch-ownership-release-sh-b0db7316ff.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/claim-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-claim-validator-sh-5417e5da80.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/clarification-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-clarification-gate-sh-5d74672311.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/completeness-check.sh",
+      "primitive_file": "primitives/hooks/hooks-completeness-check-sh-ca0d37f6ac.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/completion-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-completion-gate-sh-4fa14317b0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/concurrent-write-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-concurrent-write-guard-sh-74fb81b11a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/confidence-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-confidence-gate-sh-950304bff8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/confidentiality-enforcer.sh",
+      "primitive_file": "primitives/hooks/hooks-confidentiality-enforcer-sh-c2ec0e705c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/consequence-evaluator.sh",
+      "primitive_file": "primitives/hooks/hooks-consequence-evaluator-sh-64ea4cc1dc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/content-policy.sh",
+      "primitive_file": "primitives/hooks/hooks-content-policy-sh-2228bd5adf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/context-budget-meter.sh",
+      "primitive_file": "primitives/hooks/hooks-context-budget-meter-sh-d9be3dd712.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/context-watchdog.sh",
+      "primitive_file": "primitives/hooks/hooks-context-watchdog-sh-3720711a33.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/cos-executor-daemon-launcher.sh",
+      "primitive_file": "primitives/hooks/hooks-cos-executor-daemon-launcher-sh-20a931d221.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/cosd-auth-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-cosd-auth-guard-sh-9e3298c050.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/crash-recovery.sh",
+      "primitive_file": "primitives/hooks/hooks-crash-recovery-sh-8121539e61.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/cross-session-coordination-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-cross-session-coordination-guard-sh-1ff93e6fd8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/cross-session-event-emit.sh",
+      "primitive_file": "primitives/hooks/hooks-cross-session-event-emit-sh-a694c47027.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/cross-session-peer-context.sh",
+      "primitive_file": "primitives/hooks/hooks-cross-session-peer-context-sh-82f2020bde.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/dangerous-env-flag-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-dangerous-env-flag-detector-sh-971a5a5804.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/dequeue-notify.sh",
+      "primitive_file": "primitives/hooks/hooks-dequeue-notify-sh-27a7f9b267.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/direct-main-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-direct-main-guard-sh-c19ae1e848.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/dispatch-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-dispatch-gate-sh-f403a124d0.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/doc-sync-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-doc-sync-detector-sh-1197eba930.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/docker-drift-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-docker-drift-detector-sh-d258e9a85b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/document-ingest-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-document-ingest-guard-sh-c96fa33186.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/dod-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-dod-gate-sh-28ec67991e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/edit-lock-drain-parked.sh",
+      "primitive_file": "primitives/hooks/hooks-edit-lock-drain-parked-sh-47b00c1590.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/edit-lock-pre-tool.sh",
+      "primitive_file": "primitives/hooks/hooks-edit-lock-pre-tool-sh-8918517ffc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/edit-lock-process-negotiations.sh",
+      "primitive_file": "primitives/hooks/hooks-edit-lock-process-negotiations-sh-5a033d70f6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/edit-lock-session-end.sh",
+      "primitive_file": "primitives/hooks/hooks-edit-lock-session-end-sh-60c97a1ea9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/engram-crystallize-on-session-end.sh",
+      "primitive_file": "primitives/hooks/hooks-engram-crystallize-on-session-end-sh-9314208e13.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/engram-daemon-launcher.sh",
+      "primitive_file": "primitives/hooks/hooks-engram-daemon-launcher-sh-fe32bd9253.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/engram-obsidian-export-on-stop.sh",
+      "primitive_file": "primitives/hooks/hooks-engram-obsidian-export-on-stop-sh-a0874cf46c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/engram-reinforce-on-access.sh",
+      "primitive_file": "primitives/hooks/hooks-engram-reinforce-on-access-sh-3537e57616.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/error-learning.sh",
+      "primitive_file": "primitives/hooks/hooks-error-learning-sh-d17e6d1070.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/error-pattern-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-error-pattern-detector-sh-fe7789cf56.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/error-pipeline.sh",
+      "primitive_file": "primitives/hooks/hooks-error-pipeline-sh-72fb121df6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/git-commit-scope-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-git-commit-scope-guard-sh-a5e4bc7379.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/git-context-capture.sh",
+      "primitive_file": "primitives/hooks/hooks-git-context-capture-sh-9ad8c61064.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/hook-header-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-hook-header-validator-sh-2683fa26e9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/host-tool-doctor.sh",
+      "primitive_file": "primitives/hooks/hooks-host-tool-doctor-sh-a9551c9409.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/infra-health.sh",
+      "primitive_file": "primitives/hooks/hooks-infra-health-sh-f02009c1e2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/inject-phase-context.sh",
+      "primitive_file": "primitives/hooks/hooks-inject-phase-context-sh-9d938e134c.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/kpi-trigger.sh",
+      "primitive_file": "primitives/hooks/hooks-kpi-trigger-sh-43c61bb3b4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/lethal-trifecta-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-lethal-trifecta-gate-sh-14c0c6e882.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/agent-context.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-agent-context-sh-5ed97fcd1d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/_lib/task-event.sh",
+      "primitive_file": "primitives/hooks/hooks-lib-task-event-sh-988ab8e693.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/mcp-scan.sh",
+      "primitive_file": "primitives/hooks/hooks-mcp-scan-sh-1b708e1bea.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/memory-prefetch.sh",
+      "primitive_file": "primitives/hooks/hooks-memory-prefetch-sh-5358bd7ce1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/native-agent-heartbeat.sh",
+      "primitive_file": "primitives/hooks/hooks-native-agent-heartbeat-sh-91182787a5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/network-egress-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-network-egress-guard-sh-6e75056896.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/orchestrator-claim-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-orchestrator-claim-gate-sh-2d09ed6c49.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/orchestrator-decision-trace.sh",
+      "primitive_file": "primitives/hooks/hooks-orchestrator-decision-trace-sh-7eab923750.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/orchestrator-skill-invocation-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-orchestrator-skill-invocation-gate-sh-f3e500bfef.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/plan-claim-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-plan-claim-validator-sh-b4bd3da73a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/post-agent-snapshot-restore.sh",
+      "primitive_file": "primitives/hooks/hooks-post-agent-snapshot-restore-sh-36de6f3663.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/post-agent-verify.sh",
+      "primitive_file": "primitives/hooks/hooks-post-agent-verify-sh-482028046f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/post-git-orphan-notifier.sh",
+      "primitive_file": "primitives/hooks/hooks-post-git-orphan-notifier-sh-ef10f03cbb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/pre-agent-snapshot.sh",
+      "primitive_file": "primitives/hooks/hooks-pre-agent-snapshot-sh-e9a387ea5b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/pre-commit-content-hash-dedupe.sh",
+      "primitive_file": "primitives/hooks/hooks-pre-commit-content-hash-dedupe-sh-24c3b62804.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/pre-compaction-flush.sh",
+      "primitive_file": "primitives/hooks/hooks-pre-compaction-flush-sh-a59b510622.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/predev-completeness-check.sh",
+      "primitive_file": "primitives/hooks/hooks-predev-completeness-check-sh-7b28b2a31a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/private-mode-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-private-mode-gate-sh-db0ba85154.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/private-mode-metrics-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-private-mode-metrics-gate-sh-d5e4a58eb4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/profile-drift-autoapply.sh",
+      "primitive_file": "primitives/hooks/hooks-profile-drift-autoapply-sh-3848dd0189.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/project-docs-convention.sh",
+      "primitive_file": "primitives/hooks/hooks-project-docs-convention-sh-73dfce8b17.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/promotion-proposer-weekly.sh",
+      "primitive_file": "primitives/hooks/hooks-promotion-proposer-weekly-sh-6647df5365.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/prompt-quality-llm.sh",
+      "primitive_file": "primitives/hooks/hooks-prompt-quality-llm-sh-d6f9fd86e3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/protected-config-write-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-protected-config-write-guard-sh-9f9021738b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/query-tailored-context-inject.sh",
+      "primitive_file": "primitives/hooks/hooks-query-tailored-context-inject-sh-d37f693b7d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rate-limit-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-rate-limit-detector-sh-da6e0f2816.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rate-limit-drain.sh",
+      "primitive_file": "primitives/hooks/hooks-rate-limit-drain-sh-13a1585ac6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rate-limit-precheck.sh",
+      "primitive_file": "primitives/hooks/hooks-rate-limit-precheck-sh-cbd8b02fdf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rate-limiter.sh",
+      "primitive_file": "primitives/hooks/hooks-rate-limiter-sh-d9d6e897a8.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/reaper-daemon-launcher.sh",
+      "primitive_file": "primitives/hooks/hooks-reaper-daemon-launcher-sh-a0cd0a0a69.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/release-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-release-guard-sh-c63eb32471.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/research-quality-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-research-quality-validator-sh-19412a97ed.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/result-truncator.sh",
+      "primitive_file": "primitives/hooks/hooks-result-truncator-sh-a5e935f867.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/review-spawner.sh",
+      "primitive_file": "primitives/hooks/hooks-review-spawner-sh-f222b1fba5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rule-frontmatter-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-rule-frontmatter-validator-sh-95894a1b8e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rule-md-routing-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-rule-md-routing-validator-sh-adbcf5e984.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/rule-router-prompt-suggest.sh",
+      "primitive_file": "primitives/hooks/hooks-rule-router-prompt-suggest-sh-3ccdd543cd.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/scope-creep-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-scope-creep-detector-sh-7419dfa1d3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/scope-marker-portability-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-scope-marker-portability-gate-sh-38d03a4484.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/scope-proportionality.sh",
+      "primitive_file": "primitives/hooks/hooks-scope-proportionality-sh-36fa4ee8c6.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/secret-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-secret-detector-sh-46c65d31d3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/self-install.sh",
+      "primitive_file": "primitives/hooks/hooks-self-install-sh-e929d335ea.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/self-knowledge-refresh.sh",
+      "primitive_file": "primitives/hooks/hooks-self-knowledge-refresh-sh-213abfb018.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-changelog.sh",
+      "primitive_file": "primitives/hooks/hooks-session-changelog-sh-4b2020f129.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-cleanup.sh",
+      "primitive_file": "primitives/hooks/hooks-session-cleanup-sh-99cc5fa513.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-end-reap.sh",
+      "primitive_file": "primitives/hooks/hooks-session-end-reap-sh-dec4fab7c3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-heartbeat.sh",
+      "primitive_file": "primitives/hooks/hooks-session-heartbeat-sh-af11ceb0e7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-init.sh",
+      "primitive_file": "primitives/hooks/hooks-session-init-sh-29fcda2f32.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-learning.sh",
+      "primitive_file": "primitives/hooks/hooks-session-learning-sh-d33b701453.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-resume.sh",
+      "primitive_file": "primitives/hooks/hooks-session-resume-sh-4671efb7bb.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-sanity.sh",
+      "primitive_file": "primitives/hooks/hooks-session-sanity-sh-237864d29a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-start-stash-reapply.sh",
+      "primitive_file": "primitives/hooks/hooks-session-start-stash-reapply-sh-f8c0ae099f.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-start-worktree-nudge.sh",
+      "primitive_file": "primitives/hooks/hooks-session-start-worktree-nudge-sh-50433424c7.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-startup-protocol.sh",
+      "primitive_file": "primitives/hooks/hooks-session-startup-protocol-sh-613aeaba03.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-summary-reminder.sh",
+      "primitive_file": "primitives/hooks/hooks-session-summary-reminder-sh-4f8414f776.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-watchdog-launcher.sh",
+      "primitive_file": "primitives/hooks/hooks-session-watchdog-launcher-sh-5efa7dc710.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/session-wrapup-trigger.sh",
+      "primitive_file": "primitives/hooks/hooks-session-wrapup-trigger-sh-33b529b3d9.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-failure-monitor.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-failure-monitor-sh-124dfbae4e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-feedback-tracker.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-feedback-tracker-sh-ee721ccc16.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-frontmatter-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-frontmatter-validator-sh-cc8f1aee4b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-invocation-logger.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-invocation-logger-sh-f5c7fec560.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-md-routing-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-md-routing-validator-sh-c78b8693cc.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-post-execution-analysis.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-post-execution-analysis-sh-265fd85934.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-router-prompt-suggest.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-router-prompt-suggest-sh-addabcf106.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-synthesis-scanner.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-synthesis-scanner-sh-ecc50431ec.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-tracker.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-tracker-sh-b472048612.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-usage-tracker.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-usage-tracker-sh-9fd508a726.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/stash-budget-warn.sh",
+      "primitive_file": "primitives/hooks/hooks-stash-budget-warn-sh-2c0693d559.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/state-heartbeat.sh",
+      "primitive_file": "primitives/hooks/hooks-state-heartbeat-sh-cf0823f98b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/subagent-context-injector.sh",
+      "primitive_file": "primitives/hooks/hooks-subagent-context-injector-sh-e9ab651954.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/surface-fix-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-surface-fix-detector-sh-73d2d1bb91.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/symlink-mutation-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-symlink-mutation-guard-sh-0204fce94a.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/task-completed.sh",
+      "primitive_file": "primitives/hooks/hooks-task-completed-sh-62c8d84c89.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/task-created.sh",
+      "primitive_file": "primitives/hooks/hooks-task-created-sh-e3c66f3aab.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/teammate-idle.sh",
+      "primitive_file": "primitives/hooks/hooks-teammate-idle-sh-e28723a821.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/token-budget-monitor.sh",
+      "primitive_file": "primitives/hooks/hooks-token-budget-monitor-sh-c463842f96.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/tool-sequence-capture.sh",
+      "primitive_file": "primitives/hooks/hooks-tool-sequence-capture-sh-5c34653347.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/trust-score-validator.sh",
+      "primitive_file": "primitives/hooks/hooks-trust-score-validator-sh-55877cd3b1.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/untracked-work-preservation-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-untracked-work-preservation-guard-sh-1724597642.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/user-prompt-capture.sh",
+      "primitive_file": "primitives/hooks/hooks-user-prompt-capture-sh-7692ac61ea.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/validation-lock-cleanup.sh",
+      "primitive_file": "primitives/hooks/hooks-validation-lock-cleanup-sh-0f8930fd4b.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/validator-soak-weekly.sh",
+      "primitive_file": "primitives/hooks/hooks-validator-soak-weekly-sh-825c7b5e47.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/work-queue-sync.sh",
+      "primitive_file": "primitives/hooks/hooks-work-queue-sync-sh-71aa77cfcf.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "native-lifecycle-enforced",
+      "portable_id": "large-file-advisor",
+      "primitive_file": "primitives/hooks/large-file-advisor-54324da899.json",
+      "surface": "PreToolUse Read hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "native-lifecycle-enforced",
+      "portable_id": "reinvention-check",
+      "primitive_file": "primitives/hooks/reinvention-check-4c33735c3b.json",
+      "surface": "PreToolUse write/edit hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "native-lifecycle-enforced",
+      "portable_id": "skill-router",
+      "primitive_file": "primitives/hooks/skill-router-9c64515352.json",
+      "surface": "PreToolUse Bash hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-doctor-preserve",
+      "primitive_file": "primitives/other-doctor/scripts-cos-doctor-preserve-ac0eb836f3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt",
+      "primitive_file": "primitives/other-library/packages-agent-coordination-lib-agent-bus-py-filesystem-interrupt-b5c33b6385.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal",
+      "primitive_file": "primitives/other-library/packages-agent-lifecycle-lib-harness-adapter-base-py-inbound-signal-c5ead8e872.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-behavior-evidence.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-behavior-evidence-yaml-d0a65fc6b4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-harness-gap-policy.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-harness-gap-policy-yaml-75427a7d75.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-scope-classification.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-scope-classification-yaml-dae319cce5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-scope-overrides.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-scope-overrides-yaml-f3e79ffb47.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/agent-control/SKILL.md",
+      "primitive_file": "primitives/skills/skills-agent-control-skill-md-581efa2c15.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/primitive-harness-coverage/SKILL.md",
+      "primitive_file": "primitives/skills/skills-primitive-harness-coverage-skill-md-33d7bac0ba.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/adr_tombstone.py",
+      "primitive_file": "primitives/tools/scripts-adr-tombstone-py-5538718ef5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-adr-tombstone",
+      "primitive_file": "primitives/tools/scripts-cos-adr-tombstone-a39f196b1e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-agent-message",
+      "primitive_file": "primitives/tools/scripts-cos-agent-message-a47302cb4e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-session-coordination",
+      "primitive_file": "primitives/tools/scripts-cos-session-coordination-3c8125d3c2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/_lib/session-id.sh",
+      "primitive_file": "primitives/tools/scripts-lib-session-id-sh-ff8c2a3643.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/orchestrator.py",
+      "primitive_file": "primitives/tools/scripts-orchestrator-py-f808837b26.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/primitive_harness_coverage.py",
+      "primitive_file": "primitives/tools/scripts-primitive-harness-coverage-py-60d71ab642.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    }
+  ],
+  "projection_mode": "native-settings",
+  "proof_level": "native-lifecycle",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".claude/settings.json"
+  ],
+  "status": "implemented"
+}

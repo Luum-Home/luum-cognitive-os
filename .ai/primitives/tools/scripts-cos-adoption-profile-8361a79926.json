@@ -32,6 +32,52 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "control-plane-smoke-and-unit-tests",
+      "evidence_commands": [
+        "scripts/cos-adoption-profile --profile core",
+        "python3 -m pytest tests/unit/test_boring_reliability_tools.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "control-plane-smoke-and-unit-tests",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-adoption-profile",
+        "scripts/cos_adoption_profile.py",
+        "docs/architecture/boring-reliability-control-plane.md"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/cos-adoption-profile",
   "projection_targets": [
     "scripts/cos-adoption-profile",

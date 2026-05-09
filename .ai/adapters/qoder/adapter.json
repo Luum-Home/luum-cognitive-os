@@ -1,0 +1,16 @@
+{
+  "display_name": "Qoder CLI",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "qoder",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "agents-md-project-mcp-settings",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".mcp.json",
+    ".qoder/settings.json"
+  ],
+  "status": "implemented"
+}

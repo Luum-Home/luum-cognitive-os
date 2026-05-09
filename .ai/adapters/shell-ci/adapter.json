@@ -1,0 +1,52 @@
+{
+  "display_name": "Shell / CI",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "shell-ci",
+  "projected_primitive_count": 5,
+  "projected_primitives": [
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "ci-enforced",
+      "portable_id": "destructive-git-blocker",
+      "primitive_file": "primitives/hooks/destructive-git-blocker-007838bdb8.json",
+      "surface": "shell/CI policy command lane"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "ci-enforced",
+      "portable_id": "destructive-rm-blocker",
+      "primitive_file": "primitives/hooks/destructive-rm-blocker-3a720397ee.json",
+      "surface": "shell/CI policy command lane"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "large-file-advisor",
+      "primitive_file": "primitives/hooks/large-file-advisor-54324da899.json",
+      "surface": "no default CI read-tool equivalent"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "ci-enforced",
+      "portable_id": "reinvention-check",
+      "primitive_file": "primitives/hooks/reinvention-check-4c33735c3b.json",
+      "surface": "repository audit/test lane"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "ci-enforced",
+      "portable_id": "skill-router",
+      "primitive_file": "primitives/hooks/skill-router-9c64515352.json",
+      "surface": "shell/CI audit and routing checks"
+    }
+  ],
+  "projection_mode": "cli-and-workflows",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".cognitive-os/shell-ci-projection.json",
+    ".github/workflows/cognitive-os-shell-ci.yml",
+    "scripts"
+  ],
+  "status": "implemented"
+}

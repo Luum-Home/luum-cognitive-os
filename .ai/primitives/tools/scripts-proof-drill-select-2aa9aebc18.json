@@ -32,6 +32,52 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "governed opt-in proof-drill selector; does not execute selected commands by default",
+      "evidence_commands": [
+        "bash -n scripts/proof-drill-select",
+        "python3 -m py_compile scripts/proof_drill_select.py"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "governed opt-in proof-drill selector; does not execute selected commands by default",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/proof-drill-select",
+        "scripts/proof_drill_select.py",
+        "manifests/proof-drill-registry.yaml"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/proof-drill-select",
   "projection_targets": [
     "scripts/proof-drill-select",
