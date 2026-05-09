@@ -1,0 +1,15 @@
+{
+  "display_name": "Warp Agent",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "warp",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "agents-md-project-rules",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".warp/README.md"
+  ],
+  "status": "implemented"
+}

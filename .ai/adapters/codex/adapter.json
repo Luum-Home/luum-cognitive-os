@@ -1,0 +1,197 @@
+{
+  "display_name": "OpenAI Codex",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "codex",
+  "projected_primitive_count": 26,
+  "projected_primitives": [
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
+      "portable_id": "destructive-git-blocker",
+      "primitive_file": "primitives/hooks/destructive-git-blocker-007838bdb8.json",
+      "surface": "Codex Bash hook plus governed guard where available"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
+      "portable_id": "destructive-rm-blocker",
+      "primitive_file": "primitives/hooks/destructive-rm-blocker-3a720397ee.json",
+      "surface": "Codex Bash hook plus governed guard where available"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/agent-control-inbound-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-agent-control-inbound-guard-sh-8552d8d82d.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/dangerous-env-flag-detector.sh",
+      "primitive_file": "primitives/hooks/hooks-dangerous-env-flag-detector-sh-971a5a5804.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/orchestrator-skill-invocation-gate.sh",
+      "primitive_file": "primitives/hooks/hooks-orchestrator-skill-invocation-gate-sh-f3e500bfef.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/release-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-release-guard-sh-c63eb32471.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/skill-router-prompt-suggest.sh",
+      "primitive_file": "primitives/hooks/hooks-skill-router-prompt-suggest-sh-addabcf106.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/untracked-work-preservation-guard.sh",
+      "primitive_file": "primitives/hooks/hooks-untracked-work-preservation-guard-sh-1724597642.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
+      "portable_id": "large-file-advisor",
+      "primitive_file": "primitives/hooks/large-file-advisor-54324da899.json",
+      "surface": "governed read wrapper when available; otherwise advisory"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
+      "portable_id": "reinvention-check",
+      "primitive_file": "primitives/hooks/reinvention-check-4c33735c3b.json",
+      "surface": "governed Edit/Write runner when available; otherwise advisory"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
+      "portable_id": "skill-router",
+      "primitive_file": "primitives/hooks/skill-router-9c64515352.json",
+      "surface": "Codex Bash hook plus governed guard where available"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-doctor-preserve",
+      "primitive_file": "primitives/other-doctor/scripts-cos-doctor-preserve-ac0eb836f3.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt",
+      "primitive_file": "primitives/other-library/packages-agent-coordination-lib-agent-bus-py-filesystem-interrupt-b5c33b6385.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "packages/agent-lifecycle/lib/harness_adapter/base.py#inbound-signal",
+      "primitive_file": "primitives/other-library/packages-agent-lifecycle-lib-harness-adapter-base-py-inbound-signal-c5ead8e872.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-behavior-evidence.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-behavior-evidence-yaml-d0a65fc6b4.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-harness-gap-policy.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-harness-gap-policy-yaml-75427a7d75.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-scope-classification.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-scope-classification-yaml-dae319cce5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "manifests/primitive-scope-overrides.yaml",
+      "primitive_file": "primitives/other-manifest/manifests-primitive-scope-overrides-yaml-f3e79ffb47.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/agent-control/SKILL.md",
+      "primitive_file": "primitives/skills/skills-agent-control-skill-md-581efa2c15.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "skills/primitive-harness-coverage/SKILL.md",
+      "primitive_file": "primitives/skills/skills-primitive-harness-coverage-skill-md-33d7bac0ba.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/adr_tombstone.py",
+      "primitive_file": "primitives/tools/scripts-adr-tombstone-py-5538718ef5.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-adr-tombstone",
+      "primitive_file": "primitives/tools/scripts-cos-adr-tombstone-a39f196b1e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-agent-message",
+      "primitive_file": "primitives/tools/scripts-cos-agent-message-a47302cb4e.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/cos-session-coordination",
+      "primitive_file": "primitives/tools/scripts-cos-session-coordination-3c8125d3c2.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/orchestrator.py",
+      "primitive_file": "primitives/tools/scripts-orchestrator-py-f808837b26.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "scripts/primitive_harness_coverage.py",
+      "primitive_file": "primitives/tools/scripts-primitive-harness-coverage-py-60d71ab642.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    }
+  ],
+  "projection_mode": "settings-file",
+  "proof_level": "native-lifecycle",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".codex/hooks.json"
+  ],
+  "status": "implemented"
+}

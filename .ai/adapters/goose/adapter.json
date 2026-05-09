@@ -1,0 +1,14 @@
+{
+  "display_name": "Goose",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "goose",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "goosehints-project-context",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".goosehints"
+  ],
+  "status": "implemented"
+}

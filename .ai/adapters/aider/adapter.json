@@ -1,0 +1,15 @@
+{
+  "display_name": "Aider",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "aider",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "aider-conventions-config",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    "CONVENTIONS.md",
+    ".aider.conf.yml"
+  ],
+  "status": "implemented"
+}

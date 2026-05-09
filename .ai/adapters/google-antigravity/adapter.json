@@ -1,0 +1,12 @@
+{
+  "display_name": "Google Antigravity",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "google-antigravity",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "unknown",
+  "proof_level": "none",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [],
+  "status": "planned"
+}

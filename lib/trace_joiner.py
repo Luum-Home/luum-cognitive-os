@@ -39,6 +39,7 @@ DEFAULT_STREAMS = [
     StreamSpec("subagent-capability-preflight", ".cognitive-os/metrics/subagent-capability-preflight.jsonl"),
     StreamSpec("private-content-access", ".cognitive-os/metrics/private-content-access.jsonl", private_content_ref_only=True),
     StreamSpec("codebase-itinerary", ".cognitive-os/metrics/codebase-itinerary.jsonl", private_content_ref_only=True),
+    StreamSpec("primitive-interventions", ".cognitive-os/metrics/primitive-interventions.jsonl"),
     StreamSpec("state-retention", ".cognitive-os/metrics/state-retention.jsonl"),
     StreamSpec("performance-ledger", ".cognitive-os/metrics/performance-ledger.jsonl"),
     StreamSpec("skill-feedback", ".cognitive-os/metrics/skill-feedback.jsonl"),
@@ -191,6 +192,60 @@ def trace_paths(project_dir: Path, run_id: str) -> tuple[Path, Path, Path]:
     )
 
 
+
+def summarize_observable_self_use(events: list[dict[str, Any]]) -> dict[str, Any]:
+    """Summarize whether a run used COS primitives observably.
+
+    This is intentionally derived from already-sanitized joined events. It never
+    reads code contents, grep patterns, or raw command payloads.
+    """
+    itinerary_events = [event for event in events if event.get("stream") == "codebase-itinerary"]
+    intervention_events = [event for event in events if event.get("stream") == "primitive-interventions"]
+
+    inspected_tools: dict[str, int] = {}
+    inspected_target_categories: dict[str, int] = {}
+    for event in itinerary_events:
+        data = event.get("data") if isinstance(event.get("data"), dict) else {}
+        tool = str(data.get("tool") or "unknown")
+        inspected_tools[tool] = inspected_tools.get(tool, 0) + 1
+        target = data.get("target_ref") or data.get("target") or {}
+        if isinstance(target, dict):
+            category = str(target.get("category") or target.get("kind") or "content-free-ref")
+        else:
+            category = "content-free-ref"
+        inspected_target_categories[category] = inspected_target_categories.get(category, 0) + 1
+
+    interventions_by_primitive: dict[str, int] = {}
+    interventions_by_action: dict[str, int] = {}
+    interventions_by_reason: dict[str, int] = {}
+    correlated_tool_use_ids: set[str] = set()
+    for event in intervention_events:
+        data = event.get("data") if isinstance(event.get("data"), dict) else {}
+        primitive = str(data.get("primitive_id") or data.get("primitive") or "unknown")
+        action = str(data.get("action_kind") or "unknown")
+        reason = str(data.get("reason_code") or "unknown")
+        interventions_by_primitive[primitive] = interventions_by_primitive.get(primitive, 0) + 1
+        interventions_by_action[action] = interventions_by_action.get(action, 0) + 1
+        interventions_by_reason[reason] = interventions_by_reason.get(reason, 0) + 1
+        tool_use_id = data.get("tool_use_id")
+        if isinstance(tool_use_id, str) and tool_use_id.strip():
+            correlated_tool_use_ids.add(tool_use_id.strip())
+
+    return {
+        "schema_version": "observable-primitive-self-use.v1",
+        "codebase_itinerary_events": len(itinerary_events),
+        "primitive_intervention_events": len(intervention_events),
+        "inspected_tools": dict(sorted(inspected_tools.items())),
+        "inspected_target_categories": dict(sorted(inspected_target_categories.items())),
+        "interventions_by_primitive": dict(sorted(interventions_by_primitive.items())),
+        "interventions_by_action": dict(sorted(interventions_by_action.items())),
+        "interventions_by_reason": dict(sorted(interventions_by_reason.items())),
+        "correlated_tool_use_ids": sorted(correlated_tool_use_ids),
+        "has_observable_self_use": bool(itinerary_events or intervention_events),
+        "has_runtime_intervention": bool(intervention_events),
+        "has_codebase_itinerary": bool(itinerary_events),
+    }
+
 def build_trace_payload(
     events: list[dict[str, Any]],
     *,
@@ -215,6 +270,7 @@ def build_trace_payload(
             "private_content_payloads": "ref-only",
             "private_content_streams": [spec.stream for spec in DEFAULT_STREAMS if spec.private_content_ref_only],
         },
+        "observable_self_use": summarize_observable_self_use(events),
         "final_status": "no_events" if not events else "joined",
     }
 

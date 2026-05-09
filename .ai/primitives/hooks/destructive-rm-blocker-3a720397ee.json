@@ -93,6 +93,90 @@
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "warn",
+      "preferred": "block",
+      "reason_codes": [
+        "destructive_rm_op",
+        "destructive_file_erasure",
+        "tracked_file_truncation"
+      ]
+    },
+    "contract_id": "destructive-rm-blocker",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/rm-op-blocks.jsonl"
+      ],
+      "proof_tests": [
+        "tests/behavior/test_safety_mesh.py",
+        "tests/behavior/test_hooks_batch1.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "install-update-risk",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Block destructive recursive file erasure and truncation patterns before execution.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Bash hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "Codex Bash hook plus governed guard where available"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "ci-enforced",
+        "surface": "shell/CI policy command lane"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "inspect_agent_context",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "command_patterns": [
+        "rm -rf|-fr|-r|-R|--recursive",
+        "redirect truncation of tracked files",
+        "truncate -s 0",
+        "cp /dev/null",
+        "dd of= with zero or empty input"
+      ],
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
   "portable_id": "destructive-rm-blocker",
   "projection_targets": [
     ".claude/settings.json",

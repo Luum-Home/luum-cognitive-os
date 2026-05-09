@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-09T16:08:22+00:00'
+generated_at: '2026-05-09T19:46:25+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 skills:
 - path: skills/__contracts__/SKILL.md
@@ -184,6 +184,8 @@ skills:
   sha256: add64d75381eecd44f22aab27cc6d6d0b7354b95606e2bf7606477bcec7e307a
 - path: skills/preserved-wip-cleanup/SKILL.md
   sha256: 3aa3362953477f9ce2a4c56baa2b3316ec8c038bdfb8a60210eacc0ca51deeb9
+- path: skills/primitive-authoring/SKILL.md
+  sha256: c36affd272dfbf64cd7a76c2741f861868352cecc3476f7231232d4b3cae025a
 - path: skills/primitive-harness-coverage/SKILL.md
   sha256: f0aab07c5f2b15bb6bcdda9bb23872e3ab8047bf92c704e0f334c65cc1a27848
 - path: skills/primitive-harvester/SKILL.md

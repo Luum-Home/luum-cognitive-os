@@ -1,0 +1,12 @@
+{
+  "display_name": "DeepSeek provider integrations",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "deepseek-provider",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "provider-via-existing-harness",
+  "proof_level": "none",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [],
+  "status": "planned"
+}

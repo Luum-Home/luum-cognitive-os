@@ -1,7 +1,7 @@
 # ADR-256 — Primitive Contract Registry and Runtime Evidence Ledger
 
 ## Status
-Proposed — plan-first, no runtime implementation yet
+Accepted — implemented through Phases 1–6; OpenCode runtime smoke remains future proof
 
 **Date:** 2026-05-09  
 **Owner:** platform-safety  
@@ -118,13 +118,27 @@ contents or raw secret/private values.
 
 ## Phases
 
-0. **Docs/contract freeze** — ADR, plan, `/primitive-authoring` gate, `.ai` overlay lesson, and OpenSage pressure-test contract.
-1. **Minimal registry** — five contracts: destructive git, destructive rm, reinvention check, large-file advisor, skill router. Implemented by ADR-257.
-2. **Intervention ledger** — bridge two hooks first, then script/advisory primitives.
-3. **Codebase itinerary** — safe Read/Grep/Glob/LS metadata without contents.
-4. **Projection and impact report** — join harness fidelity, consumer-fleet audit, and service-readiness gate.
-5. **Trace joiner + observable self-use** — join itinerary + interventions + existing run trace.
-6. **Consumer UX** — small commands around adapters/observe surfaces.
+0. **Docs/contract freeze** — implemented through this ADR, `/primitive-authoring`, OpenSage pressure testing, and ADR-258 due diligence.
+1. **Minimal registry** — implemented by ADR-257 through `manifests/primitive-contracts.yaml`.
+2. **Intervention ledger** — implemented for destructive git/rm through `hooks/_lib/primitive-intervention.sh` and `.cognitive-os/metrics/primitive-interventions.jsonl`.
+3. **Codebase itinerary** — implemented by `hooks/codebase-itinerary-capture.sh` with content-free Read/Grep/Glob/LS metadata.
+4. **Projection and impact report** — implemented by `scripts/primitive_projection_fidelity.py` and `scripts/portable_ai_consumer_impact.py`.
+5. **Trace joiner + observable self-use** — implemented by `lib/trace_joiner.py` and `scripts/cos-observe-primitives`.
+6. **Consumer UX** — implemented by `scripts/cos-adapters`, `cos adapters ...`, and `cos observe primitives`.
+
+
+## Implementation evidence
+
+| Phase | Evidence |
+|---|---|
+| Registry | `manifests/primitive-contracts.yaml`, `tests/contracts/test_primitive_contract_registry.py` |
+| Intervention ledger | `hooks/_lib/primitive-intervention.sh`, `tests/contracts/test_primitive_intervention_ledger.py` |
+| Codebase itinerary | `hooks/codebase-itinerary-capture.sh`, `tests/contracts/test_codebase_itinerary.py` |
+| Projection fidelity | `scripts/primitive_projection_fidelity.py`, `tests/contracts/test_primitive_projection_fidelity.py` |
+| Observable self-use | `lib/trace_joiner.py`, `scripts/cos-observe-primitives`, `tests/contracts/test_observable_primitive_self_use.py` |
+| Consumer UX | `scripts/cos-adapters`, `tests/contracts/test_consumer_adapter_ux.py` |
+
+OpenCode remains `host-plugin-lifecycle-capable`, not runtime-enforced, until the native adapter smoke described in `docs/architecture/opencode-native-primitive-adapter-design.md` is signed.
 
 ## OpenCode adapter note
 

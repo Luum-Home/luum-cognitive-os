@@ -32,6 +32,52 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "demotion-loop maturity audit with tests",
+      "evidence_commands": [
+        "scripts/cos-demotion-loop-audit --json",
+        "python3 -m pytest tests/audit/test_demotion_loop_audit.py -q"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "demotion-loop maturity audit with tests",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-demotion-loop-audit",
+        "scripts/cos_demotion_loop_audit.py",
+        "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/cos-demotion-loop-audit",
   "projection_targets": [
     "scripts/cos-demotion-loop-audit",

@@ -1,0 +1,15 @@
+{
+  "display_name": "Kiro",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "kiro",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "kiro-steering-hooks-mcp-investigation",
+  "proof_level": "none",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    ".kiro/steering",
+    "agent configuration file (exact project path under investigation)"
+  ],
+  "status": "planned"
+}

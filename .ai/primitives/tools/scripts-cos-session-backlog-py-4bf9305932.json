@@ -32,6 +32,50 @@
     "runtime_projection": false
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "document",
+      "reason_codes": [
+        "lifecycle_derived_contract"
+      ]
+    },
+    "contract_id": null,
+    "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
+    "evidence": {
+      "behavior_evidence": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=5",
+      "evidence_commands": [
+        "python3 -m py_compile scripts/cos_session_backlog.py",
+        "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+      ],
+      "metrics": []
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "unsupported"
+    },
+    "intent": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=5",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "shell": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_evidence_commands"
+    ],
+    "source": "primitive-lifecycle-derived",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos_session_backlog.py"
+      ],
+      "runtime_projection": false
+    }
+  },
   "portable_id": "scripts/cos_session_backlog.py",
   "projection_targets": [
     "scripts/cos_session_backlog.py"

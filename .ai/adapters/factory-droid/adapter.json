@@ -1,0 +1,17 @@
+{
+  "display_name": "Factory Droid",
+  "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
+  "harness": "factory-droid",
+  "projected_primitive_count": 0,
+  "projected_primitives": [],
+  "projection_mode": "agents-md-factory-skills-mcp-hooks",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-adapter.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".factory/mcp.json",
+    ".factory/settings.json",
+    ".factory/skills/cognitive-os/SKILL.md"
+  ],
+  "status": "implemented"
+}

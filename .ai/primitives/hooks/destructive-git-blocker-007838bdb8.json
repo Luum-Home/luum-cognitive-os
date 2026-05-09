@@ -97,6 +97,95 @@
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "warn",
+      "preferred": "block",
+      "reason_codes": [
+        "destructive_git_op",
+        "force_push",
+        "protected_branch_write",
+        "branch_context_switch"
+      ]
+    },
+    "contract_id": "destructive-git-blocker",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/git-op-blocks.jsonl",
+        ".cognitive-os/metrics/destructive-git-bypass.jsonl"
+      ],
+      "proof_tests": [
+        "tests/behavior/test_safety_mesh.py",
+        "tests/behavior/test_hooks_batch1.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "install-update-risk",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Block destructive Git operations before execution.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Bash hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "Codex Bash hook plus governed guard where available"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "ci-enforced",
+        "surface": "shell/CI policy command lane"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "command_patterns": [
+        "git stash pop|drop|apply",
+        "git reset",
+        "git clean -f",
+        "git restore",
+        "git revert",
+        "git worktree add|remove|move|prune|repair|lock|unlock",
+        "git branch -D",
+        "git rebase",
+        "git push --force|-f"
+      ],
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
   "portable_id": "destructive-git-blocker",
   "projection_targets": [
     ".claude/settings.json",
