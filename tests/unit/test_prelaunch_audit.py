@@ -1,6 +1,8 @@
 """Tests for prelaunch history and message audit tooling."""
 from __future__ import annotations
 
+import json
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -63,8 +65,28 @@ def test_rewrite_plan_writes_editable_files(tmp_path: Path) -> None:
     plan_dir = repo / ".cognitive-os/prelaunch"
     assert (plan_dir / "message-rewrites.json").exists()
     assert (plan_dir / "replacements.txt").exists()
+    assert (plan_dir / "remote-snapshot.json").exists()
     assert plan["message_rewrites"]
+    assert plan["remotes"] == []
     assert plan["message_rewrites"][0]["new"] == "chore(license): establish FSL-1.1-MIT before public launch"
+
+
+def test_rewrite_plan_snapshots_remotes(tmp_path: Path) -> None:
+    remote = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "--bare", str(remote)], text=True, capture_output=True, check=True)
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    (repo / "README.md").write_text("demo\n", encoding="utf-8")
+    _git(repo, "add", "README.md")
+    _git(repo, "commit", "-m", "normal commit")
+    _git(repo, "remote", "add", "origin", str(remote))
+
+    plan = build_rewrite_plan(repo)
+
+    snapshot = json.loads((repo / ".cognitive-os/prelaunch/remote-snapshot.json").read_text(encoding="utf-8"))
+    assert plan["remotes"] == ["origin"]
+    assert snapshot["origin"]["fetch"] == str(remote)
 
 
 def test_apply_rewrite_dry_run_requires_no_env(tmp_path: Path) -> None:
@@ -90,6 +112,37 @@ def test_apply_rewrite_without_flag_blocks(tmp_path: Path, monkeypatch: pytest.M
 
     with pytest.raises(SystemExit, match="COS_ALLOW_PRELAUNCH_REWRITE=1"):
         apply_rewrite(repo)
+
+
+def test_apply_rewrite_restores_remotes_after_filter_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    if not shutil.which("git-filter-repo"):
+        pytest.skip("git-filter-repo is required for rewrite execution")
+    remote = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "--bare", str(remote)], text=True, capture_output=True, check=True)
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    (repo / "notes.txt").write_text("private-token-before-public\n", encoding="utf-8")
+    _git(repo, "add", "notes.txt")
+    _git(repo, "commit", "-m", "seed")
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", "HEAD:main")
+    plan_dir = tmp_path / "rewrite-plan"
+    plan_dir.mkdir(parents=True)
+    (plan_dir / "replacements.txt").write_text(
+        "private-token-before-public==>private-token-redacted\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("COS_ALLOW_PRELAUNCH_REWRITE", "1")
+    monkeypatch.delenv("COS_ALLOW_PRELAUNCH_FORCE_PUSH", raising=False)
+
+    result = apply_rewrite(repo, plan_dir=plan_dir)
+
+    assert result["status"] == "rewritten"
+    assert result["remotes_restored"] == ["origin"]
+    assert result["remote_restore_issues"] == []
+    restored_origin = _git(repo, "remote", "get-url", "origin").stdout.strip()
+    assert restored_origin == str(remote)
 
 
 def test_message_audit_cli_imports_from_repo_root(tmp_path: Path) -> None:

@@ -397,18 +397,22 @@ def build_rewrite_plan(repo: Path, *, plan_dir: Path | None = None) -> dict[str,
         seen_old.add(old)
         rewrites.append({"old": old, "new": new, "reason": f"{finding['rule_id']}: {finding['kind']}"})
     replacements_text = "# git-filter-repo replacement file. Add OLD==>NEW or regex:OLD==>NEW entries after review.\n"
+    remotes = snapshot_remotes(repo)
     plan = {
         "schema_version": PLAN_SCHEMA_VERSION,
         "repo": "<repo>",
         "generated_at": utc_stamp(),
         "message_rewrites": rewrites,
         "content_replacements_file": str((plan_dir or DEFAULT_PLAN_DIR) / "replacements.txt"),
+        "remote_snapshot_file": str((plan_dir or DEFAULT_PLAN_DIR) / "remote-snapshot.json"),
+        "remotes": sorted(remotes),
         "policy": "Editable plan. Apply requires COS_ALLOW_PRELAUNCH_REWRITE=1. Force-push requires an additional COS_ALLOW_PRELAUNCH_FORCE_PUSH=1.",
     }
     target_dir = repo / (plan_dir or DEFAULT_PLAN_DIR)
     target_dir.mkdir(parents=True, exist_ok=True)
     (target_dir / "message-rewrites.json").write_text(json.dumps(rewrites, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (target_dir / "replacements.txt").write_text(replacements_text, encoding="utf-8")
+    (target_dir / "remote-snapshot.json").write_text(json.dumps(remotes, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (target_dir / "plan.json").write_text(json.dumps(plan, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return plan
 
@@ -455,14 +459,17 @@ def snapshot_remotes(repo: Path) -> dict[str, dict[str, str]]:
         return remotes
     for name in [line.strip() for line in proc.stdout.splitlines() if line.strip()]:
         remotes[name] = {}
-        for kind in ("fetch", "push"):
-            url = git(repo, ["remote", "get-url", f"--{kind}", name])
-            if url.returncode == 0 and url.stdout.strip():
-                remotes[name][kind] = url.stdout.strip()
+        fetch_url = git(repo, ["remote", "get-url", name])
+        if fetch_url.returncode == 0 and fetch_url.stdout.strip():
+            remotes[name]["fetch"] = fetch_url.stdout.strip()
+        push_url = git(repo, ["remote", "get-url", "--push", name])
+        if push_url.returncode == 0 and push_url.stdout.strip():
+            remotes[name]["push"] = push_url.stdout.strip()
     return remotes
 
 
-def restore_remotes(repo: Path, remotes: dict[str, dict[str, str]]) -> None:
+def restore_remotes(repo: Path, remotes: dict[str, dict[str, str]]) -> dict[str, dict[str, str]]:
+    restored: dict[str, dict[str, str]] = {}
     for name, urls in remotes.items():
         fetch = urls.get("fetch") or urls.get("push")
         push = urls.get("push") or fetch
@@ -474,6 +481,36 @@ def restore_remotes(repo: Path, remotes: dict[str, dict[str, str]]) -> None:
             git(repo, ["remote", "set-url", name, fetch])
         if push:
             git(repo, ["remote", "set-url", "--push", name, push])
+        restored[name] = {"fetch": fetch, "push": push or fetch}
+    return restored
+
+
+def comparable_remote_url(url: str | None) -> str:
+    if not url:
+        return ""
+    if "://" in url or ":" in url.split("/", 1)[0]:
+        return url
+    try:
+        return str(Path(url).expanduser().resolve())
+    except OSError:
+        return url
+
+
+def remote_restore_issues(repo: Path, expected: dict[str, dict[str, str]]) -> list[str]:
+    issues: list[str] = []
+    actual = snapshot_remotes(repo)
+    for name, urls in expected.items():
+        expected_fetch = urls.get("fetch") or urls.get("push")
+        expected_push = urls.get("push") or expected_fetch
+        actual_urls = actual.get(name)
+        if not actual_urls:
+            issues.append(f"{name}: missing")
+            continue
+        if expected_fetch and comparable_remote_url(actual_urls.get("fetch")) != comparable_remote_url(expected_fetch):
+            issues.append(f"{name}: fetch URL mismatch")
+        if expected_push and comparable_remote_url(actual_urls.get("push")) != comparable_remote_url(expected_push):
+            issues.append(f"{name}: push URL mismatch")
+    return issues
 
 
 def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
@@ -500,6 +537,7 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
     if bundle.returncode != 0:
         raise SystemExit(bundle.stderr.strip() or "git bundle backup failed")
     remotes = snapshot_remotes(repo)
+    (target_dir / "remote-snapshot.json").write_text(json.dumps(remotes, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     executed: list[list[str]] = []
     for action in actions:
         proc = subprocess.run(action, cwd=repo, text=True, capture_output=True, check=False)
@@ -507,8 +545,18 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
         if proc.returncode != 0:
             restore_remotes(repo, remotes)
             raise SystemExit(proc.stderr.strip() or proc.stdout.strip() or f"rewrite action failed: {action[:3]}")
-    restore_remotes(repo, remotes)
-    result: dict[str, Any] = {"schema_version": PLAN_SCHEMA_VERSION, "status": "rewritten", "backup": str(backup_path), "executed": executed}
+    restored = restore_remotes(repo, remotes)
+    restore_issues = remote_restore_issues(repo, remotes)
+    result: dict[str, Any] = {
+        "schema_version": PLAN_SCHEMA_VERSION,
+        "status": "rewritten",
+        "backup": str(backup_path),
+        "executed": executed,
+        "remotes_restored": sorted(restored),
+        "remote_restore_issues": restore_issues,
+    }
+    if restore_issues:
+        raise SystemExit("git remote restore failed after history rewrite: " + "; ".join(restore_issues))
     if os.environ.get("COS_ALLOW_PRELAUNCH_FORCE_PUSH") == "1":
         remote = os.environ.get("COS_PRELAUNCH_REMOTE", "origin")
         branch = os.environ.get("COS_PRELAUNCH_BRANCH", "main")

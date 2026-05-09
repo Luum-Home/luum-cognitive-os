@@ -122,6 +122,19 @@ def audit(repo: Path) -> dict[str, Any]:
             ";".join(dirty_lines[:5]),
         )
 
+    remote_proc = run(repo, ["remote"])
+    remotes = [line.strip() for line in remote_proc.stdout.splitlines() if line.strip()] if remote_proc.returncode == 0 else []
+    checks["git_remotes"] = remotes
+    if not remotes:
+        add(
+            findings,
+            "block",
+            "git-remote-missing",
+            "No git remote is configured; git-filter-repo may have removed origin. Restore the intended remote before public push/land.",
+            1,
+            "git remote add origin <repo-url>",
+        )
+
     history = tracked_history(repo)
     bodies = commit_bodies(repo)
 
