@@ -283,6 +283,34 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: Significant overlap with Aguara, which already provides 189 deterministic rules for skill scanning. skill-scanner uses ML-based detection which could catch patterns Aguara's deterministic rules miss, but adds complexity. Revisit if Aguara proves insufficient for skill security coverage.
 
+### TaskingAI — AI-native app BaaS with provider routing, RAG, tools, UI (HOLD)
+
+---
+repo: TaskingAI/TaskingAI
+classification: HOLD
+stars: 5377
+license: Apache-2.0
+ci_health: red
+score: 60
+one_liner: "AI-native app BaaS with provider routing, RAG, tools, UI; pattern-only while upstream is stale."
+last_evaluated: 2026-05-09
+last_commit: 2024-12-02
+last_release: 2024-06-03
+---
+
+| Property | Value |
+|----------|-------|
+| GitHub | [TaskingAI/TaskingAI](https://github.com/TaskingAI/TaskingAI) |
+| Purpose | AI-native application BaaS with provider routing, RAG/data flows, tools/plugins, REST API, Python SDK, and React console |
+| Radar posture | **HOLD / pattern-only** |
+| Runtime adoption | No default dependency; do not integrate until upstream activity and CI recover |
+| Deep dive | `docs/reports/external-tools-radar-taskingai-addendum-2026-05-09.md` |
+
+**Adoption notes**: Study provider YAML catalogs, tool bundle metadata/execution boundaries, and multi-service deployment topology as design references only. Keep COS provider routing and tool governance first-party behind existing adapter boundaries.
+
+**Gotchas**: Upstream is stale by the 12-month repo-scout gate, recent concluded CI runs are red, and workflow files contain hardcoded crypto-like environment values that must not be copied into COS.
+
+
 ### tero (garagon) — HTTP Testing with Chaos (WATCH)
 
 | Property | Value |

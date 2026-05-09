@@ -210,6 +210,8 @@ bidirectional axis and adoption-kind doctrine.
 | [`docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`](external-tools-radar-evoskill-addendum-2026-05-09.md) | Radar addendum: TRIAL-PATTERNS / ASSESS-RUNTIME for benchmark-driven skill evolution |
 | [`docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`](../research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md) | Deep per-repo evaluation of Langflow |
 | [`docs/reports/external-tools-radar-langflow-addendum-2026-05-09.md`](external-tools-radar-langflow-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Langflow visual workflow and MCP-facing runtime patterns |
+| [`docs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md`](../research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md) | Deep per-repo evaluation of TaskingAI |
+| [`docs/reports/external-tools-radar-taskingai-addendum-2026-05-09.md`](external-tools-radar-taskingai-addendum-2026-05-09.md) | Radar addendum: HOLD / pattern-only for AI-native app BaaS patterns |
 | [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entries under EVALUATE |
 
 **Outcome:** OpenSwarm is added as a monitor/evaluate item. Extract its
@@ -227,6 +229,7 @@ benchmark-driven skill-evolution loop, generated-skill evidence schema,
 held-out validation discipline, and harness projection fixture; do not add its
 runtime, git mutation, Docker/remote execution, or generated skills to COS core
 without a manifest-backed adapter lab.
+TaskingAI is added as HOLD / pattern-only: study provider catalogs, tool-bundle boundaries, service topology, and BaaS UX, but do not adopt the runtime while upstream is stale and CI is red.
 
 ## How to use this index
 

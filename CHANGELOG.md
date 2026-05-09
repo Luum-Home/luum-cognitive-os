@@ -10,6 +10,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Public history-sanitization disclosure package documenting the pre-public rewrite scope, preserved human authorship, preserved Apache-to-FSL license-transition evidence, and sanitized runtime report copy.
 - Public-launch transparency package: `TRANSPARENCY.md`, launch-day runbook, and verify-public-release guide.
 - External tools radar 2026-05-08 edition with chronological index, bidirectional cross-check axis, five focused cross-check reports, implementation tracker, and reassessment scope controls.
+- TaskingAI radar addendum and tech-radar HOLD entry after deep repo-scout/repo-forensics pass; keeps TaskingAI pattern-only because upstream activity is stale and CI is red.
 - Langflow radar addendum and tech-radar EVALUATE entry after deep staged analysis; keeps Langflow pattern-only because direct runtime adoption would import dynamic code execution, credential/env, storage, telemetry, and MCP blast-radius risks.
 - External Tool Intelligence Plane (ADR-254): central adoption doctrine, project overlay model, adoption manifest, inventory/audit/render/research-check CLIs, and tests for COS-vs-project contradictions.
 - Feature-to-External-Tool Due Diligence (ADR-255): feature/tool scan, external source fetch, feature-vs-tool benchmark, source-cache guard, and manifest-backed BUILD-vs-ADOPT evidence requirements.
