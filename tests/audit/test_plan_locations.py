@@ -58,6 +58,10 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/architecture/primitive-readiness-continuity-plan.md",  # primitive readiness architecture companion
     "docs/architecture/service-control-plane-implementation-plan.md",  # service-control-plane architecture companion
     "docs/architecture/service-control-plane-research-2026-05-04.md",  # research artifact, not active plan
+    "docs/architecture/external-tool-intelligence-plane.md",  # architecture companion, not active plan inventory
+    "docs/architecture/primitive-contract-registry-implementation-plan.md",  # ADR-256 architecture companion
+    "docs/adrs/ADR-248-control-plane-audit-loop.md",  # ADR title contains control-plane, not active plan inventory
+    "docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # ADR title contains plane, not active plan inventory
     "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # ADR title includes control-plane, not active plan
     "docs/manual-tests/remote-control-plane-boundary.md",  # manual-test artifact
     "docs/manual-tests/service-control-plane-proof-drills.md",  # manual-test artifact

@@ -68,10 +68,6 @@ entries:
   rationale: Split-and-resume clarification behavior moved into clarification-gate/orchestrator
     flow.
   next_action: Archive after reference audit.
-- path: hooks/codebase-itinerary-capture.sh
-  status: registered
-  rationale: ADR-256 observable self-use hook is projected in Claude PostToolUse and records content-free Read/Grep/Glob/LS itinerary evidence.
-  next_action: Keep registered while trace_joiner and primitive observability consume codebase-itinerary.jsonl.
 - path: hooks/code-review-on-commit.sh
   status: git_or_manual
   rationale: Designed as a Git pre-commit hook, not a Claude hook.
@@ -100,11 +96,6 @@ entries:
   rationale: Task-aware context selection advisory overlaps compact rules/stage-2
     expansion.
   next_action: Promote only after measurable token savings and precision proof.
-- path: hooks/context-watchdog.sh
-  status: registered
-  rationale: One-shot PostToolUse checkpoint warnings are low-noise after the 2026-05-09
-    threshold hardening and provide real context-rot protection.
-  next_action: Keep projected while p99 and warning frequency remain acceptable.
 - path: hooks/contextual-rule-loader.sh
   status: future
   rationale: Dynamic full-rule injection needs prompt/event support and bounded context
