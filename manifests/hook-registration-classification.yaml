@@ -68,6 +68,10 @@ entries:
   rationale: Split-and-resume clarification behavior moved into clarification-gate/orchestrator
     flow.
   next_action: Archive after reference audit.
+- path: hooks/codebase-itinerary-capture.sh
+  status: registered
+  rationale: ADR-256 observable self-use hook is projected in Claude PostToolUse and records content-free Read/Grep/Glob/LS itinerary evidence.
+  next_action: Keep registered while trace_joiner and primitive observability consume codebase-itinerary.jsonl.
 - path: hooks/code-review-on-commit.sh
   status: git_or_manual
   rationale: Designed as a Git pre-commit hook, not a Claude hook.

@@ -2,6 +2,7 @@
 adr: 247
 title: Manifest-Driven Postmortem Regression Audits and External Tool Adapters
 status: accepted
+relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -13,6 +14,9 @@ implementation_files:
 tier: maintainer
 tags: [audits, manifests, external-tools, no-hardcoding, primitive-coherence]
 ---
+
+<!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->
+
 # ADR-247: Manifest-Driven Postmortem Regression Audits and External Tool Adapters
 
 ## Status

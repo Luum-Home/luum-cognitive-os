@@ -69,7 +69,11 @@ if [[ ! -f "$TOKEN_FILE" ]]; then
   echo "error: token file not found: $TOKEN_FILE" >&2
   exit 2
 fi
-mapfile -t TOKENS < <(grep -vE '^\s*(#|$)' "$TOKEN_FILE")
+TOKENS=()
+while IFS= read -r tok || [[ -n "$tok" ]]; do
+  [[ "$tok" =~ ^[[:space:]]*(#|$) ]] && continue
+  TOKENS+=("$tok")
+done < "$TOKEN_FILE"
 if (( ${#TOKENS[@]} == 0 )); then
   echo "error: token file has no usable entries: $TOKEN_FILE" >&2
   exit 2
@@ -117,7 +121,10 @@ echo
 
 for tok in "${TOKENS[@]}"; do
   [[ -z "$tok" ]] && continue
-  mapfile -t raw_hits < <(search "$tok")
+  raw_hits=()
+  while IFS= read -r hit || [[ -n "$hit" ]]; do
+    raw_hits+=("$hit")
+  done < <(search "$tok")
   hits=()
   retained=0
   for h in "${raw_hits[@]}"; do

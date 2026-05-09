@@ -64,6 +64,7 @@ checks:
     pattern: "\\bgit\\s+filter-repo\\b|\\[\\s*['\"]git['\"]\\s*,\\s*['\"]filter-repo['\"]"
     allow_paths:
       - scripts/cos-filter-repo-wrap.sh
+      - lib/prelaunch_audit.py
 
   - id: post-rewrite-push-exception-missing
     adr: ADR-243

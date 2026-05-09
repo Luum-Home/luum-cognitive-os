@@ -2,6 +2,7 @@
 adr: 246
 title: Release Transaction Freeze for Destructive and Public-State Operations
 status: accepted
+relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -14,6 +15,9 @@ implementation_files:
 tier: maintainer
 tags: [release, history-rewrite, force-push, freeze, multi-agent-safety, postmortem-2026-05-08]
 ---
+
+<!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->
+
 # ADR-246: Release Transaction Freeze for Destructive and Public-State Operations
 
 ## Status

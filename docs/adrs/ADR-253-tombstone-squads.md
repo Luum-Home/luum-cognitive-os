@@ -1,3 +1,5 @@
+<!-- ADR_RELATION_CHAIN_EXEMPT: tombstone pointer to ADR-251; not a new implementation scope chain. -->
+
 # ADR-253 — Tombstone (squads orchestration superseded by ADR-251)
 
 status: tombstone

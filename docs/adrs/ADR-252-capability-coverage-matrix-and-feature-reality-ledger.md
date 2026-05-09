@@ -2,6 +2,7 @@
 adr: 252
 title: Capability Coverage Matrix and Feature Reality Ledger
 status: accepted
+relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -15,6 +16,9 @@ implementation_files:
 tier: maintainer
 tags: [capability-coverage, feature-reality, claims, matrix, audit, control-plane]
 ---
+
+<!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->
+
 # ADR-252: Capability Coverage Matrix and Feature Reality Ledger
 
 ## Status

@@ -1,6 +1,6 @@
 {
   "content_free_rows": true,
-  "generated_at": "2026-05-09T21:07:39+00:00",
+  "generated_at": "2026-05-09T21:31:26+00:00",
   "ledger_row_count": 4,
   "mode": "headless-shell-service-equivalent",
   "primitive_ids": [
@@ -28,7 +28,7 @@
     {
       "hook": "reinvention-check.sh",
       "returncode": 0,
-      "stderr_tail": "REINVENTION CHECK: Similar implementation(s) may already exist:\n  - /var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-headless-primitive-94zuqeh0/consumer/lib/duplicate_helper.py\nConsider reusing or extending existing code before creating new files.\n"
+      "stderr_tail": "REINVENTION CHECK: Similar implementation(s) may already exist:\n  - /var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-headless-primitive-jft69vh_/consumer/lib/duplicate_helper.py\nConsider reusing or extending existing code before creating new files.\n"
     }
   ],
   "schema_version": "primitive-service-headless-smoke.v1",

@@ -253,6 +253,7 @@ cc_driver_emit() {
     "hooks/inject-phase-context.sh"         "false" \
     "hooks/agent-working-dir-inject.sh"     "false" \
     "hooks/query-tailored-context-inject.sh" "false" \
+    "hooks/control-plane-audit.sh"           "false" \
     "hooks/agent-prelaunch.sh"              "false" \
     "hooks/pre-agent-snapshot.sh"           "false" \
     "hooks/error-pattern-detector.sh"       "false" \
@@ -266,7 +267,6 @@ cc_driver_emit() {
     "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/cross-session-event-emit.sh"      "true"  \
     "hooks/agent-launch-confirmed.sh"        "false" \
-    "hooks/control-plane-audit.sh"           "false" \
   )
 
   local post_all
@@ -274,6 +274,7 @@ cc_driver_emit() {
     "hooks/context-watchdog.sh"       "false" \
     "hooks/rate-limit-detector.sh"    "false" \
     "hooks/tool-sequence-capture.sh"  "false" \
+    "hooks/codebase-itinerary-capture.sh" "false" \
     "hooks/aci-observation-capture.sh" "false" \
   )
 

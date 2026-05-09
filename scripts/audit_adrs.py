@@ -169,6 +169,14 @@ def _relationship_refs(path: Path, fm: dict[str, Any] | None, body: str) -> set[
     return refs
 
 
+
+def _relationship_chain_exempt(fm: dict[str, Any] | None, body: str) -> bool:
+    """Return True for ADRs intentionally consolidated by an implementation ledger."""
+    if isinstance(fm, dict) and fm.get("relationship_chain_exempt") is True:
+        return True
+    return "ADR_RELATION_CHAIN_EXEMPT" in body
+
+
 def analyze_relationship_graph(files: list[Path]) -> list[dict[str, Any]]:
     """Warn on ADR relationship cycles and chains that encourage scope creep."""
     by_num: dict[int, tuple[Path, set[int]]] = {}
@@ -188,6 +196,8 @@ def analyze_relationship_graph(files: list[Path]) -> list[dict[str, Any]]:
                 fm = loaded if isinstance(loaded, dict) else None
             except yaml.YAMLError:
                 fm = None
+        if _relationship_chain_exempt(fm, body):
+            continue
         refs = {ref for ref in _relationship_refs(path, fm, body) if ref in known and ref != adr_num}
         if refs:
             by_num[adr_num] = (path, refs)

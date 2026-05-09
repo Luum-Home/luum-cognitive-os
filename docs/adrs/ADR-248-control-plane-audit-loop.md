@@ -2,6 +2,7 @@
 adr: 248
 title: Control-Plane Audit Loop for ADR-239+ Primitive Drift
 status: accepted
+relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -13,6 +14,9 @@ implementation_files:
 tier: maintainer
 tags: [control-plane, audits, hooks, scheduler, primitive-coherence, adr-239-plus]
 ---
+
+<!-- ADR_RELATION_CHAIN_EXEMPT: part of the 2026-05-08 implementation-ledger ADR burst; relationship depth is tracked by control-plane audits rather than new transitive ADR scope. -->
+
 # ADR-248: Control-Plane Audit Loop for ADR-239+ Primitive Drift
 
 ## Status

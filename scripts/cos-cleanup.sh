@@ -14,7 +14,7 @@ set -u
 set -o pipefail
 
 # Resolve repo root (script lives in scripts/).
-SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}" 2>/dev/null || python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "${BASH_SOURCE[0]}")"
+SCRIPT_PATH="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "${BASH_SOURCE[0]}")"
 ROOT="$(cd "$(dirname "$SCRIPT_PATH")/.." && pwd)"
 AUDIT_LOG_DEFAULT="${ROOT}/.cognitive-os/cleanup-audit.jsonl"
 AUDIT_LOG="${COS_CLEANUP_AUDIT_LOG:-$AUDIT_LOG_DEFAULT}"
@@ -123,11 +123,7 @@ mtime_epoch() {
   # Cross-platform mtime in seconds since epoch. Empty on missing.
   local p="$1"
   [[ -e "$p" ]] || { echo ""; return; }
-  if stat -f %m "$p" >/dev/null 2>&1; then
-    stat -f %m "$p"
-  else
-    stat -c %Y "$p"
-  fi
+  python3 -c 'import os,sys; print(int(os.path.getmtime(sys.argv[1])))' "$p"
 }
 
 confirm() {

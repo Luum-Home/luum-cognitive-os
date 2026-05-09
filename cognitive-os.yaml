@@ -1300,17 +1300,17 @@ harness:
       matcher: Agent
       scope: os-only
 
-    agent-prelaunch:
-      script: hooks/agent-prelaunch.sh
-      event: PreToolUse
-      matcher: Agent
-      scope: os-only
-
     control-plane-audit-agent:
       script: hooks/control-plane-audit.sh
       event: PreToolUse
       matcher: Agent
       scope: both
+
+    agent-prelaunch:
+      script: hooks/agent-prelaunch.sh
+      event: PreToolUse
+      matcher: Agent
+      scope: os-only
 
     error-pattern-detector:
       script: hooks/error-pattern-detector.sh

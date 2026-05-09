@@ -72,7 +72,10 @@ fi
 
 # ── Discover env vars from manifest (no consumer codenames in this script) ──
 # Extract `value_env: COS_HISTORY_SANITIZE_*` lines from rules: section.
-mapfile -t ENV_VARS < <(
+ENV_VARS=()
+while IFS= read -r env_var || [[ -n "$env_var" ]]; do
+  ENV_VARS+=("$env_var")
+done < <(
   awk '
     /^rules:/ { in_rules = 1; next }
     /^[a-zA-Z_]+:/ && !/^[[:space:]]/ { in_rules = 0 }

@@ -1,6 +1,6 @@
 # OpenCode Primitive Adapter Smoke — Latest
 
-Generated: 2026-05-09T21:07:37+00:00
+Generated: 2026-05-09T21:31:23+00:00
 Status: `pass`
 OpenCode: `1.14.20` at `/opt/homebrew/bin/opencode`
 Plugin: `packages/opencode-adapter/plugins/cos-primitive-guard.js`

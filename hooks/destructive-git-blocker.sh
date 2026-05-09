@@ -456,8 +456,7 @@ _is_bypass_context() {
 
 # Session-wide override
 _has_session_override() {
-  [ "${COS_ALLOW_DESTRUCTIVE_GIT:-}" = "1" ] && return 0
-  type _cos_bypass_list_contains >/dev/null 2>&1 && _cos_bypass_list_contains destructive_git && return 0
+  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows destructive_git && return 0
   return 1
 }
 

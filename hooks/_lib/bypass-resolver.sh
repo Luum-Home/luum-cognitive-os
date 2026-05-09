@@ -42,7 +42,7 @@ _cos_bypass_legacy_alias_allows() {
   local key="$1"
   case "$key" in
     destructive_git)
-      _cos_bypass_truthy "${COS_ALLOW_DESTRUCTIVE_GIT:-}" || _cos_bypass_truthy "${COS_GIT_BYPASS:-}"
+      [ "${COS_ALLOW_DESTRUCTIVE_GIT:-}" = "1" ] || _cos_bypass_truthy "${COS_GIT_BYPASS:-}"
       ;;
     main_branch_write)
       _cos_bypass_truthy "${COS_ALLOW_MAIN_BRANCH_WRITE:-}" || _cos_bypass_truthy "${COS_ALLOW_DIRECT_MAIN:-}"
