@@ -251,6 +251,26 @@ authorization systems.
 `hooks/`, `skills/`, `rules/`, and `scripts/` canonical until generator,
 conformance, adapter fidelity, and consumer impact proof justify migration.
 
+
+## Phase 6 — Missing portable primitive radar entries (2026-05-09)
+
+After ADR-258 generated the `.ai` overlay, the user asked to explicitly add the
+external tools/spec families that were detected as missing or under-connected in
+the radar. This phase keeps them as spec/pattern/adaptor-design entries, not
+default dependencies.
+
+| Path | Role |
+|---|---|
+| [`docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md`](external-tools-radar-portable-primitives-addendum-2026-05-09.md) | Radar addendum for VERSA/dotAIslash, Agent Skills ecosystem, Zed ACP, OpenCode permissions/plugins, and Open Agent Passport/pre-action authorization |
+| [`manifests/external-tools-adoption.yaml`](../../manifests/external-tools-adoption.yaml) | Machine-readable pattern/spec-only entries for the five missing families |
+| [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Human-readable ecosystem catalog entry |
+
+**Outcome:** VERSA/dotAIslash is ASSESS for generated `.ai` overlay
+conformance; Agent Skills/mdskills/Trigger.dev Skills are ASSESS for SKILL.md
+contract alignment; Zed ACP is ASSESS for adapter-runtime transport; OpenCode
+permissions/plugins are TRIAL for a native adapter design; Open Agent Passport /
+pre-action authorization is MONITOR for future intervention-ledger hardening.
+
 ## How to use this index
 
 - **"Has X been evaluated?"** — `git ls-files docs/research/repo-scout/deep | grep -i x` (Phase 2 deep audits cover ~63 named tools).

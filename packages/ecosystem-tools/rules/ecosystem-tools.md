@@ -489,3 +489,24 @@ done
 ## Contextual Trigger
 
 This rule is loaded when: ecosystem tools, external tools, ccusage, token usage, cost tracking, claude usage, agnix, semgrep, parry, aguara, mcp-scan, promptfoo, garak, recall, hcom, tero, mantis, tool integration.
+### Portable Primitive Standards and Adapter Runtime Tools (ASSESS/TRIAL/MONITOR)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Track missing external standards and runtime surfaces for ADR-258 `.ai` overlay, ADR-256 intervention ledger, and cross-IDE primitive adapter work |
+| Config | N/A (radar/spec-only; no default dependency) |
+| Hook | N/A |
+| Install | None by default |
+| Required | No |
+| Scope | `.ai` overlay conformance, `SKILL.md` contract alignment, adapter runtime transport, OpenCode native enforcement, pre-action authorization receipts |
+| Status | **MIXED** — VERSA/Agent Skills/Zed ACP ASSESS, OpenCode permissions/plugins TRIAL, OAP/pre-action authorization MONITOR |
+
+**Tracked families**:
+- VERSA / dotAIslash — portable `.ai/` schema, adapters, linting, conformance.
+- Agent Skills ecosystem / mdskills / Trigger.dev Skills — SKILL.md contract and distribution references.
+- Zed ACP — possible editor/agent adapter runtime transport, not a primitive registry.
+- OpenCode permissions/plugins — native adapter design target before claiming OpenCode enforcement.
+- Open Agent Passport / pre-action authorization — future signed authorization receipt pattern for the intervention ledger.
+
+**Evaluation Notes**: These entries are spec/pattern references, not runtime dependencies. ADR-258 keeps `.ai` generated and non-canonical until conformance and consumer proof are stable. ADR-256 keeps primitive ledgers content-free and does not claim pre-action authorization compatibility yet. Full addendum: `docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md`.
+

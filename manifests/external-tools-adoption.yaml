@@ -317,3 +317,64 @@ tools:
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [], tests: []}
     status: hold_pattern_only
+  - id: versa-dotaislash
+    name: VERSA / dotAIslash
+    domain: portable-primitive-overlay
+    verdict: ASSESS
+    adoption_kind: trial-overlay-standard
+    license: MIT
+    package_names: []
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [.ai, scripts/portable_ai_overlay.py], tests: [tests/contracts/test_portable_ai_overlay.py]}
+    status: assess_spec_only
+  - id: agent-skills-ecosystem
+    name: Agent Skills ecosystem / mdskills / Trigger.dev Skills
+    domain: skill-contracts
+    verdict: ASSESS
+    adoption_kind: conformance-reference
+    license: MIXED
+    package_names: []
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [skills], tests: []}
+    status: assess_contract_reference_only
+  - id: zed-acp
+    name: Zed Agent Client Protocol
+    domain: adapter-runtime-transport
+    verdict: ASSESS
+    adoption_kind: adapter-runtime-transport
+    license: UNKNOWN
+    package_names: []
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [], tests: []}
+    status: assess_transport_pattern_only
+  - id: opencode-permissions-plugins
+    name: OpenCode permissions/plugins
+    domain: harness-runtime-adapter
+    verdict: TRIAL
+    adoption_kind: adapter-design
+    license: UNKNOWN
+    package_names: []
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [manifests/harness-driver-capabilities.yaml, manifests/primitive-contracts.yaml], tests: [tests/contracts/test_primitive_projection_fidelity.py]}
+    status: trial_adapter_design_only
+  - id: open-agent-passport-preaction-auth
+    name: Open Agent Passport / pre-action authorization
+    domain: authorization-ledger
+    verdict: MONITOR
+    adoption_kind: ledger-hardening-pattern
+    license: UNKNOWN
+    package_names: []
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-portable-primitives-addendum-2026-05-09.md, due_diligence: docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [.cognitive-os/metrics/primitive-interventions.jsonl], tests: [tests/contracts/test_primitive_intervention_ledger.py]}
+    status: monitor_research_only
+
