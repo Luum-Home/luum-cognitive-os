@@ -293,6 +293,18 @@ tools:
     consumer_contract: {required_adapter: true, public_claim_allowed: partial}
     evidence: {consumers: [packages/mcp-server/cos_mcp.py], tests: [tests/unit/test_cos_mcp_server.py]}
     status: active
+  - id: opensage-adk
+    name: OpenSage ADK
+    domain: agents-orchestration-routing
+    verdict: DEFER
+    adoption_kind: pattern-only
+    license: Apache-2.0
+    package_names: []
+    source_of_truth: {radar_report: docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md, repo_scout: .cognitive-os/reports/repo-scout/opensage-agent_opensage-adk.md}
+    allowed_surfaces: {os_repo: false, consumer_projects: false, service_mode: false, docker_runtime: false}
+    consumer_contract: {required_adapter: true, public_claim_allowed: partial}
+    evidence: {consumers: [], tests: []}
+    status: assess_pattern_only
   - id: taskingai
     name: TaskingAI
     domain: agents-orchestration-routing

@@ -283,6 +283,35 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: Significant overlap with Aguara, which already provides 189 deterministic rules for skill scanning. skill-scanner uses ML-based detection which could catch patterns Aguara's deterministic rules miss, but adds complexity. Revisit if Aguara proves insufficient for skill security coverage.
 
+### OpenSage — self-programming ADK for dynamic agents/tools and graph memory (ASSESS)
+
+---
+repo: opensage-agent/opensage-adk
+classification: ASSESS
+stars: 86
+license: Apache-2.0
+ci_health: green
+score: 72
+one_liner: "Self-programming ADK with dynamic agents/tools, graph memory, sandboxed execution, and benchmark loops."
+last_evaluated: 2026-05-09
+last_commit: 2026-04-07
+last_release: none
+---
+
+| Property | Value |
+|----------|-------|
+| GitHub | [opensage-agent/opensage-adk](https://github.com/opensage-agent/opensage-adk) |
+| Context | [Berkeley RDI OpenSage article](https://rdi.berkeley.edu/blog/opensage/) |
+| Purpose | Self-programming agent development kit with dynamic subagents, dynamic tool/skill synthesis, sandboxed asynchronous execution, hierarchical graph memory, and SWE/security benchmark harnesses |
+| Radar posture | **ASSESS / trial-patterns** |
+| Runtime adoption | No default dependency; evaluate patterns and adapter-lab spike only |
+| Deep dive | `docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md` |
+
+**Adoption notes**: Study dynamic agent lifecycle, tool-specific sandbox dependency declarations, async long-running tool execution, graph memory topology, benchmark harnesses, and Claude Code hook-bridge limitations. Keep COS hooks/rules/skills/Engram/tool-discovery governance first-party.
+
+**Gotchas**: Young unreleased repo with no tags, broad Google ADK/Docker/Neo4j/LiteLLM/direct-Git dependency surface, privileged Docker CI, provider-key integration tests, and autonomous tool/skill creation semantics that need COS fail-closed wrappers before any runnable trial.
+
+
 ### TaskingAI — AI-native app BaaS with provider routing, RAG, tools, UI (HOLD)
 
 ---

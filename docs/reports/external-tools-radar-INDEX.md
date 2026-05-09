@@ -210,6 +210,8 @@ bidirectional axis and adoption-kind doctrine.
 | [`docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`](external-tools-radar-evoskill-addendum-2026-05-09.md) | Radar addendum: TRIAL-PATTERNS / ASSESS-RUNTIME for benchmark-driven skill evolution |
 | [`docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`](../research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md) | Deep per-repo evaluation of Langflow |
 | [`docs/reports/external-tools-radar-langflow-addendum-2026-05-09.md`](external-tools-radar-langflow-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Langflow visual workflow and MCP-facing runtime patterns |
+| [`docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md`](../research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md) | Deep per-repo evaluation of OpenSage ADK |
+| [`docs/reports/external-tools-radar-opensage-addendum-2026-05-09.md`](external-tools-radar-opensage-addendum-2026-05-09.md) | Radar addendum: ASSESS / trial-patterns for self-programming agents, dynamic tools, graph memory, and sandboxed execution |
 | [`docs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md`](../research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md) | Deep per-repo evaluation of TaskingAI |
 | [`docs/reports/external-tools-radar-taskingai-addendum-2026-05-09.md`](external-tools-radar-taskingai-addendum-2026-05-09.md) | Radar addendum: HOLD / pattern-only for AI-native app BaaS patterns |
 | [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entries under EVALUATE |
@@ -220,16 +222,15 @@ import its Agency Swarm runtime, installer side effects, all-to-all handoff mesh
 or external-action execution path into COS core. Agno is added as an
 assess/trial-patterns suite: harvest runtime-packaging, human-approval,
 self-learning data-agent, and context-provider ideas while keeping COS
-hooks/rules/memory/policy authoritative and avoiding default runtime adoption. Langflow is added as an assess/trial-patterns visual workflow runtime
-reference: harvest graph-authoring UX, flow-to-MCP packaging, bundle registry,
-settings taxonomy, and security-regression ideas; do not adopt its app/runtime
-by default.
+hooks/rules/memory/policy authoritative and avoiding default runtime adoption.
+Langflow is added as an assess/trial-patterns visual workflow runtime reference:
+harvest graph-authoring UX, flow-to-MCP packaging, bundle registry, settings
+taxonomy, and security-regression ideas; do not adopt its app/runtime by default.
 EvoSkill is added as TRIAL-PATTERNS / ASSESS-RUNTIME: extract the
 benchmark-driven skill-evolution loop, generated-skill evidence schema,
 held-out validation discipline, and harness projection fixture; do not add its
 runtime, git mutation, Docker/remote execution, or generated skills to COS core
-without a manifest-backed adapter lab.
-TaskingAI is added as HOLD / pattern-only: study provider catalogs, tool-bundle boundaries, service topology, and BaaS UX, but do not adopt the runtime while upstream is stale and CI is red.
+without a manifest-backed adapter lab. OpenSage is added as ASSESS / trial-patterns: harvest dynamic-agent topology, sandboxed async tool execution, graph-memory recovery, benchmark-harness discipline, and hook-compatibility fixtures, but do not adopt the runtime until dynamic tool creation, sandbox capabilities, provider credentials, and memory retention are fail-closed. TaskingAI is added as HOLD / pattern-only: study provider catalogs, tool-bundle boundaries, service topology, and BaaS UX, but do not adopt the runtime while upstream is stale and CI is red.
 
 ## How to use this index
 
