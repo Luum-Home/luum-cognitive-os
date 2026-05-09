@@ -2,7 +2,7 @@
 report_type: documentation-consistency-review
 scope: ide-agnostic-primitives-observable-self-use
 reviewed_at: 2026-05-09
-status: corrected-minor-drift
+status: verified-no-new-drift-after-correction
 ---
 
 # IDE-Agnostic Primitive Documentation Review — 2026-05-09
@@ -114,6 +114,41 @@ scripts/cos-self-programming-pattern-audit --json
    phase 0 through phase 6.
 5. The IDE-agnostic projection doc now records the `.ai/` overlay lesson and the
    recommended first runtime slice.
+
+## Follow-up verification pass
+
+This follow-up pass re-read the documentation set after the correction above:
+
+- `docs/architecture/ide-agnostic-primitive-projection.md`
+- `docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md`
+- `docs/architecture/primitive-contract-registry-implementation-plan.md`
+- `skills/primitive-authoring/SKILL.md`
+- `docs/README.md`
+- `docs/business/master-plan-checklist.md`
+- `skills/CATALOG.md`
+- `skills/CATALOG-COMPACT.md`
+- `manifests/harness-projection.yaml`
+- `manifests/harness-driver-capabilities.yaml`
+- `manifests/primitive-projection-profiles.yaml`
+- `docs/reports/cos-self-observability-deep-review-2026-05-05.md`
+
+Result:
+
+1. No broken local Markdown links were found in the primary documentation set.
+2. `docs/README.md` links the ADR, architecture synthesis, implementation plan,
+   and this review exactly once each in the key-documents section.
+3. `skills/CATALOG.md` and `skills/CATALOG-COMPACT.md` each contain one
+   `primitive-authoring` catalog entry.
+4. ADR-256 and the implementation plan agree on phase order: docs freeze,
+   minimal registry, intervention ledger, codebase itinerary, projection/impact
+   report, trace joiner, consumer UX.
+5. The docs consistently preserve the non-goal: do not copy `.ai/` wholesale and
+   do not claim enforcement for structural advisory adapters.
+6. The remaining work is implementation, not documentation alignment:
+   `manifests/primitive-contracts.yaml`,
+   `.cognitive-os/metrics/primitive-interventions.jsonl`, and
+   `.cognitive-os/metrics/codebase-itinerary.jsonl` are still ADR-256 future
+   surfaces.
 
 ## Recommended next implementation slice
 
