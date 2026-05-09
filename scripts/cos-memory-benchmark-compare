@@ -1,0 +1,28 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+import argparse, json, sys
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
+from lib.memory_retrieval_compare import compare_reports, markdown_table
+
+def main() -> int:
+    p=argparse.ArgumentParser(description="Compare Wave 2 memory retrieval benchmark reports.")
+    p.add_argument("reports", nargs="*", default=[])
+    p.add_argument("--reports-dir", default="docs/reports/memory-retrieval-wave2")
+    p.add_argument("--baseline", default="current-local")
+    p.add_argument("--json", action="store_true")
+    a=p.parse_args()
+    paths=[Path(x) for x in a.reports]
+    if not paths:
+        d=ROOT/a.reports_dir if not Path(a.reports_dir).is_absolute() else Path(a.reports_dir)
+        paths=sorted(path for path in d.glob("*.json") if not path.name.startswith("comparison-"))
+    comparison=compare_reports(paths, baseline=a.baseline)
+    if a.json:
+        print(json.dumps(comparison, indent=2, sort_keys=True))
+    else:
+        print(markdown_table(comparison), end="")
+        print(f"winner: {comparison['winner']['strategy'] if comparison['winner'] else 'none'}")
+        print(f"next_port: {comparison['decision']['next_port']} — {comparison['decision']['reason']}")
+    return 0
+if __name__ == "__main__": raise SystemExit(main())

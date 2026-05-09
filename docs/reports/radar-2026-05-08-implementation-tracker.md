@@ -87,6 +87,17 @@ the expected deltas:
 Production Engram defaults remain unchanged until an explicit follow-up ports
 M1/M3 behind a non-default runtime flag and passes the same benchmark.
 
+### Wave 2 comparison decision
+
+Report: [`docs/reports/memory-retrieval-wave2/comparison-2026-05-08.json`](memory-retrieval-wave2/comparison-2026-05-08.json).
+
+`graph-path-local` is selected as the next port target because it is the
+smallest mode that passes all Slice 0 fixtures. It fixes the same 3 fixtures as
+`dual-level-local` and `memory-class-local`, but avoids porting M2/M4 before the
+required temporal and support-chain substrate exists.
+
+Next implementation target: **M1+M3 real Engram port behind a non-default flag**.
+
 **Acceptance criteria** (proposed, to confirm at `/sdd-new memory-layer-evolution`):
 - Schema migration is idempotent and reversible.
 - Existing Engram queries return identical results pre/post-migration when bi-temporal fields default to `created_at`/`superseded_at`.
