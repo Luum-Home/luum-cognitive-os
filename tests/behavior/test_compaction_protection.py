@@ -9,7 +9,6 @@ that the next session can recover from where the last one left off.
 """
 
 import json
-import re
 import subprocess
 from pathlib import Path
 
@@ -69,6 +68,47 @@ class TestContextManagementThresholds:
             "rules/context-management.md must reference Engram (mem_save) as the "
             "mandatory save mechanism at the 70% threshold."
         )
+
+    def test_context_management_rule_documents_early_checkpoint(self):
+        """Context-management rule must document the early lightweight checkpoint."""
+        if not CONTEXT_MGMT_RULE.exists():
+            pytest.skip("rules/context-management.md not found")
+        content = CONTEXT_MGMT_RULE.read_text().lower()
+        assert "15%" in content
+        assert "checkpoint" in content
+
+
+
+class TestContextWatchdogHook:
+    """Verify context-watchdog is active, low-noise, and has early checkpoint behavior."""
+
+    def test_context_watchdog_registered_as_post_tool_use(self):
+        cmds = _load_settings_commands()
+        assert any("context-watchdog.sh" in cmd and "PostToolUse" in cmd for cmd in cmds), (
+            "context-watchdog.sh must be projected as a real PostToolUse hook, not only documented."
+        )
+
+    def test_context_watchdog_emits_early_checkpoint_once(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("COGNITIVE_OS_PROJECT_DIR", str(tmp_path))
+        monkeypatch.setenv("COGNITIVE_OS_SESSION_ID", "test-session")
+        monkeypatch.setenv("CONTEXT_WATCHDOG_THRESHOLD_15", "2")
+        monkeypatch.setenv("CONTEXT_WATCHDOG_THRESHOLD_50", "50")
+        monkeypatch.setenv("CONTEXT_WATCHDOG_THRESHOLD_70", "70")
+        monkeypatch.setenv("CONTEXT_WATCHDOG_THRESHOLD_85", "85")
+        monkeypatch.setenv("CONTEXT_WATCHDOG_MAX_CALLS", "100")
+
+        first = subprocess.run(["bash", str(WATCHDOG_HOOK)], capture_output=True, text=True, timeout=10)
+        second = subprocess.run(["bash", str(WATCHDOG_HOOK)], capture_output=True, text=True, timeout=10)
+        third = subprocess.run(["bash", str(WATCHDOG_HOOK)], capture_output=True, text=True, timeout=10)
+
+        assert first.returncode == second.returncode == third.returncode == 0
+        assert "CHECKPOINT" not in first.stderr
+        assert "CHECKPOINT" in second.stderr
+        assert "CHECKPOINT" not in third.stderr
+
+        metric = tmp_path / ".cognitive-os" / "metrics" / "context-watchdog.jsonl"
+        rows = [json.loads(line) for line in metric.read_text().splitlines()]
+        assert [row["level"] for row in rows].count("checkpoint") == 1
 
 
 # ===========================================================================

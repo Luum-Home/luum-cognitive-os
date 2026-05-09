@@ -112,7 +112,6 @@ auto-verify.sh | FUTURE: per rules/ROADMAP.md §2.1 — built by UX2 sprint but 
 dod-gate.sh | FUTURE: per rules/ROADMAP.md §2.2 — built by UX2 sprint; registration status unverified
 auto-refine.sh | FUTURE: per rules/ROADMAP.md §2.3 — built by UX2 sprint; registration status unverified
 error-learning.sh | FUTURE: captures test/lint/build errors; planned PostToolUse Bash alongside error-pipeline.sh
-large-file-advisor.sh | FUTURE: advises on large file reads; planned PreToolUse Read — not yet wired
 context-diet.sh | FUTURE: enforces context diet; planned PostToolUse Agent — not yet wired
 conversation-capture.sh | FUTURE: captures conversation turns; planned for UserPromptSubmit — not yet wired
 ecosystem-check.sh | FUTURE: checks library ecosystem before adoption; planned for PreToolUse Agent — not yet wired
@@ -147,7 +146,6 @@ assumption-tracker.sh | FUTURE: PreToolUse Agent — ADR-022 variant, not in def
 auto-repair-dispatcher.sh | CONDITIONAL: fires only on error-pipeline output, sourced not registered
 auto-skill-generator.sh | MANUAL_TRIGGER: invoked by /auto-skill skill, not a hook matcher
 consequence-evaluator.sh | MANUAL_TRIGGER: invoked by /consequence skill
-context-watchdog.sh | CONDITIONAL: PostToolUse in full profile only; default uses context-diet.sh
 dequeue-notify.sh | CONDITIONAL: fires only when dispatch-gate emits queue events
 epic-task-detector.sh | FUTURE: heuristic detector, not yet wired to any matcher
 guardrails-validator.sh | MANUAL_TRIGGER: NeMo Guardrails integration; fires via /guardrails skill on demand, GUARDRAILS_ENABLED=true required — @on-demand

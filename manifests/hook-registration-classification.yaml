@@ -97,10 +97,10 @@ entries:
     expansion.
   next_action: Promote only after measurable token savings and precision proof.
 - path: hooks/context-watchdog.sh
-  status: demoted
-  rationale: Canonical registry marks default_projection=false; global PostToolUse
-    context warnings add hot-path overhead.
-  next_action: Keep opt-in/full-profile until lower-noise implementation exists.
+  status: registered
+  rationale: One-shot PostToolUse checkpoint warnings are low-noise after the 2026-05-09
+    threshold hardening and provide real context-rot protection.
+  next_action: Keep projected while p99 and warning frequency remain acceptable.
 - path: hooks/contextual-rule-loader.sh
   status: future
   rationale: Dynamic full-rule injection needs prompt/event support and bounded context

@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Convert context-heavy documents into Markdown before agent ingestion."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from lib.document_ingest import DocumentIngestError, ingest_document  # noqa: E402
+
+
+def default_output(project_dir: Path, input_path: Path) -> Path:
+    safe_name = input_path.name.replace("/", "_")
+    return project_dir / ".cognitive-os" / "ingest" / f"{safe_name}.md"
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Convert PDF/HTML/text documents to Markdown before adding them to agent context.")
+    parser.add_argument("input", help="Document path (.pdf, .html, .htm, .txt, .md)")
+    parser.add_argument("--output", "-o", help="Output Markdown path. Defaults to .cognitive-os/ingest/<input-name>.md")
+    parser.add_argument("--project-dir", default=str(ROOT), help="Project directory for metrics output")
+    parser.add_argument("--json", action="store_true", help="Print machine-readable result")
+    args = parser.parse_args()
+
+    project_dir = Path(args.project_dir).resolve()
+    input_path = Path(args.input).expanduser().resolve()
+    output_path = Path(args.output).expanduser().resolve() if args.output else default_output(project_dir, input_path)
+
+    try:
+        result = ingest_document(input_path, output_path, project_dir=project_dir)
+    except DocumentIngestError as exc:
+        if args.json:
+            print(json.dumps({"ok": False, "error": str(exc)}, sort_keys=True))
+        else:
+            print(f"cos-document-ingest: {exc}", file=sys.stderr)
+        return 2
+
+    payload = {"ok": True, **result.to_dict()}
+    if args.json:
+        print(json.dumps(payload, sort_keys=True))
+    else:
+        print(f"Wrote Markdown: {result.output_path}")
+        print(f"Estimated tokens: input={result.input_tokens_estimate} output={result.output_tokens_estimate} savings={result.token_savings_estimate} ({result.token_savings_pct}%)")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

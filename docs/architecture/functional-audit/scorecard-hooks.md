@@ -23,7 +23,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 
 | Metric | Count | Notes |
 |---|---|---|
-| Total hook files on disk (`hooks/*.sh`) | **218** | Flat invocable hook scripts under `hooks/` |
+| Total hook files on disk (`hooks/*.sh`) | **221** | Flat invocable hook scripts under `hooks/`; refreshed after adding the document-ingest guard. |
 | Library helpers (`hooks/_lib/*.sh`) | **13** | Sourced by other hooks, not invocable directly (cache.sh, common.sh, etc.) |
 | Invocable hooks (`hooks/*.sh`, excl. `_lib/`) | **118** (flat list) | `_lib/` is a subdir, so counts unchanged |
 | **Functional-wired** (full profile) | **55** | Registered in `.claude/settings.json` |

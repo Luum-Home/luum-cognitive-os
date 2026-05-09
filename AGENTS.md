@@ -196,6 +196,4 @@ Key skills: `/sdd-new`, `/sdd-apply`, `/sdd-verify`, `/scout`, `/error-analyzer`
 
 Run `/skill-registry` to regenerate the skill index at `.atl/skill-registry.md`.
 
----
-
 *Phase: reconstruction | Config: `cognitive-os.yaml` | Full rules: `rules/RULES-COMPACT.md`*

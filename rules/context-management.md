@@ -8,6 +8,16 @@ Context window is a finite resource. Losing context to compaction without saving
 
 ## Capacity Thresholds
 
+### 15% — Lightweight Checkpoint
+
+The context-watchdog hook emits a one-shot CHECKPOINT reminder when projected.
+
+**Agent behavior:**
+- Capture a compact state marker: current goal, decisions so far, files touched, and next step
+- Do not open a new session yet
+- Do not write a full handoff unless the task is already sprawling
+- Use this as a cheap recovery anchor before the conversation becomes expensive
+
 ### 50% — Efficiency Mode
 
 The context-watchdog hook emits an informational note.
@@ -61,7 +71,7 @@ This is the last-resort safety net — the 70% and 85% thresholds should have al
 Compaction     → pre-compaction-flush.sh: LAST RESORT (emergency save)
 ```
 
-Note: The `context-watchdog.sh` hook (which would emit threshold warnings at 50/70/85% tool call counts) is NOT currently registered in `settings.local.json`. The thresholds above are AGENT BEHAVIORAL GUIDELINES that the agent should self-monitor based on approximate tool call count awareness. The `pre-compaction-flush.sh` hook is the only registered automated safety net.
+Note: The `context-watchdog.sh` hook emits one-shot threshold warnings when projected in the active harness settings. The `pre-compaction-flush.sh` hook remains the last-resort safety net at actual compaction time.
 
 ## Heuristic Accuracy
 

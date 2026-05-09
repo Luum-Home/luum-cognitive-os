@@ -639,8 +639,8 @@ primitives:
   metrics_file: .cognitive-os/metrics/content-policy.jsonl
 - id: hooks/context-watchdog.sh
   kind: hook
-  owner_adr: ADR-126
-  lifecycle_state: demoted
+  owner_adr: ADR-186
+  lifecycle_state: active
   maturity: advisory
   distribution: maintainer
   governance_class: meta-governance
@@ -649,30 +649,17 @@ primitives:
   - claude
   projection_targets:
   - hooks/context-watchdog.sh
-  runtime_projection: false
-  behavior_evidence: metrics-emitting-advisory
+  runtime_projection: true
+  behavior_evidence: one-shot-metrics-emitting-advisory-with-early-checkpoint
   evidence_commands:
   - bash -n hooks/context-watchdog.sh
-  - python3 -m pytest tests/unit/test_codex_guard_layer.py tests/behavior/test_compaction_protection.py
+  - python3 -m pytest tests/behavior/test_compaction_protection.py tests/contracts/test_context_budget_hook_wiring.py
     -q
-  rollback_or_repair_command: Disable or demote hooks/context-watchdog.sh in generated harness settings,
-    then regenerate projections.
-  sunset_criteria: Keep demoted while context warnings remain advisory-only and no sustained positive
-    ROI demonstrates default projection value; archive after 90 days with no opt-in use.
-  demotion_evidence:
-    demoted_on: '2026-05-03'
-    primary_signal: governance-roi
-    reason: Advisory PostToolUse wildcard hook adds default runtime surface and cognitive noise without
-      blocking behavior; governance ROI remained negative in the default window, manifest-tier audit identified
-      it as a candidate_second_demote, and pre-compaction-flush remains the hard compaction safety primitive.
-    control_plane_commands:
-    - scripts/cos-governance-roi --json
-    - scripts/cos-manifest-tier-claim-audit --json
-    - scripts/cos-demotion-loop-audit --json
-    - python3 scripts/cos_architecture_readiness.py --json
-    expected_effect: default runtime projection shrinks while hooks/context-watchdog.sh remains available
-      for opt-in maintainer sessions.
-  docs_claim_level: advisory
+  rollback_or_repair_command: Remove hooks/context-watchdog.sh from generated harness settings and set
+    runtime_projection=false if latency or warning noise regresses.
+  sunset_criteria: Keep active while one-shot thresholds provide measurable checkpoint value without hot-path
+    noise; demote if p99/noise budget regresses.
+  docs_claim_level: active-advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/context-watchdog.jsonl
 - id: hooks/cos-executor-daemon-launcher.sh
@@ -909,6 +896,29 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/stale-docs.jsonl
+- id: hooks/document-ingest-guard.sh
+  kind: hook
+  owner_adr: ADR-186
+  lifecycle_state: active
+  maturity: advisory
+  distribution: maintainer
+  governance_class: context-management
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - hooks/document-ingest-guard.sh
+  runtime_projection: true
+  behavior_evidence: blocks-direct-pdf-read-before-context-ingestion
+  evidence_commands:
+  - bash -n hooks/document-ingest-guard.sh
+  - python3 -m pytest tests/unit/test_document_ingest.py tests/hooks/test_document_ingest_guard.py -q
+  rollback_or_repair_command: Remove hooks/document-ingest-guard.sh from generated settings if it blocks
+    legitimate non-context PDF workflows.
+  sunset_criteria: Keep active while direct PDF reads remain high-risk context ingestion.
+  docs_claim_level: active-advisory
+  exit_behavior: exit_2_on_pdf_read
+  metrics_file: .cognitive-os/metrics/document-ingest.jsonl
 - id: hooks/docker-drift-detector.sh
   kind: hook
   owner_adr: ADR-126
