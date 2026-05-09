@@ -47,8 +47,10 @@ def _obs(
     topic_key: str = "",
     project: str = "",
     obs_id: int = 1,
+    sync_id: str | None = None,
+    **extra: Any,
 ) -> dict[str, Any]:
-    return {
+    row = {
         "id": obs_id,
         "title": title,
         "content": content,
@@ -57,6 +59,10 @@ def _obs(
         "project": project,
         "created_at": "2026-04-27T00:00:00Z",
     }
+    if sync_id is not None:
+        row["sync_id"] = sync_id
+    row.update(extra)
+    return row
 
 
 # ---------------------------------------------------------------------------
@@ -322,6 +328,80 @@ class TestSearch:
         assert len(results) == 1
         assert results[0]["confidence"] == 0.5
         assert results[0]["retention"] == 1.0
+
+    def test_search_default_does_not_apply_wave2_strategy(self):
+        current = _obs(content="Current policy", obs_id=1, sync_id="obs-current", valid_to="")
+        stale = _obs(content="Old policy", obs_id=2, sync_id="obs-stale", valid_to="2026-01-01T00:00:00Z")
+
+        with patch(
+            "lib.engram_lifecycle.engram_client.search_observations",
+            return_value=[stale, current],
+        ):
+            results = _make_lc().search("policy", lifecycle_weight=True)
+
+        assert [row["sync_id"] for row in results] == ["obs-stale", "obs-current"]
+        assert "retrieval_strategy" not in results[0]
+        assert "wave2_score" not in results[0]
+
+    def test_wave2_m1_m3_strategy_reranks_superseding_observation_and_adds_support_chain(self):
+        class FakeWalker:
+            def temporal_status(self, sync_ids: list[str]) -> dict[str, dict[str, Any]]:
+                assert sync_ids == ["obs-stale", "obs-current"]
+                return {
+                    "obs-current": {
+                        "is_current": True,
+                        "is_superseded": False,
+                        "supersedes": ["obs-stale"],
+                        "superseded_by": [],
+                    },
+                    "obs-stale": {
+                        "is_current": False,
+                        "is_superseded": True,
+                        "supersedes": [],
+                        "superseded_by": ["obs-current"],
+                    },
+                }
+
+            def support_chains(
+                self,
+                start_sync_ids: list[str],
+                target_sync_ids: list[str],
+            ) -> dict[str, list[str]]:
+                assert start_sync_ids == ["obs-stale", "obs-current"]
+                assert target_sync_ids == ["obs-stale", "obs-current"]
+                return {"obs-current": ["obs-stale", "obs-current"]}
+
+        lc = EngramLifecycle(now=lambda: _FIXED_NOW, graph_walker=FakeWalker())
+        current = _obs(
+            content="Current policy",
+            obs_id=1,
+            sync_id="obs-current",
+            score=0.1,
+            valid_to="",
+        )
+        stale = _obs(
+            content="Old policy",
+            obs_id=2,
+            sync_id="obs-stale",
+            score=0.9,
+            valid_to="2026-01-01T00:00:00Z",
+        )
+
+        with patch(
+            "lib.engram_lifecycle.engram_client.search_observations",
+            return_value=[stale, current],
+        ):
+            results = lc.search(
+                "policy",
+                lifecycle_weight=True,
+                retrieval_strategy="wave2-m1-m3",
+            )
+
+        assert [row["sync_id"] for row in results] == ["obs-current", "obs-stale"]
+        assert results[0]["retrieval_strategy"] == "wave2-m1-m3"
+        assert results[0]["support_chain"] == ["obs-stale", "obs-current"]
+        assert results[0]["temporal_status"]["is_current"] is True
+        assert results[1]["temporal_status"]["is_superseded"] is True
 
 
 # ---------------------------------------------------------------------------

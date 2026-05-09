@@ -216,6 +216,120 @@ class EngramGraphWalker:
         enriched.sort(key=lambda x: x.get("final_score", 0.0), reverse=True)
         return enriched
 
+    def temporal_status(
+        self,
+        sync_ids: list[str],
+    ) -> dict[str, dict[str, Any]]:
+        """Return supersession-aware temporal metadata for *sync_ids*.
+
+        This is a read-only helper for Wave 2 M1.  It interprets accepted
+        ``supersedes`` relations as a temporal validity signal:
+
+        - ``source_id supersedes target_id`` means source is the current
+          candidate and target is stale.
+        - Rejected relation judgments are ignored.
+
+        The method returns only rows relevant to the requested sync ids and
+        never mutates Engram state.
+        """
+        requested = {sid for sid in sync_ids if sid}
+        if not requested:
+            return {}
+        conn = self._open_db_readonly()
+        if conn is None:
+            return {}
+        status: dict[str, dict[str, Any]] = {
+            sid: {
+                "is_current": False,
+                "is_superseded": False,
+                "supersedes": [],
+                "superseded_by": [],
+            }
+            for sid in requested
+        }
+        try:
+            placeholders = ",".join("?" * len(requested))
+            rows = conn.execute(
+                f"""
+                SELECT source_id, target_id, relation, judgment_status, superseded_at
+                FROM memory_relations
+                WHERE relation = 'supersedes'
+                  AND judgment_status != 'rejected'
+                  AND source_id IS NOT NULL
+                  AND source_id != ''
+                  AND target_id IS NOT NULL
+                  AND target_id != ''
+                  AND (source_id IN ({placeholders}) OR target_id IN ({placeholders}))
+                """,
+                [*requested, *requested],
+            ).fetchall()
+            for row in rows:
+                source_id = str(row["source_id"])
+                target_id = str(row["target_id"])
+                if source_id in requested:
+                    status[source_id]["is_current"] = True
+                    status[source_id]["supersedes"].append(target_id)
+                if target_id in requested:
+                    status[target_id]["is_superseded"] = True
+                    status[target_id]["superseded_by"].append(source_id)
+                    if row["superseded_at"]:
+                        status[target_id]["superseded_at"] = str(row["superseded_at"])
+        except Exception as exc:
+            _log.debug("temporal_status failed: %s", exc)
+            return {}
+        finally:
+            conn.close()
+        return status
+
+    def support_chains(
+        self,
+        start_sync_ids: list[str],
+        target_sync_ids: list[str],
+        max_depth: int | None = None,
+    ) -> dict[str, list[str]]:
+        """Find relation support chains from starts to targets.
+
+        Returns a mapping ``target_sync_id -> [start, ..., target]`` for the
+        first bounded BFS path found.  It is intentionally generic: all
+        non-rejected relation types can support a chain because the caller can
+        decide how to interpret relation semantics.
+        """
+        starts = [sid for sid in start_sync_ids if sid]
+        targets = {sid for sid in target_sync_ids if sid}
+        if not starts or not targets:
+            return {}
+        depth = max_depth if max_depth is not None else self.max_depth
+        conn = self._open_db_readonly()
+        if conn is None:
+            return {}
+
+        chains: dict[str, list[str]] = {}
+        try:
+            for start in starts:
+                queue: deque[tuple[str, int, list[str]]] = deque([(start, 0, [start])])
+                visited: set[str] = {start}
+                while queue:
+                    current_id, current_depth, path = queue.popleft()
+                    if current_id in targets and current_id != start:
+                        chains.setdefault(current_id, path)
+                    if len(chains) == len(targets):
+                        return chains
+                    if current_depth >= depth:
+                        continue
+                    if len(visited) >= _MAX_VISITED:
+                        break
+                    for neighbor_id, _relation in self._fetch_edges(conn, current_id):
+                        if not neighbor_id or neighbor_id in visited:
+                            continue
+                        visited.add(neighbor_id)
+                        queue.append((neighbor_id, current_depth + 1, [*path, neighbor_id]))
+        except Exception as exc:
+            _log.debug("support_chains failed: %s", exc)
+            return {}
+        finally:
+            conn.close()
+        return chains
+
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
