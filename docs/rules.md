@@ -67,10 +67,10 @@ See `RULES-COMPACT.md` for the full thematic index with trigger conditions.
 **Purpose**: Defines what cannot be changed, performance targets, security rules, and task scaling.
 
 ### Required Libraries (no replacement without approval)
-- NestJS 10, Spring Boot 3.0.6 / Java 17, Express.js, React Native 0.74 / Expo, Solidity / Hardhat
+- Project-approved frameworks, language runtimes, mobile stacks, infrastructure SDKs, and domain-specific toolchains
 
 ### Prohibited Zones (never modify)
-- Flyway migrations, deployed smart contracts, auth provider realm config
+- Database migrations, deployed irreversible artifacts, auth provider realm config
 - HTTP header names (`x-custom-*`), bundle IDs (`com.example.app`), Java package names
 
 ### Performance Constraints
@@ -210,7 +210,7 @@ Repairs progress through phases: detect, diagnose, propose, apply, verify. Each 
 If a repair loop fails 3 consecutive times for the same issue, the circuit breaker trips and the system stops attempting automatic repairs. Manual intervention is required to reset.
 
 ### Never-auto-repair list
-Certain components are excluded from automatic repair: Flyway migrations, deployed smart contracts, auth provider realm config, and any file in the prohibited zones defined by the control manifest.
+Certain elements are excluded from automatic repair: database migrations, deployed irreversible artifacts, auth provider realm config, and any file in the prohibited zones defined by the control manifest.
 
 ---
 

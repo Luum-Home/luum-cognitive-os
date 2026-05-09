@@ -69,7 +69,7 @@ Agents classify tasks at the START of work. If unsure, classify UP (safer).
 | `adversarial_review` | Adversarial review completed | Output contains BLOCKER/CONCERN/SUGGESTION labels |
 
 ### Critical
-**Signal**: Security changes, payment flows, auth changes, data migrations, smart contracts.
+**Signal**: Security changes, payment flows, auth changes, data migrations, externally irreversible operations.
 **Examples**: Payment endpoint, auth flow change, database migration, encryption change.
 
 | Criterion | Description | Verification |

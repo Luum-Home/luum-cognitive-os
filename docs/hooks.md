@@ -112,7 +112,7 @@ Hooks are shell scripts that fire at specific points in the Claude Code session 
 | Jest | `"jest"` in any package.json |
 | Go | `go.mod` found (max depth 3) |
 | Java / Spring Boot | `build.gradle` or `pom.xml` found; `spring-boot` in gradle files |
-| Solidity / Hardhat | `hardhat.config.*` found |
+| Specialized domain runtime | Project-specific config found |
 | Docker | `docker-compose.yml` at root |
 | MongoDB, MySQL, Redis, RabbitMQ | Referenced in `docker-compose*.yml` |
 | Clean Architecture | `domain/` + `infrastructure/` or `usecases/` directories |

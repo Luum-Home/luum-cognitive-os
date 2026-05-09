@@ -76,7 +76,7 @@ Per-service testing conventions:
 - **Spring Boot**: WireMock + TestContainers, `@Profile("test")`
 - **Express.js**: Jest + mock env flags
 - **Go**: Table-driven tests, testify/assert, `-short` flag
-- **Solidity**: Hardhat + ethers.js, loadFixture()
+- **Specialized domain runtimes**: use the project's configured harness and fixtures
 
 General rules: `should_[result]_when_[condition]` naming, AAA pattern, mock only at boundaries.
 

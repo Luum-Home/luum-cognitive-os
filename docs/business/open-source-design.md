@@ -107,7 +107,7 @@ cognitive-os/
 |   |   |   +-- control-manifest.md       # Required libs, prohibited zones, performance constraints
 |   |   +-- agents/
 |   |   |   +-- compliance-auditor.md
-|   |   |   +-- blockchain-auditor.md
+|   |   |   +-- regulated-domain-auditor.md
 |   |   +-- skills/
 |   |       +-- daily-health-check/SKILL.md  # Template: read docker-compose, check endpoints
 |   |
@@ -427,7 +427,7 @@ provides:
     - control-manifest.md         # Library/zone/performance constraints
   agents:
     - compliance-auditor.md       # Regulatory compliance checking
-    - blockchain-auditor.md       # Smart contract security
+    - regulated-domain-auditor.md # Domain-specific security/compliance
   skills:
     - daily-health-check/SKILL.md # Health check template for multi-service stacks
 
