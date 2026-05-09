@@ -13,7 +13,7 @@ hardcoding a small subset; today this includes `hermes-agent`, `pi-mono`, and
 
 | Source | URL | License | Components | Status |
 |--------|-----|---------|------------|--------|
-| Trail of Bits Security Skills | [trailofbits/skills](https://github.com/trailofbits/skills) | CC-BY-SA-4.0 | 62 security audit skills (static analysis, variant analysis, insecure defaults, supply chain, smart contracts, agentic actions) | OPTIONAL -- installed via `scripts/install-tob-skills.sh` as git submodule to `.claude/plugins/trailofbits-skills/` |
+| Trail of Bits Security Skills | [trailofbits/skills](https://github.com/trailofbits/skills) | CC-BY-SA-4.0 | 62 security audit skills (static analysis, variant analysis, insecure defaults, supply chain, specialized protocol audits, agentic actions) | OPTIONAL -- installed via `scripts/install-tob-skills.sh` as git submodule to `.claude/plugins/trailofbits-skills/` |
 | Antigravity Awesome Skills | [sickn33/antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) | MIT | 1,331+ agentic skills for Claude Code/Cursor/Codex CLI/Gemini CLI | EVALUATED -- see evaluation below |
 
 ## Security Tools

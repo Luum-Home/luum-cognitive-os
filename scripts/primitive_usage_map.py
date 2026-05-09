@@ -53,14 +53,23 @@ class TargetUsage:
 
 def repo_files(root: Path, patterns: Iterable[str]) -> list[Path]:
     files: dict[str, Path] = {}
-    ignored_parts = {".git", ".venv", "node_modules", "__pycache__", ".pytest_cache"}
+    ignored_parts = {
+        ".git",
+        ".venv",
+        "node_modules",
+        "__pycache__",
+        ".pytest_cache",
+    }
     ignored_prefixes = ("docs/reports/",)
+    ignored_subtrees = (".claude/plugins/",)
     for pattern in patterns:
         for path in root.glob(pattern):
             if not path.is_file() and not path.is_symlink():
                 continue
             rel = path.relative_to(root).as_posix()
             if ignored_parts.intersection(path.relative_to(root).parts):
+                continue
+            if any(rel.startswith(prefix) for prefix in ignored_subtrees):
                 continue
             if any(rel.startswith(prefix) for prefix in ignored_prefixes):
                 continue
@@ -141,8 +150,26 @@ def ref_patterns(rel_path: str) -> list[re.Pattern[str]]:
     return [re.compile(pattern) for pattern in refs]
 
 
+def ref_literals(rel_path: str) -> list[str]:
+    literals = [rel_path]
+    basename = Path(rel_path).name
+    if basename != rel_path:
+        literals.append(basename)
+    if rel_path.endswith("/SKILL.md"):
+        literals.append(Path(rel_path).parent.name)
+    elif rel_path.startswith("rules/") and rel_path.endswith(".md"):
+        literals.append(Path(rel_path).stem)
+    return list(dict.fromkeys(literals))
+
+
 def references_target(text: str, rel_path: str) -> bool:
     return any(pattern.search(text) for pattern in ref_patterns(rel_path))
+
+
+def references_compiled_target(text: str, literals: list[str], patterns: list[re.Pattern[str]]) -> bool:
+    if not any(literal in text for literal in literals):
+        return False
+    return any(pattern.search(text) for pattern in patterns)
 
 
 def build_usage(root: Path, family: str) -> list[TargetUsage]:
@@ -154,13 +181,21 @@ def build_usage(root: Path, family: str) -> list[TargetUsage]:
         consumer_text.append((consumer, rel, read_text(consumer)))
 
     rows: list[TargetUsage] = []
-    for target in targets:
-        rel = target.relative_to(root).as_posix()
+    compiled_targets = [
+        (
+            target,
+            target.relative_to(root).as_posix(),
+            ref_literals(target.relative_to(root).as_posix()),
+            ref_patterns(target.relative_to(root).as_posix()),
+        )
+        for target in targets
+    ]
+    for target, rel, literals, patterns in compiled_targets:
         row = TargetUsage(family=family, path=rel)
         for consumer, consumer_rel, text in consumer_text:
             if consumer_rel == rel:
                 continue
-            if references_target(text, rel):
+            if references_compiled_target(text, literals, patterns):
                 row.consumers.append(Consumer(classify_consumer(root, consumer), consumer_rel))
         row.consumers.sort(key=lambda item: (item.family, item.path))
         rows.append(row)

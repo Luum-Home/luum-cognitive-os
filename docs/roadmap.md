@@ -61,7 +61,7 @@ Safe environment for experimenting with skills, hooks, and pipelines without aff
 | **agnix** | Apache-2.0 | 6-8h | Config file linter (342 rules for CLAUDE.md, SKILL.md, hooks, MCP) |
 | **claude-code-action** | MIT | 3-5h | GitHub Actions for @claude interactive, PR review, issue triage |
 | **parry** | MIT | 4h | ML-based prompt injection scanner (Rust/DeBERTa, runs as hook) |
-| **Trail of Bits Skills** | CC-BY-SA-4.0 | 7-22h | 62 security audit skills (code auditing, smart contracts, supply chain) |
+| **Trail of Bits Skills** | CC-BY-SA-4.0 | 7-22h | 62 security audit skills (code auditing, specialized protocol audits, supply chain) |
 | **recall** | MIT | 2-4h | Full-text search of Claude Code conversations (Tantivy index) |
 | **Usage Monitor** | MIT | 2-3d | Ground-truth cost reconciliation from Claude's native JSONL |
 | **hcom** | MIT | 5d | Cross-terminal agent communication (SQLite + TCP) |

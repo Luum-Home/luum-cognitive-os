@@ -29,8 +29,8 @@ Required actions:
 - [x] `cos history sanitize --execute --yes` run successfully (2026-05-08T04:27:48Z)
 - [x] Tombstone branch present at `history-sanitization-20260508T042748Z`
 - [x] Sanitization report at `.cognitive-os/reports/history-sanitization/20260508T042748Z.json` recorded and reviewed
-- [x] Smoke test: codenames + service names + operator email/path → 0 hits across full history
-  (post-execute: n1u/gamer-wallet/altatienda/bff-ninja/users-core/users-auth/wallet-go/acme-gateway all 0)
+- [x] Smoke test: configured private codenames + service names + operator email/path → 0 hits across full history
+  (post-execute: all configured private tokens returned 0 matches; raw token list retained outside repo)
 - [x] Force-push to origin completed after final local history rewrite (origin/main = `db846adb`, matches local HEAD)
 - [x] Tag `v0.27.1-pre-history-rewrite` re-attached to new SHA on origin (`7b989099`)
 

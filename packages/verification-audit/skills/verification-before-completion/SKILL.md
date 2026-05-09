@@ -79,7 +79,7 @@ Skip any step = lying, not verifying
 | `<service-d>` (JVM) | `make test` | `<path/to/service-d>` |
 | `<service-e>` (Node monolith) | `yarn test` | `<path/to/service-e>` |
 | `<service-f>` (Go) | `go test ./...` | `<path/to/service-f>` |
-| `<service-g>` (smart contracts) | `npx hardhat test` | `<path/to/contracts>` |
+| `<service-g>` (specialized domain) | `<custom verification command>` | `<path/to/service-g>` |
 | `<service-h>` (mobile) | `yarn test` | `<path/to/mobile-app>` |
 
 **For multi-service changes, verify ALL affected services.**

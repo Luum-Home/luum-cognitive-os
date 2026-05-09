@@ -47,13 +47,13 @@ Sync flow:
 
 | Component | Location | What it contains |
 |---|---|---|
-| BFF | `mobile/example-bff/` | NestJS gateway |
-| Mobile app | `mobile/app/` | React Native/Expo |
-| Users Core | `services/example-users/` | Spring Boot |
-| Users Auth | `services/example-auth/` | Spring Boot |
-| Onboarding | `services/onboarding/` | NestJS |
-| Monolith | `services/example-gateway/` | Express.js |
-| Smart contracts | `contracts-ozv5/` | Solidity |
+| API gateway | `services/example-api/` | HTTP/API boundary |
+| Client app | `apps/example-client/` | Frontend/mobile boundary |
+| Core service | `services/example-core/` | Domain service |
+| Auth service | `services/example-auth/` | Identity boundary |
+| Workflow service | `services/example-workflow/` | Process orchestration |
+| Monolith | `services/example-monolith/` | Single-service app |
+| Specialized domain service | `services/example-specialized/` | Project-specific runtime |
 | Scripts | `scripts/` | Automation (sync, import, onboarding, health checks) |
 
 ## NOT in Git (local only, machine-specific)
