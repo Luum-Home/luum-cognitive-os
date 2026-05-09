@@ -92,7 +92,69 @@ print(json.dumps(restored))
 PY
 }
 
+snapshot_branch_upstreams() {
+  python3 - "$PROJECT_DIR" <<'PY'
+import json, subprocess, sys
+root=sys.argv[1]
+cur=subprocess.run(['git','-C',root,'branch','--show-current'],text=True,capture_output=True)
+branches={}
+refs=subprocess.run(['git','-C',root,'for-each-ref','--format=%(refname:short)','refs/heads'],text=True,capture_output=True)
+if refs.returncode == 0:
+    for branch in refs.stdout.splitlines():
+        branch=branch.strip()
+        if not branch: continue
+        entry={}
+        remote=subprocess.run(['git','-C',root,'config','--get',f'branch.{branch}.remote'],text=True,capture_output=True)
+        merge=subprocess.run(['git','-C',root,'config','--get',f'branch.{branch}.merge'],text=True,capture_output=True)
+        if remote.returncode == 0 and remote.stdout.strip(): entry['remote']=remote.stdout.strip()
+        if merge.returncode == 0 and merge.stdout.strip(): entry['merge']=merge.stdout.strip()
+        if entry: branches[branch]=entry
+print(json.dumps({'current_branch': cur.stdout.strip() if cur.returncode == 0 else '', 'branches': branches}, sort_keys=True))
+PY
+}
+
+restore_branch_upstreams() {
+  local json="$1"
+  python3 - "$PROJECT_DIR" "$json" <<'PY'
+import json, subprocess, sys
+root=sys.argv[1]
+snapshot=json.loads(sys.argv[2] or '{}')
+restored=[]
+refreshed=[]
+errors=[]
+branches=snapshot.get('branches', {})
+if not isinstance(branches, dict):
+    print(json.dumps({'restored': restored, 'refreshed': refreshed, 'errors': ['branch upstream snapshot is malformed']}))
+    raise SystemExit(0)
+for branch, cfg in branches.items():
+    if not isinstance(branch, str) or not isinstance(cfg, dict):
+        continue
+    if subprocess.run(['git','-C',root,'rev-parse','--verify',f'refs/heads/{branch}'],text=True,capture_output=True).returncode != 0:
+        errors.append(f'{branch}: missing local branch')
+        continue
+    remote=cfg.get('remote')
+    merge=cfg.get('merge')
+    if isinstance(remote, str) and remote:
+        subprocess.run(['git','-C',root,'config',f'branch.{branch}.remote',remote],check=False)
+    if isinstance(merge, str) and merge:
+        subprocess.run(['git','-C',root,'config',f'branch.{branch}.merge',merge],check=False)
+    if remote or merge:
+        restored.append(branch)
+    tracking=''
+    if isinstance(remote, str) and remote and remote != '.' and isinstance(merge, str) and merge.startswith('refs/heads/'):
+        tracking=f"refs/remotes/{remote}/{merge.removeprefix('refs/heads/')}"
+    if tracking and subprocess.run(['git','-C',root,'show-ref','--verify','--quiet',tracking]).returncode != 0:
+        fetch=subprocess.run(['git','-C',root,'fetch','--no-tags',remote,f'+{merge}:{tracking}'],text=True,capture_output=True)
+        if fetch.returncode == 0:
+            refreshed.append(tracking)
+        else:
+            errors.append(f'{branch}: fetch {remote} {merge} failed')
+print(json.dumps({'restored': restored, 'refreshed': refreshed, 'errors': errors}, sort_keys=True))
+PY
+}
+
 REMOTES_JSON="$(snapshot_remotes)"
+BRANCH_UPSTREAMS_JSON="$(snapshot_branch_upstreams)"
 if [ "$DRY_RUN" = "1" ]; then
   python3 - <<PY
 import json
@@ -104,6 +166,7 @@ print(json.dumps({
   'env_hash':'$ENV_HASH',
   'triple_hash':'$TRIPLE_HASH',
   'remotes': json.loads('''$REMOTES_JSON'''),
+  'branch_upstreams': json.loads('''$BRANCH_UPSTREAMS_JSON'''),
 }, indent=2, sort_keys=True))
 PY
   exit 0
@@ -116,6 +179,7 @@ git -C "$PROJECT_DIR" filter-repo "${PASSTHROUGH[@]}" --replace-text "$RULES_FIL
 RC=$?
 set -e
 RESTORED_JSON="$(restore_remotes "$REMOTES_JSON")"
+BRANCH_UPSTREAM_RESTORE_JSON="$(restore_branch_upstreams "$BRANCH_UPSTREAMS_JSON")"
 POST_HEAD="$(git -C "$PROJECT_DIR" rev-parse HEAD 2>/dev/null || true)"
 TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 python3 - "$RECOVERY_JSON" "$STATE_FILE" <<PY
@@ -133,6 +197,8 @@ payload={
   'triple_hash':'$TRIPLE_HASH',
   'remotes_before': json.loads('''$REMOTES_JSON'''),
   'remotes_restored': json.loads('''$RESTORED_JSON'''),
+  'branch_upstreams_before': json.loads('''$BRANCH_UPSTREAMS_JSON'''),
+  'branch_upstream_restore': json.loads('''$BRANCH_UPSTREAM_RESTORE_JSON'''),
   'returncode': $RC,
 }
 for path in sys.argv[1:]:

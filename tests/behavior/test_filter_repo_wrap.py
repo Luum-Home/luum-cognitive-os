@@ -20,6 +20,7 @@ def init_repo(tmp_path: Path) -> tuple[Path, Path]:
     subprocess.run(["git", "-C", str(repo), "add", "file.txt"], check=True)
     subprocess.run(["git", "-C", str(repo), "commit", "-m", "init"], check=True, stdout=subprocess.DEVNULL)
     subprocess.run(["git", "-C", str(repo), "remote", "add", "origin", str(remote)], check=True)
+    subprocess.run(["git", "-C", str(repo), "push", "-u", "origin", "HEAD:main"], check=True, stdout=subprocess.DEVNULL)
     return repo, remote
 
 
@@ -31,6 +32,9 @@ def fake_filter_repo_bin(tmp_path: Path) -> Path:
         "#!/usr/bin/env bash\n"
         "set -euo pipefail\n"
         "git remote remove origin 2>/dev/null || true\n"
+        "git config --unset branch.main.remote 2>/dev/null || true\n"
+        "git config --unset branch.main.merge 2>/dev/null || true\n"
+        "git update-ref -d refs/remotes/origin/main 2>/dev/null || true\n"
         "exit 0\n",
         encoding="utf-8",
     )
@@ -55,12 +59,15 @@ def test_wrapper_restores_origin_and_writes_recovery(tmp_path: Path) -> None:
 
     assert proc.returncode == 0, proc.stderr
     assert subprocess.check_output(["git", "-C", str(repo), "remote", "get-url", "origin"], text=True).strip() == str(remote)
+    assert subprocess.check_output(["git", "-C", str(repo), "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], text=True).strip() == "origin/main"
     payload = json.loads(recovery.read_text(encoding="utf-8"))
     assert payload["schema_version"] == "cos-filter-repo-recovery/v1"
     assert payload["pre_head"]
     assert payload["post_head"]
     assert payload["rules_hash"]
     assert payload["backup_mirror_path"] == str(tmp_path / "backup.git")
+    assert payload["branch_upstream_restore"]["restored"] == ["main"]
+    assert payload["branch_upstream_restore"]["errors"] == []
 
 
 def test_wrapper_refuses_same_head_rules_env_rerun_without_force(tmp_path: Path) -> None:
@@ -90,3 +97,4 @@ def test_wrapper_dry_run_is_json_and_does_not_require_tool(tmp_path: Path) -> No
     payload = json.loads(proc.stdout)
     assert payload["schema_version"] == "cos-filter-repo-wrap-plan/v1"
     assert payload["status"] == "dry-run"
+    assert payload["branch_upstreams"]["branches"]["main"]["remote"] == "origin"

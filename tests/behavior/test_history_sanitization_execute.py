@@ -208,6 +208,34 @@ def test_execute_round_trip_on_fixture(tmp_path, monkeypatch) -> None:
     assert payload["verification"]["all_replacements_resolved_to_zero"] is True
 
 
+def test_execute_restores_branch_upstream_tracking(tmp_path, monkeypatch) -> None:
+    fixture = tmp_path / "fixture-repo"
+    _make_fixture_repo(fixture)
+    remote = tmp_path / "origin.git"
+    _run(["git", "init", "--bare", str(remote)], tmp_path)
+    _run(["git", "remote", "set-url", "origin", str(remote)], fixture)
+    _run(["git", "push", "-u", "origin", "HEAD:main"], fixture)
+    _write_fixture_manifest(fixture)
+    _run(["git", "add", "manifests/history-sanitization.yaml"], fixture)
+    _run(["git", "commit", "-m", "add sanitize manifest"], fixture)
+    _run(["git", "push", "origin", "HEAD:main"], fixture)
+
+    monkeypatch.setenv("TEST_OPERATOR_EMAIL", SECRET_EMAIL)
+    monkeypatch.setenv("TEST_OPERATOR_NAME", SECRET_NAME)
+    monkeypatch.setenv("TEST_OPERATOR_HOME", SECRET_HOME)
+    monkeypatch.setenv("COS_ALLOW_DESTRUCTIVE_GIT", "1")
+    fake_home = tmp_path / "fake-home"
+    fake_home.mkdir()
+    monkeypatch.setenv("HOME", str(fake_home))
+
+    result = execute(fixture, confirmed=True)
+
+    assert result["branch_upstreams_restored"] == ["main"]
+    assert _run(["git", "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"], fixture).stdout.strip() == "origin/main"
+    payload = json.loads(Path(result["report_path"]).read_text(encoding="utf-8"))
+    assert payload["branch_upstreams_restored"] == ["main"]
+
+
 
 def test_execute_metadata_rewrite_requires_explicit_env(tmp_path, monkeypatch) -> None:
     fixture = tmp_path / "fixture-repo"

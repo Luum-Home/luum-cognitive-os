@@ -459,6 +459,26 @@ def _snapshot_remotes(project_dir: Path) -> dict[str, dict[str, str]]:
     return remotes
 
 
+def _snapshot_branch_upstreams(project_dir: Path) -> dict[str, Any]:
+    current_proc = git(project_dir, ["branch", "--show-current"])
+    current_branch = current_proc.stdout.strip() if current_proc.returncode == 0 else ""
+    branches_proc = git(project_dir, ["for-each-ref", "--format=%(refname:short)", "refs/heads"])
+    branches: dict[str, dict[str, str]] = {}
+    if branches_proc.returncode != 0:
+        return {"current_branch": current_branch, "branches": branches}
+    for branch in [line.strip() for line in branches_proc.stdout.splitlines() if line.strip()]:
+        remote_proc = git(project_dir, ["config", "--get", f"branch.{branch}.remote"])
+        merge_proc = git(project_dir, ["config", "--get", f"branch.{branch}.merge"])
+        entry: dict[str, str] = {}
+        if remote_proc.returncode == 0 and remote_proc.stdout.strip():
+            entry["remote"] = remote_proc.stdout.strip()
+        if merge_proc.returncode == 0 and merge_proc.stdout.strip():
+            entry["merge"] = merge_proc.stdout.strip()
+        if entry:
+            branches[branch] = entry
+    return {"current_branch": current_branch, "branches": branches}
+
+
 def _restore_remotes(project_dir: Path, remotes: dict[str, dict[str, str]]) -> list[str]:
     restored: list[str] = []
     for name, urls in remotes.items():
@@ -476,6 +496,84 @@ def _restore_remotes(project_dir: Path, remotes: dict[str, dict[str, str]]) -> l
             git(project_dir, ["remote", "set-url", "--push", name, push_url])
         restored.append(name)
     return restored
+
+
+def _upstream_tracking_ref(remote: str | None, merge: str | None) -> str:
+    if not remote or remote == "." or not merge or not merge.startswith("refs/heads/"):
+        return ""
+    return f"refs/remotes/{remote}/{merge.removeprefix('refs/heads/')}"
+
+
+def _restore_branch_upstreams(project_dir: Path, snapshot: dict[str, Any]) -> list[str]:
+    restored: list[str] = []
+    branches = snapshot.get("branches", {})
+    if not isinstance(branches, dict):
+        return restored
+    for branch, config in branches.items():
+        if not isinstance(branch, str) or not isinstance(config, dict):
+            continue
+        if git(project_dir, ["rev-parse", "--verify", f"refs/heads/{branch}"]).returncode != 0:
+            continue
+        remote = config.get("remote")
+        merge = config.get("merge")
+        if isinstance(remote, str) and remote:
+            git(project_dir, ["config", f"branch.{branch}.remote", remote])
+        if isinstance(merge, str) and merge:
+            git(project_dir, ["config", f"branch.{branch}.merge", merge])
+        if remote or merge:
+            restored.append(branch)
+    return restored
+
+
+def _refresh_branch_upstream_refs(project_dir: Path, snapshot: dict[str, Any]) -> dict[str, list[str]]:
+    refreshed: list[str] = []
+    errors: list[str] = []
+    branches = snapshot.get("branches", {})
+    if not isinstance(branches, dict):
+        return {"refreshed": refreshed, "errors": ["branch upstream snapshot is malformed"]}
+    for branch, config in branches.items():
+        if not isinstance(branch, str) or not isinstance(config, dict):
+            continue
+        remote = config.get("remote")
+        merge = config.get("merge")
+        if not isinstance(remote, str) or not isinstance(merge, str):
+            continue
+        tracking_ref = _upstream_tracking_ref(remote, merge)
+        if not tracking_ref or git(project_dir, ["show-ref", "--verify", "--quiet", tracking_ref]).returncode == 0:
+            continue
+        proc = git(project_dir, ["fetch", "--no-tags", remote, f"+{merge}:{tracking_ref}"], timeout_seconds=60)
+        if proc.returncode == 0:
+            refreshed.append(tracking_ref)
+        else:
+            errors.append(f"{branch}: fetch {remote} {merge} failed")
+    return {"refreshed": refreshed, "errors": errors}
+
+
+def _branch_upstream_restore_issues(project_dir: Path, expected: dict[str, Any]) -> list[str]:
+    issues: list[str] = []
+    actual = _snapshot_branch_upstreams(project_dir)
+    expected_branches = expected.get("branches", {})
+    actual_branches = actual.get("branches", {})
+    if not isinstance(expected_branches, dict) or not isinstance(actual_branches, dict):
+        return ["branch upstream snapshot is malformed"]
+    for branch, config in expected_branches.items():
+        if not isinstance(branch, str) or not isinstance(config, dict):
+            continue
+        if git(project_dir, ["rev-parse", "--verify", f"refs/heads/{branch}"]).returncode != 0:
+            issues.append(f"{branch}: missing local branch")
+            continue
+        actual_config = actual_branches.get(branch, {})
+        if not isinstance(actual_config, dict):
+            actual_config = {}
+        for key in ("remote", "merge"):
+            expected_value = config.get(key)
+            if isinstance(expected_value, str) and expected_value and actual_config.get(key) != expected_value:
+                issues.append(f"{branch}: {key} mismatch")
+        tracking_ref = _upstream_tracking_ref(config.get("remote"), config.get("merge"))
+        if tracking_ref and git(project_dir, ["show-ref", "--verify", "--quiet", tracking_ref]).returncode != 0:
+            issues.append(f"{branch}: upstream ref missing")
+    return issues
+
 
 def _write_replacements_file(rules: list[dict[str, Any]], target_path: Path) -> int:
     """Write replacement rules in git-filter-repo's `OLD==>NEW` format.
@@ -708,6 +806,8 @@ def _write_post_execute_report(
     tombstone_branch: str,
     rules_written: int,
     remaining_hits: dict[str, int],
+    branch_upstreams_restored: list[str] | None = None,
+    branch_upstream_refs_refreshed: list[str] | None = None,
 ) -> Path:
     report_dir = project_dir / ".cognitive-os" / "reports" / "history-sanitization"
     report_dir.mkdir(parents=True, exist_ok=True)
@@ -720,6 +820,8 @@ def _write_post_execute_report(
         "boundary_tag_recommended": "v0.27.1-pre-history-rewrite",
         "backup_mirror": str(backup_path),
         "tombstone_branch": tombstone_branch,
+        "branch_upstreams_restored": branch_upstreams_restored or [],
+        "branch_upstream_refs_refreshed": branch_upstream_refs_refreshed or [],
         "pre_rewrite": {
             "head": pre_head,
             "commit_count": pre_commit_count,
@@ -838,6 +940,7 @@ def execute(
     pre_count_proc = git(project, ["rev-list", "--count", "--all"])
     pre_commit_count = int(pre_count_proc.stdout.strip() or "0")
     pre_remotes = _snapshot_remotes(project)
+    pre_branch_upstreams = _snapshot_branch_upstreams(project)
 
     # 4. Backup mirror (mandatory; backup-or-refuse)
     _create_backup_mirror(project, backup_path)
@@ -859,6 +962,15 @@ def execute(
         # references it). It can be deleted by the operator post-verify.
         pass
     restored_remotes = _restore_remotes(project, pre_remotes)
+    restored_branch_upstreams = _restore_branch_upstreams(project, pre_branch_upstreams)
+    branch_upstream_ref_refresh = _refresh_branch_upstream_refs(project, pre_branch_upstreams)
+    branch_upstream_restore_issues = _branch_upstream_restore_issues(project, pre_branch_upstreams)
+    branch_upstream_restore_issues.extend(branch_upstream_ref_refresh["errors"])
+    if branch_upstream_restore_issues:
+        raise SanitizationError(
+            "branch-upstream-restore-failed",
+            "git branch upstream restore failed after history rewrite: " + "; ".join(branch_upstream_restore_issues),
+        )
 
     # 7. Capture post-rewrite state
     post_head_proc = git(project, ["rev-parse", "HEAD"])
@@ -900,6 +1012,8 @@ def execute(
         tombstone_branch=tombstone_branch,
         rules_written=rules_written,
         remaining_hits=remaining_hits,
+        branch_upstreams_restored=restored_branch_upstreams,
+        branch_upstream_refs_refreshed=branch_upstream_ref_refresh["refreshed"],
     )
 
     all_clean = all(v == 0 for v in remaining_hits.values())
@@ -915,6 +1029,8 @@ def execute(
         "post_rewrite": {"head": post_head, "commit_count": post_commit_count},
         "remaining_hits": remaining_hits,
         "remotes_restored": restored_remotes,
+        "branch_upstreams_restored": restored_branch_upstreams,
+        "branch_upstream_refs_refreshed": branch_upstream_ref_refresh["refreshed"],
         "rules_file": str(rules_file),
         "last_rewrite_marker": str(last_rewrite_marker),
         "rules_hash": rules_hash,
