@@ -25,6 +25,35 @@ Slice 1-4 strategy modes are implemented in the benchmark harness only:
 `memory-class-local`. They prove the intended deltas without mutating Engram
 storage or changing production defaults.
 
+## Runtime opt-in port: M1 + M3
+
+The first runtime port intentionally stops at M1 + M3 and keeps
+`strategy=current` unchanged:
+
+- M1: `EngramLifecycle.search(..., retrieval_strategy="wave2-m1-m3")` applies
+  temporal validity and supersession-aware reranking. Observations with open
+  `valid_to` or accepted `supersedes` source edges receive a current boost;
+  observations with closed `valid_to` or accepted `supersedes` target edges
+  receive a stale penalty.
+- M3: `EngramGraphWalker.support_chains(...)` returns bounded relation paths
+  from the search seed set to retrieved targets. The runtime annotates results
+  with `support_chain` and a `wave2_score` only when the flag is explicitly
+  enabled.
+
+Activation is non-default through either:
+
+```python
+EngramLifecycle().search("query", retrieval_strategy="wave2-m1-m3")
+```
+
+or:
+
+```bash
+COS_ENGRAM_RETRIEVAL_STRATEGY=wave2-m1-m3
+```
+
+`None`, empty, and `current` preserve the prior payload and ordering.
+
 ## Goal
 
 Design the Wave 2 memory bundle before touching Engram or Cognee code. The

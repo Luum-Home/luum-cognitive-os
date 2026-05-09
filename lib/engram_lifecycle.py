@@ -82,6 +82,13 @@ _TYPE_TO_DECAY_CLASS: dict[str, str] = {
 # Ranking constants — ADR-071 §Ranking formula
 _ALPHA: float = 0.3   # lifecycle weight; engram relevance dominates at 70%
 _BETA: float = 0.15   # confidence increment per reinforcement
+_WAVE2_TEMPORAL_GRAPH_STRATEGIES = {
+    "wave2-m1-m3",
+    "temporal-graph",
+    "temporal-graph-support-chain",
+}
+_TEMPORAL_CURRENT_BOOST: float = 1.0
+_TEMPORAL_STALE_PENALTY: float = 1.0
 
 
 # ---------------------------------------------------------------------------
@@ -210,15 +217,22 @@ class EngramLifecycle:
     ALPHA: float = _ALPHA
     BETA: float = _BETA
 
-    def __init__(self, now: Callable[[], datetime] | None = None) -> None:
+    def __init__(
+        self,
+        now: Callable[[], datetime] | None = None,
+        graph_walker: Any | None = None,
+    ) -> None:
         """
         Args:
             now: Optional callable that returns the current UTC datetime.
                  Defaults to datetime.utcnow.  Inject for deterministic tests.
+            graph_walker: Optional EngramGraphWalker-compatible instance for
+                 deterministic tests and opt-in Wave 2 runtime strategies.
         """
         self._now: Callable[[], datetime] = now or (
             lambda: datetime.now(timezone.utc).replace(tzinfo=None)
         )
+        self._graph_walker = graph_walker
 
     # ------------------------------------------------------------------
     # Public API
@@ -264,6 +278,7 @@ class EngramLifecycle:
         lifecycle_weight: bool = True,
         type_filter: str = "",
         graph_walk: bool = False,
+        retrieval_strategy: str | None = None,
     ) -> list[dict[str, Any]]:
         """Search observations with optional lifecycle-based re-ranking.
 
@@ -285,6 +300,12 @@ class EngramLifecycle:
             lifecycle_weight: Set False to return engram's native ordering.
             type_filter:      Optional type filter forwarded to engram_client.
             graph_walk:       When True, extend results via graph traversal.
+            retrieval_strategy:
+                Optional, non-default Wave 2 strategy. ``None`` and
+                ``"current"`` preserve existing behavior. ``"wave2-m1-m3"``
+                enables temporal validity / supersession-aware reranking plus
+                relation support-chain metadata. Can also be enabled via
+                ``COS_ENGRAM_RETRIEVAL_STRATEGY``.
 
         Returns:
             List of observation dicts, each extended with:
@@ -327,13 +348,11 @@ class EngramLifecycle:
         enriched.sort(key=lambda x: x["adjusted_score"], reverse=True)
 
         if not graph_walk:
-            return enriched
+            return self._apply_retrieval_strategy(enriched, retrieval_strategy)
 
         # Phase 3: walk memory_relations graph and merge neighbors
         try:
-            from lib.engram_graph_walker import EngramGraphWalker
-
-            walker = EngramGraphWalker()
+            walker = self._get_graph_walker()
             all_sync_ids = [
                 obs.get("sync_id", "") for obs in enriched if obs.get("sync_id")
             ]
@@ -344,7 +363,7 @@ class EngramLifecycle:
         except Exception:
             pass
 
-        return enriched
+        return self._apply_retrieval_strategy(enriched, retrieval_strategy)
 
     def reinforce(self, observation_id: str | int) -> bool:
         """Bump reinforcement_count, reset last_reinforced, and increase confidence.
@@ -452,6 +471,97 @@ class EngramLifecycle:
             return json.loads(match.group(1))
         except Exception:
             return None
+
+    def _active_retrieval_strategy(self, explicit: str | None) -> str:
+        """Resolve the opt-in retrieval strategy without changing defaults."""
+        raw = explicit if explicit is not None else os.environ.get("COS_ENGRAM_RETRIEVAL_STRATEGY", "")
+        strategy = str(raw or "current").strip().lower()
+        return strategy or "current"
+
+    def _get_graph_walker(self) -> Any:
+        if self._graph_walker is not None:
+            return self._graph_walker
+        from lib.engram_graph_walker import EngramGraphWalker
+
+        return EngramGraphWalker()
+
+    def _apply_retrieval_strategy(
+        self,
+        results: list[dict[str, Any]],
+        retrieval_strategy: str | None,
+    ) -> list[dict[str, Any]]:
+        """Apply optional Wave 2 runtime retrieval behavior.
+
+        This method is intentionally no-op for the default ``current`` strategy
+        so existing Engram callers keep their previous ordering and payload.
+        """
+        strategy = self._active_retrieval_strategy(retrieval_strategy)
+        if strategy not in _WAVE2_TEMPORAL_GRAPH_STRATEGIES:
+            return results
+        if not results:
+            return []
+
+        sync_ids = [str(obs.get("sync_id", "")) for obs in results if obs.get("sync_id")]
+        if not sync_ids:
+            return results
+
+        try:
+            walker = self._get_graph_walker()
+            temporal = walker.temporal_status(sync_ids)
+            base_sync_ids = [
+                str(obs.get("sync_id", ""))
+                for obs in results
+                if obs.get("sync_id") and not obs.get("graph_only")
+            ] or sync_ids
+            chains = walker.support_chains(base_sync_ids, sync_ids)
+        except Exception:
+            return results
+
+        reranked: list[dict[str, Any]] = []
+        for obs in results:
+            sid = str(obs.get("sync_id", ""))
+            base_score = float(
+                obs.get("final_score", obs.get("adjusted_score", obs.get("score", 1.0)))
+            )
+            status = temporal.get(sid, {})
+            temporal_delta = 0.0
+            if self._observation_is_temporally_current(obs, status):
+                temporal_delta += _TEMPORAL_CURRENT_BOOST
+            if self._observation_is_temporally_stale(obs, status):
+                temporal_delta -= _TEMPORAL_STALE_PENALTY
+            wave2_score = base_score + temporal_delta
+            chain = chains.get(sid, [])
+            if chain:
+                wave2_score += 0.25
+            reranked.append(
+                {
+                    **obs,
+                    "retrieval_strategy": strategy,
+                    "temporal_status": status,
+                    "support_chain": chain,
+                    "wave2_score": wave2_score,
+                }
+            )
+        reranked.sort(key=lambda row: row.get("wave2_score", 0.0), reverse=True)
+        return reranked
+
+    @staticmethod
+    def _observation_is_temporally_current(
+        obs: dict[str, Any],
+        status: dict[str, Any],
+    ) -> bool:
+        valid_to = obs.get("valid_to")
+        has_open_validity = "valid_to" in obs and valid_to in (None, "")
+        return bool(has_open_validity or status.get("is_current"))
+
+    @staticmethod
+    def _observation_is_temporally_stale(
+        obs: dict[str, Any],
+        status: dict[str, Any],
+    ) -> bool:
+        valid_to = obs.get("valid_to")
+        has_closed_validity = "valid_to" in obs and valid_to not in (None, "")
+        return bool(has_closed_validity or status.get("is_superseded"))
 
     def _apply_decay(self, trailer: dict[str, Any] | None) -> float:
         """Compute current retention R(t) from the trailer.

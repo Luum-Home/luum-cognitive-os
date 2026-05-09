@@ -55,9 +55,9 @@ Candidate change name: `memory-layer-evolution`. Bundled because the four items 
 
 | # | Topic | Status | Source | License |
 |---|---|---:|---|---|
-| M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) in `memory_relations` | 🟡 Slice 0 benchmark ready; schema not started | A §🔍2c; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | Apache-2.0 (schema only) |
+| M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) in `memory_relations` | 🟡 runtime opt-in port landed; schema migration still pending | A §🔍2c; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | Apache-2.0 (schema only) |
 | M2 | LightRAG dual-level (entity + topic) retrieval scoring → `engram_lifecycle.py` | 🟡 blocked on M1 schema + benchmark comparison | A §🔍2a; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
-| M3 | HippoRAG personalized PageRank as alternative mode in `engram_graph_walker.py` | 🟡 blocked on M1 schema + benchmark comparison | A §🔍2b; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
+| M3 | HippoRAG personalized PageRank as alternative mode in `engram_graph_walker.py` | 🟡 relation support-chain runtime port landed; PPR algorithm still pending | A §🔍2b; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
 | M4 | `memory_class` enum overlay (`semantic`/`episodic`/`procedural`/`working`); couple `memory_decay` to `working` | 🟡 SDD started; lands after retrieval benchmark + schema | A §🔍12; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (MIRIX overlay) |
 
 **Required ordering**: M1 (schema) before M2/M3/M4 (consumers). M2 and M3 can run in parallel once M1 lands. M4 is overlay, lands last.
@@ -97,6 +97,27 @@ smallest mode that passes all Slice 0 fixtures. It fixes the same 3 fixtures as
 required temporal and support-chain substrate exists.
 
 Next implementation target: **M1+M3 real Engram port behind a non-default flag**.
+
+### Runtime M1+M3 port
+
+`lib/engram_lifecycle.py` now supports explicit
+`retrieval_strategy="wave2-m1-m3"` (or environment variable
+`COS_ENGRAM_RETRIEVAL_STRATEGY=wave2-m1-m3`). The default `current` strategy is
+unchanged: existing callers receive the same lifecycle-ranked payload unless
+they opt in.
+
+The opt-in path adds:
+
+- temporal validity / supersession-aware reranking using open/closed
+  `valid_to` metadata and accepted `supersedes` edges in `memory_relations`;
+- bounded relation support-chain annotations through
+  `lib/engram_graph_walker.py`;
+- `retrieval_strategy`, `temporal_status`, `support_chain`, and `wave2_score`
+  fields only in the opt-in response.
+
+Remaining M1/M3 work: additive schema migration/backfill for `valid_from`,
+`valid_to`, `source_episode`, and a true PPR mode. The current port is runtime
+behavior over existing fields/relations, not a default switch.
 
 **Acceptance criteria** (proposed, to confirm at `/sdd-new memory-layer-evolution`):
 - Schema migration is idempotent and reversible.

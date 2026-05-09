@@ -294,3 +294,90 @@ class TestMergeIntoResults:
         result = w.merge_into_results(base, {})
         assert result[0]["sync_id"] == "obs-high"
         assert result[1]["sync_id"] == "obs-low"
+
+
+class TestTemporalStatus:
+    def test_supersedes_relation_marks_source_current_and_target_stale(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            path = f.name
+        try:
+            conn = _create_test_db(path)
+            _insert_obs(conn, "obs-current")
+            _insert_obs(conn, "obs-stale")
+            _insert_relation(
+                conn,
+                "rel-1",
+                "obs-current",
+                "obs-stale",
+                relation="supersedes",
+            )
+            conn.close()
+
+            result = _walker(path).temporal_status(["obs-current", "obs-stale"])
+
+            assert result["obs-current"]["is_current"] is True
+            assert result["obs-current"]["supersedes"] == ["obs-stale"]
+            assert result["obs-stale"]["is_superseded"] is True
+            assert result["obs-stale"]["superseded_by"] == ["obs-current"]
+        finally:
+            os.unlink(path)
+
+    def test_rejected_supersedes_relation_does_not_mark_temporal_status(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            path = f.name
+        try:
+            conn = _create_test_db(path)
+            _insert_obs(conn, "obs-current")
+            _insert_obs(conn, "obs-stale")
+            _insert_relation(
+                conn,
+                "rel-1",
+                "obs-current",
+                "obs-stale",
+                relation="supersedes",
+                judgment_status="rejected",
+            )
+            conn.close()
+
+            result = _walker(path).temporal_status(["obs-current", "obs-stale"])
+
+            assert result["obs-current"]["is_current"] is False
+            assert result["obs-stale"]["is_superseded"] is False
+        finally:
+            os.unlink(path)
+
+
+class TestSupportChains:
+    def test_support_chain_finds_two_hop_relation_path(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            path = f.name
+        try:
+            conn = _create_test_db(path)
+            for sid in ("obs-query", "obs-impl", "obs-test"):
+                _insert_obs(conn, sid)
+            _insert_relation(conn, "rel-1", "obs-query", "obs-impl", relation="implemented_by")
+            _insert_relation(conn, "rel-2", "obs-impl", "obs-test", relation="verified_by")
+            conn.close()
+
+            result = _walker(path).support_chains(["obs-query"], ["obs-test"], max_depth=2)
+
+            assert result["obs-test"] == ["obs-query", "obs-impl", "obs-test"]
+        finally:
+            os.unlink(path)
+
+    def test_support_chain_respects_depth_limit(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            path = f.name
+        try:
+            conn = _create_test_db(path)
+            for sid in ("obs-query", "obs-impl", "obs-test"):
+                _insert_obs(conn, sid)
+            _insert_relation(conn, "rel-1", "obs-query", "obs-impl", relation="implemented_by")
+            _insert_relation(conn, "rel-2", "obs-impl", "obs-test", relation="verified_by")
+            conn.close()
+
+            result = _walker(path).support_chains(["obs-query"], ["obs-test"], max_depth=1)
+
+            assert result == {}
+        finally:
+            os.unlink(path)
