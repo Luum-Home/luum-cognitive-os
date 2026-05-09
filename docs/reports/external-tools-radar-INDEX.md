@@ -206,6 +206,8 @@ bidirectional axis and adoption-kind doctrine.
 | [`docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`](external-tools-radar-openswarm-addendum-2026-05-09.md) | Radar addendum: ASSESS/MONITOR, pattern-only extraction |
 | [`docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`](../research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md) | Targeted evaluation of Agno, Dash, and Scout |
 | [`docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`](external-tools-radar-agno-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Agno suite |
+| [`docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md`](../research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md) | Deep per-repo evaluation of EvoSkill |
+| [`docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`](external-tools-radar-evoskill-addendum-2026-05-09.md) | Radar addendum: TRIAL-PATTERNS / ASSESS-RUNTIME for benchmark-driven skill evolution |
 | [`docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`](../research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md) | Deep per-repo evaluation of Langflow |
 | [`docs/reports/external-tools-radar-langflow-addendum-2026-05-09.md`](external-tools-radar-langflow-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Langflow visual workflow and MCP-facing runtime patterns |
 | [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entries under EVALUATE |
@@ -220,6 +222,11 @@ hooks/rules/memory/policy authoritative and avoiding default runtime adoption. L
 reference: harvest graph-authoring UX, flow-to-MCP packaging, bundle registry,
 settings taxonomy, and security-regression ideas; do not adopt its app/runtime
 by default.
+EvoSkill is added as TRIAL-PATTERNS / ASSESS-RUNTIME: extract the
+benchmark-driven skill-evolution loop, generated-skill evidence schema,
+held-out validation discipline, and harness projection fixture; do not add its
+runtime, git mutation, Docker/remote execution, or generated skills to COS core
+without a manifest-backed adapter lab.
 
 ## How to use this index
 

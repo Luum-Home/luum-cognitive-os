@@ -2,7 +2,7 @@
 
 > Browsable index of every research artifact in the repo, public and (by reference) private. Generated 2026-05-07. Re-run `find docs/research docs/reports docs/architecture docs/business -name '*.md'` to verify.
 
-**Total**: ~329 markdown research/audit/forensics artifacts across 6 directories. Coverage: 151+ external tools evaluated, 15 frontier orchestration systems in prior-art, 11 orchestration gaps, 138 operational reports, 4 reusable audits with multiple editions.
+**Total**: ~538 markdown research/audit/forensics artifacts across 6 directories. Coverage: 151+ external tools evaluated, 15 frontier orchestration systems in prior-art, 11 orchestration gaps, 138 operational reports, 4 reusable audits with multiple editions.
 
 ---
 
@@ -12,7 +12,7 @@
 |---|---|
 | [§1 Top-level research](#1-top-level-research) | Tool/topic-level research (9 files) |
 | [§2 Orchestration line](#2-orchestration-line-2026-05-06-07) | 79-source prior-art + 11 gap reports + synthesis + checklist |
-| [§3 Repo-scout](#3-repo-scout-128-files) | External tools landscape (clusters + deep dives + monitor follow-up) |
+| [§3 Repo-scout](#3-repo-scout-129-files) | External tools landscape (clusters + deep dives + monitor follow-up) |
 | [§4 Operational reports](#4-operational-reports-138-files) | Audits, forensics, postmortems, gap reports |
 | [§5 Architecture research](#5-architecture-research-10-files) | Backend evaluations, benchmarks, control-plane research |
 | [§6 Business research](#6-business-research-4-files) | Reality audits, competitive re-assessments |
@@ -64,7 +64,7 @@
 
 ---
 
-## 3. Repo-scout (128 files)
+## 3. Repo-scout (129 files)
 
 `docs/research/repo-scout/` — external tools landscape. Three sub-levels:
 
@@ -252,7 +252,7 @@
 
 - **Aspirational claims audit** (5 editions): [2026-04-20](../reports/aspirational-audit-2026-04-20.md) · [2026-05-02](../reports/aspirational-audit-2026-05-02.md) · [2026-05-03](../reports/aspirational-audit-2026-05-03.md) · [2026-05-05](../reports/aspirational-audit-2026-05-05.md) · [2026-05-06](../reports/aspirational-audit-2026-05-06.md)
 - **External tools radar** (5): [inventory](../reports/external-tools-inventory-2026-05-06.md) · [comparative-matrix](../reports/external-tools-comparative-matrix-2026-05-06.md) · [radar](../reports/external-tools-radar-2026-05-06.md) · [radar-deep](../reports/external-tools-radar-deep-2026-05-06.md) · [radar-deep-tier2](../reports/external-tools-radar-deep-tier2-2026-05-06.md) · [monitor-followup](../reports/external-tools-radar-monitor-followup-2026-05-06.md)
-- **Targeted 2026-05-09 additions**: [Langflow deep evaluation](repo-scout/deep/langflow-ai__langflow-2026-05-09.md) · [Langflow radar addendum](../reports/external-tools-radar-langflow-addendum-2026-05-09.md)
+- **Targeted 2026-05-09 additions**: [EvoSkill deep evaluation](repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md) · [EvoSkill radar addendum](../reports/external-tools-radar-evoskill-addendum-2026-05-09.md) · [Langflow deep evaluation](repo-scout/deep/langflow-ai__langflow-2026-05-09.md) · [Langflow radar addendum](../reports/external-tools-radar-langflow-addendum-2026-05-09.md)
 - **Primitive readiness ledgers** (5 families, all `-latest.md`): [hooks](../reports/primitive-readiness-ledger-hooks-latest.md) · [rules](../reports/primitive-readiness-ledger-rules-latest.md) · [scripts](../reports/primitive-readiness-ledger-scripts-latest.md) · [skills](../reports/primitive-readiness-ledger-skills-latest.md) · [templates](../reports/primitive-readiness-ledger-templates-latest.md)
 - **Primitive gap matrix**: [latest](../reports/primitive-gap-latest.md) · [matrix-2026-04](../reports/primitive-gap-matrix-2026-04.md) · [regressions](../reports/primitive-gap-regressions.md)
 - **Primitive lifecycle**: [lifecycle-backlog-scripts](../reports/primitive-readiness-lifecycle-backlog-scripts-latest.md) · [readiness-review-2026-05-04](../reports/primitive-readiness-review-2026-05-04.md) · [primitive-row-audit-latest](../reports/primitive-row-audit-latest.md) · [surface-coverage-session-2026-05-06](../reports/primitive-surface-coverage-session-2026-05-06.md) · [surface-reduction-latest](../reports/primitive-surface-reduction-latest.md) · [usage-map-latest](../reports/primitive-usage-map-latest.md)
