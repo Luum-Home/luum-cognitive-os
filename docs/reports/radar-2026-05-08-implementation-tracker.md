@@ -119,6 +119,23 @@ Remaining M1/M3 work: additive schema migration/backfill for `valid_from`,
 `valid_to`, `source_episode`, and a true PPR mode. The current port is runtime
 behavior over existing fields/relations, not a default switch.
 
+### M1 default decision
+
+Decision record:
+[`docs/reports/memory-retrieval-wave2/m1-default-decision-2026-05-08.json`](memory-retrieval-wave2/m1-default-decision-2026-05-08.json).
+
+`temporal-local` justifies the M1 runtime port but **does not justify flipping
+the default**:
+
+- `current-local`: `passed=0/3`, `block=3`, `temporal_correct=1/3`,
+  `source_supported=2/3`;
+- `temporal-local`: `passed=2/3`, `block=1`, `temporal_correct=3/3`,
+  `source_supported=2/3`;
+- remaining blocker: `multi-hop-adr-implementation-test`.
+
+Default remains `strategy=current`. M1 stays opt-in until M3/source-support
+closes the remaining blocker or a release owner records an explicit waiver.
+
 **Acceptance criteria** (proposed, to confirm at `/sdd-new memory-layer-evolution`):
 - Schema migration is idempotent and reversible.
 - Existing Engram queries return identical results pre/post-migration when bi-temporal fields default to `created_at`/`superseded_at`.

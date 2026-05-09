@@ -1,0 +1,34 @@
+{
+  "schema_version": "memory-default-decision/v1",
+  "date": "2026-05-08",
+  "question": "Should M1 temporal validity / supersession-aware retrieval become the default strategy?",
+  "baseline_report": "docs/reports/memory-retrieval-wave2/current-local-2026-05-08.json",
+  "candidate_report": "docs/reports/memory-retrieval-wave2/temporal-local-2026-05-08.json",
+  "comparison_report": "docs/reports/memory-retrieval-wave2/comparison-2026-05-08.json",
+  "decision": {
+    "default_flip": false,
+    "keep_default": "current",
+    "keep_opt_in_strategy": "wave2-m1-m3",
+    "reason": "temporal-local fixes the stale temporal failures but still leaves the multi-hop support-chain blocker unresolved; a default switch requires block=0 or an explicit waiver."
+  },
+  "current_local": {
+    "passed": 0,
+    "block": 3,
+    "temporal_correct": 1,
+    "source_supported": 2,
+    "precision_at_k_avg": 0.3333
+  },
+  "temporal_local": {
+    "passed": 2,
+    "block": 1,
+    "temporal_correct": 3,
+    "source_supported": 2,
+    "precision_at_k_avg": 0.3333,
+    "fixed_fixtures": [
+      "temporal-contradiction-license-policy",
+      "procedural-runbook-current"
+    ],
+    "remaining_blocker": "multi-hop-adr-implementation-test"
+  },
+  "next_step": "Keep M1 opt-in and validate the M1+M3 runtime path against real Engram data; do not flip default until multi-hop/source support reaches block=0."
+}
