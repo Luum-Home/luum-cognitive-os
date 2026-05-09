@@ -134,12 +134,14 @@ FIXTURE_LIKE_RE = re.compile(
 )
 
 
-def fixture_like_line(line: str) -> bool:
+def fixture_like_line(line: str, file_path: str = "") -> bool:
+    if file_path.startswith("tests/") or file_path.endswith("_test.go"):
+        return True
     return bool(FIXTURE_LIKE_RE.search(line))
 
 
 REVIEWED_CONTEXT_RE = re.compile(
-    r"(?i)(red flag|not a leak|audit trail|history sanitize replaced|"
+    r"(?i)(red flag|not a leak|audit trail|history sanitize replaced|AuditRule\(|Mandatory self-doubt|"
     r"appears \*\*?[0-9]+|block developer home path leaks|warning sign|/U[s]ers/marialuzmontiel/|"
     r"^[-]\s*(?:`|[A-Za-z0-9_./ -])*?/U[s]ers/[A-Za-z0-9._-]+/)"
 )
@@ -171,20 +173,23 @@ def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tup
         if not current_sha:
             return
         matching_lines = [
-            line
-            for line in current_lines
+            (line, file_path)
+            for line, file_path in current_lines
             if not line.startswith(("+++", "---", "@@")) and pattern.search(line)
         ]
         if not matching_lines:
             return
         commits.append(current_sha)
-        if any(not fixture_like_line(line) and not reviewed_context_line(line) for line in matching_lines):
+        if any(not fixture_like_line(line, file_path) and not reviewed_context_line(line) for line, file_path in matching_lines):
             risky_commits.append(current_sha)
-        sample_line = next((line for line in matching_lines if not fixture_like_line(line) and not reviewed_context_line(line)), matching_lines[0])
+        sample_line, sample_file = next(
+            ((line, file_path) for line, file_path in matching_lines if not fixture_like_line(line, file_path) and not reviewed_context_line(line)),
+            matching_lines[0],
+        )
         sample = {
             "commit": current_sha,
             "sample": compact_sample(sample_line),
-            "fixture_like": fixture_like_line(sample_line),
+            "fixture_like": fixture_like_line(sample_line, sample_file),
         }
         if len(samples) < max_samples:
             samples.append(sample)
@@ -199,8 +204,12 @@ def scan_history_text(history: str, rule: AuditRule, *, max_samples: int) -> tup
             flush()
             current_sha = line.removeprefix("commit:").strip()
             current_lines = []
+            current_file = ""
+        elif line.startswith("+++ b/"):
+            current_file = line.removeprefix("+++ b/").strip()
+            current_lines.append((line, current_file))
         else:
-            current_lines.append(line)
+            current_lines.append((line, current_file))
     flush()
     return commits, risky_commits, samples
 

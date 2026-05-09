@@ -1,0 +1,74 @@
+title = "Luum Cognitive OS gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Reviewed prelaunch audit reports quote fixture-like historical samples"
+condition = "AND"
+paths = [
+  '''^docs/reports/prelaunch-history-audit-[0-9T]+Z\.(json|md)$''',
+]
+regexes = [
+  '''sk-qwenSECRET1234567890''',
+  '''AKIAABCDEFGHIJKLMNOP''',
+]
+
+[[allowlists]]
+description = "Reviewed test fixtures intentionally exercise credential detectors and redaction"
+condition = "AND"
+paths = [
+  '''^tests/behavior/test_history_sanitization_smoke\.py$''',
+  '''^tests/integration/test_code_review_engram\.py$''',
+  '''^tests/integration/test_mcp_server_functional\.py$''',
+  '''^tests/unit/test_code_reviewer\.py$''',
+  '''^tests/unit/test_cos_mcp_server\.py$''',
+  '''^tests/unit/test_credential_safe_run\.py$''',
+  '''^tests/unit/test_engram_crystallizer\.py$''',
+  '''^tests/unit/test_llm_status\.py$''',
+  '''^tests/unit/test_peer_card\.py$''',
+  '''^cmd/cos/internal/security/audit_test\.go$''',
+  '''^internal/validator/impl/content_policy_test\.go$''',
+]
+regexes = [
+  '''COS_HISTORY_SANITIZE_TEST_TOKEN_A''',
+  '''absent-xyz-123''',
+  '''ALIBABA_QWEN_API_KEY''',
+  '''OPENAI_API_KEY=sk-abc123456789abcdefghi''',
+  '''topic_key": "test/key/crystallized''',
+  '''test/key/crystallized''',
+  '''api_key = "sk-live-abc123def456"''',
+  '''API_KEY = "sk-1234567890abcdef1234567890abcdef"''',
+  '''api_key = "sk-abc123456789012345678"''',
+  '''api_key = "sk-1234567890abcdef1234567890abcdef"''',
+  '''key = "AKIA1234567890ABCDEF"''',
+  '''AKIA1234567890ABCDEF''',
+  '''api_key = "sk-12345678901234567890"''',
+  '''API_KEY=secret123456789abcdef''',
+  '''secret123456789abcdef''',
+  '''api_key: "sk-1234567890abcdef"''',
+  '''key = AKIAABCDEFGHIJKLMNOP''',
+  '''AKIAABCDEFGHIJKLMNOP''',
+  '''sk-[A-Za-z0-9_-]{10,}''',
+]
+
+[[allowlists]]
+description = "Reviewed documentation examples use non-routable placeholder webhook IDs"
+condition = "AND"
+paths = [
+  '''^docs/getting-started\.md$''',
+]
+regexes = [
+  '''https://hooks\.slack\.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX''',
+]
+
+[[allowlists]]
+description = "Reviewed repo-scout prose false positive for gh api wording"
+condition = "AND"
+paths = [
+  '''^docs/research/repo-scout/deep/praetorian-inc__augustus-2026-05-06\.md$''',
+]
+regexes = [
+  '''gh api recursive tree''',
+  '''internal/probes''',
+]

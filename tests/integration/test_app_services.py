@@ -14,9 +14,7 @@ Requires:
     pip install testcontainers pytest
     Docker daemon running
 """
-import json
 import os
-import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -47,6 +45,8 @@ pytestmark = [
         ),
     ),
 ]
+
+LANGFUSE_DB_PASSWORD = "langfuse_pass"
 
 
 # ---------------------------------------------------------------------------
@@ -266,7 +266,7 @@ class TestLangfuseWebService:
 
     # --- Langfuse common env vars (mirrors &langfuse-env YAML anchor) ---
     _LANGFUSE_ENV = {
-        "DATABASE_URL": "postgresql://langfuse:<db-password>@langfuse-pg:5432/langfuse",
+        "DATABASE_URL": f"postgresql://langfuse:{LANGFUSE_DB_PASSWORD}@langfuse-pg:5432/langfuse",
         "NEXTAUTH_URL": "http://localhost:3100",
         "NEXTAUTH_SECRET": "test_secret_32chars_minimum_length",
         "SALT": "test_salt_32chars_minimum_length_x",
@@ -361,7 +361,7 @@ class TestLangfuseWorkerService:
         network = langfuse_app_infra["network"]
 
         langfuse_env = {
-            "DATABASE_URL": "postgresql://langfuse:<db-password>@langfuse-pg:5432/langfuse",
+            "DATABASE_URL": f"postgresql://langfuse:{LANGFUSE_DB_PASSWORD}@langfuse-pg:5432/langfuse",
             "NEXTAUTH_URL": "http://localhost:3100",
             "NEXTAUTH_SECRET": "test_secret_32chars_minimum_length",
             "SALT": "test_salt_32chars_minimum_length_x",
@@ -435,7 +435,7 @@ class TestLangfuseWorkerService:
         while time.monotonic() < deadline:
             try:
                 req = urllib.request.Request(url, method="GET")
-                with urllib.request.urlopen(req, timeout=5) as resp:
+                with urllib.request.urlopen(req, timeout=5):
                     reachable = True
                     break
             except urllib.error.HTTPError:
