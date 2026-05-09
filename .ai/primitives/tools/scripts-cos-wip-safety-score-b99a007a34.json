@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-wip-safety-score",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "control-plane-smoke-and-unit-tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "control-plane-smoke-and-unit-tests",
+    "evidence_commands": [
+      "scripts/cos-wip-safety-score",
+      "python3 -m pytest tests/unit/test_boring_reliability_tools.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-117",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-wip-safety-score",
+  "projection_targets": [
+    "scripts/cos-wip-safety-score",
+    "scripts/cos_wip_safety_score.py",
+    "docs/architecture/boring-reliability-control-plane.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-wip-safety-score",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

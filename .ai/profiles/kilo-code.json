@@ -1,0 +1,30 @@
+{
+  "adapter_directory": "adapters/kilo-code",
+  "contract_projection_fidelity": [],
+  "display_name": "Kilo Code",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "kilo-code",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Kilo project files proof only; no account-backed runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "Permission settings are placeholders and do not grant tools by default."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "rules",
+    "mcp-placeholder-in-kilo-jsonc",
+    "settings-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "kilo-rules-agents-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".kilocode/rules/cognitive-os.md",
+    ".kilo/kilo.jsonc"
+  ],
+  "status": "implemented"
+}

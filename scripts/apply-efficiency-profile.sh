@@ -15,6 +15,7 @@
 #
 # ── Hooks delegated to settings-driver-claude-code.sh (ADR-095 Phase 2) ──────
 # tool-sequence-capture.sh  — PostToolUse[*]; appends JSONL to tool-sequences.jsonl
+# codebase-itinerary-capture.sh  — PostToolUse[Read|Grep|Glob|LS]; appends content-free access metadata
 # aci-observation-capture.sh  — PostToolUse[*]; appends normalized ACI + trajectory JSONL
 # skill-synthesis-scanner.sh  — Stop; 30-min cooldown synthesis scanner
 # ─────────────────────────────────────────────────────────────────────────────
@@ -207,6 +208,7 @@ echo "  PreToolUse Bash|Edit|Write: secret-detector.sh (redaction); Edit|Write a
 echo "  PreToolUse Agent: dispatch-gate.sh, clarification-gate.sh, blast-radius.sh, inject-phase-context.sh, agent-working-dir-inject.sh, query-tailored-context-inject.sh, control-plane-audit.sh, agent-prelaunch.sh, error-pattern-detector.sh, prompt-quality-llm.sh, token-budget-monitor.sh, adaptive-bypass.sh, predev-completeness-check.sh, completeness-check.sh, reinvention-check.sh, pre-agent-snapshot.sh, native-agent-heartbeat.sh, agent-launch-confirmed.sh"
 echo "  PostToolUse * (early): private-mode-metrics-gate.sh"
 echo "  PostToolUse *: context-watchdog.sh, rate-limit-detector.sh, tool-sequence-capture.sh, aci-observation-capture.sh"
+echo "  PostToolUse Read|Grep|Glob|LS: codebase-itinerary-capture.sh"
 echo "  PostToolUse Bash: error-pipeline.sh, result-truncator.sh, rate-limit-drain.sh, audit-id-enricher.sh, post-git-orphan-notifier.sh"
 echo "  PostToolUse Bash|Edit|Write: auto-checkpoint.sh (async)"
 echo "  PostToolUse Edit|Write: content-policy.sh, ai-provider-identity-guard.sh, skill-frontmatter-validator.sh, rule-frontmatter-validator.sh, hook-header-validator.sh, adr-section-validator.sh, confidentiality-enforcer.sh, scope-creep-detector.sh, surface-fix-detector.sh, doc-sync-detector.sh (async)"

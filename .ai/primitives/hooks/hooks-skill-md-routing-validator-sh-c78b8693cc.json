@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/skill-md-routing-validator.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "skill-routing-metadata-warning",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "skill-routing-metadata-warning",
+    "evidence_commands": [
+      "bash -n hooks/skill-md-routing-validator.sh",
+      "python3 -m pytest tests/unit -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/skill-routing-validator.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-174",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/skill-md-routing-validator.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/skill-md-routing-validator.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/skill-md-routing-validator.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

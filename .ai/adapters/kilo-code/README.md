@@ -1,0 +1,24 @@
+# Kilo Code portable `.ai` adapter
+
+Schema: `portable-ai-adapter.v1`
+
+This adapter is generated from Cognitive OS canonical primitive manifests.
+It must not invent primitive behavior or overclaim runtime enforcement.
+
+## Current projection
+
+- harness id: `kilo-code`
+- status: `implemented`
+- proof level: `structural`
+- projection mode: `kilo-rules-agents-mcp`
+
+## Settings paths
+
+- `AGENTS.md`
+- `.kilocode/rules/cognitive-os.md`
+- `.kilo/kilo.jsonc`
+
+## Rule
+
+Read `.ai/profiles/kilo-code.json` for declared fidelity before projecting primitives into this host.
+Structural advisory surfaces are not runtime enforcement.

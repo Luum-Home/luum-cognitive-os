@@ -1,0 +1,46 @@
+{
+  "canonical_source": "hooks/consequence-evaluator.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "hook-enforced projection for consequence evaluation rule exclusion",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "hook-enforced projection for consequence evaluation rule exclusion",
+    "evidence_commands": [
+      "bash -n hooks/consequence-evaluator.sh",
+      "python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-144",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/consequence-evaluator.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "cognitive-os.yaml",
+    "hooks/consequence-evaluator.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/consequence-evaluator.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

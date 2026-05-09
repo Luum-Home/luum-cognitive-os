@@ -1,0 +1,106 @@
+{
+  "canonical_source": "hooks/destructive-rm-blocker.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "warn",
+      "preferred": "block",
+      "reason_codes": [
+        "destructive_rm_op",
+        "destructive_file_erasure",
+        "tracked_file_truncation"
+      ]
+    },
+    "contract_id": "destructive-rm-blocker",
+    "impact": {
+      "consumer_fleet": "install-update-risk",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Block destructive recursive file erasure and truncation patterns before execution.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Bash hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "Codex Bash hook plus governed guard where available"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "ci-enforced",
+        "surface": "shell/CI policy command lane"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "inspect_agent_context",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "command_patterns": [
+        "rm -rf|-fr|-r|-R|--recursive",
+        "redirect truncation of tracked files",
+        "truncate -s 0",
+        "cp /dev/null",
+        "dd of= with zero or empty input"
+      ],
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "static-exit2-detected; chaos-tested agent-context file-erasure blocker",
+    "evidence_commands": [
+      "bash -n hooks/destructive-rm-blocker.sh",
+      "python3 -m pytest tests/chaos/test_destructive_rm_blocker.py tests/chaos/test_safety_drill.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/rm-op-blocks.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-126",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "destructive-rm-blocker",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/destructive-rm-blocker.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/destructive-rm-blocker.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

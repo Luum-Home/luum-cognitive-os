@@ -1,0 +1,48 @@
+{
+  "canonical_source": "manifests/primitive-scope-classification.yaml",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "scope-classification governance manifest with contract, integration, and red-team tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "scope-classification governance manifest with contract, integration, and red-team tests",
+    "evidence_commands": [
+      "python3 -m pytest tests/contracts/test_primitive_scope_governance.py tests/unit/test_primitive_scope_governance.py -q",
+      "python3 -m pytest tests/contracts/test_primitive_scope_classification.py tests/integration/test_install_scope.py tests/red_team/portability/test_scope-marker-portability-gate.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "manifest",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-019",
+    "risk_class": "blocking",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "manifests/primitive-scope-classification.yaml",
+  "projection_targets": [
+    "install scope filtering",
+    "primitive readiness ledgers",
+    "portability gates"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "manifests/primitive-scope-classification.yaml",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

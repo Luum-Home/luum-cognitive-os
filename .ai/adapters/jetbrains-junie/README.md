@@ -1,0 +1,23 @@
+# JetBrains Junie portable `.ai` adapter
+
+Schema: `portable-ai-adapter.v1`
+
+This adapter is generated from Cognitive OS canonical primitive manifests.
+It must not invent primitive behavior or overclaim runtime enforcement.
+
+## Current projection
+
+- harness id: `jetbrains-junie`
+- status: `implemented`
+- proof level: `structural`
+- projection mode: `junie-agents-md`
+
+## Settings paths
+
+- `.junie/AGENTS.md`
+- `.junie/README.md`
+
+## Rule
+
+Read `.ai/profiles/jetbrains-junie.json` for declared fidelity before projecting primitives into this host.
+Structural advisory surfaces are not runtime enforcement.

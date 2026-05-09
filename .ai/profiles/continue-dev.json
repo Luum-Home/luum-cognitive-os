@@ -1,0 +1,27 @@
+{
+  "adapter_directory": "adapters/continue-dev",
+  "contract_projection_fidelity": [],
+  "display_name": "Continue.dev",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "continue-dev",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Continue rules/MCP placeholder proof only; no account-backed IDE runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "MCP servers are intentionally empty placeholders."
+  ],
+  "projected_surfaces": [
+    "rules",
+    "mcp-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "continue-rules-mcpservers",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".continue/rules/cognitive-os.md",
+    ".continue/mcpServers/cognitive-os.json"
+  ],
+  "status": "implemented"
+}

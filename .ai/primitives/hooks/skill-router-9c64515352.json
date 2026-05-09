@@ -1,0 +1,107 @@
+{
+  "canonical_source": "hooks/skill-router-bash-gate.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "skill_route_available",
+        "dependency_update_bypass",
+        "tool_discovery_bypass"
+      ]
+    },
+    "contract_id": "skill-router",
+    "impact": {
+      "consumer_fleet": "install-update-risk",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Route raw shell/tool activity toward the appropriate COS skill or block high-risk bypasses.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Bash hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "Codex Bash hook plus governed guard where available"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "ci-enforced",
+        "surface": "shell/CI audit and routing checks"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "route_skill",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "command_patterns": [
+        "dependency manager upgrades",
+        "known ad-hoc tool choices with existing COS primitives",
+        "commands matching high-confidence skill routing patterns"
+      ],
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "deterministic Bash dependency-upgrade bypass gate plus optional skill suggestion",
+    "evidence_commands": [
+      "bash -n hooks/skill-router-bash-gate.sh",
+      "python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-144",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "skill-router",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "cognitive-os.yaml",
+    "hooks/skill-router-bash-gate.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/skill-router-bash-gate.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "canonical_source": "packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides orchestrator-to-agent signaling when Valkey is disabled or unavailable.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Filesystem interrupt sentinel plus control.jsonl/answer.jsonl fallback provides orchestrator-to-agent signaling when Valkey is disabled or unavailable.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_agent_bus.py tests/integration/test_orchestrator_cli.py -q"
+    ],
+    "metrics_file": ".cognitive-os/agent-bus/*/control.jsonl"
+  },
+  "family": "library",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-042",
+    "risk_class": "blocking",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt",
+  "projection_targets": [
+    "packages/agent-coordination/lib/agent_bus.py",
+    "hooks/agent-control-inbound-guard.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "packages/agent-coordination/lib/agent_bus.py#filesystem-interrupt",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

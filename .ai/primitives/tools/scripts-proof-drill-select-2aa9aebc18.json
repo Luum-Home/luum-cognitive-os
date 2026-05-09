@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/proof-drill-select",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "governed opt-in proof-drill selector; does not execute selected commands by default",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "governed opt-in proof-drill selector; does not execute selected commands by default",
+    "evidence_commands": [
+      "bash -n scripts/proof-drill-select",
+      "python3 -m py_compile scripts/proof_drill_select.py"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-166",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/proof-drill-select",
+  "projection_targets": [
+    "scripts/proof-drill-select",
+    "scripts/proof_drill_select.py",
+    "manifests/proof-drill-registry.yaml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/proof-drill-select",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

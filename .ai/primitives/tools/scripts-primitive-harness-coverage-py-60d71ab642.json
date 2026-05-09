@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/primitive_harness_coverage.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "machine-readable harness implementation coverage report separates scope intent from IDE/harness execution evidence",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "machine-readable harness implementation coverage report separates scope intent from IDE/harness execution evidence",
+    "evidence_commands": [
+      "python3 scripts/primitive_harness_coverage.py --project-dir .",
+      "python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-189",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/primitive_harness_coverage.py",
+  "projection_targets": [
+    "docs/reports/primitive-harness-coverage-latest.json",
+    "docs/reports/primitive-harness-coverage-latest.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/primitive_harness_coverage.py",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

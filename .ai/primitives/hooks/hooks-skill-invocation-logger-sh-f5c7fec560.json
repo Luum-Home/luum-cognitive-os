@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/skill-invocation-logger.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/skill-invocation-logger.sh",
+      "python3 -m pytest tests/integration/test_auto_trigger_honoured.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/skill-invocations.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/skill-invocation-logger.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/skill-invocation-logger.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/skill-invocation-logger.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

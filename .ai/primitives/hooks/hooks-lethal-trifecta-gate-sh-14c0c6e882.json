@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/lethal-trifecta-gate.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "static-exit2-detected; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "static-exit2-detected; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/lethal-trifecta-gate.sh",
+      "python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_lethal_trifecta_gate.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/lethal-trifecta.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-126",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/lethal-trifecta-gate.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/lethal-trifecta-gate.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/lethal-trifecta-gate.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/session-wrapup-trigger.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/session-wrapup-trigger.sh",
+      "python3 -m pytest tests/integration/test_auto_trigger_honoured.py tests/hooks/test_session_wrapup_trigger.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/auto-trigger-events.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/session-wrapup-trigger.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/session-wrapup-trigger.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/session-wrapup-trigger.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

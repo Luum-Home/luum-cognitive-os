@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-boring-reliability",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "aggregate-control-plane-smoke",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "aggregate-control-plane-smoke",
+    "evidence_commands": [
+      "scripts/cos-boring-reliability --profile core",
+      "python3 -m pytest tests/unit/test_boring_reliability_tools.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-125",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-boring-reliability",
+  "projection_targets": [
+    "scripts/cos-boring-reliability",
+    "scripts/cos_boring_reliability.py",
+    "docs/architecture/boring-reliability-control-plane.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-boring-reliability",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

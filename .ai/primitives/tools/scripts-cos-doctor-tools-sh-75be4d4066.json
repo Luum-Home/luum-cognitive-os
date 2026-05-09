@@ -1,0 +1,45 @@
+{
+  "canonical_source": "scripts/cos-doctor-tools.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "protected install/profile surface; surface=harness-doctor; primitive-readiness-ledger priority=protected",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "protected install/profile surface; surface=harness-doctor; primitive-readiness-ledger priority=protected",
+    "evidence_commands": [
+      "bash -n scripts/cos-doctor-tools.sh",
+      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-146",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-doctor-tools.sh",
+  "projection_targets": [
+    "scripts/cos-doctor-tools.sh",
+    "manifests/primitive-readiness-protected-install-surfaces.yaml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-doctor-tools.sh",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

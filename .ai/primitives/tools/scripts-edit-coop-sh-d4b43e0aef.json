@@ -1,0 +1,44 @@
+{
+  "canonical_source": "scripts/edit-coop.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=20",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=20",
+    "evidence_commands": [
+      "bash -n scripts/edit-coop.sh",
+      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-146",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/edit-coop.sh",
+  "projection_targets": [
+    "scripts/edit-coop.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/edit-coop.sh",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

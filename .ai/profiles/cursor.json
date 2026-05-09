@@ -1,0 +1,57 @@
+{
+  "adapter_directory": "adapters/cursor",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-git-blocker",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-rm-blocker",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "reinvention-check",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "large-file-advisor",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-router",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    }
+  ],
+  "display_name": "Cursor",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "cursor",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural project rule/MCP file proof only; no Cursor account-backed runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed."
+  ],
+  "projected_surfaces": [
+    "rules",
+    "instructions",
+    "mcp-placeholder",
+    "skills-reference"
+  ],
+  "projection_mode": "cursor-project-rules-and-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".cursor/rules/cognitive-os.mdc",
+    ".cursor/mcp.json"
+  ],
+  "status": "implemented"
+}

@@ -557,6 +557,15 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/aci-observation-capture.sh\""
           }
         ]
+      },
+      {
+        "matcher": "Read|Grep|Glob|LS",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/codebase-itinerary-capture.sh\""
+          }
+        ]
       }
     ],
     "Stop": [

@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-demotion-loop-audit",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "demotion-loop maturity audit with tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "demotion-loop maturity audit with tests",
+    "evidence_commands": [
+      "scripts/cos-demotion-loop-audit --json",
+      "python3 -m pytest tests/audit/test_demotion_loop_audit.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-demotion-loop-audit",
+  "projection_targets": [
+    "scripts/cos-demotion-loop-audit",
+    "scripts/cos_demotion_loop_audit.py",
+    "docs/adrs/ADR-126-agentic-primitive-lifecycle-governor.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-demotion-loop-audit",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

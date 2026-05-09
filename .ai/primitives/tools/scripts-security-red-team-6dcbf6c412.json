@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/security-red-team",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring, and mitigation backlog generation.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Opt-in security red-team workflow runner for inventory, threat modeling, abuse probes, risk scoring, and mitigation backlog generation.",
+    "evidence_commands": [
+      "bash -n scripts/security-red-team",
+      "python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/security-red-team-latest.json"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-164",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/security-red-team",
+  "projection_targets": [
+    "scripts/security-red-team",
+    "scripts/security_red_team.py",
+    "manifests/security-red-team.yaml",
+    "docs/security/security-red-team.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/security-red-team",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

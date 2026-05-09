@@ -1,0 +1,26 @@
+{
+  "adapter_directory": "adapters/warp",
+  "contract_projection_fidelity": [],
+  "display_name": "Warp Agent",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "warp",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural AGENTS.md project-rules proof only; no account-backed Warp runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "COS does not write user-global Warp rules."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "agents-md-project-rules",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".warp/README.md"
+  ],
+  "status": "implemented"
+}

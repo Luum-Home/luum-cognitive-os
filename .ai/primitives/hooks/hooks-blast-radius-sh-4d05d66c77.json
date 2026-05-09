@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/blast-radius.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "observe-only-metrics; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "observe-only-metrics; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/blast-radius.sh",
+      "python3 -m pytest tests/unit/test_blast_radius_additional_context.py tests/unit/test_capability_levels.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/blast-radius.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "observe",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "observe",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/blast-radius.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/blast-radius.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/blast-radius.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

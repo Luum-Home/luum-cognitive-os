@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/task-created.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "static-exit2-detected; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "static-exit2-detected; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/task-created.sh",
+      "python3 -m pytest tests/integration/test_harness_driver_parity.py tests/hooks/test_agent_teams_hooks.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/task-created.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-126",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/task-created.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/task-created.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/task-created.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/completion-gate.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/completion-gate.sh",
+      "python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_completion_gate_perf.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/auto-verify.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/completion-gate.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/completion-gate.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/completion-gate.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

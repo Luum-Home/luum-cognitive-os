@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/adr-relevance-suggest.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "context-suggestion",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "context-suggestion",
+    "evidence_commands": [
+      "bash -n hooks/adr-relevance-suggest.sh",
+      "python3 -m pytest tests/unit -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/adr-relevance.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-181",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/adr-relevance-suggest.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/adr-relevance-suggest.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/adr-relevance-suggest.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

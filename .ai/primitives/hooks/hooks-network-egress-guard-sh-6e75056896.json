@@ -1,0 +1,48 @@
+{
+  "canonical_source": "hooks/network-egress-guard.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "PreToolUse Bash guard blocks exfiltration-shaped external network commands unless COS_ALLOW_NETWORK_EGRESS is explicitly enabled.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "PreToolUse Bash guard blocks exfiltration-shaped external network commands unless COS_ALLOW_NETWORK_EGRESS is explicitly enabled.",
+    "evidence_commands": [
+      "bash -n hooks/network-egress-guard.sh",
+      "python3 -m py_compile scripts/network_egress_guard.py",
+      "python3 -m pytest tests/security/test_boundary_enforcement_p0.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-164",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/network-egress-guard.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/network-egress-guard.sh",
+    "scripts/network_egress_guard.py",
+    "manifests/network-egress-policy.yaml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/network-egress-guard.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

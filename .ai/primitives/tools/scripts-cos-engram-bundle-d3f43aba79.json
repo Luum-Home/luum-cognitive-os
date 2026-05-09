@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-engram-bundle",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "portable Engram bundle export/import-propose covered by tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "portable Engram bundle export/import-propose covered by tests",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_cross_instance_learning.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-136",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-engram-bundle",
+  "projection_targets": [
+    "scripts/cos-engram-bundle",
+    "scripts/cos-engram-import-propose",
+    "scripts/cos_cross_instance_learning.py",
+    "lib/cross_instance_learning.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-engram-bundle",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

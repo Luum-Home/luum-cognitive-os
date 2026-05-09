@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/session-init.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "metrics-emitting-advisory; core-sessionstart-session-marker",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; core-sessionstart-session-marker",
+    "evidence_commands": [
+      "bash -n hooks/session-init.sh",
+      "python3 -m pytest tests/unit/test_capability_level5.py tests/unit/test_catalog_loading.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/<dynamic>.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/session-init.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/session-init.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/session-init.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

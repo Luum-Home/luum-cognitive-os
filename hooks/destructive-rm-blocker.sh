@@ -38,6 +38,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="destructive-rm-blocker"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/primitive-intervention.sh"
 source "$(dirname "$0")/_lib/agent-context.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
@@ -279,6 +280,17 @@ esc_cmd=${esc_cmd//\"/\\\"}
 esc_cmd=$(echo "$esc_cmd" | head -c 500 | tr '\n\r' '  ')
 esc_type=${HIT_TYPE//\"/\\\"}
 
+_rm_emit_intervention() {
+  primitive_intervention_emit \
+    "destructive-rm-blocker" \
+    "hooks/destructive-rm-blocker.sh" \
+    "$1" \
+    "destructive_file_op" \
+    "${HIT_TYPE:-file-erasure}" \
+    ".cognitive-os/metrics/rm-op-blocks.jsonl" \
+    "Bash" 2>/dev/null || true
+}
+
 if _is_agent_context; then
   # Agent context → BLOCK
   echo "" >&2
@@ -295,6 +307,7 @@ if _is_agent_context; then
   ENTRY=$(printf '{"timestamp":"%s","event":"blocked","agent_id":"%s","op":"%s","command":"%s"}' \
     "$TIMESTAMP" "$AGENT_ID" "$esc_type" "$esc_cmd")
   safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+  _rm_emit_intervention "block"
 
   exit 2
 fi
@@ -309,5 +322,6 @@ echo "" >&2
 ENTRY=$(printf '{"timestamp":"%s","event":"warned","agent_id":"","op":"%s","command":"%s"}' \
   "$TIMESTAMP" "$esc_type" "$esc_cmd")
 safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+_rm_emit_intervention "warn"
 
 exit 0

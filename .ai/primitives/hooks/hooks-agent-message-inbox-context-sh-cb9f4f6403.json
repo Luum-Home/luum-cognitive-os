@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/agent-message-inbox-context.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "context-injection",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "context-injection",
+    "evidence_commands": [
+      "bash -n hooks/agent-message-inbox-context.sh",
+      "python3 -m pytest tests/unit -q"
+    ],
+    "metrics_file": ".cognitive-os/coordination/agent-messages.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-185",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/agent-message-inbox-context.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/agent-message-inbox-context.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/agent-message-inbox-context.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

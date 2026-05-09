@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-export-consumer-evidence",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "consumer evidence export covered by cross-instance runway tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "consumer evidence export covered by cross-instance runway tests",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_cross_instance_learning.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-136",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-export-consumer-evidence",
+  "projection_targets": [
+    "scripts/cos-export-consumer-evidence",
+    "scripts/cos_cross_instance_learning.py",
+    "lib/cross_instance_learning.py",
+    "manifests/external-adoption-evidence.yaml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-export-consumer-evidence",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

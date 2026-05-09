@@ -1,0 +1,44 @@
+{
+  "canonical_source": "scripts/radar_merge.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=4",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "primitive-readiness lifecycle backlog closure; priority=high; role_source=usage:skill; skill_consumers=1; total_consumers=4",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/radar_merge.py",
+      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-146",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/radar_merge.py",
+  "projection_targets": [
+    "scripts/radar_merge.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/radar_merge.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

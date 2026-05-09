@@ -1,0 +1,44 @@
+{
+  "canonical_source": "scripts/cos-test-efficiency-plan",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Generates targeted test plans from git changes or failure logs before heavy laptop validation.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Generates targeted test plans from git changes or failure logs before heavy laptop validation.",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_test_efficiency_planner.py tests/behavior/test_cos_test_efficiency_plan_cli.py tests/audit/test_test_execution_efficiency_manifest.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/test-runs/*"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-237",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-test-efficiency-plan",
+  "projection_targets": [
+    "scripts/cos-test-efficiency-plan",
+    ".codex/skills/test-efficiency/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-test-efficiency-plan",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

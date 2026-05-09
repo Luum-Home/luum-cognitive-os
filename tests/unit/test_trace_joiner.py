@@ -52,3 +52,24 @@ def test_build_run_trace_joins_streams_without_raw_private_payload(tmp_path):
     assert (tmp_path / ".cognitive-os" / "runs" / "fixture-session" / "trace.json").exists()
     assert (tmp_path / ".cognitive-os" / "metrics" / "run-trace.jsonl").exists()
     assert (tmp_path / ".cognitive-os" / "reports" / "run-trace-latest.json").exists()
+
+
+def test_build_run_trace_includes_codebase_itinerary_as_ref_only_stream(tmp_path):
+    metrics = tmp_path / ".cognitive-os" / "metrics"
+    metrics.mkdir(parents=True)
+    (metrics / "codebase-itinerary.jsonl").write_text(
+        '{"timestamp":"2026-05-06T00:00:03Z","session_id":"fixture-session","tool":"Grep","action_kind":"search","target_ref":{"hash_sha256_12":"abc123"},"selector_ref":{"kind":"grep-pattern","hash_sha256_12":"def456"}}\n',
+        encoding="utf-8",
+    )
+
+    payload = build_run_trace(tmp_path, session_id="fixture-session")
+
+    assert payload["event_count"] == 1
+    assert payload["streams"] == {"codebase-itinerary": 1}
+    assert payload["privacy_policy"]["private_content_streams"] == [
+        "private-content-access",
+        "codebase-itinerary",
+    ]
+    event = payload["events"][0]
+    assert event["stream"] == "codebase-itinerary"
+    assert event["private_content_ref_only"] is True

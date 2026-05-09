@@ -1,0 +1,46 @@
+{
+  "canonical_source": "skills/agent-control/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Operator skill routes natural-language requests like stop agent, answer agent, kill hung agent, list live agents, and scan stale agents to governed orchestrator verbs.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Operator skill routes natural-language requests like stop agent, answer agent, kill hung agent, list live agents, and scan stale agents to governed orchestrator verbs.",
+    "evidence_commands": [
+      "python3 -m pytest tests/contracts/test_agent_control_primitive_lifecycle.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/skill-router.jsonl"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-042",
+    "risk_class": "mutating",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "skills/agent-control/SKILL.md",
+  "projection_targets": [
+    "skills/agent-control/SKILL.md",
+    "scripts/orchestrator.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "skills/agent-control/SKILL.md",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

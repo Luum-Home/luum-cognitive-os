@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/orchestrator-decision-trace.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "records orchestrator adoption or rejection of skill suggestions",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "records orchestrator adoption or rejection of skill suggestions",
+    "evidence_commands": [
+      "bash -n hooks/orchestrator-decision-trace.sh",
+      "python3 -m pytest tests/unit -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/orchestrator-decision-trace.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-176",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/orchestrator-decision-trace.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/orchestrator-decision-trace.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/orchestrator-decision-trace.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

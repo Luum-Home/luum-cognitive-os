@@ -1,0 +1,47 @@
+{
+  "canonical_source": "hooks/agent-control-inbound-guard.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.",
+    "evidence_commands": [
+      "bash -n hooks/agent-control-inbound-guard.sh",
+      "python3 -m pytest tests/unit/test_agent_control_policy.py tests/integration/test_agent_control_inbound_guard.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/agent-control-inbound.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-042",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/agent-control-inbound-guard.sh",
+  "projection_targets": [
+    "hooks/agent-control-inbound-guard.sh",
+    "scripts/_lib/settings-driver-claude-code.sh",
+    "templates/security-profiles/standard.json"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/agent-control-inbound-guard.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

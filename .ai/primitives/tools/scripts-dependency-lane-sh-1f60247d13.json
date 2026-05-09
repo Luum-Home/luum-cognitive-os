@@ -1,0 +1,44 @@
+{
+  "canonical_source": "scripts/dependency-lane.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Splits dependency-sensitive checks into an explicit lane for adoption and license/security validation.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Splits dependency-sensitive checks into an explicit lane for adoption and license/security validation.",
+    "evidence_commands": [
+      "bash -n scripts/dependency-lane.sh",
+      "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/dependency-lane/*.json"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-145",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/dependency-lane.sh",
+  "projection_targets": [
+    "scripts/dependency-lane.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/dependency-lane.sh",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

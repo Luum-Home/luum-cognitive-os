@@ -1,0 +1,29 @@
+{
+  "adapter_directory": "adapters/kimi-code",
+  "contract_projection_fidelity": [],
+  "display_name": "Kimi Code",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "kimi-code",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Kimi Code CLI project-context proof only; no account-backed CLI runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "MCP config is an empty placeholder until an operator or profile configures concrete servers."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "mcp-placeholder",
+    "cli-workdir-guidance",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "kimi-cli-agents-md-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".kimi/mcp.json",
+    ".kimi/README.md"
+  ],
+  "status": "implemented"
+}

@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-task-submit",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Submits local-command tasks to the Phase 1 service queue with propose-only policy.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Submits local-command tasks to the Phase 1 service queue with propose-only policy.",
+    "evidence_commands": [
+      "bash -n scripts/cos-task-submit",
+      "python3 -m py_compile scripts/cos_service_control_plane.py",
+      "python3 -m pytest tests/unit/test_service_control_plane_local_queue.py tests/contracts/test_service_control_plane_contracts.py -q"
+    ],
+    "metrics_file": ".cognitive-os/service/queue.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "sandbox",
+    "maturity": "observe",
+    "owner_adr": "ADR-091",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-task-submit",
+  "projection_targets": [
+    "scripts/cos-task-submit",
+    "scripts/cos_service_control_plane.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-task-submit",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

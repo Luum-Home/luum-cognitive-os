@@ -618,6 +618,15 @@
             "async": true
           }
         ]
+      },
+      {
+        "matcher": "Read|Grep|Glob|LS",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/codebase-itinerary-capture.sh\""
+          }
+        ]
       }
     ],
     "Stop": [

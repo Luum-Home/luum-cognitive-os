@@ -1,0 +1,44 @@
+{
+  "canonical_source": "scripts/demo-first-run-onboarding.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "primitive-readiness lifecycle backlog closure; priority=medium; role_source=wrapper; skill_consumers=0; total_consumers=5",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "primitive-readiness lifecycle backlog closure; priority=medium; role_source=wrapper; skill_consumers=0; total_consumers=5",
+    "evidence_commands": [
+      "bash -n scripts/demo-first-run-onboarding.sh",
+      "python3 scripts/primitive_readiness_ledger.py --project-dir . --fail-low-confidence"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-146",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/demo-first-run-onboarding.sh",
+  "projection_targets": [
+    "scripts/demo-first-run-onboarding.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/demo-first-run-onboarding.sh",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

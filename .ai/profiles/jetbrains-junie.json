@@ -1,0 +1,26 @@
+{
+  "adapter_directory": "adapters/jetbrains-junie",
+  "contract_projection_fidelity": [],
+  "display_name": "JetBrains Junie",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "jetbrains-junie",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural .junie/AGENTS.md proof only; no account-backed JetBrains IDE runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "MCP is documented through IDE settings and is not generated as a project file until a stable project-local path is signed."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "junie-agents-md",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".junie/AGENTS.md",
+    ".junie/README.md"
+  ],
+  "status": "implemented"
+}

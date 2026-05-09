@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-agent-message",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "unit-tested directed message CLI for auditor to implementer communication",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "unit-tested directed message CLI for auditor to implementer communication",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_agent_message_bus.py tests/contracts/test_agent_message_bus_contract.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/agent-messages.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "pending-sunset",
+    "maturity": "advisory",
+    "owner_adr": "ADR-185",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-agent-message",
+  "projection_targets": [
+    "docs/architecture/agent-message-bus.md",
+    "scripts/cos-agent-message"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-agent-message",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

@@ -38,6 +38,7 @@ DEFAULT_STREAMS = [
     StreamSpec("dispatch-gate", ".cognitive-os/metrics/dispatch-gate.jsonl"),
     StreamSpec("subagent-capability-preflight", ".cognitive-os/metrics/subagent-capability-preflight.jsonl"),
     StreamSpec("private-content-access", ".cognitive-os/metrics/private-content-access.jsonl", private_content_ref_only=True),
+    StreamSpec("codebase-itinerary", ".cognitive-os/metrics/codebase-itinerary.jsonl", private_content_ref_only=True),
     StreamSpec("state-retention", ".cognitive-os/metrics/state-retention.jsonl"),
     StreamSpec("performance-ledger", ".cognitive-os/metrics/performance-ledger.jsonl"),
     StreamSpec("skill-feedback", ".cognitive-os/metrics/skill-feedback.jsonl"),

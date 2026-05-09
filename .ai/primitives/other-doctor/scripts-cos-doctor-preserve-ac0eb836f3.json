@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/cos-doctor-preserve",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "behavior-test; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "behavior-test; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash scripts/cos-doctor-preserve.sh --help >/dev/null",
+      "python3 -m pytest tests/behavior/test_cos_doctor_preserve.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "doctor",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-116",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-doctor-preserve",
+  "projection_targets": [
+    "scripts/cos-doctor-preserve.sh",
+    "docs/architecture/preserve-branch-lifecycle.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-doctor-preserve",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

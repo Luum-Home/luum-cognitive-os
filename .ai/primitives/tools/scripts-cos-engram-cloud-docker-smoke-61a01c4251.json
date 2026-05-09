@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-engram-cloud-docker-smoke",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "opt-in Engram Cloud Docker smoke; requires Docker and Engram and is excluded from default laptop lanes",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "opt-in Engram Cloud Docker smoke; requires Docker and Engram and is excluded from default laptop lanes",
+    "evidence_commands": [
+      "bash -n scripts/cos-engram-cloud-docker-smoke",
+      "python3 -m pytest tests/contracts/test_proof_drill_registry.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-136",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-engram-cloud-docker-smoke",
+  "projection_targets": [
+    "scripts/cos-engram-cloud-docker-smoke",
+    "scripts/engram-sync.sh",
+    "docker/cos-worker/docker-compose.yml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-engram-cloud-docker-smoke",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "description": "Runtime primitive intervention ledger rows; generated overlay reference only.",
+  "privacy": "Do not store raw secrets, tool output, or unredacted command content.",
+  "required_fields": [
+    "schema_version",
+    "session_id",
+    "tool_use_id",
+    "primitive_id",
+    "action_kind",
+    "reason_code"
+  ],
+  "schema_version": "primitive-intervention.v1"
+}

@@ -1,0 +1,60 @@
+{
+  "adapter_profiles": [
+    "profiles/aider.json",
+    "profiles/amp-code.json",
+    "profiles/augment-code.json",
+    "profiles/claude.json",
+    "profiles/cline.json",
+    "profiles/codex.json",
+    "profiles/continue-dev.json",
+    "profiles/cursor.json",
+    "profiles/deepseek-provider.json",
+    "profiles/factory-droid.json",
+    "profiles/gemini-cli.json",
+    "profiles/google-antigravity.json",
+    "profiles/goose.json",
+    "profiles/jetbrains-junie.json",
+    "profiles/kilo-code.json",
+    "profiles/kimi-code.json",
+    "profiles/kiro.json",
+    "profiles/minimax-maxclaw.json",
+    "profiles/opencode.json",
+    "profiles/qoder.json",
+    "profiles/qwen-code.json",
+    "profiles/shell-ci.json",
+    "profiles/vscode-copilot.json",
+    "profiles/warp.json",
+    "profiles/windsurf.json",
+    "profiles/zed-ai.json"
+  ],
+  "canonical_source_of_truth": [
+    "manifests/primitive-contracts.yaml",
+    "manifests/primitive-lifecycle.yaml",
+    "hooks/",
+    "skills/",
+    "rules/",
+    "scripts/"
+  ],
+  "overlay_schema_version": "portable-ai-overlay.v1",
+  "policy": "The `.ai` tree is a generated overlay until ADR-258 Phase 5 decides otherwise.",
+  "primitive_count": 298,
+  "primitive_count_by_family": {
+    "doctor": 1,
+    "hook": 156,
+    "library": 2,
+    "manifest": 4,
+    "script": 133,
+    "skill": 2
+  },
+  "runtime_evidence_streams": [
+    ".cognitive-os/metrics/primitive-interventions.jsonl",
+    ".cognitive-os/metrics/codebase-itinerary.jsonl"
+  ],
+  "schema_version": "portable-ai-context.v1",
+  "source_manifests": [
+    "manifests/primitive-contracts.yaml",
+    "manifests/primitive-lifecycle.yaml",
+    "manifests/harness-projection.yaml"
+  ],
+  "status": "generated-portable-overlay"
+}

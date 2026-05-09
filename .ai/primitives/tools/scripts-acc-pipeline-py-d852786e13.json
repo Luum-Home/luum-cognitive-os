@@ -1,0 +1,45 @@
+{
+  "canonical_source": "scripts/acc_pipeline.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Unified ACC orchestrator consumes readiness ledgers and audit reports; candidate until broader application adapters and Engram bridge are implemented.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Unified ACC orchestrator consumes readiness ledgers and audit reports; candidate until broader application adapters and Engram bridge are implemented.",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/acc_pipeline.py",
+      "python3 scripts/acc_pipeline.py --project-dir . --refresh",
+      "python3 -m pytest tests/unit/test_acc_pipeline.py tests/contracts/test_acc_pipeline_contract.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/acc-pipeline-history.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "observe",
+    "exit_behavior": "manual",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-147",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/acc_pipeline.py",
+  "projection_targets": [
+    "scripts/acc_pipeline.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/acc_pipeline.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

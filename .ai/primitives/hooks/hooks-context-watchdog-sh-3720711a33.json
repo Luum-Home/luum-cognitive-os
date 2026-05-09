@@ -1,0 +1,44 @@
+{
+  "canonical_source": "hooks/context-watchdog.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "one-shot-metrics-emitting-advisory-with-early-checkpoint",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "one-shot-metrics-emitting-advisory-with-early-checkpoint",
+    "evidence_commands": [
+      "bash -n hooks/context-watchdog.sh",
+      "python3 -m pytest tests/behavior/test_compaction_protection.py tests/contracts/test_context_budget_hook_wiring.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/context-watchdog.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "active-advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "active",
+    "maturity": "advisory",
+    "owner_adr": "ADR-186",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/context-watchdog.sh",
+  "projection_targets": [
+    "hooks/context-watchdog.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/context-watchdog.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "adapter_directory": "adapters/windsurf",
+  "contract_projection_fidelity": [],
+  "display_name": "Windsurf",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "windsurf",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Native lifecycle hook semantics are not signed.",
+    "Projection driver has not been implemented."
+  ],
+  "projected_surfaces": [
+    "rules",
+    "skills",
+    "mcp"
+  ],
+  "projection_mode": "ide-rules-or-wrapper",
+  "proof_level": "none",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".windsurf/rules",
+    ".windsurf/mcp.json"
+  ],
+  "status": "planned"
+}

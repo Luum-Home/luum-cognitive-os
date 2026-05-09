@@ -1,0 +1,97 @@
+{
+  "canonical_source": "hooks/large-file-advisor.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "advise",
+      "reason_codes": [
+        "large_file_read",
+        "context_budget_risk"
+      ]
+    },
+    "contract_id": "large-file-advisor",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Advise targeted reads before loading large files into model context.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "PreToolUse Read hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "governed read wrapper when available; otherwise advisory"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future tool.execute.before plugin adapter for read tools"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "no default CI read-tool equivalent"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_read_target_metadata",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "file_size_threshold_bytes": 40000,
+      "kind": "before_tool_call",
+      "tool_intent": "read_file",
+      "tools": [
+        "Read"
+      ]
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/large-file-advisor.sh",
+      "python3 -m pytest tests/behavior/test_large_file_advisor.py tests/hooks/test_hook_basics.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/large-file-reads.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "large-file-advisor",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/large-file-advisor.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/large-file-advisor.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

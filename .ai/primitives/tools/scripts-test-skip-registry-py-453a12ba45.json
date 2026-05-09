@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/test_skip_registry.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "pytest JUnit skip classifier enforced by pytest-with-summary wrapper",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "pytest JUnit skip classifier enforced by pytest-with-summary wrapper",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/test_skip_registry.py",
+      "python3 -m pytest tests/unit/test_test_skip_registry.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/test-runs/*/skip-summary.json"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-166",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/test_skip_registry.py",
+  "projection_targets": [
+    "scripts/test_skip_registry.py",
+    "manifests/test-skip-registry.yaml",
+    "scripts/pytest-with-summary.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/test_skip_registry.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "canonical_source": "hooks/dangerous-env-flag-detector.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Advisory SessionStart detector warns when dangerous COS override flags are active.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Advisory SessionStart detector warns when dangerous COS override flags are active.",
+    "evidence_commands": [
+      "bash -n hooks/dangerous-env-flag-detector.sh",
+      "python3 -m py_compile scripts/dangerous_env_flag_detector.py",
+      "python3 -m pytest tests/security/test_adversarial_p1_p2.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-164",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/dangerous-env-flag-detector.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/dangerous-env-flag-detector.sh",
+    "scripts/dangerous_env_flag_detector.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/dangerous-env-flag-detector.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

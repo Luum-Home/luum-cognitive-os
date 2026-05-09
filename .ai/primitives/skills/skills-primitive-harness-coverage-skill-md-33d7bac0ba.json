@@ -1,0 +1,45 @@
+{
+  "canonical_source": "skills/primitive-harness-coverage/SKILL.md",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "agent-facing procedure for invoking primitive harness coverage instead of inferring parity from SCOPE markers",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "agent-facing procedure for invoking primitive harness coverage instead of inferring parity from SCOPE markers",
+    "evidence_commands": [
+      "python3 -m pytest tests/contracts/test_primitive_harness_coverage_contract.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "skill",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "observe",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "observe",
+    "owner_adr": "ADR-189",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "skills/primitive-harness-coverage/SKILL.md",
+  "projection_targets": [
+    "skills/primitive-harness-coverage/SKILL.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "skills/primitive-harness-coverage/SKILL.md",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

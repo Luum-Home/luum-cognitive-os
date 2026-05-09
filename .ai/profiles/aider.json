@@ -1,0 +1,27 @@
+{
+  "adapter_directory": "adapters/aider",
+  "contract_projection_fidelity": [],
+  "display_name": "Aider",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "aider",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Aider conventions/config proof only; no account-backed runtime/model invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "Aider remains rules/context-only; no MCP or hooks are generated."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "read-config",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "aider-conventions-config",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "CONVENTIONS.md",
+    ".aider.conf.yml"
+  ],
+  "status": "implemented"
+}

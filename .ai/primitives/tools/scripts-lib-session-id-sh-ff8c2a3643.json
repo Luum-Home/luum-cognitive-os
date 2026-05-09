@@ -1,0 +1,45 @@
+{
+  "canonical_source": "scripts/_lib/session-id.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "shared session identity resolution for edit-lock coordination",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "shared session identity resolution for edit-lock coordination",
+    "evidence_commands": [
+      "bash -n scripts/_lib/session-id.sh hooks/edit-lock-drain-parked.sh hooks/edit-lock-process-negotiations.sh scripts/edit-coop.sh",
+      "python3 -m pytest tests/behavior/test_concurrency_safety_ledgers.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-149",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/_lib/session-id.sh",
+  "projection_targets": [
+    "scripts/_lib/session-id.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/_lib/session-id.sh",
+  "supported_harnesses": [
+    "claude",
+    "shell"
+  ]
+}

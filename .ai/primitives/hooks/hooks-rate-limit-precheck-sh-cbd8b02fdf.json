@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/rate-limit-precheck.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "metrics-emitting-advisory",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory",
+    "evidence_commands": [
+      "bash -n hooks/rate-limit-precheck.sh",
+      "python3 -m pytest tests/integration/test_query_tailored_context.py tests/integration/test_rate_limit_precheck_lift.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/rate-limit-precheck.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/rate-limit-precheck.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/rate-limit-precheck.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

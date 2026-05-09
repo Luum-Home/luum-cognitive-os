@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/cos-self-improvement-loop",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "propose-only self-improvement loop with unit tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "propose-only self-improvement loop with unit tests",
+    "evidence_commands": [
+      "scripts/cos-self-improvement-loop --profile core --json",
+      "python3 -m pytest tests/unit/test_self_improvement_loop.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-134",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-self-improvement-loop",
+  "projection_targets": [
+    "scripts/cos-self-improvement-loop",
+    "scripts/cos_self_improvement_loop.py",
+    "lib/self_improvement_loop.py",
+    "docs/adrs/ADR-134-headless-self-improvement-proposer.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-self-improvement-loop",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

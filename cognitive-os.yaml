@@ -1423,6 +1423,12 @@ harness:
       matcher: ""
       scope: os-only
 
+    codebase-itinerary-capture:
+      script: hooks/codebase-itinerary-capture.sh
+      event: PostToolUse
+      matcher: "Read|Grep|Glob|LS"
+      scope: os-only
+
     # ── PostToolUse — Bash only ───────────────────────────────────────────────
     # Codex: limited (Bash matcher only — these project to Codex PostToolUse)
     error-pipeline:

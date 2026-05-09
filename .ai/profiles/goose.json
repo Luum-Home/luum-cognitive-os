@@ -1,0 +1,25 @@
+{
+  "adapter_directory": "adapters/goose",
+  "contract_projection_fidelity": [],
+  "display_name": "Goose",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "goose",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Goose project guidance proof only; no account-backed Goose runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "MCP/server setup remains operator-controlled through Goose CLI/config; COS does not generate a non-official project config file."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "goosehints-project-context",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".goosehints"
+  ],
+  "status": "implemented"
+}

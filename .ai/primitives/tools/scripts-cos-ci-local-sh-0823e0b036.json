@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-ci-local.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "local-ci-quick-smoke",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "local-ci-quick-smoke",
+    "evidence_commands": [
+      "bash scripts/cos-ci-local.sh quick",
+      "python3 -m pytest tests/contracts/test_control_plane_primitives.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-131",
+    "risk_class": "blocking",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-ci-local.sh",
+  "projection_targets": [
+    "scripts/cos-ci-local.sh",
+    "git-hooks/pre-push",
+    "docs/adrs/ADR-131-local-ci-migration.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-ci-local.sh",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

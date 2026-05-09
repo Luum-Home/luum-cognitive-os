@@ -1,0 +1,55 @@
+{
+  "adapter_directory": "adapters/codex",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "destructive-git-blocker",
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "Codex Bash hook plus governed guard where available"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "destructive-rm-blocker",
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "Codex Bash hook plus governed guard where available"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "reinvention-check",
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "governed Edit/Write runner when available; otherwise advisory"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "large-file-advisor",
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "governed read wrapper when available; otherwise advisory"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-router",
+      "fidelity": "governed-wrapper-enforced",
+      "surface": "Codex Bash hook plus governed guard where available"
+    }
+  ],
+  "display_name": "OpenAI Codex",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "codex",
+  "lifecycle_primitives_supporting_harness": 22,
+  "limitations": [
+    "Runtime parity depends on Codex-supported hook/settings semantics.",
+    "Proof currently covers default profile, not full profile."
+  ],
+  "projected_surfaces": [
+    "hooks",
+    "rules",
+    "skills"
+  ],
+  "projection_mode": "settings-file",
+  "proof_level": "native-lifecycle",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".codex/hooks.json"
+  ],
+  "status": "implemented"
+}

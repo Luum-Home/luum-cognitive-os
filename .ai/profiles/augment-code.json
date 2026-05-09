@@ -1,0 +1,29 @@
+{
+  "adapter_directory": "adapters/augment-code",
+  "contract_projection_fidelity": [],
+  "display_name": "Augment / Auggie",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "augment-code",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Augment/Auggie CLI flag input files proof only; no account-backed Augment runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "Files require operator invocation with --rules and --mcp-config; no user-global settings are written."
+  ],
+  "projected_surfaces": [
+    "rules-file-for-cli-flag",
+    "mcp-config-for-cli-flag",
+    "operator-invocation-guidance",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "augment-cli-flags-rules-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".augment/rules/cognitive-os.md",
+    ".augment/mcp.json",
+    ".augment/README.md"
+  ],
+  "status": "implemented"
+}

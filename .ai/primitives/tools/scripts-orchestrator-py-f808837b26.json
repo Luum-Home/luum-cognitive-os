@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/orchestrator.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Orchestrator control CLI exposes list-live, scan-stale, kill-hung, control, and answer verbs over Valkey when enabled and filesystem fallback otherwise.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Orchestrator control CLI exposes list-live, scan-stale, kill-hung, control, and answer verbs over Valkey when enabled and filesystem fallback otherwise.",
+    "evidence_commands": [
+      "python3 -m pytest tests/integration/test_orchestrator_cli.py tests/unit/test_agent_bus.py tests/contracts/test_agent_bus_metrics.py -q"
+    ],
+    "metrics_file": ".cognitive-os/agent-bus/*/control.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-042",
+    "risk_class": "mutating",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/orchestrator.py",
+  "projection_targets": [
+    "scripts/orchestrator.py",
+    "packages/agent-coordination/lib/agent_bus.py",
+    "lib/agent_bus_metrics.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/orchestrator.py",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

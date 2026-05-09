@@ -1,0 +1,26 @@
+{
+  "adapter_directory": "adapters/kiro",
+  "contract_projection_fidelity": [],
+  "display_name": "Kiro",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "kiro",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Official docs expose lifecycle/tool hooks, but COS has not mapped event payloads or generated a project agent configuration yet.",
+    "No runtime smoke or native lifecycle parity is claimed."
+  ],
+  "projected_surfaces": [
+    "steering",
+    "hooks",
+    "mcp",
+    "agents"
+  ],
+  "projection_mode": "kiro-steering-hooks-mcp-investigation",
+  "proof_level": "none",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".kiro/steering",
+    "agent configuration file (exact project path under investigation)"
+  ],
+  "status": "planned"
+}

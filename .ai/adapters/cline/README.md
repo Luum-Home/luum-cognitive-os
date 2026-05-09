@@ -1,0 +1,23 @@
+# Cline portable `.ai` adapter
+
+Schema: `portable-ai-adapter.v1`
+
+This adapter is generated from Cognitive OS canonical primitive manifests.
+It must not invent primitive behavior or overclaim runtime enforcement.
+
+## Current projection
+
+- harness id: `cline`
+- status: `implemented`
+- proof level: `structural`
+- projection mode: `cline-workspace-rules`
+
+## Settings paths
+
+- `.clinerules/cognitive-os.md`
+- `.cline/README.md`
+
+## Rule
+
+Read `.ai/profiles/cline.json` for declared fidelity before projecting primitives into this host.
+Structural advisory surfaces are not runtime enforcement.

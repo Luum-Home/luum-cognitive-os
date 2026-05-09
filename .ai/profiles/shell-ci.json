@@ -1,0 +1,57 @@
+{
+  "adapter_directory": "adapters/shell-ci",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "destructive-git-blocker",
+      "fidelity": "ci-enforced",
+      "surface": "shell/CI policy command lane"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "destructive-rm-blocker",
+      "fidelity": "ci-enforced",
+      "surface": "shell/CI policy command lane"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "reinvention-check",
+      "fidelity": "ci-enforced",
+      "surface": "repository audit/test lane"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "large-file-advisor",
+      "fidelity": "documented-only",
+      "surface": "no default CI read-tool equivalent"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-router",
+      "fidelity": "ci-enforced",
+      "surface": "shell/CI audit and routing checks"
+    }
+  ],
+  "display_name": "Shell / CI",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "shell-ci",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural command/workflow projection and syntax proof only; generated commands may still need project dependencies at runtime.",
+    "The disabled repository CI workflow is not re-enabled by this harness promotion."
+  ],
+  "projected_surfaces": [
+    "scripts",
+    "workflows",
+    "command-drivers"
+  ],
+  "projection_mode": "cli-and-workflows",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".cognitive-os/shell-ci-projection.json",
+    ".github/workflows/cognitive-os-shell-ci.yml",
+    "scripts"
+  ],
+  "status": "implemented"
+}

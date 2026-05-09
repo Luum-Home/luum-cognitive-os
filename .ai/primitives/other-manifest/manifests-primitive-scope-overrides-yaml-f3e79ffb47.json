@@ -1,0 +1,45 @@
+{
+  "canonical_source": "manifests/primitive-scope-overrides.yaml",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "legacy scope override manifest for ADR-189 harness coverage",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "legacy scope override manifest for ADR-189 harness coverage",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_primitive_harness_coverage.py tests/contracts/test_primitive_harness_coverage_contract.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "manifest",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-189",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "manifests/primitive-scope-overrides.yaml",
+  "projection_targets": [
+    "docs/reports/primitive-harness-coverage-latest.json"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "manifests/primitive-scope-overrides.yaml",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

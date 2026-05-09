@@ -1,0 +1,28 @@
+{
+  "adapter_directory": "adapters/gemini-cli",
+  "contract_projection_fidelity": [],
+  "display_name": "Gemini CLI",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "gemini-cli",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural project settings/context proof only; no account-backed Gemini CLI runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "MCP servers are intentionally empty placeholders until profiles configure concrete tools."
+  ],
+  "projected_surfaces": [
+    "context",
+    "instructions",
+    "skills-reference",
+    "rules-reference",
+    "mcp-placeholder"
+  ],
+  "projection_mode": "gemini-project-settings-context-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".gemini/settings.json",
+    "GEMINI.md"
+  ],
+  "status": "implemented"
+}

@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos_instance_init.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "operational COS instance installer implementation; separate from consumer-project cos_init.py projection",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "operational COS instance installer implementation; separate from consumer-project cos_init.py projection",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/cos_instance_init.py",
+      "python3 -m pytest tests/contracts/test_cos_instance_implementation_phases.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-164",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos_instance_init.py",
+  "projection_targets": [
+    "scripts/cos_instance_init.py",
+    "manifests/cos-instance-profiles.yaml",
+    ".cognitive-os/plans/architecture/cos-instance-installer-implementation-plan.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos_instance_init.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/engram-reinforce-on-access.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "metrics-emitting-advisory",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory",
+    "evidence_commands": [
+      "bash -n hooks/engram-reinforce-on-access.sh",
+      "python3 -m pytest tests/contracts/test_memory_lifecycle_portability.py tests/behavior/test_engram_reinforce_hook.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/lifecycle-reinforcement.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/engram-reinforce-on-access.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/engram-reinforce-on-access.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/engram-reinforce-on-access.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "description": "Content-free codebase access itinerary rows; generated overlay reference only.",
+  "privacy": "Store hashes and metadata only; never raw file contents, grep patterns, or tool output.",
+  "required_fields": [
+    "schema_version",
+    "session_id",
+    "tool_use_id",
+    "tool",
+    "target"
+  ],
+  "schema_version": "codebase-itinerary.v1"
+}

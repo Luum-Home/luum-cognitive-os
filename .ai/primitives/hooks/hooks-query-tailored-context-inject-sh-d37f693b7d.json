@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/query-tailored-context-inject.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "projected-observe-only; lab-runtime-projected-in-maintainer-repo",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "projected-observe-only; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/query-tailored-context-inject.sh",
+      "python3 -m pytest tests/unit/test_codex_guard_layer.py tests/unit/test_projected_hook_gap_behaviors.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "observe",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "observe",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/query-tailored-context-inject.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/query-tailored-context-inject.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/query-tailored-context-inject.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

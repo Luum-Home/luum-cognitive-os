@@ -1,0 +1,57 @@
+{
+  "adapter_directory": "adapters/copilot",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-git-blocker",
+      "fidelity": "structural-advisory",
+      "surface": "copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-rm-blocker",
+      "fidelity": "structural-advisory",
+      "surface": "copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "reinvention-check",
+      "fidelity": "structural-advisory",
+      "surface": "copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "large-file-advisor",
+      "fidelity": "structural-advisory",
+      "surface": "copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-router",
+      "fidelity": "structural-advisory",
+      "surface": "copilot instructions only"
+    }
+  ],
+  "display_name": "VS Code Copilot",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "vscode-copilot",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural workspace file proof only; no GitHub account/Copilot extension runtime invocation in automated tests.",
+    "VS Code Copilot custom instructions are prompt/context surfaces, not native COS lifecycle hooks."
+  ],
+  "projected_surfaces": [
+    "instructions",
+    "mcp-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "copilot-instructions-and-workspace-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".github/copilot-instructions.md",
+    ".vscode/mcp.json"
+  ],
+  "status": "implemented"
+}

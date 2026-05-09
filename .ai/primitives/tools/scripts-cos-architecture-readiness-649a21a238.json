@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/cos-architecture-readiness",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "architecture-readiness-smoke-and-unit-tests",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "architecture-readiness-smoke-and-unit-tests",
+    "evidence_commands": [
+      "scripts/cos-architecture-readiness --json",
+      "python3 -m pytest tests/unit/test_cos_architecture_readiness.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-127",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-architecture-readiness",
+  "projection_targets": [
+    "scripts/cos-architecture-readiness",
+    "scripts/cos_architecture_readiness.py",
+    "docs/adrs/ADR-127-active-primitive-index.md",
+    "docs/adrs/ADR-128-data-layer-integrity-fixes.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-architecture-readiness",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

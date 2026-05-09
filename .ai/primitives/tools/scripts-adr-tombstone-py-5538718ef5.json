@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/adr_tombstone.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "unit-tested tombstone writer refuses active ADR replacement by default",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "unit-tested tombstone writer refuses active ADR replacement by default",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/adr-tombstone.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-171",
+    "risk_class": "blocking",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/adr_tombstone.py",
+  "projection_targets": [
+    "skills/adr-tombstone/SKILL.md",
+    "scripts/adr_tombstone.py"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/adr_tombstone.py",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

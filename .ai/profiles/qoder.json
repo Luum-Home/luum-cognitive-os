@@ -1,0 +1,29 @@
+{
+  "adapter_directory": "adapters/qoder",
+  "contract_projection_fidelity": [],
+  "display_name": "Qoder CLI",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "qoder",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural AGENTS.md/.mcp.json proof only; no account-backed Qoder CLI runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "Permission settings are placeholders and do not grant tools by default."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "mcp-placeholder",
+    "permissions-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "agents-md-project-mcp-settings",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".mcp.json",
+    ".qoder/settings.json"
+  ],
+  "status": "implemented"
+}

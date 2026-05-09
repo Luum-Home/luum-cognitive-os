@@ -1,0 +1,45 @@
+{
+  "canonical_source": "scripts/cos-new-adr",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "ADR authoring primitive creates contract-compliant drafts through atomic ADR reservation; maintainer-only until a consumer authoring workflow needs it.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "ADR authoring primitive creates contract-compliant drafts through atomic ADR reservation; maintainer-only until a consumer authoring workflow needs it.",
+    "evidence_commands": [
+      "bash -n scripts/cos-new-adr",
+      "python3 -m py_compile scripts/cos_new_adr.py",
+      "python3 -m pytest tests/unit/test_cos_new_adr.py tests/audit/test_adr_contracts.py -q"
+    ],
+    "metrics_file": ".cognitive-os/locks/adr-reservations.json"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-148",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-new-adr",
+  "projection_targets": [
+    "scripts/cos-new-adr"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-new-adr",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

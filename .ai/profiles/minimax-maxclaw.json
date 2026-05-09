@@ -1,0 +1,22 @@
+{
+  "adapter_directory": "adapters/minimax-maxclaw",
+  "contract_projection_fidelity": [],
+  "display_name": "MiniMax MaxClaw / MiniMax Agent",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "minimax-maxclaw",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Current evidence points to hosted/cloud agent surfaces; local IDE/project projection contract is not signed."
+  ],
+  "projected_surfaces": [
+    "instructions",
+    "tools",
+    "memory",
+    "mcp"
+  ],
+  "projection_mode": "hosted-agent-or-openclaw-compatible",
+  "proof_level": "none",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [],
+  "status": "planned"
+}

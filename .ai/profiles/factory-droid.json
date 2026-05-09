@@ -1,0 +1,31 @@
+{
+  "adapter_directory": "adapters/factory-droid",
+  "contract_projection_fidelity": [],
+  "display_name": "Factory Droid",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "factory-droid",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Factory project files proof only; no account-backed Droid runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed despite Factory hook similarity until event mapping and runtime smoke are implemented.",
+    "Generated hooks are empty placeholders; COS hooks are not wired into Factory runtime yet."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "factory-skill",
+    "mcp-placeholder",
+    "hooks-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "agents-md-factory-skills-mcp-hooks",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".factory/mcp.json",
+    ".factory/settings.json",
+    ".factory/skills/cognitive-os/SKILL.md"
+  ],
+  "status": "implemented"
+}

@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-headless-service-drill",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",
+    "evidence_commands": [
+      "bash -n scripts/cos-headless-service-drill",
+      "python3 -m pytest tests/contracts/test_proof_drill_registry.py -q"
+    ],
+    "metrics_file": ".cognitive-os/service/artifacts"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-162",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-headless-service-drill",
+  "projection_targets": [
+    "scripts/cos-headless-service-drill",
+    "docker/cos-worker/docker-compose.yml",
+    "docs/manual-tests/headless-docker-service-runtime.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-headless-service-drill",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

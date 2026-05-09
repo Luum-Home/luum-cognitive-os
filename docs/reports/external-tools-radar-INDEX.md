@@ -232,6 +232,25 @@ held-out validation discipline, and harness projection fixture; do not add its
 runtime, git mutation, Docker/remote execution, or generated skills to COS core
 without a manifest-backed adapter lab. OpenSage is added as ASSESS / trial-patterns: harvest dynamic-agent topology, sandboxed async tool execution, graph-memory recovery, benchmark-harness discipline, and hook-compatibility fixtures, but do not adopt the runtime until dynamic tool creation, sandbox capabilities, provider credentials, and memory retention are fail-closed. TaskingAI is added as HOLD / pattern-only: study provider catalogs, tool-bundle boundaries, service topology, and BaaS UX, but do not adopt the runtime while upstream is stale and CI is red.
 
+
+## Phase 5 — Portable primitive standards due diligence (2026-05-09)
+
+The IDE-agnostic primitive work required an explicit external due-diligence pass
+before treating `.ai/` as a standard or moving COS primitives into that layout.
+The sweep reviewed 40+ sources across VERSA/dotAIslash, AGENTS.md, Agent Skills,
+host rules, OpenCode permissions/plugins, ACP, MCP, A2A, and pre-action
+authorization systems.
+
+| Path | Role |
+|---|---|
+| [`docs/reports/portable-ai-primitive-standards-due-diligence-2026-05-09.md`](portable-ai-primitive-standards-due-diligence-2026-05-09.md) | 40+ source due diligence for `.ai` / portable primitive standards |
+| [`docs/adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md`](../adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md) | Decision to adopt `.ai/` as a generated portable overlay, not immediate canonical source |
+
+**Outcome:** `.ai/` is adopted as a generated export/overlay surface. COS keeps
+`manifests/primitive-contracts.yaml`, `manifests/primitive-lifecycle.yaml`,
+`hooks/`, `skills/`, `rules/`, and `scripts/` canonical until generator,
+conformance, adapter fidelity, and consumer impact proof justify migration.
+
 ## How to use this index
 
 - **"Has X been evaluated?"** — `git ls-files docs/research/repo-scout/deep | grep -i x` (Phase 2 deep audits cover ~63 named tools).

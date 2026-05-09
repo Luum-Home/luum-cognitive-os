@@ -1,0 +1,47 @@
+{
+  "canonical_source": "hooks/skill-router-prompt-suggest.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "suggests canonical skill routing context without blocking prompts",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "suggests canonical skill routing context without blocking prompts",
+    "evidence_commands": [
+      "bash -n hooks/skill-router-prompt-suggest.sh",
+      "python3 -m pytest tests/contracts/test_orchestrator_skill_routing.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/skill-suggestion.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-174",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/skill-router-prompt-suggest.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/skill-router-prompt-suggest.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/skill-router-prompt-suggest.sh",
+  "supported_harnesses": [
+    "claude",
+    "codex"
+  ]
+}

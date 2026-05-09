@@ -1,0 +1,28 @@
+{
+  "adapter_directory": "adapters/qwen-code",
+  "contract_projection_fidelity": [],
+  "display_name": "Qwen Code",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "qwen-code",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural project settings/context proof only; no account-backed Qwen Code runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "MCP servers are intentionally empty placeholders until profiles configure concrete tools."
+  ],
+  "projected_surfaces": [
+    "context",
+    "instructions",
+    "skills-reference",
+    "rules-reference",
+    "mcp-placeholder"
+  ],
+  "projection_mode": "qwen-project-settings-context-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".qwen/settings.json",
+    "QWEN.md"
+  ],
+  "status": "implemented"
+}

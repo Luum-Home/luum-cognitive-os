@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/cross-session-peer-context.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "peer-context-injection",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "peer-context-injection",
+    "evidence_commands": [
+      "bash -n hooks/cross-session-peer-context.sh",
+      "python3 -m pytest tests/unit -q"
+    ],
+    "metrics_file": ".cognitive-os/sessions/events.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-183",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/cross-session-peer-context.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/cross-session-peer-context.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/cross-session-peer-context.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

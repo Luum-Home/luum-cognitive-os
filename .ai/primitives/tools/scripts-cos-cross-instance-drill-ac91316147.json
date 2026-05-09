@@ -1,0 +1,47 @@
+{
+  "canonical_source": "scripts/cos-cross-instance-drill",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "temporary-state manual drills for cross-instance runway scenarios",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "temporary-state manual drills for cross-instance runway scenarios",
+    "evidence_commands": [
+      "scripts/cos-cross-instance-drill --scenario all",
+      "python3 -m pytest tests/unit/test_cross_instance_drill.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-136",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-cross-instance-drill",
+  "projection_targets": [
+    "scripts/cos-cross-instance-drill",
+    "scripts/cos_cross_instance_drill.py",
+    "lib/cross_instance_learning.py",
+    "docs/architecture/cross-instance-learning-runway.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-cross-instance-drill",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

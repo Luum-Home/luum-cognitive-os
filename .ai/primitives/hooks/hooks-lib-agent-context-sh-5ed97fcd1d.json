@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/_lib/agent-context.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "transitive runtime dependency for destructive-operation blockers",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "transitive runtime dependency for destructive-operation blockers",
+    "evidence_commands": [
+      "bash -n hooks/_lib/agent-context.sh hooks/destructive-git-blocker.sh hooks/destructive-rm-blocker.sh",
+      "python3 -m pytest tests/behavior/test_hooks_batch1.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-149",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/_lib/agent-context.sh",
+  "projection_targets": [
+    "hooks/_lib/agent-context.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/_lib/agent-context.sh",
+  "supported_harnesses": [
+    "claude",
+    "shell"
+  ]
+}

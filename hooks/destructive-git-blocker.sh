@@ -60,6 +60,8 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 
 _HOOK_NAME="destructive-git-blocker"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+source "$(dirname "$0")/_lib/primitive-intervention.sh"
+source "$(dirname "$0")/_lib/bypass-resolver.sh"
 source "$(dirname "$0")/_lib/agent-context.sh"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
@@ -396,6 +398,26 @@ _op_rationale() {
   esac
 }
 
+_git_primitive_target_ref() {
+  case "${FIRST_HIT_TYPE:-}" in
+    protected_branch_write) echo "protected-branch-${PROTECTED_BRANCH:-unknown}" ;;
+    force_push) echo "git-push-force" ;;
+    branch_context_change) echo "${SEMANTIC_OP_NAME:-branch-context-change}" ;;
+    *) echo "${OP_NAME:-${FIRST_HIT_TYPE:-git-op}}" ;;
+  esac
+}
+
+_git_emit_intervention() {
+  primitive_intervention_emit \
+    "destructive-git-blocker" \
+    "hooks/destructive-git-blocker.sh" \
+    "$1" \
+    "$2" \
+    "$(_git_primitive_target_ref)" \
+    "$3" \
+    "Bash" 2>/dev/null || true
+}
+
 # Escape command for JSON
 esc_cmd=${COMMAND//\\/\\\\}
 esc_cmd=${esc_cmd//\"/\\\"}
@@ -427,13 +449,15 @@ _is_bypass_context() {
   [ "${CI:-}" = "1" ]                      && return 0
   [ "${CI:-}" = "true" ]                   && return 0
   [ -n "${PYTEST_CURRENT_TEST:-}" ]        && return 0
-  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows destructive_git && return 0
+  [ "${COS_GIT_BYPASS:-}" = "1" ]          && return 0
+  type _cos_bypass_list_contains >/dev/null 2>&1 && _cos_bypass_list_contains destructive_git_bypass && return 0
   return 1
 }
 
 # Session-wide override
 _has_session_override() {
-  type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows destructive_git && return 0
+  [ "${COS_ALLOW_DESTRUCTIVE_GIT:-}" = "1" ] && return 0
+  type _cos_bypass_list_contains >/dev/null 2>&1 && _cos_bypass_list_contains destructive_git && return 0
   return 1
 }
 
@@ -472,6 +496,7 @@ if _is_bypass_context && ! _git_blocker_is_agent_context; then
   ENTRY=$(printf '{"timestamp":"%s","event":"bypassed","reason":"so_internal_context","op":"%s","command":"%s"}' \
     "$TIMESTAMP" "$esc_op" "$esc_cmd")
   safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+  _git_emit_intervention "allow" "so_internal_context" ".cognitive-os/metrics/git-op-blocks.jsonl"
   exit 0
 fi
 
@@ -498,6 +523,7 @@ if _has_session_override || _has_allow_flag || _has_allow_force_push_flag || { [
   ENTRY=$(printf '{"timestamp":"%s","event":"override","reason":"%s","agent_id":"%s","op":"%s","command":"%s"}' \
     "$TIMESTAMP" "$override_reason" "$AGENT_ID" "$esc_op" "$esc_cmd")
   safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+  _git_emit_intervention "allow" "destructive_git_override" ".cognitive-os/metrics/git-op-blocks.jsonl"
   exit 0
 fi
 
@@ -523,6 +549,7 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
       '{"timestamp":"%s","event":"wip_guard_bypass","op":"%s","command":"%s","wip_files":%s,"bypass_reason":"COS_ALLOW_RESET_OVER_WIP","agent_id":"%s"}' \
       "$TIMESTAMP" "$esc_op" "$esc_cmd" "$esc_wip_json" "$AGENT_ID")
     safe_jsonl_append "$BYPASS_LOG" "$BYPASS_ENTRY" 2>/dev/null || true
+    _git_emit_intervention "allow" "wip_guard_bypass" ".cognitive-os/metrics/destructive-git-bypass.jsonl"
     exit 0
   fi
 
@@ -545,6 +572,7 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
         '{"timestamp":"%s","event":"wip_guard_auto_stash","op":"%s","command":"%s","stash_ref":"%s","stash_msg":"%s","agent_id":"%s"}' \
         "$TIMESTAMP" "$esc_op" "$esc_cmd" "${STASH_REF:-unknown}" "$STASH_MSG" "$AGENT_ID")
       safe_jsonl_append "$BYPASS_LOG" "$BYPASS_ENTRY" 2>/dev/null || true
+      _git_emit_intervention "allow" "wip_guard_auto_stash" ".cognitive-os/metrics/destructive-git-bypass.jsonl"
       exit 0
     else
       echo "ERROR: auto-stash failed (exit $STASH_RC): $STASH_OUTPUT" >&2
@@ -584,6 +612,7 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
       '{"timestamp":"%s","event":"blocked","context":"agent","reason":"wip_guard","agent_id":"%s","op":"%s","command":"%s","wip_files":%s}' \
       "$TIMESTAMP" "$AGENT_ID" "$esc_op" "$esc_cmd" "$esc_wip_json")
     safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+    _git_emit_intervention "block" "wip_guard" ".cognitive-os/metrics/git-op-blocks.jsonl"
     exit 1
   fi
 
@@ -591,6 +620,7 @@ if [ "$IS_WIP_GUARD_OP" = "1" ] && _has_wip; then
     '{"timestamp":"%s","event":"blocked","context":"user","reason":"wip_guard","agent_id":"","op":"%s","command":"%s","wip_files":%s}' \
     "$TIMESTAMP" "$esc_op" "$esc_cmd" "$esc_wip_json")
   safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+  _git_emit_intervention "block" "wip_guard" ".cognitive-os/metrics/git-op-blocks.jsonl"
   exit 2
 fi
 
@@ -621,6 +651,7 @@ if _git_blocker_is_agent_context; then
   ENTRY=$(printf '{"timestamp":"%s","event":"blocked","context":"agent","agent_id":"%s","op":"%s","command":"%s"}' \
     "$TIMESTAMP" "$AGENT_ID" "$esc_op" "$esc_cmd")
   safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+  _git_emit_intervention "block" "destructive_git_op" ".cognitive-os/metrics/git-op-blocks.jsonl"
 
   exit 1
 fi
@@ -659,5 +690,6 @@ echo "" >&2
 ENTRY=$(printf '{"timestamp":"%s","event":"blocked","context":"user","agent_id":"","op":"%s","command":"%s"}' \
   "$TIMESTAMP" "$esc_op" "$esc_cmd")
 safe_jsonl_append "$BLOCKS_LOG" "$ENTRY" 2>/dev/null || true
+_git_emit_intervention "block" "destructive_git_op" ".cognitive-os/metrics/git-op-blocks.jsonl"
 
 exit 2

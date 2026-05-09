@@ -1,0 +1,57 @@
+{
+  "adapter_directory": "adapters/opencode",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-git-blocker",
+      "fidelity": "host-plugin-lifecycle-capable",
+      "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-rm-blocker",
+      "fidelity": "host-plugin-lifecycle-capable",
+      "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "reinvention-check",
+      "fidelity": "host-plugin-lifecycle-capable",
+      "surface": "future tool.execute.before plugin adapter for edit/write tools"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "large-file-advisor",
+      "fidelity": "host-plugin-lifecycle-capable",
+      "surface": "future tool.execute.before plugin adapter for read tools"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-router",
+      "fidelity": "host-plugin-lifecycle-capable",
+      "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+    }
+  ],
+  "display_name": "OpenCode",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "opencode",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Current COS projection proof writes and verifies structural opencode.json only; no account-backed OpenCode runtime invocation is in automated tests yet.",
+    "OpenCode's official plugin API exposes tool.execute.before/tool.execute.after and permission surfaces that can enforce some COS primitives. Do not model OpenCode as documented-only or structural-advisory once a COS OpenCode plugin adapter is implemented and smoke-tested.",
+    "No COS OpenCode plugin adapter has been signed yet, so ACC must not claim runtime enforcement from the existing opencode.json structural projection."
+  ],
+  "projected_surfaces": [
+    "instructions",
+    "skills",
+    "rules",
+    "mcp-placeholder"
+  ],
+  "projection_mode": "opencode-json-instructions-mcp-plugin-capable",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "opencode.json"
+  ],
+  "status": "implemented"
+}

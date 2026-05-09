@@ -1,0 +1,45 @@
+{
+  "canonical_source": "scripts/security_red_team.py",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "Python implementation behind the opt-in security-red-team wrapper; reads policy manifests and writes security assessment artifacts.",
+    "evidence_commands": [
+      "python3 -m py_compile scripts/security_red_team.py",
+      "python3 -m pytest tests/security/test_security_red_team_runner.py tests/contracts/test_security_red_team_contract.py -q"
+    ],
+    "metrics_file": ".cognitive-os/reports/security-red-team-latest.json"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-164",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/security_red_team.py",
+  "projection_targets": [
+    "scripts/security_red_team.py",
+    "manifests/security-red-team.yaml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/security_red_team.py",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

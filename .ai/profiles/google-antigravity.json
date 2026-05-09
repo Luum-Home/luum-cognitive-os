@@ -1,0 +1,21 @@
+{
+  "adapter_directory": "adapters/google-antigravity",
+  "contract_projection_fidelity": [],
+  "display_name": "Google Antigravity",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "google-antigravity",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Supported local projection/config format is not signed in this repo."
+  ],
+  "projected_surfaces": [
+    "instructions",
+    "tools",
+    "mcp"
+  ],
+  "projection_mode": "unknown",
+  "proof_level": "none",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [],
+  "status": "planned"
+}

@@ -1,0 +1,46 @@
+{
+  "canonical_source": "scripts/cos-session-coordination",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "unit-tested session claim and ADR tombstone coordination CLI",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "unit-tested session claim and ADR tombstone coordination CLI",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_session_coordination.py tests/contracts/test_session_coordination_contract.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/session-coordination.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-183",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "scripts/cos-session-coordination",
+  "projection_targets": [
+    "docs/architecture/cross-session-coordination-ledger.md",
+    "scripts/cos-session-coordination"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-session-coordination",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

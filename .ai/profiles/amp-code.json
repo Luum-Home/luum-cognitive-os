@@ -1,0 +1,27 @@
+{
+  "adapter_directory": "adapters/amp-code",
+  "contract_projection_fidelity": [],
+  "display_name": "Amp Code",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "amp-code",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural AGENTS.md/workspace settings proof only; no account-backed Amp runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "Workspace MCP servers are empty placeholders and require operator trust/approval."
+  ],
+  "projected_surfaces": [
+    "project-instructions",
+    "mcp-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "agents-md-workspace-settings-mcp",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md",
+    ".amp/settings.json"
+  ],
+  "status": "implemented"
+}

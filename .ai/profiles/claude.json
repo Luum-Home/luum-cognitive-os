@@ -1,0 +1,54 @@
+{
+  "adapter_directory": "adapters/claude-code",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "destructive-git-blocker",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "PreToolUse Bash hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "destructive-rm-blocker",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "PreToolUse Bash hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "reinvention-check",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "PreToolUse write/edit hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "large-file-advisor",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "PreToolUse Read hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-router",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "PreToolUse Bash hook"
+    }
+  ],
+  "display_name": "Claude Code",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "claude",
+  "lifecycle_primitives_supporting_harness": 172,
+  "limitations": [
+    "Proof currently covers default profile, not full profile."
+  ],
+  "projected_surfaces": [
+    "hooks",
+    "rules",
+    "skills"
+  ],
+  "projection_mode": "native-settings",
+  "proof_level": "native-lifecycle",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".claude/settings.json"
+  ],
+  "status": "implemented"
+}

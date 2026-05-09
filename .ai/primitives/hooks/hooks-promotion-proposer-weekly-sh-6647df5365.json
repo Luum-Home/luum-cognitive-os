@@ -1,0 +1,45 @@
+{
+  "canonical_source": "hooks/promotion-proposer-weekly.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": null,
+    "contract_id": null,
+    "impact": null,
+    "intent": "throttled-lifecycle-promotion-proposal",
+    "present": false,
+    "projection_fidelity": {},
+    "requires": [],
+    "trigger": null
+  },
+  "evidence": {
+    "behavior_evidence": "throttled-lifecycle-promotion-proposal",
+    "evidence_commands": [
+      "bash -n hooks/promotion-proposer-weekly.sh",
+      "python3 -m pytest tests/unit -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/skill-promotions.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-180",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_id": "hooks/promotion-proposer-weekly.sh",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/promotion-proposer-weekly.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/promotion-proposer-weekly.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

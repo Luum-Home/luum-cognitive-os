@@ -1,0 +1,27 @@
+{
+  "adapter_directory": "adapters/zed-ai",
+  "contract_projection_fidelity": [],
+  "display_name": "Zed AI",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "zed-ai",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Structural Zed project rule/context-server placeholder proof only; no account-backed Zed runtime invocation in automated tests.",
+    "No native COS lifecycle hook parity is claimed.",
+    "Context servers are intentionally empty placeholders."
+  ],
+  "projected_surfaces": [
+    "project-rules",
+    "context-server-placeholder",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "zed-project-rules-context-servers",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    ".rules",
+    ".zed/settings.json"
+  ],
+  "status": "implemented"
+}

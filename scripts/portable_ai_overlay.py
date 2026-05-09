@@ -1,0 +1,381 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""Generate a portable `.ai/` overlay for Cognitive OS agentic primitives.
+
+The overlay is intentionally generated from existing COS sources. It is not the
+canonical source of truth while ADR-258 is still proving the surface.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import shutil
+import sys
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.primitive_contracts import load_contracts
+
+SCHEMA_VERSION = "portable-ai-overlay.v1"
+CONTEXT_SCHEMA_VERSION = "portable-ai-context.v1"
+PRIMITIVE_SCHEMA_VERSION = "portable-ai-primitive.v1"
+PROFILE_SCHEMA_VERSION = "portable-ai-profile.v1"
+ADAPTER_SCHEMA_VERSION = "portable-ai-adapter.v1"
+DEFAULT_HARNESSES = ["claude", "codex", "cursor", "windsurf", "vscode-copilot", "kiro", "opencode", "shell-ci"]
+ADAPTER_DIR_NAMES = {
+    "claude": "claude-code",
+    "codex": "codex",
+    "cursor": "cursor",
+    "windsurf": "windsurf",
+    "vscode-copilot": "copilot",
+    "kiro": "kiro",
+    "opencode": "opencode",
+    "shell-ci": "shell-ci",
+}
+FAMILY_TO_DIR = {
+    "hook": "hooks",
+    "skill": "skills",
+    "rule": "rules",
+    "workflow": "workflows",
+    "script": "tools",
+    "agent": "agents",
+    "memory": "memory",
+}
+ENFORCEMENT_FIDELITY = {"native-lifecycle-enforced", "governed-wrapper-enforced", "ci-enforced"}
+
+
+def _load_yaml(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if not isinstance(data, dict):
+        raise ValueError(f"{path} must contain a YAML mapping")
+    return data
+
+
+def _slug(value: str) -> str:
+    safe = "".join(ch.lower() if ch.isalnum() else "-" for ch in value).strip("-")
+    safe = "-".join(part for part in safe.split("-") if part)
+    digest = hashlib.sha256(value.encode("utf-8")).hexdigest()[:10]
+    if not safe:
+        safe = "primitive"
+    return f"{safe[:80]}-{digest}"
+
+
+def _family_dir(family: str) -> str:
+    return FAMILY_TO_DIR.get(family, f"other-{_slug(family).split('-')[0]}")
+
+
+def _contract_projection(contract: dict[str, Any] | None) -> dict[str, Any]:
+    if not contract:
+        return {}
+    out: dict[str, Any] = {}
+    for harness, row in sorted((contract.get("projection") or {}).items()):
+        if not isinstance(row, dict):
+            continue
+        fidelity = str(row.get("fidelity", "unsupported"))
+        out[str(harness)] = {
+            "fidelity": fidelity,
+            "surface": row.get("surface"),
+            "claims_runtime_enforcement": fidelity in ENFORCEMENT_FIDELITY,
+        }
+    return out
+
+
+def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
+    contracts = {str(item.get("source") or item.get("id")): item for item in load_contracts(root)}
+    contracts_by_id = {str(item.get("id")): item for item in load_contracts(root)}
+    lifecycle = _load_yaml(root / "manifests" / "primitive-lifecycle.yaml")
+    rows = lifecycle.get("primitives") or []
+    out: list[tuple[str, dict[str, Any]]] = []
+    seen: set[str] = set()
+
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        primitive_id = str(item.get("id", "")).strip()
+        if not primitive_id:
+            continue
+        seen.add(primitive_id)
+        family = str(item.get("kind") or "unknown")
+        contract = contracts.get(primitive_id) or contracts_by_id.get(primitive_id)
+        portable_id = str(contract.get("id")) if contract else primitive_id
+        row = {
+            "schema_version": PRIMITIVE_SCHEMA_VERSION,
+            "portable_id": portable_id,
+            "source_id": primitive_id,
+            "family": family,
+            "canonical_source": primitive_id,
+            "canonical_source_kind": "cos-internal",
+            "overlay_role": "generated-reference",
+            "lifecycle": {
+                "owner_adr": item.get("owner_adr"),
+                "lifecycle_state": item.get("lifecycle_state"),
+                "maturity": item.get("maturity"),
+                "distribution": item.get("distribution"),
+                "governance_class": item.get("governance_class"),
+                "risk_class": item.get("risk_class"),
+                "runtime_projection": bool(item.get("runtime_projection")),
+                "docs_claim_level": item.get("docs_claim_level"),
+                "exit_behavior": item.get("exit_behavior"),
+            },
+            "supported_harnesses": list(item.get("supported_harnesses") or []),
+            "projection_targets": list(item.get("projection_targets") or []),
+            "evidence": {
+                "behavior_evidence": item.get("behavior_evidence"),
+                "evidence_commands": list(item.get("evidence_commands") or []),
+                "metrics_file": item.get("metrics_file"),
+            },
+            "contract": {
+                "present": bool(contract),
+                "contract_id": contract.get("id") if contract else None,
+                "intent": contract.get("intent") if contract else item.get("behavior_evidence"),
+                "requires": list(contract.get("requires") or []) if contract else [],
+                "trigger": contract.get("trigger") if contract else None,
+                "actions": contract.get("actions") if contract else None,
+                "projection_fidelity": _contract_projection(contract),
+                "impact": contract.get("impact") if contract else None,
+            },
+        }
+        rel = Path("primitives") / _family_dir(family) / f"{_slug(portable_id)}.json"
+        out.append((rel.as_posix(), row))
+
+    # Ensure contract-only rows are still exported if the lifecycle manifest lags.
+    for contract in load_contracts(root):
+        source = str(contract.get("source") or contract.get("id"))
+        contract_id = str(contract.get("id"))
+        if source in seen or contract_id in seen:
+            continue
+        family = str(contract.get("family") or "unknown")
+        row = {
+            "schema_version": PRIMITIVE_SCHEMA_VERSION,
+            "portable_id": contract_id,
+            "source_id": source,
+            "family": family,
+            "canonical_source": source,
+            "canonical_source_kind": "cos-internal",
+            "overlay_role": "generated-reference",
+            "lifecycle": None,
+            "supported_harnesses": sorted((contract.get("projection") or {}).keys()),
+            "projection_targets": [source],
+            "evidence": contract.get("evidence") or {},
+            "contract": {
+                "present": True,
+                "contract_id": contract_id,
+                "intent": contract.get("intent"),
+                "requires": list(contract.get("requires") or []),
+                "trigger": contract.get("trigger"),
+                "actions": contract.get("actions"),
+                "projection_fidelity": _contract_projection(contract),
+                "impact": contract.get("impact"),
+            },
+        }
+        rel = Path("primitives") / _family_dir(family) / f"{_slug(contract_id)}.json"
+        out.append((rel.as_posix(), row))
+
+    return sorted(out, key=lambda pair: pair[0])
+
+
+def _harness_projection(root: Path) -> dict[str, dict[str, Any]]:
+    data = _load_yaml(root / "manifests" / "harness-projection.yaml")
+    out: dict[str, dict[str, Any]] = {}
+    for item in data.get("harnesses") or []:
+        if isinstance(item, dict) and item.get("id"):
+            out[str(item["id"])] = item
+    return out
+
+
+def _profile_rows(root: Path, primitive_rows: list[tuple[str, dict[str, Any]]]) -> list[tuple[str, dict[str, Any]]]:
+    harnesses = _harness_projection(root)
+    contracts = load_contracts(root)
+    all_harnesses = sorted(set(DEFAULT_HARNESSES) | set(harnesses))
+    rows: list[tuple[str, dict[str, Any]]] = []
+    for harness in all_harnesses:
+        hp = harnesses.get(harness, {})
+        contract_projection = []
+        for contract in contracts:
+            projection = (contract.get("projection") or {}).get(harness)
+            if isinstance(projection, dict):
+                fidelity = str(projection.get("fidelity", "unsupported"))
+                contract_projection.append({
+                    "contract_id": contract.get("id"),
+                    "fidelity": fidelity,
+                    "surface": projection.get("surface"),
+                    "claims_runtime_enforcement": fidelity in ENFORCEMENT_FIDELITY,
+                })
+        lifecycle_count = 0
+        for _, row in primitive_rows:
+            if harness in row.get("supported_harnesses", []):
+                lifecycle_count += 1
+        profile = {
+            "schema_version": PROFILE_SCHEMA_VERSION,
+            "harness": harness,
+            "display_name": hp.get("display_name", harness),
+            "status": hp.get("status", "unknown"),
+            "projection_mode": hp.get("projection_mode"),
+            "proof_level": hp.get("proof_level"),
+            "settings_paths": list(hp.get("settings_paths") or []),
+            "projected_surfaces": list(hp.get("projected_surfaces") or []),
+            "limitations": list(hp.get("limitations") or []),
+            "adapter_directory": f"adapters/{ADAPTER_DIR_NAMES.get(harness, harness)}",
+            "lifecycle_primitives_supporting_harness": lifecycle_count,
+            "contract_projection_fidelity": contract_projection,
+            "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+        }
+        rows.append((f"profiles/{harness}.json", profile))
+    return rows
+
+
+def _adapter_rows(root: Path) -> list[tuple[str, str]]:
+    harnesses = _harness_projection(root)
+    all_harnesses = sorted(set(DEFAULT_HARNESSES) | set(harnesses))
+    rows: list[tuple[str, str]] = []
+    for harness in all_harnesses:
+        dirname = ADAPTER_DIR_NAMES.get(harness, harness)
+        hp = harnesses.get(harness, {})
+        lines = [
+            f"# {hp.get('display_name', harness)} portable `.ai` adapter",
+            "",
+            f"Schema: `{ADAPTER_SCHEMA_VERSION}`",
+            "",
+            "This adapter is generated from Cognitive OS canonical primitive manifests.",
+            "It must not invent primitive behavior or overclaim runtime enforcement.",
+            "",
+            "## Current projection",
+            "",
+            f"- harness id: `{harness}`",
+            f"- status: `{hp.get('status', 'unknown')}`",
+            f"- proof level: `{hp.get('proof_level', 'unknown')}`",
+            f"- projection mode: `{hp.get('projection_mode', 'unknown')}`",
+            "",
+            "## Settings paths",
+            "",
+        ]
+        settings = list(hp.get("settings_paths") or [])
+        if settings:
+            lines.extend(f"- `{path}`" for path in settings)
+        else:
+            lines.append("- none declared")
+        lines.extend([
+            "",
+            "## Rule",
+            "",
+            "Read `.ai/profiles/{0}.json` for declared fidelity before projecting primitives into this host.".format(harness),
+            "Structural advisory surfaces are not runtime enforcement.",
+            "",
+        ])
+        rows.append((f"adapters/{dirname}/README.md", "\n".join(lines)))
+    return rows
+
+
+def build_overlay(root: Path) -> dict[str, str]:
+    primitive_rows = _primitive_rows(root)
+    files: dict[str, str] = {}
+    summary_by_family: dict[str, int] = {}
+    for rel, row in primitive_rows:
+        summary_by_family[row["family"]] = summary_by_family.get(row["family"], 0) + 1
+        files[rel] = json.dumps(row, indent=2, sort_keys=True) + "\n"
+
+    context = {
+        "schema_version": CONTEXT_SCHEMA_VERSION,
+        "overlay_schema_version": SCHEMA_VERSION,
+        "status": "generated-portable-overlay",
+        "canonical_source_of_truth": [
+            "manifests/primitive-contracts.yaml",
+            "manifests/primitive-lifecycle.yaml",
+            "hooks/",
+            "skills/",
+            "rules/",
+            "scripts/",
+        ],
+        "policy": "The `.ai` tree is a generated overlay until ADR-258 Phase 5 decides otherwise.",
+        "source_manifests": [
+            "manifests/primitive-contracts.yaml",
+            "manifests/primitive-lifecycle.yaml",
+            "manifests/harness-projection.yaml",
+        ],
+        "primitive_count": len(primitive_rows),
+        "primitive_count_by_family": dict(sorted(summary_by_family.items())),
+        "adapter_profiles": sorted([path for path, _ in _profile_rows(root, primitive_rows)]),
+        "runtime_evidence_streams": [
+            ".cognitive-os/metrics/primitive-interventions.jsonl",
+            ".cognitive-os/metrics/codebase-itinerary.jsonl",
+        ],
+    }
+    files["context.json"] = json.dumps(context, indent=2, sort_keys=True) + "\n"
+    for rel, row in _profile_rows(root, primitive_rows):
+        files[rel] = json.dumps(row, indent=2, sort_keys=True) + "\n"
+    for rel, text in _adapter_rows(root):
+        files[rel] = text
+    files["logs/schema/primitive-interventions.schema.json"] = json.dumps({
+        "schema_version": "primitive-intervention.v1",
+        "description": "Runtime primitive intervention ledger rows; generated overlay reference only.",
+        "required_fields": ["schema_version", "session_id", "tool_use_id", "primitive_id", "action_kind", "reason_code"],
+        "privacy": "Do not store raw secrets, tool output, or unredacted command content.",
+    }, indent=2, sort_keys=True) + "\n"
+    files["logs/schema/codebase-itinerary.schema.json"] = json.dumps({
+        "schema_version": "codebase-itinerary.v1",
+        "description": "Content-free codebase access itinerary rows; generated overlay reference only.",
+        "required_fields": ["schema_version", "session_id", "tool_use_id", "tool", "target"],
+        "privacy": "Store hashes and metadata only; never raw file contents, grep patterns, or tool output.",
+    }, indent=2, sort_keys=True) + "\n"
+    files["state/.gitkeep"] = ""
+    return dict(sorted(files.items()))
+
+
+def write_overlay(files: dict[str, str], output: Path, clean: bool = True) -> None:
+    if clean and output.exists():
+        shutil.rmtree(output)
+    output.mkdir(parents=True, exist_ok=True)
+    for rel, text in files.items():
+        path = output / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(text, encoding="utf-8")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--output", type=Path, default=Path(".ai"))
+    parser.add_argument("--check", action="store_true", help="fail if the on-disk overlay differs")
+    parser.add_argument("--no-clean", action="store_true", help="do not remove existing output before writing")
+    args = parser.parse_args(argv)
+
+    root = args.root.resolve()
+    output = args.output if args.output.is_absolute() else root / args.output
+    files = build_overlay(root)
+
+    if args.check:
+        mismatches: list[str] = []
+        expected = set(files)
+        existing = {p.relative_to(output).as_posix() for p in output.rglob("*") if p.is_file()} if output.exists() else set()
+        for rel in sorted(expected | existing):
+            expected_text = files.get(rel)
+            actual_path = output / rel
+            actual_text = actual_path.read_text(encoding="utf-8") if actual_path.exists() else None
+            if expected_text != actual_text:
+                mismatches.append(rel)
+        if mismatches:
+            print("Portable .ai overlay is stale:", file=sys.stderr)
+            for rel in mismatches[:50]:
+                print(f"  {rel}", file=sys.stderr)
+            if len(mismatches) > 50:
+                print(f"  ... {len(mismatches) - 50} more", file=sys.stderr)
+            return 1
+        print(f"Portable .ai overlay is current ({len(files)} files).")
+        return 0
+
+    write_overlay(files, output, clean=not args.no_clean)
+    print(f"Wrote portable .ai overlay to {output} ({len(files)} files).")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
