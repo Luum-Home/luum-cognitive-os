@@ -223,6 +223,22 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: Agno is different from the Claw naming cluster: it is a production-agent platform with SDK/runtime/control-plane concepts, while Dash and Scout are first-party templates for self-learning data agents and company-brain context providers. Useful extraction targets are runtime packaging vocabulary, human approval UX, Dash's durable SQL/data learnings, and Scout's provider registry. Direct adoption is not recommended until telemetry, hosted-control-plane, credential, rollback, and ADR-049/ADR-064 governance boundaries are proven. Deep evaluation: `docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`.
 
+### EvoSkill — Automated Skill Discovery for Coding Agents (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Benchmark-driven self-improvement loop that analyzes failed agent trajectories, proposes reusable skills or prompt changes, generates skill folders, evaluates on held-out data, and keeps frontier-improving agent programs |
+| Config | N/A (evaluation phase — pattern-only plus possible future adapter lab) |
+| Hook | N/A (not implemented) |
+| Install | See [sentient-agi/EvoSkill](https://github.com/sentient-agi/EvoSkill); do not add to default COS bootstrap |
+| Required | No |
+| Scope | Skill-evolution loop, generated-skill evidence schema, held-out validation, frontier selection, cross-harness skill projection fixtures |
+| GitHub | [sentient-agi/EvoSkill](https://github.com/sentient-agi/EvoSkill) |
+| License | Apache-2.0 |
+| Status | **EVALUATE** — Trial patterns and a disposable adapter lab; do not adopt the runtime by default |
+
+**Evaluation Notes**: EvoSkill is the strongest current external reference for COS's skill-optimization direction: it turns failed trajectories into reusable skill folders, validates against held-out data, and tracks frontier-improving agent programs. Direct runtime adoption is gated because it mutates git branches/tags, writes `.claude/skills`, can forward provider credentials into Docker or remote runs, and depends on project-owned benchmark quality. Extract the stage contract, evidence schema, projection fixture, and validation discipline first. Deep evaluation: `docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-evoskill-addendum-2026-05-09.md`.
+
 ### Langflow — Visual AI Workflow Builder and MCP-Facing Runtime (EVALUATE)
 
 | Property | Value |
