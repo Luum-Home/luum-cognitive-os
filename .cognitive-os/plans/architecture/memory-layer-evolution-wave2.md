@@ -192,6 +192,17 @@ The next production-safe implementation step is to port M1's additive fields and
 supersession reranking into the real Engram wrapper behind an explicit
 non-default strategy flag.
 
+
+## Wave 2 comparison decision
+
+Comparison report: `docs/reports/memory-retrieval-wave2/comparison-2026-05-08.json`.
+
+Winner: `graph-path-local`. It ties `dual-level-local` and `memory-class-local`
+on score, but it is the smallest passing mode: M1 temporal validity plus M3
+support-chain retrieval. Therefore the next real Engram port is **M1+M3**, not
+M2 or M4. M2/M4 stay benchmark-proven but deferred until M1+M3 exist behind a
+non-default runtime flag.
+
 ## Definition of Done for SDD start
 
 - [x] Doctrine status verified as accepted.

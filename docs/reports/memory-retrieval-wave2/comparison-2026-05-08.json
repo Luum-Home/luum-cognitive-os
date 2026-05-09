@@ -1,0 +1,119 @@
+{
+  "baseline": "current-local",
+  "decision": {
+    "next_port": "M1+M3",
+    "reason": "graph-path-local is the smallest passing mode: it fixes temporal freshness and multi-hop support chains without requiring dual-level ranking or memory_class overlay."
+  },
+  "rows": [
+    {
+      "block": 3,
+      "delta_passed": 0,
+      "delta_source_supported": 0,
+      "delta_temporal_correct": 0,
+      "fixed_fixtures": [],
+      "passed": 0,
+      "path": "docs/reports/memory-retrieval-wave2/current-local-2026-05-08.json",
+      "regressed_fixtures": [],
+      "score": 0,
+      "source_supported": 2,
+      "status": "block",
+      "strategy": "current-local",
+      "temporal_correct": 1
+    },
+    {
+      "block": 0,
+      "delta_passed": 3,
+      "delta_source_supported": 1,
+      "delta_temporal_correct": 2,
+      "fixed_fixtures": [
+        "temporal-contradiction-license-policy",
+        "multi-hop-adr-implementation-test",
+        "procedural-runbook-current"
+      ],
+      "passed": 3,
+      "path": "docs/reports/memory-retrieval-wave2/dual-level-local-2026-05-08.json",
+      "regressed_fixtures": [],
+      "score": 39,
+      "source_supported": 3,
+      "status": "pass",
+      "strategy": "dual-level-local",
+      "temporal_correct": 3
+    },
+    {
+      "block": 0,
+      "delta_passed": 3,
+      "delta_source_supported": 1,
+      "delta_temporal_correct": 2,
+      "fixed_fixtures": [
+        "temporal-contradiction-license-policy",
+        "multi-hop-adr-implementation-test",
+        "procedural-runbook-current"
+      ],
+      "passed": 3,
+      "path": "docs/reports/memory-retrieval-wave2/graph-path-local-2026-05-08.json",
+      "regressed_fixtures": [],
+      "score": 39,
+      "source_supported": 3,
+      "status": "pass",
+      "strategy": "graph-path-local",
+      "temporal_correct": 3
+    },
+    {
+      "block": 0,
+      "delta_passed": 3,
+      "delta_source_supported": 1,
+      "delta_temporal_correct": 2,
+      "fixed_fixtures": [
+        "temporal-contradiction-license-policy",
+        "multi-hop-adr-implementation-test",
+        "procedural-runbook-current"
+      ],
+      "passed": 3,
+      "path": "docs/reports/memory-retrieval-wave2/memory-class-local-2026-05-08.json",
+      "regressed_fixtures": [],
+      "score": 39,
+      "source_supported": 3,
+      "status": "pass",
+      "strategy": "memory-class-local",
+      "temporal_correct": 3
+    },
+    {
+      "block": 1,
+      "delta_passed": 2,
+      "delta_source_supported": 0,
+      "delta_temporal_correct": 2,
+      "fixed_fixtures": [
+        "temporal-contradiction-license-policy",
+        "procedural-runbook-current"
+      ],
+      "passed": 2,
+      "path": "docs/reports/memory-retrieval-wave2/temporal-local-2026-05-08.json",
+      "regressed_fixtures": [],
+      "score": 26,
+      "source_supported": 2,
+      "status": "block",
+      "strategy": "temporal-local",
+      "temporal_correct": 3
+    }
+  ],
+  "schema_version": "memory-retrieval-comparison/v1",
+  "winner": {
+    "block": 0,
+    "delta_passed": 3,
+    "delta_source_supported": 1,
+    "delta_temporal_correct": 2,
+    "fixed_fixtures": [
+      "temporal-contradiction-license-policy",
+      "multi-hop-adr-implementation-test",
+      "procedural-runbook-current"
+    ],
+    "passed": 3,
+    "path": "docs/reports/memory-retrieval-wave2/graph-path-local-2026-05-08.json",
+    "regressed_fixtures": [],
+    "score": 39,
+    "source_supported": 3,
+    "status": "pass",
+    "strategy": "graph-path-local",
+    "temporal_correct": 3
+  }
+}
