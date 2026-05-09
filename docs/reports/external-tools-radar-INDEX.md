@@ -195,21 +195,26 @@ Adoption decisions now gated by license compliance, formalized through:
 
 ## Phase 4 — Targeted post-reassessment additions (2026-05-09)
 
-After the full 2026-05-08 reassessment, the user requested adding
-`VRSEN/OpenSwarm` to the radar. This phase is intentionally narrow: one
-new repository gets a deep evaluation plus an addendum that uses the Phase 3
+After the full 2026-05-08 reassessment, the user requested targeted additions
+that were not in the broad corpus. This phase is intentionally narrow: each
+new tool or suite gets a deep evaluation plus an addendum that uses the Phase 3
 bidirectional axis and adoption-kind doctrine.
 
 | Path | Role |
 |---|---|
 | [`docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md`](../research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md) | Deep per-repo evaluation of OpenSwarm |
 | [`docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`](external-tools-radar-openswarm-addendum-2026-05-09.md) | Radar addendum: ASSESS/MONITOR, pattern-only extraction |
-| [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entry under EVALUATE |
+| [`docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`](../research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md) | Targeted evaluation of Agno, Dash, and Scout |
+| [`docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`](external-tools-radar-agno-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Agno suite |
+| [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entries under EVALUATE |
 
 **Outcome:** OpenSwarm is added as a monitor/evaluate item. Extract its
 specialist-roster, routing-language, and artifact-delivery UX patterns; do not
 import its Agency Swarm runtime, installer side effects, all-to-all handoff mesh,
-or external-action execution path into COS core.
+or external-action execution path into COS core. Agno is added as an
+assess/trial-patterns suite: harvest runtime-packaging, human-approval,
+self-learning data-agent, and context-provider ideas while keeping COS
+hooks/rules/memory/policy authoritative and avoiding default runtime adoption.
 
 ## How to use this index
 
