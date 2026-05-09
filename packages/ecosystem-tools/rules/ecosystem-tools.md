@@ -207,6 +207,22 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: OpenSwarm is valuable as a productized example of an orchestrator plus deliverable specialists with explicit `SendMessage` vs `Handoff` routing and concrete output-path discipline. Direct runtime adoption is not recommended: it is a young, broad Agency Swarm application with heavy Python/Node/media dependencies, bootstrap side effects, all-to-all handoffs, and external-action tools that would need COS credential, permission, audit, and rollback wrappers. Deep evaluation: `docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`.
 
+### Agno Suite — Production Agent Platform and Company-Brain Templates (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Agent platform and first-party app templates for production agent services, self-learning data agents, and company-brain context providers |
+| Config | N/A (evaluation phase — pattern-only plus possible future adapter lab) |
+| Hook | N/A (not implemented) |
+| Install | See [agno-agi/agno](https://github.com/agno-agi/agno); do not add to default COS bootstrap |
+| Required | No |
+| Scope | Runtime packaging, human approval UX, tracing/session concepts, data-agent learning loop, context-provider registry |
+| GitHub | [agno-agi/agno](https://github.com/agno-agi/agno), [agno-agi/dash](https://github.com/agno-agi/dash), [agno-agi/scout](https://github.com/agno-agi/scout) |
+| License | Apache-2.0 |
+| Status | **EVALUATE** — Assess patterns and a bounded adapter lab; do not adopt the runtime by default |
+
+**Evaluation Notes**: Agno is different from the Claw naming cluster: it is a production-agent platform with SDK/runtime/control-plane concepts, while Dash and Scout are first-party templates for self-learning data agents and company-brain context providers. Useful extraction targets are runtime packaging vocabulary, human approval UX, Dash's durable SQL/data learnings, and Scout's provider registry. Direct adoption is not recommended until telemetry, hosted-control-plane, credential, rollback, and ADR-049/ADR-064 governance boundaries are proven. Deep evaluation: `docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`.
+
 ### Agentic Radar (SPLX AI) — Agent Workflow Analyzer (WATCH)
 
 | Property | Value |
