@@ -66,8 +66,10 @@ def test_rewrite_plan_writes_editable_files(tmp_path: Path) -> None:
     assert (plan_dir / "message-rewrites.json").exists()
     assert (plan_dir / "replacements.txt").exists()
     assert (plan_dir / "remote-snapshot.json").exists()
+    assert (plan_dir / "branch-upstream-snapshot.json").exists()
     assert plan["message_rewrites"]
     assert plan["remotes"] == []
+    assert plan["branch_upstreams"] == []
     assert plan["message_rewrites"][0]["new"] == "chore(license): establish FSL-1.1-MIT before public launch"
 
 
@@ -87,6 +89,28 @@ def test_rewrite_plan_snapshots_remotes(tmp_path: Path) -> None:
     snapshot = json.loads((repo / ".cognitive-os/prelaunch/remote-snapshot.json").read_text(encoding="utf-8"))
     assert plan["remotes"] == ["origin"]
     assert snapshot["origin"]["fetch"] == str(remote)
+
+
+def test_rewrite_plan_snapshots_branch_upstreams(tmp_path: Path) -> None:
+    remote = tmp_path / "remote.git"
+    subprocess.run(["git", "init", "--bare", str(remote)], text=True, capture_output=True, check=True)
+    repo = tmp_path / "repo"
+    repo.mkdir()
+    _init_repo(repo)
+    (repo / "README.md").write_text("demo\n", encoding="utf-8")
+    _git(repo, "add", "README.md")
+    _git(repo, "commit", "-m", "normal commit")
+    branch = _git(repo, "branch", "--show-current").stdout.strip()
+    _git(repo, "remote", "add", "origin", str(remote))
+    _git(repo, "push", "-u", "origin", f"HEAD:{branch}")
+
+    plan = build_rewrite_plan(repo)
+
+    snapshot = json.loads((repo / ".cognitive-os/prelaunch/branch-upstream-snapshot.json").read_text(encoding="utf-8"))
+    assert plan["current_branch"] == branch
+    assert plan["branch_upstreams"] == [branch]
+    assert snapshot["branches"][branch]["remote"] == "origin"
+    assert snapshot["branches"][branch]["merge"] == f"refs/heads/{branch}"
 
 
 def test_apply_rewrite_dry_run_requires_no_env(tmp_path: Path) -> None:
@@ -127,6 +151,7 @@ def test_apply_rewrite_restores_remotes_after_filter_repo(tmp_path: Path, monkey
     _git(repo, "commit", "-m", "seed")
     _git(repo, "remote", "add", "origin", str(remote))
     _git(repo, "push", "-u", "origin", "HEAD:main")
+    _git(repo, "branch", "--set-upstream-to=origin/main")
     plan_dir = tmp_path / "rewrite-plan"
     plan_dir.mkdir(parents=True)
     (plan_dir / "replacements.txt").write_text(
@@ -141,8 +166,10 @@ def test_apply_rewrite_restores_remotes_after_filter_repo(tmp_path: Path, monkey
     assert result["status"] == "rewritten"
     assert result["remotes_restored"] == ["origin"]
     assert result["remote_restore_issues"] == []
+    assert result["branch_upstream_restore_issues"] == []
     restored_origin = _git(repo, "remote", "get-url", "origin").stdout.strip()
     assert restored_origin == str(remote)
+    assert _git(repo, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}").stdout.strip() == "origin/main"
 
 
 def test_message_audit_cli_imports_from_repo_root(tmp_path: Path) -> None:

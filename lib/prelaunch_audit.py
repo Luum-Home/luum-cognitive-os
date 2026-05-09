@@ -398,6 +398,7 @@ def build_rewrite_plan(repo: Path, *, plan_dir: Path | None = None) -> dict[str,
         rewrites.append({"old": old, "new": new, "reason": f"{finding['rule_id']}: {finding['kind']}"})
     replacements_text = "# git-filter-repo replacement file. Add OLD==>NEW or regex:OLD==>NEW entries after review.\n"
     remotes = snapshot_remotes(repo)
+    branch_upstreams = snapshot_branch_upstreams(repo)
     plan = {
         "schema_version": PLAN_SCHEMA_VERSION,
         "repo": "<repo>",
@@ -405,7 +406,10 @@ def build_rewrite_plan(repo: Path, *, plan_dir: Path | None = None) -> dict[str,
         "message_rewrites": rewrites,
         "content_replacements_file": str((plan_dir or DEFAULT_PLAN_DIR) / "replacements.txt"),
         "remote_snapshot_file": str((plan_dir or DEFAULT_PLAN_DIR) / "remote-snapshot.json"),
+        "branch_upstream_snapshot_file": str((plan_dir or DEFAULT_PLAN_DIR) / "branch-upstream-snapshot.json"),
         "remotes": sorted(remotes),
+        "branch_upstreams": sorted(branch_upstreams["branches"]),
+        "current_branch": branch_upstreams["current_branch"],
         "policy": "Editable plan. Apply requires COS_ALLOW_PRELAUNCH_REWRITE=1. Force-push requires an additional COS_ALLOW_PRELAUNCH_FORCE_PUSH=1.",
     }
     target_dir = repo / (plan_dir or DEFAULT_PLAN_DIR)
@@ -413,6 +417,7 @@ def build_rewrite_plan(repo: Path, *, plan_dir: Path | None = None) -> dict[str,
     (target_dir / "message-rewrites.json").write_text(json.dumps(rewrites, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (target_dir / "replacements.txt").write_text(replacements_text, encoding="utf-8")
     (target_dir / "remote-snapshot.json").write_text(json.dumps(remotes, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (target_dir / "branch-upstream-snapshot.json").write_text(json.dumps(branch_upstreams, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (target_dir / "plan.json").write_text(json.dumps(plan, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return plan
 
@@ -468,6 +473,33 @@ def snapshot_remotes(repo: Path) -> dict[str, dict[str, str]]:
     return remotes
 
 
+def snapshot_branch_upstreams(repo: Path) -> dict[str, Any]:
+    """Capture local branch tracking config that history rewrite tools can drop."""
+    current_proc = git(repo, ["branch", "--show-current"])
+    current_branch = current_proc.stdout.strip() if current_proc.returncode == 0 else ""
+    branches_proc = git(repo, ["for-each-ref", "--format=%(refname:short)", "refs/heads"])
+    branches: dict[str, dict[str, str]] = {}
+    if branches_proc.returncode != 0:
+        return {"current_branch": current_branch, "branches": branches}
+    for branch in [line.strip() for line in branches_proc.stdout.splitlines() if line.strip()]:
+        remote = git(repo, ["config", "--get", f"branch.{branch}.remote"])
+        merge = git(repo, ["config", "--get", f"branch.{branch}.merge"])
+        entry: dict[str, str] = {}
+        if remote.returncode == 0 and remote.stdout.strip():
+            entry["remote"] = remote.stdout.strip()
+        if merge.returncode == 0 and merge.stdout.strip():
+            entry["merge"] = merge.stdout.strip()
+        if entry:
+            branches[branch] = entry
+    return {"current_branch": current_branch, "branches": branches}
+
+
+def upstream_tracking_ref(remote: str | None, merge: str | None) -> str:
+    if not remote or remote == "." or not merge or not merge.startswith("refs/heads/"):
+        return ""
+    return f"refs/remotes/{remote}/{merge.removeprefix('refs/heads/')}"
+
+
 def restore_remotes(repo: Path, remotes: dict[str, dict[str, str]]) -> dict[str, dict[str, str]]:
     restored: dict[str, dict[str, str]] = {}
     for name, urls in remotes.items():
@@ -482,6 +514,53 @@ def restore_remotes(repo: Path, remotes: dict[str, dict[str, str]]) -> dict[str,
         if push:
             git(repo, ["remote", "set-url", "--push", name, push])
         restored[name] = {"fetch": fetch, "push": push or fetch}
+    return restored
+
+
+def refresh_branch_upstream_refs(repo: Path, snapshot: dict[str, Any]) -> dict[str, list[str]]:
+    """Fetch missing remote-tracking refs so restored upstreams resolve as @{u}."""
+    refreshed: list[str] = []
+    errors: list[str] = []
+    branches = snapshot.get("branches", {})
+    if not isinstance(branches, dict):
+        return {"refreshed": refreshed, "errors": ["branch upstream snapshot is malformed"]}
+    for branch, config in branches.items():
+        if not isinstance(branch, str) or not isinstance(config, dict):
+            continue
+        remote = config.get("remote")
+        merge = config.get("merge")
+        if not isinstance(remote, str) or not isinstance(merge, str):
+            continue
+        tracking_ref = upstream_tracking_ref(remote, merge)
+        if not tracking_ref or git(repo, ["show-ref", "--verify", "--quiet", tracking_ref]).returncode == 0:
+            continue
+        proc = git(repo, ["fetch", "--no-tags", remote, f"+{merge}:{tracking_ref}"], timeout=60)
+        if proc.returncode == 0:
+            refreshed.append(tracking_ref)
+        else:
+            errors.append(f"{branch}: fetch {remote} {merge} failed")
+    return {"refreshed": refreshed, "errors": errors}
+
+
+def restore_branch_upstreams(repo: Path, snapshot: dict[str, Any]) -> dict[str, dict[str, str]]:
+    """Restore local branch upstream config after remotes have been restored."""
+    restored: dict[str, dict[str, str]] = {}
+    branches = snapshot.get("branches", {})
+    if not isinstance(branches, dict):
+        return restored
+    for branch, config in branches.items():
+        if not isinstance(branch, str) or not isinstance(config, dict):
+            continue
+        if git(repo, ["rev-parse", "--verify", f"refs/heads/{branch}"]).returncode != 0:
+            continue
+        remote = config.get("remote")
+        merge = config.get("merge")
+        if isinstance(remote, str) and remote:
+            git(repo, ["config", f"branch.{branch}.remote", remote])
+        if isinstance(merge, str) and merge:
+            git(repo, ["config", f"branch.{branch}.merge", merge])
+        if remote or merge:
+            restored[branch] = {k: v for k, v in {"remote": remote, "merge": merge}.items() if isinstance(v, str) and v}
     return restored
 
 
@@ -513,6 +592,32 @@ def remote_restore_issues(repo: Path, expected: dict[str, dict[str, str]]) -> li
     return issues
 
 
+def branch_upstream_restore_issues(repo: Path, expected: dict[str, Any]) -> list[str]:
+    issues: list[str] = []
+    actual = snapshot_branch_upstreams(repo)
+    expected_branches = expected.get("branches", {})
+    actual_branches = actual.get("branches", {})
+    if not isinstance(expected_branches, dict) or not isinstance(actual_branches, dict):
+        return ["branch upstream snapshot is malformed"]
+    for branch, config in expected_branches.items():
+        if not isinstance(branch, str) or not isinstance(config, dict):
+            continue
+        if git(repo, ["rev-parse", "--verify", f"refs/heads/{branch}"]).returncode != 0:
+            issues.append(f"{branch}: missing local branch")
+            continue
+        actual_config = actual_branches.get(branch, {})
+        if not isinstance(actual_config, dict):
+            actual_config = {}
+        for key in ("remote", "merge"):
+            expected_value = config.get(key)
+            if isinstance(expected_value, str) and expected_value and actual_config.get(key) != expected_value:
+                issues.append(f"{branch}: {key} mismatch")
+        tracking_ref = upstream_tracking_ref(config.get("remote"), config.get("merge"))
+        if tracking_ref and git(repo, ["show-ref", "--verify", "--quiet", tracking_ref]).returncode != 0:
+            issues.append(f"{branch}: upstream ref missing")
+    return issues
+
+
 def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = False) -> dict[str, Any]:
     target_dir = repo / (plan_dir or DEFAULT_PLAN_DIR)
     rewrites = load_message_rewrites(target_dir / "message-rewrites.json")
@@ -537,16 +642,23 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
     if bundle.returncode != 0:
         raise SystemExit(bundle.stderr.strip() or "git bundle backup failed")
     remotes = snapshot_remotes(repo)
+    branch_upstreams = snapshot_branch_upstreams(repo)
     (target_dir / "remote-snapshot.json").write_text(json.dumps(remotes, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (target_dir / "branch-upstream-snapshot.json").write_text(json.dumps(branch_upstreams, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     executed: list[list[str]] = []
     for action in actions:
         proc = subprocess.run(action, cwd=repo, text=True, capture_output=True, check=False)
         executed.append(action[:4])
         if proc.returncode != 0:
             restore_remotes(repo, remotes)
+            restore_branch_upstreams(repo, branch_upstreams)
             raise SystemExit(proc.stderr.strip() or proc.stdout.strip() or f"rewrite action failed: {action[:3]}")
     restored = restore_remotes(repo, remotes)
+    branch_upstreams_restored = restore_branch_upstreams(repo, branch_upstreams)
+    branch_upstream_ref_refresh = refresh_branch_upstream_refs(repo, branch_upstreams)
     restore_issues = remote_restore_issues(repo, remotes)
+    branch_upstream_issues = branch_upstream_restore_issues(repo, branch_upstreams)
+    branch_upstream_issues.extend(branch_upstream_ref_refresh["errors"])
     result: dict[str, Any] = {
         "schema_version": PLAN_SCHEMA_VERSION,
         "status": "rewritten",
@@ -554,9 +666,14 @@ def apply_rewrite(repo: Path, *, plan_dir: Path | None = None, dry_run: bool = F
         "executed": executed,
         "remotes_restored": sorted(restored),
         "remote_restore_issues": restore_issues,
+        "branch_upstreams_restored": sorted(branch_upstreams_restored),
+        "branch_upstream_refs_refreshed": sorted(branch_upstream_ref_refresh["refreshed"]),
+        "branch_upstream_restore_issues": branch_upstream_issues,
     }
     if restore_issues:
         raise SystemExit("git remote restore failed after history rewrite: " + "; ".join(restore_issues))
+    if branch_upstream_issues:
+        raise SystemExit("git branch upstream restore failed after history rewrite: " + "; ".join(branch_upstream_issues))
     if os.environ.get("COS_ALLOW_PRELAUNCH_FORCE_PUSH") == "1":
         remote = os.environ.get("COS_PRELAUNCH_REMOTE", "origin")
         branch = os.environ.get("COS_PRELAUNCH_BRANCH", "main")

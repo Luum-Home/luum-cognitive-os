@@ -51,6 +51,21 @@ def test_pre_public_audit_warns_when_git_remote_missing(tmp_path: Path) -> None:
     assert any(f["code"] == "git-remote-missing" for f in payload["findings"])
 
 
+def test_pre_public_audit_warns_when_branch_upstream_missing(tmp_path: Path) -> None:
+    repo = _repo(tmp_path)
+    remote = tmp_path / "origin.git"
+    _run(["git", "init", "--bare", str(remote)], tmp_path).check_returncode()
+    _run(["git", "remote", "add", "origin", str(remote)], repo).check_returncode()
+
+    proc = _run([str(SCRIPT), "--repo", str(repo), "--json"], repo)
+
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    payload = json.loads(proc.stdout)
+    assert payload["checks"]["git_current_branch"] == "main"
+    assert payload["checks"]["git_current_upstream"] == ""
+    assert any(f["code"] == "git-branch-upstream-missing" for f in payload["findings"])
+
+
 def test_pre_public_audit_blocks_configured_sensitive_token_in_history(tmp_path: Path) -> None:
     repo = _repo(tmp_path)
     token = "private-token@example.invalid"

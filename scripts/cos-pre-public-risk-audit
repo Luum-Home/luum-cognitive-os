@@ -135,6 +135,22 @@ def audit(repo: Path) -> dict[str, Any]:
             "git remote add origin <repo-url>",
         )
 
+    current_branch_proc = run(repo, ["branch", "--show-current"])
+    current_branch = current_branch_proc.stdout.strip() if current_branch_proc.returncode == 0 else ""
+    upstream_proc = run(repo, ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
+    current_upstream = upstream_proc.stdout.strip() if upstream_proc.returncode == 0 else ""
+    checks["git_current_branch"] = current_branch
+    checks["git_current_upstream"] = current_upstream
+    if remotes and current_branch and not current_upstream:
+        add(
+            findings,
+            "warn",
+            "git-branch-upstream-missing",
+            "Current branch has a remote configured but no upstream tracking branch; set it before public push/land.",
+            1,
+            f"git branch --set-upstream-to=origin/{current_branch} {current_branch}",
+        )
+
     history = tracked_history(repo)
     bodies = commit_bodies(repo)
 
