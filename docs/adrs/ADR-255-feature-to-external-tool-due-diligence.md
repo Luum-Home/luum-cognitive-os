@@ -78,3 +78,30 @@ Slice A implements the local control plane:
 - tests for missing scans, deepwiki URL derivation, and scratch-cache behavior.
 
 Future slices can enrich records from deps.dev and OpenSSF Scorecard APIs.
+
+## Consequences
+
+- BUILD decisions become auditable instead of relying on conversational memory.
+- External tools can be adopted, integrated, deferred, or rejected with evidence
+  instead of impulse.
+- COS avoids quietly cloning mature tool ecosystems when an adapter or governed
+  integration would be cheaper.
+- Some feature promotion work now requires a small evidence packet before it can
+  be described as REAL or public-facing.
+
+## Alternatives rejected
+
+| Alternative | Rejection rationale |
+|---|---|
+| Keep due diligence as an informal review checklist | Rejected because informal research is easy to skip and hard for future agents to audit. |
+| Require internet/source refresh on every normal test lane | Rejected because normal CI must remain local and deterministic; due-diligence receipts can be cached or refreshed explicitly. |
+| Adopt external tools by default whenever they exist | Rejected because license, footprint, maturity, governance boundary, and local product fit still need evaluation. |
+
+## Verification
+
+```bash
+python3 -m pytest tests/unit/test_feature_tool_due_diligence.py -q
+python3 -m pytest tests/behavior/test_feature_tool_due_diligence_cli.py -q
+scripts/cos-feature-tool-scan --json
+scripts/cos-feature-vs-tool-benchmark --json
+```

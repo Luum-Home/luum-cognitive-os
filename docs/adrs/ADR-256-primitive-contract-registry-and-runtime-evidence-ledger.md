@@ -119,7 +119,7 @@ contents or raw secret/private values.
 ## Phases
 
 0. **Docs/contract freeze** — ADR, plan, `/primitive-authoring` gate, `.ai` overlay lesson, and OpenSage pressure-test contract.
-1. **Minimal registry** — five contracts: destructive git, destructive rm, reinvention check, large-file advisor, skill router.
+1. **Minimal registry** — five contracts: destructive git, destructive rm, reinvention check, large-file advisor, skill router. Implemented by ADR-257.
 2. **Intervention ledger** — bridge two hooks first, then script/advisory primitives.
 3. **Codebase itinerary** — safe Read/Grep/Glob/LS metadata without contents.
 4. **Projection and impact report** — join harness fidelity, consumer-fleet audit, and service-readiness gate.
@@ -143,6 +143,28 @@ opencode.json / AGENTS.md advisory context
 The current COS proof remains structural because `cos_init.py --harness opencode`
 only signs `opencode.json`. Runtime enforcement may be claimed only after a COS
 OpenCode plugin adapter and smoke test exist.
+
+## Consequences
+
+- Primitive portability becomes contract-driven instead of inferred from scattered
+  hook, skill, rule, script, lifecycle, and projection metadata.
+- Cross-IDE claims can distinguish enforced, wrapper-enforced, plugin-capable,
+  structural-advisory, CI-enforced, documented-only, and unsupported projections.
+- Runtime evidence can be compared across harnesses once intervention and
+  itinerary ledgers exist.
+- The first implementation slices intentionally duplicate some lifecycle/readiness
+  data while the registry proves its join value.
+- Projection and trace tooling must eventually consume the registry; otherwise it
+  becomes another passive manifest.
+
+## Alternatives rejected
+
+| Alternative | Rejection rationale |
+|---|---|
+| Keep lifecycle/readiness/projection manifests separate with no root contract | Rejected because agents still cannot answer which primitive has which capability requirement, fidelity, and runtime evidence in one row. |
+| Start by adding more IDE adapters | Rejected because it expands projection surface without closing the source-of-truth gap. |
+| Treat structural adapters as runtime enforcement | Rejected because Cursor/Copilot-style instruction surfaces cannot honestly claim blocking behavior without a native, wrapper, plugin, or CI enforcement path. |
+| Copy the `.ai/` overlay wholesale into COS | Rejected because `.ai/` is a useful product mirror, while COS needs richer contracts and evidence ledgers internally. |
 
 ## Non-goals
 
