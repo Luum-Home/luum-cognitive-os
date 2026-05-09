@@ -91,6 +91,68 @@ drivers:
         status: cognitive_os_extension
         projection: requires_cos_runner
 
+  opencode:
+    settings_path: opencode.json
+    plugin_paths:
+      - .opencode/plugins/
+      - ~/.config/opencode/plugins/
+    shape: opencode_json_plus_plugin_hooks
+    version_baseline: "official-docs-2026-05-08"
+    evidence:
+      - https://opencode.ai/docs/plugins/
+      - https://opencode.ai/docs/agents/
+      - https://open-code.ai/en/docs/rules
+    supported_events:
+      SessionStart:
+        status: limited
+        native_event: session.created
+        limitation: >
+          OpenCode exposes session events through plugins, but COS has not yet
+          signed a projection/smoke that maps SessionStart hooks into an
+          OpenCode plugin.
+      UserPromptSubmit:
+        status: limited
+        native_event: tui.prompt.append
+        limitation: >
+          TUI prompt events are plugin-accessible, but they are not yet signed
+          as equivalent to Claude/Codex UserPromptSubmit semantics.
+      PreToolUse:
+        status: supported
+        native_event: tool.execute.before
+        matcher_semantics: tool_name_and_args
+        enforcement: plugin_can_mutate_or_throw
+      PostToolUse:
+        status: supported
+        native_event: tool.execute.after
+        matcher_semantics: tool_name_and_args
+      Stop:
+        status: limited
+        native_event: session.idle
+        limitation: >
+          session.idle can support completion/summary style plugins, but stop
+          parity requires a signed COS adapter and runtime smoke.
+      SubagentStart:
+        status: limited
+        native_surface: agent.task_permissions
+        limitation: >
+          OpenCode supports primary/subagents and task permissions, but COS has
+          not yet signed lifecycle parity for SubagentStart.
+      PreCompact:
+        status: limited
+        native_event: experimental.session.compacting
+        limitation: >
+          OpenCode exposes an experimental compaction hook; treat as limited
+          until COS signs a stable adapter contract.
+      TeammateIdle:
+        status: cognitive_os_extension
+        projection: requires_cos_or_opencode_plugin_adapter
+      TaskCreated:
+        status: cognitive_os_extension
+        projection: requires_cos_or_opencode_plugin_adapter
+      TaskCompleted:
+        status: cognitive_os_extension
+        projection: requires_cos_or_opencode_plugin_adapter
+
   bare_cli:
     settings_path: .cognitive-os/cos-runner-hooks.json
     shape: cos_runner_event_json

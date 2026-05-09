@@ -40,6 +40,20 @@ OpenSage ADK is now a formal pressure test for this plan, not a runtime dependen
 - `lib/trace_joiner.py`
 - `skills/primitive-authoring/SKILL.md`
 
+## OpenCode non-reinvention rule
+
+Do not build a parallel OpenCode enforcement layer when OpenCode already exposes
+the required host surfaces. Use OpenCode-native surfaces first:
+
+1. `opencode.json` / `AGENTS.md` for advisory context.
+2. OpenCode permissions for coarse `allow` / `ask` / `deny` policy.
+3. OpenCode plugins for `tool.execute.before` and `tool.execute.after`
+   enforcement or observation.
+4. COS `primitive-interventions.jsonl` for comparable cross-harness evidence.
+
+The current COS OpenCode projection remains structural until this adapter is
+implemented and smoke-tested.
+
 ## Phase 0 — Contract freeze
 
 Keep the plan-first documentation consistent before runtime changes:

@@ -150,6 +150,30 @@ Result:
    `.cognitive-os/metrics/codebase-itinerary.jsonl` are still ADR-256 future
    surfaces.
 
+## OpenCode correction
+
+OpenCode should not be grouped permanently with instruction-only structural
+adapters. Official OpenCode surfaces include:
+
+- `AGENTS.md` / `opencode.json` instruction loading;
+- configurable agents, commands, permissions, and bash command patterns;
+- plugins with `tool.execute.before` and `tool.execute.after` events.
+
+Documentation and manifests were updated so the current COS OpenCode proof
+remains structural, while the target adapter path is:
+
+```text
+primitive contract
+  -> opencode.json / AGENTS.md advisory context
+  -> OpenCode permissions for coarse allow/ask/deny
+  -> OpenCode plugin lifecycle hooks for enforcement/observation
+  -> primitive-interventions.jsonl evidence
+```
+
+This avoids reinventing OpenCode's host enforcement surface while preserving the
+COS value: portable contracts, cross-harness fidelity, and comparable runtime
+evidence.
+
 ## Recommended next implementation slice
 
 ```text

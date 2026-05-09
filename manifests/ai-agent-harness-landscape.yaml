@@ -81,9 +81,17 @@ candidates:
   - config
   - instructions
   - mcp
+  runtime_capable_surface:
+  - permissions
+  - plugins
+  - tool.execute.before
+  - tool.execute.after
   official_sources:
   - https://opencode.ai/docs/
-  next_action: Optional runtime smoke with credentials.
+  - https://opencode.ai/docs/plugins/
+  - https://opencode.ai/docs/agents/
+  next_action: Implement COS OpenCode plugin adapter and then run optional runtime
+    smoke with credentials or local CLI fixture.
 - id: qwen-code
   display_name: Qwen Code
   category: cli

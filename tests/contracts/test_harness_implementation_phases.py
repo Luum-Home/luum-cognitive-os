@@ -75,7 +75,21 @@ def test_structural_harnesses_do_not_claim_runtime_support() -> None:
             "no native cos lifecycle hook parity" in limitation_text
             or "not native cos lifecycle hooks" in limitation_text
             or "syntax proof only" in limitation_text
+            or "must not claim runtime enforcement" in limitation_text
         ), harness_id
+
+
+def test_opencode_runtime_capability_is_not_counted_as_signed_enforcement() -> None:
+    manifest = yaml.safe_load(HARNESS.read_text())
+    by_id = {item["id"]: item for item in manifest["harnesses"]}
+
+    opencode = by_id["opencode"]
+    assert opencode["proof_level"] == "structural"
+    assert "plugins" in opencode.get("runtime_capable_surfaces", [])
+    assert "tool.execute.before" in opencode.get("runtime_capable_surfaces", [])
+    limitation_text = " ".join(opencode.get("limitations", [])).lower()
+    assert "no cos opencode plugin adapter has been signed yet" in limitation_text
+    assert "must not claim runtime enforcement" in limitation_text
 
 
 def test_native_lifecycle_harnesses_are_explicitly_labeled() -> None:

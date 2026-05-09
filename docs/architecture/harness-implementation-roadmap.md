@@ -12,7 +12,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 |---|---|---|
 | Claude Code | implemented | ACC temp project runs `cos_init.py --default/--full --harness claude`. |
 | OpenAI Codex | implemented | ACC temp project runs `cos_init.py --default/--full --harness codex`. |
-| OpenCode | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness opencode` and verifies `opencode.json`. |
+| OpenCode | implemented structural; runtime-plugin-capable | ACC temp project runs `cos_init.py --default/--full --harness opencode` and verifies `opencode.json`; official plugin/permission surfaces can support runtime enforcement after a COS adapter and smoke test. |
 | VS Code Copilot | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness vscode-copilot` and verifies `.github/copilot-instructions.md` plus `.vscode/mcp.json`. |
 | Cursor | implemented structural | ACC temp project runs `cos_init.py --default/--full --harness cursor` and verifies `.cursor/rules/cognitive-os.mdc` plus `.cursor/mcp.json`. |
 | Shell/CI | implemented structural | `cos_init.py --default/--full --harness shell-ci` invokes `scripts/project_shell_ci.py` and ACC records shell-ci default/full projection counts. |
@@ -23,7 +23,7 @@ Track planned IDE/provider harnesses without overclaiming support. A harness bec
 |---|---|---|---|
 | Qwen Code | Official docs describe `.qwen/settings.json`, `mcpServers`, and context files such as `QWEN.md`. | Implemented structural projection. Next: optional account-backed CLI/runtime smoke. | Temp project validates `.qwen/settings.json`, `QWEN.md`, and ACC default/full counts. |
 | Kimi Code | Official docs describe Kimi Code CLI, `--work-dir`, `--mcp-config-file`, MCP config, and project-level `AGENTS.md`; VS Code extension remains account-backed. | Implemented structural CLI projection. Next: optional account-backed CLI smoke. | Temp project validates `AGENTS.md`, `.kimi/mcp.json`, `.kimi/README.md`, and ACC default/full counts. |
-| OpenCode | Official docs expose `opencode.json`, instructions, permissions, and MCP config. | Implemented structural projection. Next: optional account-backed CLI smoke. | Temp project validates `opencode.json`; runtime smoke remains optional. |
+| OpenCode | Official docs expose `opencode.json`, instructions, permissions, MCP config, and plugin lifecycle events such as `tool.execute.before` / `tool.execute.after`. | Implemented structural projection. Next: COS OpenCode plugin adapter plus optional runtime smoke. | Temp project validates `opencode.json`; plugin adapter smoke must validate enforcement before runtime claims. |
 | Cursor | Official docs expose `.cursor/rules`, MDC metadata, AGENTS.md, and MCP config. | Implemented structural projection. Next: optional account-backed Cursor smoke. | Temp project validates `.cursor/rules/cognitive-os.mdc` and `.cursor/mcp.json`; runtime smoke remains optional. |
 | Windsurf | Planned IDE rules/MCP projection. | Define `.windsurf/rules` and `.windsurf/mcp.json` projection. | Temp project structural proof. |
 | VS Code Copilot | Official docs expose `.github/copilot-instructions.md`, AGENTS.md, and MCP configuration. | Implemented structural projection. Next: optional account-backed extension smoke. | Temp project validates `.github/copilot-instructions.md` and `.vscode/mcp.json`; runtime smoke remains optional. |

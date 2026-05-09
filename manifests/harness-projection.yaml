@@ -9,6 +9,9 @@ proof_levels:
     docs; runtime execution is not claimed.
   runtime-smoke: A real account-backed or CLI/IDE runtime smoke has been executed
     and recorded.
+  host-plugin-lifecycle: Host exposes plugin/tool lifecycle events that can support
+    runtime enforcement, but COS has not yet signed a runtime smoke for projected
+    COS primitives on that host.
   native-lifecycle: Native lifecycle hooks/events are projected and tested for the
     harness.
   planned: Harness is in product scope but native projection proof is not implemented
@@ -133,22 +136,37 @@ harnesses:
 - id: opencode
   display_name: OpenCode
   status: implemented
-  projection_mode: opencode-json-instructions-mcp
+  projection_mode: opencode-json-instructions-mcp-plugin-capable
   settings_paths:
   - opencode.json
+  optional_runtime_paths:
+  - .opencode/plugins/
+  - .opencode/commands/
+  - .opencode/agents/
   projected_surfaces:
   - instructions
   - skills
   - rules
   - mcp-placeholder
+  runtime_capable_surfaces:
+  - permissions
+  - plugins
+  - tool.execute.before
+  - tool.execute.after
   proof: temp-consumer-project-structural
   proof_level: structural
   limitations:
-  - Structural project config proof only; no account-backed OpenCode runtime invocation
-    in automated tests.
-  - No native COS lifecycle hook parity is claimed.
-  next_action: Add account-backed optional runtime smoke when OpenCode CLI credentials
-    are available.
+  - Current COS projection proof writes and verifies structural opencode.json only;
+    no account-backed OpenCode runtime invocation is in automated tests yet.
+  - OpenCode's official plugin API exposes tool.execute.before/tool.execute.after
+    and permission surfaces that can enforce some COS primitives. Do not model
+    OpenCode as documented-only or structural-advisory once a COS OpenCode plugin
+    adapter is implemented and smoke-tested.
+  - No COS OpenCode plugin adapter has been signed yet, so ACC must not claim
+    runtime enforcement from the existing opencode.json structural projection.
+  next_action: Implement a COS OpenCode plugin adapter for primitive interventions
+    and add account-backed or local CLI runtime smoke for representative blocking
+    and advisory primitives.
   default_command:
   - python3
   - scripts/cos_init.py
