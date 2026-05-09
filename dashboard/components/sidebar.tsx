@@ -7,6 +7,7 @@ const navigation = [
   { name: "Dashboard", href: "/" },
   { name: "Rules", href: "/rules" },
   { name: "Skills", href: "/skills" },
+  { name: "Primitives", href: "/primitives" },
 ];
 
 export function Sidebar() {
