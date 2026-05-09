@@ -353,7 +353,16 @@ class TestAutoUpdate:
         project_dir = tmp_path / "my-project"
         project_dir.mkdir()
         (project_dir / ".cognitive-os").mkdir()
-        current_version = (PROJECT_ROOT / "VERSION").read_text(encoding="utf-8").strip()
+        current_version = subprocess.run(
+            ["git", "describe", "--tags", "--abbrev=0"],
+            cwd=PROJECT_ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+            timeout=10,
+        ).stdout.strip().removeprefix("v")
+        if not current_version:
+            current_version = (PROJECT_ROOT / "VERSION").read_text(encoding="utf-8").strip()
         registry_file = _create_registry(tmp_path, [{
             "path": str(project_dir),
             "mode": "default",

@@ -186,6 +186,19 @@ The runway must not copy credentials, full vaults, IDE state, or proprietary
 project context. Engram bundles remain scoped and propose-only; Obsidian remains
 a local graph/audit view unless a sanitized export is explicitly generated.
 
+## Consumer fleet audit panel
+
+Use [`consumer-fleet-audit.md`](consumer-fleet-audit.md) when the operator needs
+one read-only panel for the installed downstream-project fleet. The command:
+
+```bash
+scripts/cos-consumer-fleet-audit --json
+```
+
+joins the installation registry, each project's install metadata, registry-lock
+drift, claim-signature status, and targeted validation lanes. It does not mutate
+consumer projects and it does not promote evidence into claims.
+
 ## Safety boundary
 
 The runway does not:

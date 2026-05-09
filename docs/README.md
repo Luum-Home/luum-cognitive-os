@@ -96,6 +96,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-146: Primitive Readiness Ledger](adrs/ADR-146-primitive-readiness-ledger.md) — accepted contract for the machine-readable script role ledger and future ratchet gates.
 - [Primitive Readiness Ledger Family Extension Plan](architecture/primitive-readiness-ledger-family-extension.md) — staged plan for extending readiness ledgers from scripts to hooks, skills, and rules.
 - [Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) — downstream-project projection contract and current Claude/Codex proof boundary.
+- [Consumer Fleet Audit](architecture/consumer-fleet-audit.md) — read-only panel joining installation registry, install metadata, registry locks, claim signatures, and targeted validation lanes for downstream SO adopters.
 - [ADR-189: Harness Implementation Coverage for Agentic Primitives](adrs/ADR-189-harness-implementation-coverage.md) — separates `SCOPE` intent from effective Claude/Codex/Shell-CI implementation states.
 - [Harness Action Receipts](architecture/harness-action-receipts.md) — vendor-neutral receipt and trust model for Codex `::git-*` directives, Git operations, merge queues, and future harness action telemetry.
 - [Session Close: Lethal Trifecta and Harness Action Receipts — 2026-05-06](reports/session-close-lethal-receipts-2026-05-06.md) — closure report for the lethal-trifecta false-positive fix, harness action receipts runtime/docs, dashboard `fnm` validation, and remaining local worktree scope.
