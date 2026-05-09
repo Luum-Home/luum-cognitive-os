@@ -1,0 +1,384 @@
+{
+  "audit": "history",
+  "findings": [
+    {
+      "kind": "secret",
+      "message": "private-key-material matched 2 historical commit(s); 0 need non-fixture review. Private key material must never be present in public history. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "private-key-material",
+      "sample": "+ \"sample\": \"+ writeFile(t, dir, \\\"key.pem\\\", \\\"-----BEGIN RSA PRIVATE KEY-----\\\\ndata\\\\n-----END RSA PRIVATE KEY-----\\\")\",",
+      "severity": "info",
+      "target": "history:2 commits"
+    },
+    {
+      "kind": "secret",
+      "message": "env-assignment-secret matched 40 historical commit(s); 0 need non-fixture review. Secret-like assignments require manual review or sanitization. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "env-assignment-secret",
+      "sample": "+ \"sample\": \"+ token = load_api_token(token_file)\"",
+      "severity": "info",
+      "target": "history:40 commits"
+    },
+    {
+      "kind": "secret",
+      "message": "github-token matched 7 historical commit(s); 0 need non-fixture review. GitHub tokens must be removed from history. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "github-token",
+      "sample": "+ \"sample\": \"+ token = \\\"ghp_abcdefghijklmnopqrstuvwxyz0123456789\\\"\",",
+      "severity": "info",
+      "target": "history:7 commits"
+    },
+    {
+      "kind": "secret",
+      "message": "openai-token matched 8 historical commit(s); 0 need non-fixture review. Provider tokens must be removed from history. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "openai-token",
+      "sample": "+ \"sample\": \"+ secret = \\\"sk-qwenSECRET1234567890\\\"\",",
+      "severity": "info",
+      "target": "history:8 commits"
+    },
+    {
+      "kind": "secret",
+      "message": "aws-access-key matched 12 historical commit(s); 0 need non-fixture review. AWS access keys must be removed from history. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "aws-access-key",
+      "sample": "+ \"sample\": \"+ \\\"tool_input\\\": {\\\"command\\\": \\\"echo AKIAIOSFODNN7EXAMPLE && echo safe\\\"},\",",
+      "severity": "info",
+      "target": "history:12 commits"
+    },
+    {
+      "kind": "privacy",
+      "message": "personal-email matched 1 historical commit(s); 0 need non-fixture review. Personal email addresses should be reviewed before public launch. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "personal-email",
+      "sample": "+ '> (`reviewer@gmail.com`) appears **2 times** in `git log -p`, not a leak.\\n'",
+      "severity": "info",
+      "target": "history:1 commits"
+    },
+    {
+      "kind": "tone",
+      "message": "hostile-content matched 1 historical commit(s); 0 need non-fixture review. Hostile/internal phrasing in tracked history can create avoidable backlash. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "hostile-content",
+      "sample": "+ AuditRule(\"hostile-message\", \"tone\", \"warn\", r\"\\b(hate|drama|scam|fraud|trash|stupid|idiot)\\b|\\b(odio|bardo|quilombo|estafa|trucho|bardear)\\b\", \"Hostile phrasing creates avoidable reputational risk.\"),",
+      "severity": "info",
+      "target": "history:1 commits"
+    },
+    {
+      "kind": "quote_mine_risk",
+      "message": "concealment-content matched 1 historical commit(s); 0 need non-fixture review. Concealment language should be reviewed in context. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "concealment-content",
+      "sample": "+ AuditRule(\"hide-bypass-message\", \"quote_mine_risk\", \"warn\", r\"\\b(hide|sneak|smuggle)\\b\", \"Commit messages can be quote-mined as intent to conceal controls.\"),",
+      "severity": "info",
+      "target": "history:1 commits"
+    },
+    {
+      "kind": "overclaim",
+      "message": "absolute-claim-content matched 11 historical commit(s); 0 need non-fixture review. Absolute public claims should be evidence-backed or softened. All matches are fixture/example-like or reviewed audit context.",
+      "rule_id": "absolute-claim-content",
+      "sample": "+ \"sample\": \"+UNSURE ABOUT: <at least 1 item \\u2014 \\\"100% confident\\\" is a red flag>\",",
+      "severity": "info",
+      "target": "history:11 commits"
+    }
+  ],
+  "policy": "Read-only scan. License references are reported as context, not auto-sanitized.",
+  "repo": "<repo>",
+  "rule_hits": [
+    {
+      "commit_count": 2,
+      "fixture_like_commit_count": 2,
+      "kind": "secret",
+      "rationale": "Private key material must never be present in public history.",
+      "risky_commit_count": 0,
+      "rule_id": "private-key-material",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": true,
+          "sample": "+ \"sample\": \"+ writeFile(t, dir, \\\"key.pem\\\", \\\"-----BEGIN RSA PRIVATE KEY-----\\\\ndata\\\\n-----END RSA PRIVATE KEY-----\\\")\","
+        },
+        {
+          "commit": "d46f42ba093f9f9035fc91946be44d5976013968",
+          "fixture_like": true,
+          "sample": "+ writeFile(t, dir, \"key.pem\", \"-----BEGIN RSA PRIVATE KEY-----\\ndata\\n-----END RSA PRIVATE KEY-----\")"
+        }
+      ],
+      "severity": "block"
+    },
+    {
+      "commit_count": 40,
+      "fixture_like_commit_count": 40,
+      "kind": "secret",
+      "rationale": "Secret-like assignments require manual review or sanitization.",
+      "risky_commit_count": 0,
+      "rule_id": "env-assignment-secret",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": true,
+          "sample": "+ \"sample\": \"+ token = load_api_token(token_file)\""
+        },
+        {
+          "commit": "df909c0460a85e75522de540554682040b653da9",
+          "fixture_like": true,
+          "sample": "+ token = \"private-token@example.invalid\""
+        },
+        {
+          "commit": "a768216ca89947a4d22152bac6f1ee895527622b",
+          "fixture_like": true,
+          "sample": "+ token = \"sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789_FAKEKEYFORTEST0\""
+        },
+        {
+          "commit": "43a26b1279c81364ec25cd74d5bf10df838c0fcd",
+          "fixture_like": true,
+          "sample": "+ token = \"sk-ant-api03-abcdefghijklmnopqrstuvwxyz0123456789_FAKEKEYFORTEST0\""
+        },
+        {
+          "commit": "c2dbf9e8c5781337df5921207e4b4eb261284929",
+          "fixture_like": true,
+          "sample": "+ token = load_api_token(token_file)"
+        }
+      ],
+      "severity": "block"
+    },
+    {
+      "commit_count": 7,
+      "fixture_like_commit_count": 7,
+      "kind": "secret",
+      "rationale": "GitHub tokens must be removed from history.",
+      "risky_commit_count": 0,
+      "rule_id": "github-token",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": true,
+          "sample": "+ \"sample\": \"+ token = \\\"ghp_abcdefghijklmnopqrstuvwxyz0123456789\\\"\","
+        },
+        {
+          "commit": "1d10178566c8615c2ac1f73aed0c21b386779952",
+          "fixture_like": true,
+          "sample": "+ token = \"ghp_abcdefghijklmnopqrstuvwxyz0123456789\""
+        },
+        {
+          "commit": "58d7b8873c2439b4e3520ed69fa51d0819412b43",
+          "fixture_like": true,
+          "sample": "+ raw = cos_check_quality('ghp_ABCDEFghijklmnopqrstuvwxyz0123456789ab')"
+        },
+        {
+          "commit": "5cc0c5475c6e3adbe1d8bd40990c21f25269621f",
+          "fixture_like": true,
+          "sample": "+ result = cos_check_quality('token = \"ghp_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghij\"')"
+        },
+        {
+          "commit": "0d94c5dde060d46c3fcd3762e4b87d60d4a273b0",
+          "fixture_like": true,
+          "sample": "+ writeFile(t, dir, \".git/config\", `token = ghp_abcdefghijklmnopqrstuvwxyz0123456789`)"
+        }
+      ],
+      "severity": "block"
+    },
+    {
+      "commit_count": 8,
+      "fixture_like_commit_count": 8,
+      "kind": "secret",
+      "rationale": "Provider tokens must be removed from history.",
+      "risky_commit_count": 0,
+      "rule_id": "openai-token",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": true,
+          "sample": "+ \"sample\": \"+ secret = \\\"sk-qwenSECRET1234567890\\\"\","
+        },
+        {
+          "commit": "50896141d236c93ffb39ece4f2822ec401b1f74d",
+          "fixture_like": true,
+          "sample": "+ secret = \"sk-qwenSECRET1234567890\""
+        },
+        {
+          "commit": "3f990ba1a328e6c7fedecb6382dccbe2cf3366cf",
+          "fixture_like": true,
+          "sample": "+ secret = \"sk-qwenSECRET1234567890\""
+        },
+        {
+          "commit": "05907191a15822fed367f53f1b173e0c63cb2cac",
+          "fixture_like": true,
+          "sample": "+ result = update(store, {\"preferences\": {\"token\": \"OPENAI_API_KEY=sk-abc123456789abcdefghi\"}})"
+        },
+        {
+          "commit": "58d7b8873c2439b4e3520ed69fa51d0819412b43",
+          "fixture_like": true,
+          "sample": "+ raw = cos_check_quality('API_KEY = \"sk-1234567890abcdef1234567890abcdef\"')"
+        }
+      ],
+      "severity": "block"
+    },
+    {
+      "commit_count": 12,
+      "fixture_like_commit_count": 12,
+      "kind": "secret",
+      "rationale": "AWS access keys must be removed from history.",
+      "risky_commit_count": 0,
+      "rule_id": "aws-access-key",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": true,
+          "sample": "+ \"sample\": \"+ \\\"tool_input\\\": {\\\"command\\\": \\\"echo AKIAIOSFODNN7EXAMPLE && echo safe\\\"},\","
+        },
+        {
+          "commit": "a768216ca89947a4d22152bac6f1ee895527622b",
+          "fixture_like": true,
+          "sample": "+ \"tool_input\": {\"command\": \"echo AKIAIOSFODNN7EXAMPLE && echo safe\"},"
+        },
+        {
+          "commit": "43a26b1279c81364ec25cd74d5bf10df838c0fcd",
+          "fixture_like": true,
+          "sample": "+ \"tool_input\": {\"command\": \"echo AKIAIOSFODNN7EXAMPLE && echo safe\"},"
+        },
+        {
+          "commit": "7771cb16879db1951889c41df807c668f2709b3c",
+          "fixture_like": true,
+          "sample": "+ - 'AKIAIOSFODNN7EXAMPLE'"
+        },
+        {
+          "commit": "5dcb95c41a82cad4454d3c0ec1e716495015c066",
+          "fixture_like": true,
+          "sample": "+ - 'AKIAIOSFODNN7EXAMPLE'"
+        }
+      ],
+      "severity": "block"
+    },
+    {
+      "commit_count": 0,
+      "fixture_like_commit_count": 0,
+      "kind": "privacy",
+      "rationale": "Machine-local paths expose operator environment details.",
+      "risky_commit_count": 0,
+      "rule_id": "local-home-path",
+      "samples": [],
+      "severity": "warn"
+    },
+    {
+      "commit_count": 1,
+      "fixture_like_commit_count": 1,
+      "kind": "privacy",
+      "rationale": "Personal email addresses should be reviewed before public launch.",
+      "risky_commit_count": 0,
+      "rule_id": "personal-email",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": true,
+          "sample": "+ '> (`reviewer@gmail.com`) appears **2 times** in `git log -p`, not a leak.\\n'"
+        }
+      ],
+      "severity": "warn"
+    },
+    {
+      "commit_count": 1,
+      "fixture_like_commit_count": 1,
+      "kind": "tone",
+      "rationale": "Hostile/internal phrasing in tracked history can create avoidable backlash.",
+      "risky_commit_count": 0,
+      "rule_id": "hostile-content",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": false,
+          "sample": "+ AuditRule(\"hostile-message\", \"tone\", \"warn\", r\"\\b(hate|drama|scam|fraud|trash|stupid|idiot)\\b|\\b(odio|bardo|quilombo|estafa|trucho|bardear)\\b\", \"Hostile phrasing creates avoidable reputational risk.\"),"
+        }
+      ],
+      "severity": "warn"
+    },
+    {
+      "commit_count": 1,
+      "fixture_like_commit_count": 1,
+      "kind": "quote_mine_risk",
+      "rationale": "Concealment language should be reviewed in context.",
+      "risky_commit_count": 0,
+      "rule_id": "concealment-content",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": false,
+          "sample": "+ AuditRule(\"hide-bypass-message\", \"quote_mine_risk\", \"warn\", r\"\\b(hide|sneak|smuggle)\\b\", \"Commit messages can be quote-mined as intent to conceal controls.\"),"
+        }
+      ],
+      "severity": "warn"
+    },
+    {
+      "commit_count": 11,
+      "fixture_like_commit_count": 11,
+      "kind": "overclaim",
+      "rationale": "Absolute public claims should be evidence-backed or softened.",
+      "risky_commit_count": 0,
+      "rule_id": "absolute-claim-content",
+      "samples": [
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": false,
+          "sample": "+ \"sample\": \"+UNSURE ABOUT: <at least 1 item \\u2014 \\\"100% confident\\\" is a red flag>\","
+        },
+        {
+          "commit": "8b1d13b11e6489ce5d9be335a86a6f848118cec9",
+          "fixture_like": false,
+          "sample": "+UNSURE ABOUT: <at least 1 item \u2014 \"100% confident\" is a red flag>"
+        },
+        {
+          "commit": "ecb9143fd046e4a7c9af95b58ccb151f24cd7523",
+          "fixture_like": false,
+          "sample": "+UNSURE ABOUT: <at least 1 item \u2014 \"100% confident\" is a red flag>"
+        },
+        {
+          "commit": "8ec93864ff06af97f1cc3a717f398a2bba2528e2",
+          "fixture_like": false,
+          "sample": "+ REQUIRED; \"100% confident\" is a red flag."
+        },
+        {
+          "commit": "e57a1a9b04d6e4ddac13071a341a7db139500ac8",
+          "fixture_like": false,
+          "sample": "-\"100% confident, no uncertainties\" is a RED FLAG \u2014 it means the agent isn't thinking critically."
+        }
+      ],
+      "severity": "warn"
+    },
+    {
+      "commit_count": 214,
+      "fixture_like_commit_count": 23,
+      "kind": "license_narrative",
+      "rationale": "License references are expected but should be calm, transparent, and consistent.",
+      "risky_commit_count": 191,
+      "rule_id": "license-context",
+      "samples": [
+        {
+          "commit": "3b658bb1bec66581bbfe6caf5db37365d26a75d0",
+          "fixture_like": false,
+          "sample": "+| License | Apache-2.0 |"
+        },
+        {
+          "commit": "2957e55ea8f3e055c05c6a9b58f9fbdda198b5ea",
+          "fixture_like": false,
+          "sample": "+| License | Apache-2.0 across the three checked repositories |"
+        },
+        {
+          "commit": "ed4e1f70525faa7b1d53153f12e7d38b5329d78f",
+          "fixture_like": false,
+          "sample": "+ \"sample\": \"| **agnix** | Apache-2.0 | 6-8h | Config file linter (342 rules for CLAUDE.md, SKILL.md, hooks, MCP) |\""
+        },
+        {
+          "commit": "39ce28fb4e0853dd73903f8fdf857a0f3ff1ca99",
+          "fixture_like": false,
+          "sample": "| **agnix** | Apache-2.0 | 6-8h | Config file linter (342 rules for CLAUDE.md, SKILL.md, hooks, MCP) |"
+        },
+        {
+          "commit": "1fd6abf0f05f02a80e9928b96448263352ae4b2b",
+          "fixture_like": false,
+          "sample": "- \"license\": \"Apache-2.0\","
+        }
+      ],
+      "severity": "info"
+    }
+  ],
+  "schema_version": "prelaunch-audit/v1",
+  "status": "pass",
+  "summary": {
+    "block": 0,
+    "findings": 9,
+    "info": 9,
+    "warn": 0
+  }
+}

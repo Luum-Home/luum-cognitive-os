@@ -1,0 +1,14 @@
+{
+  "audit": "messages",
+  "findings": [],
+  "policy": "Read-only commit-message scan. Suggested rewrites require explicit operator approval before apply.",
+  "repo": "<repo>",
+  "schema_version": "prelaunch-audit/v1",
+  "status": "pass",
+  "summary": {
+    "block": 0,
+    "findings": 0,
+    "info": 0,
+    "warn": 0
+  }
+}
