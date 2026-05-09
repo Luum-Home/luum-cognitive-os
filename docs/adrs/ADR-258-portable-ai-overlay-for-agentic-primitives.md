@@ -129,6 +129,34 @@ files, instruction files, hooks, or adapter docs.
 Only after generator, conformance, adapters, and consumer proof are stable should
 COS revisit whether `.ai/` becomes canonical rather than generated.
 
+
+## Due-diligence addendum
+
+ADR-258 depends on the following classification from the external due-diligence
+report:
+
+| Surface | Role in COS |
+|---|---|
+| `.ai` / VERSA / dotAIslash | Candidate consumer overlay standard and future conformance target. |
+| `AGENTS.md` | Strong cross-tool instruction standard and adapter output. |
+| `SKILL.md` / Agent Skills | Strong portable skill standard and COS skill authoring baseline. |
+| MCP | Tool/server capability protocol; related but not equivalent to primitive projection. |
+| ACP | Editor-agent transport protocol; related but not equivalent to primitive registry. |
+| A2A | Agent-to-agent communication protocol; related but not equivalent to IDE adapter projection. |
+| COS primitive contracts | Internal canonical registry. |
+| `.ai` overlay | Generated consumer export. |
+
+Decision invariant:
+
+```text
+COS canonical internal registry != consumer .ai overlay
+```
+
+The `.ai` tree is allowed to mirror, package, and project COS primitives. It is
+not allowed to invent primitive behavior, erase declared fidelity differences, or
+replace `manifests/primitive-contracts.yaml` as source of truth before a later
+migration ADR is accepted.
+
 ## Consequences
 
 ### Positive

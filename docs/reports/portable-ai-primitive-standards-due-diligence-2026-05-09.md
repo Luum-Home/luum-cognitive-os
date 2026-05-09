@@ -124,6 +124,43 @@ Rules/instructions are portable. Enforcement is not. OpenCode permissions/plugin
 Claude hooks, CI wrappers, and future OAP/OpenLeash-style authorization are
 different enforcement surfaces. A `.ai` overlay must declare fidelity honestly.
 
+
+## Due-diligence addendum: standard classification
+
+This addendum is the explicit gate that should exist before implementation
+commits touching `.ai` portability. It separates candidate standards, strong
+standards, related protocols, and COS-owned canonical state.
+
+| Surface | Classification | COS decision |
+|---|---|---|
+| `.ai` / VERSA / dotAIslash | Candidate portable overlay standard | Use as generated consumer overlay and conformance target; do not make it canonical yet. |
+| `AGENTS.md` | Strong cross-tool instruction standard | Keep as an adapter output / embedded guidance surface for tools that support it. |
+| `SKILL.md` / Agent Skills | Strong portable skill standard | Keep as the canonical skill authoring format; ratchet COS skill contracts against external skill specs. |
+| MCP | Related tool protocol | Treat as tool/server capability transport; not a primitive registry, adapter fidelity report, or `.ai` replacement. |
+| ACP | Related editor-agent protocol | Treat as possible adapter runtime transport; not a primitive source of truth or policy engine. |
+| A2A | Related agent-to-agent protocol | Treat as cross-agent communication substrate; not IDE primitive projection. |
+| COS primitive registry | Internal canonical source | `manifests/primitive-contracts.yaml` plus lifecycle/source files remain canonical until a later ADR changes ownership. |
+| Consumer `.ai` overlay | Generated export/package | `.ai/` mirrors canonical COS state for consumers and adapters; adapters must not invent behavior. |
+
+### Hard invariant
+
+**COS canonical internal registry != consumer `.ai` overlay.**
+
+The canonical internal registry answers: what primitives exist, what capabilities
+they require, how they project, and what evidence proves intervention. The
+consumer `.ai` overlay answers: what portable package can a project or IDE consume
+without understanding COS internals.
+
+The overlay may become canonical only after all of the following are true:
+
+1. Generated `.ai` rows round-trip to `manifests/primitive-contracts.yaml` and
+   `manifests/primitive-lifecycle.yaml`.
+2. VERSA-style lint/conformance, if adopted, is optional and graceful by default.
+3. Consumer-fleet audit proves generated files do not break installed projects.
+4. Adapter fidelity reports still prevent structural-only hosts from claiming
+   runtime enforcement.
+5. Runtime evidence ledgers prove actual intervention rather than documentation-only projection.
+
 ## Rejected immediate approach
 
 Do not move every primitive source file into `.ai/` in one commit. Generate a complete `.ai` overlay first, then decide whether canonical migration is justified.
