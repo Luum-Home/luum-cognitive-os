@@ -81,11 +81,12 @@ answer remains:
 
 > The agent inspected these safe targets, these primitives observed/warned/blocked/suggested these actions, and this was the effect.
 
-ADR-256 covers the missing runtime surfaces:
+ADR-256 covers the missing runtime surfaces. ADR-257 has implemented the first
+minimal registry surface; the runtime ledgers remain pending:
 
-- `manifests/primitive-contracts.yaml`
-- `.cognitive-os/metrics/primitive-interventions.jsonl`
-- `.cognitive-os/metrics/codebase-itinerary.jsonl`
+- `manifests/primitive-contracts.yaml` — Phase 1 implemented by ADR-257
+- `.cognitive-os/metrics/primitive-interventions.jsonl` — pending
+- `.cognitive-os/metrics/codebase-itinerary.jsonl` — pending
 
 ## OpenSage pressure test
 
@@ -144,11 +145,11 @@ Result:
    report, trace joiner, consumer UX.
 5. The docs consistently preserve the non-goal: do not copy `.ai/` wholesale and
    do not claim enforcement for structural advisory adapters.
-6. The remaining work is implementation, not documentation alignment:
-   `manifests/primitive-contracts.yaml`,
-   `.cognitive-os/metrics/primitive-interventions.jsonl`, and
-   `.cognitive-os/metrics/codebase-itinerary.jsonl` are still ADR-256 future
-   surfaces.
+6. ADR-257 implemented the minimal `manifests/primitive-contracts.yaml` slice.
+   The remaining ADR-256 implementation work is runtime evidence:
+   `.cognitive-os/metrics/primitive-interventions.jsonl`,
+   `.cognitive-os/metrics/codebase-itinerary.jsonl`, projection/fidelity reporting,
+   and trace-joiner integration.
 
 ## OpenCode correction
 

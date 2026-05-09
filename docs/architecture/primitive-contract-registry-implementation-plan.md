@@ -73,6 +73,8 @@ python3 -m pytest tests/unit/test_self_programming_pattern_audit.py -q
 
 ## Phase 1 — Minimal registry
 
+**Status:** implemented by ADR-257.
+
 Create `manifests/primitive-contracts.yaml` with five initial contracts:
 
 1. `destructive-git-blocker`

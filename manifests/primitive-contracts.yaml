@@ -1,0 +1,303 @@
+schema_version: primitive-contracts.v1
+purpose: >
+  Canonical portable contract registry for Cognitive OS agentic primitives. This
+  registry is the ADR-256 Phase 1 bridge between primitive lifecycle/readiness
+  metadata, source files, harness projection fidelity, and future runtime
+  intervention evidence.
+fidelity_levels:
+  native-lifecycle-enforced: Host lifecycle runs the primitive at the right event and can block/warn in the tested projection.
+  governed-wrapper-enforced: COS wrapper/guard enforces when native lifecycle is incomplete or unavailable.
+  host-plugin-lifecycle-capable: Host exposes plugin/tool lifecycle events suitable for enforcement, but COS has not signed runtime smoke for this primitive yet.
+  structural-advisory: Project files/instructions are generated; no runtime enforcement is claimed.
+  ci-enforced: Enforced only when the shell/CI lane runs.
+  documented-only: Durable docs/contract only; no active runtime projection.
+  unsupported: No safe projection or fallback is currently declared.
+contracts:
+  - id: destructive-git-blocker
+    family: hook
+    source: hooks/destructive-git-blocker.sh
+    lifecycle_ref: hooks/destructive-git-blocker.sh
+    intent: Block destructive Git operations before execution.
+    trigger:
+      kind: before_tool_call
+      tool_intent: shell_command
+      tools: [Bash]
+      command_patterns:
+        - git stash pop|drop|apply
+        - git reset
+        - git clean -f
+        - git restore
+        - git revert
+        - git worktree add|remove|move|prune|repair|lock|unlock
+        - git branch -D
+        - git rebase
+        - git push --force|-f
+    requires:
+      - inspect_shell_command
+      - block_tool_call
+      - emit_metric
+      - emit_intervention
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes:
+        - destructive_git_op
+        - force_push
+        - protected_branch_write
+        - branch_context_switch
+    evidence:
+      metrics:
+        - .cognitive-os/metrics/git-op-blocks.jsonl
+        - .cognitive-os/metrics/destructive-git-bypass.jsonl
+      interventions:
+        - .cognitive-os/metrics/primitive-interventions.jsonl
+      proof_tests:
+        - tests/behavior/test_safety_mesh.py
+        - tests/behavior/test_hooks_batch1.py
+    projection:
+      claude:
+        fidelity: native-lifecycle-enforced
+        surface: PreToolUse Bash hook
+      codex:
+        fidelity: governed-wrapper-enforced
+        surface: Codex Bash hook plus governed guard where available
+      opencode:
+        fidelity: host-plugin-lifecycle-capable
+        surface: OpenCode permissions plus future tool.execute.before plugin adapter
+      cursor:
+        fidelity: structural-advisory
+        surface: project rules/context only
+      vscode-copilot:
+        fidelity: structural-advisory
+        surface: copilot instructions only
+      shell-ci:
+        fidelity: ci-enforced
+        surface: shell/CI policy command lane
+    impact:
+      consumer_fleet: install-update-risk
+      service_mode: harness-embedded-only
+
+  - id: destructive-rm-blocker
+    family: hook
+    source: hooks/destructive-rm-blocker.sh
+    lifecycle_ref: hooks/destructive-rm-blocker.sh
+    intent: Block destructive recursive file erasure and truncation patterns before execution.
+    trigger:
+      kind: before_tool_call
+      tool_intent: shell_command
+      tools: [Bash]
+      command_patterns:
+        - rm -rf|-fr|-r|-R|--recursive
+        - redirect truncation of tracked files
+        - truncate -s 0
+        - cp /dev/null
+        - dd of= with zero or empty input
+    requires:
+      - inspect_shell_command
+      - inspect_agent_context
+      - block_tool_call
+      - emit_metric
+      - emit_intervention
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes:
+        - destructive_rm_op
+        - destructive_file_erasure
+        - tracked_file_truncation
+    evidence:
+      metrics:
+        - .cognitive-os/metrics/rm-op-blocks.jsonl
+      interventions:
+        - .cognitive-os/metrics/primitive-interventions.jsonl
+      proof_tests:
+        - tests/behavior/test_safety_mesh.py
+        - tests/behavior/test_hooks_batch1.py
+    projection:
+      claude:
+        fidelity: native-lifecycle-enforced
+        surface: PreToolUse Bash hook
+      codex:
+        fidelity: governed-wrapper-enforced
+        surface: Codex Bash hook plus governed guard where available
+      opencode:
+        fidelity: host-plugin-lifecycle-capable
+        surface: OpenCode permissions plus future tool.execute.before plugin adapter
+      cursor:
+        fidelity: structural-advisory
+        surface: project rules/context only
+      vscode-copilot:
+        fidelity: structural-advisory
+        surface: copilot instructions only
+      shell-ci:
+        fidelity: ci-enforced
+        surface: shell/CI policy command lane
+    impact:
+      consumer_fleet: install-update-risk
+      service_mode: harness-embedded-only
+
+  - id: reinvention-check
+    family: hook
+    source: hooks/reinvention-check.sh
+    lifecycle_ref: hooks/reinvention-check.sh
+    intent: Warn before creating duplicate primitives, docs, or implementation patterns when existing COS surfaces likely apply.
+    trigger:
+      kind: before_tool_call
+      tool_intent: write_or_edit
+      tools: [Write, Edit, MultiEdit]
+      target_patterns:
+        - skills/**/SKILL.md
+        - rules/**/*.md
+        - hooks/**/*.sh
+        - scripts/**
+        - docs/adrs/ADR-*.md
+    requires:
+      - inspect_tool_target
+      - search_existing_primitives
+      - emit_metric
+      - emit_intervention
+    actions:
+      preferred: warn
+      fallback: documented-only
+      reason_codes:
+        - possible_reinvention
+        - existing_primitive_candidate
+    evidence:
+      metrics:
+        - .cognitive-os/metrics/reinvention-checks.jsonl
+      interventions:
+        - .cognitive-os/metrics/primitive-interventions.jsonl
+      proof_tests:
+        - tests/contracts/test_reinvention_check.py
+    projection:
+      claude:
+        fidelity: native-lifecycle-enforced
+        surface: PreToolUse write/edit hook
+      codex:
+        fidelity: governed-wrapper-enforced
+        surface: governed Edit/Write runner when available; otherwise advisory
+      opencode:
+        fidelity: host-plugin-lifecycle-capable
+        surface: future tool.execute.before plugin adapter for edit/write tools
+      cursor:
+        fidelity: structural-advisory
+        surface: project rules/context only
+      vscode-copilot:
+        fidelity: structural-advisory
+        surface: copilot instructions only
+      shell-ci:
+        fidelity: ci-enforced
+        surface: repository audit/test lane
+    impact:
+      consumer_fleet: none
+      service_mode: harness-embedded-only
+
+  - id: large-file-advisor
+    family: hook
+    source: hooks/large-file-advisor.sh
+    lifecycle_ref: hooks/large-file-advisor.sh
+    intent: Advise targeted reads before loading large files into model context.
+    trigger:
+      kind: before_tool_call
+      tool_intent: read_file
+      tools: [Read]
+      file_size_threshold_bytes: 40000
+    requires:
+      - inspect_read_target_metadata
+      - emit_metric
+      - emit_intervention
+    actions:
+      preferred: advise
+      fallback: documented-only
+      reason_codes:
+        - large_file_read
+        - context_budget_risk
+    evidence:
+      metrics:
+        - .cognitive-os/metrics/large-file-reads.jsonl
+      interventions:
+        - .cognitive-os/metrics/primitive-interventions.jsonl
+      proof_tests:
+        - tests/behavior/test_hooks_batch1.py
+    projection:
+      claude:
+        fidelity: native-lifecycle-enforced
+        surface: PreToolUse Read hook
+      codex:
+        fidelity: governed-wrapper-enforced
+        surface: governed read wrapper when available; otherwise advisory
+      opencode:
+        fidelity: host-plugin-lifecycle-capable
+        surface: future tool.execute.before plugin adapter for read tools
+      cursor:
+        fidelity: structural-advisory
+        surface: project rules/context only
+      vscode-copilot:
+        fidelity: structural-advisory
+        surface: copilot instructions only
+      shell-ci:
+        fidelity: documented-only
+        surface: no default CI read-tool equivalent
+    impact:
+      consumer_fleet: none
+      service_mode: harness-embedded-only
+
+  - id: skill-router
+    family: hook
+    source: hooks/skill-router-bash-gate.sh
+    lifecycle_ref: hooks/skill-router-bash-gate.sh
+    implementation_refs:
+      - lib/skill_router.py
+    intent: Route raw shell/tool activity toward the appropriate COS skill or block high-risk bypasses.
+    trigger:
+      kind: before_tool_call
+      tool_intent: shell_command
+      tools: [Bash]
+      command_patterns:
+        - dependency manager upgrades
+        - known ad-hoc tool choices with existing COS primitives
+        - commands matching high-confidence skill routing patterns
+    requires:
+      - inspect_shell_command
+      - route_skill
+      - block_tool_call
+      - emit_metric
+      - emit_intervention
+    actions:
+      preferred: warn
+      fallback: documented-only
+      reason_codes:
+        - skill_route_available
+        - dependency_update_bypass
+        - tool_discovery_bypass
+    evidence:
+      metrics:
+        - .cognitive-os/metrics/skill-routing.jsonl
+      interventions:
+        - .cognitive-os/metrics/primitive-interventions.jsonl
+      proof_tests:
+        - tests/contracts/test_skill_router_invariant.py
+        - tests/contracts/test_skill_router_coverage.py
+        - tests/behavior/test_skill_router_bash_gate.py
+    projection:
+      claude:
+        fidelity: native-lifecycle-enforced
+        surface: PreToolUse Bash hook
+      codex:
+        fidelity: governed-wrapper-enforced
+        surface: Codex Bash hook plus governed guard where available
+      opencode:
+        fidelity: host-plugin-lifecycle-capable
+        surface: OpenCode permissions plus future tool.execute.before plugin adapter
+      cursor:
+        fidelity: structural-advisory
+        surface: project rules/context only
+      vscode-copilot:
+        fidelity: structural-advisory
+        surface: copilot instructions only
+      shell-ci:
+        fidelity: ci-enforced
+        surface: shell/CI audit and routing checks
+    impact:
+      consumer_fleet: install-update-risk
+      service_mode: harness-embedded-only

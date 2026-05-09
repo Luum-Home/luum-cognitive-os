@@ -75,6 +75,14 @@ This ADR lands the first complete slice:
 - Future adoption decisions can reuse existing control-plane primitives:
   adoption truth, capability coverage, public-claim gates, and dependency gates.
 
+## Alternatives rejected
+
+| Alternative | Rejection rationale |
+|---|---|
+| Let every consumer project maintain its own deep external-tool radar | Rejected because it duplicates COS research, produces conflicting verdicts, and makes adoption truth harder to audit. |
+| Put consumer-specific usage decisions directly into the COS adoption manifest | Rejected because local constraints, receipts, and waivers belong in project overlays, not in reusable OS-level intelligence. |
+| Keep the radar as prose-only reports | Rejected because scripts need a machine-readable adoption ledger to detect contradictions and stale claims. |
+
 ## Verification
 
 ```bash
