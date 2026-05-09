@@ -206,6 +206,8 @@ bidirectional axis and adoption-kind doctrine.
 | [`docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`](external-tools-radar-openswarm-addendum-2026-05-09.md) | Radar addendum: ASSESS/MONITOR, pattern-only extraction |
 | [`docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`](../research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md) | Targeted evaluation of Agno, Dash, and Scout |
 | [`docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`](external-tools-radar-agno-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Agno suite |
+| [`docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`](../research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md) | Deep per-repo evaluation of Langflow |
+| [`docs/reports/external-tools-radar-langflow-addendum-2026-05-09.md`](external-tools-radar-langflow-addendum-2026-05-09.md) | Radar addendum: ASSESS/TRIAL-PATTERNS for Langflow visual workflow and MCP-facing runtime patterns |
 | [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entries under EVALUATE |
 
 **Outcome:** OpenSwarm is added as a monitor/evaluate item. Extract its
@@ -214,7 +216,10 @@ import its Agency Swarm runtime, installer side effects, all-to-all handoff mesh
 or external-action execution path into COS core. Agno is added as an
 assess/trial-patterns suite: harvest runtime-packaging, human-approval,
 self-learning data-agent, and context-provider ideas while keeping COS
-hooks/rules/memory/policy authoritative and avoiding default runtime adoption.
+hooks/rules/memory/policy authoritative and avoiding default runtime adoption. Langflow is added as an assess/trial-patterns visual workflow runtime
+reference: harvest graph-authoring UX, flow-to-MCP packaging, bundle registry,
+settings taxonomy, and security-regression ideas; do not adopt its app/runtime
+by default.
 
 ## How to use this index
 

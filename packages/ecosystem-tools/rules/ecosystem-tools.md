@@ -223,6 +223,22 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: Agno is different from the Claw naming cluster: it is a production-agent platform with SDK/runtime/control-plane concepts, while Dash and Scout are first-party templates for self-learning data agents and company-brain context providers. Useful extraction targets are runtime packaging vocabulary, human approval UX, Dash's durable SQL/data learnings, and Scout's provider registry. Direct adoption is not recommended until telemetry, hosted-control-plane, credential, rollback, and ADR-049/ADR-064 governance boundaries are proven. Deep evaluation: `docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-agno-addendum-2026-05-09.md`.
 
+### Langflow — Visual AI Workflow Builder and MCP-Facing Runtime (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Visual builder and service runtime for AI-powered workflows, agents, APIs, and MCP-facing tool deployments |
+| Config | N/A (evaluation phase — pattern-only plus possible future adapter lab) |
+| Hook | N/A (not implemented) |
+| Install | See [langflow-ai/langflow](https://github.com/langflow-ai/langflow); do not add to default COS bootstrap |
+| Required | No |
+| Scope | Visual workflow UX, flow-to-API/MCP packaging, bundle/extension registry, settings taxonomy, security regression fixtures |
+| GitHub | [langflow-ai/langflow](https://github.com/langflow-ai/langflow) |
+| License | MIT |
+| Status | **EVALUATE** — Extract patterns and optionally run a local-only adapter lab; do not adopt the runtime by default |
+
+**Evaluation Notes**: Langflow is a mature Python/TypeScript visual workflow app with FastAPI backend, React flow editor, `lfx` executor, Python SDK, and MCP-facing workflow/tool surfaces. It is valuable for visual graph UX, flow-to-MCP packaging, bundle registries, and security fixtures, but direct runtime adoption would import a large app surface with dynamic code execution, broad credential/env configuration, storage, telemetry, and hosted-control-plane concerns. Keep COS hooks/rules/skills/Engram/SDD/provider routing authoritative. Deep evaluation: `docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-langflow-addendum-2026-05-09.md`.
+
 ### Agentic Radar (SPLX AI) — Agent Workflow Analyzer (WATCH)
 
 | Property | Value |
