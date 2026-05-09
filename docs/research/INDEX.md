@@ -2,7 +2,7 @@
 
 > Browsable index of every research artifact in the repo, public and (by reference) private. Generated 2026-05-07. Re-run `find docs/research docs/reports docs/architecture docs/business -name '*.md'` to verify.
 
-**Total**: ~325 markdown research/audit/forensics artifacts across 6 directories. Coverage: 150+ external tools evaluated, 15 frontier orchestration systems in prior-art, 11 orchestration gaps, 138 operational reports, 4 reusable audits with multiple editions.
+**Total**: ~327 markdown research/audit/forensics artifacts across 6 directories. Coverage: 151+ external tools evaluated, 15 frontier orchestration systems in prior-art, 11 orchestration gaps, 138 operational reports, 4 reusable audits with multiple editions.
 
 ---
 
@@ -12,7 +12,7 @@
 |---|---|
 | [§1 Top-level research](#1-top-level-research) | Tool/topic-level research (9 files) |
 | [§2 Orchestration line](#2-orchestration-line-2026-05-06-07) | 79-source prior-art + 11 gap reports + synthesis + checklist |
-| [§3 Repo-scout](#3-repo-scout-126-files) | External tools landscape (clusters + deep dives + monitor follow-up) |
+| [§3 Repo-scout](#3-repo-scout-127-files) | External tools landscape (clusters + deep dives + monitor follow-up) |
 | [§4 Operational reports](#4-operational-reports-138-files) | Audits, forensics, postmortems, gap reports |
 | [§5 Architecture research](#5-architecture-research-10-files) | Backend evaluations, benchmarks, control-plane research |
 | [§6 Business research](#6-business-research-4-files) | Reality audits, competitive re-assessments |
@@ -64,7 +64,7 @@
 
 ---
 
-## 3. Repo-scout (126 files)
+## 3. Repo-scout (127 files)
 
 `docs/research/repo-scout/` — external tools landscape. Three sub-levels:
 
@@ -93,11 +93,11 @@
 | [cluster-tui-py-other-2026-05-06.md](repo-scout/cluster-tui-py-other-2026-05-06.md) | Python/other TUI |
 | [cluster-tui-rust-2026-05-06.md](repo-scout/cluster-tui-rust-2026-05-06.md) | Rust TUI (ratatui ecosystem) |
 
-### 3.2 Deep dives (63 files)
+### 3.2 Deep dives (64 files)
 
-`docs/research/repo-scout/deep/` — per-tool deep analysis (all dated 2026-05-06).
+`docs/research/repo-scout/deep/` — per-tool deep analysis (mostly 2026-05-06, with targeted addenda as requested).
 
-**Coding agents / orchestrators (14)**:
+**Coding agents / orchestrators (15)**:
 [Aider-AI__aider](repo-scout/deep/Aider-AI__aider-2026-05-06.md) ·
 [ComposioHQ__agent-orchestrator](repo-scout/deep/ComposioHQ__agent-orchestrator-2026-05-06.md) ·
 [JackChen-me__open-multi-agent](repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md) ·
@@ -111,7 +111,8 @@
 [microsoft__agent-framework](repo-scout/deep/microsoft__agent-framework-2026-05-06.md) ·
 [musistudio__claude-code-router](repo-scout/deep/musistudio__claude-code-router-2026-05-06.md) ·
 [openclaw__openclaw](repo-scout/deep/openclaw__openclaw-2026-05-06.md) ·
-[praetorian-inc__augustus](repo-scout/deep/praetorian-inc__augustus-2026-05-06.md)
+[praetorian-inc__augustus](repo-scout/deep/praetorian-inc__augustus-2026-05-06.md) ·
+[VRSEN__OpenSwarm](repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md)
 
 **Memory & RAG (6)**:
 [DEEP-PolyU__Awesome-GraphMemory](repo-scout/deep/DEEP-PolyU__Awesome-GraphMemory-2026-05-06.md) ·

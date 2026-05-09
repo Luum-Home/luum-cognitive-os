@@ -192,6 +192,25 @@ Adoption decisions now gated by license compliance, formalized through:
 
 ---
 
+
+## Phase 4 — Targeted post-reassessment additions (2026-05-09)
+
+After the full 2026-05-08 reassessment, the user requested adding
+`VRSEN/OpenSwarm` to the radar. This phase is intentionally narrow: one
+new repository gets a deep evaluation plus an addendum that uses the Phase 3
+bidirectional axis and adoption-kind doctrine.
+
+| Path | Role |
+|---|---|
+| [`docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md`](../research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md) | Deep per-repo evaluation of OpenSwarm |
+| [`docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`](external-tools-radar-openswarm-addendum-2026-05-09.md) | Radar addendum: ASSESS/MONITOR, pattern-only extraction |
+| [`docs/patterns/ecosystem-tools.md`](../patterns/ecosystem-tools.md) | Catalog entry under EVALUATE |
+
+**Outcome:** OpenSwarm is added as a monitor/evaluate item. Extract its
+specialist-roster, routing-language, and artifact-delivery UX patterns; do not
+import its Agency Swarm runtime, installer side effects, all-to-all handoff mesh,
+or external-action execution path into COS core.
+
 ## How to use this index
 
 - **"Has X been evaluated?"** — `git ls-files docs/research/repo-scout/deep | grep -i x` (Phase 2 deep audits cover ~63 named tools).

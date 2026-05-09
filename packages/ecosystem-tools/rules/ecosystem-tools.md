@@ -190,6 +190,23 @@ npx ccusage@latest daily --since 2026-04-01
 
 **Evaluation Notes**: Archon excels at workflow execution mechanics (14/27 features) while COS excels at governance (11/27). Language barrier (TypeScript/Bun vs Python) and architectural mismatch (standalone server vs CLI overlay) make direct adoption impractical. Clean-room implementation of conditional execution, loop primitives, and output piping into our `lib/task_dag.py` is the recommended path. Full evaluation at `docs/research/archon-evaluation.md`. Re-evaluate if Archon adds governance features.
 
+
+### OpenSwarm — Deliverable Specialist Swarm (EVALUATE)
+
+| Property | Value |
+|----------|-------|
+| Purpose | Local terminal multi-agent system for non-coding deliverables: research reports, data analysis, slide decks, documents, images, videos, and external-service tasks |
+| Config | N/A (evaluation phase — pattern-only reference) |
+| Hook | N/A (not implemented) |
+| Install | See [VRSEN/OpenSwarm](https://github.com/VRSEN/OpenSwarm); do not add to default COS bootstrap |
+| Required | No |
+| Scope | Specialist-agent roster, artifact delivery UX, and routing-policy reference |
+| GitHub | [VRSEN/OpenSwarm](https://github.com/VRSEN/OpenSwarm) |
+| License | MIT |
+| Status | **EVALUATE** — Monitor and harvest patterns; do not adopt the runtime |
+
+**Evaluation Notes**: OpenSwarm is valuable as a productized example of an orchestrator plus deliverable specialists with explicit `SendMessage` vs `Handoff` routing and concrete output-path discipline. Direct runtime adoption is not recommended: it is a young, broad Agency Swarm application with heavy Python/Node/media dependencies, bootstrap side effects, all-to-all handoffs, and external-action tools that would need COS credential, permission, audit, and rollback wrappers. Deep evaluation: `docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md`; addendum: `docs/reports/external-tools-radar-openswarm-addendum-2026-05-09.md`.
+
 ### Agentic Radar (SPLX AI) — Agent Workflow Analyzer (WATCH)
 
 | Property | Value |
