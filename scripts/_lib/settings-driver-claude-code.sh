@@ -274,8 +274,12 @@ cc_driver_emit() {
     "hooks/context-watchdog.sh"       "false" \
     "hooks/rate-limit-detector.sh"    "false" \
     "hooks/tool-sequence-capture.sh"  "false" \
-    "hooks/codebase-itinerary-capture.sh" "false" \
     "hooks/aci-observation-capture.sh" "false" \
+  )
+
+  local post_codebase_itinerary
+  post_codebase_itinerary=$(_cc_hook_group "PostToolUse" "Read|Grep|Glob|LS" \
+    "hooks/codebase-itinerary-capture.sh" "false" \
   )
 
   local post_private_mode
@@ -429,7 +433,7 @@ cc_driver_emit() {
 
   printf '    "PostToolUse": [\n'
   local post_first=true
-  for group in "$post_all" "$post_private_mode" "$post_bash" "$post_bash_edit_write" "$post_edit_write" "$post_todowrite" "$post_skill" "$post_agent" "$post_engram_mcp"; do
+  for group in "$post_all" "$post_codebase_itinerary" "$post_private_mode" "$post_bash" "$post_bash_edit_write" "$post_edit_write" "$post_todowrite" "$post_skill" "$post_agent" "$post_engram_mcp"; do
     [ -z "$group" ] && continue
     if [ "$post_first" = true ]; then
       post_first=false
