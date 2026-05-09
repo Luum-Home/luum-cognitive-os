@@ -1,10 +1,10 @@
 <!-- SCOPE: both -->
 ---
 name: primitive-authoring
-description: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in consumer projects. Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive, deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256 projection/runtime/consumer/service impact.
-version: 0.1.0
+description: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in consumer projects. Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive, deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service impact.
+version: 0.2.0
 audience: both
-tags: [primitives, governance, portability, authoring, projection, observability]
+tags: [primitives, governance, portability, authoring, projection, observability, portable-ai]
 user-invocable: true
 routing_patterns:
   - pattern: '\bprimitive[- ]?authoring\b'
@@ -22,7 +22,25 @@ hook, script, workflow, template, manifest, doctor, or project-local primitive.
 
 > No new primitive without reuse check, ownership boundary, portable contract,
 > projection-fidelity claim, runtime-evidence plan, consumer-fleet impact check,
-> and service/headless impact check.
+> service/headless impact check, and generated `.ai` overlay proof when the
+> primitive is consumer-visible.
+
+## 0. Standards boundary
+
+Cognitive OS uses these standards and near-standards deliberately:
+
+- `AGENTS.md` is a strong cross-agent instruction surface.
+- `SKILL.md` / Agent Skills are a strong skill packaging surface.
+- `.ai` / VERSA / dotAIslash is a candidate consumer overlay surface, not the
+  canonical source of truth for COS internals.
+- MCP, ACP, and A2A are related protocols/transports, but they are not equivalent to a portable primitive contract.
+- OpenCode permissions/plugins can become an adapter runtime surface only after
+  a native smoke proves enforcement and ledger receipt.
+
+Invariant: **COS canonical internal registry != consumer .ai overlay**. The
+canonical primitive remains in COS source (`skills/`, `rules/`, `hooks/`,
+`scripts/`, `manifests/primitive-contracts.yaml`). The `.ai/` tree is generated
+packaging for consumers and IDE adapters; do not hand-edit it as canonical state.
 
 ## 1. Reuse check
 
@@ -59,8 +77,10 @@ outside the core primitive.
 ## 3. Contract stub
 
 Before implementation, write a primitive contract stub. If
-`manifests/primitive-contracts.yaml` exists, use it. Otherwise include the stub in
-ADR/plan/PR notes.
+`manifests/primitive-contracts.yaml` exists, use it for governed primitives. If a
+primitive is not ready for registry promotion, document why it is only
+`primitive-lifecycle-derived` in the generated overlay and what evidence is
+missing before it can claim registry governance.
 
 Required fields:
 
@@ -78,9 +98,15 @@ actions:
 evidence:
   metrics: []
   proof_tests: []
+portable_contract:
+  source: primitive-contract-registry|primitive-lifecycle-derived
+  warning: null|"Must be promoted into manifests/primitive-contracts.yaml before claiming full contract-registry governance."
 projection:
   claude: {fidelity: native-lifecycle-enforced|structural-advisory|documented-only|unsupported}
   codex: {fidelity: native-lifecycle-enforced|governed-wrapper-enforced|structural-advisory|documented-only|unsupported}
+  cursor: {fidelity: structural-advisory|documented-only|unsupported}
+  vscode-copilot: {fidelity: structural-advisory|documented-only|unsupported}
+  opencode: {fidelity: host-plugin-lifecycle-capable|structural-advisory|documented-only|unsupported}
   shell-ci: {fidelity: ci-enforced|documented-only|unsupported}
   cosd-service: {fidelity: service-enforced|documented-only|unsupported}
 impact:
@@ -96,8 +122,30 @@ Do not claim stronger fidelity than the harness/service can prove.
 - Native lifecycle hooks may be `native-lifecycle-enforced` only when the host emits the needed event.
 - CLI/CI primitives are `ci-enforced` only when the lane runs.
 - `cosd`/headless primitives are `service-enforced` only when service boundaries and readiness gates support them.
+- OpenCode is only `host-plugin-lifecycle-capable` until a real OpenCode permissions/plugin smoke proves runtime enforcement and an intervention ledger row.
 
-## 5. Consumer-fleet impact
+## 5. Consumer overlay and adapter proof
+
+When the primitive is visible to consumers or IDE adapters, regenerate/check the
+portable overlay after changing the canonical source:
+
+```bash
+scripts/cos-portable-ai-overlay --check
+scripts/cos-adapters verify --json
+```
+
+Required checks:
+
+- every generated `.ai/primitives/**/*.json` row has `portable_contract`;
+- registry-backed primitives report `portable_contract.source = primitive-contract-registry`;
+- lifecycle-only primitives report `portable_contract.source = primitive-lifecycle-derived` and do not claim full governance;
+- adapter manifests describe projection honestly without inventing knowledge;
+- `.ai/context.json` keeps the generated-overlay warning.
+
+Do not move canonical primitives physically into `.ai/` unless a future ADR
+explicitly changes the architecture and migration plan.
+
+## 6. Consumer-fleet impact
 
 If the primitive changes install, update, projection, generated settings, default
 profiles, or consumer-visible files, run or plan:
@@ -110,7 +158,7 @@ Use its `required_test_lanes[]` in validation when relevant. If registered
 projects are stale or missing install metadata, do not assume the primitive
 reaches them.
 
-## 6. Service/headless impact
+## 7. Service/headless impact
 
 A primitive may affect COS outside IDEs. Classify the runtime shape:
 
@@ -131,7 +179,7 @@ Do not assume IDE hooks fire in service mode. Do not expose provider calls,
 credentials, destructive actions, or raw shell through `cosd` without an ADR and
 readiness proof.
 
-## 7. Evidence plan
+## 8. Observable self-use and evidence plan
 
 Risk determines proof:
 
@@ -145,10 +193,18 @@ Risk determines proof:
 | consumer projection | temp consumer project projection + fleet-audit consideration |
 | service/headless | service-readiness gate + headless/service proof lane |
 
-If ADR-256 ledgers exist, plan `primitive-interventions.jsonl`,
-`codebase-itinerary.jsonl`, and trace joiner integration as needed.
+If ADR-256 ledgers apply, plan `primitive-interventions.jsonl`,
+`codebase-itinerary.jsonl`, and trace joiner integration. For runtime-relevant
+changes, prove observable self-use with:
 
-## 8. Implement narrowly
+```bash
+scripts/cos-observe-primitives --json
+```
+
+A primitive is not observably used merely because it exists in docs. It needs an
+inspection/action/evidence path appropriate to its risk class.
+
+## 9. Implement narrowly
 
 After this gate, use the family-specific primitive:
 
@@ -165,12 +221,14 @@ Keep first slices small; do not migrate the world.
 ACCEPTANCE CRITERIA:
 1. Reuse check recorded.
 2. Ownership boundary declared.
-3. Contract stub exists.
+3. Contract stub exists, or lifecycle-derived rationale is explicit.
 4. Harness/runtime fidelity does not exceed evidence.
-5. Consumer-fleet impact considered when downstream projects may be affected.
-6. Service/headless impact considered when COS can run outside IDE lifecycle.
-7. Tests/proof match risk class.
-8. Runtime evidence plan exists, or documented-only rationale exists.
+5. Generated .ai overlay is current when the primitive is consumer-visible.
+6. Adapter manifests verify when projection behavior changes.
+7. Consumer-fleet impact considered when downstream projects may be affected.
+8. Service/headless impact considered when COS can run outside IDE lifecycle.
+9. Tests/proof match risk class.
+10. Runtime evidence plan exists, or documented-only rationale exists.
 ```
 
 ## Stop conditions
@@ -182,4 +240,5 @@ Stop for design review if the primitive:
 - changes consumer projection/update/install behavior;
 - changes service/headless/cosd behavior or public service claims;
 - duplicates an existing primitive;
-- requires a harness capability not present in capability manifests.
+- requires a harness capability not present in capability manifests;
+- would require hand-editing generated `.ai/` files as canonical source.
