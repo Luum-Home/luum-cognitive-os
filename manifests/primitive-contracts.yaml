@@ -62,8 +62,8 @@ contracts:
         fidelity: governed-wrapper-enforced
         surface: Codex Bash hook plus governed guard where available
       opencode:
-        fidelity: host-plugin-lifecycle-capable
-        surface: OpenCode permissions plus future tool.execute.before plugin adapter
+        fidelity: governed-wrapper-enforced
+        surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions
       cursor:
         fidelity: structural-advisory
         surface: project rules/context only
@@ -121,8 +121,8 @@ contracts:
         fidelity: governed-wrapper-enforced
         surface: Codex Bash hook plus governed guard where available
       opencode:
-        fidelity: host-plugin-lifecycle-capable
-        surface: OpenCode permissions plus future tool.execute.before plugin adapter
+        fidelity: governed-wrapper-enforced
+        surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions
       cursor:
         fidelity: structural-advisory
         surface: project rules/context only
@@ -174,8 +174,8 @@ contracts:
         fidelity: native-lifecycle-enforced
         surface: PreToolUse write/edit hook
       codex:
-        fidelity: governed-wrapper-enforced
-        surface: governed Edit/Write runner when available; otherwise advisory
+        fidelity: structural-advisory
+        surface: generated instructions and governed wrapper backlog
       opencode:
         fidelity: host-plugin-lifecycle-capable
         surface: future tool.execute.before plugin adapter for edit/write tools
@@ -186,8 +186,8 @@ contracts:
         fidelity: structural-advisory
         surface: copilot instructions only
       shell-ci:
-        fidelity: ci-enforced
-        surface: repository audit/test lane
+        fidelity: documented-only
+        surface: proof tests only until a shell/CI command lane is signed
     impact:
       consumer_fleet: none
       service_mode: harness-embedded-only
@@ -224,11 +224,11 @@ contracts:
         fidelity: native-lifecycle-enforced
         surface: PreToolUse Read hook
       codex:
-        fidelity: governed-wrapper-enforced
-        surface: governed read wrapper when available; otherwise advisory
+        fidelity: structural-advisory
+        surface: generated instructions and governed wrapper backlog
       opencode:
-        fidelity: host-plugin-lifecycle-capable
-        surface: future tool.execute.before plugin adapter for read tools
+        fidelity: governed-wrapper-enforced
+        surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before for read tools
       cursor:
         fidelity: structural-advisory
         surface: project rules/context only
@@ -287,8 +287,8 @@ contracts:
         fidelity: governed-wrapper-enforced
         surface: Codex Bash hook plus governed guard where available
       opencode:
-        fidelity: host-plugin-lifecycle-capable
-        surface: OpenCode permissions plus future tool.execute.before plugin adapter
+        fidelity: governed-wrapper-enforced
+        surface: OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions
       cursor:
         fidelity: structural-advisory
         surface: project rules/context only
@@ -301,3 +301,283 @@ contracts:
     impact:
       consumer_fleet: install-update-risk
       service_mode: harness-embedded-only
+
+  - id: aci-observation-capture
+    family: hook
+    source: hooks/aci-observation-capture.sh
+    lifecycle_ref: hooks/aci-observation-capture.sh
+    intent: Capture agent-computer-interaction observations as runtime evidence without exposing private content.
+    trigger:
+      kind: after_tool_call
+      tool_intent: observation_capture
+      tools: [Read, Grep, Glob, LS, Bash]
+    requires: [inspect_tool_result_metadata, emit_metric, emit_intervention]
+    actions:
+      preferred: observe
+      fallback: documented-only
+      reason_codes: [aci_observation_captured]
+    evidence:
+      metrics: [.cognitive-os/metrics/aci-observations.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/contracts/test_aci_observation_capture_hook.py]
+    projection: &runtime_hook_projection
+      claude: {fidelity: native-lifecycle-enforced, surface: lifecycle hook}
+      codex: {fidelity: structural-advisory, surface: generated instructions and governed wrapper backlog}
+      opencode: {fidelity: host-plugin-lifecycle-capable, surface: future OpenCode plugin hook}
+      cursor: {fidelity: structural-advisory, surface: project rules/context only}
+      vscode-copilot: {fidelity: structural-advisory, surface: copilot instructions only}
+      shell-ci: {fidelity: documented-only, surface: proof tests only until a shell/CI command lane is signed}
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: adr-relevance-suggest
+    family: hook
+    source: hooks/adr-relevance-suggest.sh
+    lifecycle_ref: hooks/adr-relevance-suggest.sh
+    intent: Suggest relevant ADR context when changes touch governed architecture surfaces.
+    trigger: {kind: before_tool_call, tool_intent: write_or_edit}
+    requires: [inspect_tool_target, search_existing_primitives, emit_metric, emit_intervention]
+    actions:
+      preferred: suggest
+      fallback: documented-only
+      reason_codes: [adr_context_relevant]
+    evidence:
+      metrics: [.cognitive-os/metrics/adr-relevance.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/unit/test_adr_relevance_hook.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: adr-section-validator
+    family: hook
+    source: hooks/adr-section-validator.sh
+    lifecycle_ref: hooks/adr-section-validator.sh
+    intent: Warn or block malformed ADR section edits before architectural records drift.
+    trigger: {kind: before_tool_call, tool_intent: write_or_edit}
+    requires: [inspect_tool_target, validate_document_structure, emit_metric, emit_intervention]
+    actions:
+      preferred: warn
+      fallback: documented-only
+      reason_codes: [adr_section_invalid]
+    evidence:
+      metrics: [.cognitive-os/metrics/adr-section-warnings.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/audit/test_hooks_contracts.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: agent-bash-cwd-enforcer
+    family: hook
+    source: hooks/agent-bash-cwd-enforcer.sh
+    lifecycle_ref: hooks/agent-bash-cwd-enforcer.sh
+    intent: Keep subagent Bash commands anchored to the expected project working directory.
+    trigger: {kind: before_tool_call, tool_intent: shell_command, tools: [Bash]}
+    requires: [inspect_shell_command, inspect_agent_context, emit_metric, emit_intervention]
+    actions:
+      preferred: warn
+      fallback: documented-only
+      reason_codes: [agent_cwd_mismatch]
+    evidence:
+      metrics: [.cognitive-os/metrics/cwd-enforcer.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/integration/test_cwd_enforcer_warns.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: agent-control-inbound-guard
+    family: hook
+    source: hooks/agent-control-inbound-guard.sh
+    lifecycle_ref: hooks/agent-control-inbound-guard.sh
+    intent: Guard inbound agent-control messages before unsafe delegation or interruption.
+    trigger: {kind: before_tool_call, tool_intent: agent_control}
+    requires: [inspect_agent_context, block_tool_call, emit_metric, emit_intervention]
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes: [unsafe_agent_control_inbound]
+    evidence:
+      metrics: [.cognitive-os/metrics/agent-control-inbound.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/contracts/test_agent_control_primitive_lifecycle.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: auto-rollback-trigger
+    family: hook
+    source: hooks/auto-rollback-trigger.sh
+    lifecycle_ref: hooks/auto-rollback-trigger.sh
+    intent: Detect rollback-worthy failure patterns and record rollback trigger evidence.
+    trigger: {kind: after_tool_call, tool_intent: validation_result}
+    requires: [inspect_tool_result_metadata, emit_metric, emit_intervention]
+    actions:
+      preferred: advise
+      fallback: documented-only
+      reason_codes: [auto_rollback_candidate]
+    evidence:
+      metrics: [.cognitive-os/metrics/auto-rollback.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/chaos/test_auto_rollback_trigger_exercised.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: auto-verify
+    family: hook
+    source: hooks/auto-verify.sh
+    lifecycle_ref: hooks/auto-verify.sh
+    intent: Suggest verification work when implementation activity lacks matching proof.
+    trigger: {kind: after_tool_call, tool_intent: implementation_activity}
+    requires: [inspect_tool_result_metadata, emit_metric, emit_intervention]
+    actions:
+      preferred: advise
+      fallback: documented-only
+      reason_codes: [verification_missing]
+    evidence:
+      metrics: [.cognitive-os/metrics/auto-verify.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/chaos/test_auto_verify_exercised.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: claim-validator
+    family: hook
+    source: hooks/claim-validator.sh
+    lifecycle_ref: hooks/claim-validator.sh
+    intent: Prevent unsupported completion or capability claims from entering durable output.
+    trigger: {kind: before_tool_call, tool_intent: write_or_message}
+    requires: [inspect_claim_text, block_tool_call, emit_metric, emit_intervention]
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes: [unsupported_claim]
+    evidence:
+      metrics: [.cognitive-os/metrics/hallucinations.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/unit/test_capability_level5.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: confidence-gate
+    family: hook
+    source: hooks/confidence-gate.sh
+    lifecycle_ref: hooks/confidence-gate.sh
+    intent: Require calibrated confidence and uncertainty reporting for significant outputs.
+    trigger: {kind: before_tool_call, tool_intent: write_or_message}
+    requires: [inspect_claim_text, emit_metric, emit_intervention]
+    actions:
+      preferred: warn
+      fallback: documented-only
+      reason_codes: [confidence_report_missing]
+    evidence:
+      metrics: [.cognitive-os/metrics/confidence-gates.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/unit/test_trust_report_parser.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: confidentiality-enforcer
+    family: hook
+    source: hooks/confidentiality-enforcer.sh
+    lifecycle_ref: hooks/confidentiality-enforcer.sh
+    intent: Prevent private or confidential content from being written to unsafe destinations.
+    trigger: {kind: before_tool_call, tool_intent: write_or_edit}
+    requires: [inspect_tool_target, block_tool_call, emit_metric, emit_intervention]
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes: [confidential_content_risk]
+    evidence:
+      metrics: [.cognitive-os/metrics/confidentiality-enforcer.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/behavior/test_confidentiality_enforcer.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: content-policy
+    family: hook
+    source: hooks/content-policy.sh
+    lifecycle_ref: hooks/content-policy.sh
+    intent: Gate unsafe content-policy scenarios before action or durable output.
+    trigger: {kind: before_tool_call, tool_intent: write_or_message}
+    requires: [inspect_claim_text, block_tool_call, emit_metric, emit_intervention]
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes: [content_policy_violation]
+    evidence:
+      metrics: [.cognitive-os/metrics/content-policy.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/chaos/test_content_policy_exercised.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: context-watchdog
+    family: hook
+    source: hooks/context-watchdog.sh
+    lifecycle_ref: hooks/context-watchdog.sh
+    intent: Watch context budget pressure and nudge compaction or scoped reads before overload.
+    trigger: {kind: after_tool_call, tool_intent: context_growth}
+    requires: [inspect_context_budget, emit_metric, emit_intervention]
+    actions:
+      preferred: advise
+      fallback: documented-only
+      reason_codes: [context_budget_pressure]
+    evidence:
+      metrics: [.cognitive-os/metrics/context-watchdog.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/contracts/test_context_budget_hook_wiring.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}
+
+  - id: cosd-auth-guard
+    family: hook
+    source: hooks/cosd-auth-guard.sh
+    lifecycle_ref: hooks/cosd-auth-guard.sh
+    implementation_refs: [lib/cosd_auth_guard.py]
+    intent: Enforce cosd authentication boundaries before service-control-plane access.
+    trigger: {kind: before_tool_call, tool_intent: service_event}
+    requires: [inspect_service_request, block_tool_call, emit_metric, emit_intervention]
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes: [cosd_auth_missing_or_invalid]
+    evidence:
+      metrics: [.cognitive-os/metrics/cosd-auth-guard.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/contracts/test_cosd_auth_primitives.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: cosd-service-safe}
+
+  - id: dispatch-gate
+    family: hook
+    source: hooks/dispatch-gate.sh
+    lifecycle_ref: hooks/dispatch-gate.sh
+    intent: Gate dispatch attempts against project policy, budgets, and available primitive routing.
+    trigger: {kind: before_tool_call, tool_intent: dispatch_request}
+    requires: [inspect_dispatch_request, block_tool_call, emit_metric, emit_intervention]
+    actions:
+      preferred: block
+      fallback: warn
+      reason_codes: [dispatch_policy_violation]
+    evidence:
+      metrics: [.cognitive-os/metrics/dispatch-gate.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/integration/test_dispatch_gate_real_dispatch.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: install-update-risk, service_mode: headless-worker-safe}
+
+  - id: doc-sync-detector
+    family: hook
+    source: hooks/doc-sync-detector.sh
+    lifecycle_ref: hooks/doc-sync-detector.sh
+    intent: Detect implementation changes that require synchronized documentation updates.
+    trigger: {kind: after_tool_call, tool_intent: implementation_activity}
+    requires: [inspect_tool_result_metadata, emit_metric, emit_intervention]
+    actions:
+      preferred: warn
+      fallback: documented-only
+      reason_codes: [documentation_sync_needed]
+    evidence:
+      metrics: [.cognitive-os/metrics/stale-docs.jsonl]
+      interventions: [.cognitive-os/metrics/primitive-interventions.jsonl]
+      proof_tests: [tests/behavior/test_hooks_batch1.py]
+    projection: *runtime_hook_projection
+    impact: {consumer_fleet: none, service_mode: harness-embedded-only}

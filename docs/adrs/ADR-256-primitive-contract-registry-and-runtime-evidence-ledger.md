@@ -1,7 +1,7 @@
 # ADR-256 — Primitive Contract Registry and Runtime Evidence Ledger
 
 ## Status
-Accepted — implemented through Phases 1–6; OpenCode runtime smoke remains future proof
+Accepted — implemented through Phases 1–6; OpenCode signed starter smoke implemented for four primitives
 
 **Date:** 2026-05-09  
 **Owner:** platform-safety  
@@ -138,7 +138,7 @@ contents or raw secret/private values.
 | Observable self-use | `lib/trace_joiner.py`, `scripts/cos-observe-primitives`, `tests/contracts/test_observable_primitive_self_use.py` |
 | Consumer UX | `scripts/cos-adapters`, `tests/contracts/test_consumer_adapter_ux.py` |
 
-OpenCode remains `host-plugin-lifecycle-capable`, not runtime-enforced, until the native adapter smoke described in `docs/architecture/opencode-native-primitive-adapter-design.md` is signed.
+OpenCode is now split: the signed starter slice (`destructive-git-blocker`, `destructive-rm-blocker`, `large-file-advisor`, `skill-router`) is `governed-wrapper-enforced` through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and `docs/reports/opencode-primitive-adapter-smoke-latest.md`; all other OpenCode primitive contracts remain `host-plugin-lifecycle-capable`.
 
 ## OpenCode adapter note
 
@@ -154,9 +154,7 @@ opencode.json / AGENTS.md advisory context
   -> primitive-interventions.jsonl row for comparable COS evidence
 ```
 
-The current COS proof remains structural because `cos_init.py --harness opencode`
-only signs `opencode.json`. Runtime enforcement may be claimed only after a COS
-OpenCode plugin adapter and smoke test exist.
+The current COS proof is no longer structural for the signed starter slice: `cos_init.py --harness opencode` now projects `opencode.json` plus `.opencode/plugins/cos-primitive-guard.js`. Runtime enforcement may be claimed only for primitives listed in `docs/reports/opencode-primitive-adapter-smoke-latest.json`; all other primitives remain plugin-capable backlog.
 
 ## Consequences
 

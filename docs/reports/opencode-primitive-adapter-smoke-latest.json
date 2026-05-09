@@ -1,0 +1,30 @@
+{
+  "checks": {
+    "blocking_event_threw": true,
+    "content_free_rows": true,
+    "destructive_git_ledger_row": true,
+    "destructive_rm_ledger_row": true,
+    "large_file_advisory_ledger_row": true,
+    "plugin_loaded": true,
+    "skill_router_ledger_row": true
+  },
+  "generated_at": "2026-05-09T21:07:37+00:00",
+  "ledger_row_count": 4,
+  "node_stderr_tail": "",
+  "opencode": {
+    "binary": "/opt/homebrew/bin/opencode",
+    "version": "1.14.20"
+  },
+  "plugin": {
+    "event": "tool.execute.before",
+    "path": "packages/opencode-adapter/plugins/cos-primitive-guard.js"
+  },
+  "schema_version": "opencode-primitive-adapter-smoke.v1",
+  "status": "pass",
+  "supported_primitives": [
+    "destructive-git-blocker",
+    "destructive-rm-blocker",
+    "large-file-advisor",
+    "skill-router"
+  ]
+}

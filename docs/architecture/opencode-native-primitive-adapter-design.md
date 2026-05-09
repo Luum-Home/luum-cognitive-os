@@ -2,14 +2,15 @@
 
 ## Status
 
-Draft — adapter design complete, runtime smoke not signed yet.
+Implemented for the signed starter slice — `destructive-git-blocker`, `destructive-rm-blocker`, `large-file-advisor`, and `skill-router` are projected through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and verified by `docs/reports/opencode-primitive-adapter-smoke-latest.md`. Other primitives remain `host-plugin-lifecycle-capable` until their own smoke is signed.
 
 ## Purpose
 
 Close the ADR-256 / ADR-257 OpenCode gap without inventing a parallel COS-only
-enforcement layer. OpenCode remains `host-plugin-lifecycle-capable` until this
-design is implemented and a dated runtime smoke proves enforcement plus COS
-ledger emission.
+enforcement layer. The first runtime slice now uses the native OpenCode project
+plugin surface documented by OpenCode: local project plugins under
+`.opencode/plugins/` and `tool.execute.before` events. The smoke is model-free
+and verifies plugin load, blocking behavior, and COS ledger emission.
 
 ## Design
 
@@ -39,14 +40,17 @@ The future adapter implementation should generate or validate:
 
 - `opencode.json` advisory/profile settings;
 - OpenCode permission entries for coarse allow/ask/deny;
-- `.opencode/plugins/cos-primitive-guard.*` or equivalent plugin bridge;
+- `packages/opencode-adapter/plugins/cos-primitive-guard.js` as the canonical plugin source;
+- `.opencode/plugins/cos-primitive-guard.js` projected into OpenCode consumer installs;
 - `.cognitive-os/metrics/primitive-interventions.jsonl` rows;
-- `docs/reports/opencode-primitive-adapter-smoke-YYYY-MM-DD.md`.
+- `docs/reports/opencode-primitive-adapter-smoke-latest.md`.
 
 ## Runtime smoke acceptance
 
 A signed smoke must include all of the following before any primitive is promoted
-from `host-plugin-lifecycle-capable` to enforced in OpenCode:
+from `host-plugin-lifecycle-capable` to enforced in OpenCode. The current signed
+starter slice satisfies this for `destructive-git-blocker`,
+`destructive-rm-blocker`, `large-file-advisor`, and `skill-router`:
 
 1. OpenCode version and operating system.
 2. Fixture repo path and disposable branch/worktree.
@@ -69,17 +73,19 @@ from `host-plugin-lifecycle-capable` to enforced in OpenCode:
 
 ## Current fidelity
 
-Current fidelity remains:
+Current fidelity is split:
 
 ```text
-OpenCode: host-plugin-lifecycle-capable
+OpenCode signed starter slice: governed-wrapper-enforced
+OpenCode remaining primitives: host-plugin-lifecycle-capable
 ```
 
-Promotion target after smoke:
+The signed starter slice is `governed-wrapper-enforced` because COS owns the
+plugin bridge while OpenCode supplies the native project-plugin lifecycle event.
+Do not promote additional primitives until their plugin behavior and ledger rows
+are covered by smoke evidence.
 
-```text
-OpenCode: native-lifecycle-enforced or governed-wrapper-enforced
-```
+## Current sources checked
 
-The promotion label depends on whether the final implementation is purely native
-OpenCode plugin/permissions or a COS-governed plugin bridge.
+- [OpenCode Plugins](https://opencode.ai/docs/plugins/) documents project-level `.opencode/plugins/` loading and `tool.execute.before` / `tool.execute.after` events.
+- [OpenCode Permissions](https://opencode.ai/docs/permissions/) documents `permission` actions `allow`, `ask`, and `deny`.

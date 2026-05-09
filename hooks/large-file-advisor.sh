@@ -14,6 +14,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="large-file-advisor"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/primitive-intervention.sh"
 
 # Skip in private mode
 check_private_mode
@@ -100,5 +101,13 @@ TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 REL_PATH="${FILE_PATH#$PROJECT_DIR/}"
 ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"path\":\"${REL_PATH}\",\"bytes\":${FILE_SIZE},\"lines\":${LINE_COUNT},\"est_tokens\":${EST_TOKENS},\"advisory\":true}"
 safe_jsonl_append "$METRICS_FILE" "$ENTRY"
+primitive_intervention_emit \
+  "large-file-advisor" \
+  "hooks/large-file-advisor.sh" \
+  "advise" \
+  "large_file_read" \
+  "large-file" \
+  ".cognitive-os/metrics/large-file-reads.jsonl" \
+  "Read"
 
 exit 0

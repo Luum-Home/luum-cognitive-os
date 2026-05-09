@@ -24,9 +24,9 @@
         "surface": "PreToolUse Read hook"
       },
       "codex": {
-        "claims_runtime_enforcement": true,
-        "fidelity": "governed-wrapper-enforced",
-        "surface": "governed read wrapper when available; otherwise advisory"
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
       },
       "cursor": {
         "claims_runtime_enforcement": false,
@@ -34,9 +34,9 @@
         "surface": "project rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "host-plugin-lifecycle-capable",
-        "surface": "future tool.execute.before plugin adapter for read tools"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before for read tools"
       },
       "shell-ci": {
         "claims_runtime_enforcement": false,
@@ -118,9 +118,9 @@
         "surface": "PreToolUse Read hook"
       },
       "codex": {
-        "claims_runtime_enforcement": true,
-        "fidelity": "governed-wrapper-enforced",
-        "surface": "governed read wrapper when available; otherwise advisory"
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
       },
       "cursor": {
         "claims_runtime_enforcement": false,
@@ -128,9 +128,9 @@
         "surface": "project rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "host-plugin-lifecycle-capable",
-        "surface": "future tool.execute.before plugin adapter for read tools"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before for read tools"
       },
       "shell-ci": {
         "claims_runtime_enforcement": false,

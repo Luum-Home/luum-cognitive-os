@@ -25,6 +25,7 @@ SCHEMA_VERSION = "primitive-projection-fidelity.v1"
 DEFAULT_COVERAGE = Path("docs/reports/primitive-harness-coverage-latest.json")
 DEFAULT_JSON = Path("docs/reports/primitive-projection-fidelity-latest.json")
 DEFAULT_MD = Path("docs/reports/primitive-projection-fidelity-latest.md")
+DEFAULT_OPENCODE_SMOKE = Path("docs/reports/opencode-primitive-adapter-smoke-latest.json")
 ENFORCED_FIDELITY = {"native-lifecycle-enforced", "governed-wrapper-enforced", "ci-enforced"}
 NON_ENFORCED_FIDELITY = {"structural-advisory", "documented-only", "unsupported"}
 PLUGIN_CAPABLE = "host-plugin-lifecycle-capable"
@@ -47,6 +48,13 @@ def _coverage_by_primitive(root: Path, coverage_rel: Path = DEFAULT_COVERAGE) ->
         if isinstance(item, dict) and item.get("primitive"):
             out[str(item["primitive"])] = item
     return out
+
+
+def _opencode_smoke_supported(root: Path, smoke_rel: Path = DEFAULT_OPENCODE_SMOKE) -> set[str]:
+    smoke = _load_json(root / smoke_rel)
+    if smoke.get("status") != "pass":
+        return set()
+    return {str(item) for item in smoke.get("supported_primitives", []) if item}
 
 
 def _observed_state(coverage_row: dict[str, Any] | None, harness: str) -> dict[str, Any]:
@@ -87,6 +95,7 @@ def _status_for(fidelity: str, observed: dict[str, Any]) -> tuple[str, str | Non
 
 def build_report(root: Path) -> dict[str, Any]:
     coverage = _coverage_by_primitive(root)
+    opencode_smoke_supported = _opencode_smoke_supported(root)
     items: list[dict[str, Any]] = []
     summary = {"contracts": 0, "projection_rows": 0, "aligned": 0, "gaps": 0, "pending_runtime_smoke": 0, "unknown": 0}
 
@@ -100,6 +109,17 @@ def build_report(root: Path) -> dict[str, Any]:
                 continue
             fidelity = str(projection.get("fidelity", "unknown"))
             observed = _observed_state(coverage_row, str(harness))
+            if str(harness) == "opencode" and contract_id in opencode_smoke_supported:
+                observed = {
+                    **observed,
+                    "installed": True,
+                    "projected": True,
+                    "wired": True,
+                    "behavior_proven": True,
+                    "observable": True,
+                    "operable": True,
+                    "evidence": sorted(set(observed.get("evidence", [])) | {"opencode-plugin-smoke"}),
+                }
             status, finding = _status_for(fidelity, observed)
             summary["projection_rows"] += 1
             if status == "aligned":

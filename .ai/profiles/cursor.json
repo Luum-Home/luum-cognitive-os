@@ -30,6 +30,96 @@
       "contract_id": "skill-router",
       "fidelity": "structural-advisory",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "aci-observation-capture",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-relevance-suggest",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-section-validator",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bash-cwd-enforcer",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-inbound-guard",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-rollback-trigger",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-verify",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "claim-validator",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidence-gate",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidentiality-enforcer",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "content-policy",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "context-watchdog",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cosd-auth-guard",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dispatch-gate",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "doc-sync-detector",
+      "fidelity": "structural-advisory",
+      "surface": "project rules/context only"
     }
   ],
   "display_name": "Cursor",

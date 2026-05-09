@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T19:49:36+00:00",
+  "generated_at": "2026-05-09T21:07:39+00:00",
   "items": [
     {
       "consumer_fleet_impact": "install-update-risk",
@@ -65,22 +65,23 @@
           "status": "aligned"
         },
         {
-          "declared_fidelity": "host-plugin-lifecycle-capable",
-          "declared_surface": "OpenCode permissions plus future tool.execute.before plugin adapter",
-          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions",
+          "finding": null,
           "harness": "opencode",
           "observed": {
             "behavior_proven": true,
             "evidence": [
+              "opencode-plugin-smoke",
               "test-or-manual-reference"
             ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
-          "status": "pending-runtime-smoke"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "ci-enforced",
@@ -186,22 +187,23 @@
           "status": "aligned"
         },
         {
-          "declared_fidelity": "host-plugin-lifecycle-capable",
-          "declared_surface": "OpenCode permissions plus future tool.execute.before plugin adapter",
-          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions",
+          "finding": null,
           "harness": "opencode",
           "observed": {
             "behavior_proven": true,
             "evidence": [
+              "opencode-plugin-smoke",
               "test-or-manual-reference"
             ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
-          "status": "pending-runtime-smoke"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "ci-enforced",
@@ -269,9 +271,9 @@
           "status": "aligned"
         },
         {
-          "declared_fidelity": "governed-wrapper-enforced",
-          "declared_surface": "governed Edit/Write runner when available; otherwise advisory",
-          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
           "harness": "codex",
           "observed": {
             "behavior_proven": false,
@@ -282,7 +284,7 @@
             "projected": false,
             "wired": false
           },
-          "status": "gap"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "structural-advisory",
@@ -317,9 +319,9 @@
           "status": "pending-runtime-smoke"
         },
         {
-          "declared_fidelity": "ci-enforced",
-          "declared_surface": "repository audit/test lane",
-          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
           "harness": "shell-ci",
           "observed": {
             "behavior_proven": false,
@@ -330,7 +332,7 @@
             "projected": false,
             "wired": false
           },
-          "status": "gap"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "structural-advisory",
@@ -378,9 +380,9 @@
           "status": "aligned"
         },
         {
-          "declared_fidelity": "governed-wrapper-enforced",
-          "declared_surface": "governed read wrapper when available; otherwise advisory",
-          "finding": "declared enforcement fidelity lacks observed wiring/behavior proof in harness coverage",
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
           "harness": "codex",
           "observed": {
             "behavior_proven": false,
@@ -391,7 +393,7 @@
             "projected": false,
             "wired": false
           },
-          "status": "gap"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "structural-advisory",
@@ -410,20 +412,22 @@
           "status": "aligned"
         },
         {
-          "declared_fidelity": "host-plugin-lifecycle-capable",
-          "declared_surface": "future tool.execute.before plugin adapter for read tools",
-          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before for read tools",
+          "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
-          "status": "pending-runtime-smoke"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "documented-only",
@@ -525,22 +529,23 @@
           "status": "aligned"
         },
         {
-          "declared_fidelity": "host-plugin-lifecycle-capable",
-          "declared_surface": "OpenCode permissions plus future tool.execute.before plugin adapter",
-          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "declared_fidelity": "governed-wrapper-enforced",
+          "declared_surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions",
+          "finding": null,
           "harness": "opencode",
           "observed": {
             "behavior_proven": true,
             "evidence": [
+              "opencode-plugin-smoke",
               "test-or-manual-reference"
             ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
-          "status": "pending-runtime-smoke"
+          "status": "aligned"
         },
         {
           "declared_fidelity": "ci-enforced",
@@ -581,16 +586,1741 @@
       ],
       "service_mode_impact": "harness-embedded-only",
       "source": "hooks/skill-router-bash-gate.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "aci-observation-capture",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Capture agent-computer-interaction observations as runtime evidence without exposing private content.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/aci-observation-capture.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "adr-relevance-suggest",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Suggest relevant ADR context when changes touch governed architecture surfaces.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/adr-relevance-suggest.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "adr-section-validator",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Warn or block malformed ADR section edits before architectural records drift.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/adr-section-validator.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "agent-bash-cwd-enforcer",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Keep subagent Bash commands anchored to the expected project working directory.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/agent-bash-cwd-enforcer.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "agent-control-inbound-guard",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Guard inbound agent-control messages before unsafe delegation or interruption.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/agent-control-inbound-guard.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "auto-rollback-trigger",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Detect rollback-worthy failure patterns and record rollback trigger evidence.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/auto-rollback-trigger.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "auto-verify",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Suggest verification work when implementation activity lacks matching proof.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/auto-verify.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "claim-validator",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Prevent unsupported completion or capability claims from entering durable output.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/claim-validator.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "confidence-gate",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Require calibrated confidence and uncertainty reporting for significant outputs.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/confidence-gate.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "confidentiality-enforcer",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Prevent private or confidential content from being written to unsafe destinations.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/confidentiality-enforcer.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "content-policy",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Gate unsafe content-policy scenarios before action or durable output.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/content-policy.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "context-watchdog",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Watch context budget pressure and nudge compaction or scoped reads before overload.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/context-watchdog.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "cosd-auth-guard",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Enforce cosd authentication boundaries before service-control-plane access.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "cosd-service-safe",
+      "source": "hooks/cosd-auth-guard.sh"
+    },
+    {
+      "consumer_fleet_impact": "install-update-risk",
+      "contract_id": "dispatch-gate",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Gate dispatch attempts against project policy, budgets, and available primitive routing.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "settings-wiring",
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": true,
+            "evidence": [
+              "test-or-manual-reference"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "headless-worker-safe",
+      "source": "hooks/dispatch-gate.sh"
+    },
+    {
+      "consumer_fleet_impact": "none",
+      "contract_id": "doc-sync-detector",
+      "coverage_present": true,
+      "family": "hook",
+      "intent": "Detect implementation changes that require synchronized documentation updates.",
+      "projection_fidelity": [
+        {
+          "declared_fidelity": "native-lifecycle-enforced",
+          "declared_surface": "lifecycle hook",
+          "finding": null,
+          "harness": "claude",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [
+              "settings-wiring"
+            ],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": true,
+            "wired": true
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "generated instructions and governed wrapper backlog",
+          "finding": null,
+          "harness": "codex",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "project rules/context only",
+          "finding": null,
+          "harness": "cursor",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "host-plugin-lifecycle-capable",
+          "declared_surface": "future OpenCode plugin hook",
+          "finding": "host plugin lifecycle declared but no signed runtime enforcement claimed",
+          "harness": "opencode",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "pending-runtime-smoke"
+        },
+        {
+          "declared_fidelity": "documented-only",
+          "declared_surface": "proof tests only until a shell/CI command lane is signed",
+          "finding": null,
+          "harness": "shell-ci",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        },
+        {
+          "declared_fidelity": "structural-advisory",
+          "declared_surface": "copilot instructions only",
+          "finding": null,
+          "harness": "vscode-copilot",
+          "observed": {
+            "behavior_proven": false,
+            "evidence": [],
+            "installed": true,
+            "observable": false,
+            "operable": false,
+            "projected": false,
+            "wired": false
+          },
+          "status": "aligned"
+        }
+      ],
+      "service_mode_impact": "harness-embedded-only",
+      "source": "hooks/doc-sync-detector.sh"
     }
   ],
   "purpose": "Join primitive contracts to observed harness coverage without treating declared contracts as runtime proof.",
   "schema_version": "primitive-projection-fidelity.v1",
   "summary": {
-    "aligned": 22,
-    "contracts": 5,
-    "gaps": 3,
-    "pending_runtime_smoke": 5,
-    "projection_rows": 30,
+    "aligned": 104,
+    "contracts": 20,
+    "gaps": 0,
+    "pending_runtime_smoke": 16,
+    "projection_rows": 120,
     "unknown": 0
   }
 }

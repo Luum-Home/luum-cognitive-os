@@ -2,8 +2,99 @@
   "display_name": "OpenAI Codex",
   "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
   "harness": "codex",
-  "projected_primitive_count": 26,
+  "projected_primitive_count": 42,
   "projected_primitives": [
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "aci-observation-capture",
+      "primitive_file": "primitives/hooks/aci-observation-capture-3a10bc2c38.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "adr-relevance-suggest",
+      "primitive_file": "primitives/hooks/adr-relevance-suggest-0cb421d056.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "adr-section-validator",
+      "primitive_file": "primitives/hooks/adr-section-validator-1505506da1.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-bash-cwd-enforcer",
+      "primitive_file": "primitives/hooks/agent-bash-cwd-enforcer-f7fd6257e3.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-control-inbound-guard",
+      "primitive_file": "primitives/hooks/agent-control-inbound-guard-f468af4e5b.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "auto-rollback-trigger",
+      "primitive_file": "primitives/hooks/auto-rollback-trigger-1e5de2a322.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "auto-verify",
+      "primitive_file": "primitives/hooks/auto-verify-9959e0843a.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "claim-validator",
+      "primitive_file": "primitives/hooks/claim-validator-5ddb75e4cf.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "confidence-gate",
+      "primitive_file": "primitives/hooks/confidence-gate-027b27f336.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "confidentiality-enforcer",
+      "primitive_file": "primitives/hooks/confidentiality-enforcer-1d65edf403.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "content-policy",
+      "primitive_file": "primitives/hooks/content-policy-746c8f61b4.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "context-watchdog",
+      "primitive_file": "primitives/hooks/context-watchdog-dab9035370.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "cosd-auth-guard",
+      "primitive_file": "primitives/hooks/cosd-auth-guard-4b69aa5274.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
     {
       "claims_runtime_enforcement": true,
       "fidelity": "governed-wrapper-enforced",
@@ -20,9 +111,30 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "dispatch-gate",
+      "primitive_file": "primitives/hooks/dispatch-gate-e6e97e6f6d.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "doc-sync-detector",
+      "primitive_file": "primitives/hooks/doc-sync-detector-a726f6b9f0.json",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "fidelity": "documented-only",
-      "portable_id": "hooks/agent-control-inbound-guard.sh",
-      "primitive_file": "primitives/hooks/hooks-agent-control-inbound-guard-sh-8552d8d82d.json",
+      "portable_id": "hooks/control-plane-audit-hourly.sh",
+      "primitive_file": "primitives/hooks/hooks-control-plane-audit-hourly-sh-6517f1f410.json",
+      "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "documented-only",
+      "portable_id": "hooks/control-plane-audit.sh",
+      "primitive_file": "primitives/hooks/hooks-control-plane-audit-sh-3176a0f37b.json",
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
@@ -61,18 +173,18 @@
       "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
     },
     {
-      "claims_runtime_enforcement": true,
-      "fidelity": "governed-wrapper-enforced",
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "large-file-advisor",
       "primitive_file": "primitives/hooks/large-file-advisor-54324da899.json",
-      "surface": "governed read wrapper when available; otherwise advisory"
+      "surface": "generated instructions and governed wrapper backlog"
     },
     {
-      "claims_runtime_enforcement": true,
-      "fidelity": "governed-wrapper-enforced",
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "reinvention-check",
       "primitive_file": "primitives/hooks/reinvention-check-4c33735c3b.json",
-      "surface": "governed Edit/Write runner when available; otherwise advisory"
+      "surface": "generated instructions and governed wrapper backlog"
     },
     {
       "claims_runtime_enforcement": true,

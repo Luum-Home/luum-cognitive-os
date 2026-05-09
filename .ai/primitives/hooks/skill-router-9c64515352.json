@@ -35,9 +35,9 @@
         "surface": "project rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "host-plugin-lifecycle-capable",
-        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
       },
       "shell-ci": {
         "claims_runtime_enforcement": true,
@@ -138,9 +138,9 @@
         "surface": "project rules/context only"
       },
       "opencode": {
-        "claims_runtime_enforcement": false,
-        "fidelity": "host-plugin-lifecycle-capable",
-        "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+        "claims_runtime_enforcement": true,
+        "fidelity": "governed-wrapper-enforced",
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
       },
       "shell-ci": {
         "claims_runtime_enforcement": true,

@@ -1,0 +1,160 @@
+{
+  "canonical_source": "hooks/context-watchdog.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "advise",
+      "reason_codes": [
+        "context_budget_pressure"
+      ]
+    },
+    "contract_id": "context-watchdog",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Watch context budget pressure and nudge compaction or scoped reads before overload.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_context_budget",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "after_tool_call",
+      "tool_intent": "context_growth"
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "one-shot-metrics-emitting-advisory-with-early-checkpoint",
+    "evidence_commands": [
+      "bash -n hooks/context-watchdog.sh",
+      "python3 -m pytest tests/behavior/test_compaction_protection.py tests/contracts/test_context_budget_hook_wiring.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/context-watchdog.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-186",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "advise",
+      "reason_codes": [
+        "context_budget_pressure"
+      ]
+    },
+    "contract_id": "context-watchdog",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/context-watchdog.jsonl"
+      ],
+      "proof_tests": [
+        "tests/contracts/test_context_budget_hook_wiring.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Watch context budget pressure and nudge compaction or scoped reads before overload.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_context_budget",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "after_tool_call",
+      "tool_intent": "context_growth"
+    }
+  },
+  "portable_id": "context-watchdog",
+  "projection_targets": [
+    "hooks/context-watchdog.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/context-watchdog.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

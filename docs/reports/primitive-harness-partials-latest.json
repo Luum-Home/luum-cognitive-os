@@ -23,12 +23,12 @@
     {
       "coverage": "acc-report+dashboard+tui",
       "family": "hooks",
-      "gap": "scope=both but missing projected/wired support for: claude, codex",
+      "gap": "projected/wired but no direct behavior proof reference detected",
       "gap_policy": "codex-adapter-needed",
       "gap_severity": "medium",
-      "next_action": "Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence.",
-      "primitive": "hooks/context-watchdog.sh",
-      "scope": "both"
+      "next_action": "Add behavior evidence or refine policy so this is not misclassified as an adapter gap.",
+      "primitive": "hooks/ai-provider-identity-guard.sh",
+      "scope": "project"
     },
     {
       "coverage": "acc-report+dashboard+tui",
@@ -597,6 +597,16 @@
       "gap_policy": "projectable-needs-driver",
       "gap_severity": "medium",
       "next_action": "Add a consumer projection driver or demote from projectable scope.",
+      "primitive": "scripts/install-git-filter-repo.sh",
+      "scope": "project"
+    },
+    {
+      "coverage": "acc-report+dashboard+tui",
+      "family": "scripts",
+      "gap": "projected/wired but no direct behavior proof reference detected",
+      "gap_policy": "projectable-needs-driver",
+      "gap_severity": "medium",
+      "next_action": "Add a consumer projection driver or demote from projectable scope.",
       "primitive": "scripts/install-syft-grype.sh",
       "scope": "project"
     },
@@ -636,13 +646,13 @@
   "summary": {
     "by_policy": {
       "codex-adapter-needed": 57,
-      "projectable-needs-driver": 6
+      "projectable-needs-driver": 7
     },
     "by_severity": {
-      "medium": 63
+      "medium": 64
     },
-    "partial_count": 63,
-    "total_gaps": 750,
+    "partial_count": 64,
+    "total_gaps": 808,
     "unclassified_gaps": 0
   }
 }

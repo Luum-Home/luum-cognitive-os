@@ -42,6 +42,8 @@ DEFAULT_WEIGHTS = {
     "proof_drill": 2,
     "proof_claim": 3,
     "primitive_fitness": 2,
+    "projection_fidelity": 2,
+    "primitive_intervention": 2,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -883,6 +885,90 @@ def load_harness_coverage(root: Path) -> tuple[AdapterStatus, list[Capability], 
     return AdapterStatus("ok", str(path.relative_to(root)), summary=summary), capabilities, findings
 
 
+def load_projection_fidelity(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "primitive-projection-fidelity-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", str(path.relative_to(root)), error="missing projection fidelity report"), [], []
+    data = read_json(path)
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    status_counts: dict[str, int] = {}
+    for item in data.get("items", []) if isinstance(data, dict) else []:
+        contract_id = str(item.get("contract_id") or "")
+        if not contract_id:
+            continue
+        rows = item.get("projection_fidelity") or []
+        statuses = {str(row.get("status")) for row in rows if isinstance(row, dict)}
+        for status in statuses:
+            status_counts[status] = status_counts.get(status, 0) + 1
+        mapping_status = "aligned" if statuses <= {"aligned", "pending-runtime-smoke"} else "partial"
+        evidence = [f"projection_statuses:{','.join(sorted(statuses))}"]
+        capabilities.append(Capability(
+            id=f"projection_fidelity:{contract_id}",
+            kind="projection_fidelity",
+            source={"path": str(path.relative_to(root)), "primitive": contract_id},
+            risk="medium",
+            signature={"statuses": sorted(statuses), "service_mode": item.get("service_mode_impact")},
+            represented_by=[{"kind": "primitive_contract", "id": contract_id, "role": "projection-fidelity"}],
+            mapping_status=mapping_status,
+            confidence=0.88 if mapping_status == "aligned" else 0.68,
+            consumer_accessibility="projected-consumer-surface",
+            lifecycle_status="real",
+            evidence=evidence,
+            weight=DEFAULT_WEIGHTS["projection_fidelity"],
+        ))
+        gap_rows = [row for row in rows if isinstance(row, dict) and row.get("status") == "gap"]
+        if gap_rows:
+            findings.append(Finding(
+                f"projection_fidelity:{contract_id}",
+                "medium",
+                "partial",
+                "Primitive projection fidelity has harness gaps",
+                evidence,
+                "repair harness projection or downgrade declared fidelity",
+            ))
+    return AdapterStatus("ok", str(path.relative_to(root)), summary={"contracts": len(capabilities), "statuses": status_counts}), capabilities, findings
+
+
+def load_primitive_interventions(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / ".cognitive-os" / "metrics" / "primitive-interventions.jsonl"
+    if not path.exists():
+        return AdapterStatus("unverified", str(path.relative_to(root)), error="missing primitive intervention ledger"), [], []
+    primitive_counts: dict[str, int] = {}
+    action_counts: dict[str, int] = {}
+    for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        primitive_id = str(row.get("primitive_id") or "")
+        if not primitive_id:
+            continue
+        primitive_counts[primitive_id] = primitive_counts.get(primitive_id, 0) + 1
+        action = str(row.get("action_kind") or "unknown")
+        action_counts[action] = action_counts.get(action, 0) + 1
+    capabilities = [
+        Capability(
+            id=f"primitive_intervention:{primitive_id}",
+            kind="primitive_intervention",
+            source={"path": str(path.relative_to(root)), "primitive": primitive_id},
+            risk="medium",
+            signature={"rows": count},
+            represented_by=[{"kind": "runtime_evidence", "id": primitive_id, "role": "observable-self-use"}],
+            mapping_status="aligned",
+            confidence=0.82,
+            consumer_accessibility="runtime-evidence",
+            lifecycle_status="real",
+            evidence=[f"intervention_rows:{count}"],
+            weight=DEFAULT_WEIGHTS["primitive_intervention"],
+        )
+        for primitive_id, count in sorted(primitive_counts.items())
+    ]
+    return AdapterStatus("ok", str(path.relative_to(root)), summary={"primitive_count": len(primitive_counts), "actions": action_counts}), capabilities, []
+
+
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
@@ -1155,6 +1241,12 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     harness_coverage_status, harness_coverage_capabilities, harness_coverage_findings = load_harness_coverage(root)
     capabilities.extend(harness_coverage_capabilities)
     findings.extend(harness_coverage_findings)
+    projection_fidelity_status, projection_fidelity_capabilities, projection_fidelity_findings = load_projection_fidelity(root)
+    capabilities.extend(projection_fidelity_capabilities)
+    findings.extend(projection_fidelity_findings)
+    intervention_status, intervention_capabilities, intervention_findings = load_primitive_interventions(root)
+    capabilities.extend(intervention_capabilities)
+    findings.extend(intervention_findings)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
     adapters = {
@@ -1167,6 +1259,8 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "proof_drill_evidence": proof_status,
         "primitive_fitness_ledger": fitness_status,
         "harness_coverage": harness_coverage_status,
+        "projection_fidelity": projection_fidelity_status,
+        "primitive_interventions": intervention_status,
         **readiness_adapters,
         **existing_adapters,
     }

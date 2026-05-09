@@ -950,7 +950,7 @@ def _upsert_agents_md_block(project_dir: Path, marker_slug: str, title: str, bod
     else:
         agents.write_text(block, encoding="utf-8")
 
-def _write_structural_instruction_harness_settings(project_dir: Path, harness: str, mode: str) -> None:
+def _write_structural_instruction_harness_settings(project_dir: Path, cos_source: Path, harness: str, mode: str) -> None:
     """Write project-local instruction/config files for harnesses without native COS hooks.
 
     These drivers prove consumer-project projection of instructions, rules, skills,
@@ -981,7 +981,12 @@ def _write_structural_instruction_harness_settings(project_dir: Path, harness: s
                 "permission": {"bash": "ask", "edit": "ask"},
             },
         )
-        print("Created opencode.json with COS instruction projection")
+        plugin_source = cos_source / "packages" / "opencode-adapter" / "plugins" / "cos-primitive-guard.js"
+        plugin_target = project_dir / ".opencode" / "plugins" / "cos-primitive-guard.js"
+        if plugin_source.exists():
+            plugin_target.parent.mkdir(parents=True, exist_ok=True)
+            plugin_target.write_text(plugin_source.read_text(encoding="utf-8"), encoding="utf-8")
+        print("Created opencode.json with COS instruction projection and native primitive guard plugin")
         return
 
     if harness == "vscode-copilot":
@@ -1300,7 +1305,7 @@ def _apply_harness_settings(
 ) -> None:
     """Port of the settings generation block plus structural instruction harnesses."""
     if harness in STRUCTURAL_INSTRUCTION_HARNESSES:
-        _write_structural_instruction_harness_settings(project_dir, harness, mode)
+        _write_structural_instruction_harness_settings(project_dir, cos_source, harness, mode)
         return
     if harness in SHELL_CI_HARNESSES:
         _write_shell_ci_harness_settings(project_dir, cos_source, mode)

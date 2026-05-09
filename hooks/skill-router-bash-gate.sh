@@ -10,7 +10,9 @@ set -uo pipefail
 
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="skill-router-bash-gate"
+source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/primitive-intervention.sh"
 
 check_capability_level "skill-router-bash-gate"
 check_disabled_env "skill-router-bash-gate"
@@ -24,6 +26,8 @@ COMMAND=$(stdin_field '.tool_input.command' '')
 [ -n "$COMMAND" ] || exit 0
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$_PROJECT_DIR}}"
+METRICS_DIR="$(_resolve_metrics_dir)"
+TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
 # Explicit operator override. Kept intentionally noisy so bypasses are auditable.
 if printf '%s' "$COMMAND" | grep -q 'COS_ALLOW_SKILL_BYPASS=1'; then
@@ -46,9 +50,29 @@ if [ "${COS_ALLOW_TOOL_DISCOVERY_BYPASS:-0}" != "1" ] \
     echo "TOOL DISCOVERY PRE-USE GATE: BLOCK" >&2
     echo "$TOOL_DISCOVERY_OUT" >&2
     echo "Override only with explicit operator intent: prefix command with COS_ALLOW_TOOL_DISCOVERY_BYPASS=1 and document why." >&2
+    safe_jsonl_append "$METRICS_DIR/skill-routing.jsonl" \
+      "{\"timestamp\":\"$TIMESTAMP\",\"primitive\":\"skill-router\",\"action\":\"BLOCK\",\"reason_code\":\"tool_discovery_bypass\",\"target_ref\":\"tool-discovery-preuse\"}"
+    primitive_intervention_emit \
+      "skill-router" \
+      "hooks/skill-router-bash-gate.sh" \
+      "block" \
+      "tool_discovery_bypass" \
+      "tool-discovery-preuse" \
+      ".cognitive-os/metrics/skill-routing.jsonl" \
+      "Bash"
     exit 2
   elif [ -n "$TOOL_DISCOVERY_OUT" ] && printf '%s' "$TOOL_DISCOVERY_OUT" | grep -q 'tool-discovery-preuse: warn'; then
     echo "$TOOL_DISCOVERY_OUT" >&2
+    safe_jsonl_append "$METRICS_DIR/skill-routing.jsonl" \
+      "{\"timestamp\":\"$TIMESTAMP\",\"primitive\":\"skill-router\",\"action\":\"WARN\",\"reason_code\":\"tool_discovery_bypass\",\"target_ref\":\"tool-discovery-preuse\"}"
+    primitive_intervention_emit \
+      "skill-router" \
+      "hooks/skill-router-bash-gate.sh" \
+      "warn" \
+      "tool_discovery_bypass" \
+      "tool-discovery-preuse" \
+      ".cognitive-os/metrics/skill-routing.jsonl" \
+      "Bash"
   fi
 fi
 
@@ -66,6 +90,16 @@ tracked together.
 
 Override only with explicit operator intent: prefix command with COS_ALLOW_SKILL_BYPASS=1.
 MSG
+  safe_jsonl_append "$METRICS_DIR/skill-routing.jsonl" \
+    "{\"timestamp\":\"$TIMESTAMP\",\"primitive\":\"skill-router\",\"action\":\"BLOCK\",\"reason_code\":\"dependency_update_bypass\",\"target_ref\":\"dependency-update-command\"}"
+  primitive_intervention_emit \
+    "skill-router" \
+    "hooks/skill-router-bash-gate.sh" \
+    "block" \
+    "dependency_update_bypass" \
+    "dependency-update-command" \
+    ".cognitive-os/metrics/skill-routing.jsonl" \
+    "Bash"
   exit 2
 fi
 
@@ -91,7 +125,19 @@ if match and match.confidence >= 0.85:
     print(f"SKILL ROUTER: command resembles {match.invoke_command} ({match.confidence:.2f}) — consider using the skill workflow before raw Bash.")
 PYEOF
 )
-  [ -n "$SUGGESTION" ] && echo "$SUGGESTION" >&2
+  if [ -n "$SUGGESTION" ]; then
+    echo "$SUGGESTION" >&2
+    safe_jsonl_append "$METRICS_DIR/skill-routing.jsonl" \
+      "{\"timestamp\":\"$TIMESTAMP\",\"primitive\":\"skill-router\",\"action\":\"SUGGEST\",\"reason_code\":\"skill_route_available\",\"target_ref\":\"skill-route-suggestion\"}"
+    primitive_intervention_emit \
+      "skill-router" \
+      "hooks/skill-router-bash-gate.sh" \
+      "suggest" \
+      "skill_route_available" \
+      "skill-route-suggestion" \
+      ".cognitive-os/metrics/skill-routing.jsonl" \
+      "Bash"
+  fi
 fi
 
 exit 0

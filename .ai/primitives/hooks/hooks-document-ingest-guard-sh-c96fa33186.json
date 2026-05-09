@@ -22,11 +22,11 @@
   "family": "hook",
   "lifecycle": {
     "distribution": "maintainer",
-    "docs_claim_level": "active-advisory",
-    "exit_behavior": "exit_2_on_pdf_read",
-    "governance_class": "context-management",
-    "lifecycle_state": "active",
-    "maturity": "advisory",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
     "owner_adr": "ADR-186",
     "risk_class": "blocking",
     "runtime_projection": true

@@ -37,7 +37,9 @@ def test_projection_fidelity_report_joins_registry_to_harness_coverage() -> None
     assert git["coverage_present"] is True
     projections = {row["harness"]: row for row in git["projection_fidelity"]}
     assert projections["claude"]["declared_fidelity"] == "native-lifecycle-enforced"
-    assert projections["opencode"]["status"] == "pending-runtime-smoke"
+    assert projections["opencode"]["declared_fidelity"] == "governed-wrapper-enforced"
+    assert projections["opencode"]["status"] == "aligned"
+    assert "opencode-plugin-smoke" in projections["opencode"]["observed"]["evidence"]
     assert projections["cursor"]["status"] == "aligned"
     assert projections["cursor"]["declared_fidelity"] == "structural-advisory"
 

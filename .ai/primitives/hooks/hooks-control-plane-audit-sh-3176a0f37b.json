@@ -1,24 +1,23 @@
 {
-  "canonical_source": "hooks/cosd-auth-guard.sh",
+  "canonical_source": "hooks/control-plane-audit.sh",
   "canonical_source_kind": "cos-internal",
   "contract": {
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "PreToolUse hook blocks unsafe cosd remote binds and protected cosd API config edits unless explicit auth/review gates are present.",
+    "intent": "hook-fast control-plane audit blocks blocking findings and emits control-plane-audit-hook metrics",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "PreToolUse hook blocks unsafe cosd remote binds and protected cosd API config edits unless explicit auth/review gates are present.",
+    "behavior_evidence": "hook-fast control-plane audit blocks blocking findings and emits control-plane-audit-hook metrics",
     "evidence_commands": [
-      "bash -n hooks/cosd-auth-guard.sh",
-      "python3 -m py_compile lib/cosd_auth_guard.py",
-      "python3 -m pytest tests/unit/test_cosd_auth_guard.py tests/integration/test_cosd_auth_guard_hook.py tests/contracts/test_cosd_auth_primitives.py -q"
+      "bash -n hooks/control-plane-audit.sh",
+      "python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_control_plane_hook_triggers.py tests/unit/test_control_plane_hook_wiring.py -q"
     ],
-    "metrics_file": ".cognitive-os/metrics/cosd-auth-guard.jsonl"
+    "metrics_file": ".cognitive-os/metrics/control-plane-audit-hook.jsonl"
   },
   "family": "hook",
   "lifecycle": {
@@ -28,7 +27,7 @@
     "governance_class": "runtime-safety",
     "lifecycle_state": "blocking",
     "maturity": "blocking",
-    "owner_adr": "ADR-194",
+    "owner_adr": "ADR-248",
     "risk_class": "blocking",
     "runtime_projection": true
   },
@@ -44,24 +43,28 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "PreToolUse hook blocks unsafe cosd remote binds and protected cosd API config edits unless explicit auth/review gates are present.",
+      "behavior_evidence": "hook-fast control-plane audit blocks blocking findings and emits control-plane-audit-hook metrics",
       "evidence_commands": [
-        "bash -n hooks/cosd-auth-guard.sh",
-        "python3 -m py_compile lib/cosd_auth_guard.py",
-        "python3 -m pytest tests/unit/test_cosd_auth_guard.py tests/integration/test_cosd_auth_guard_hook.py tests/contracts/test_cosd_auth_primitives.py -q"
+        "bash -n hooks/control-plane-audit.sh",
+        "python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_control_plane_hook_triggers.py tests/unit/test_control_plane_hook_wiring.py -q"
       ],
       "metrics": [
-        ".cognitive-os/metrics/cosd-auth-guard.jsonl"
+        ".cognitive-os/metrics/control-plane-audit-hook.jsonl"
       ]
     },
     "impact": {
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "PreToolUse hook blocks unsafe cosd remote binds and protected cosd API config edits unless explicit auth/review gates are present.",
+    "intent": "hook-fast control-plane audit blocks blocking findings and emits control-plane-audit-hook metrics",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
+      },
+      "codex": {
         "claims_runtime_enforcement": false,
         "fidelity": "documented-only",
         "surface": "derived from primitive-lifecycle metadata; not a runtime enforcement claim"
@@ -75,22 +78,23 @@
     "trigger": {
       "kind": "lifecycle_declared",
       "projection_targets": [
-        "hooks/cosd-auth-guard.sh",
-        "scripts/_lib/settings-driver-claude-code.sh",
-        "rules/cosd-secure-api.md"
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        "hooks/control-plane-audit.sh"
       ],
       "runtime_projection": true
     }
   },
-  "portable_id": "hooks/cosd-auth-guard.sh",
+  "portable_id": "hooks/control-plane-audit.sh",
   "projection_targets": [
-    "hooks/cosd-auth-guard.sh",
-    "scripts/_lib/settings-driver-claude-code.sh",
-    "rules/cosd-secure-api.md"
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/control-plane-audit.sh"
   ],
   "schema_version": "portable-ai-primitive.v1",
-  "source_id": "hooks/cosd-auth-guard.sh",
+  "source_id": "hooks/control-plane-audit.sh",
   "supported_harnesses": [
-    "claude"
+    "claude",
+    "codex"
   ]
 }

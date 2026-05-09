@@ -1,0 +1,163 @@
+{
+  "canonical_source": "hooks/adr-section-validator.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "adr_section_invalid"
+      ]
+    },
+    "contract_id": "adr-section-validator",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Warn or block malformed ADR section edits before architectural records drift.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_tool_target",
+      "validate_document_structure",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "before_tool_call",
+      "tool_intent": "write_or_edit"
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "static-exit2-detected",
+    "evidence_commands": [
+      "bash -n hooks/adr-section-validator.sh",
+      "python3 -m pytest tests/unit/test_codex_guard_layer.py tests/audit/test_hooks_contracts.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/adr-section-warnings.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-126",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "adr_section_invalid"
+      ]
+    },
+    "contract_id": "adr-section-validator",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/adr-section-warnings.jsonl"
+      ],
+      "proof_tests": [
+        "tests/audit/test_hooks_contracts.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Warn or block malformed ADR section edits before architectural records drift.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_tool_target",
+      "validate_document_structure",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "before_tool_call",
+      "tool_intent": "write_or_edit"
+    }
+  },
+  "portable_id": "adr-section-validator",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/adr-section-validator.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/adr-section-validator.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

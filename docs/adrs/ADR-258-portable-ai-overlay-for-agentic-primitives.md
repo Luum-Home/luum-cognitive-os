@@ -125,9 +125,7 @@ governance.
 
 Implemented by `scripts/portable_ai_consumer_impact.py` and
 `docs/reports/portable-ai-consumer-impact-latest.md`. The report is read-only and
-keeps canonical migration blocked. Current consumer-fleet status may be `warn`
-when unrelated external adoption evidence remains unsigned; that warning must not
-be hidden or forged.
+keeps canonical migration blocked. `scripts/portable_ai_consumer_smoke.py` also writes the generated overlay into a disposable consumer fixture and verifies adapter manifests, registry-backed portable contracts, lifecycle-derived rows, and no canonical mutation. Current consumer-fleet status may be `warn` or `fail` when unrelated external adoption evidence remains unsigned; that warning must not be hidden or forged.
 
 ### Phase 5 — consider canonical migration
 

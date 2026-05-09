@@ -37,10 +37,10 @@
   ],
   "overlay_schema_version": "portable-ai-overlay.v1",
   "policy": "The `.ai` tree is a generated overlay until ADR-258 Phase 5 decides otherwise.",
-  "primitive_count": 298,
+  "primitive_count": 301,
   "primitive_count_by_family": {
     "doctor": 1,
-    "hook": 156,
+    "hook": 159,
     "library": 2,
     "manifest": 4,
     "script": 133,

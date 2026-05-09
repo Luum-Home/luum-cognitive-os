@@ -9,6 +9,9 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 GIT_BLOCKER = PROJECT_ROOT / "hooks" / "destructive-git-blocker.sh"
 RM_BLOCKER = PROJECT_ROOT / "hooks" / "destructive-rm-blocker.sh"
+REINVENTION_CHECK = PROJECT_ROOT / "hooks" / "reinvention-check.sh"
+LARGE_FILE_ADVISOR = PROJECT_ROOT / "hooks" / "large-file-advisor.sh"
+SKILL_ROUTER_BASH_GATE = PROJECT_ROOT / "hooks" / "skill-router-bash-gate.sh"
 
 LEDGER = Path(".cognitive-os/metrics/primitive-interventions.jsonl")
 
@@ -101,3 +104,86 @@ def test_destructive_rm_block_emits_content_free_primitive_intervention(tmp_path
     assert row["source_metric"] == ".cognitive-os/metrics/rm-op-blocks.jsonl"
     assert "command" not in row
     assert "private-target-dir" not in json.dumps(row)
+
+
+def test_reinvention_check_emits_content_free_primitive_intervention(tmp_path: Path) -> None:
+    (tmp_path / "lib").mkdir()
+    (tmp_path / "lib" / "duplicate_helper.py").write_text("print('existing')\n", encoding="utf-8")
+    payload = {
+        "tool_name": "Agent",
+        "tool_input": {
+            "prompt": "Please create a new file duplicate_helper.py under lib/ for this private implementation."
+        },
+    }
+
+    result = subprocess.run(
+        ["bash", str(REINVENTION_CHECK)],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        env=_clean_env(tmp_path),
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    row = _ledger_rows(tmp_path)[-1]
+    assert row["primitive_id"] == "reinvention-check"
+    assert row["primitive_source"] == "hooks/reinvention-check.sh"
+    assert row["tool"] == "Agent"
+    assert row["action_kind"] == "warn"
+    assert row["reason_code"] == "possible_reinvention"
+    assert row["target_ref"] == "phase-a-duplicate-candidate"
+    assert row["source_metric"] == ".cognitive-os/metrics/reinvention-checks.jsonl"
+    assert "private implementation" not in json.dumps(row)
+
+
+def test_large_file_advisor_emits_content_free_primitive_intervention(tmp_path: Path) -> None:
+    large_file = tmp_path / "large-private-file.txt"
+    large_file.write_text("x" * 41000, encoding="utf-8")
+    payload = {"tool_name": "Read", "tool_input": {"file_path": str(large_file)}}
+
+    result = subprocess.run(
+        ["bash", str(LARGE_FILE_ADVISOR)],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        env=_clean_env(tmp_path),
+        timeout=10,
+    )
+
+    assert result.returncode == 0, result.stderr
+    row = _ledger_rows(tmp_path)[-1]
+    assert row["primitive_id"] == "large-file-advisor"
+    assert row["primitive_source"] == "hooks/large-file-advisor.sh"
+    assert row["tool"] == "Read"
+    assert row["action_kind"] == "advise"
+    assert row["reason_code"] == "large_file_read"
+    assert row["target_ref"] == "large-file"
+    assert row["source_metric"] == ".cognitive-os/metrics/large-file-reads.jsonl"
+    assert str(large_file) not in json.dumps(row)
+    assert "large-private-file" not in json.dumps(row)
+
+
+def test_skill_router_bash_gate_emits_content_free_primitive_intervention(tmp_path: Path) -> None:
+    payload = {"tool_name": "Bash", "tool_input": {"command": "pip install --upgrade private-package-name"}}
+
+    result = subprocess.run(
+        ["bash", str(SKILL_ROUTER_BASH_GATE)],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        env=_clean_env(tmp_path),
+        cwd=str(PROJECT_ROOT),
+        timeout=10,
+    )
+
+    assert result.returncode == 2, result.stderr
+    row = _ledger_rows(tmp_path)[-1]
+    assert row["primitive_id"] == "skill-router"
+    assert row["primitive_source"] == "hooks/skill-router-bash-gate.sh"
+    assert row["tool"] == "Bash"
+    assert row["action_kind"] == "block"
+    assert row["reason_code"] == "dependency_update_bypass"
+    assert row["target_ref"] == "dependency-update-command"
+    assert row["source_metric"] == ".cognitive-os/metrics/skill-routing.jsonl"
+    assert "private-package-name" not in json.dumps(row)

@@ -1,33 +1,33 @@
 {
-  "canonical_source": "hooks/aci-observation-capture.sh",
+  "canonical_source": "hooks/codebase-itinerary-capture.sh",
   "canonical_source_kind": "cos-internal",
   "contract": {
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "intent": "content-free Read/Grep/Glob/LS itinerary capture contract",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "behavior_evidence": "content-free Read/Grep/Glob/LS itinerary capture contract",
     "evidence_commands": [
-      "bash -n hooks/aci-observation-capture.sh",
-      "python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_aci_observation_capture_hook.py -q"
+      "bash -n hooks/codebase-itinerary-capture.sh",
+      "python3 -m pytest tests/contracts/test_codebase_itinerary.py -q"
     ],
-    "metrics_file": ".cognitive-os/metrics/aci-observations.jsonl"
+    "metrics_file": ".cognitive-os/metrics/codebase-itinerary.jsonl"
   },
   "family": "hook",
   "lifecycle": {
-    "distribution": "lab",
+    "distribution": "maintainer",
     "docs_claim_level": "advisory",
     "exit_behavior": "exit_0",
-    "governance_class": "runtime-safety",
-    "lifecycle_state": "sandbox",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
     "maturity": "advisory",
-    "owner_adr": "ADR-126",
+    "owner_adr": "ADR-256",
     "risk_class": "advisory",
     "runtime_projection": true
   },
@@ -43,20 +43,20 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+      "behavior_evidence": "content-free Read/Grep/Glob/LS itinerary capture contract",
       "evidence_commands": [
-        "bash -n hooks/aci-observation-capture.sh",
-        "python3 -m pytest tests/unit/test_codex_guard_layer.py tests/contracts/test_aci_observation_capture_hook.py -q"
+        "bash -n hooks/codebase-itinerary-capture.sh",
+        "python3 -m pytest tests/contracts/test_codebase_itinerary.py -q"
       ],
       "metrics": [
-        ".cognitive-os/metrics/aci-observations.jsonl"
+        ".cognitive-os/metrics/codebase-itinerary.jsonl"
       ]
     },
     "impact": {
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "intent": "content-free Read/Grep/Glob/LS itinerary capture contract",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {
@@ -74,18 +74,18 @@
       "kind": "lifecycle_declared",
       "projection_targets": [
         ".claude/settings.json",
-        "hooks/aci-observation-capture.sh"
+        "hooks/codebase-itinerary-capture.sh"
       ],
       "runtime_projection": true
     }
   },
-  "portable_id": "hooks/aci-observation-capture.sh",
+  "portable_id": "hooks/codebase-itinerary-capture.sh",
   "projection_targets": [
     ".claude/settings.json",
-    "hooks/aci-observation-capture.sh"
+    "hooks/codebase-itinerary-capture.sh"
   ],
   "schema_version": "portable-ai-primitive.v1",
-  "source_id": "hooks/aci-observation-capture.sh",
+  "source_id": "hooks/codebase-itinerary-capture.sh",
   "supported_harnesses": [
     "claude"
   ]

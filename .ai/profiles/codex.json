@@ -14,28 +14,118 @@
       "surface": "Codex Bash hook plus governed guard where available"
     },
     {
-      "claims_runtime_enforcement": true,
+      "claims_runtime_enforcement": false,
       "contract_id": "reinvention-check",
-      "fidelity": "governed-wrapper-enforced",
-      "surface": "governed Edit/Write runner when available; otherwise advisory"
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
     },
     {
-      "claims_runtime_enforcement": true,
+      "claims_runtime_enforcement": false,
       "contract_id": "large-file-advisor",
-      "fidelity": "governed-wrapper-enforced",
-      "surface": "governed read wrapper when available; otherwise advisory"
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
     },
     {
       "claims_runtime_enforcement": true,
       "contract_id": "skill-router",
       "fidelity": "governed-wrapper-enforced",
       "surface": "Codex Bash hook plus governed guard where available"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "aci-observation-capture",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-relevance-suggest",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-section-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bash-cwd-enforcer",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-inbound-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-rollback-trigger",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-verify",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "claim-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidence-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidentiality-enforcer",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "content-policy",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "context-watchdog",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cosd-auth-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dispatch-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "doc-sync-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated instructions and governed wrapper backlog"
     }
   ],
   "display_name": "OpenAI Codex",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "codex",
-  "lifecycle_primitives_supporting_harness": 22,
+  "lifecycle_primitives_supporting_harness": 24,
   "limitations": [
     "Runtime parity depends on Codex-supported hook/settings semantics.",
     "Proof currently covers default profile, not full profile."

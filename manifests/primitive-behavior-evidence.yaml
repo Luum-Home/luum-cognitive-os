@@ -1,6 +1,5 @@
 schema_version: primitive-behavior-evidence.v1
-purpose: Explicit behavior evidence mapping for primitives whose proof should not
-  rely only on text-reference heuristics.
+purpose: Explicit behavior evidence mapping for primitives whose proof should not rely only on text-reference heuristics.
 evidence:
 - primitive: hooks/cosd-auth-guard.sh
   harnesses:
@@ -61,8 +60,7 @@ evidence:
   - tests/contracts/test_aci_observation_capture_hook.py
   - tests/contracts/test_promotion_propose_only.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/adr-relevance-suggest.sh
   harnesses:
   - claude
@@ -71,16 +69,14 @@ evidence:
   - tests/contracts/test_context_budget_hook_wiring.py
   - tests/unit/test_adr_relevance_hook.py
   - tests/unit/test_adr_router.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/adr-section-validator.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/agent-bash-cwd-enforcer.sh
   harnesses:
   - claude
@@ -88,8 +84,7 @@ evidence:
   tests:
   - tests/integration/test_cwd_enforcer_rewrite.py
   - tests/integration/test_cwd_enforcer_warns.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/agent-message-inbox-context.sh
   harnesses:
   - claude
@@ -99,32 +94,28 @@ evidence:
   - tests/contracts/test_context_budget_hook_wiring.py
   - tests/contracts/test_cross_session_event_taxonomy.py
   - tests/unit/test_agent_message_hooks.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/agent-message-inbox-guard.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_agent_message_hooks.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/aspirational-audit-weekly.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/hooks/test_aspirational_audit_weekly.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/audit-id-enricher.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/behavior/test_audit_enricher.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/auto-skill-generator.sh
   harnesses:
   - claude
@@ -133,16 +124,14 @@ evidence:
   - tests/behavior/test_hooks_batch2.py
   - tests/unit/test_auto_skill_generator_routing.py
   - tests/unit/test_capability_level5.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/branch-ownership-lock.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/contracts/test_branch_ownership_lock.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/completeness-check.sh
   harnesses:
   - claude
@@ -151,8 +140,7 @@ evidence:
   - tests/contracts/test_orchestrator_verify.py
   - tests/hooks/test_hook_basics.py
   - tests/hooks/test_hook_graceful_degradation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/context-budget-meter.sh
   harnesses:
   - claude
@@ -161,16 +149,14 @@ evidence:
   - tests/contracts/test_context_budget_enforcement.py
   - tests/contracts/test_context_budget_hook_wiring.py
   - tests/unit/test_context_budget_monitor.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/cos-executor-daemon-launcher.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/contracts/test_self_install_no_container_spawn.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/crash-recovery.sh
   harnesses:
   - claude
@@ -180,8 +166,7 @@ evidence:
   - tests/behavior/test_crash_recovery.py
   - tests/behavior/test_state_heartbeat.py
   - tests/chaos/test_state_heartbeat_exercised.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/cross-session-event-emit.sh
   harnesses:
   - claude
@@ -190,8 +175,7 @@ evidence:
   - tests/behavior/test_efficiency_profiles.py
   - tests/contracts/test_cross_session_event_taxonomy.py
   - tests/unit/test_cross_session_events.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/cross-session-peer-context.sh
   harnesses:
   - claude
@@ -201,16 +185,14 @@ evidence:
   - tests/contracts/test_context_budget_hook_wiring.py
   - tests/contracts/test_cross_session_event_taxonomy.py
   - tests/unit/test_cross_session_events.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/dequeue-notify.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_registered_hook_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/destructive-rm-blocker.sh
   harnesses:
   - claude
@@ -220,8 +202,7 @@ evidence:
   - tests/chaos/test_safety_drill.py
   - tests/contracts/test_killswitch.py
   - tests/contracts/test_p95_hook_latency.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/direct-main-guard.sh
   harnesses:
   - claude
@@ -231,8 +212,7 @@ evidence:
   - tests/behavior/test_cos_friction_report.py
   - tests/unit/test_active_primitive_index.py
   - tests/unit/test_direct_main_guard.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/dispatch-gate.sh
   harnesses:
   - claude
@@ -241,24 +221,21 @@ evidence:
   - tests/behavior/test_agent_resilience.py
   - tests/behavior/test_hook_architecture.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/docker-drift-detector.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_docker_drift_detector.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/edit-lock-process-negotiations.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_edit_lock_process_negotiations.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/edit-lock-session-end.sh
   harnesses:
   - claude
@@ -266,8 +243,7 @@ evidence:
   tests:
   - tests/integration/test_edit_lock_live_conflict.py
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/engram-crystallize-on-session-end.sh
   harnesses:
   - claude
@@ -277,8 +253,7 @@ evidence:
   - tests/contracts/test_harness_transparency_status_docs.py
   - tests/contracts/test_memory_lifecycle_docs.py
   - tests/contracts/test_memory_lifecycle_portability.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/engram-daemon-launcher.sh
   harnesses:
   - claude
@@ -288,16 +263,14 @@ evidence:
   - tests/contracts/test_harness_transparency_status_docs.py
   - tests/contracts/test_memory_lifecycle_docs.py
   - tests/contracts/test_memory_lifecycle_portability.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/engram-obsidian-export-on-stop.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/behavior/test_engram_obsidian_export_hook.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/error-learning.sh
   harnesses:
   - claude
@@ -307,8 +280,7 @@ evidence:
   - tests/audit/test_rules_enforcement.py
   - tests/behavior/test_claude_md_diet.py
   - tests/behavior/test_cos_index_and_global_init.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/error-pipeline.sh
   harnesses:
   - claude
@@ -318,8 +290,7 @@ evidence:
   - tests/behavior/test_hook_architecture.py
   - tests/chaos/test_error_pipeline_exercised.py
   - tests/hooks/test_hook_basics.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/git-commit-scope-guard.sh
   harnesses:
   - claude
@@ -327,8 +298,7 @@ evidence:
   tests:
   - tests/audit/test_adr_140_cos_worker_compose.py
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/git-context-capture.sh
   harnesses:
   - claude
@@ -338,16 +308,14 @@ evidence:
   - tests/behavior/test_git_context_hook.py
   - tests/chaos/test_git_context_capture_exercised.py
   - tests/contracts/test_harness_transparency_status_docs.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/hook-header-validator.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/host-tool-doctor.sh
   harnesses:
   - claude
@@ -357,8 +325,7 @@ evidence:
   - tests/behavior/test_host_tool_doctor_hook.py
   - tests/contracts/test_session_start_tooling_contract.py
   - tests/integration/test_project_settings_generation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/infra-health.sh
   harnesses:
   - claude
@@ -368,24 +335,21 @@ evidence:
   - tests/behavior/test_efficiency_profiles.py
   - tests/behavior/test_safety_mesh.py
   - tests/hooks/test_hook_graceful_degradation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/kpi-trigger.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/behavior/test_self_improvement.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/lethal-trifecta-gate.sh
   harnesses:
   - claude
   tests:
   - tests/contracts/test_lethal_trifecta_gate.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/mcp-scan.sh
   harnesses:
   - claude
@@ -393,40 +357,35 @@ evidence:
   tests:
   - tests/behavior/test_security_integrations.py
   - tests/hooks/test_hook_graceful_degradation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/memory-prefetch.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_registered_hook_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/native-agent-heartbeat.sh
   harnesses:
   - claude
   tests:
   - tests/integration/test_native_agent_heartbeat.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/network-egress-guard.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/security/test_boundary_enforcement_p0.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/orchestrator-skill-invocation-gate.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/contracts/test_skill_invocation_gate.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/post-agent-snapshot-restore.sh
   harnesses:
   - claude
@@ -435,8 +394,7 @@ evidence:
   - tests/integration/test_post_agent_snapshot_restore.py
   - tests/integration/test_stash_lock_hook_wiring.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/profile-drift-autoapply.sh
   harnesses:
   - claude
@@ -445,8 +403,7 @@ evidence:
   - tests/integration/test_profile_drift_autoapply_flock.py
   - tests/unit/test_registered_hook_behaviors.py
   - tests/unit/test_validation_capsule.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rate-limit-detector.sh
   harnesses:
   - claude
@@ -454,8 +411,7 @@ evidence:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_orchestrator_fallback.py
   - tests/unit/test_rate_limit_detector.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rate-limit-drain.sh
   harnesses:
   - claude
@@ -464,8 +420,7 @@ evidence:
   - tests/integration/test_rate_limit_drainer_executes.py
   - tests/integration/test_rate_limiter_hook_retry_flow.py
   - tests/unit/test_rate_limiter_edge_matrix.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rate-limit-precheck.sh
   harnesses:
   - claude
@@ -474,8 +429,7 @@ evidence:
   - tests/e2e/test_cos_smoke.py
   - tests/integration/test_query_tailored_context.py
   - tests/integration/test_rate_limit_precheck_lift.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rate-limiter.sh
   harnesses:
   - claude
@@ -485,8 +439,7 @@ evidence:
   - tests/behavior/test_hook_architecture.py
   - tests/behavior/test_pentest_self.py
   - tests/hooks/conftest.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/reaper-daemon-launcher.sh
   harnesses:
   - claude
@@ -496,8 +449,7 @@ evidence:
   - tests/contracts/test_self_install_no_container_spawn.py
   - tests/unit/test_cos_config_audit.py
   - tests/unit/test_primitive_duplication_audit.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/release-guard.sh
   harnesses:
   - claude
@@ -507,8 +459,7 @@ evidence:
   - tests/chaos/test_release_guard_exercised.py
   - tests/integration/test_project_settings_generation.py
   - tests/unit/test_chaos_template.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/result-truncator.sh
   harnesses:
   - claude
@@ -516,39 +467,34 @@ evidence:
   tests:
   - tests/behavior/test_hooks_batch1.py
   - tests/unit/test_capability_level5.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/review-spawner.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rule-frontmatter-validator.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rule-md-routing-validator.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_rule_md_routing_validator_hook.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/rule-router-prompt-suggest.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/contracts/test_context_budget_hook_wiring.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/self-install.sh
   harnesses:
   - claude
@@ -558,16 +504,14 @@ evidence:
   - tests/audit/test_hook_enforced_exclusions.py
   - tests/audit/test_install_scripts.py
   - tests/audit/test_rules_enforcement.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/self-knowledge-refresh.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/integration/test_self_knowledge_refresh.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-changelog.sh
   harnesses:
   - claude
@@ -577,8 +521,7 @@ evidence:
   - tests/behavior/test_session_changelog.py
   - tests/chaos/test_session_changelog_exercised.py
   - tests/contracts/test_developer_confidence_docs.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-cleanup.sh
   harnesses:
   - claude
@@ -588,8 +531,7 @@ evidence:
   - tests/behavior/test_hook_architecture.py
   - tests/behavior/test_hooks_batch2.py
   - tests/hooks/test_hook_graceful_degradation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-end-reap.sh
   harnesses:
   - claude
@@ -597,8 +539,7 @@ evidence:
   tests:
   - tests/chaos/test_session_end_reap_exercised.py
   - tests/unit/test_coverage_classifier.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-heartbeat.sh
   harnesses:
   - claude
@@ -608,8 +549,7 @@ evidence:
   - tests/chaos/test_session_heartbeat_exercised.py
   - tests/e2e/test_session_startup_smoke.py
   - tests/integration/test_project_settings_generation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-learning.sh
   harnesses:
   - claude
@@ -619,8 +559,7 @@ evidence:
   - tests/behavior/test_self_improvement.py
   - tests/contracts/test_harness_engineering_docs.py
   - tests/contracts/test_harness_transparency_status_docs.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-resume.sh
   harnesses:
   - claude
@@ -630,16 +569,14 @@ evidence:
   - tests/behavior/test_cos_doctor_tools.py
   - tests/behavior/test_hooks_batch2.py
   - tests/contracts/test_developer_confidence_docs.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-sanity.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/integration/test_project_settings_generation.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-start-stash-reapply.sh
   harnesses:
   - claude
@@ -647,8 +584,7 @@ evidence:
   tests:
   - tests/behavior/test_efficiency_profiles.py
   - tests/integration/test_stash_reapply.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-start-worktree-nudge.sh
   harnesses:
   - claude
@@ -656,24 +592,21 @@ evidence:
   tests:
   - tests/e2e/test_cos_smoke.py
   - tests/integration/test_session_start_worktree_nudge.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-startup-protocol.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_startup_protocol.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-summary-reminder.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/behavior/test_cos_doctor_tools.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-watchdog-launcher.sh
   harnesses:
   - claude
@@ -682,8 +615,7 @@ evidence:
   - tests/contracts/test_self_install_no_container_spawn.py
   - tests/e2e/test_session_startup_smoke.py
   - tests/unit/test_session_watchdog_launcher.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/session-wrapup-trigger.sh
   harnesses:
   - claude
@@ -691,47 +623,41 @@ evidence:
   tests:
   - tests/hooks/test_session_wrapup_trigger.py
   - tests/integration/test_auto_trigger_honoured.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-failure-monitor.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-feedback-tracker.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-invocation-logger.sh
   harnesses:
   - claude
   tests:
   - tests/integration/test_auto_trigger_honoured.py
   - tests/unit/test_skill_lifecycle_promoter.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-md-routing-validator.sh
   harnesses:
   - claude
   tests:
   - tests/contracts/test_validator_promotion_trigger.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-router-bash-gate.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/behavior/test_skill_router_bash_gate.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-router-prompt-suggest.sh
   harnesses:
   - claude
@@ -740,39 +666,34 @@ evidence:
   - tests/contracts/test_context_budget_hook_wiring.py
   - tests/unit/test_context_budget_monitor.py
   - tests/unit/test_skill_router_prompt_suggest_hook.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-synthesis-scanner.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_projected_hook_gap_behaviors.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-tracker.sh
   harnesses:
   - claude
   tests:
   - tests/audit/test_hooks_contracts.py
   - tests/behavior/test_hooks_batch1.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/skill-usage-tracker.sh
   harnesses:
   - claude
   tests:
   - tests/behavior/test_efficiency_profiles.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/stash-budget-warn.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/integration/test_stash_budget_warn.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/state-heartbeat.sh
   harnesses:
   - claude
@@ -781,24 +702,21 @@ evidence:
   - tests/behavior/test_state_heartbeat.py
   - tests/chaos/test_state_heartbeat_exercised.py
   - tests/unit/test_codex_guard_layer.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/tool-sequence-capture.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_tool_sequence_capture.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/untracked-work-preservation-guard.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_delete_intent.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/user-prompt-capture.sh
   harnesses:
   - claude
@@ -808,8 +726,7 @@ evidence:
   - tests/behavior/test_cos_doctor_tools.py
   - tests/chaos/test_user_prompt_capture_exercised.py
   - tests/contracts/test_harness_transparency_status_docs.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/validation-lock-cleanup.sh
   harnesses:
   - claude
@@ -818,128 +735,107 @@ evidence:
   - tests/behavior/test_efficiency_profiles.py
   - tests/unit/test_session_start_budget.py
   - tests/unit/test_validation_capsule.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/work-queue-sync.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_codex_guard_layer.py
   - tests/unit/test_work_queue_sync.py
-  rationale: Generated from direct test references to the primitive path, filename,
-    or stem; review before promoting to stronger proof.
+  rationale: Generated from direct test references to the primitive path, filename, or stem; review before promoting to stronger proof.
 - primitive: hooks/branch-ownership-release.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct
-    evidence mapping.
+  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
 - primitive: hooks/cross-session-coordination-guard.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct
-    evidence mapping.
+  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
 - primitive: hooks/dangerous-env-flag-detector.sh
   harnesses:
   - claude
   - codex
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct
-    evidence mapping.
+  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
 - primitive: hooks/promotion-proposer-weekly.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct
-    evidence mapping.
+  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
 - primitive: hooks/validator-soak-weekly.sh
   harnesses:
   - claude
   tests:
   - tests/unit/test_behavior_evidence_remaining_hooks.py
-  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct
-    evidence mapping.
+  rationale: Explicit fail-open/throttle behavior tests for hooks that had no direct evidence mapping.
 - primitive: hooks/architecture-compliance.sh
   tests:
   - tests/behavior/test_hooks_batch1.py
 - primitive: scripts/cos-cloud-worker-bootstrap.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/cos-postgres-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/cos-valkey-local.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/dependency-lane.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/deps-update.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/document_feature_append.py
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-aguara.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-garak.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-mcp-scan.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-promptfoo.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/install-tob-skills.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/setup-git-hooks.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/sprint-test-summary.sh
   tests:
   - tests/contracts/test_projectable_script_surface_evidence.py
-  rationale: Projectable command surface has an explicit contract proving the entrypoint
-    is present and parseable.
+  rationale: Projectable command surface has an explicit contract proving the entrypoint is present and parseable.
 - primitive: scripts/cos-tui
   tests:
   - tests/contracts/test_cos_tui_operable_surface_contract.py
   - tests/contracts/test_cos_cli_surface_contract.py
-  rationale: Operable TUI surface has explicit whitelist, confirmation, and receipt
-    contracts.
+  rationale: Operable TUI surface has explicit whitelist, confirmation, and receipt contracts.
 - primitive: scripts/orchestrator.py
   harnesses:
   - claude
@@ -984,8 +880,31 @@ evidence:
   tests:
   - tests/contracts/test_agent_control_primitive_lifecycle.py
   rationale: Operator-facing agent-control skill routes natural language requests to governed orchestrator control/answer/list-live/scan-stale verbs.
+- primitive: hooks/control-plane-audit.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/unit/test_control_plane_audit.py
+  - tests/unit/test_control_plane_hook_triggers.py
+  - tests/unit/test_control_plane_hook_wiring.py
+  rationale: Explicit behavior proof for the ADR-248 fast control-plane audit hook; it writes hook metrics and can block when the hook-fast lane reports blocking findings.
+- primitive: hooks/control-plane-audit-hourly.sh
+  harnesses:
+  - claude
+  - codex
+  tests:
+  - tests/unit/test_control_plane_audit.py
+  - tests/unit/test_control_plane_hook_triggers.py
+  - tests/unit/test_control_plane_hook_wiring.py
+  rationale: Explicit behavior proof for the ADR-248 cooldown wrapper that runs the control-plane audit in hourly warn mode from lifecycle shutdown surfaces.
+- primitive: hooks/session-end-cleanup.sh
+  harnesses:
+  - claude
+  tests:
+  - tests/hooks/test_hook_graceful_degradation.py
+  rationale: Explicit behavior proof for the session-end cleanup hook graceful-degradation contract; it must exit cleanly when cleanup tooling is unavailable.
 patterns:
 - pattern: tests/**
   behavior_proven: true
-  rationale: Test files are behavior proof artifacts, not runtime primitives requiring
-    separate proof.
+  rationale: Test files are behavior proof artifacts, not runtime primitives requiring separate proof.

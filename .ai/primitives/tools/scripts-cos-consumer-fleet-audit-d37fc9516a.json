@@ -24,7 +24,7 @@
     "distribution": "maintainer",
     "docs_claim_level": "advisory",
     "exit_behavior": "mixed",
-    "governance_class": "observability",
+    "governance_class": "meta-governance",
     "lifecycle_state": "advisory",
     "maturity": "advisory",
     "owner_adr": "ADR-136",

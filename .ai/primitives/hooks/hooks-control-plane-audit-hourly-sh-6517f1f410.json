@@ -1,34 +1,34 @@
 {
-  "canonical_source": "hooks/agent-control-inbound-guard.sh",
+  "canonical_source": "hooks/control-plane-audit-hourly.sh",
   "canonical_source_kind": "cos-internal",
   "contract": {
     "actions": null,
     "contract_id": null,
     "impact": null,
-    "intent": "PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.",
+    "intent": "cooldown wrapper invokes control-plane audit in hourly warn mode without blocking shutdown",
     "present": false,
     "projection_fidelity": {},
     "requires": [],
     "trigger": null
   },
   "evidence": {
-    "behavior_evidence": "PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.",
+    "behavior_evidence": "cooldown wrapper invokes control-plane audit in hourly warn mode without blocking shutdown",
     "evidence_commands": [
-      "bash -n hooks/agent-control-inbound-guard.sh",
-      "python3 -m pytest tests/unit/test_agent_control_policy.py tests/integration/test_agent_control_inbound_guard.py -q"
+      "bash -n hooks/control-plane-audit-hourly.sh",
+      "python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_control_plane_hook_triggers.py tests/unit/test_control_plane_hook_wiring.py -q"
     ],
-    "metrics_file": ".cognitive-os/metrics/agent-control-inbound.jsonl"
+    "metrics_file": ".cognitive-os/metrics/control-plane-audit-hook.jsonl"
   },
   "family": "hook",
   "lifecycle": {
     "distribution": "core",
-    "docs_claim_level": "blocking",
-    "exit_behavior": "exit_2",
-    "governance_class": "runtime-safety",
-    "lifecycle_state": "blocking",
-    "maturity": "blocking",
-    "owner_adr": "ADR-042",
-    "risk_class": "blocking",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-248",
+    "risk_class": "advisory",
     "runtime_projection": true
   },
   "overlay_role": "generated-reference",
@@ -43,20 +43,20 @@
     "contract_id": null,
     "derived_contract_warning": "Derived from lifecycle metadata; promote to manifests/primitive-contracts.yaml before claiming contract-registry governance.",
     "evidence": {
-      "behavior_evidence": "PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.",
+      "behavior_evidence": "cooldown wrapper invokes control-plane audit in hourly warn mode without blocking shutdown",
       "evidence_commands": [
-        "bash -n hooks/agent-control-inbound-guard.sh",
-        "python3 -m pytest tests/unit/test_agent_control_policy.py tests/integration/test_agent_control_inbound_guard.py -q"
+        "bash -n hooks/control-plane-audit-hourly.sh",
+        "python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_control_plane_hook_triggers.py tests/unit/test_control_plane_hook_wiring.py -q"
       ],
       "metrics": [
-        ".cognitive-os/metrics/agent-control-inbound.jsonl"
+        ".cognitive-os/metrics/control-plane-audit-hook.jsonl"
       ]
     },
     "impact": {
       "consumer_fleet": "unknown",
       "service_mode": "harness-embedded-only"
     },
-    "intent": "PreToolUse hook enforces inbound stop/pause/resume signals at hook boundaries for harnesses without native child-process control.",
+    "intent": "cooldown wrapper invokes control-plane audit in hourly warn mode without blocking shutdown",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {
@@ -78,21 +78,21 @@
     "trigger": {
       "kind": "lifecycle_declared",
       "projection_targets": [
-        "hooks/agent-control-inbound-guard.sh",
-        "scripts/_lib/settings-driver-claude-code.sh",
-        "templates/security-profiles/standard.json"
+        ".claude/settings.json",
+        ".codex/hooks.json",
+        "hooks/control-plane-audit-hourly.sh"
       ],
       "runtime_projection": true
     }
   },
-  "portable_id": "hooks/agent-control-inbound-guard.sh",
+  "portable_id": "hooks/control-plane-audit-hourly.sh",
   "projection_targets": [
-    "hooks/agent-control-inbound-guard.sh",
-    "scripts/_lib/settings-driver-claude-code.sh",
-    "templates/security-profiles/standard.json"
+    ".claude/settings.json",
+    ".codex/hooks.json",
+    "hooks/control-plane-audit-hourly.sh"
   ],
   "schema_version": "portable-ai-primitive.v1",
-  "source_id": "hooks/agent-control-inbound-guard.sh",
+  "source_id": "hooks/control-plane-audit-hourly.sh",
   "supported_harnesses": [
     "claude",
     "codex"

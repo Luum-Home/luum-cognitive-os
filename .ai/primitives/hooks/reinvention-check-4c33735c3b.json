@@ -24,9 +24,9 @@
         "surface": "PreToolUse write/edit hook"
       },
       "codex": {
-        "claims_runtime_enforcement": true,
-        "fidelity": "governed-wrapper-enforced",
-        "surface": "governed Edit/Write runner when available; otherwise advisory"
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
       },
       "cursor": {
         "claims_runtime_enforcement": false,
@@ -39,9 +39,9 @@
         "surface": "future tool.execute.before plugin adapter for edit/write tools"
       },
       "shell-ci": {
-        "claims_runtime_enforcement": true,
-        "fidelity": "ci-enforced",
-        "surface": "repository audit/test lane"
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
       },
       "vscode-copilot": {
         "claims_runtime_enforcement": false,
@@ -127,9 +127,9 @@
         "surface": "PreToolUse write/edit hook"
       },
       "codex": {
-        "claims_runtime_enforcement": true,
-        "fidelity": "governed-wrapper-enforced",
-        "surface": "governed Edit/Write runner when available; otherwise advisory"
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
       },
       "cursor": {
         "claims_runtime_enforcement": false,
@@ -142,9 +142,9 @@
         "surface": "future tool.execute.before plugin adapter for edit/write tools"
       },
       "shell-ci": {
-        "claims_runtime_enforcement": true,
-        "fidelity": "ci-enforced",
-        "surface": "repository audit/test lane"
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
       },
       "vscode-copilot": {
         "claims_runtime_enforcement": false,

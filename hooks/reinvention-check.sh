@@ -11,6 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="reinvention-check"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+source "$(dirname "$0")/_lib/primitive-intervention.sh"
 
 check_private_mode
 read_stdin_json
@@ -62,6 +63,14 @@ if [ -n "$FOUND_SOURCES" ]; then
 
   safe_jsonl_append "$METRICS_DIR/reinvention-checks.jsonl" \
     "{\"timestamp\":\"$TIMESTAMP\",\"target\":\"${TARGET// /,}\",\"sources\":$(echo "$FOUND_SOURCES" | jq -Rs '.'),\"phase\":\"A\"}"
+  primitive_intervention_emit \
+    "reinvention-check" \
+    "hooks/reinvention-check.sh" \
+    "warn" \
+    "possible_reinvention" \
+    "phase-a-duplicate-candidate" \
+    ".cognitive-os/metrics/reinvention-checks.jsonl" \
+    "Agent"
 fi
 
 # ADR-029b Phase B-α — semantic Jaccard advisory.
@@ -139,6 +148,16 @@ PYEOF
       fi
       safe_jsonl_append "$METRICS_DIR/reinvention-checks.jsonl" \
         "{\"timestamp\":\"$TIMESTAMP\",\"phase\":\"${PHASE_USED}\",\"reason\":\"$REASON\",\"match_count\":${MATCH_COUNT:-0},\"threshold\":${THRESHOLD},\"action\":\"ADVISED\"}"
+      if [ "$REASON" = "ok" ] && [ "${MATCH_COUNT:-0}" -gt 0 ]; then
+        primitive_intervention_emit \
+          "reinvention-check" \
+          "hooks/reinvention-check.sh" \
+          "warn" \
+          "existing_primitive_candidate" \
+          "semantic-duplicate-candidate" \
+          ".cognitive-os/metrics/reinvention-checks.jsonl" \
+          "Agent"
+      fi
     fi
   fi
 fi

@@ -129,6 +129,8 @@ rules:
       - hooks/concurrent-write-guard.sh
       - hooks/confidentiality-enforcer.sh
       - hooks/content-policy.sh
+      - hooks/context-watchdog.sh
+      - hooks/document-ingest-guard.sh
   - policy: optional-background-orchestration
     family: hooks
     primitives:

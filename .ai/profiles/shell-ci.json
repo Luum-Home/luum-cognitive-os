@@ -14,10 +14,10 @@
       "surface": "shell/CI policy command lane"
     },
     {
-      "claims_runtime_enforcement": true,
+      "claims_runtime_enforcement": false,
       "contract_id": "reinvention-check",
-      "fidelity": "ci-enforced",
-      "surface": "repository audit/test lane"
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
     },
     {
       "claims_runtime_enforcement": false,
@@ -30,6 +30,96 @@
       "contract_id": "skill-router",
       "fidelity": "ci-enforced",
       "surface": "shell/CI audit and routing checks"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "aci-observation-capture",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-relevance-suggest",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-section-validator",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bash-cwd-enforcer",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-inbound-guard",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-rollback-trigger",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-verify",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "claim-validator",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidence-gate",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidentiality-enforcer",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "content-policy",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "context-watchdog",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cosd-auth-guard",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dispatch-gate",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "doc-sync-detector",
+      "fidelity": "documented-only",
+      "surface": "proof tests only until a shell/CI command lane is signed"
     }
   ],
   "display_name": "Shell / CI",

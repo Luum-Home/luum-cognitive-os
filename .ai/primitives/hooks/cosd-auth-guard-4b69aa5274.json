@@ -1,0 +1,165 @@
+{
+  "canonical_source": "hooks/cosd-auth-guard.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "warn",
+      "preferred": "block",
+      "reason_codes": [
+        "cosd_auth_missing_or_invalid"
+      ]
+    },
+    "contract_id": "cosd-auth-guard",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "cosd-service-safe"
+    },
+    "intent": "Enforce cosd authentication boundaries before service-control-plane access.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_service_request",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "before_tool_call",
+      "tool_intent": "service_event"
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "PreToolUse hook blocks unsafe cosd remote binds and protected cosd API config edits unless explicit auth/review gates are present.",
+    "evidence_commands": [
+      "bash -n hooks/cosd-auth-guard.sh",
+      "python3 -m py_compile lib/cosd_auth_guard.py",
+      "python3 -m pytest tests/unit/test_cosd_auth_guard.py tests/integration/test_cosd_auth_guard_hook.py tests/contracts/test_cosd_auth_primitives.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/cosd-auth-guard.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-194",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "warn",
+      "preferred": "block",
+      "reason_codes": [
+        "cosd_auth_missing_or_invalid"
+      ]
+    },
+    "contract_id": "cosd-auth-guard",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/cosd-auth-guard.jsonl"
+      ],
+      "proof_tests": [
+        "tests/contracts/test_cosd_auth_primitives.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "cosd-service-safe"
+    },
+    "intent": "Enforce cosd authentication boundaries before service-control-plane access.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_service_request",
+      "block_tool_call",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "before_tool_call",
+      "tool_intent": "service_event"
+    }
+  },
+  "portable_id": "cosd-auth-guard",
+  "projection_targets": [
+    "hooks/cosd-auth-guard.sh",
+    "scripts/_lib/settings-driver-claude-code.sh",
+    "rules/cosd-secure-api.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/cosd-auth-guard.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

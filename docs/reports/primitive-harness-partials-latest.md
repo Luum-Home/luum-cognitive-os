@@ -2,10 +2,10 @@
 
 This report lists classified-but-unresolved primitive surface coverage debt. It intentionally excludes aligned gaps.
 
-Partial count: 63
-Total gaps in source report: 750
+Partial count: 64
+Total gaps in source report: 808
 Unclassified gaps: 0
-By policy: {'codex-adapter-needed': 57, 'projectable-needs-driver': 6}
+By policy: {'codex-adapter-needed': 57, 'projectable-needs-driver': 7}
 
 ## Priority order
 
@@ -19,7 +19,7 @@ By policy: {'codex-adapter-needed': 57, 'projectable-needs-driver': 6}
 |---:|---|---|---|---|---|---|---|---|
 | 1 | `hooks/agent-control-inbound-guard.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 2 | `hooks/agent-launch-confirmed.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
-| 3 | `hooks/context-watchdog.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
+| 3 | `hooks/ai-provider-identity-guard.sh` | hooks | project | codex-adapter-needed | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add behavior evidence or refine policy so this is not misclassified as an adapter gap. |
 | 4 | `hooks/contextual-rule-loader.sh` | hooks | both | codex-adapter-needed | medium | acc-report+dashboard+tui | scope=both but missing projected/wired support for: claude, codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 5 | `hooks/cosd-auth-guard.sh` | hooks | both | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | scope=both but missing projected/wired support for: codex | Add a Codex adapter/projection, or reclassify as accepted no-equivalent-event with evidence. |
 | 6 | `hooks/doc-sync-detector.sh` | hooks | project | codex-adapter-needed | medium | acc-report+claude+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add behavior evidence or refine policy so this is not misclassified as an adapter gap. |
@@ -76,7 +76,8 @@ By policy: {'codex-adapter-needed': 57, 'projectable-needs-driver': 6}
 | 57 | `hooks/worktree-submodule-fix.sh` | hooks | project | codex-adapter-needed | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add behavior evidence or refine policy so this is not misclassified as an adapter gap. |
 | 58 | `scripts/credibility-audit.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
 | 59 | `scripts/install-credibility-tools.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 60 | `scripts/install-syft-grype.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 61 | `scripts/install-trivy.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 62 | `scripts/license-audit-syft-grype.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
-| 63 | `scripts/license-audit-trivy.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
+| 60 | `scripts/install-git-filter-repo.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
+| 61 | `scripts/install-syft-grype.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
+| 62 | `scripts/install-trivy.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
+| 63 | `scripts/license-audit-syft-grype.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |
+| 64 | `scripts/license-audit-trivy.sh` | scripts | project | projectable-needs-driver | medium | acc-report+dashboard+tui | projected/wired but no direct behavior proof reference detected | Add a consumer projection driver or demote from projectable scope. |

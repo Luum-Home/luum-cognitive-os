@@ -210,6 +210,31 @@ def make_repo(tmp_path: Path) -> Path:
         },
     )
     write_json(
+        root / "docs" / "reports" / "primitive-projection-fidelity-latest.json",
+        {
+            "schema_version": "primitive-projection-fidelity.v1",
+            "summary": {"contracts": 1, "projection_rows": 2, "aligned": 2, "pending_runtime_smoke": 0},
+            "items": [
+                {
+                    "contract_id": "hooks/x",
+                    "service_mode_impact": "harness-embedded-only",
+                    "projection_fidelity": [
+                        {"harness": "claude", "status": "aligned"},
+                        {"harness": "codex", "status": "aligned"},
+                    ],
+                }
+            ],
+        },
+    )
+    write_json(
+        root / ".cognitive-os" / "metrics" / "primitive-interventions.jsonl",
+        {
+            "schema_version": "primitive-intervention.v1",
+            "primitive_id": "hooks/x",
+            "action_kind": "warn",
+        },
+    )
+    write_json(
         root / "docs" / "reports" / "docs-execution-latest.json",
         {
             "summary": {"items": 1},
@@ -247,8 +272,12 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["adapters"]["shell_ci_projection"]["status"] == "ok"
     assert payload["adapters"]["primitive_fitness_ledger"]["status"] == "ok"
     assert payload["adapters"]["harness_coverage"]["status"] == "ok"
+    assert payload["adapters"]["projection_fidelity"]["status"] == "ok"
+    assert payload["adapters"]["primitive_interventions"]["status"] == "ok"
     assert any(cap["id"] == "primitive_fitness:scripts/projected.sh" for cap in payload["capabilities"])
     assert any(cap["id"] == "harness_coverage:scripts/projected.sh" for cap in payload["capabilities"])
+    assert any(cap["id"] == "projection_fidelity:hooks/x" for cap in payload["capabilities"])
+    assert any(cap["id"] == "primitive_intervention:hooks/x" for cap in payload["capabilities"])
     assert any(cap["id"] == "template:templates/quality.md" for cap in payload["capabilities"])
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"

@@ -14,7 +14,6 @@ import pytest
 
 from lib.dogfood_scorer import (
     DIMENSION_WEIGHTS,
-    DogfoodScore,
     DogfoodScorer,
     append_trend_record,
     read_last_trend_record,
@@ -265,6 +264,42 @@ def test_doc_freshness_blend(tmp_path):
     # ADR health: 1/2 = 0.5; plan freshness: 1/1 = 1.0 → mean 0.75 → 75
     assert score == 75.0
     assert "1/2" in ev and "1/1" in ev
+
+
+def test_primitive_observability_uses_contracts_projection_and_interventions(tmp_path):
+    repo = _minimal_repo(tmp_path)
+    _write(
+        repo / "manifests/primitive-contracts.yaml",
+        "\n".join(
+            [
+                "schema_version: primitive-contracts.v1",
+                "contracts:",
+                "  - id: destructive-git-blocker",
+                "  - id: large-file-advisor",
+            ]
+        )
+        + "\n",
+    )
+    _write(
+        repo / "docs/reports/primitive-projection-fidelity-latest.json",
+        json.dumps({"summary": {"projection_rows": 4, "aligned": 2, "pending_runtime_smoke": 2}}),
+    )
+    _write(
+        repo / ".cognitive-os/metrics/primitive-interventions.jsonl",
+        json.dumps(
+            {
+                "schema_version": "primitive-intervention.v1",
+                "primitive_id": "destructive-git-blocker",
+            }
+        )
+        + "\n",
+    )
+
+    score, ev = DogfoodScorer(repo)._score_primitive_observability()
+
+    assert score is not None and score > 0
+    assert "contracts=2" in ev
+    assert "observed_contracts=1" in ev
 
 
 def test_overall_is_weighted_sum(tmp_path):

@@ -1,9 +1,9 @@
 {
   "consumer_fleet": {
-    "finding_count": 2,
-    "status": "warn",
+    "finding_count": 3,
+    "status": "fail",
     "summary": {
-      "fleet_findings": 2,
+      "fleet_findings": 3,
       "matching_source": 4,
       "project_failures": 0,
       "project_warnings": 0,
@@ -15,7 +15,7 @@
     "mutates_consumers": false,
     "reason": "ADR-258 keeps `.ai` as generated overlay until conformance, adapter proof, and consumer proof justify migration."
   },
-  "generated_at": "2026-05-09T19:49:36+00:00",
+  "generated_at": "2026-05-09T20:26:29+00:00",
   "overlay": {
     "adapter_file_count": 52,
     "file_count": 380,
@@ -25,5 +25,5 @@
     "state_file_count": 1
   },
   "schema_version": "portable-ai-consumer-impact.v1",
-  "status": "warn"
+  "status": "fail"
 }

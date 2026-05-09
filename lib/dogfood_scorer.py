@@ -53,9 +53,11 @@ DIMENSION_WEIGHTS: dict[str, int] = {
     # fraction of scripts/hooks/libs free of harness-specific hardcoded paths
     "harness_portability": 10,
     # commit-type mix in last 30 days (test ≥25%, docs ≥10% ⇒ healthy)
-    "self_build_activity": 10,
+    "self_build_activity": 5,
     # fraction of ADRs pointing to extant files + plans touched in last 90 days
-    "doc_freshness": 10,
+    "doc_freshness": 5,
+    # whether primitive portability is observable through contracts, projection fidelity, and runtime ledgers
+    "primitive_observability": 10,
 }
 
 # Thresholds treated as "fully healthy" (score = 100) or penalty edges.
@@ -125,6 +127,7 @@ class DogfoodScorer:
             ("harness_portability", self._score_harness_portability),
             ("self_build_activity", self._score_self_build_activity),
             ("doc_freshness", self._score_doc_freshness),
+            ("primitive_observability", self._score_primitive_observability),
         ):
             score, ev = scorer()
             dims[name] = score
@@ -512,6 +515,57 @@ class DogfoodScorer:
             f"adr_healthy={adr_healthy}/{adr_total} "
             f"plans_fresh={plans_fresh}/{plans_total} "
             f"(window={DOC_TOUCH_WINDOW_DAYS}d)"
+        )
+        return score, evidence
+
+    def _score_primitive_observability(self) -> tuple[Optional[float], str]:
+        """Measure whether primitive architecture is observable, not just documented."""
+        contracts_path = self.repo / "manifests/primitive-contracts.yaml"
+        projection_path = self.repo / "docs/reports/primitive-projection-fidelity-latest.json"
+        intervention_path = self.repo / ".cognitive-os/metrics/primitive-interventions.jsonl"
+        if not contracts_path.exists():
+            return None, "primitive-contracts.yaml missing"
+        try:
+            contract_text = contracts_path.read_text(encoding="utf-8")
+        except OSError as exc:
+            return None, f"primitive contracts unreadable: {exc}"
+        contract_ids = set(re.findall(r"(?m)^\s*-\s+id:\s*([A-Za-z0-9_.-]+)\s*$", contract_text))
+        contract_count = len(contract_ids)
+        if contract_count == 0:
+            return None, "no primitive contracts"
+
+        projection_score = 0.0
+        projection_ev = "projection report missing"
+        if projection_path.exists():
+            try:
+                projection = json.loads(projection_path.read_text(encoding="utf-8"))
+                summary = projection.get("summary", {})
+                rows = max(int(summary.get("projection_rows", 0)), 1)
+                aligned = int(summary.get("aligned", 0))
+                pending = int(summary.get("pending_runtime_smoke", 0))
+                projection_score = min(100.0, ((aligned + pending * 0.5) / rows) * 100.0)
+                projection_ev = f"projection aligned={aligned}/{rows} pending={pending}"
+            except Exception as exc:
+                projection_ev = f"projection report unreadable: {exc}"
+
+        intervention_ids: set[str] = set()
+        if intervention_path.exists():
+            try:
+                for line in intervention_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+                    if not line.strip():
+                        continue
+                    row = json.loads(line)
+                    if row.get("schema_version") == "primitive-intervention.v1" and row.get("primitive_id"):
+                        intervention_ids.add(str(row["primitive_id"]))
+            except Exception:
+                intervention_ids = set()
+        observed_contracts = len(intervention_ids & contract_ids)
+        ledger_score = min(100.0, (observed_contracts / max(min(contract_count, 10), 1)) * 100.0)
+        contract_score = min(100.0, (contract_count / 20) * 100.0)
+        score = round(contract_score * 0.35 + projection_score * 0.35 + ledger_score * 0.30, 2)
+        evidence = (
+            f"contracts={contract_count} observed_contracts={observed_contracts} "
+            f"{projection_ev} ledger_ids={len(intervention_ids)}"
         )
         return score, evidence
 

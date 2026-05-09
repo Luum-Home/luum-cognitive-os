@@ -30,12 +30,102 @@
       "contract_id": "skill-router",
       "fidelity": "native-lifecycle-enforced",
       "surface": "PreToolUse Bash hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "aci-observation-capture",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "adr-relevance-suggest",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "adr-section-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-bash-cwd-enforcer",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-control-inbound-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "auto-rollback-trigger",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "auto-verify",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "claim-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "confidence-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "confidentiality-enforcer",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "content-policy",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "context-watchdog",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "cosd-auth-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "dispatch-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "doc-sync-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "lifecycle hook"
     }
   ],
   "display_name": "Claude Code",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
   "harness": "claude",
-  "lifecycle_primitives_supporting_harness": 172,
+  "lifecycle_primitives_supporting_harness": 175,
   "limitations": [
     "Proof currently covers default profile, not full profile."
   ],

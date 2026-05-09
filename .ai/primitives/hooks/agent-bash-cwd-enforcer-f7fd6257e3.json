@@ -1,0 +1,169 @@
+{
+  "canonical_source": "hooks/agent-bash-cwd-enforcer.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "agent_cwd_mismatch"
+      ]
+    },
+    "contract_id": "agent-bash-cwd-enforcer",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Keep subagent Bash commands anchored to the expected project working directory.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "inspect_agent_context",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/agent-bash-cwd-enforcer.sh",
+      "python3 -m pytest tests/integration/test_cwd_enforcer_rewrite.py tests/integration/test_cwd_enforcer_warns.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/cwd-enforcer.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "warn",
+      "reason_codes": [
+        "agent_cwd_mismatch"
+      ]
+    },
+    "contract_id": "agent-bash-cwd-enforcer",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/cwd-enforcer.jsonl"
+      ],
+      "proof_tests": [
+        "tests/integration/test_cwd_enforcer_warns.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Keep subagent Bash commands anchored to the expected project working directory.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_shell_command",
+      "inspect_agent_context",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "before_tool_call",
+      "tool_intent": "shell_command",
+      "tools": [
+        "Bash"
+      ]
+    }
+  },
+  "portable_id": "agent-bash-cwd-enforcer",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/agent-bash-cwd-enforcer.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/agent-bash-cwd-enforcer.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

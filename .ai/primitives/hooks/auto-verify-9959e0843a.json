@@ -1,0 +1,161 @@
+{
+  "canonical_source": "hooks/auto-verify.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "advise",
+      "reason_codes": [
+        "verification_missing"
+      ]
+    },
+    "contract_id": "auto-verify",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Suggest verification work when implementation activity lacks matching proof.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_tool_result_metadata",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "after_tool_call",
+      "tool_intent": "implementation_activity"
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "metrics-emitting-advisory; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/auto-verify.sh",
+      "python3 -m pytest tests/unit/test_chaos_template.py tests/unit/test_governance_artifact_consumption.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/auto-verify.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "documented-only",
+      "preferred": "advise",
+      "reason_codes": [
+        "verification_missing"
+      ]
+    },
+    "contract_id": "auto-verify",
+    "evidence": {
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/auto-verify.jsonl"
+      ],
+      "proof_tests": [
+        "tests/chaos/test_auto_verify_exercised.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "Suggest verification work when implementation activity lacks matching proof.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "lifecycle hook"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated instructions and governed wrapper backlog"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "project rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "host-plugin-lifecycle-capable",
+        "surface": "future OpenCode plugin hook"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "proof tests only until a shell/CI command lane is signed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "copilot instructions only"
+      }
+    },
+    "requires": [
+      "inspect_tool_result_metadata",
+      "emit_metric",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "after_tool_call",
+      "tool_intent": "implementation_activity"
+    }
+  },
+  "portable_id": "auto-verify",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/auto-verify.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/auto-verify.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

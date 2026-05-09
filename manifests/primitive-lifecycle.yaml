@@ -1022,7 +1022,7 @@ primitives:
 - id: hooks/context-watchdog.sh
   kind: hook
   owner_adr: ADR-186
-  lifecycle_state: active
+  lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
   governance_class: meta-governance
@@ -1041,7 +1041,7 @@ primitives:
     settings and set runtime_projection=false if latency or warning noise regresses.
   sunset_criteria: Keep active while one-shot thresholds provide measurable checkpoint
     value without hot-path noise; demote if p99/noise budget regresses.
-  docs_claim_level: active-advisory
+  docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: .cognitive-os/metrics/context-watchdog.jsonl
 - id: hooks/cos-executor-daemon-launcher.sh
@@ -1465,10 +1465,10 @@ primitives:
 - id: hooks/document-ingest-guard.sh
   kind: hook
   owner_adr: ADR-186
-  lifecycle_state: active
-  maturity: advisory
+  lifecycle_state: blocking
+  maturity: blocking
   distribution: maintainer
-  governance_class: context-management
+  governance_class: runtime-safety
   risk_class: blocking
   supported_harnesses:
   - claude
@@ -1483,9 +1483,14 @@ primitives:
   rollback_or_repair_command: Remove hooks/document-ingest-guard.sh from generated
     settings if it blocks legitimate non-context PDF workflows.
   sunset_criteria: Keep active while direct PDF reads remain high-risk context ingestion.
-  docs_claim_level: active-advisory
-  exit_behavior: exit_2_on_pdf_read
+  docs_claim_level: blocking
+  exit_behavior: exit_2
   metrics_file: .cognitive-os/metrics/document-ingest.jsonl
+  latency_budget_ms: 200
+  repair_message: document-ingest-guard blocked direct PDF/context ingestion; use an ingest/extraction workflow or scoped text conversion before reading.
+  false_positive_tests:
+  - tests/hooks/test_document_ingest_guard.py
+  - tests/unit/test_document_ingest.py
 - id: hooks/dod-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -5075,7 +5080,7 @@ primitives:
   lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
-  governance_class: observability
+  governance_class: meta-governance
   risk_class: advisory
   supported_harnesses:
   - shell
@@ -8491,3 +8496,81 @@ primitives:
   docs_claim_level: observe
   exit_behavior: exit_0
   metrics_file: none
+- id: hooks/codebase-itinerary-capture.sh
+  kind: hook
+  owner_adr: ADR-256
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  projection_targets:
+  - .claude/settings.json
+  - hooks/codebase-itinerary-capture.sh
+  runtime_projection: true
+  behavior_evidence: content-free Read/Grep/Glob/LS itinerary capture contract
+  evidence_commands:
+  - bash -n hooks/codebase-itinerary-capture.sh
+  - python3 -m pytest tests/contracts/test_codebase_itinerary.py -q
+  rollback_or_repair_command: Remove hooks/codebase-itinerary-capture.sh from PostToolUse projection and rerun trace/codebase itinerary contracts.
+  sunset_criteria: Keep while ADR-256 observable self-use requires content-free codebase itinerary evidence; demote if trace_joiner no longer consumes itinerary streams.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/codebase-itinerary.jsonl
+- id: hooks/control-plane-audit.sh
+  kind: hook
+  owner_adr: ADR-248
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  governance_class: runtime-safety
+  risk_class: blocking
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/control-plane-audit.sh
+  runtime_projection: true
+  behavior_evidence: hook-fast control-plane audit blocks blocking findings and emits control-plane-audit-hook metrics
+  evidence_commands:
+  - bash -n hooks/control-plane-audit.sh
+  - python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_control_plane_hook_triggers.py tests/unit/test_control_plane_hook_wiring.py -q
+  rollback_or_repair_command: Remove hooks/control-plane-audit.sh from generated harness settings or switch COS_CONTROL_PLANE_AUDIT_MODE=warn while fixing control-plane audit findings.
+  sunset_criteria: Keep while control-plane findings need runtime enforcement before mutating operations; demote only after equivalent native harness enforcement exists for 90 days.
+  latency_budget_ms: 1000
+  repair_message: control-plane-audit blocked the action; run scripts/cos-control-plane-audit --lane hook-fast --json and repair blocking findings before retrying.
+  false_positive_tests:
+  - tests/unit/test_control_plane_audit.py
+  - tests/unit/test_control_plane_hook_triggers.py
+  docs_claim_level: blocking
+  exit_behavior: exit_2
+  metrics_file: .cognitive-os/metrics/control-plane-audit-hook.jsonl
+- id: hooks/control-plane-audit-hourly.sh
+  kind: hook
+  owner_adr: ADR-248
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/control-plane-audit-hourly.sh
+  runtime_projection: true
+  behavior_evidence: cooldown wrapper invokes control-plane audit in hourly warn mode without blocking shutdown
+  evidence_commands:
+  - bash -n hooks/control-plane-audit-hourly.sh
+  - python3 -m pytest tests/unit/test_control_plane_audit.py tests/unit/test_control_plane_hook_triggers.py tests/unit/test_control_plane_hook_wiring.py -q
+  rollback_or_repair_command: Remove hooks/control-plane-audit-hourly.sh from Stop projection if hourly shutdown sweeps produce noisy findings.
+  sunset_criteria: Keep while hourly/session-end sweep detects drift with acceptable latency and noise; demote if control-plane daemon fully replaces the hook surface.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: .cognitive-os/metrics/control-plane-audit-hook.jsonl

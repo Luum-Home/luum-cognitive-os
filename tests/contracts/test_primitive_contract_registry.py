@@ -143,8 +143,18 @@ def test_structural_only_ide_harnesses_do_not_claim_enforcement() -> None:
             assert fidelity not in ENFORCEMENT_FIDELITY
 
 
-def test_opencode_is_plugin_capable_but_not_signed_as_enforced() -> None:
+def test_opencode_enforcement_claims_are_limited_to_signed_plugin_smoke_slice() -> None:
+    signed = {
+        "destructive-git-blocker",
+        "destructive-rm-blocker",
+        "large-file-advisor",
+        "skill-router",
+    }
     for contract in _contracts():
         fidelity = contract["projection"]["opencode"]["fidelity"]
-        assert fidelity == "host-plugin-lifecycle-capable", contract["id"]
-        assert fidelity not in ENFORCEMENT_FIDELITY
+        if contract["id"] in signed:
+            assert fidelity == "governed-wrapper-enforced", contract["id"]
+            assert "cos-primitive-guard.js" in contract["projection"]["opencode"]["surface"]
+        else:
+            assert fidelity == "host-plugin-lifecycle-capable", contract["id"]
+            assert fidelity not in ENFORCEMENT_FIDELITY

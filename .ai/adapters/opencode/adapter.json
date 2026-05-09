@@ -2,28 +2,133 @@
   "display_name": "OpenCode",
   "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
   "harness": "opencode",
-  "projected_primitive_count": 5,
+  "projected_primitive_count": 20,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
       "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "aci-observation-capture",
+      "primitive_file": "primitives/hooks/aci-observation-capture-3a10bc2c38.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "adr-relevance-suggest",
+      "primitive_file": "primitives/hooks/adr-relevance-suggest-0cb421d056.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "adr-section-validator",
+      "primitive_file": "primitives/hooks/adr-section-validator-1505506da1.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "agent-bash-cwd-enforcer",
+      "primitive_file": "primitives/hooks/agent-bash-cwd-enforcer-f7fd6257e3.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "agent-control-inbound-guard",
+      "primitive_file": "primitives/hooks/agent-control-inbound-guard-f468af4e5b.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "auto-rollback-trigger",
+      "primitive_file": "primitives/hooks/auto-rollback-trigger-1e5de2a322.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "auto-verify",
+      "primitive_file": "primitives/hooks/auto-verify-9959e0843a.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "claim-validator",
+      "primitive_file": "primitives/hooks/claim-validator-5ddb75e4cf.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "confidence-gate",
+      "primitive_file": "primitives/hooks/confidence-gate-027b27f336.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "confidentiality-enforcer",
+      "primitive_file": "primitives/hooks/confidentiality-enforcer-1d65edf403.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "content-policy",
+      "primitive_file": "primitives/hooks/content-policy-746c8f61b4.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "context-watchdog",
+      "primitive_file": "primitives/hooks/context-watchdog-dab9035370.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "cosd-auth-guard",
+      "primitive_file": "primitives/hooks/cosd-auth-guard-4b69aa5274.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
       "portable_id": "destructive-git-blocker",
       "primitive_file": "primitives/hooks/destructive-git-blocker-007838bdb8.json",
-      "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
     },
     {
-      "claims_runtime_enforcement": false,
-      "fidelity": "host-plugin-lifecycle-capable",
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
       "portable_id": "destructive-rm-blocker",
       "primitive_file": "primitives/hooks/destructive-rm-blocker-3a720397ee.json",
-      "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
     },
     {
       "claims_runtime_enforcement": false,
       "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "dispatch-gate",
+      "primitive_file": "primitives/hooks/dispatch-gate-e6e97e6f6d.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "host-plugin-lifecycle-capable",
+      "portable_id": "doc-sync-detector",
+      "primitive_file": "primitives/hooks/doc-sync-detector-a726f6b9f0.json",
+      "surface": "future OpenCode plugin hook"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
       "portable_id": "large-file-advisor",
       "primitive_file": "primitives/hooks/large-file-advisor-54324da899.json",
-      "surface": "future tool.execute.before plugin adapter for read tools"
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before for read tools"
     },
     {
       "claims_runtime_enforcement": false,
@@ -33,11 +138,11 @@
       "surface": "future tool.execute.before plugin adapter for edit/write tools"
     },
     {
-      "claims_runtime_enforcement": false,
-      "fidelity": "host-plugin-lifecycle-capable",
+      "claims_runtime_enforcement": true,
+      "fidelity": "governed-wrapper-enforced",
       "portable_id": "skill-router",
       "primitive_file": "primitives/hooks/skill-router-9c64515352.json",
-      "surface": "OpenCode permissions plus future tool.execute.before plugin adapter"
+      "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
     }
   ],
   "projection_mode": "opencode-json-instructions-mcp-plugin-capable",
