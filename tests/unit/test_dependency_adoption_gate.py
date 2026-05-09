@@ -68,6 +68,33 @@ def test_allows_staged_dependency_addition_with_repo_scout_evidence(tmp_path: Pa
     assert result.evidence_files == ["docs/reports/repo-scout-leftpad.md"]
 
 
+def test_allows_package_json_metadata_only_change(tmp_path: Path) -> None:
+    """package.json metadata fields (license/version/name/etc.) are not dependencies.
+
+    Regression test: previously a string-valued license change in package.json was
+    flagged as a dependency addition, blocking pure metadata cleanup commits.
+    """
+    repo = _init_repo(tmp_path)
+    pkg = repo / "package.json"
+    pkg.write_text(
+        '{\n  "name": "demo",\n  "version": "0.1.0",\n  "license": "Apache-2.0"\n}\n',
+        encoding="utf-8",
+    )
+    _git(repo, "add", "package.json")
+    _git(repo, "commit", "-m", "init")
+    pkg.write_text(
+        '{\n  "name": "demo",\n  "version": "0.1.0",\n  "license": "FSL-1.1-MIT"\n}\n',
+        encoding="utf-8",
+    )
+    _git(repo, "add", "package.json")
+
+    result = evaluate_staged(repo)
+
+    assert result.status == "pass", result.message
+    assert result.exit_code == 0
+    assert result.added_dependency_lines == []
+
+
 def test_inventory_uses_tracked_files_not_local_dependency_caches(tmp_path: Path) -> None:
     repo = _init_repo(tmp_path)
     (repo / "pyproject.toml").write_text('[project]\nname = "demo"\n', encoding="utf-8")
