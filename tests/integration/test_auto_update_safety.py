@@ -51,6 +51,7 @@ def _run_script(
     test pollution of ~/.cognitive-os/installations.json.
     """
     env = os.environ.copy()
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
     # Isolate registry: use cwd-based temp file to avoid polluting global registry
     if "COS_REGISTRY_FILE" not in (env_overrides or {}):
         _cwd = cwd or os.getcwd()
@@ -150,6 +151,13 @@ def create_fake_cos_source(base_path: Path, version: str = "0.3.0") -> Path:
         src = SCRIPTS_DIR / script_name
         if src.exists():
             shutil.copy2(src, scripts_dst / script_name)
+
+    # Minimal Python support library required by scripts/cos_init.py.
+    # Keep the fake source realistic enough to exercise the installer rather
+    # than failing before the safety path under test.
+    lib_dst = cos_src / "lib"
+    lib_dst.mkdir(exist_ok=True)
+    shutil.copy2(PROJECT_ROOT / "lib" / "script_io.py", lib_dst / "script_io.py")
 
     # .claude/settings.json (minimal)
     claude_dir = cos_src / ".claude"
