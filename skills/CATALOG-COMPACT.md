@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 162
+Total skills: 163
 
 ## os (18)
 
@@ -69,7 +69,7 @@ Total skills: 162
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
 
-## both (35)
+## both (36)
 
 | Skill | Description |
 |-------|-------------|
@@ -92,6 +92,7 @@ Total skills: 162
 | llm-status | Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
 | preserved-wip-cleanup | Backup preserved WIP, remove temporary blockers, and prove the inventory is clean. |
+| primitive-authoring | Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO o… |
 | primitive-harness-coverage | Generate the primitive surface coverage report and inspect IDE/CLI/UI/report implementation gaps. |
 | primitive-harvester | Turn repeatable high-value conversation recipes into governed primitive proposals. |
 | proof-drill | Select opt-in proof drills and smoke checks without default-lane pollution. |

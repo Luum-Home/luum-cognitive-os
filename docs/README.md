@@ -27,6 +27,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-256: Primitive Contract Registry and Runtime Evidence Ledger](adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) — proposed root contract connecting primitive definitions, projection fidelity, consumer/service impact, intervention evidence, codebase itinerary, and run traces.
+- [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains canonical primitives, portable contracts, harness/runtime projection, fidelity, consumer-fleet impact, and service/headless impact.
 - [ADR-256: Primitive Contract Registry and Runtime Evidence Ledger](adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) — proposed root contract connecting primitive definitions, projection fidelity, intervention evidence, codebase itinerary, and run traces.
 - [Primitive Contract Registry Implementation Plan](architecture/primitive-contract-registry-implementation-plan.md) — phased plan for ADR-256 before runtime implementation.
 - [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains how canonical primitives stay IDE-neutral, how harness adapters project them into Claude/Codex/Cursor/Copilot/etc., and why projection fidelity must be measured through runtime evidence.
