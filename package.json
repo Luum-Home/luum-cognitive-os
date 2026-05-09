@@ -34,7 +34,7 @@
     "engram"
   ],
   "author": "Luum Home",
-  "license": "Apache-2.0",
+  "license": "FSL-1.1-MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/luum-home/luum-cognitive-os.git"
