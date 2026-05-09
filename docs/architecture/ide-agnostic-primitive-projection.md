@@ -34,6 +34,7 @@ warned, blocked, advised, or only existed as instructions.
 | Fidelity | Meaning |
 |---|---|
 | `native-lifecycle-enforced` | Host lifecycle runs the primitive at the right event and can block/warn. |
+| `host-plugin-lifecycle-capable` | Host exposes plugin/tool lifecycle events that can enforce primitives, but COS has not yet signed runtime projection/smoke. |
 | `governed-wrapper-enforced` | COS wrapper enforces when native lifecycle is insufficient. |
 | `structural-advisory` | Project files/instructions are generated; no runtime enforcement claimed. |
 | `ci-enforced` | Enforced only when shell/CI lane runs. |
@@ -75,6 +76,31 @@ scripts/cos-service-readiness-gate --json
 ```
 
 The product lesson is: consumers need a small overlay-shaped mental model, while COS can keep richer internal manifests and ledgers. Adapters must translate canonical primitives; they must not invent new primitive behavior.
+
+## OpenCode adapter correction
+
+OpenCode should not be treated as instruction-only. Current official OpenCode
+surfaces include:
+
+- project/global rules through `AGENTS.md` and `opencode.json` instruction files;
+- configurable agents, commands, permissions, and bash command patterns;
+- plugins with `tool.execute.before` and `tool.execute.after` lifecycle events.
+
+That means an OpenCode projection can use:
+
+```text
+primitive contract
+  -> opencode.json / AGENTS.md for advisory context
+  -> OpenCode permissions for coarse allow/ask/deny policy
+  -> OpenCode plugin hooks for pre/post tool enforcement and metrics
+  -> primitive-interventions.jsonl as COS evidence sink
+```
+
+Until the COS OpenCode plugin adapter is implemented and smoke-tested, the
+existing `opencode.json` projection remains structural proof only. The target
+fidelity for eligible blocking/advisory primitives is therefore
+`host-plugin-lifecycle-capable`, not `documented-only` and not yet
+`native-lifecycle-enforced`.
 
 ## Observable self-use gap
 

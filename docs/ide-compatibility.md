@@ -14,6 +14,7 @@ Use the proof levels from `docs/architecture/harness-proof-levels.md` instead:
 |---|---|
 | `native-lifecycle` | Native lifecycle hooks/events are projected and tested for this harness. |
 | `runtime-smoke` | A real account-backed CLI/IDE runtime smoke was executed and recorded. |
+| `host-plugin-lifecycle` | Host exposes plugin/tool lifecycle events that can support runtime enforcement, but COS has not signed runtime primitive projection/smoke for that host yet. |
 | `structural` | Project-local files/configs are generated and shape-tested from official docs. Runtime execution is not claimed. |
 | `none` | The surface is planned, hosted/provider-only, unsupported, or not yet researched enough for projection. |
 
@@ -32,7 +33,7 @@ Use the proof levels from `docs/architecture/harness-proof-levels.md` instead:
 | OpenAI Codex | `native-lifecycle` | Codex harness projection with current repo contract tests. |
 | Cursor | `structural` | Project rules/MCP placeholder only; no account-backed runtime claim. |
 | VS Code Copilot | `structural` | Copilot instructions/workspace MCP placeholder only; no account-backed runtime claim. |
-| OpenCode | `structural` | Project config projection only; no account-backed runtime claim. |
+| OpenCode | `structural` + `host-plugin-lifecycle` candidate | Current COS proof is `opencode.json` structural projection only; official OpenCode permissions/plugins expose `tool.execute.before` / `tool.execute.after`, so runtime enforcement should use an OpenCode plugin adapter before any parallel COS layer is invented. |
 | Qwen Code | `structural` | `.qwen/settings.json` and `QWEN.md` shape-tested only. |
 | Kimi Code CLI | `structural` | `AGENTS.md` and `.kimi/mcp.json` shape-tested only. |
 | Shell / CI | `structural` | Generated commands/workflow shape-tested only. |

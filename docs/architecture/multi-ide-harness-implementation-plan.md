@@ -10,13 +10,13 @@ Turn the ACC harness backlog into an evidence-backed rollout path. A harness can
 planned → structural projection → optional runtime smoke → native lifecycle parity
 ```
 
-Only the first implemented slice is in this change: structural projection for OpenCode, VS Code Copilot, and Cursor. These drivers write project-local instruction/config files and prove them in temporary consumer projects. They do not claim native Claude/Codex lifecycle hook parity.
+Only the first implemented slice is in this change: structural projection for OpenCode, VS Code Copilot, and Cursor. These drivers write project-local instruction/config files and prove them in temporary consumer projects. They do not claim native Claude/Codex lifecycle hook parity. OpenCode is a special case: current COS proof is structural, but OpenCode's official permission and plugin lifecycle surfaces can support runtime enforcement after a COS plugin adapter and smoke test.
 
 ## Source signals used
 
 | Harness | Source signal | COS interpretation |
 |---|---|---|
-| OpenCode | Official config supports `opencode.json`, `instructions`, `mcp`, plugins, permissions. See https://opencode.ai/docs/config/ and https://opencode.ai/docs/mcp-servers. | Implement structural config projection now. Runtime CLI smoke later. |
+| OpenCode | Official config supports `opencode.json`, `instructions`, `mcp`, plugins, permissions, and tool lifecycle events. See https://opencode.ai/docs/config/, https://opencode.ai/docs/mcp-servers, https://opencode.ai/docs/plugins/, and https://opencode.ai/docs/agents/. | Structural config projection exists now. Do not reinvent enforcement: implement COS primitives through OpenCode permissions/plugins before claiming runtime parity. |
 | VS Code Copilot | Official VS Code docs auto-detect `.github/copilot-instructions.md`, support `AGENTS.md`, and document workspace/user MCP config. See https://code.visualstudio.com/docs/copilot/customization/custom-instructions and https://code.visualstudio.com/docs/copilot/customization/mcp-servers. | Implement instruction + workspace MCP placeholder projection now. Account-backed extension smoke later. |
 | Cursor | Official docs describe project rules under `.cursor/rules`, MDC metadata, `AGENTS.md`, and MCP configuration. See https://docs.cursor.com/en/context and https://docs.cursor.com/advanced/model-context-protocol. | Implement project rule + MCP placeholder projection now. Account-backed Cursor smoke later. |
 | Windsurf | Official docs describe Cascade MCP management/admin whitelist, but the repo has not signed a project-local rules/config surface. See https://docs.windsurf.com/windsurf/cascade/mcp. | Keep planned until project-local instruction/rule contract is confirmed. |

@@ -78,6 +78,7 @@ contracts:
     projection:
       claude: {fidelity: native-lifecycle-enforced}
       codex: {fidelity: governed-wrapper-enforced}
+      opencode: {fidelity: host-plugin-lifecycle-capable, notes: Use permissions and tool.execute.before/after plugin hooks after adapter smoke.}
       cursor: {fidelity: structural-advisory}
       shell-ci: {fidelity: ci-enforced}
       cosd-service: {fidelity: documented-only, notes: Not exposed through remote cosd endpoints.}
@@ -124,6 +125,24 @@ contents or raw secret/private values.
 4. **Projection and impact report** — join harness fidelity, consumer-fleet audit, and service-readiness gate.
 5. **Trace joiner + observable self-use** — join itinerary + interventions + existing run trace.
 6. **Consumer UX** — small commands around adapters/observe surfaces.
+
+## OpenCode adapter note
+
+OpenCode is not merely an instruction-file harness. Its official runtime surface
+includes configurable permissions and plugins with `tool.execute.before` and
+`tool.execute.after` events. ADR-256 should therefore project eligible COS
+primitives to OpenCode through an adapter stack:
+
+```text
+opencode.json / AGENTS.md advisory context
+  -> OpenCode permissions for coarse allow/ask/deny
+  -> OpenCode plugin hook for pre/post tool enforcement
+  -> primitive-interventions.jsonl row for comparable COS evidence
+```
+
+The current COS proof remains structural because `cos_init.py --harness opencode`
+only signs `opencode.json`. Runtime enforcement may be claimed only after a COS
+OpenCode plugin adapter and smoke test exist.
 
 ## Non-goals
 
