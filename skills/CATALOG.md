@@ -274,7 +274,6 @@ These skills are project-specific and live in `{project}/.claude/skills/`. They 
 - **preserved-wip-cleanup** — Archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie session registry entries after all agents stop.
 - **primitive-classifier** — Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package.
 - **primitive-harvester** — Classify whether a conversation should become a reusable agentic primitive, improve an existing primitive, use an existing primitive, become documentation only, or be discarded.
-- **primitive-authoring** — Governed workflow for creating/modifying/promoting primitives with reuse, ownership, contract, projection fidelity, consumer-fleet impact, service impact, and evidence checks.
 - **primitive-authoring** — Governed workflow for creating, modifying, or promoting agentic primitives with reuse, ownership, portable contract, projection fidelity, runtime evidence, and consumer-impact checks.
 - **primitive-surface-reduction** — Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.
 - **primitive-usage-map** — Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.

@@ -18,6 +18,16 @@ canonical primitive contract
   -> joined run trace
 ```
 
+## OpenSage pressure test
+
+OpenSage ADK is now a formal pressure test for this plan, not a runtime dependency. The extracted patterns are codified in `manifests/self-programming-agent-patterns.yaml` and checked by `scripts/cos-self-programming-pattern-audit`. ADR-256 must be able to answer these OpenSage-shaped questions before any adapter lab can execute generated agents/tools:
+
+1. Which primitive authorized dynamic subagent topology?
+2. Which primitive-authoring, license, credential, discovery, and sandbox gates approved a generated tool or skill?
+3. Which sandbox tier actually ran the tool, and did it fall back?
+4. Which memory/itinerary rows were written without leaking contents?
+5. Which benchmark result proves primitive use rather than architecture intent?
+
 ## Existing assets to reuse
 
 - `manifests/harness-projection.yaml`
@@ -29,6 +39,23 @@ canonical primitive contract
 - `docs/architecture/cos-service-runtime-boundary.md`
 - `lib/trace_joiner.py`
 - `skills/primitive-authoring/SKILL.md`
+
+## Phase 0 — Contract freeze
+
+Keep the plan-first documentation consistent before runtime changes:
+
+- ADR-256.
+- `docs/architecture/ide-agnostic-primitive-projection.md`.
+- `/primitive-authoring`.
+- `docs/architecture/opensage-self-programming-patterns.md`.
+- `manifests/self-programming-agent-patterns.yaml`.
+
+Test:
+
+```bash
+scripts/cos-self-programming-pattern-audit --json
+python3 -m pytest tests/unit/test_self_programming_pattern_audit.py -q
+```
 
 ## Phase 1 — Minimal registry
 
@@ -108,3 +135,17 @@ Pause if:
 - service-readiness is red and the primitive is used for service/headless claims;
 - the registry duplicates lifecycle/readiness manifests without adding join value;
 - intervention rows cannot correlate to sessions reliably.
+
+## Phase 6 — Consumer UX
+
+Add small commands once contract/evidence/reporting exists:
+
+```bash
+cos adapters list
+cos adapters install codex
+cos adapters install cursor
+cos adapters verify
+cos observe primitives
+```
+
+These commands should present a `.ai`-like overlay mental model without copying `.ai/` wholesale into COS.

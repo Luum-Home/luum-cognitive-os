@@ -60,6 +60,41 @@ scripts/cos-consumer-fleet-audit --json
 scripts/cos-service-readiness-gate --json
 ```
 
+
+## `.ai/` product mirror
+
+`<consumer-repo>/.ai` is not deeper than COS, but it is clearer as consumer packaging. It separates:
+
+```text
+.ai/primitives/   # canonical skills/rules/workflows/hooks
+.ai/adapters/     # per-IDE translators with README.md + install.sh
+.ai/context/      # durable project context
+.ai/logs/         # simple JSONL metrics
+.ai/state/        # anchors/budgets/session state
+.ai/scripts/      # verification, routing, usage, access audits
+```
+
+The product lesson is: consumers need a small overlay-shaped mental model, while COS can keep richer internal manifests and ledgers. Adapters must translate canonical primitives; they must not invent new primitive behavior.
+
+## Observable self-use gap
+
+COS already has partial observability: dogfood scoring, primitive harness coverage, ACC, hook timing, run traces, and behavior tests. The missing per-run answer is:
+
+> The agent inspected these safe targets, these primitives observed/warned/blocked/suggested these actions, and this was the effect.
+
+ADR-256 closes that through a primitive intervention ledger and codebase itinerary, joined into run traces.
+
+## Recommended first runtime slice
+
+```text
+ACCEPTANCE CRITERIA:
+1. tool-sequence capture records Read/Grep/Glob/LS with safe target metadata only.
+2. `.cognitive-os/metrics/primitive-interventions.jsonl` exists.
+3. Destructive git/rm, reinvention, and large-file primitives can emit canonical intervention rows.
+4. `trace_joiner.py` joins tool sequences with primitive interventions.
+5. A synthetic test proves read advisory + git block + reinvention warning joined by session.
+```
+
 ## Root implementation proposal
 
 The root proposal is ADR-256 and its implementation plan:

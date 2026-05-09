@@ -51,4 +51,4 @@ OpenSage is worth deep analysis because it is explicitly built around agentic pr
 
 ## Follow-up trigger
 
-Open an adapter-lab spike only if COS starts a dedicated self-programming-agent or sandboxed-long-running-tool lane. Required preconditions: manifest row, disposable fixture repo, generated-file allowlist, provider-key isolation, sandbox capability policy, memory-retention policy, and rollback receipts.
+Open an adapter-lab spike only if COS starts a dedicated self-programming-agent or sandboxed-long-running-tool lane. Required preconditions: `manifests/self-programming-agent-patterns.yaml` passes `scripts/cos-self-programming-pattern-audit`, ADR-256 phase 1/2 primitive contract and intervention-ledger slices exist, and the lab has a disposable fixture repo, generated-file allowlist, provider-key isolation, sandbox capability policy, memory-retention policy, and rollback receipts.

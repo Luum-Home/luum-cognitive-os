@@ -22,6 +22,7 @@ primitive definition
   -> installed consumer impact
   -> service/headless impact
   -> runtime intervention evidence
+  -> codebase itinerary
   -> trace join
 ```
 
@@ -30,6 +31,10 @@ say hooks exist, projections exist, or metrics exist, but cannot always answer:
 
 > This primitive exists, reaches these projects/runtimes, claims this fidelity,
 > and produced this intervention in this run.
+
+## External pressure test: OpenSage
+
+OpenSage ADK is a useful stress case for this ADR because it combines dynamic agent topology, dynamic tool/skill synthesis, sandboxed execution, graph/hierarchical memory, and real benchmark loops. COS may extract those patterns only through `manifests/self-programming-agent-patterns.yaml`; it must not adopt a self-programming runtime until this ADR can prove primitive authorization and runtime evidence for each dynamic action.
 
 ## Decision
 
@@ -112,13 +117,13 @@ contents or raw secret/private values.
 
 ## Phases
 
-1. **Docs/contract freeze** — ADR, plan, and `/primitive-authoring` gate.
-2. **Minimal registry** — five contracts: destructive git, destructive rm, reinvention check, large-file advisor, skill router.
-3. **Intervention ledger** — bridge two hooks first.
-4. **Codebase itinerary** — safe Read/Grep/Glob/LS metadata.
-5. **Projection and impact report** — join harness fidelity, consumer-fleet audit, and service-readiness gate.
-6. **Trace joiner** — join itinerary + interventions + existing run trace.
-7. **Consumer UX** — small commands around adapters/observe surfaces.
+0. **Docs/contract freeze** — ADR, plan, `/primitive-authoring` gate, `.ai` overlay lesson, and OpenSage pressure-test contract.
+1. **Minimal registry** — five contracts: destructive git, destructive rm, reinvention check, large-file advisor, skill router.
+2. **Intervention ledger** — bridge two hooks first, then script/advisory primitives.
+3. **Codebase itinerary** — safe Read/Grep/Glob/LS metadata without contents.
+4. **Projection and impact report** — join harness fidelity, consumer-fleet audit, and service-readiness gate.
+5. **Trace joiner + observable self-use** — join itinerary + interventions + existing run trace.
+6. **Consumer UX** — small commands around adapters/observe surfaces.
 
 ## Non-goals
 
