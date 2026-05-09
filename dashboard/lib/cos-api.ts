@@ -185,6 +185,120 @@ export async function getPrimitiveSurfaceCoverageSummary(): Promise<PrimitiveSur
   }
 }
 
+
+export interface PrimitiveProjectionFidelitySummary {
+  contracts: number;
+  projectionRows: number;
+  aligned: number;
+  gaps: number;
+  unknown: number;
+  pendingRuntimeSmoke: number;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
+export interface OpenCodePrimitiveAdapterSmokeSummary {
+  status: string;
+  version: string;
+  supportedPrimitives: number;
+  ledgerRows: number;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
+export interface PortableAiConsumerSmokeSummary {
+  status: string;
+  overlayFiles: number;
+  primitiveFiles: number;
+  registryBacked: number;
+  lifecycleDerived: number;
+  noCanonicalMutation: boolean;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
+export interface PrimitiveServiceHeadlessSmokeSummary {
+  status: string;
+  ledgerRows: number;
+  primitiveCount: number;
+  contentFreeRows: boolean;
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
+export async function getPrimitiveProjectionFidelitySummary(): Promise<PrimitiveProjectionFidelitySummary> {
+  const reportPath = join(COS_ROOT, "docs", "reports", "primitive-projection-fidelity-latest.json");
+  try {
+    const report = JSON.parse(await readFile(reportPath, "utf-8"));
+    const summary = report.summary || {};
+    return {
+      contracts: Number(summary.contracts || 0),
+      projectionRows: Number(summary.projection_rows || 0),
+      aligned: Number(summary.aligned || 0),
+      gaps: Number(summary.gaps || 0),
+      unknown: Number(summary.unknown || 0),
+      pendingRuntimeSmoke: Number(summary.pending_runtime_smoke || 0),
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return { contracts: 0, projectionRows: 0, aligned: 0, gaps: 0, unknown: 0, pendingRuntimeSmoke: 0, consumesReport: false, mode: "observe-only" };
+  }
+}
+
+export async function getOpenCodePrimitiveAdapterSmokeSummary(): Promise<OpenCodePrimitiveAdapterSmokeSummary> {
+  const reportPath = join(COS_ROOT, "docs", "reports", "opencode-primitive-adapter-smoke-latest.json");
+  try {
+    const report = JSON.parse(await readFile(reportPath, "utf-8"));
+    return {
+      status: String(report.status || "unknown"),
+      version: String((report.opencode || {}).version || ""),
+      supportedPrimitives: Array.isArray(report.supported_primitives) ? report.supported_primitives.length : 0,
+      ledgerRows: Number(report.ledger_row_count || 0),
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return { status: "unavailable", version: "", supportedPrimitives: 0, ledgerRows: 0, consumesReport: false, mode: "observe-only" };
+  }
+}
+
+export async function getPortableAiConsumerSmokeSummary(): Promise<PortableAiConsumerSmokeSummary> {
+  const reportPath = join(COS_ROOT, "docs", "reports", "portable-ai-consumer-smoke-latest.json");
+  try {
+    const report = JSON.parse(await readFile(reportPath, "utf-8"));
+    return {
+      status: String(report.status || "unknown"),
+      overlayFiles: Number(report.overlay_file_count || 0),
+      primitiveFiles: Number(report.primitive_file_count || 0),
+      registryBacked: Number(report.registry_backed_count || 0),
+      lifecycleDerived: Number(report.lifecycle_derived_count || 0),
+      noCanonicalMutation: Boolean(report.no_canonical_mutation),
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return { status: "unavailable", overlayFiles: 0, primitiveFiles: 0, registryBacked: 0, lifecycleDerived: 0, noCanonicalMutation: false, consumesReport: false, mode: "observe-only" };
+  }
+}
+
+export async function getPrimitiveServiceHeadlessSmokeSummary(): Promise<PrimitiveServiceHeadlessSmokeSummary> {
+  const reportPath = join(COS_ROOT, "docs", "reports", "primitive-service-headless-smoke-latest.json");
+  try {
+    const report = JSON.parse(await readFile(reportPath, "utf-8"));
+    return {
+      status: String(report.status || "unknown"),
+      ledgerRows: Number(report.ledger_row_count || 0),
+      primitiveCount: Array.isArray(report.primitive_ids) ? report.primitive_ids.length : 0,
+      contentFreeRows: Boolean(report.content_free_rows),
+      consumesReport: true,
+      mode: "observe-only",
+    };
+  } catch {
+    return { status: "unavailable", ledgerRows: 0, primitiveCount: 0, contentFreeRows: false, consumesReport: false, mode: "observe-only" };
+  }
+}
+
 export async function getVcsActionReceiptSummary(): Promise<VcsActionReceiptSummary> {
   const metricsPath = join(COS_ROOT, ".cognitive-os", "metrics", "vcs-actions.jsonl");
   const empty = {
