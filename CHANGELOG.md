@@ -8,6 +8,63 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 
 - Public history-sanitization disclosure package documenting the pre-public rewrite scope, preserved human authorship, preserved Apache-to-FSL license-transition evidence, and sanitized runtime report copy.
+- Public-launch transparency package: `TRANSPARENCY.md`, launch-day runbook, and verify-public-release guide.
+- External tools radar 2026-05-08 edition with chronological index, bidirectional cross-check axis, five focused cross-check reports, implementation tracker, and reassessment scope controls.
+- External Tool Intelligence Plane (ADR-254): central adoption doctrine, project overlay model, adoption manifest, inventory/audit/render/research-check CLIs, and tests for COS-vs-project contradictions.
+- Feature-to-External-Tool Due Diligence (ADR-255): feature/tool scan, external source fetch, feature-vs-tool benchmark, source-cache guard, and manifest-backed BUILD-vs-ADOPT evidence requirements.
+- Capability and feature reality surfaces: feature reality matrix, capability coverage artifacts, and adapter-boundary audits for orchestration and router subsystems.
+- Primitive behavioral proof audit to catch overfit tests that only prove file existence or manifest wiring instead of fail-closed behavior.
+- Control-plane remediation loop (ADR-248): hook-fast lane, hourly/session-end lane, latest report, metrics, remediation queue, and safe-class auto-fix substrate.
+- Release transaction freeze substrate (ADR-246) for high-risk operations such as history rewrites, force-pushes, and public-release preparation.
+- Postmortem regression and primitive-coherence audits (ADR-239 through ADR-245) covering branch-shift, recursion boundaries, bypass resolver consistency, release-freeze boundaries, claim verification, and production-source read guards.
+- Tiered cleanup primitive (`scripts/cos-cleanup.sh` and session-end cleanup hook) for stale locks, temporary validation capsules, merged branches, orphan worktrees, and daemon cleanup with risk-tier separation.
+- Pre-public risk audit and consumer/project residue audit for sensitive blobs, internal trailers, provider-looking identities, disclosure gaps, and license FAQ readiness.
+- History sanitization execute slice (ADR-218): git-filter-repo wrapper with recovery mirror, tombstone/report generation, bounded scans, tombstone smoke test, and runbook.
+- Supply-chain release artifacts: CycloneDX SBOM, supply-chain audit, digest notes, and sanitized SBOM path/checksum refresh.
+- License FAQ and readiness documentation for the Apache 2.0 to FSL-1.1-MIT transition, including badge/readme linkage and legal provenance evidence.
+- Orchestration runtime substrate wave: event bus consumer guardrail, dispatch retry/budget/circuit-breaker hardening, handoff receiver hardening, MCP streamable HTTP registration with trust pins, sandbox adapter tiers, policy-as-code projection, detached agent daemon activation, deferred tool loading payload switch, shadow-git restore, shadow-state retention, branch-per-task/worktree lifecycle, and orchestration coverage checklist.
+- Test execution efficiency protocol to avoid wasteful full-suite reruns during grouped repair cycles.
+- Memory Wave 2 Slice 0: retrieval benchmark manifest, fixtures, runner, baseline report, strategy comparison runner, and five comparable retrieval reports.
+- Memory Wave 2 runtime opt-in: M1 temporal validity / supersession-aware reranking and M3 relation support-chain annotations behind `retrieval_strategy="wave2-m1-m3"` or `COS_ENGRAM_RETRIEVAL_STRATEGY=wave2-m1-m3`; `strategy=current` remains default.
+- Memory Wave 2 default decision record documenting why M1 stays opt-in until the remaining multi-hop/source-support blocker is closed.
+
+### Changed
+
+- Ratified the adopt-before-build posture: COS should integrate commodity third-party schemas/runtimes behind adapter boundaries while keeping governance semantics first-party.
+- Reframed external-tool research as a central COS radar plus lightweight project overlays instead of duplicating deep-research structures inside every consumer project.
+- Promoted documentation-before-implementation for radar-derived work: doctrine, design docs, manifests, audit tests, and benchmark receipts must exist before runtime adoption.
+- Updated the radar implementation tracker to reflect Wave 1 housekeeping, drift fixes, cleanup tasks, Wave 2 benchmark status, runtime M1/M3 opt-in status, and remaining PPR/schema work.
+- Preserved commit author metadata by default in history sanitization; metadata rewrite now requires explicit opt-in flags instead of being implied by content cleanup.
+- Made commit provenance trailers opt-in and added guards against invented AI-provider identities or placeholder authors.
+- Defaulted agent lifecycle work toward isolated worktrees/task branches and explicit branch-switch blocking instead of silent branch context changes.
+- Downgraded or tombstoned stale ADR claims where manifests or docs implied implemented behavior without consuming runtime code.
+- Qualified token-reduction claims as upstream figures unless local ToolSearch metrics exist.
+- Restored and clarified supply-chain digest notes after SBOM sanitization.
+
+### Fixed
+
+- Closed control-plane audit registry drift and hook classification projection gaps so active/manual/deprecated hook states match registration reality.
+- Blocked silent `git switch` / branch checkout context changes from agents unless explicitly bypassed.
+- Fixed pre-public audit provider-identity false positives by matching real email-shaped identities instead of Markdown tables such as `active <30d`.
+- Fixed cleanup safety so orphan worktrees with uncommitted WIP escalate to manual Tier 3 instead of being removed by Tier 2.
+- Fixed release/history rewrite readiness issues: remote restoration, public rewrite identity configuration, X-COS trailer stripping, collision bypass audit, and post-rewrite remotes.
+- Fixed privacy/readiness artifacts by avoiding raw operator email/path leakage, moving private tokens to operator-owned files, deriving session directory slugs at runtime, and genericizing consumer/service fixtures.
+- Fixed ADR and readiness status drift, including ADR-228 header inconsistency and ADR-238 hook registration follow-up status.
+- Fixed test-laptop/unit-lane readiness regressions, suspicious skip classification, hook timing count noise in validation capsules, primitive lifecycle/coverage baseline drift, and snapshot restore tracked-plan baselines.
+- Fixed dependency/adoption contradictions by removing direct `litellm`, `langfuse`, `memu`, and `pytest-smell` references that conflicted with current radar posture.
+- Fixed package mirrors for agent lifecycle and deferred tool loading after runtime adapter work.
+
+### Security
+
+- Added stronger pre-public gates for secret/PII history, report-publish surfaces, provider-looking identities, and sensitive token configuration.
+- Added history rewrite recovery guardrails with mandatory backup mirror, explicit destructive-git gate, and public disclosure artifacts.
+- Added production-source read-only chaos guard and release-freeze boundary for destructive operations.
+- Added supply-chain SBOM and license/provenance audit artifacts for public readiness.
+
+### Release notes
+
+- This scope is larger than a patch release. The next tagged release should be treated as a minor release candidate (`0.28.0`) after a 24-48 hour soak because several control-plane hooks and the Wave 2 memory opt-in landed on main today.
+- `/release-os` remains the canonical release orchestrator, but this entry only prepares the changelog/readiness stage; version bump, tag, and push should wait for soak unless the release owner records an explicit waiver.
 
 ## [0.27.1] - 2026-05-06
 
