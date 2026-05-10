@@ -1,3 +1,8 @@
+# Changelog
+
+All notable changes to Cognitive OS are documented here.
+Format follows [Keep a Changelog](https://keepachangelog.com/).
+
 ## [Unreleased]
 
 ## [0.28.0] - 2026-05-10
