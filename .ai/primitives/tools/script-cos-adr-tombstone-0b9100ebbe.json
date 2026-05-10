@@ -1,0 +1,174 @@
+{
+  "canonical_source": "scripts/cos-adr-tombstone",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "block",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "script-cos-adr-tombstone",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "unsupported"
+    },
+    "intent": "wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "contract/documentation only"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/adr-tombstone/SKILL.md",
+        "scripts/cos-adr-tombstone"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests",
+    "evidence_commands": [
+      "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/adr-tombstone.jsonl"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "mixed",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-171",
+    "risk_class": "blocking",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "block",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "script-cos-adr-tombstone",
+    "evidence": {
+      "evidence_commands": [
+        "python3 -m pytest tests/unit/test_adr_tombstone.py tests/contracts/test_adr_numbering_integrity.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/adr-tombstone.jsonl"
+      ],
+      "proof_tests": [
+        "tests/unit/test_adr_tombstone.py",
+        "tests/contracts/test_adr_numbering_integrity.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "unsupported"
+    },
+    "intent": "wrapper delegates to scripts/adr_tombstone.py and inherits active-ADR safety tests",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "contract/documentation only"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "skills/adr-tombstone/SKILL.md",
+        "scripts/cos-adr-tombstone"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "script-cos-adr-tombstone",
+  "projection_targets": [
+    "skills/adr-tombstone/SKILL.md",
+    "scripts/cos-adr-tombstone"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-adr-tombstone",
+  "supported_harnesses": [
+    "claude",
+    "codex",
+    "shell"
+  ]
+}

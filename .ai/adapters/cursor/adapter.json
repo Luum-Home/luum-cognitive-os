@@ -2,7 +2,7 @@
   "display_name": "Cursor",
   "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
   "harness": "cursor",
-  "projected_primitive_count": 20,
+  "projected_primitive_count": 307,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -10,6 +10,13 @@
       "portable_id": "aci-observation-capture",
       "primitive_file": "primitives/hooks/aci-observation-capture-3a10bc2c38.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "adaptive-bypass",
+      "primitive_file": "primitives/hooks/adaptive-bypass-4f1c8f55b6.json",
+      "surface": "generated Cursor rules/context only"
     },
     {
       "claims_runtime_enforcement": false,
@@ -35,9 +42,100 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "agent-checkpoint",
+      "primitive_file": "primitives/hooks/agent-checkpoint-2eeb0a8bd6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-context",
+      "primitive_file": "primitives/hooks/agent-context-67c6921739.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "agent-control-inbound-guard",
       "primitive_file": "primitives/hooks/agent-control-inbound-guard-f468af4e5b.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-launch-confirmed",
+      "primitive_file": "primitives/hooks/agent-launch-confirmed-a06a028c24.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-message-inbox-context",
+      "primitive_file": "primitives/hooks/agent-message-inbox-context-150468761a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-message-inbox-guard",
+      "primitive_file": "primitives/hooks/agent-message-inbox-guard-28c53cdfb8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-prelaunch",
+      "primitive_file": "primitives/hooks/agent-prelaunch-3cb0e3859a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-working-dir-inject",
+      "primitive_file": "primitives/hooks/agent-working-dir-inject-40a7091813.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "aspirational-audit-weekly",
+      "primitive_file": "primitives/hooks/aspirational-audit-weekly-53366cc5d6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "assumption-tracker",
+      "primitive_file": "primitives/hooks/assumption-tracker-48ced294ae.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "audit-id-enricher",
+      "primitive_file": "primitives/hooks/audit-id-enricher-2894ff5a23.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "auto-checkpoint",
+      "primitive_file": "primitives/hooks/auto-checkpoint-d36ed5c62d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "auto-refine",
+      "primitive_file": "primitives/hooks/auto-refine-e7a42027eb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "auto-repair-dispatcher",
+      "primitive_file": "primitives/hooks/auto-repair-dispatcher-90865097b9.json",
+      "surface": "generated Cursor rules/context only"
     },
     {
       "claims_runtime_enforcement": false,
@@ -49,6 +147,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "auto-skill-generator",
+      "primitive_file": "primitives/hooks/auto-skill-generator-b9efc8f6ac.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "auto-verify",
       "primitive_file": "primitives/hooks/auto-verify-9959e0843a.json",
       "surface": "project rules/context only"
@@ -56,9 +161,65 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "blast-radius",
+      "primitive_file": "primitives/hooks/blast-radius-f776a633d8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "branch-ownership-lock",
+      "primitive_file": "primitives/hooks/branch-ownership-lock-3ae426e948.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "branch-ownership-release",
+      "primitive_file": "primitives/hooks/branch-ownership-release-8e9ced0746.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "claim-validator",
       "primitive_file": "primitives/hooks/claim-validator-5ddb75e4cf.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "clarification-gate",
+      "primitive_file": "primitives/hooks/clarification-gate-726ef77490.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "codebase-itinerary-capture",
+      "primitive_file": "primitives/hooks/codebase-itinerary-capture-00da7bd734.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "completeness-check",
+      "primitive_file": "primitives/hooks/completeness-check-0f22b47a07.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "completion-gate",
+      "primitive_file": "primitives/hooks/completion-gate-c62a1ab95d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "concurrent-write-guard",
+      "primitive_file": "primitives/hooks/concurrent-write-guard-326d6f9d1b.json",
+      "surface": "generated Cursor rules/context only"
     },
     {
       "claims_runtime_enforcement": false,
@@ -77,9 +238,23 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "consequence-evaluator",
+      "primitive_file": "primitives/hooks/consequence-evaluator-989892bf39.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "content-policy",
       "primitive_file": "primitives/hooks/content-policy-746c8f61b4.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "context-budget-meter",
+      "primitive_file": "primitives/hooks/context-budget-meter-d6e90f656b.json",
+      "surface": "generated Cursor rules/context only"
     },
     {
       "claims_runtime_enforcement": false,
@@ -91,9 +266,72 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "control-plane-audit",
+      "primitive_file": "primitives/hooks/control-plane-audit-a6bf860aea.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "control-plane-audit-hourly",
+      "primitive_file": "primitives/hooks/control-plane-audit-hourly-6ab41ec2d2.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "cos-executor-daemon-launcher",
+      "primitive_file": "primitives/hooks/cos-executor-daemon-launcher-ebcd951ec7.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "cosd-auth-guard",
       "primitive_file": "primitives/hooks/cosd-auth-guard-4b69aa5274.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "crash-recovery",
+      "primitive_file": "primitives/hooks/crash-recovery-be507e3fed.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "cross-session-coordination-guard",
+      "primitive_file": "primitives/hooks/cross-session-coordination-guard-bdf067df4a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "cross-session-event-emit",
+      "primitive_file": "primitives/hooks/cross-session-event-emit-0dafc38227.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "cross-session-peer-context",
+      "primitive_file": "primitives/hooks/cross-session-peer-context-3a888eecff.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "dangerous-env-flag-detector",
+      "primitive_file": "primitives/hooks/dangerous-env-flag-detector-6337308c3b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "dequeue-notify",
+      "primitive_file": "primitives/hooks/dequeue-notify-679543f083.json",
+      "surface": "generated Cursor rules/context only"
     },
     {
       "claims_runtime_enforcement": false,
@@ -112,6 +350,13 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "direct-main-guard",
+      "primitive_file": "primitives/hooks/direct-main-guard-176178770d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "dispatch-gate",
       "primitive_file": "primitives/hooks/dispatch-gate-e6e97e6f6d.json",
       "surface": "project rules/context only"
@@ -126,9 +371,359 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "docker-drift-detector",
+      "primitive_file": "primitives/hooks/docker-drift-detector-5749f63922.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "document-ingest-guard",
+      "primitive_file": "primitives/hooks/document-ingest-guard-168b18f1fb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "dod-gate",
+      "primitive_file": "primitives/hooks/dod-gate-fc5a3bcaaa.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "edit-lock-drain-parked",
+      "primitive_file": "primitives/hooks/edit-lock-drain-parked-aa26cf78e7.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "edit-lock-pre-tool",
+      "primitive_file": "primitives/hooks/edit-lock-pre-tool-bf3f48563e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "edit-lock-process-negotiations",
+      "primitive_file": "primitives/hooks/edit-lock-process-negotiations-c7e1d57a0e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "edit-lock-session-end",
+      "primitive_file": "primitives/hooks/edit-lock-session-end-75ccc8a7d8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "engram-crystallize-on-session-end",
+      "primitive_file": "primitives/hooks/engram-crystallize-on-session-end-d6b8d84b5a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "engram-daemon-launcher",
+      "primitive_file": "primitives/hooks/engram-daemon-launcher-f77420bb66.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "engram-obsidian-export-on-stop",
+      "primitive_file": "primitives/hooks/engram-obsidian-export-on-stop-3211d31964.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "engram-reinforce-on-access",
+      "primitive_file": "primitives/hooks/engram-reinforce-on-access-60d2168ad1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "error-learning",
+      "primitive_file": "primitives/hooks/error-learning-17e53e67c3.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "error-pattern-detector",
+      "primitive_file": "primitives/hooks/error-pattern-detector-476ba1e87a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "error-pipeline",
+      "primitive_file": "primitives/hooks/error-pipeline-3e310dc87f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "git-commit-scope-guard",
+      "primitive_file": "primitives/hooks/git-commit-scope-guard-d98fc6788e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "git-context-capture",
+      "primitive_file": "primitives/hooks/git-context-capture-7d5f936e15.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "hook-header-validator",
+      "primitive_file": "primitives/hooks/hook-header-validator-d5e21e6b37.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "host-tool-doctor",
+      "primitive_file": "primitives/hooks/host-tool-doctor-6aafdf356b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "infra-health",
+      "primitive_file": "primitives/hooks/infra-health-4245c64834.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "inject-phase-context",
+      "primitive_file": "primitives/hooks/inject-phase-context-db98bb3f17.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "kpi-trigger",
+      "primitive_file": "primitives/hooks/kpi-trigger-4df8201a2f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "large-file-advisor",
       "primitive_file": "primitives/hooks/large-file-advisor-54324da899.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "lethal-trifecta-gate",
+      "primitive_file": "primitives/hooks/lethal-trifecta-gate-b4e5184c2d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "mcp-scan",
+      "primitive_file": "primitives/hooks/mcp-scan-ed4e87da37.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "memory-prefetch",
+      "primitive_file": "primitives/hooks/memory-prefetch-54cb8b8e23.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "native-agent-heartbeat",
+      "primitive_file": "primitives/hooks/native-agent-heartbeat-0e68a9558f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "network-egress-guard",
+      "primitive_file": "primitives/hooks/network-egress-guard-317e2e6113.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "orchestrator-claim-gate",
+      "primitive_file": "primitives/hooks/orchestrator-claim-gate-1312234fec.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "orchestrator-decision-trace",
+      "primitive_file": "primitives/hooks/orchestrator-decision-trace-b0218344f5.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "orchestrator-skill-invocation-gate",
+      "primitive_file": "primitives/hooks/orchestrator-skill-invocation-gate-9494690d5b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "plan-claim-validator",
+      "primitive_file": "primitives/hooks/plan-claim-validator-b20d73ea36.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "post-agent-snapshot-restore",
+      "primitive_file": "primitives/hooks/post-agent-snapshot-restore-6a8cd1d1c0.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "post-agent-verify",
+      "primitive_file": "primitives/hooks/post-agent-verify-ea05990ebb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "post-git-orphan-notifier",
+      "primitive_file": "primitives/hooks/post-git-orphan-notifier-0e69b837c1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "pre-agent-snapshot",
+      "primitive_file": "primitives/hooks/pre-agent-snapshot-4c1b705ff9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "pre-commit-content-hash-dedupe",
+      "primitive_file": "primitives/hooks/pre-commit-content-hash-dedupe-d1b81cd713.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "pre-compaction-flush",
+      "primitive_file": "primitives/hooks/pre-compaction-flush-68a62e9e1a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "predev-completeness-check",
+      "primitive_file": "primitives/hooks/predev-completeness-check-3eb6af787d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "private-mode-gate",
+      "primitive_file": "primitives/hooks/private-mode-gate-2e8f758da3.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "private-mode-metrics-gate",
+      "primitive_file": "primitives/hooks/private-mode-metrics-gate-e02c5347e8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "profile-drift-autoapply",
+      "primitive_file": "primitives/hooks/profile-drift-autoapply-ae3f6d812b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "project-docs-convention",
+      "primitive_file": "primitives/hooks/project-docs-convention-1411987621.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "promotion-proposer-weekly",
+      "primitive_file": "primitives/hooks/promotion-proposer-weekly-493ac83eac.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "prompt-quality-llm",
+      "primitive_file": "primitives/hooks/prompt-quality-llm-c85d6c9b3b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "protected-config-write-guard",
+      "primitive_file": "primitives/hooks/protected-config-write-guard-f9fd7d76f1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "query-tailored-context-inject",
+      "primitive_file": "primitives/hooks/query-tailored-context-inject-8a41be5da1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rate-limit-detector",
+      "primitive_file": "primitives/hooks/rate-limit-detector-40838881e0.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rate-limit-drain",
+      "primitive_file": "primitives/hooks/rate-limit-drain-43535ee2af.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rate-limit-precheck",
+      "primitive_file": "primitives/hooks/rate-limit-precheck-195865565b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rate-limiter",
+      "primitive_file": "primitives/hooks/rate-limiter-499d42defd.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "reaper-daemon-launcher",
+      "primitive_file": "primitives/hooks/reaper-daemon-launcher-f608667980.json",
+      "surface": "generated Cursor rules/context only"
     },
     {
       "claims_runtime_enforcement": false,
@@ -140,9 +735,1423 @@
     {
       "claims_runtime_enforcement": false,
       "fidelity": "structural-advisory",
+      "portable_id": "release-guard",
+      "primitive_file": "primitives/hooks/release-guard-a1cb51cb2a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "research-quality-validator",
+      "primitive_file": "primitives/hooks/research-quality-validator-9c2a4672ad.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "result-truncator",
+      "primitive_file": "primitives/hooks/result-truncator-b45230ac28.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "review-spawner",
+      "primitive_file": "primitives/hooks/review-spawner-579537da86.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rule-frontmatter-validator",
+      "primitive_file": "primitives/hooks/rule-frontmatter-validator-c14bc70f9e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rule-md-routing-validator",
+      "primitive_file": "primitives/hooks/rule-md-routing-validator-18736a3005.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "rule-router-prompt-suggest",
+      "primitive_file": "primitives/hooks/rule-router-prompt-suggest-259a20522e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "scope-creep-detector",
+      "primitive_file": "primitives/hooks/scope-creep-detector-df5a090f8e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "scope-marker-portability-gate",
+      "primitive_file": "primitives/hooks/scope-marker-portability-gate-cfa5cd3130.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "scope-proportionality",
+      "primitive_file": "primitives/hooks/scope-proportionality-8b934050b6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "secret-detector",
+      "primitive_file": "primitives/hooks/secret-detector-b8bb982b5b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "self-install",
+      "primitive_file": "primitives/hooks/self-install-5205c16219.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "self-knowledge-refresh",
+      "primitive_file": "primitives/hooks/self-knowledge-refresh-6e55e3d991.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-changelog",
+      "primitive_file": "primitives/hooks/session-changelog-2b86a4c97d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-cleanup",
+      "primitive_file": "primitives/hooks/session-cleanup-1938e1ec44.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-end-reap",
+      "primitive_file": "primitives/hooks/session-end-reap-687568ce48.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-heartbeat",
+      "primitive_file": "primitives/hooks/session-heartbeat-ae67d5a363.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-init",
+      "primitive_file": "primitives/hooks/session-init-0171b058a0.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-learning",
+      "primitive_file": "primitives/hooks/session-learning-b35f9b9a76.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-resume",
+      "primitive_file": "primitives/hooks/session-resume-005aa0a34b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-sanity",
+      "primitive_file": "primitives/hooks/session-sanity-97baa6d2ef.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-start-stash-reapply",
+      "primitive_file": "primitives/hooks/session-start-stash-reapply-e689092804.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-start-worktree-nudge",
+      "primitive_file": "primitives/hooks/session-start-worktree-nudge-73c3187b87.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-startup-protocol",
+      "primitive_file": "primitives/hooks/session-startup-protocol-7c7fa9eb8a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-summary-reminder",
+      "primitive_file": "primitives/hooks/session-summary-reminder-b84f04ef85.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-watchdog-launcher",
+      "primitive_file": "primitives/hooks/session-watchdog-launcher-3b962d04af.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "session-wrapup-trigger",
+      "primitive_file": "primitives/hooks/session-wrapup-trigger-c2a5165893.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-failure-monitor",
+      "primitive_file": "primitives/hooks/skill-failure-monitor-e89931d8a5.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-feedback-tracker",
+      "primitive_file": "primitives/hooks/skill-feedback-tracker-979343907d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-frontmatter-validator",
+      "primitive_file": "primitives/hooks/skill-frontmatter-validator-56ac99933c.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-invocation-logger",
+      "primitive_file": "primitives/hooks/skill-invocation-logger-2bcb3cb5be.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-md-routing-validator",
+      "primitive_file": "primitives/hooks/skill-md-routing-validator-ff0f9854c1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-post-execution-analysis",
+      "primitive_file": "primitives/hooks/skill-post-execution-analysis-70cda863e4.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
       "portable_id": "skill-router",
       "primitive_file": "primitives/hooks/skill-router-9c64515352.json",
       "surface": "project rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-router-prompt-suggest",
+      "primitive_file": "primitives/hooks/skill-router-prompt-suggest-20891116c0.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-synthesis-scanner",
+      "primitive_file": "primitives/hooks/skill-synthesis-scanner-436ee8389f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-tracker",
+      "primitive_file": "primitives/hooks/skill-tracker-bbbe9fbe0c.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "skill-usage-tracker",
+      "primitive_file": "primitives/hooks/skill-usage-tracker-7fdcc0ee56.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "stash-budget-warn",
+      "primitive_file": "primitives/hooks/stash-budget-warn-ccd6d16977.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "state-heartbeat",
+      "primitive_file": "primitives/hooks/state-heartbeat-25a2e9ff56.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "subagent-context-injector",
+      "primitive_file": "primitives/hooks/subagent-context-injector-897ae57a70.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "surface-fix-detector",
+      "primitive_file": "primitives/hooks/surface-fix-detector-a7bab38337.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "symlink-mutation-guard",
+      "primitive_file": "primitives/hooks/symlink-mutation-guard-361583b101.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "task-completed",
+      "primitive_file": "primitives/hooks/task-completed-98a3c180de.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "task-created",
+      "primitive_file": "primitives/hooks/task-created-5af70ba765.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "task-event",
+      "primitive_file": "primitives/hooks/task-event-e94d2dfd31.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "teammate-idle",
+      "primitive_file": "primitives/hooks/teammate-idle-5721a9f309.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "token-budget-monitor",
+      "primitive_file": "primitives/hooks/token-budget-monitor-69b36f47d2.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "tool-sequence-capture",
+      "primitive_file": "primitives/hooks/tool-sequence-capture-a0ab025760.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "trust-score-validator",
+      "primitive_file": "primitives/hooks/trust-score-validator-a4051a48cc.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "untracked-work-preservation-guard",
+      "primitive_file": "primitives/hooks/untracked-work-preservation-guard-493caea5e9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "user-prompt-capture",
+      "primitive_file": "primitives/hooks/user-prompt-capture-ecdc56242a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "validation-lock-cleanup",
+      "primitive_file": "primitives/hooks/validation-lock-cleanup-bb8432b8c1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "validator-soak-weekly",
+      "primitive_file": "primitives/hooks/validator-soak-weekly-eb2457c14e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "work-queue-sync",
+      "primitive_file": "primitives/hooks/work-queue-sync-131e4cd4ef.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-doctor-preserve",
+      "primitive_file": "primitives/other-doctor/script-cos-doctor-preserve-c8dc11851a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-bus-py-filesystem-interrupt",
+      "primitive_file": "primitives/other-library/agent-bus-py-filesystem-interrupt-f90694059c.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "base-py-inbound-signal",
+      "primitive_file": "primitives/other-library/base-py-inbound-signal-f437efe332.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "primitive-behavior-evidence",
+      "primitive_file": "primitives/other-manifest/primitive-behavior-evidence-ab43853630.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "primitive-harness-gap-policy",
+      "primitive_file": "primitives/other-manifest/primitive-harness-gap-policy-c0105608b6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "primitive-scope-classification",
+      "primitive_file": "primitives/other-manifest/primitive-scope-classification-c28ad19c18.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "primitive-scope-overrides",
+      "primitive_file": "primitives/other-manifest/primitive-scope-overrides-8eb02aa3a9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "agent-control-skill",
+      "primitive_file": "primitives/skills/agent-control-skill-c237b68918.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "primitive-harness-coverage-skill",
+      "primitive_file": "primitives/skills/primitive-harness-coverage-skill-51af57d8bd.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-acc-pipeline",
+      "primitive_file": "primitives/tools/script-acc-pipeline-428453653e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-adr-tombstone",
+      "primitive_file": "primitives/tools/script-adr-tombstone-a3067b48eb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-apply-efficiency-profile",
+      "primitive_file": "primitives/tools/script-apply-efficiency-profile-ca56e90390.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-aspirational-audit",
+      "primitive_file": "primitives/tools/script-aspirational-audit-ec54898dd4.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-check-mcp-servers",
+      "primitive_file": "primitives/tools/script-check-mcp-servers-620843889e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos",
+      "primitive_file": "primitives/tools/script-cos-763120d263.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-active-primitive-index",
+      "primitive_file": "primitives/tools/script-cos-active-primitive-index-0fe936bf49.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-adapters",
+      "primitive_file": "primitives/tools/script-cos-adapters-7b9f23adcc.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-adoption-profile",
+      "primitive_file": "primitives/tools/script-cos-adoption-profile-f19e371aaf.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-adr-tombstone",
+      "primitive_file": "primitives/tools/script-cos-adr-tombstone-0b9100ebbe.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-agent-message",
+      "primitive_file": "primitives/tools/script-cos-agent-message-0eada5f57a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-architecture-readiness-06fbe1ac",
+      "primitive_file": "primitives/tools/script-cos-architecture-readiness-06fbe1ac-18e44eb20f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-architecture-readiness",
+      "primitive_file": "primitives/tools/script-cos-architecture-readiness-4be3246812.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-auth-probe",
+      "primitive_file": "primitives/tools/script-cos-auth-probe-3878d0f19e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-auth-probe-dc36addf",
+      "primitive_file": "primitives/tools/script-cos-auth-probe-dc36addf-d68a7c2062.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-bootstrap",
+      "primitive_file": "primitives/tools/script-cos-bootstrap-45b22a22d8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-boring-reliability",
+      "primitive_file": "primitives/tools/script-cos-boring-reliability-88724b31ef.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-boring-reliability-c8805364",
+      "primitive_file": "primitives/tools/script-cos-boring-reliability-c8805364-86bc1bc02b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-ci-local",
+      "primitive_file": "primitives/tools/script-cos-ci-local-288bf553cb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-closure-discipline-audit",
+      "primitive_file": "primitives/tools/script-cos-closure-discipline-audit-2337bc85ab.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-closure-discipline-audit-940d76af",
+      "primitive_file": "primitives/tools/script-cos-closure-discipline-audit-940d76af-b4bd7f228c.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-config-audit",
+      "primitive_file": "primitives/tools/script-cos-config-audit-775b8ba3ff.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-consumer-fleet-audit",
+      "primitive_file": "primitives/tools/script-cos-consumer-fleet-audit-6d364fc301.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-coordination-status",
+      "primitive_file": "primitives/tools/script-cos-coordination-status-51f52b9592.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-core-skills-check",
+      "primitive_file": "primitives/tools/script-cos-core-skills-check-eff8306427.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-credential-safe-run",
+      "primitive_file": "primitives/tools/script-cos-credential-safe-run-2d65b6b45d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-cross-instance-drill",
+      "primitive_file": "primitives/tools/script-cos-cross-instance-drill-a4a67d04bd.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-demotion-loop-audit",
+      "primitive_file": "primitives/tools/script-cos-demotion-loop-audit-17c38e68ce.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-dispatch-smoke",
+      "primitive_file": "primitives/tools/script-cos-dispatch-smoke-a0751cdac6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-doctor-harness",
+      "primitive_file": "primitives/tools/script-cos-doctor-harness-58e1b0b17e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-doctor-memory-lifecycle",
+      "primitive_file": "primitives/tools/script-cos-doctor-memory-lifecycle-518510cce5.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-doctor-tools",
+      "primitive_file": "primitives/tools/script-cos-doctor-tools-e6d41048b3.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-doctrine-proposer",
+      "primitive_file": "primitives/tools/script-cos-doctrine-proposer-454c8a3c74.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-engram-bundle",
+      "primitive_file": "primitives/tools/script-cos-engram-bundle-d1dc6f90eb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-engram-cloud-docker-smoke",
+      "primitive_file": "primitives/tools/script-cos-engram-cloud-docker-smoke-d75f876b19.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-export-consumer-evidence",
+      "primitive_file": "primitives/tools/script-cos-export-consumer-evidence-dc4e690076.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-federation-trigger-audit",
+      "primitive_file": "primitives/tools/script-cos-federation-trigger-audit-6e95fb2613.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-flow-register",
+      "primitive_file": "primitives/tools/script-cos-flow-register-f8cb155b66.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-headless-service-drill",
+      "primitive_file": "primitives/tools/script-cos-headless-service-drill-3a8a0f05ad.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-import-consumer-evidence",
+      "primitive_file": "primitives/tools/script-cos-import-consumer-evidence-85241f99fb.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-init",
+      "primitive_file": "primitives/tools/script-cos-init-ab964776f2.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-init-c3577131",
+      "primitive_file": "primitives/tools/script-cos-init-c3577131-2201591b10.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-instance-init",
+      "primitive_file": "primitives/tools/script-cos-instance-init-7d2e6cc1f9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-key-learnings-capture",
+      "primitive_file": "primitives/tools/script-cos-key-learnings-capture-16f9b610bc.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-lab-first-gate",
+      "primitive_file": "primitives/tools/script-cos-lab-first-gate-1ff4258e40.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-manifest-tier-claim-audit",
+      "primitive_file": "primitives/tools/script-cos-manifest-tier-claim-audit-7bb8697855.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-merge-queue-worker",
+      "primitive_file": "primitives/tools/script-cos-merge-queue-worker-ab32982e19.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-new-adr",
+      "primitive_file": "primitives/tools/script-cos-new-adr-432173adef.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-new-adr-561e4a84",
+      "primitive_file": "primitives/tools/script-cos-new-adr-561e4a84-aed55265f8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-observe-primitives",
+      "primitive_file": "primitives/tools/script-cos-observe-primitives-c49a356c1a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-portable-ai-overlay",
+      "primitive_file": "primitives/tools/script-cos-portable-ai-overlay-70f7e973bd.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-preamble-budget",
+      "primitive_file": "primitives/tools/script-cos-preamble-budget-4503c7c637.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-primitive-harvester",
+      "primitive_file": "primitives/tools/script-cos-primitive-harvester-069df199c6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-primitive-harvester-0ff3f530",
+      "primitive_file": "primitives/tools/script-cos-primitive-harvester-0ff3f530-16dfaba271.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-queue-drain",
+      "primitive_file": "primitives/tools/script-cos-queue-drain-5e638d4819.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-record-onboarding",
+      "primitive_file": "primitives/tools/script-cos-record-onboarding-324ab56f6a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-recovery-drill",
+      "primitive_file": "primitives/tools/script-cos-recovery-drill-8182812424.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-registry-lock",
+      "primitive_file": "primitives/tools/script-cos-registry-lock-eff5fd2604.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-release-check",
+      "primitive_file": "primitives/tools/script-cos-release-check-0a1a58e52a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-runtime-hook-reality",
+      "primitive_file": "primitives/tools/script-cos-runtime-hook-reality-949c2e7520.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-self-improvement-discipline-gate",
+      "primitive_file": "primitives/tools/script-cos-self-improvement-discipline-gate-806168d56d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-self-improvement-loop",
+      "primitive_file": "primitives/tools/script-cos-self-improvement-loop-a43015c036.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-service-control-plane",
+      "primitive_file": "primitives/tools/script-cos-service-control-plane-28a85f83f9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-service-readiness-gate",
+      "primitive_file": "primitives/tools/script-cos-service-readiness-gate-1d92e93414.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-session-backlog",
+      "primitive_file": "primitives/tools/script-cos-session-backlog-019e93290d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-session-coordination",
+      "primitive_file": "primitives/tools/script-cos-session-coordination-0c4a1709e6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-session-start-budget",
+      "primitive_file": "primitives/tools/script-cos-session-start-budget-d5795becd1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-silent-failure-audit",
+      "primitive_file": "primitives/tools/script-cos-silent-failure-audit-3674453586.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-smoke",
+      "primitive_file": "primitives/tools/script-cos-smoke-e93629e4e9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-status",
+      "primitive_file": "primitives/tools/script-cos-status-4ed2324621.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-task-submit",
+      "primitive_file": "primitives/tools/script-cos-task-submit-71a4272ef2.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-test-efficiency-plan",
+      "primitive_file": "primitives/tools/script-cos-test-efficiency-plan-e892e9c322.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-tier-claim-audit",
+      "primitive_file": "primitives/tools/script-cos-tier-claim-audit-f8d4f4516f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-usage-report",
+      "primitive_file": "primitives/tools/script-cos-usage-report-8861af6b61.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-validation-break",
+      "primitive_file": "primitives/tools/script-cos-validation-break-e0e2b182d2.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-validation-status",
+      "primitive_file": "primitives/tools/script-cos-validation-status-b2f2fb237e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-weekly-config-audit",
+      "primitive_file": "primitives/tools/script-cos-weekly-config-audit-b05169f62e.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-wip-safety-score",
+      "primitive_file": "primitives/tools/script-cos-wip-safety-score-d32ab81297.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-work-inventory",
+      "primitive_file": "primitives/tools/script-cos-work-inventory-3d2f17147f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-worker-run-once",
+      "primitive_file": "primitives/tools/script-cos-worker-run-once-5f973cc4f3.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-worktree-triage-19c3f535",
+      "primitive_file": "primitives/tools/script-cos-worktree-triage-19c3f535-5e51aa8d56.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-worktree-triage",
+      "primitive_file": "primitives/tools/script-cos-worktree-triage-ff4769bfc1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cosd",
+      "primitive_file": "primitives/tools/script-cosd-2e9aaf3610.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cost-predict",
+      "primitive_file": "primitives/tools/script-cost-predict-b6df660bb0.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-create-release",
+      "primitive_file": "primitives/tools/script-create-release-5423ecab7d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-decision-triage",
+      "primitive_file": "primitives/tools/script-decision-triage-5bbee52b26.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-demo-first-run-onboarding",
+      "primitive_file": "primitives/tools/script-demo-first-run-onboarding-eb0ba1ab91.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-demo-portability-proof",
+      "primitive_file": "primitives/tools/script-demo-portability-proof-9bf86e1f06.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-dependency-lane",
+      "primitive_file": "primitives/tools/script-dependency-lane-1cd6050fc3.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-deps-update",
+      "primitive_file": "primitives/tools/script-deps-update-81848d86fd.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-doc-review-personas",
+      "primitive_file": "primitives/tools/script-doc-review-personas-6f6cfbc5a9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-docs-execution-audit",
+      "primitive_file": "primitives/tools/script-docs-execution-audit-8506ec6f3f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-document-feature-append",
+      "primitive_file": "primitives/tools/script-document-feature-append-8142dc7aee.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-dogfood-score",
+      "primitive_file": "primitives/tools/script-dogfood-score-7d93b319ce.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-domain-model",
+      "primitive_file": "primitives/tools/script-domain-model-68f9358b31.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-edit-coop",
+      "primitive_file": "primitives/tools/script-edit-coop-f7a1d877cd.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-generate-compact-catalog",
+      "primitive_file": "primitives/tools/script-generate-compact-catalog-46cf1633cc.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-generate-project-settings",
+      "primitive_file": "primitives/tools/script-generate-project-settings-5f48410d52.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-hook-stream-statusline",
+      "primitive_file": "primitives/tools/script-hook-stream-statusline-f97641513f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-hook-timing-report",
+      "primitive_file": "primitives/tools/script-hook-timing-report-c790a98f15.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-hook-timing-wrapper",
+      "primitive_file": "primitives/tools/script-hook-timing-wrapper-47f5b837ed.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-install-garak",
+      "primitive_file": "primitives/tools/script-install-garak-5e0deacd21.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-install-promptfoo",
+      "primitive_file": "primitives/tools/script-install-promptfoo-b6152405ba.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-invariant-check-helper",
+      "primitive_file": "primitives/tools/script-invariant-check-helper-1af513230f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-llm-status",
+      "primitive_file": "primitives/tools/script-llm-status-37a2fddb4d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-merge-to-main",
+      "primitive_file": "primitives/tools/script-merge-to-main-ea02b8a4de.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-ops-runbook",
+      "primitive_file": "primitives/tools/script-ops-runbook-1555ed620a.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-orchestrator",
+      "primitive_file": "primitives/tools/script-orchestrator-d1deb1c4ad.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-primitive-harness-coverage",
+      "primitive_file": "primitives/tools/script-primitive-harness-coverage-8c56e6b149.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-primitive-surface-reduce",
+      "primitive_file": "primitives/tools/script-primitive-surface-reduce-991f0ee00c.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-primitive-usage-map",
+      "primitive_file": "primitives/tools/script-primitive-usage-map-23bb2705b2.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-project-scaffold",
+      "primitive_file": "primitives/tools/script-project-scaffold-3fd1759144.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-promote-lifecycle-primitives-to-contracts",
+      "primitive_file": "primitives/tools/script-promote-lifecycle-primitives-to-contracts-b682d46820.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-proof-drill-select",
+      "primitive_file": "primitives/tools/script-proof-drill-select-ec3c6e5e4d.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-pytest-with-summary",
+      "primitive_file": "primitives/tools/script-pytest-with-summary-68bc14b1af.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-radar-merge",
+      "primitive_file": "primitives/tools/script-radar-merge-554e563fa9.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-redteam-aggregate",
+      "primitive_file": "primitives/tools/script-redteam-aggregate-536daa2e05.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-risk-register",
+      "primitive_file": "primitives/tools/script-risk-register-29ca3294e1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-rules-export",
+      "primitive_file": "primitives/tools/script-rules-export-aafee721ad.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-run-all-tests",
+      "primitive_file": "primitives/tools/script-run-all-tests-4c3e3dda55.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-run-redteam-scenario",
+      "primitive_file": "primitives/tools/script-run-redteam-scenario-5323c528ef.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-security-audit-writer",
+      "primitive_file": "primitives/tools/script-security-audit-writer-4b3c8dabc5.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-security-red-team-abf374e8",
+      "primitive_file": "primitives/tools/script-security-red-team-abf374e8-e52cbfafb8.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-security-red-team",
+      "primitive_file": "primitives/tools/script-security-red-team-e61df6b868.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-session-id",
+      "primitive_file": "primitives/tools/script-session-id-8f61490ac1.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-set-security-profile",
+      "primitive_file": "primitives/tools/script-set-security-profile-ac19b30724.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-setup",
+      "primitive_file": "primitives/tools/script-setup-b6b4058d2b.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-smoke-doc-review-personas",
+      "primitive_file": "primitives/tools/script-smoke-doc-review-personas-01b7caee83.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-smoke-multi-provider-fallback",
+      "primitive_file": "primitives/tools/script-smoke-multi-provider-fallback-48dcb58775.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-smoke-qwen-fallback",
+      "primitive_file": "primitives/tools/script-smoke-qwen-fallback-4d56ee4135.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-sprint-test-summary",
+      "primitive_file": "primitives/tools/script-sprint-test-summary-616da643f6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-test-all",
+      "primitive_file": "primitives/tools/script-test-all-0dfc36c5c6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-test-cognitive-os-full",
+      "primitive_file": "primitives/tools/script-test-cognitive-os-full-a63ef81367.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-test-run-inventory",
+      "primitive_file": "primitives/tools/script-test-run-inventory-1fbaac9cf6.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-test-skip-registry",
+      "primitive_file": "primitives/tools/script-test-skip-registry-8dd717fd1f.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-uninstall",
+      "primitive_file": "primitives/tools/script-uninstall-4d71f5a380.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-upgrade",
+      "primitive_file": "primitives/tools/script-upgrade-cb26b6b124.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-verify-archived",
+      "primitive_file": "primitives/tools/script-verify-archived-4c187d4b58.json",
+      "surface": "generated Cursor rules/context only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-weekly-aspirational-audit",
+      "primitive_file": "primitives/tools/script-weekly-aspirational-audit-70a8646427.json",
+      "surface": "generated Cursor rules/context only"
     }
   ],
   "projection_mode": "cursor-project-rules-and-mcp",

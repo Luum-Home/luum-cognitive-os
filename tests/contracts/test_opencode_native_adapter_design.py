@@ -17,7 +17,28 @@ from scripts.primitive_projection_fidelity import build_report
 DOC = REPO_ROOT / "docs" / "architecture" / "opencode-native-primitive-adapter-design.md"
 CONTRACTS = REPO_ROOT / "manifests" / "primitive-contracts.yaml"
 SMOKE = REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.json"
-SIGNED = {"destructive-git-blocker", "destructive-rm-blocker", "large-file-advisor", "skill-router"}
+SIGNED = {
+    "destructive-git-blocker",
+    "destructive-rm-blocker",
+    "reinvention-check",
+    "large-file-advisor",
+    "skill-router",
+    "aci-observation-capture",
+    "adr-relevance-suggest",
+    "adr-section-validator",
+    "agent-bash-cwd-enforcer",
+    "agent-control-inbound-guard",
+    "auto-rollback-trigger",
+    "auto-verify",
+    "claim-validator",
+    "confidence-gate",
+    "confidentiality-enforcer",
+    "content-policy",
+    "context-watchdog",
+    "cosd-auth-guard",
+    "dispatch-gate",
+    "doc-sync-detector",
+}
 
 
 def _contracts() -> list[dict[str, Any]]:
@@ -32,7 +53,7 @@ def test_opencode_adapter_design_has_native_surfaces_and_smoke_acceptance() -> N
     assert "OpenCode permission" in text
     assert "primitive-interventions.jsonl" in text
     assert "no raw command, file content, grep pattern, or secret" in text
-    assert "host-plugin-lifecycle-capable" in text
+    assert "structural-advisory" in text
     assert "cos-primitive-guard.js" in text
 
 
@@ -43,8 +64,8 @@ def test_opencode_contracts_only_promote_signed_smoke_slice() -> None:
             assert projection["fidelity"] == "governed-wrapper-enforced"
             assert "cos-primitive-guard.js" in projection["surface"]
         else:
-            assert projection["fidelity"] == "host-plugin-lifecycle-capable"
-            assert "future" in projection["surface"] or "plugin" in projection["surface"]
+            assert projection["fidelity"] == "structural-advisory"
+            assert "advisory" in projection["surface"]
 
 
 def test_projection_fidelity_uses_opencode_smoke_without_promoting_all_primitives() -> None:
@@ -63,5 +84,4 @@ def test_projection_fidelity_uses_opencode_smoke_without_promoting_all_primitive
     by_contract = {contract_id: row for contract_id, row in opencode_rows}
     assert {by_contract[item]["status"] for item in SIGNED} == {"aligned"}
     pending = {key for key, row in by_contract.items() if row["status"] == "pending-runtime-smoke"}
-    assert pending
-    assert SIGNED.isdisjoint(pending)
+    assert not pending

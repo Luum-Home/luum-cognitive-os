@@ -59,6 +59,7 @@ export default async function PrimitivesPage() {
             <KeyValue label="Aligned" value={fidelity.aligned} />
             <KeyValue label="Gaps" value={fidelity.gaps} />
             <KeyValue label="Pending runtime smoke" value={fidelity.pendingRuntimeSmoke} />
+            <KeyValue label="Pending contracts" value={fidelity.pendingContracts.length} />
           </dl>
         </div>
 
@@ -79,6 +80,7 @@ export default async function PrimitivesPage() {
             <KeyValue label="Version" value={openCode.version || "unavailable"} />
             <KeyValue label="Supported primitives" value={openCode.supportedPrimitives} />
             <KeyValue label="Ledger rows" value={openCode.ledgerRows} />
+            <KeyValue label="Events" value={openCode.events.join(", ") || "none"} />
           </dl>
         </div>
 
@@ -88,6 +90,7 @@ export default async function PrimitivesPage() {
             <KeyValue label=".ai smoke" value={consumer.status} />
             <KeyValue label="Overlay files" value={consumer.overlayFiles} />
             <KeyValue label="Registry-backed" value={consumer.registryBacked} />
+            <KeyValue label="Lifecycle-derived" value={consumer.lifecycleDerived} />
             <KeyValue label="Headless smoke" value={headless.status} />
             <KeyValue label="Headless ledger rows" value={headless.ledgerRows} />
           </dl>
@@ -97,6 +100,25 @@ export default async function PrimitivesPage() {
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <JsonTable title="Surfaces by Kind" values={coverage.surfacesByKind} />
         <JsonTable title="Projected or Wired by Surface" values={coverage.surfaceProjectedOrWired} />
+        <JsonTable title="Harness Projection Rows" values={fidelity.harnessStatus} />
+        <JsonTable title="Projection Status Filters" values={fidelity.fidelityStatus} />
+      </div>
+
+      <div className="mt-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
+        <h2 className="text-lg font-semibold">Evidence Links</h2>
+        <p className="mt-2 text-sm text-[var(--color-text-muted)]">Release operators can jump from this dashboard to the signed reports and contracts that prove registry-backed vs lifecycle-derived primitive state.</p>
+        <ul className="mt-4 list-disc space-y-2 pl-5 text-sm">
+          <li><code>{fidelity.reportPath}</code></li>
+          <li><code>{openCode.reportPath}</code></li>
+          <li><code>docs/reports/portable-ai-consumer-smoke-latest.json</code></li>
+          <li><code>docs/reports/primitive-service-headless-smoke-latest.json</code></li>
+          <li><code>manifests/primitive-contracts.yaml</code></li>
+        </ul>
+        {fidelity.pendingContracts.length > 0 ? (
+          <p className="mt-4 text-sm text-[var(--color-text-muted)]">Pending contracts: {fidelity.pendingContracts.join(", ")}</p>
+        ) : (
+          <p className="mt-4 text-sm font-medium">No pending primitive projection contracts in the latest report.</p>
+        )}
       </div>
     </div>
   );

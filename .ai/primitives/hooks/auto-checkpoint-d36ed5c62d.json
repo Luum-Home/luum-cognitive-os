@@ -1,0 +1,172 @@
+{
+  "canonical_source": "hooks/auto-checkpoint.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "auto-checkpoint",
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "projected-observe-only; lab-runtime-projected-in-maintainer-repo",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/auto-checkpoint.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "projected-observe-only; lab-runtime-projected-in-maintainer-repo",
+    "evidence_commands": [
+      "bash -n hooks/auto-checkpoint.sh",
+      "python3 -m pytest tests/unit/test_auto_checkpoint_behavior.py tests/unit/test_codex_guard_layer.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "observe",
+    "exit_behavior": "exit_0",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "observe",
+    "owner_adr": "ADR-126",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "auto-checkpoint",
+    "evidence": {
+      "evidence_commands": [
+        "bash -n hooks/auto-checkpoint.sh",
+        "python3 -m pytest tests/unit/test_auto_checkpoint_behavior.py tests/unit/test_codex_guard_layer.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [],
+      "proof_tests": [
+        "tests/unit/test_auto_checkpoint_behavior.py",
+        "tests/unit/test_codex_guard_layer.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "projected-observe-only; lab-runtime-projected-in-maintainer-repo",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/auto-checkpoint.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "auto-checkpoint",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/auto-checkpoint.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/auto-checkpoint.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

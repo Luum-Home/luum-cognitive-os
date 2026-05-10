@@ -1,0 +1,175 @@
+{
+  "canonical_source": "hooks/consequence-evaluator.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "consequence-evaluator",
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "hook-enforced projection for consequence evaluation rule exclusion",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "cognitive-os.yaml",
+        "hooks/consequence-evaluator.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "hook-enforced projection for consequence evaluation rule exclusion",
+    "evidence_commands": [
+      "bash -n hooks/consequence-evaluator.sh",
+      "python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "lab",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "sandbox",
+    "maturity": "advisory",
+    "owner_adr": "ADR-144",
+    "risk_class": "advisory",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "consequence-evaluator",
+    "evidence": {
+      "evidence_commands": [
+        "bash -n hooks/consequence-evaluator.sh",
+        "python3 -m pytest tests/audit/test_hook_enforced_exclusions.py tests/behavior/test_skill_router_bash_gate.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [],
+      "proof_tests": [
+        "tests/audit/test_hook_enforced_exclusions.py",
+        "tests/behavior/test_skill_router_bash_gate.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "hook-enforced projection for consequence evaluation rule exclusion",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "cognitive-os.yaml",
+        "hooks/consequence-evaluator.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "consequence-evaluator",
+  "projection_targets": [
+    ".claude/settings.json",
+    "cognitive-os.yaml",
+    "hooks/consequence-evaluator.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/consequence-evaluator.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

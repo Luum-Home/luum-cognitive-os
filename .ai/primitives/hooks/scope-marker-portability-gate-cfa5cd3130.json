@@ -1,0 +1,174 @@
+{
+  "canonical_source": "hooks/scope-marker-portability-gate.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "block",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "scope-marker-portability-gate",
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "static-exit2-detected",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/scope-marker-portability-gate.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "static-exit2-detected",
+    "evidence_commands": [
+      "bash -n hooks/scope-marker-portability-gate.sh",
+      "python3 -m pytest tests/unit/test_gate_runner.py tests/contracts/test_redteam_portability_coverage.py -q"
+    ],
+    "metrics_file": ".cognitive-os/metrics/scope-marker-portability-gate.jsonl"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "core",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-126",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "block",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "scope-marker-portability-gate",
+    "evidence": {
+      "evidence_commands": [
+        "bash -n hooks/scope-marker-portability-gate.sh",
+        "python3 -m pytest tests/unit/test_gate_runner.py tests/contracts/test_redteam_portability_coverage.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/metrics/scope-marker-portability-gate.jsonl"
+      ],
+      "proof_tests": [
+        "tests/unit/test_gate_runner.py",
+        "tests/contracts/test_redteam_portability_coverage.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "static-exit2-detected",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/scope-marker-portability-gate.sh"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "scope-marker-portability-gate",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/scope-marker-portability-gate.sh"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/scope-marker-portability-gate.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

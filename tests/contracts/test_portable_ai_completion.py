@@ -20,7 +20,7 @@ def test_every_ai_primitive_has_a_portable_contract_view() -> None:
     assert all(row["portable_contract"]["is_full_contract"] is True for row in rows)
     sources = {row["portable_contract"]["source"] for row in rows}
     assert "primitive-contract-registry" in sources
-    assert "primitive-lifecycle-derived" in sources
+    assert "primitive-lifecycle-derived" not in sources
     for row in rows:
         contract = row["portable_contract"]
         assert contract["intent"]

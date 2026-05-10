@@ -24,6 +24,9 @@ def test_dashboard_menu_links_real_primitive_runtime_page() -> None:
     assert "getOpenCodePrimitiveAdapterSmokeSummary" in page
     assert "getPortableAiConsumerSmokeSummary" in page
     assert "getPrimitiveServiceHeadlessSmokeSummary" in page
+    assert "Projection Status Filters" in page
+    assert "Evidence Links" in page
+    assert "Lifecycle-derived" in page
     assert "primitive-projection-fidelity-latest.json" in api
     assert "opencode-primitive-adapter-smoke-latest.json" in api
     assert "portable-ai-consumer-smoke-latest.json" in api

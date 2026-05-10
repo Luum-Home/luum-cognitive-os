@@ -6,6 +6,7 @@ version: 0.2.0
 audience: both
 tags: [primitives, governance, portability, authoring, projection, observability, portable-ai]
 user-invocable: true
+platforms: [claude, codex, opencode, cursor, vscode-copilot, shell-ci]
 routing_patterns:
   - pattern: '\bprimitive[- ]?authoring\b'
     confidence: 0.96

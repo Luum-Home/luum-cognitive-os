@@ -38,7 +38,7 @@
       "opencode": {
         "claims_runtime_enforcement": true,
         "fidelity": "governed-wrapper-enforced",
-        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
       },
       "shell-ci": {
         "claims_runtime_enforcement": true,
@@ -147,7 +147,7 @@
       "opencode": {
         "claims_runtime_enforcement": true,
         "fidelity": "governed-wrapper-enforced",
-        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before plus permissions"
+        "surface": "OpenCode project plugin cos-primitive-guard.js tool.execute.before/after smoke"
       },
       "shell-ci": {
         "claims_runtime_enforcement": true,

@@ -1,10 +1,11 @@
 {
   "content_free_rows": true,
-  "generated_at": "2026-05-09T21:31:26+00:00",
-  "ledger_row_count": 4,
+  "generated_at": "2026-05-10T14:14:50+00:00",
+  "ledger_row_count": 5,
   "mode": "headless-shell-service-equivalent",
   "primitive_ids": [
     "destructive-git-blocker",
+    "destructive-rm-blocker",
     "large-file-advisor",
     "reinvention-check",
     "skill-router"
@@ -13,22 +14,27 @@
     {
       "hook": "destructive-git-blocker.sh",
       "returncode": 1,
-      "stderr_tail": "IVE-GIT-BLOCKER: BLOCKED (agent context) ===\nBLOCKED: destructive git op 'git reset' requires explicit user approval.\nRationale: mutates HEAD/index/worktree state and can erase another session's staged or uncommitted work\nUse Edit tool to revert specific lines manually, or escalate to the user.\nAgent: \nCommand: git reset --hard private-headless\nOverride: set COS_ALLOW_DESTRUCTIVE_GIT=1 or append --allow-destructive to the command.\nReference: ADR-003, ADR-055b (hooks/destructive-git-blocker.sh)\n\n"
+      "stderr_present": true
+    },
+    {
+      "hook": "destructive-rm-blocker.sh",
+      "returncode": 2,
+      "stderr_present": true
     },
     {
       "hook": "skill-router-bash-gate.sh",
       "returncode": 2,
-      "stderr_tail": "SKILL ROUTER BASH GATE: BLOCK\nDirect dependency/toolchain upgrade command detected. Use `/deps-update --audit`\nthen `bash scripts/deps-update.sh --apply` (or documented manual review) so\nPython package gaps, engram PATH symlinks, Docker images, and major bumps are\ntracked together.\n\nOverride only with explicit operator intent: prefix command with COS_ALLOW_SKILL_BYPASS=1.\n"
+      "stderr_present": true
     },
     {
       "hook": "large-file-advisor.sh",
       "returncode": 0,
-      "stderr_tail": "LARGE FILE ADVISORY: large.txt\n  Size: 41000 bytes (0 lines, ~10250 tokens)\n  This file may exceed the Read tool's token limit.\n  Consider using offset+limit parameters for targeted reads.\n"
+      "stderr_present": true
     },
     {
       "hook": "reinvention-check.sh",
       "returncode": 0,
-      "stderr_tail": "REINVENTION CHECK: Similar implementation(s) may already exist:\n  - /var/folders/7j/0h_y5pnj2qn82jj8t8pzf7w40000gn/T/cos-headless-primitive-jft69vh_/consumer/lib/duplicate_helper.py\nConsider reusing or extending existing code before creating new files.\n"
+      "stderr_present": true
     }
   ],
   "schema_version": "primitive-service-headless-smoke.v1",

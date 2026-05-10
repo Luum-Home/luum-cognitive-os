@@ -1,0 +1,174 @@
+{
+  "canonical_source": "hooks/protected-config-write-guard.sh",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "block",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "protected-config-write-guard",
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "PreToolUse edit/write guard blocks writes to protected control-plane paths unless COS_ALLOW_PROTECTED_CONFIG_WRITE is explicitly enabled.",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/protected-config-write-guard.sh",
+        "manifests/protected-config-write-policy.yaml"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "PreToolUse edit/write guard blocks writes to protected control-plane paths unless COS_ALLOW_PROTECTED_CONFIG_WRITE is explicitly enabled.",
+    "evidence_commands": [
+      "bash -n hooks/protected-config-write-guard.sh",
+      "python3 -m pytest tests/security/test_boundary_enforcement_p0.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "hook",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "blocking",
+    "exit_behavior": "exit_2",
+    "governance_class": "runtime-safety",
+    "lifecycle_state": "blocking",
+    "maturity": "blocking",
+    "owner_adr": "ADR-164",
+    "risk_class": "blocking",
+    "runtime_projection": true
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "block",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "protected-config-write-guard",
+    "evidence": {
+      "evidence_commands": [
+        "bash -n hooks/protected-config-write-guard.sh",
+        "python3 -m pytest tests/security/test_boundary_enforcement_p0.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [],
+      "proof_tests": [
+        "tests/security/test_boundary_enforcement_p0.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "unknown",
+      "service_mode": "harness-embedded-only"
+    },
+    "intent": "PreToolUse edit/write guard blocks writes to protected control-plane paths unless COS_ALLOW_PROTECTED_CONFIG_WRITE is explicitly enabled.",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": true,
+        "fidelity": "native-lifecycle-enforced",
+        "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "lifecycle_declared_tool_event",
+      "projection_targets": [
+        ".claude/settings.json",
+        "hooks/protected-config-write-guard.sh",
+        "manifests/protected-config-write-policy.yaml"
+      ],
+      "runtime_projection": true
+    }
+  },
+  "portable_id": "protected-config-write-guard",
+  "projection_targets": [
+    ".claude/settings.json",
+    "hooks/protected-config-write-guard.sh",
+    "manifests/protected-config-write-policy.yaml"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "hooks/protected-config-write-guard.sh",
+  "supported_harnesses": [
+    "claude"
+  ]
+}

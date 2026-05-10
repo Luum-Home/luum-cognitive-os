@@ -78,10 +78,26 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 7,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/README.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/external-tool-adapter-taxonomy.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/external-tool-adoption-doctrine.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/repo-map-context-selector.md"
+        },
         {
           "family": "doc",
           "path": "docs/competitive-landscape.md"
@@ -102,7 +118,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -112,18 +128,30 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 8
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
+        "config": 4,
         "doc": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/capability-coverage.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -141,7 +169,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:1",
-        "config_consumers:1"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -151,7 +179,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 6
     },
     {
       "confidence": "high",
@@ -280,6 +308,7 @@
         "doc": 5,
         "rule": 1,
         "script": 1,
+        "skill": 1,
         "test": 4
       },
       "consumers": [
@@ -312,6 +341,10 @@
           "path": "scripts/backfill_session_decisions.py"
         },
         {
+          "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/integration/test_cos_skill_cli.py"
         },
@@ -330,6 +363,7 @@
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:4",
@@ -343,7 +377,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "medium",
@@ -400,6 +434,7 @@
         "doc": 5,
         "rule": 1,
         "script": 1,
+        "skill": 1,
         "test": 1
       },
       "consumers": [
@@ -432,12 +467,17 @@
           "path": "scripts/backfill_session_decisions.py"
         },
         {
+          "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        },
+        {
           "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "skill_consumers:1",
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:1",
@@ -451,21 +491,25 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
-        "doc": 11,
+        "config": 2,
+        "doc": 12,
         "rule": 2,
         "script": 1,
-        "skill": 1,
-        "test": 2
+        "skill": 2,
+        "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/skill-router-retrieval.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
@@ -489,6 +533,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md"
         },
         {
           "family": "doc",
@@ -528,6 +576,10 @@
         },
         {
           "family": "skill",
+          "path": "skills/primitive-authoring/SKILL.md"
+        },
+        {
+          "family": "skill",
           "path": "skills/repair-skill/SKILL.md"
         },
         {
@@ -537,16 +589,20 @@
         {
           "family": "test",
           "path": "tests/unit/test_skill_router.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router_benchmark.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "skill_consumers:1",
+        "skill_consumers:2",
         "rule_consumers:2",
         "script_consumers:1",
-        "test_consumers:2",
-        "doc_consumers:11",
-        "config_consumers:1"
+        "test_consumers:3",
+        "doc_consumers:12",
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -556,19 +612,27 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 18
+      "total_consumers": 22
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "doc": 3,
         "script": 2,
         "test": 4
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -623,7 +687,7 @@
         "script_consumers:2",
         "test_consumers:4",
         "doc_consumers:3",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -633,19 +697,19 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 14
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 6,
+        "config": 8,
         "doc": 3,
         "hook": 1,
         "rule": 1,
-        "script": 2,
-        "test": 3
+        "script": 5,
+        "test": 6
       },
       "consumers": [
         {
@@ -658,6 +722,10 @@
         },
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/hook-quality.yaml"
         },
         {
@@ -667,6 +735,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -701,8 +773,28 @@
           "path": "scripts/apply-efficiency-profile.sh"
         },
         {
+          "family": "script",
+          "path": "scripts/cos-opencode-primitive-adapter-smoke"
+        },
+        {
+          "family": "script",
+          "path": "scripts/opencode_primitive_adapter_smoke.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/promote_lifecycle_primitives_to_contracts.py"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_agent_control_primitive_lifecycle.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_opencode_native_adapter_design.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_contract_registry.py"
         },
         {
           "family": "test",
@@ -711,6 +803,10 @@
         {
           "family": "test",
           "path": "tests/integration/test_orchestrator_cli.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_primitive_coherence_audit.py"
         }
       ],
       "distribution": "core",
@@ -718,10 +814,10 @@
         "lifecycle",
         "hook_consumers:1",
         "rule_consumers:1",
-        "script_consumers:2",
-        "test_consumers:3",
+        "script_consumers:5",
+        "test_consumers:6",
         "doc_consumers:3",
-        "config_consumers:6"
+        "config_consumers:8"
       ],
       "family": "skills",
       "lifecycle_id": "skills/agent-control/SKILL.md",
@@ -735,7 +831,7 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 16
+      "total_consumers": 24
     },
     {
       "confidence": "medium",
@@ -999,7 +1095,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 9,
+        "doc": 11,
         "hook": 1,
         "script": 1,
         "test": 5
@@ -1043,6 +1139,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/provenance.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/legal/pre-public-readiness-checklist.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/security/cognitive-os-attack-surface-inventory.md"
         },
         {
@@ -1079,7 +1183,7 @@
         "hook_consumers:1",
         "script_consumers:1",
         "test_consumers:5",
-        "doc_consumers:9",
+        "doc_consumers:11",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -1090,7 +1194,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 17
+      "total_consumers": 19
     },
     {
       "confidence": "high",
@@ -1475,7 +1579,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 4,
+        "config": 5,
         "doc": 18,
         "hook": 1,
         "rule": 3,
@@ -1494,6 +1598,10 @@
         {
           "family": "config",
           "path": "manifests/silent-failure-allowlist.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/skill-router-retrieval.yaml"
         },
         {
           "family": "config",
@@ -1639,7 +1747,7 @@
         "rule_consumers:3",
         "test_consumers:10",
         "doc_consumers:18",
-        "config_consumers:4"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1649,7 +1757,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 37
+      "total_consumers": 38
     },
     {
       "confidence": "high",
@@ -1657,7 +1765,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 2,
-        "doc": 28,
+        "doc": 29,
         "rule": 2,
         "script": 3,
         "skill": 1,
@@ -1683,6 +1791,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-174-auto-derived-primitive-routing.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
         },
         {
           "family": "doc",
@@ -1827,7 +1939,7 @@
         "rule_consumers:2",
         "script_consumers:3",
         "test_consumers:3",
-        "doc_consumers:28",
+        "doc_consumers:29",
         "config_consumers:2"
       ],
       "family": "skills",
@@ -1838,7 +1950,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 39
+      "total_consumers": 40
     },
     {
       "confidence": "medium",
@@ -2180,7 +2292,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "rule": 1,
         "test": 2
       },
@@ -2200,6 +2312,10 @@
         {
           "family": "doc",
           "path": "docs/agent-capability-coverage.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
@@ -2226,7 +2342,7 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:2",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -2237,21 +2353,29 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
-        "doc": 5,
+        "config": 5,
+        "doc": 7,
         "test": 1
       },
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -2279,6 +2403,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/quality/test-coverage-report.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/JackChen-me__open-multi-agent-2026-05-06.md"
         },
         {
@@ -2289,8 +2421,8 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:5",
-        "config_consumers:3"
+        "doc_consumers:7",
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2300,20 +2432,24 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 13
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 6,
-        "doc": 22,
+        "config": 8,
+        "doc": 26,
         "hook": 1,
-        "script": 8,
+        "script": 9,
         "test": 9
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/hook-registration-classification.yaml"
@@ -2325,6 +2461,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -2360,6 +2500,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-238-tier-1-4-followup-bug-tracking.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/bootstrap-portability.md"
         },
         {
@@ -2373,6 +2517,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/surface-5-and-secure-cosd-roadmap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/legal/pre-public-readiness-checklist.md"
         },
         {
           "family": "doc",
@@ -2416,6 +2564,14 @@
         },
         {
           "family": "doc",
+          "path": "docs/onboarding/recording-recipe.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/onboarding/walkthrough.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/release/roadmap-v1.0-full-e2e.md"
         },
         {
@@ -2437,6 +2593,10 @@
         {
           "family": "script",
           "path": "scripts/cos-core-skills-check.sh"
+        },
+        {
+          "family": "script",
+          "path": "scripts/cos-record-onboarding.sh"
         },
         {
           "family": "script",
@@ -2502,10 +2662,10 @@
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
-        "script_consumers:8",
+        "script_consumers:9",
         "test_consumers:9",
-        "doc_consumers:22",
-        "config_consumers:6"
+        "doc_consumers:26",
+        "config_consumers:8"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2515,7 +2675,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 46
+      "total_consumers": 53
     },
     {
       "confidence": "high",
@@ -2579,6 +2739,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "rule": 1,
         "script": 2,
@@ -2586,6 +2747,10 @@
         "test": 5
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/SESSION-HANDOFF-2026-04-25.md"
@@ -2649,7 +2814,8 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:5",
-        "doc_consumers:5"
+        "doc_consumers:5",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2659,14 +2825,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 14
+      "total_consumers": 15
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 4,
+        "config": 6,
         "doc": 6,
         "hook": 1,
         "script": 1,
@@ -2676,7 +2842,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -2746,7 +2920,7 @@
         "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:6",
-        "config_consumers:4"
+        "config_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2756,7 +2930,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 16
+      "total_consumers": 18
     },
     {
       "confidence": "medium",
@@ -2871,7 +3045,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 4,
         "doc": 1,
         "rule": 2,
         "script": 2
@@ -2879,7 +3053,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -2911,7 +3093,7 @@
         "rule_consumers:2",
         "script_consumers:2",
         "doc_consumers:1",
-        "config_consumers:2"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2921,16 +3103,21 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 9
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -2938,7 +3125,8 @@
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -2948,13 +3136,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 1
+      "total_consumers": 2
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 5,
         "rule": 2,
         "script": 2,
@@ -2962,6 +3151,10 @@
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-059-so-existential-validation.md"
@@ -3017,7 +3210,8 @@
         "rule_consumers:2",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:5"
+        "doc_consumers:5",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3027,14 +3221,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -3044,6 +3238,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "rule",
@@ -3072,7 +3270,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3082,7 +3280,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -3132,7 +3330,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 31,
         "hook": 1,
         "rule": 1,
@@ -3140,6 +3338,10 @@
         "test": 5
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/harness-driver-capabilities.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-readiness-script-overrides.yaml"
@@ -3324,7 +3526,7 @@
         "rule_consumers:1",
         "test_consumers:5",
         "doc_consumers:31",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3334,7 +3536,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 44
+      "total_consumers": 45
     },
     {
       "confidence": "medium",
@@ -3467,7 +3669,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "doc": 11,
         "script": 12,
         "test": 12
@@ -3479,7 +3681,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -3631,7 +3841,7 @@
         "script_consumers:12",
         "test_consumers:12",
         "doc_consumers:11",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3641,7 +3851,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 38
+      "total_consumers": 40
     },
     {
       "confidence": "medium",
@@ -3679,6 +3889,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "hook": 1,
         "rule": 1,
@@ -3686,6 +3897,10 @@
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -3725,7 +3940,8 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3735,19 +3951,24 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 4,
         "rule": 2,
         "script": 1,
         "test": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-049-llm-gateway-selection-and-overflow-providers.md"
@@ -3790,7 +4011,8 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:2",
-        "doc_consumers:4"
+        "doc_consumers:4",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3800,7 +4022,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -3862,11 +4084,16 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 1,
         "rule": 1,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/research/repo-scout/cluster-dev-tools-tui-2026-05-06.md"
@@ -3884,7 +4111,8 @@
       "evidence": [
         "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:1"
+        "doc_consumers:1",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3894,15 +4122,15 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 3
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "doc": 4,
-        "script": 3
+        "doc": 7,
+        "script": 4
       },
       "consumers": [
         {
@@ -3915,11 +4143,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/architecture/opensage-self-programming-patterns.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/parser-coverage-audit-2026-04-24.md"
         },
         {
           "family": "doc",
+          "path": "docs/architecture/primitive-contract-registry-implementation-plan.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture/python-stdin-heredoc-trap.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
         },
         {
           "family": "script",
@@ -3932,12 +4172,16 @@
         {
           "family": "script",
           "path": "scripts/python_stdin_antipattern_audit.py"
+        },
+        {
+          "family": "script",
+          "path": "scripts/self_programming_pattern_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "script_consumers:3",
-        "doc_consumers:4"
+        "script_consumers:4",
+        "doc_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -3947,7 +4191,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 11
     },
     {
       "confidence": "high",
@@ -4203,15 +4447,74 @@
     },
     {
       "confidence": "high",
+      "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
+      "consumer_accessibility": "repo-skill-not-projectable",
+      "consumer_families": {
+        "config": 1,
+        "doc": 4,
+        "test": 1
+      },
+      "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/self-programming-agent-patterns.yaml"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/opensage-self-programming-patterns.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/primitive-contract-registry-implementation-plan.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/contracts/test_primitive_authoring_gate.py"
+        }
+      ],
+      "distribution": null,
+      "evidence": [
+        "test_consumers:1",
+        "doc_consumers:4",
+        "config_consumers:1"
+      ],
+      "family": "skills",
+      "lifecycle_id": null,
+      "lifecycle_state": null,
+      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "path": "skills/primitive-authoring/SKILL.md",
+      "role": "compatibility-wrapper",
+      "role_source": "usage:script-hook",
+      "supported_harnesses": [],
+      "total_consumers": 6
+    },
+    {
+      "confidence": "high",
       "consumer_access_next_action": "prove projection into a consumer project before claiming availability",
       "consumer_accessibility": "lifecycle-declared-consumer-candidate",
       "consumer_families": {
-        "config": 1,
+        "config": 3,
         "doc": 6,
-        "script": 4,
+        "script": 5,
         "test": 7
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
@@ -4257,6 +4560,10 @@
           "path": "scripts/primitive_harness_partials.py"
         },
         {
+          "family": "script",
+          "path": "scripts/primitive_projection_fidelity.py"
+        },
+        {
           "family": "test",
           "path": "tests/contracts/test_cos_cli_surface_contract.py"
         },
@@ -4288,10 +4595,10 @@
       "distribution": "team",
       "evidence": [
         "lifecycle",
-        "script_consumers:4",
+        "script_consumers:5",
         "test_consumers:7",
         "doc_consumers:6",
-        "config_consumers:1"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": "skills/primitive-harness-coverage/SKILL.md",
@@ -4305,17 +4612,17 @@
         "codex",
         "shell"
       ],
-      "total_consumers": 18
+      "total_consumers": 21
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "doc": 4,
         "script": 2,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
@@ -4328,7 +4635,15 @@
         },
         {
           "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/self-programming-agent-patterns.yaml"
         },
         {
           "family": "doc",
@@ -4360,15 +4675,19 @@
         },
         {
           "family": "test",
+          "path": "tests/unit/test_consumer_fleet_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_cos_claim_signature_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "script_consumers:2",
-        "test_consumers:2",
+        "test_consumers:3",
         "doc_consumers:4",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4378,7 +4697,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 14
     },
     {
       "confidence": "high",
@@ -4436,11 +4755,16 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 3,
         "script": 2,
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/architecture/primitive-readiness-continuity-plan.md"
@@ -4478,7 +4802,8 @@
       "evidence": [
         "script_consumers:2",
         "test_consumers:3",
-        "doc_consumers:3"
+        "doc_consumers:3",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4488,19 +4813,24 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 8
+      "total_consumers": 9
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "hook": 1,
         "rule": 1,
         "skill": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-054-project-docs-convention.md"
@@ -4535,7 +4865,8 @@
         "skill_consumers:3",
         "hook_consumers:1",
         "rule_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4545,14 +4876,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 8,
+        "config": 10,
         "doc": 12,
         "script": 7,
         "test": 6
@@ -4560,7 +4891,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -4696,7 +5035,7 @@
         "script_consumers:7",
         "test_consumers:6",
         "doc_consumers:12",
-        "config_consumers:8"
+        "config_consumers:10"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4706,7 +5045,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 33
+      "total_consumers": 35
     },
     {
       "confidence": "medium",
@@ -4768,7 +5107,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 4,
+        "config": 6,
         "doc": 11,
         "hook": 3,
         "rule": 3,
@@ -4778,11 +5117,19 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/cos-instance-profiles.yaml"
         },
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -4896,7 +5243,7 @@
         "script_consumers:3",
         "test_consumers:4",
         "doc_consumers:11",
-        "config_consumers:4"
+        "config_consumers:6"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -4906,7 +5253,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 28
+      "total_consumers": 30
     },
     {
       "confidence": "high",
@@ -4914,7 +5261,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 5,
+        "doc": 6,
         "script": 1
       },
       "consumers": [
@@ -4943,6 +5290,10 @@
           "path": "docs/research/repo-scout/deep/agentsmd__agents.md-2026-05-06.md"
         },
         {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
+        },
+        {
           "family": "script",
           "path": "scripts/radar_merge.py"
         }
@@ -4950,7 +5301,7 @@
       "distribution": null,
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:5",
+        "doc_consumers:6",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -4961,15 +5312,15 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 5,
-        "doc": 27,
+        "config": 7,
+        "doc": 28,
         "hook": 1,
         "rule": 2,
         "script": 6,
@@ -4979,11 +5330,19 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/dependencies.yaml"
         },
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -5060,6 +5419,10 @@
         {
           "family": "doc",
           "path": "docs/patterns/ecosystem-tools.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/quality/test-coverage-report.md"
         },
         {
           "family": "doc",
@@ -5189,8 +5552,8 @@
         "rule_consumers:2",
         "script_consumers:6",
         "test_consumers:7",
-        "doc_consumers:27",
-        "config_consumers:5"
+        "doc_consumers:28",
+        "config_consumers:7"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5200,7 +5563,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 51
+      "total_consumers": 54
     },
     {
       "confidence": "high",
@@ -5404,11 +5767,11 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 4,
         "doc": 14,
         "rule": 1,
         "skill": 1,
-        "test": 6
+        "test": 7
       },
       "consumers": [
         {
@@ -5418,6 +5781,10 @@
         {
           "family": "config",
           "path": "manifests/rule-routing-coverage.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/skill-router-retrieval.yaml"
         },
         {
           "family": "config",
@@ -5510,15 +5877,19 @@
         {
           "family": "test",
           "path": "tests/unit/test_skill_router.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/unit/test_skill_router_retrieval_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "rule_consumers:1",
-        "test_consumers:6",
+        "test_consumers:7",
         "doc_consumers:14",
-        "config_consumers:3"
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5528,7 +5899,7 @@
       "role": "project-extension",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 25
+      "total_consumers": 27
     },
     {
       "confidence": "medium",
@@ -5655,7 +6026,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 10,
+        "doc": 11,
         "test": 1
       },
       "consumers": [
@@ -5701,6 +6072,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/self-building-protocol.md"
         },
         {
@@ -5711,7 +6086,7 @@
       "distribution": null,
       "evidence": [
         "test_consumers:1",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -5722,14 +6097,14 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 12
+      "total_consumers": 13
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "rule": 1,
         "script": 1,
         "skill": 1,
@@ -5739,6 +6114,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "rule",
@@ -5767,7 +6146,7 @@
         "rule_consumers:1",
         "script_consumers:1",
         "test_consumers:2",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5777,19 +6156,24 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 2,
         "rule": 1,
         "script": 2,
         "test": 1
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-055-docs-convention-enforcement.md"
@@ -5820,7 +6204,8 @@
         "rule_consumers:1",
         "script_consumers:2",
         "test_consumers:1",
-        "doc_consumers:2"
+        "doc_consumers:2",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -5830,7 +6215,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -6035,8 +6420,8 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
-        "doc": 83,
+        "config": 4,
+        "doc": 92,
         "hook": 1,
         "rule": 8,
         "script": 2,
@@ -6046,7 +6431,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/external-tools-adoption.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/imported-pattern-closures.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/self-programming-agent-patterns.yaml"
         },
         {
           "family": "config",
@@ -6102,6 +6495,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/architecture.md"
         },
         {
@@ -6115,6 +6512,10 @@
         {
           "family": "doc",
           "path": "docs/architecture/functional-audit/scorecard-skills.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/opensage-self-programming-patterns.md"
         },
         {
           "family": "doc",
@@ -6143,6 +6544,10 @@
         {
           "family": "doc",
           "path": "docs/onboarding-wizard-design.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/patterns/ecosystem-tools.md"
         },
         {
           "family": "doc",
@@ -6218,11 +6623,23 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/deep/TaskingAI__TaskingAI-2026-05-09.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/Textualize__textual-2026-05-06.md"
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/deep/VRSEN__OpenSwarm-2026-05-09.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/agentscope-ai__agentscope-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/agno-agi__agno-suite-2026-05-09.md"
         },
         {
           "family": "doc",
@@ -6310,6 +6727,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/deep/langflow-ai__langflow-2026-05-09.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/microsoft__agent-framework-2026-05-06.md"
         },
         {
@@ -6322,6 +6743,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/research/repo-scout/deep/opensage-agent__opensage-adk-2026-05-09.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/research/repo-scout/deep/ratatui__ratatui-2026-05-06.md"
         },
         {
@@ -6331,6 +6756,10 @@
         {
           "family": "doc",
           "path": "docs/research/repo-scout/deep/semgrep__semgrep-2026-05-06.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/research/repo-scout/deep/sentient-agi__EvoSkill-2026-05-09.md"
         },
         {
           "family": "doc",
@@ -6496,8 +6925,8 @@
         "rule_consumers:8",
         "script_consumers:2",
         "test_consumers:10",
-        "doc_consumers:83",
-        "config_consumers:2"
+        "doc_consumers:92",
+        "config_consumers:4"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6507,7 +6936,7 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 111
+      "total_consumers": 122
     },
     {
       "confidence": "medium",
@@ -6795,7 +7224,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "doc": 6,
         "script": 1,
         "test": 3
@@ -6803,7 +7232,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -6859,7 +7296,7 @@
         "script_consumers:1",
         "test_consumers:3",
         "doc_consumers:6",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -6869,13 +7306,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 13
+      "total_consumers": 15
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 15,
         "hook": 1,
         "script": 2,
@@ -6883,6 +7321,10 @@
         "test": 10
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adoption-tiers.md"
@@ -7010,7 +7452,8 @@
         "hook_consumers:1",
         "script_consumers:2",
         "test_consumers:10",
-        "doc_consumers:15"
+        "doc_consumers:15",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7020,7 +7463,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "medium",
@@ -7135,7 +7578,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 9,
+        "config": 10,
         "doc": 8,
         "hook": 3,
         "script": 5,
@@ -7169,6 +7612,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-behavior-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -7269,7 +7716,7 @@
         "script_consumers:5",
         "test_consumers:5",
         "doc_consumers:8",
-        "config_consumers:9"
+        "config_consumers:10"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7279,7 +7726,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 30
+      "total_consumers": 31
     },
     {
       "confidence": "medium",
@@ -7763,7 +8210,7 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "config": 1,
-        "doc": 3,
+        "doc": 4,
         "skill": 3
       },
       "consumers": [
@@ -7784,6 +8231,10 @@
           "path": "docs/archive/plans/self-optimizing-pipeline.md"
         },
         {
+          "family": "doc",
+          "path": "docs/legal/pre-public-readiness-checklist.md"
+        },
+        {
           "family": "skill",
           "path": "skills/bump-version/SKILL.md"
         },
@@ -7799,7 +8250,7 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:3",
-        "doc_consumers:3",
+        "doc_consumers:4",
         "config_consumers:1"
       ],
       "family": "skills",
@@ -7810,14 +8261,14 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 7
+      "total_consumers": 8
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 2,
+        "config": 3,
         "doc": 6,
         "test": 1
       },
@@ -7825,6 +8276,10 @@
         {
           "family": "config",
           "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -7863,7 +8318,7 @@
       "evidence": [
         "test_consumers:1",
         "doc_consumers:6",
-        "config_consumers:2"
+        "config_consumers:3"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -7873,7 +8328,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 9
+      "total_consumers": 10
     },
     {
       "confidence": "high",
@@ -7965,7 +8420,7 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 3,
+        "config": 5,
         "doc": 2,
         "script": 1,
         "skill": 2,
@@ -7974,7 +8429,15 @@
       "consumers": [
         {
           "family": "config",
+          "path": "manifests/agentic-primitive-registry.lock.yaml"
+        },
+        {
+          "family": "config",
           "path": "manifests/primitive-consumer-availability.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
         },
         {
           "family": "config",
@@ -8019,7 +8482,7 @@
         "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:2",
-        "config_consumers:3"
+        "config_consumers:5"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -8029,29 +8492,29 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 10
+      "total_consumers": 12
     }
   ],
   "schema_version": 1,
   "summary": {
     "confidence": {
-      "high": 58,
+      "high": 59,
       "medium": 38
     },
     "consumer_accessibility": {
       "lifecycle-declared-consumer-candidate": 2,
-      "repo-skill-not-projectable": 89,
+      "repo-skill-not-projectable": 90,
       "so-local-only": 5
     },
     "roles": {
-      "compatibility-wrapper": 58,
+      "compatibility-wrapper": 59,
       "lab": 7,
       "project-extension": 16,
       "so-maintainer": 15
     },
-    "total": 96,
+    "total": 97,
     "without_consumers": 1,
-    "without_lifecycle": 94
+    "without_lifecycle": 95
   },
   "target_family": "skills"
 }

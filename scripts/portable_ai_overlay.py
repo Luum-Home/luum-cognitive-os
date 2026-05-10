@@ -145,8 +145,16 @@ def _derived_portable_contract(primitive_id: str, family: str, lifecycle: dict[s
     }
 
 def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
-    contracts = {str(item.get("source") or item.get("id")): item for item in load_contracts(root)}
-    contracts_by_id = {str(item.get("id")): item for item in load_contracts(root)}
+    contracts = {}
+    contracts_by_id = {}
+    contracts_by_lifecycle = {}
+    for item in load_contracts(root):
+        contracts_by_id[str(item.get("id"))] = item
+        if item.get("lifecycle_ref"):
+            contracts_by_lifecycle[str(item.get("lifecycle_ref"))] = item
+        for key in (item.get("source"), item.get("id")):
+            if key and str(key) not in contracts:
+                contracts[str(key)] = item
     lifecycle = _load_yaml(root / "manifests" / "primitive-lifecycle.yaml")
     rows = lifecycle.get("primitives") or []
     out: list[tuple[str, dict[str, Any]]] = []
@@ -160,7 +168,11 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
             continue
         seen.add(primitive_id)
         family = str(item.get("kind") or "unknown")
-        contract = contracts.get(primitive_id) or contracts_by_id.get(primitive_id)
+        contract = contracts_by_lifecycle.get(primitive_id) or contracts.get(primitive_id) or contracts_by_id.get(primitive_id)
+        if contract:
+            for key in (contract.get("id"), contract.get("source"), contract.get("lifecycle_ref")):
+                if key:
+                    seen.add(str(key))
         portable_id = str(contract.get("id")) if contract else primitive_id
         portable_contract = _derived_portable_contract(primitive_id, family, item, contract)
         row = {
@@ -168,7 +180,7 @@ def _primitive_rows(root: Path) -> list[tuple[str, dict[str, Any]]]:
             "portable_id": portable_id,
             "source_id": primitive_id,
             "family": family,
-            "canonical_source": primitive_id,
+            "canonical_source": str(contract.get("source")) if contract else primitive_id,
             "canonical_source_kind": "cos-internal",
             "overlay_role": "generated-reference",
             "lifecycle": {
