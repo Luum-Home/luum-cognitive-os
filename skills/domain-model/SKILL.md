@@ -2,7 +2,7 @@
 ---
 name: domain-model
 version: 1.0.0
-description: Scaffold a DDD domain-model.md template under docs/03-dominio-riesgo/ (ADR-054 10-category convention). Emits bounded-contexts + entities + ubiquitous-language tables with TODO markers. Idempotent.
+description: "Use when you need this Cognitive OS skill: Scaffold a DDD domain-model.md template under docs/03-dominio-riesgo/ (ADR-054 10-category convention). Emits bounded-contexts + entities + ubiquitous-language tables with TODO markers. Idempotent.; do not use when a narrower skill directly matches the task."
 invocation: /domain-model --project-dir <path> [--brief "<description>"] [--overwrite]
 user-invocable: true
 last-updated: 2026-04-21

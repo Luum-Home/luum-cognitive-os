@@ -3,7 +3,7 @@
 name: push-release
 invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
 command: /push-release
-description: Push the release commit and tags to the remote — always requires explicit confirmation
+description: "Use when you need this Cognitive OS skill: Push the release commit and tags to the remote — always requires explicit confirmation; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [release, git]

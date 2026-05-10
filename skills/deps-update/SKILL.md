@@ -3,7 +3,7 @@
 name: deps-update
 invocation_pattern: on-demand  # @on-demand: monthly/pre-release maintenance — manual trigger
 command: /deps-update
-description: Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins) using the canonical scripts/deps-update.sh primitive
+description: "Use when you need this Cognitive OS skill: Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Claude plugins) using the canonical scripts/deps-update.sh primitive; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [maintenance, dependencies, primitives]

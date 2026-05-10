@@ -2,7 +2,7 @@
 ---
 name: agent-control
 version: "1.0.0"
-description: Send governed bidirectional control and clarification signals between the orchestrator and live agents.
+description: "Use when you need this Cognitive OS skill: Send governed bidirectional control and clarification signals between the orchestrator and live agents.; do not use when a narrower skill directly matches the task."
 audience: os
 scope: os
 platforms: ["claude-code", "codex", "shell"]

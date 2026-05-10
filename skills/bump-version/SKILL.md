@@ -3,7 +3,7 @@
 name: bump-version
 invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
 command: /bump-version
-description: Calculate and write the new version to the VERSION file
+description: "Use when you need this Cognitive OS skill: Calculate and write the new version to the VERSION file; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [release, versioning]

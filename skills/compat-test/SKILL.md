@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: compat-test
-description: Smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness, and error handling.
+description: "Use when you need this Cognitive OS skill: Smoke test suite verifying Cognitive OS works correctly with the current AI model. Checks skill triggers, rule compliance, phase awareness, memory, progressive loading, templates, budget awareness, and error handling.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false

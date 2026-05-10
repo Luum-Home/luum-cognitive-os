@@ -3,7 +3,7 @@
 name: resource-governor
 version: 1.0.0
 last-updated: 2026-03-22
-description: Master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide
+description: "Use when you need this Cognitive OS skill: Master resource optimizer — coordinates budget, infrastructure, agents, skills, and tokens system-wide; do not use when a narrower skill directly matches the task."
 auto-generated: false
 audience: project
 summary_line: "Master resource optimizer — coordinates budget, infrastructure, agents, skills…"
@@ -19,7 +19,6 @@ routing_patterns:
     confidence: 0.86
   - pattern: '\boptimi[sz]e\s+(resources|budget|infra)\b'
     confidence: 0.86
-
 ---
 
 # Resource Governor

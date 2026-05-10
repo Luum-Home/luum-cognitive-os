@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: component-reality-check
-description: Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.
+description: "Use when you need this Cognitive OS skill: Measure declared-but-unwired vs real agentic primitives of the SO using the audit classifier script. Reports REAL / DORMANT / UNWIRED / METADATA counts + worst offenders + trend. SO-only.; do not use when a narrower skill directly matches the task."
 invoke: /component-reality-check
 version: 1.0.0
 last-updated: 2026-04-24

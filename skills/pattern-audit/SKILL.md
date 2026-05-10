@@ -1,10 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: pattern-audit
-description: >
-  Pattern/regex audit of a codebase with MANDATORY sample verification before
-  publishing counts as severity. Prevents alarmist "N occurrences = problem"
-  conclusions based on unverified regex hits.
+description: "Use when you need this Cognitive OS skill: Pattern/regex audit of a codebase with MANDATORY sample verification before publishing counts as severity. Prevents alarmist \"N occurrences = problem\" conclusions based on unverified regex hits.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: false

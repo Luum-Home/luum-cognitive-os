@@ -2,7 +2,7 @@
 ---
 name: scout
 command: /scout
-description: Quick pre-implementation codebase reconnaissance with 3 depth levels
+description: "Use when you need this Cognitive OS skill: Quick pre-implementation codebase reconnaissance with 3 depth levels; do not use when a narrower skill directly matches the task."
 trigger: Before medium+ implementation tasks, or when user invokes /scout
 inputs:
   - target: File path, directory, service name, or task description to scout
@@ -23,7 +23,6 @@ routing_patterns:
     confidence: 0.92
   - pattern: '\bquick\s+(codebase\s+)?recon\b'
     confidence: 0.88
-
 ---
 
 # Scout -- Pre-Implementation Codebase Reconnaissance

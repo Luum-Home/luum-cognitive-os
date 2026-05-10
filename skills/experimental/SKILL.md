@@ -2,7 +2,7 @@
 ---
 name: experimental
 version: 1.0.0
-description: Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.
+description: "Use when you need this Cognitive OS skill: Structural namespace for experimental Cognitive OS skills that are not promoted to stable catalog surfaces yet.; do not use when a narrower skill directly matches the task."
 triggers: []
 user-invocable: false
 audience: os-dev

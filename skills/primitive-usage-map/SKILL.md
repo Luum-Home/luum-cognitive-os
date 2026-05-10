@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: primitive-usage-map
-description: Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.
+description: "Use when you need this Cognitive OS skill: Map which Cognitive OS skills, hooks, rules, tests, docs, workflows, and configs reference each primitive or script.; do not use when a narrower skill directly matches the task."
 invoke: /primitive-usage-map
 tag: os-only
 model: haiku

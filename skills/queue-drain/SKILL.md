@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: queue-drain
-description: Periodic agent queue drain and health check
+description: "Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use when a narrower skill directly matches the task."
 trigger: Scheduled via CronCreate every 5 minutes, or invoked manually when agents may be stuck
 version: 1.0.0
 audience: os-dev

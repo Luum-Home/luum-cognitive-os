@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: redteam-harness
-description: "Run red-team scenarios against the agent OS to detect false-done, partial-completion, and unwired-constant failure modes per ADR-105/ADR-106."
+description: "Use when you need this Cognitive OS skill: Run red-team scenarios against the agent OS to detect false-done, partial-completion, and unwired-constant failure modes per ADR-105/ADR-106.; do not use when a narrower skill directly matches the task."
 triggers: ["/redteam-harness", "/red-team-harness", "/rt-harness"]
 audience: both
 version: 1.0.0

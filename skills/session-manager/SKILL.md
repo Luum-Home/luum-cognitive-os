@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: session-manager
-description: Manage concurrent Cognitive OS sessions — list, inspect, and clean up
+description: "Use when you need this Cognitive OS skill: Manage concurrent Cognitive OS sessions — list, inspect, and clean up; do not use when a narrower skill directly matches the task."
 audience: project
 effort: haiku
 version: "1.0.0"
@@ -14,7 +14,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\b(list|inspect|clean\s+up)\s+sessions\b'
     confidence: 0.84
-
 ---
 
 # Session Manager

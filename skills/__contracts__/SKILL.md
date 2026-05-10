@@ -2,7 +2,7 @@
 ---
 name: __contracts__
 version: 1.0.0
-description: Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.
+description: "Use when you need this Cognitive OS skill: Structural namespace for shared Cognitive OS skill contracts used by other agentic primitives.; do not use when a narrower skill directly matches the task."
 triggers: []
 user-invocable: false
 audience: os-dev

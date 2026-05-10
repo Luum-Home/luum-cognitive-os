@@ -39,6 +39,14 @@ if [ -z "$PAYLOAD" ]; then
   exit 0
 fi
 
+# Fast path for non-Agent tool completions. The expensive Python/SQLite path is
+# only relevant to Agent skill executions; generic Bash/Edit/Read performance
+# tests should not pay that cost.
+case "$PAYLOAD" in
+  *'"tool_name"'*'"Agent"'*|*'"tool_name":"Agent"'*) ;;
+  *) exit 0 ;;
+esac
+
 # --- Parse and extract fields via python3 ---
 FIELDS=$(python3 -c "
 import json, sys, os, hashlib

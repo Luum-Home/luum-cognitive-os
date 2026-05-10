@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: primitive-authoring
-description: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in consumer projects. Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive, deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service impact.
+description: "Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a primitive, deciding whether a primitive belongs in the OS or a project overlay, or assessing ADR-256/ADR-258 projection/runtime/consumer/service impact. Purpose: Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO or in consumer projects."
 version: 0.2.0
 audience: both
 tags: [primitives, governance, portability, authoring, projection, observability, portable-ai]

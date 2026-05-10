@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: session-wrapup
-description: End-of-session routine — run session-backlog inventory, save to engram, write session summary, and report what was accomplished and what comes next.
+description: "Use when you need this Cognitive OS skill: End-of-session routine — run session-backlog inventory, save to engram, write session summary, and report what was accomplished and what comes next.; do not use when a narrower skill directly matches the task."
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-04-10

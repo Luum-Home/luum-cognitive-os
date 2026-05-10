@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: analyze-improvements
-description: Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes NO file changes.
+description: "Use when you need this Cognitive OS skill: Analyze KPIs, error patterns, and skill metrics to identify improvement opportunities. Produces a ranked list of proposed changes with AUTO vs HUMAN-APPROVAL classification. Output only — makes NO file changes.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 user-invocable: true
 auto-generated: false
@@ -240,11 +240,13 @@ PROPOSALS ({N} total):
   Auto-applicable: {N}
   Requires human approval: {N}
 
---- PROPOSAL BLOCK (paste into apply-improvements) ---
+--- PROPOSAL BLOCK (paste into apply-improvements)
+---
 
 {full PROPOSAL #1 through #N blocks}
 
---- END PROPOSAL BLOCK ---
+--- END PROPOSAL BLOCK
+---
 
 KPI SNAPSHOT (for metrics/kpi-history.jsonl):
 {JSON block}

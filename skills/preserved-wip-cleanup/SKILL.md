@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: preserved-wip-cleanup
-description: Archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie session registry entries after all agents stop.
+description: "Use when you need this Cognitive OS skill: Archive-first cleanup for preserved WIP stashes, temporary validation capsule worktrees, and zombie session registry entries after all agents stop.; do not use when a narrower skill directly matches the task."
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02

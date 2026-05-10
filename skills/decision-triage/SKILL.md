@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: decision-triage
-description: Surface all pending operator decisions across research reports and ADRs. Companion to /session-backlog — counts decisions instead of tasks. Read-only inventory.
+description: "Use when you need this Cognitive OS skill: Surface all pending operator decisions across research reports and ADRs. Companion to /session-backlog — counts decisions instead of tasks. Read-only inventory.; do not use when a narrower skill directly matches the task."
 command: /decision-triage
 audience: both
 version: 0.1.0

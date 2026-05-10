@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: agent-stress-test
-description: "Stress-test agent cognitive health to detect context-induced degradation"
+description: "Use when you need this Cognitive OS skill: Stress-test agent cognitive health to detect context-induced degradation; do not use when a narrower skill directly matches the task."
 triggers: ["/agent-stress-test", "/stress-test", "/cognitive-stress"]
 audience: os-dev
 version: 1.0.0
@@ -18,7 +18,6 @@ routing_patterns:
     confidence: 0.88
   - pattern: '\bstress[- ]?test\s+(agents?|cognitive health)\b'
     confidence: 0.86
-
 ---
 
 # /agent-stress-test

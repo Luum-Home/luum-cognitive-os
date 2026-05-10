@@ -9,37 +9,37 @@ Total skills: 163
 
 | Skill | Description |
 |-------|-------------|
-| add-hook | Step-by-step guide for adding a new hook to the Cognitive OS |
-| add-mcp | Step-by-step guide for integrating a new MCP server into the Cognitive OS |
-| add-rule | Step-by-step guide for adding a new rule to the Cognitive OS |
-| add-skill | Step-by-step guide for adding a new skill to the Cognitive OS |
-| agent-control | Send governed bidirectional control and clarification signals between the orchestrator and live age… |
-| agent-dashboard | Show real-time status of all running background agents |
+| add-hook | Use when you need this Cognitive OS skill: Step-by-step guide for adding a new hook to the Cognitiv… |
+| add-mcp | Use when you need this Cognitive OS skill: Step-by-step guide for integrating a new MCP server into… |
+| add-rule | Use when you need this Cognitive OS skill: Step-by-step guide for adding a new rule to the Cognitiv… |
+| add-skill | Use when you need this Cognitive OS skill: Step-by-step guide for adding a new skill to the Cogniti… |
+| agent-control | Use when you need this Cognitive OS skill: Send governed bidirectional control and clarification si… |
+| agent-dashboard | Use when you need this Cognitive OS skill: Show real-time status of all running background agents;… |
 | audit-integrity | Symlink-aware integrity audit of hooks, libs, and skills. |
-| bump-version | Calculate and write the new version to the VERSION file |
-| deps-update | Audit and upgrade Cognitive OS dependencies (engram, brew packages, Python deps, Docker images, Cla… |
-| generate-changelog | Move [Unreleased] CHANGELOG entries into a versioned release section |
+| bump-version | Use when you need this Cognitive OS skill: Calculate and write the new version to the VERSION file;… |
+| deps-update | Use when you need this Cognitive OS skill: Audit and upgrade Cognitive OS dependencies (engram, bre… |
+| generate-changelog | Use when you need this Cognitive OS skill: Move [Unreleased] CHANGELOG entries into a versioned rel… |
 | hook-timing | Analyze hook execution latency — full stats, live tail, per-event or per-session views. |
 | memory-scan | Scan content for memory threats (prompt injection, exfiltration, invisible Unicode). |
-| peer-card | Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. |
+| peer-card | Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) b… |
 | push-release | Push the release commit and tags to the remote — always requires explicit… |
 | release-os | META — orchestrate the full Cognitive OS release by chaining the 5 atomic… |
-| tag-release | Create the release commit (VERSION + CHANGELOG) and annotated git tag |
+| tag-release | Use when you need this Cognitive OS skill: Create the release commit (VERSION + CHANGELOG) and anno… |
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
-| vuln-remediation-flow | Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation. |
+| vuln-remediation-flow | Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract for sandboxed… |
 
 ## os-dev (36)
 
 | Skill | Description |
 |-------|-------------|
 | adr-tombstone | Agentic primitive for creating neutral ADR tombstones while preserving ADR numbering integrity. |
-| agent-stress-test | Stress-test agent cognitive health to detect context-induced degradation |
+| agent-stress-test | Use when you need this Cognitive OS skill: Stress-test agent cognitive health to detect context-ind… |
 | arena | \"Run competitive benchmarks comparing Cognitive OS against other AI coding… |
 | automaker-bridge | Configure AutoMaker to use Cognitive OS as its execution brain |
 | capability-snapshot | \"Snapshot, diff, and restore Cognitive OS capabilities to prevent feature loss… |
 | cognee-integration | Configure and use Cognee for knowledge graph memory. |
 | cognitive-os-benchmark | Run benchmark comparisons between Cognitive OS and BMAD METHOD v6 |
-| cognitive-os-test | Run the Cognitive OS test suite with persisted summary (junit + failures + tails). |
+| cognitive-os-test | Use when you need this Cognitive OS skill: Run the Cognitive OS test suite with persisted summary (… |
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
 | coordination-status | List who is editing what across concurrent COS sessions. |
@@ -56,7 +56,7 @@ Total skills: 163
 | primitive-surface-reduction | Plan/apply safe reduction of unused Cognitive OS primitive surface. |
 | primitive-usage-map | Static primitive consumer map for scripts, hooks, skills, and rules. |
 | promptfoo-integration | Configure Promptfoo for prompt regression testing and red teaming of skills in… |
-| queue-drain | Periodic agent queue drain and health check |
+| queue-drain | Use when you need this Cognitive OS skill: Periodic agent queue drain and health check; do not use… |
 | radar-update | Merge /repo-scout evaluations into ecosystem-tools.md and blocked-tools.md while preserving human-authored prose. Dry-run by default, --apply writes. |
 | ragas-integration | Configure and use RAGAS for memory quality testing, retrieval evaluation, and… |
 | red-team | \"Red team testing for agent prompts — detects injection, jailbreak, and… |
@@ -65,9 +65,9 @@ Total skills: 163
 | simulation-arena | End-to-end agent workflow simulation for safety-mesh regression. |
 | smoke-test | Run end-to-end smoke tests that validate the real Cognitive OS system works |
 | strands-evals-integration | Configure Strands Evals for trace-based agent trajectory evaluation using… |
-| test-contract-repair | Repair failing or misleading tests without greenwashing. |
+| test-contract-repair | Use when you need this Cognitive OS skill: Repair failing or misleading tests without greenwashing. |
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
-| vulnerability-scan | Run LLM vulnerability probes using Garak against configured endpoints |
+| vulnerability-scan | Use when you need this Cognitive OS skill: Run LLM vulnerability probes using Garak against configu… |
 
 ## both (36)
 
@@ -81,7 +81,7 @@ Total skills: 163
 | caveman | Ultra-compressed communication mode. |
 | caveman-es | Modo cavernícola en español. |
 | cognitive-os-init | META skill — initialize Cognitive OS for a project by chaining detect-stack →… |
-| cognitive-os-status | Full health check of all Cognitive OS agentic primitives |
+| cognitive-os-status | Use when you need this Cognitive OS skill: Full health check of all Cognitive OS agentic primitives… |
 | compress | Compress natural language memory files (CLAUDE.md, todos, preferences) into… |
 | cos-status | Display current Cognitive OS state — active profile, skills exposed, hooks… |
 | decision-triage | Surface pending operator decisions across research reports + ADR open questions in unified urgency-sorted view. |
@@ -92,7 +92,7 @@ Total skills: 163
 | llm-status | Inspect LLM dispatch state — provider inventory, kill-switches, cascade config, recent dispatch totals. |
 | model-optimizer | Analyze skill execution metrics and recommend optimal model routing |
 | preserved-wip-cleanup | Backup preserved WIP, remove temporary blockers, and prove the inventory is clean. |
-| primitive-authoring | Governed workflow for creating, modifying, or promoting Cognitive OS agentic primitives in the SO o… |
+| primitive-authoring | Use when building a new skill/rule/hook/script/workflow, converting a repeated conversation into a… |
 | primitive-harness-coverage | Generate the primitive surface coverage report and inspect IDE/CLI/UI/report implementation gaps. |
 | primitive-harvester | Turn repeatable high-value conversation recipes into governed primitive proposals. |
 | proof-drill | Select opt-in proof drills and smoke checks without default-lane pollution. |
@@ -137,7 +137,7 @@ Total skills: 163
 | exhaustive-prompt | Generate exhaustive agent prompts with scope enumeration and acceptance criteria |
 | gpu-sandbox | Execute Python code in Jupyter runtime for compute-heavy tasks (ML, data… |
 | impact-analysis | \"Analyze change impact: imports, tests, configs, services, and SDD artifacts… |
-| install-recommended | Detect project stack and recommend relevant skills to install |
+| install-recommended | Use when you need this Cognitive OS skill: Detect project stack and recommend relevant skills to in… |
 | invariant-check | Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs… |
 | issue-pipeline | Fetch a GitHub issue, run the SDD pipeline, and open a pull request |
 | jupyter-execute | Execute code in a Jupyter kernel sandbox for data analysis, Python snippets… |
@@ -145,7 +145,7 @@ Total skills: 163
 | ops-runbook | Scaffold deploy/rollback/on-call/monitoring runbooks idempotently under 06-backoffice. |
 | optimize-skill | Optimizar un skill de Claude Code iterativamente usando evals, midiendo mejoras… |
 | persistent-agent | Create persistent agents that maintain their own state across sessions. |
-| phoenix-trace-ui | Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker) |
+| phoenix-trace-ui | Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip… |
 | plan-bug | Create a bug fix plan with root cause analysis and evaluation scoring. |
 | plan-feature | Create a feature implementation plan with evaluation scoring. |
 | planning-poker | Multi-agent complexity estimation via planning-poker rounds. |
@@ -155,7 +155,7 @@ Total skills: 163
 | readiness-check | Implementation readiness gate — validates all prerequisites before coding starts |
 | recall-search | \"Search past Claude Code conversations using full-text search. |
 | recommend-library | Search package registries and rank by relevance, adoption, maintenance, and… |
-| repair-skill | Drain the skill repair queue and propose regeneration or deprecation for degraded skills |
+| repair-skill | Use when you need this Cognitive OS skill: Drain the skill repair queue and propose regeneration or… |
 | repair-status | Report on auto-repair system health and statistics |
 | research-protocol | Meta-skill that teaches agents HOW to investigate any source material… |
 | resolve-blockers | Automatically resolve blockers reported by readiness-check. |
@@ -163,22 +163,22 @@ Total skills: 163
 | resume-tasks | Check for incomplete tasks from previous sessions and offer to resume them. |
 | retrospective | Weekly analysis of all squads with trend analysis and auto-reconfiguration… |
 | risk-register | Scaffold STRIDE risk register with impact/likelihood matrix idempotently. |
-| run-tests | Auto-detect project test framework and run tests with structured reporting |
+| run-tests | Use when you need this Cognitive OS skill: Auto-detect project test framework and run tests with st… |
 | sandbox-sample | Classify, sample, sandbox-verify, then scale changes across large file sets |
-| scout | Quick pre-implementation codebase reconnaissance with 3 depth levels |
+| scout | Use when you need this Cognitive OS skill: Quick pre-implementation codebase reconnaissance with 3… |
 | sdd-compound | \"Extract learnings and compound knowledge after completing an SDD change. |
-| sdd-continue | Enhanced SDD continuation with state inspection — determines optimal next action |
+| sdd-continue | Use when you need this Cognitive OS skill: Enhanced SDD continuation with state inspection — determ… |
 | sdd-explore | Explore and investigate ideas before committing to a change — deep feasibility… |
 | sdd-resume | Resume an SDD pipeline from its last completed phase with timing and state… |
 | secret-audit | Scan all services for env var usage, cross-reference with definitions, report… |
 | self-review | Lightweight 4-question post-implementation checklist for non-SDD work. |
 | semgrep-scan | Run Semgrep SAST security scanning on a path or changed files. |
-| session-manager | Manage concurrent Cognitive OS sessions — list, inspect, and clean up |
+| session-manager | Use when you need this Cognitive OS skill: Manage concurrent Cognitive OS sessions — list, inspect,… |
 | singularity | Codebase Singularity — autonomous MAPE-K control loop that monitors… |
 | sprint | Lightweight agent-managed sprint tracking — plan, status, retro, course-correct |
 | squad-manager | Evaluate squad performance and propose reconfigurations |
 | sre-agent | SRE auto-repair agent. |
-| synthesize-skill | Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates |
+| synthesize-skill | Use when you need this Cognitive OS skill: Review the skill synthesis queue, list proposed drafts,… |
 | systematic-debugging | Use when encountering any bug, test failure, or unexpected behavior, before… |
 | test-driven-development | Use when implementing any feature or bugfix, before writing implementation code |
 | verification-before-completion | Use when about to claim work is complete, fixed, or passing, before committing… |
@@ -201,5 +201,5 @@ Total skills: 163
 
 | Skill | Description |
 |-------|-------------|
-| so-vs-vanilla | A/B benchmark harness that measures Cognitive OS governance value by running the same task under fu… |
+| so-vs-vanilla | Use when you need this Cognitive OS skill: A/B benchmark harness that measures Cognitive OS governa… |
 

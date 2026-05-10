@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: agent-dashboard
-description: Show real-time status of all running background agents
+description: "Use when you need this Cognitive OS skill: Show real-time status of all running background agents; do not use when a narrower skill directly matches the task."
 audience: os
 scope: os
 version: "1.0.0"

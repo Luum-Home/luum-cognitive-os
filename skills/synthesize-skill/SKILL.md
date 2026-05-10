@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: synthesize-skill
-description: Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates
+description: "Use when you need this Cognitive OS skill: Review the skill synthesis queue, list proposed drafts, and accept/reject/defer promotion candidates; do not use when a narrower skill directly matches the task."
 trigger: synthesize skill, synthesize-skill, skill synthesis, review synthesis queue, skill proposals, experimental skills
 model: sonnet
 effort: sonnet

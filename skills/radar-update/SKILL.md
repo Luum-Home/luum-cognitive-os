@@ -2,11 +2,7 @@
 ---
 name: radar-update
 command: /radar-update
-description: >
-  Tech radar curation pipeline. Evaluates one or more GitHub repos via /repo-scout,
-  then merges the results into the canonical radar docs (ecosystem-tools.md,
-  blocked-tools.md) while preserving all human-authored prose. Dry-run by default;
-  --apply writes files. Delegates per-repo evaluation to /repo-scout unchanged.
+description: "Use when you need this Cognitive OS skill: Tech radar curation pipeline. Evaluates one or more GitHub repos via /repo-scout, then merges the results into the canonical radar docs (ecosystem-tools.md, blocked-tools.md) while preserving all human-authored prose. Dry-run by default; --apply writes files. Delegates per-repo evaluation to /repo-scout unchanged.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 user-invocable: true
 auto-generated: false
@@ -193,7 +189,8 @@ If NOT `--apply`:
 @@ -42,0 +43,18 @@
 +### some-tool — Short description (ADOPT)
 +
-+---
++
+---
 +repo: owner/some-tool
 +stars: 4200
 +license: MIT
@@ -202,14 +199,16 @@ If NOT `--apply`:
 +one_liner: "Does X well with Y approach"
 +last_evaluated: 2026-04-24
 +ci_health: green
-+---
++
+---
 +
 ```
 
 Print the unified diff to stdout. Save it to `.cognitive-os/reports/radar-update/<timestamp>.diff`. Summarize at the end:
 
 ```
---- radar-update dry-run summary ---
+--- radar-update dry-run summary
+---
 ecosystem-tools.md : 2 added, 1 updated, 0 moved
 blocked-tools.md   : 1 added, 0 updated, 0 moved
 Total repos        : 3 (0 errors, 0 fuzzy warnings)

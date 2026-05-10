@@ -1,10 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: reverse-engineer
-description: >
-  Deep source code analysis of a dependency to understand its internal APIs,
-  config schemas, CLI commands, environment variables, and undocumented behavior.
-  When docs are incomplete, reading source code gives the EXACT answer in minutes.
+description: "Use when you need this Cognitive OS skill: Deep source code analysis of a dependency to understand its internal APIs, config schemas, CLI commands, environment variables, and undocumented behavior. When docs are incomplete, reading source code gives the EXACT answer in minutes.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -27,7 +24,6 @@ routing_patterns:
     confidence: 0.78
   - pattern: '\bunderstand\s+(the\s+)?(internal\s+)?(config|configuration)\s+schema\b'
     confidence: 0.82
-
 ---
 
 ## Purpose

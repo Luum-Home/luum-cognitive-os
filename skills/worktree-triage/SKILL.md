@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: worktree-triage
-description: Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.
+description: "Use when you need this Cognitive OS skill: Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.; do not use when a narrower skill directly matches the task."
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02

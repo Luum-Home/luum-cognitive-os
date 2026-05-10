@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: docs-execution-audit
-description: Classify documentation items as done, weak-proof, planned, proposed, stale, or unknown using repository evidence.
+description: "Use when you need this Cognitive OS skill: Classify documentation items as done, weak-proof, planned, proposed, stale, or unknown using repository evidence.; do not use when a narrower skill directly matches the task."
 invoke: /docs-execution-audit
 tag: os-only
 model: haiku

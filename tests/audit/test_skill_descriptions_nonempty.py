@@ -31,6 +31,20 @@ def test_every_skill_has_extractable_nonempty_description():
 
 
 @pytest.mark.audit
+def test_every_skill_description_starts_with_use_when():
+    failures = []
+    for skill_md in sorted((REPO / "skills").glob("**/SKILL.md")):
+        text = skill_md.read_text(encoding="utf-8")
+        desc = _fm(text, "description")
+        if not desc or not desc.strip().startswith("Use when"):
+            failures.append((str(skill_md.relative_to(REPO)), repr(desc)))
+    assert not failures, (
+        "Skills whose routing description does not start with 'Use when' "
+        f"({len(failures)} total): {failures}"
+    )
+
+
+@pytest.mark.audit
 def test_every_skill_has_valid_audience():
     valid = {"os", "os-dev", "os-only", "project", "both", "adopters", "human"}
     failures = []

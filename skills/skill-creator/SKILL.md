@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: skill-creator
-description: Creates new AI agent skills following the Agent Skills spec, then generates cos package scaffolding for sharing.
+description: "Use when you need this Cognitive OS skill: Creates new AI agent skills following the Agent Skills spec, then generates cos package scaffolding for sharing.; do not use when a narrower skill directly matches the task."
 summary_line: Create new AI agent skills + cos package scaffolding.
 version: 1.1.0
 audience: both
@@ -16,7 +16,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\bagent\s+skills?\s+spec\b'
     confidence: 0.82
-
 ---
 
 # Skill Creator with cos Packaging

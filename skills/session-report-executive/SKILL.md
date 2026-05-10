@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: session-report-executive
-description: Generate an executive-level session report translating technical metrics into business language. For non-technical leaders who need to know what the Cognitive OS did during a session.
+description: "Use when you need this Cognitive OS skill: Generate an executive-level session report translating technical metrics into business language. For non-technical leaders who need to know what the Cognitive OS did during a session.; do not use when a narrower skill directly matches the task."
 user-invocable: true
 version: 0.1.0
 last-updated: 2026-04-09

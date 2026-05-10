@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: memory-scan
-description: Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.
+description: "Use when you need this Cognitive OS skill: Scan text content (or a file) for prompt injection, credential exfiltration, and invisible Unicode threats before persisting to memory.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false

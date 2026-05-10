@@ -3,7 +3,7 @@
 name: tag-release
 invocation_pattern: on-demand  # @on-demand: release pipeline step — manual trigger
 command: /tag-release
-description: Create the release commit (VERSION + CHANGELOG) and annotated git tag
+description: "Use when you need this Cognitive OS skill: Create the release commit (VERSION + CHANGELOG) and annotated git tag; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [release, git]

@@ -1,10 +1,7 @@
 <!-- SCOPE: project -->
 ---
 name: project-scaffold
-description: >
-  Scaffold the 10-category docs/ tree adopted by Cognitive OS projects.
-  Creates 01-contexto through 10-resumenes with starter files and TODO
-  markers. Idempotent. See ADR-054.
+description: "Use when you need this Cognitive OS skill: Scaffold the 10-category docs/ tree adopted by Cognitive OS projects. Creates 01-contexto through 10-resumenes with starter files and TODO markers. Idempotent. See ADR-054.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: false

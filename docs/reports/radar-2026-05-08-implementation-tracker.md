@@ -20,19 +20,20 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 | H3 | Trust Report claim → match hook reality (advisory + log) | ✅ | `b5062d0f` — [README.md:36-38](../../README.md). `trust-score-validator.sh` validates + logs to `.cognitive-os/metrics/trust-scores.jsonl`; does not block task closure | E DEBT-1 |
 | H4 | Bubblewrap policy hardening | ✅ partial | `b5062d0f` — [`packages/agent-lifecycle/lib/sandbox_adapter.py`](../../packages/agent-lifecycle/lib/sandbox_adapter.py). Added `--die-with-parent`, `--unshare-pid/uts/ipc`, `--unshare-cgroup-try`, `--new-session`. **Seccomp BPF profile pending** (>>1-2h budget; tracked as T-H4-seccomp). `--ro-bind /` retained intentionally (no equivalent without breaking process startup). | B §🔍4 |
 | H5 | "85% token reduction" claim → qualify as upstream-Anthropic figure, unmeasured locally | ✅ | `b5062d0f` — 4 occurrences in 2 docs (SYNTHESIS + tool-discovery-dynamic-registration). Local instrumentation tracked as T-H5-local-metrics | B §🔍7 |
-| H6 | Skill schema convention: adopt `description: "Use when…"` across `skills/*/SKILL.md` | 🟡 design ready | `c0e899c2` — [`docs/skills/skill-description-use-when-migration.md`](../skills/skill-description-use-when-migration.md) defines migration plan; batch rewrite still pending. | D §🔍13 |
+| H6 | Skill schema convention: adopt `description: "Use when…"` across `skills/*/SKILL.md` | ✅ implemented | `scripts/migrate_skill_descriptions_use_when.py` rewrites/checks the convention; `tests/audit/test_skill_descriptions_nonempty.py` enforces it; `skills/CATALOG-COMPACT.md` regenerated. | D §🔍13 |
 
 **Wave 1 progress: 5/6 implemented or documented, 1 implementation pending.** Closed work landed on `main` through `e7ed3c6b`, `b5062d0f`, `b55f2fb8`, and `c0e899c2`.
 
 ### H4 follow-ups (tracked, out of Wave 1 scope)
-- **T-H4-seccomp**: BPF syscall filter profile for bwrap. Effort: 1-2 days. Needs threat model first (which syscalls are dangerous in our context).
+- **T-H4-seccomp**: BPF syscall filter profile for bwrap. Threat model drafted in [`docs/security/bwrap-seccomp-threat-model.md`](../security/bwrap-seccomp-threat-model.md); BPF implementation remains opt-in/pending workload smokes.
 
 ### H5 follow-ups (tracked, out of Wave 1 scope)
-- **T-H5-local-metrics**: instrument `.cognitive-os/metrics/` to record actual token-cost delta when ToolSearch is active vs not. Effort: 1-2 days. Closes the "claimed vs measured" gap permanently.
+- **T-H5-local-metrics**: ✅ implemented local ToolSearch token-delta estimates in `lib/deferred_tool_loading.py`, dispatch metrics at `.cognitive-os/metrics/toolsearch-token-delta.jsonl`, CLI `scripts/cos-deferred-tool-plan --token-delta`, and unit/behavior/integration tests.
 
-### H6 plan
-- Single sub-agent (Sonnet) pass over `skills/**/SKILL.md`. For each: read existing description, propose `Use when …` formulation, write back. Idempotent: skip files that already start with `Use when`. Output: count of skills migrated + diff summary.
-- Acceptance: `grep -L "^description:.*Use when" skills/**/SKILL.md` returns 0 (every SKILL.md follows the convention) **or** the exceptions are explicit (e.g. ADR-X declares foo-skill as legacy).
+### H6 closure
+- Batch migration is now script-backed and idempotent: `python3 scripts/migrate_skill_descriptions_use_when.py --check --json`.
+- Acceptance: nonconforming count is 0 and audit tests enforce the routing description convention for future skills.
+- Note: this improves skill discoverability and routing metadata. The existing dogfood `skill_coverage` dimension is behavior-test coverage, so it should not be interpreted as a direct H6 score unless the scorer is changed separately.
 
 ## Wave 1.5 — Drift fix retro and post-reassessment cleanup
 
@@ -64,7 +65,7 @@ Candidate change name: `memory-layer-evolution`. Bundled because the four items 
 
 | # | Topic | Status | Source | License |
 |---|---|---:|---|---|
-| M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) in `memory_relations` | 🟡 runtime opt-in port landed; schema migration still pending | A §🔍2c; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | Apache-2.0 (schema only) |
+| M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) for Engram observations | ✅ additive migration landed; default retrieval remains `strategy=current` | `lib/engram_wave2_schema.py`, `scripts/cos-engram-wave2-schema-migrate`, `tests/unit/test_engram_wave2_schema.py`; A §🔍2c | Apache-2.0 (schema only) |
 | M2 | LightRAG dual-level (entity + topic) retrieval scoring → `engram_lifecycle.py` | 🟡 blocked on M1 schema + benchmark comparison | A §🔍2a; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
 | M3 | HippoRAG personalized PageRank as alternative mode in `engram_graph_walker.py` | 🟡 relation support-chain runtime port landed; PPR algorithm still pending | A §🔍2b; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
 | M4 | `memory_class` enum overlay (`semantic`/`episodic`/`procedural`/`working`); couple `memory_decay` to `working` | 🟡 SDD started; lands after retrieval benchmark + schema | A §🔍12; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (MIRIX overlay) |
@@ -124,9 +125,7 @@ The opt-in path adds:
 - `retrieval_strategy`, `temporal_status`, `support_chain`, and `wave2_score`
   fields only in the opt-in response.
 
-Remaining M1/M3 work: additive schema migration/backfill for `valid_from`,
-`valid_to`, `source_episode`, and a true PPR mode. The current port is runtime
-behavior over existing fields/relations, not a default switch.
+M1 schema migration/backfill is now implemented by `scripts/cos-engram-wave2-schema-migrate`. Remaining M3 work: a true PPR mode. The current runtime port remains opt-in behavior over existing fields/relations, not a default switch.
 
 ### M1 default decision
 
@@ -176,12 +175,11 @@ Listed here for completeness so this tracker is the single source of truth on "w
 
 Recommended next order after `v0.28.0`:
 
-1. **H6 skill description migration** — quick discoverability/dogfood win; expected to improve the weakest dogfood dimension (`skill_coverage=24.85`) once paired with catalog/router refresh.
-2. **M1 schema migration** — master blocker for Wave 2; unlocks M2 LightRAG dual-level scoring and M4 MIRIX `memory_class`.
-3. **T-H5 local ToolSearch metrics** — closes the measured-vs-claimed token delta gap.
-4. **T-H4 seccomp threat model/profile** — security hardening; do threat model before BPF implementation.
-5. **W3-1/W3-2/W3-3** — parallelizable after Wave 2 substrate decisions: repo-map context selector, DSPy pilot, and agentapi testdata vendor.
-6. **Public launch runbook execution** — operational visibility flip; separate from code release tagging.
+1. **M2/M4 consumers after M1** — schema substrate is available; keep defaults unchanged until benchmark evidence justifies a switch.
+2. **M3 true PPR mode** — relation support-chain runtime exists, but PageRank itself is still pending.
+3. **T-H4 seccomp BPF implementation** — threat model exists; implement opt-in profile only after workload smokes.
+4. **W3-1/W3-2/W3-3** — parallelizable after Wave 2 substrate decisions: repo-map context selector, DSPy pilot, and agentapi testdata vendor.
+5. **Public launch runbook execution** — operational visibility flip; separate from code release tagging.
 
 ## Maintenance contract
 
@@ -190,4 +188,4 @@ Recommended next order after `v0.28.0`:
 - When all items in a wave reach ✅ or ⏸, append a closure note ("Wave N closed YYYY-MM-DD in commit X").
 - New radar editions (2026-05-XX+) get their own tracker file. Do not mix waves across editions in one tracker.
 
-**Last updated**: 2026-05-10 by Codex session after `v0.28.0` final release; C1-C4 synced to audit-pass state and post-0.28 priorities clarified.
+**Last updated**: 2026-05-10 by Codex post-0.28 backlog session; H6, M1 schema, and T-H5 are implemented; T-H4 threat model is drafted; Wave 3 remains next work.

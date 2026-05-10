@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: adr-tombstone
-description: Create or repair neutral tombstones for removed ADR numbers; use when an ADR is deleted, purged, superseded without replacement text, or ADR numbering has gaps that must stay auditable without reusing numbers.
+description: "Use when you need this Cognitive OS skill: Create or repair neutral tombstones for removed ADR numbers; use when an ADR is deleted, purged, superseded without replacement text, or ADR numbering has gaps that must stay auditable without reusing numbers.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 last-updated: 2026-05-05
 user-invocable: true

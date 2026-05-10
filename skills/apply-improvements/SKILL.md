@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: apply-improvements
-description: Apply approved self-improvement changes from an analyze-improvements report. Applies AUTO changes immediately; presents HUMAN-APPROVAL changes for explicit confirmation before touching files.
+description: "Use when you need this Cognitive OS skill: Apply approved self-improvement changes from an analyze-improvements report. Applies AUTO changes immediately; presents HUMAN-APPROVAL changes for explicit confirmation before touching files.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 user-invocable: true
 auto-generated: false
@@ -119,7 +119,8 @@ For each proposal in manual_queue:
 Print the full proposal and ask:
 
 ```
---- HUMAN APPROVAL REQUIRED ---
+--- HUMAN APPROVAL REQUIRED
+---
 PROPOSAL #{N}: {short description}
 
 Target: {TARGET_FILE}

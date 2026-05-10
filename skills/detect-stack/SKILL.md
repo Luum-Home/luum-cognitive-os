@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: detect-stack
-description: Scan a project root and produce detected-stack.json with detected languages, frameworks, databases, auth, cache, messaging, and services.
+description: "Use when you need this Cognitive OS skill: Scan a project root and produce detected-stack.json with detected languages, frameworks, databases, auth, cache, messaging, and services.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: both
 tags: [init, setup, detection]

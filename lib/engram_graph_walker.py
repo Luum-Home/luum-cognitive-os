@@ -143,24 +143,32 @@ class EngramGraphWalker:
                 return []
             with conn:
                 placeholders = ",".join("?" * len(sync_ids))
+                columns = self._observation_columns(conn)
+                optional = [
+                    column
+                    for column in ("valid_from", "valid_to", "memory_class", "source_episode")
+                    if column in columns
+                ]
+                select_columns = [
+                    "id",
+                    "sync_id",
+                    "title",
+                    "content",
+                    "type",
+                    "topic_key",
+                    "project",
+                    "created_at",
+                    *optional,
+                ]
                 rows = conn.execute(
-                    f"SELECT id, sync_id, title, content, type, topic_key, "
-                    f"project, created_at FROM observations WHERE sync_id IN ({placeholders})",
+                    f"SELECT {', '.join(select_columns)} "
+                    f"FROM observations WHERE sync_id IN ({placeholders})",
                     sync_ids,
                 ).fetchall()
             conn.close()
             results = []
             for row in rows:
-                results.append({
-                    "id": row[0],
-                    "sync_id": row[1],
-                    "title": row[2],
-                    "content": row[3],
-                    "type": row[4],
-                    "topic_key": row[5],
-                    "project": row[6],
-                    "created_at": row[7],
-                })
+                results.append(dict(row))
             return results
         except Exception as exc:
             _log.debug("fetch_observations_by_sync_id failed: %s", exc)
@@ -427,3 +435,10 @@ class EngramGraphWalker:
         except Exception as exc:
             _log.debug("_fetch_edges failed for %s: %s", sync_id, exc)
             return []
+
+    @staticmethod
+    def _observation_columns(conn: sqlite3.Connection) -> set[str]:
+        try:
+            return {str(row[1]) for row in conn.execute("PRAGMA table_info(observations)").fetchall()}
+        except Exception:
+            return set()

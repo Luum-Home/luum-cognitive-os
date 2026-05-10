@@ -1,13 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: doc-review-personas
-description: >
-  Multi-persona adversarial review of a documentation corpus. Runs N Haiku
-  sub-agents in parallel — each one reading the same docs with a different
-  human-role lens (CFO, Tech Lead, Commercial, New Dev, Editor) — then
-  consolidates findings into a severity-tiered report (S1/S2/S3/S4).
-  Different lenses catch non-overlapping gaps; the consolidated output is a
-  prioritized fix-plan, not a set of independent critiques.
+description: "Use when you need this Cognitive OS skill: Multi-persona adversarial review of a documentation corpus. Runs N Haiku sub-agents in parallel — each one reading the same docs with a different human-role lens (CFO, Tech Lead, Commercial, New Dev, Editor) — then consolidates findings into a severity-tiered report (S1/S2/S3/S4). Different lenses catch non-overlapping gaps; the consolidated output is a prioritized fix-plan, not a set of independent critiques.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: false

@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: session-backlog
-description: Inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority and produce a structured backlog document for future sessions.
+description: "Use when you need this Cognitive OS skill: Inventory all pending work across plans, engram, tasks, todos, audits, and git. Classify by priority and produce a structured backlog document for future sessions.; do not use when a narrower skill directly matches the task."
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
