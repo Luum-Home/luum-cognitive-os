@@ -511,3 +511,106 @@ function extractFirstParagraph(markdown: string): string {
 
   return paragraphLines.join(" ").slice(0, 200) || "No description";
 }
+
+export interface PrimitiveProjectionDrilldownRow {
+  contractId: string;
+  harnessStatuses: Record<string, string>;
+  pendingReasons: string[];
+  contractPath: string;
+}
+
+export interface PrimitiveRuntimeSessionRow {
+  sessionId: string;
+  interventions: number;
+  itineraryEvents: number;
+  actions: Record<string, number>;
+  tools: Record<string, number>;
+}
+
+export interface PrimitiveRuntimeEvidenceSummary {
+  sessions: PrimitiveRuntimeSessionRow[];
+  interventionRows: number;
+  itineraryRows: number;
+  interventionPrimitives: number;
+  reportPaths: string[];
+  consumesReport: boolean;
+  mode: "observe-only";
+}
+
+function bumpCount(map: Record<string, number>, key: string): void {
+  map[key] = (map[key] || 0) + 1;
+}
+
+export async function getPrimitiveProjectionDrilldown(): Promise<PrimitiveProjectionDrilldownRow[]> {
+  const reportPath = join(COS_ROOT, "docs", "reports", "primitive-projection-fidelity-latest.json");
+  try {
+    const report = JSON.parse(await readFile(reportPath, "utf-8"));
+    const rows: PrimitiveProjectionDrilldownRow[] = [];
+    for (const item of Array.isArray(report.items) ? report.items : []) {
+      const contractId = String(item.contract_id || "unknown");
+      const harnessStatuses: Record<string, string> = {};
+      const pendingReasons: string[] = [];
+      for (const row of Array.isArray(item.projection_fidelity) ? item.projection_fidelity : []) {
+        if (!row || typeof row !== "object") continue;
+        const harness = String((row as Record<string, unknown>).harness || "unknown");
+        const status = String((row as Record<string, unknown>).status || "unknown");
+        harnessStatuses[harness] = status;
+        if (status !== "aligned") pendingReasons.push(`${harness}:${status}`);
+      }
+      rows.push({ contractId, harnessStatuses, pendingReasons, contractPath: "manifests/primitive-contracts.yaml" });
+    }
+    return rows.slice(0, 80);
+  } catch {
+    return [];
+  }
+}
+
+export async function getPrimitiveRuntimeEvidenceSummary(): Promise<PrimitiveRuntimeEvidenceSummary> {
+  const interventionPath = join(COS_ROOT, ".cognitive-os", "metrics", "primitive-interventions.jsonl");
+  const itineraryPath = join(COS_ROOT, ".cognitive-os", "metrics", "codebase-itinerary.jsonl");
+  const bySession: Record<string, PrimitiveRuntimeSessionRow> = {};
+  const primitiveIds = new Set<string>();
+  let interventionRows = 0;
+  let itineraryRows = 0;
+  const ensure = (sessionId: string): PrimitiveRuntimeSessionRow => {
+    if (!bySession[sessionId]) bySession[sessionId] = { sessionId, interventions: 0, itineraryEvents: 0, actions: {}, tools: {} };
+    return bySession[sessionId];
+  };
+  try {
+    const content = await readFile(interventionPath, "utf-8");
+    for (const line of content.split("\n")) {
+      if (!line.trim()) continue;
+      try {
+        const row = JSON.parse(line);
+        interventionRows += 1;
+        const session = ensure(String(row.session_id || "unknown"));
+        session.interventions += 1;
+        bumpCount(session.actions, String(row.action_kind || "unknown"));
+        if (row.primitive_id) primitiveIds.add(String(row.primitive_id));
+      } catch {}
+    }
+  } catch {}
+  try {
+    const content = await readFile(itineraryPath, "utf-8");
+    for (const line of content.split("\n")) {
+      if (!line.trim()) continue;
+      try {
+        const row = JSON.parse(line);
+        itineraryRows += 1;
+        const session = ensure(String(row.session_id || "unknown"));
+        session.itineraryEvents += 1;
+        bumpCount(session.tools, String(row.tool || row.tool_name || "unknown"));
+      } catch {}
+    }
+  } catch {}
+  const sessions = Object.values(bySession).sort((a, b) => (b.interventions + b.itineraryEvents) - (a.interventions + a.itineraryEvents)).slice(0, 20);
+  return {
+    sessions,
+    interventionRows,
+    itineraryRows,
+    interventionPrimitives: primitiveIds.size,
+    reportPaths: [".cognitive-os/metrics/primitive-interventions.jsonl", ".cognitive-os/metrics/codebase-itinerary.jsonl"],
+    consumesReport: interventionRows > 0 || itineraryRows > 0,
+    mode: "observe-only",
+  };
+}

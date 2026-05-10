@@ -27,6 +27,16 @@ const SIGNED_PRIMITIVES = [
   "cosd-auth-guard",
   "dispatch-gate",
   "doc-sync-detector",
+  "direct-main-guard",
+  "secret-detector",
+  "protected-config-write-guard",
+  "network-egress-guard",
+  "token-budget-monitor",
+  "prompt-quality-llm",
+  "scope-creep-detector",
+  "result-truncator",
+  "private-mode-gate",
+  "trust-score-validator",
 ]
 
 const PRIMITIVE_SOURCE = Object.freeze({
@@ -50,6 +60,16 @@ const PRIMITIVE_SOURCE = Object.freeze({
   "cosd-auth-guard": "hooks/cosd-auth-guard.sh",
   "dispatch-gate": "hooks/dispatch-gate.sh",
   "doc-sync-detector": "hooks/doc-sync-detector.sh",
+  "direct-main-guard": "hooks/direct-main-guard.sh",
+  "secret-detector": "hooks/secret-detector.sh",
+  "protected-config-write-guard": "hooks/protected-config-write-guard.sh",
+  "network-egress-guard": "hooks/network-egress-guard.sh",
+  "token-budget-monitor": "hooks/token-budget-monitor.sh",
+  "prompt-quality-llm": "hooks/prompt-quality-llm.sh",
+  "scope-creep-detector": "hooks/scope-creep-detector.sh",
+  "result-truncator": "hooks/result-truncator.sh",
+  "private-mode-gate": "hooks/private-mode-gate.sh",
+  "trust-score-validator": "hooks/trust-score-validator.sh",
 })
 
 function projectRoot(ctx) {
@@ -116,6 +136,12 @@ function classifyBash(command) {
   if (/\bcosd\b.*\b(write|mutate|admin)|curl\s+.*cosd/i.test(text)) {
     return row("cosd-auth-guard", "block", "cosd_auth_required", "cosd-unsafe-call")
   }
+  if (/\bgit\s+push\s+origin\s+(main|master)\b/i.test(text)) {
+    return row("direct-main-guard", "block", "direct_main_push", "direct-main-push")
+  }
+  if (/\b(curl|wget|nc)\b.*https?:\/\//i.test(text)) {
+    return row("network-egress-guard", "warn", "network_egress_review", "network-egress")
+  }
   return null
 }
 
@@ -148,6 +174,14 @@ function classifyTextTool(toolName, args) {
     if (text.includes("docs/adrs/") && !text.includes("## status")) return row("adr-section-validator", "warn", "adr_section_missing", "adr-structure")
     if (text.includes("private customer") || text.includes("confidential customer")) return row("confidentiality-enforcer", "block", "confidentiality_boundary", "confidential-content")
     if (text.includes("unsafe content policy fixture")) return row("content-policy", "block", "content_policy_violation", "content-policy")
+    if (/api[_-]?key|secret|token/.test(text)) return row("secret-detector", "block", "secret_write_attempt", "secret-like-content")
+    if (text.includes(".git/config") || text.includes(".env") || text.includes("cognitive-os.yaml")) return row("protected-config-write-guard", "block", "protected_config_write", "protected-config")
+  }
+  if (toolName === "agent") {
+    if (text.includes("ignore privacy") || text.includes("disable private mode")) return row("private-mode-gate", "block", "private_mode_boundary", "private-mode")
+    if (text.includes("no trust report") || text.includes("skip trust report")) return row("trust-score-validator", "warn", "trust_report_missing", "trust-report")
+    if (text.includes("huge prompt") || text.includes("low quality prompt")) return row("prompt-quality-llm", "warn", "prompt_quality_review", "prompt-quality")
+    if (text.includes("add unrelated feature") || text.includes("scope creep")) return row("scope-creep-detector", "warn", "scope_creep", "scope-creep")
   }
   return null
 }
@@ -159,6 +193,8 @@ function classifyAfter(toolName, args) {
   if (text.includes("verification recommended")) return row("auto-verify", "advise", "verification_recommended", "verification-signal")
   if (text.includes("context threshold")) return row("context-watchdog", "advise", "context_budget_checkpoint", "context-threshold")
   if (text.includes("doc sync drift")) return row("doc-sync-detector", "warn", "doc_sync_drift", "doc-sync")
+  if (text.includes("token budget exceeded")) return row("token-budget-monitor", "advise", "token_budget_exceeded", "token-budget")
+  if (text.includes("result truncated")) return row("result-truncator", "advise", "result_truncated", "result-truncation")
   return null
 }
 

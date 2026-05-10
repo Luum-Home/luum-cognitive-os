@@ -6,13 +6,13 @@
     "plugin_loaded": true
   },
   "failed_outcomes": [],
-  "generated_at": "2026-05-10T14:14:48+00:00",
-  "ledger_row_count": 20,
+  "generated_at": "2026-05-10T18:39:20+00:00",
+  "ledger_row_count": 30,
   "missing_ledger_rows": [],
   "node_stderr_tail": "",
   "opencode": {
-    "binary": "/opt/homebrew/bin/opencode",
-    "version": "1.14.20"
+    "binary": "$HOME/bin/opencode",
+    "version": "Unable to find application named 'OpenCode'"
   },
   "plugin": {
     "events": [
@@ -43,6 +43,16 @@
     "context-watchdog",
     "cosd-auth-guard",
     "dispatch-gate",
-    "doc-sync-detector"
+    "doc-sync-detector",
+    "direct-main-guard",
+    "secret-detector",
+    "protected-config-write-guard",
+    "network-egress-guard",
+    "token-budget-monitor",
+    "prompt-quality-llm",
+    "scope-creep-detector",
+    "result-truncator",
+    "private-mode-gate",
+    "trust-score-validator"
   ]
 }

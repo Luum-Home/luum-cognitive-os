@@ -11,6 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_lib/killswitch_check.sh"
 _HOOK_NAME="trust-score-validator"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
 source "$(dirname "$0")/_lib/common.sh"
+[ -f "$(dirname "$0")/_lib/primitive-intervention.sh" ] && source "$(dirname "$0")/_lib/primitive-intervention.sh"
 
 # Auto-disabled at capability level 5
 check_capability_level "trust-score-validator"
@@ -49,6 +50,9 @@ if [[ "$HAS_TRUST_REPORT" == "false" ]]; then
   echo "WARNING: Agent did not provide Trust Report. Confidence cannot be assessed."
   echo "Agents MUST include a Trust Report with score, evidence, uncertainties, and human verification steps."
   echo ""
+  if type primitive_intervention_emit >/dev/null 2>&1; then
+    primitive_intervention_emit "trust-score-validator" "hooks/trust-score-validator.sh" "warn" "trust_report_missing" "agent-output" ".cognitive-os/metrics/trust-scores.jsonl" "Agent" || true
+  fi
   exit 0
 fi
 
@@ -64,6 +68,9 @@ if [[ -z "$SCORE" ]]; then
   echo ""
   echo "WARNING: Trust Report found but score could not be extracted."
   echo ""
+  if type primitive_intervention_emit >/dev/null 2>&1; then
+    primitive_intervention_emit "trust-score-validator" "hooks/trust-score-validator.sh" "warn" "trust_score_missing" "agent-output" ".cognitive-os/metrics/trust-scores.jsonl" "Agent" || true
+  fi
   exit 0
 fi
 

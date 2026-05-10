@@ -3,6 +3,8 @@
 # PreToolUse guard: blocks writes to agent control-plane config unless explicitly approved.
 set -uo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/_lib/common.sh"
+[ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/safe-jsonl.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/safe-jsonl.sh"
+[ -f "$(dirname "${BASH_SOURCE[0]}")/_lib/primitive-intervention.sh" ] && source "$(dirname "${BASH_SOURCE[0]}")/_lib/primitive-intervention.sh"
 check_disabled_env "protected-config-write-guard"
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-${COGNITIVE_OS_PROJECT_DIR:-$(pwd)}}"
@@ -80,6 +82,9 @@ if [ -n "$BLOCKED" ]; then
   echo "=== PROTECTED CONFIG WRITE GUARD: BLOCKED ===" >&2
   echo "Protected control-plane path(s): $BLOCKED" >&2
   echo "Set $APPROVAL_ENV=1 only after explicit human review." >&2
+  if type primitive_intervention_emit >/dev/null 2>&1; then
+    primitive_intervention_emit "protected-config-write-guard" "hooks/protected-config-write-guard.sh" "block" "protected_config_write" "protected-config" ".cognitive-os/metrics/protected-config-write-blocks.jsonl" "$TOOL_NAME" || true
+  fi
   exit 2
 fi
 exit 0

@@ -44,6 +44,7 @@ DEFAULT_WEIGHTS = {
     "primitive_fitness": 2,
     "projection_fidelity": 2,
     "primitive_intervention": 2,
+    "codebase_itinerary": 1,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -969,6 +970,53 @@ def load_primitive_interventions(root: Path) -> tuple[AdapterStatus, list[Capabi
     return AdapterStatus("ok", str(path.relative_to(root)), summary={"primitive_count": len(primitive_counts), "actions": action_counts}), capabilities, []
 
 
+def load_codebase_itinerary(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / ".cognitive-os" / "metrics" / "codebase-itinerary.jsonl"
+    if not path.exists():
+        return AdapterStatus("unverified", str(path.relative_to(root)), error="missing codebase itinerary ledger"), [], []
+    tool_counts: dict[str, int] = {}
+    category_counts: dict[str, int] = {}
+    session_counts: dict[str, int] = {}
+    total = 0
+    for line in path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if not line.strip():
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if row.get("schema_version") not in {"codebase-itinerary.v1", "tool-sequence.v1", None}:
+            continue
+        total += 1
+        tool = str(row.get("tool") or row.get("tool_name") or "unknown")
+        category = str(row.get("category") or row.get("target_category") or row.get("action_kind") or "unknown")
+        session_id = str(row.get("session_id") or "unknown")
+        tool_counts[tool] = tool_counts.get(tool, 0) + 1
+        category_counts[category] = category_counts.get(category, 0) + 1
+        session_counts[session_id] = session_counts.get(session_id, 0) + 1
+    capabilities: list[Capability] = []
+    for tool, count in sorted(tool_counts.items()):
+        capabilities.append(Capability(
+            id=f"codebase_itinerary:{tool}",
+            kind="codebase_itinerary",
+            source={"path": str(path.relative_to(root)), "tool": tool},
+            risk="low",
+            signature={"rows": count, "categories": category_counts},
+            represented_by=[{"kind": "runtime_evidence", "id": tool, "role": "codebase-itinerary"}],
+            mapping_status="aligned",
+            confidence=0.78,
+            consumer_accessibility="runtime-evidence",
+            lifecycle_status="real",
+            evidence=[f"itinerary_rows:{count}"],
+            weight=DEFAULT_WEIGHTS["codebase_itinerary"],
+        ))
+    return AdapterStatus(
+        "ok",
+        str(path.relative_to(root)),
+        summary={"rows": total, "tools": tool_counts, "categories": category_counts, "sessions": len(session_counts)},
+    ), capabilities, []
+
+
 def existing_tool_findings(root: Path) -> tuple[dict[str, AdapterStatus], list[Finding]]:
     adapters: dict[str, AdapterStatus] = {}
     findings: list[Finding] = []
@@ -1247,6 +1295,9 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     intervention_status, intervention_capabilities, intervention_findings = load_primitive_interventions(root)
     capabilities.extend(intervention_capabilities)
     findings.extend(intervention_findings)
+    itinerary_status, itinerary_capabilities, itinerary_findings = load_codebase_itinerary(root)
+    capabilities.extend(itinerary_capabilities)
+    findings.extend(itinerary_findings)
     existing_adapters, existing_findings = existing_tool_findings(root)
     findings.extend(existing_findings)
     adapters = {
@@ -1261,6 +1312,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "harness_coverage": harness_coverage_status,
         "projection_fidelity": projection_fidelity_status,
         "primitive_interventions": intervention_status,
+        "codebase_itinerary": itinerary_status,
         **readiness_adapters,
         **existing_adapters,
     }

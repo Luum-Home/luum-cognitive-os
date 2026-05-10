@@ -294,12 +294,17 @@ def test_primitive_observability_uses_contracts_projection_and_interventions(tmp
         )
         + "\n",
     )
+    _write(
+        repo / ".cognitive-os/metrics/codebase-itinerary.jsonl",
+        "".join(json.dumps({"schema_version": "codebase-itinerary.v1", "tool": "Read", "session_id": "unit"}) + "\n" for _ in range(2)),
+    )
 
     score, ev = DogfoodScorer(repo)._score_primitive_observability()
 
     assert score is not None and score > 0
     assert "contracts=2" in ev
     assert "observed_contracts=1" in ev
+    assert "itinerary_events=2" in ev
 
 
 def test_overall_is_weighted_sum(tmp_path):

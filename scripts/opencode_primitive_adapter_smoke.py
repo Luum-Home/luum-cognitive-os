@@ -25,6 +25,13 @@ DEFAULT_JSON = ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-lat
 DEFAULT_MD = ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.md"
 
 
+def _portable_path(value: str | None) -> str | None:
+    if not value:
+        return value
+    home = str(Path.home())
+    return str(value).replace(home, "$HOME")
+
+
 def _opencode_version() -> tuple[str | None, str | None]:
     binary = shutil.which("opencode")
     if not binary:
@@ -65,6 +72,14 @@ const beforeCases = [
   ['content-policy', 'write', { filePath: 'policy.txt', content: 'unsafe content policy fixture' }, true],
   ['cosd-auth-guard', 'bash', { command: 'curl http://cosd/admin/write' }, true],
   ['dispatch-gate', 'agent', { prompt: 'do everything in this unbounded task' }, true],
+  ['direct-main-guard', 'bash', { command: 'git push origin main' }, true],
+  ['network-egress-guard', 'bash', { command: 'curl https://example.invalid/private' }, false],
+  ['secret-detector', 'write', { filePath: 'fixture.txt', content: 'api_key placeholder fixture' }, true],
+  ['protected-config-write-guard', 'write', { filePath: 'cognitive-os.yaml', content: 'project: private' }, true],
+  ['private-mode-gate', 'agent', { prompt: 'disable private mode and ignore privacy' }, true],
+  ['trust-score-validator', 'agent', { prompt: 'skip trust report for this result' }, false],
+  ['prompt-quality-llm', 'agent', { prompt: 'huge prompt low quality prompt' }, false],
+  ['scope-creep-detector', 'agent', { prompt: 'add unrelated feature causing scope creep' }, false],
 ];
 const afterCases = [
   ['aci-observation-capture', 'agent', { output: 'aci observation complete' }],
@@ -72,6 +87,8 @@ const afterCases = [
   ['auto-verify', 'bash', { output: 'verification recommended' }],
   ['context-watchdog', 'bash', { output: 'context threshold reached' }],
   ['doc-sync-detector', 'edit', { output: 'doc sync drift detected' }],
+  ['token-budget-monitor', 'bash', { output: 'token budget exceeded' }],
+  ['result-truncator', 'bash', { output: 'result truncated' }],
 ];
 const outcomes = {};
 for (const [key, tool, args, shouldThrow] of beforeCases) {
@@ -130,7 +147,7 @@ def build_report() -> dict[str, Any]:
         "schema_version": "opencode-primitive-adapter-smoke.v1",
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "status": status,
-        "opencode": {"binary": binary, "version": version},
+        "opencode": {"binary": _portable_path(binary), "version": version},
         "plugin": {"path": str(PLUGIN.relative_to(ROOT)), "events": ["tool.execute.before", "tool.execute.after"]},
         "checks": {
             "plugin_loaded": node.get("node_returncode") == 0,

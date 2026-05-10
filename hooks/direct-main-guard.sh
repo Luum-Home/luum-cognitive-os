@@ -7,6 +7,7 @@ set -uo pipefail
 [ -f "$(dirname "$0")/_lib/bypass-resolver.sh" ] && source "$(dirname "$0")/_lib/bypass-resolver.sh"
 PROJECT_DIR="${COGNITIVE_OS_PROJECT_DIR:-${CODEX_PROJECT_DIR:-${CLAUDE_PROJECT_DIR:-$(pwd)}}}"
 source "$(dirname "$0")/_lib/safe-jsonl.sh"
+[ -f "$(dirname "$0")/_lib/primitive-intervention.sh" ] && source "$(dirname "$0")/_lib/primitive-intervention.sh"
 INPUT=""
 if [ ! -t 0 ]; then INPUT=$(cat 2>/dev/null || true); fi
 TOOL_NAME=""; COMMAND=""
@@ -162,6 +163,15 @@ _require_bypass_reason() {
   printf '%s' "$reason"
 }
 
+_emit_direct_main_intervention() {
+  local action_kind="$1"
+  local reason_code="$2"
+  local target_ref="$3"
+  if type primitive_intervention_emit >/dev/null 2>&1; then
+    primitive_intervention_emit "direct-main-guard" "hooks/direct-main-guard.sh" "$action_kind" "$reason_code" "$target_ref" ".cognitive-os/metrics/direct-main-bypass.jsonl" "Bash" || true
+  fi
+}
+
 _emit_vcs_receipt() {
   local event_type="$1"
   local trust="$2"
@@ -234,6 +244,7 @@ if [ "$ACTION" = "push" ]; then
   echo "  COS_ALLOW_DIRECT_PUSH=1" >&2
   echo "  COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>'" >&2
   _emit_vcs_receipt "vcs.push.blocked" "verified" "direct-main-guard" "direct-push-blocked"
+  _emit_direct_main_intervention "block" "direct_main_push" "${BRANCH:-main}"
   exit 2
 fi
 if type cos_bypass_allows >/dev/null 2>&1 && cos_bypass_allows direct_main; then
@@ -248,6 +259,7 @@ case "$actor" in
     echo "Use a session branch and land through the ADR-116 merge queue / protected remote path." >&2
     echo "Bypass requires BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for explicit operator emergencies." >&2
     _emit_vcs_receipt "vcs.commit" "verified" "direct-main-guard" "direct-main-commit-blocked"
+    _emit_direct_main_intervention "block" "direct_main_commit" "${BRANCH:-main}"
     exit 2
     ;;
 esac
@@ -256,6 +268,7 @@ case "$POLICY" in
   allow) exit 0 ;;
   block)
     echo "[direct-main-guard] BLOCK: operator direct commit to $BRANCH is disabled by COS_OPERATOR_MAIN_POLICY=block." >&2
+     _emit_direct_main_intervention "block" "operator_direct_main_block" "${BRANCH:-main}"
     echo "Use a session branch and merge queue, or set BOTH COS_ALLOW_DIRECT_MAIN=1 and COS_DIRECT_MAIN_BYPASS_REASON='<short audit reason>' for a one-off emergency." >&2
     exit 2
     ;;
@@ -263,6 +276,7 @@ case "$POLICY" in
     echo "[direct-main-guard] WARN: direct operator commit to $BRANCH bypasses ADR-116 local session isolation." >&2
     echo "Remote branch protection / merge queue must remain the authoritative guard before this reaches origin." >&2
     echo "Recommended: use a session branch and merge queue for coordinated work." >&2
+    _emit_direct_main_intervention "warn" "operator_direct_main_warn" "${BRANCH:-main}"
     exit 0
     ;;
 esac

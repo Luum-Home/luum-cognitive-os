@@ -523,6 +523,7 @@ class DogfoodScorer:
         contracts_path = self.repo / "manifests/primitive-contracts.yaml"
         projection_path = self.repo / "docs/reports/primitive-projection-fidelity-latest.json"
         intervention_path = self.repo / ".cognitive-os/metrics/primitive-interventions.jsonl"
+        itinerary_path = self.repo / ".cognitive-os/metrics/codebase-itinerary.jsonl"
         if not contracts_path.exists():
             return None, "primitive-contracts.yaml missing"
         try:
@@ -561,11 +562,28 @@ class DogfoodScorer:
                 intervention_ids = set()
         observed_contracts = len(intervention_ids & contract_ids)
         ledger_score = min(100.0, (observed_contracts / max(min(contract_count, 10), 1)) * 100.0)
+
+        itinerary_events = 0
+        itinerary_tools: set[str] = set()
+        if itinerary_path.exists():
+            try:
+                for line in itinerary_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+                    if not line.strip():
+                        continue
+                    row = json.loads(line)
+                    if row.get("schema_version") in {"codebase-itinerary.v1", "tool-sequence.v1", None}:
+                        itinerary_events += 1
+                        itinerary_tools.add(str(row.get("tool") or row.get("tool_name") or "unknown"))
+            except Exception:
+                itinerary_events = 0
+                itinerary_tools = set()
+        itinerary_score = min(100.0, (itinerary_events / 10) * 100.0)
         contract_score = min(100.0, (contract_count / 20) * 100.0)
-        score = round(contract_score * 0.35 + projection_score * 0.35 + ledger_score * 0.30, 2)
+        score = round(contract_score * 0.25 + projection_score * 0.30 + ledger_score * 0.25 + itinerary_score * 0.20, 2)
         evidence = (
             f"contracts={contract_count} observed_contracts={observed_contracts} "
-            f"{projection_ev} ledger_ids={len(intervention_ids)}"
+            f"{projection_ev} ledger_ids={len(intervention_ids)} "
+            f"itinerary_events={itinerary_events} itinerary_tools={len(itinerary_tools)}"
         )
         return score, evidence
 

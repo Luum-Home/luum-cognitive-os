@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-10T14:15:06+00:00",
+  "generated_at": "2026-05-10T18:34:54+00:00",
   "items": [
     {
       "consumer_fleet_impact": "install-update-risk",
@@ -6091,13 +6091,14 @@
           "observed": {
             "behavior_proven": true,
             "evidence": [
+              "opencode-plugin-smoke",
               "test-or-manual-reference"
             ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -9150,13 +9151,14 @@
           "observed": {
             "behavior_proven": true,
             "evidence": [
+              "opencode-plugin-smoke",
               "test-or-manual-reference"
             ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -10554,13 +10556,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -11123,13 +11127,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -11232,13 +11238,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -12292,13 +12300,14 @@
           "observed": {
             "behavior_proven": true,
             "evidence": [
+              "opencode-plugin-smoke",
               "test-or-manual-reference"
             ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -12886,13 +12895,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -13225,13 +13236,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -17356,13 +17369,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },
@@ -17585,13 +17600,15 @@
           "finding": null,
           "harness": "opencode",
           "observed": {
-            "behavior_proven": false,
-            "evidence": [],
+            "behavior_proven": true,
+            "evidence": [
+              "opencode-plugin-smoke"
+            ],
             "installed": true,
-            "observable": false,
-            "operable": false,
-            "projected": false,
-            "wired": false
+            "observable": true,
+            "operable": true,
+            "projected": true,
+            "wired": true
           },
           "status": "aligned"
         },

@@ -107,7 +107,17 @@ def test_mcp_tofu_audit_detects_unpinned_server(tmp_path: Path) -> None:
 def test_mcp_tofu_audit_passes_pinned_server(tmp_path: Path) -> None:
     project = tmp_path / "project"
     (project / ".claude").mkdir(parents=True)
-    rec = {"name": "demo", "config_path": ".claude/settings.json", "command": "node", "args": ["server.js"], "env_keys": ["API_KEY"]}
+    rec = {
+        "name": "demo",
+        "config_path": ".claude/settings.json",
+        "command": "node",
+        "args": ["server.js"],
+        "url": "",
+        "transport": "",
+        "trust_pin_required": False,
+        "env_keys": ["API_KEY"],
+        "tool_description_hashes": {},
+    }
     rec["fingerprint"] = fingerprint(rec)
     (project / ".claude" / "settings.json").write_text(
         json.dumps({"mcpServers": {"demo": {"command": "node", "args": ["server.js"], "env": {"API_KEY": "secret-never-hashed"}}}}),

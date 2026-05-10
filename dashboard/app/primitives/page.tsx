@@ -5,6 +5,8 @@ import {
   getPortableAiConsumerSmokeSummary,
   getOpenCodePrimitiveAdapterSmokeSummary,
   getPrimitiveSurfaceCoverageSummary,
+  getPrimitiveProjectionDrilldown,
+  getPrimitiveRuntimeEvidenceSummary,
 } from "@/lib/cos-api";
 
 export const dynamic = "force-dynamic";
@@ -35,12 +37,14 @@ function JsonTable({ title, values }: { title: string; values: Record<string, nu
 }
 
 export default async function PrimitivesPage() {
-  const [coverage, fidelity, openCode, consumer, headless] = await Promise.all([
+  const [coverage, fidelity, openCode, consumer, headless, projectionRows, runtimeEvidence] = await Promise.all([
     getPrimitiveSurfaceCoverageSummary(),
     getPrimitiveProjectionFidelitySummary(),
     getOpenCodePrimitiveAdapterSmokeSummary(),
     getPortableAiConsumerSmokeSummary(),
     getPrimitiveServiceHeadlessSmokeSummary(),
+    getPrimitiveProjectionDrilldown(),
+    getPrimitiveRuntimeEvidenceSummary(),
   ]);
 
   return (
@@ -104,6 +108,43 @@ export default async function PrimitivesPage() {
         <JsonTable title="Projection Status Filters" values={fidelity.fidelityStatus} />
       </div>
 
+
+
+      <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
+          <h2 className="text-lg font-semibold">Runtime Session Drilldown</h2>
+          <p className="mt-2 text-sm text-[var(--color-text-muted)]">Ledger + itinerary rows grouped by session, content-free.</p>
+          <dl className="mt-4 text-sm">
+            <KeyValue label="Intervention rows" value={runtimeEvidence.interventionRows} />
+            <KeyValue label="Itinerary rows" value={runtimeEvidence.itineraryRows} />
+            <KeyValue label="Observed primitives" value={runtimeEvidence.interventionPrimitives} />
+          </dl>
+          <div className="mt-4 space-y-3 text-sm">
+            {runtimeEvidence.sessions.length === 0 ? <p>No runtime sessions found.</p> : runtimeEvidence.sessions.map((row) => (
+              <div key={row.sessionId} className="rounded border border-[var(--color-border)] p-3">
+                <div className="font-medium">{row.sessionId}</div>
+                <div className="text-[var(--color-text-muted)]">interventions={row.interventions} itinerary={row.itineraryEvents}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
+          <h2 className="text-lg font-semibold">Promotion Gaps</h2>
+          <p className="mt-2 text-sm text-[var(--color-text-muted)]">Qué falta para promover: harnesses no alineados o pendientes de runtime smoke por contrato.</p>
+          <div className="mt-4 space-y-3 text-sm">
+            {projectionRows.filter((row) => row.pendingReasons.length > 0).slice(0, 12).map((row) => (
+              <div key={row.contractId} className="rounded border border-[var(--color-border)] p-3">
+                <div className="font-medium">{row.contractId}</div>
+                <div className="text-[var(--color-text-muted)]">{row.pendingReasons.join(", ")}</div>
+                <code className="text-xs">{row.contractPath}</code>
+              </div>
+            ))}
+            {projectionRows.every((row) => row.pendingReasons.length === 0) ? <p>No promotion gaps in the latest projection report.</p> : null}
+          </div>
+        </div>
+      </div>
+
       <div className="mt-8 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
         <h2 className="text-lg font-semibold">Evidence Links</h2>
         <p className="mt-2 text-sm text-[var(--color-text-muted)]">Release operators can jump from this dashboard to the signed reports and contracts that prove registry-backed vs lifecycle-derived primitive state.</p>
@@ -111,8 +152,10 @@ export default async function PrimitivesPage() {
           <li><code>{fidelity.reportPath}</code></li>
           <li><code>{openCode.reportPath}</code></li>
           <li><code>docs/reports/portable-ai-consumer-smoke-latest.json</code></li>
+          <li><code>docs/reports/portable-ai-real-consumer-smoke-latest.json</code></li>
           <li><code>docs/reports/primitive-service-headless-smoke-latest.json</code></li>
           <li><code>manifests/primitive-contracts.yaml</code></li>
+          {runtimeEvidence.reportPaths.map((path) => <li key={path}><code>{path}</code></li>)}
         </ul>
         {fidelity.pendingContracts.length > 0 ? (
           <p className="mt-4 text-sm text-[var(--color-text-muted)]">Pending contracts: {fidelity.pendingContracts.join(", ")}</p>

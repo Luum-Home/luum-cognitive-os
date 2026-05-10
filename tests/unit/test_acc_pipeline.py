@@ -235,6 +235,15 @@ def make_repo(tmp_path: Path) -> Path:
         },
     )
     write_json(
+        root / ".cognitive-os" / "metrics" / "codebase-itinerary.jsonl",
+        {
+            "schema_version": "codebase-itinerary.v1",
+            "tool": "Read",
+            "category": "primitive_or_context",
+            "session_id": "unit-session",
+        },
+    )
+    write_json(
         root / "docs" / "reports" / "docs-execution-latest.json",
         {
             "summary": {"items": 1},
@@ -274,10 +283,12 @@ def test_build_report_maps_readiness_rows_to_acc_statuses(tmp_path: Path) -> Non
     assert payload["adapters"]["harness_coverage"]["status"] == "ok"
     assert payload["adapters"]["projection_fidelity"]["status"] == "ok"
     assert payload["adapters"]["primitive_interventions"]["status"] == "ok"
+    assert payload["adapters"]["codebase_itinerary"]["status"] == "ok"
     assert any(cap["id"] == "primitive_fitness:scripts/projected.sh" for cap in payload["capabilities"])
     assert any(cap["id"] == "harness_coverage:scripts/projected.sh" for cap in payload["capabilities"])
     assert any(cap["id"] == "projection_fidelity:hooks/x" for cap in payload["capabilities"])
     assert any(cap["id"] == "primitive_intervention:hooks/x" for cap in payload["capabilities"])
+    assert any(cap["id"] == "codebase_itinerary:Read" for cap in payload["capabilities"])
     assert any(cap["id"] == "template:templates/quality.md" for cap in payload["capabilities"])
     compact = acc_pipeline.compact_summary(payload)
     assert compact["schema_version"] == "acc.compact.v1"

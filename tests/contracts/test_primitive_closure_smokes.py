@@ -10,6 +10,8 @@ TRACKED_SMOKE_REPORTS = (
     REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.md",
     REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.json",
     REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.md",
+    REPO_ROOT / "docs" / "reports" / "portable-ai-real-consumer-smoke-latest.json",
+    REPO_ROOT / "docs" / "reports" / "portable-ai-real-consumer-smoke-latest.md",
     REPO_ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.json",
     REPO_ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.md",
 )
@@ -42,7 +44,7 @@ def test_opencode_native_plugin_smoke_proves_signed_subset() -> None:
     assert report["checks"]["all_signed_outcomes_passed"] is True
     assert report["checks"]["all_signed_ledger_rows_present"] is True
     assert report["checks"]["content_free_rows"] is True
-    assert len(report["supported_primitives"]) >= 20
+    assert len(report["supported_primitives"]) >= 30
     assert {
         "destructive-git-blocker",
         "destructive-rm-blocker",
@@ -68,3 +70,13 @@ def test_service_headless_smoke_proves_content_free_runtime_ledger() -> None:
     assert report["status"] == "pass"
     assert report["content_free_rows"] is True
     assert {"destructive-git-blocker", "destructive-rm-blocker", "skill-router", "large-file-advisor", "reinvention-check"} <= set(report["primitive_ids"])
+
+
+def test_portable_ai_real_consumer_smoke_uses_registered_consumer_shadows() -> None:
+    report = _run_json("cos-portable-ai-real-consumer-smoke")
+    assert report["schema_version"] == "portable-ai-real-consumer-smoke.v1"
+    assert report["status"] in {"pass", "warn"}
+    assert report["decision"]["mutates_real_consumers"] is False
+    if report["tested_consumer_count"]:
+        assert report["passing_consumer_count"] == report["tested_consumer_count"]
+        assert all(row["actual_consumer_unchanged"] for row in report["consumer_rows"])

@@ -1,6 +1,6 @@
 # Primitive Projection Fidelity — Latest
 
-Generated: 2026-05-10T14:15:06+00:00
+Generated: 2026-05-10T18:34:54+00:00
 Schema: `primitive-projection-fidelity.v1`
 
 This report compares declared primitive contract fidelity with observed harness coverage. Declared contracts are not runtime proof.

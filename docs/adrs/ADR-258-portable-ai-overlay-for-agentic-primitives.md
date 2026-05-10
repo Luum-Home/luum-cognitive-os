@@ -125,7 +125,17 @@ governance.
 
 Implemented by `scripts/portable_ai_consumer_impact.py` and
 `docs/reports/portable-ai-consumer-impact-latest.md`. The report is read-only and
-keeps canonical migration blocked. `scripts/portable_ai_consumer_smoke.py` also writes the generated overlay into a disposable consumer fixture and verifies adapter manifests, registry-backed portable contracts, lifecycle-derived rows, and no canonical mutation. Current consumer-fleet status may be `warn` or `fail` when unrelated external adoption evidence remains unsigned; that warning must not be hidden or forged.
+keeps canonical migration blocked. `scripts/portable_ai_consumer_smoke.py` also writes the generated overlay into a disposable consumer fixture and verifies adapter manifests, registry-backed portable contracts, lifecycle-derived rows, and no canonical mutation.
+
+Release-hardening adds `scripts/portable_ai_real_consumer_smoke.py`, exposed as
+`scripts/cos-portable-ai-real-consumer-smoke`, which selects registered real
+consumer projects for this COS checkout, projects the generated `.ai` overlay into
+temporary consumer shadows, and snapshots the actual consumer `.ai` tree before
+and after. This raises consumer proof from a generic fixture to representative
+registered consumers while preserving the invariant that COS release validation
+never mutates downstream repositories. Current consumer-fleet status may be
+`warn` or `fail` when unrelated external adoption evidence remains unsigned; that
+warning must not be hidden or forged.
 
 ### Phase 5 — consider canonical migration
 
@@ -193,4 +203,6 @@ migration ADR is accepted.
 python3 -m pytest tests/contracts/test_portable_ai_overlay.py -q
 python3 -m pytest tests/contracts/test_primitive_contract_registry.py -q
 python3 -m pytest tests/contracts/test_primitive_projection_fidelity.py -q
+python3 -m pytest tests/unit/test_portable_ai_real_consumer_smoke.py -q
+python3 scripts/cos-portable-ai-real-consumer-smoke --check --json
 ```
