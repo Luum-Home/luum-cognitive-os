@@ -193,6 +193,10 @@ export interface PrimitiveProjectionFidelitySummary {
   gaps: number;
   unknown: number;
   pendingRuntimeSmoke: number;
+  harnessStatus: Record<string, number>;
+  fidelityStatus: Record<string, number>;
+  pendingContracts: string[];
+  reportPath: string;
   consumesReport: boolean;
   mode: "observe-only";
 }
@@ -202,6 +206,8 @@ export interface OpenCodePrimitiveAdapterSmokeSummary {
   version: string;
   supportedPrimitives: number;
   ledgerRows: number;
+  events: string[];
+  reportPath: string;
   consumesReport: boolean;
   mode: "observe-only";
 }
@@ -226,6 +232,31 @@ export interface PrimitiveServiceHeadlessSmokeSummary {
   mode: "observe-only";
 }
 
+function countProjectionRows(items: Array<Record<string, unknown>>, field: "harness" | "status"): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const item of items) {
+    const rows = item.projection_fidelity;
+    if (!Array.isArray(rows)) continue;
+    for (const row of rows) {
+      if (!row || typeof row !== "object") continue;
+      const value = String((row as Record<string, unknown>)[field] || "unknown");
+      counts[value] = (counts[value] || 0) + 1;
+    }
+  }
+  return counts;
+}
+
+function pendingPrimitiveContracts(items: Array<Record<string, unknown>>): string[] {
+  const pending: string[] = [];
+  for (const item of items) {
+    const rows = item.projection_fidelity;
+    if (!Array.isArray(rows)) continue;
+    const hasPending = rows.some((row) => row && typeof row === "object" && String((row as Record<string, unknown>).status || "") !== "aligned");
+    if (hasPending) pending.push(String(item.contract_id || "unknown"));
+  }
+  return pending.slice(0, 25);
+}
+
 export async function getPrimitiveProjectionFidelitySummary(): Promise<PrimitiveProjectionFidelitySummary> {
   const reportPath = join(COS_ROOT, "docs", "reports", "primitive-projection-fidelity-latest.json");
   try {
@@ -238,11 +269,15 @@ export async function getPrimitiveProjectionFidelitySummary(): Promise<Primitive
       gaps: Number(summary.gaps || 0),
       unknown: Number(summary.unknown || 0),
       pendingRuntimeSmoke: Number(summary.pending_runtime_smoke || 0),
+      harnessStatus: countProjectionRows(report.items || [], "harness"),
+      fidelityStatus: countProjectionRows(report.items || [], "status"),
+      pendingContracts: pendingPrimitiveContracts(report.items || []),
+      reportPath: "docs/reports/primitive-projection-fidelity-latest.json",
       consumesReport: true,
       mode: "observe-only",
     };
   } catch {
-    return { contracts: 0, projectionRows: 0, aligned: 0, gaps: 0, unknown: 0, pendingRuntimeSmoke: 0, consumesReport: false, mode: "observe-only" };
+    return { contracts: 0, projectionRows: 0, aligned: 0, gaps: 0, unknown: 0, pendingRuntimeSmoke: 0, harnessStatus: {}, fidelityStatus: {}, pendingContracts: [], reportPath: "docs/reports/primitive-projection-fidelity-latest.json", consumesReport: false, mode: "observe-only" };
   }
 }
 
@@ -255,11 +290,13 @@ export async function getOpenCodePrimitiveAdapterSmokeSummary(): Promise<OpenCod
       version: String((report.opencode || {}).version || ""),
       supportedPrimitives: Array.isArray(report.supported_primitives) ? report.supported_primitives.length : 0,
       ledgerRows: Number(report.ledger_row_count || 0),
+      events: Array.isArray((report.plugin || {}).events) ? (report.plugin || {}).events.map(String) : [],
+      reportPath: "docs/reports/opencode-primitive-adapter-smoke-latest.json",
       consumesReport: true,
       mode: "observe-only",
     };
   } catch {
-    return { status: "unavailable", version: "", supportedPrimitives: 0, ledgerRows: 0, consumesReport: false, mode: "observe-only" };
+    return { status: "unavailable", version: "", supportedPrimitives: 0, ledgerRows: 0, events: [], reportPath: "docs/reports/opencode-primitive-adapter-smoke-latest.json", consumesReport: false, mode: "observe-only" };
   }
 }
 

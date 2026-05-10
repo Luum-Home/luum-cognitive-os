@@ -4,7 +4,7 @@ set -euo pipefail
 cmd="${1:-}"
 plan_path="${2:-}"
 purpose="${3:-plan-update}"
-project_dir="${COGNITIVE_OS_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+project_dir="${COGNITIVE_OS_PROJECT_DIR:-$(scripts/cos-root project 2>/dev/null || pwd)}"
 session_id="${COGNITIVE_OS_SESSION_ID:-operator-$$}"
 agent_id="${COGNITIVE_OS_AGENT_ID:-manual}"
 ttl="${COS_PLAN_LOCK_TTL:-1800}"

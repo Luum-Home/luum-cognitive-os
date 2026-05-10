@@ -1,0 +1,177 @@
+{
+  "canonical_source": "scripts/cos-consumer-fleet-audit",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "script-cos-consumer-fleet-audit",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "unsupported"
+    },
+    "intent": "read-only fleet panel joining install registry, install metadata, registry-lock audit, claim-signature audit, and targeted validation lanes",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "contract/documentation only"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-consumer-fleet-audit",
+        "scripts/cos_consumer_fleet_audit.py",
+        "lib/consumer_fleet_audit.py",
+        "docs/architecture/consumer-fleet-audit.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "read-only fleet panel joining install registry, install metadata, registry-lock audit, claim-signature audit, and targeted validation lanes",
+    "evidence_commands": [
+      "scripts/cos-consumer-fleet-audit --json",
+      "python3 -m pytest tests/unit/test_consumer_fleet_audit.py -q"
+    ],
+    "metrics_file": "none"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "maintainer",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "mixed",
+    "governance_class": "meta-governance",
+    "lifecycle_state": "advisory",
+    "maturity": "advisory",
+    "owner_adr": "ADR-136",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "script-cos-consumer-fleet-audit",
+    "evidence": {
+      "evidence_commands": [
+        "scripts/cos-consumer-fleet-audit --json",
+        "python3 -m pytest tests/unit/test_consumer_fleet_audit.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [],
+      "proof_tests": [
+        "tests/unit/test_consumer_fleet_audit.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "unsupported"
+    },
+    "intent": "read-only fleet panel joining install registry, install metadata, registry-lock audit, claim-signature audit, and targeted validation lanes",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "contract/documentation only"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-consumer-fleet-audit",
+        "scripts/cos_consumer_fleet_audit.py",
+        "lib/consumer_fleet_audit.py",
+        "docs/architecture/consumer-fleet-audit.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "script-cos-consumer-fleet-audit",
+  "projection_targets": [
+    "scripts/cos-consumer-fleet-audit",
+    "scripts/cos_consumer_fleet_audit.py",
+    "lib/consumer_fleet_audit.py",
+    "docs/architecture/consumer-fleet-audit.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-consumer-fleet-audit",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

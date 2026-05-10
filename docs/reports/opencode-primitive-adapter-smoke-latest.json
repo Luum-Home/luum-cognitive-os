@@ -1,22 +1,24 @@
 {
   "checks": {
-    "blocking_event_threw": true,
+    "all_signed_ledger_rows_present": true,
+    "all_signed_outcomes_passed": true,
     "content_free_rows": true,
-    "destructive_git_ledger_row": true,
-    "destructive_rm_ledger_row": true,
-    "large_file_advisory_ledger_row": true,
-    "plugin_loaded": true,
-    "skill_router_ledger_row": true
+    "plugin_loaded": true
   },
-  "generated_at": "2026-05-09T21:31:23+00:00",
-  "ledger_row_count": 4,
+  "failed_outcomes": [],
+  "generated_at": "2026-05-10T14:14:48+00:00",
+  "ledger_row_count": 20,
+  "missing_ledger_rows": [],
   "node_stderr_tail": "",
   "opencode": {
     "binary": "/opt/homebrew/bin/opencode",
     "version": "1.14.20"
   },
   "plugin": {
-    "event": "tool.execute.before",
+    "events": [
+      "tool.execute.before",
+      "tool.execute.after"
+    ],
     "path": "packages/opencode-adapter/plugins/cos-primitive-guard.js"
   },
   "schema_version": "opencode-primitive-adapter-smoke.v1",
@@ -24,7 +26,23 @@
   "supported_primitives": [
     "destructive-git-blocker",
     "destructive-rm-blocker",
+    "reinvention-check",
     "large-file-advisor",
-    "skill-router"
+    "skill-router",
+    "aci-observation-capture",
+    "adr-relevance-suggest",
+    "adr-section-validator",
+    "agent-bash-cwd-enforcer",
+    "agent-control-inbound-guard",
+    "auto-rollback-trigger",
+    "auto-verify",
+    "claim-validator",
+    "confidence-gate",
+    "confidentiality-enforcer",
+    "content-policy",
+    "context-watchdog",
+    "cosd-auth-guard",
+    "dispatch-gate",
+    "doc-sync-detector"
   ]
 }

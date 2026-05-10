@@ -42,7 +42,11 @@ def _run_hook(project: Path, hook: str, payload: dict[str, Any]) -> dict[str, An
         cwd=str(ROOT),
         timeout=15,
     )
-    return {"hook": hook, "returncode": result.returncode, "stderr_tail": result.stderr[-500:]}
+    return {
+        "hook": hook,
+        "returncode": result.returncode,
+        "stderr_present": bool(result.stderr.strip()),
+    }
 
 
 def build_report() -> dict[str, Any]:
@@ -54,6 +58,7 @@ def build_report() -> dict[str, Any]:
         large.write_text("x" * 41000, encoding="utf-8")
         runs = [
             _run_hook(project, "destructive-git-blocker.sh", {"tool_name": "Bash", "tool_input": {"command": "git reset --hard private-headless"}}),
+            _run_hook(project, "destructive-rm-blocker.sh", {"tool_name": "Bash", "tool_input": {"command": "rm -rf private-headless-dir"}}),
             _run_hook(project, "skill-router-bash-gate.sh", {"tool_name": "Bash", "tool_input": {"command": "pip install --upgrade private-headless-package"}}),
             _run_hook(project, "large-file-advisor.sh", {"tool_name": "Read", "tool_input": {"file_path": str(large)}}),
             _run_hook(project, "reinvention-check.sh", {"tool_name": "Agent", "tool_input": {"prompt": "create duplicate_helper.py in lib/ for a new hook"}}),
@@ -62,7 +67,7 @@ def build_report() -> dict[str, Any]:
         rows = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines() if line.strip()] if ledger.exists() else []
     by_id = {row.get("primitive_id") for row in rows}
     leaked = "private-headless" in json.dumps(rows) or "duplicate_helper" in json.dumps(rows)
-    expected = {"destructive-git-blocker", "skill-router", "large-file-advisor", "reinvention-check"}
+    expected = {"destructive-git-blocker", "destructive-rm-blocker", "skill-router", "large-file-advisor", "reinvention-check"}
     status = "pass" if expected <= by_id and not leaked and any(run["returncode"] == 2 for run in runs) else "fail"
     return {
         "schema_version": "primitive-service-headless-smoke.v1",

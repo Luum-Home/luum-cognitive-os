@@ -267,8 +267,8 @@ if command -v python3 >/dev/null 2>&1 && [ -x "$PROJECT_DIR/scripts/cos_work_inv
   # still get task claims and resource leases instead of being blocked by a
   # non-applicable repository inventory check.
   if git -C "$PROJECT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    INVENTORY_TMP=$(mktemp "${TMPDIR:-/tmp}/cos-inventory.XXXXXX.json")
-    INVENTORY_ERR=$(mktemp "${TMPDIR:-/tmp}/cos-inventory.XXXXXX.err")
+    INVENTORY_TMP=$(mktemp "${TMPDIR:-/tmp}/cos-inventory.json.XXXXXX")
+    INVENTORY_ERR=$(mktemp "${TMPDIR:-/tmp}/cos-inventory.err.XXXXXX")
     set +e
     python3 "$PROJECT_DIR/scripts/cos_work_inventory.py" --project-dir "$PROJECT_DIR" --all --strict --json $ALLOW_RO_ARG >"$INVENTORY_TMP" 2>"$INVENTORY_ERR"
     INVENTORY_RC=$?

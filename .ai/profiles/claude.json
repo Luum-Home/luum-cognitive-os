@@ -120,6 +120,1728 @@
       "contract_id": "doc-sync-detector",
       "fidelity": "native-lifecycle-enforced",
       "surface": "lifecycle hook"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-context",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-event",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "adaptive-bypass",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-checkpoint",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-launch-confirmed",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-message-inbox-context",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-message-inbox-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-prelaunch",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "agent-working-dir-inject",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "aspirational-audit-weekly",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "assumption-tracker",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "audit-id-enricher",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "auto-checkpoint",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "auto-refine",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "auto-repair-dispatcher",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "auto-skill-generator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "blast-radius",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "branch-ownership-lock",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "branch-ownership-release",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "clarification-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "completeness-check",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "completion-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "concurrent-write-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "consequence-evaluator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "context-budget-meter",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "cos-executor-daemon-launcher",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "crash-recovery",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "cross-session-coordination-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "cross-session-event-emit",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "cross-session-peer-context",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "dangerous-env-flag-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "dequeue-notify",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "direct-main-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "docker-drift-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "document-ingest-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "dod-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "edit-lock-drain-parked",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "edit-lock-pre-tool",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "edit-lock-process-negotiations",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "edit-lock-session-end",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "engram-crystallize-on-session-end",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "engram-daemon-launcher",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "engram-obsidian-export-on-stop",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "engram-reinforce-on-access",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "error-learning",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "error-pattern-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "error-pipeline",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "git-commit-scope-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "git-context-capture",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "hook-header-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "host-tool-doctor",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "infra-health",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "inject-phase-context",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "kpi-trigger",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "lethal-trifecta-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "mcp-scan",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "memory-prefetch",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "native-agent-heartbeat",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "network-egress-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "orchestrator-claim-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "orchestrator-decision-trace",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "orchestrator-skill-invocation-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "plan-claim-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "post-agent-snapshot-restore",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "post-agent-verify",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "post-git-orphan-notifier",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "pre-agent-snapshot",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "pre-commit-content-hash-dedupe",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "pre-compaction-flush",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "predev-completeness-check",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "private-mode-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "private-mode-metrics-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "profile-drift-autoapply",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "project-docs-convention",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "promotion-proposer-weekly",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "prompt-quality-llm",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "protected-config-write-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "query-tailored-context-inject",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rate-limit-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rate-limit-drain",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rate-limit-precheck",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rate-limiter",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "reaper-daemon-launcher",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "release-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "research-quality-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "result-truncator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "review-spawner",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rule-frontmatter-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rule-md-routing-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "rule-router-prompt-suggest",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "scope-creep-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "scope-marker-portability-gate",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "scope-proportionality",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "secret-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "self-install",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "self-knowledge-refresh",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-changelog",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-cleanup",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-end-reap",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-heartbeat",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-init",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-learning",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-resume",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-sanity",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-start-stash-reapply",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-start-worktree-nudge",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-startup-protocol",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-summary-reminder",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-watchdog-launcher",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "session-wrapup-trigger",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-failure-monitor",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-feedback-tracker",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-frontmatter-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-invocation-logger",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-md-routing-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-post-execution-analysis",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-router-prompt-suggest",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-synthesis-scanner",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-tracker",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "skill-usage-tracker",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "stash-budget-warn",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "state-heartbeat",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "subagent-context-injector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "surface-fix-detector",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "symlink-mutation-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-completed",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "task-created",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "teammate-idle",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "token-budget-monitor",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "tool-sequence-capture",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "trust-score-validator",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "untracked-work-preservation-guard",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "user-prompt-capture",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "validation-lock-cleanup",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "validator-soak-weekly",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "work-queue-sync",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-behavior-evidence",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-harness-gap-policy",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-scope-classification",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-scope-overrides",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-session-id",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-acc-pipeline",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-adr-tombstone",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-apply-efficiency-profile",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-aspirational-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-check-mcp-servers",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-active-primitive-index",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adoption-profile",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-tombstone",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-agent-message",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-architecture-readiness",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-auth-probe",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-bootstrap",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-boring-reliability",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-ci-local",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-discipline-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-config-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-consumer-fleet-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-coordination-status",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-core-skills-check",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-credential-safe-run",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-cross-instance-drill",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-demotion-loop-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-dispatch-smoke",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-harness",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-memory-lifecycle",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-tools",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctrine-proposer",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-engram-bundle",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-engram-cloud-docker-smoke",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-export-consumer-evidence",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-federation-trigger-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-flow-register",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-headless-service-drill",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-import-consumer-evidence",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-init",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-key-learnings-capture",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-lab-first-gate",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-manifest-tier-claim-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-merge-queue-worker",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-new-adr",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-preamble-budget",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-queue-drain",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-registry-lock",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-release-check",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-runtime-hook-reality",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-self-improvement-discipline-gate",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-self-improvement-loop",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-coordination",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-start-budget",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-silent-failure-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-smoke",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-status",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-task-submit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-test-efficiency-plan",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-tier-claim-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-usage-report",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-validation-break",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-validation-status",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-weekly-config-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-wip-safety-score",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worker-run-once",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worktree-triage",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-architecture-readiness-06fbe1ac",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-auth-probe-dc36addf",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-boring-reliability-c8805364",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-discipline-audit-940d76af",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-init-c3577131",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-instance-init",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-new-adr-561e4a84",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-primitive-harvester",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-recovery-drill",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-service-control-plane",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-backlog",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-work-inventory",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worktree-triage-19c3f535",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cosd",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cost-predict",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-create-release",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-decision-triage",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-demo-first-run-onboarding",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-demo-portability-proof",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-dependency-lane",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-deps-update",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-doc-review-personas",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-docs-execution-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-document-feature-append",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-dogfood-score",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-domain-model",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-edit-coop",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-generate-project-settings",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-generate-compact-catalog",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-stream-statusline",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-timing-wrapper",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-timing-report",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-install-garak",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-install-promptfoo",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-invariant-check-helper",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-llm-status",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-merge-to-main",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-ops-runbook",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-orchestrator",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-harness-coverage",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-surface-reduce",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-usage-map",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-project-scaffold",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-proof-drill-select",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-pytest-with-summary",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-radar-merge",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-redteam-aggregate",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-risk-register",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-rules-export",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-run-all-tests",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-run-redteam-scenario",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-red-team",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-audit-writer",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-red-team-abf374e8",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-set-security-profile",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-setup",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-doc-review-personas",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-multi-provider-fallback",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-qwen-fallback",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-sprint-test-summary",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-all",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-cognitive-os-full",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-run-inventory",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-skip-registry",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-uninstall",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-upgrade",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-verify-archived",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-weekly-aspirational-audit",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-skill",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-harness-coverage-skill",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "codebase-itinerary-capture",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "control-plane-audit",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": true,
+      "contract_id": "control-plane-audit-hourly",
+      "fidelity": "native-lifecycle-enforced",
+      "surface": "Claude lifecycle projection declared by primitive-lifecycle"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bus-py-filesystem-interrupt",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "base-py-inbound-signal",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-preserve",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-primitive-harvester-0ff3f530",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-service-readiness-gate",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapters",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-observe-primitives",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-portable-ai-overlay",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-record-onboarding",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-promote-lifecycle-primitives-to-contracts",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
     }
   ],
   "display_name": "Claude Code",

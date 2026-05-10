@@ -1,0 +1,176 @@
+{
+  "canonical_source": "scripts/cos-headless-service-drill",
+  "canonical_source_kind": "cos-internal",
+  "contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "script-cos-headless-service-drill",
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "unsupported"
+    },
+    "intent": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",
+    "present": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "contract/documentation only"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-headless-service-drill",
+        "docker/cos-worker/docker-compose.yml",
+        "docs/manual-tests/headless-docker-service-runtime.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "evidence": {
+    "behavior_evidence": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",
+    "evidence_commands": [
+      "bash -n scripts/cos-headless-service-drill",
+      "python3 -m pytest tests/contracts/test_proof_drill_registry.py -q"
+    ],
+    "metrics_file": ".cognitive-os/service/artifacts"
+  },
+  "family": "script",
+  "lifecycle": {
+    "distribution": "team",
+    "docs_claim_level": "advisory",
+    "exit_behavior": "manual",
+    "governance_class": "delivery-structure",
+    "lifecycle_state": "candidate",
+    "maturity": "advisory",
+    "owner_adr": "ADR-162",
+    "risk_class": "advisory",
+    "runtime_projection": false
+  },
+  "overlay_role": "generated-reference",
+  "portable_contract": {
+    "actions": {
+      "fallback": "document",
+      "preferred": "observe",
+      "reason_codes": [
+        "lifecycle_promoted_contract"
+      ]
+    },
+    "contract_id": "script-cos-headless-service-drill",
+    "evidence": {
+      "evidence_commands": [
+        "bash -n scripts/cos-headless-service-drill",
+        "python3 -m pytest tests/contracts/test_proof_drill_registry.py -q"
+      ],
+      "interventions": [
+        ".cognitive-os/metrics/primitive-interventions.jsonl"
+      ],
+      "metrics": [
+        ".cognitive-os/service/artifacts"
+      ],
+      "proof_tests": [
+        "tests/contracts/test_proof_drill_registry.py"
+      ]
+    },
+    "impact": {
+      "consumer_fleet": "none",
+      "service_mode": "unsupported"
+    },
+    "intent": "opt-in Docker/headless service proof drill; excluded from default laptop lanes",
+    "is_full_contract": true,
+    "projection_fidelity": {
+      "claude": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "contract/documentation only"
+      },
+      "codex": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+      },
+      "cursor": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Cursor rules/context only"
+      },
+      "opencode": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated .ai/OpenCode advisory projection; no runtime enforcement claimed"
+      },
+      "shell-ci": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "documented-only",
+        "surface": "evidence commands documented; no generic CI enforcement claimed"
+      },
+      "vscode-copilot": {
+        "claims_runtime_enforcement": false,
+        "fidelity": "structural-advisory",
+        "surface": "generated Copilot instructions only"
+      }
+    },
+    "requires": [
+      "respect_declared_scope",
+      "preserve_privacy",
+      "emit_intervention"
+    ],
+    "source": "primitive-contract-registry",
+    "trigger": {
+      "kind": "documented_or_on_demand",
+      "projection_targets": [
+        "scripts/cos-headless-service-drill",
+        "docker/cos-worker/docker-compose.yml",
+        "docs/manual-tests/headless-docker-service-runtime.md"
+      ],
+      "runtime_projection": false
+    }
+  },
+  "portable_id": "script-cos-headless-service-drill",
+  "projection_targets": [
+    "scripts/cos-headless-service-drill",
+    "docker/cos-worker/docker-compose.yml",
+    "docs/manual-tests/headless-docker-service-runtime.md"
+  ],
+  "schema_version": "portable-ai-primitive.v1",
+  "source_id": "scripts/cos-headless-service-drill",
+  "supported_harnesses": [
+    "shell"
+  ]
+}

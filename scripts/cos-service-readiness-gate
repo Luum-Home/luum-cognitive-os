@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SCOPE: both
 """CLI for ADR-211 Service-Mode Readiness Gate."""
 from __future__ import annotations
 

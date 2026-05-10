@@ -120,6 +120,1728 @@
       "contract_id": "doc-sync-detector",
       "fidelity": "structural-advisory",
       "surface": "copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-context",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-event",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adaptive-bypass",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-checkpoint",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-launch-confirmed",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-message-inbox-context",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-message-inbox-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-prelaunch",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-working-dir-inject",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "aspirational-audit-weekly",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "assumption-tracker",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "audit-id-enricher",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-checkpoint",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-refine",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-repair-dispatcher",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-skill-generator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "blast-radius",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "branch-ownership-lock",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "branch-ownership-release",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "clarification-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "completeness-check",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "completion-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "concurrent-write-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "consequence-evaluator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "context-budget-meter",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cos-executor-daemon-launcher",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "crash-recovery",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cross-session-coordination-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cross-session-event-emit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cross-session-peer-context",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dangerous-env-flag-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dequeue-notify",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "direct-main-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "docker-drift-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "document-ingest-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dod-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-drain-parked",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-pre-tool",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-process-negotiations",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-session-end",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-crystallize-on-session-end",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-daemon-launcher",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-obsidian-export-on-stop",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-reinforce-on-access",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "error-learning",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "error-pattern-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "error-pipeline",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "git-commit-scope-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "git-context-capture",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-header-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "host-tool-doctor",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "infra-health",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "inject-phase-context",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "kpi-trigger",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "lethal-trifecta-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "mcp-scan",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "memory-prefetch",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "native-agent-heartbeat",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "network-egress-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "orchestrator-claim-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "orchestrator-decision-trace",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "orchestrator-skill-invocation-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "plan-claim-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "post-agent-snapshot-restore",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "post-agent-verify",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "post-git-orphan-notifier",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "pre-agent-snapshot",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "pre-commit-content-hash-dedupe",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "pre-compaction-flush",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "predev-completeness-check",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "private-mode-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "private-mode-metrics-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "profile-drift-autoapply",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "project-docs-convention",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "promotion-proposer-weekly",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "prompt-quality-llm",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "protected-config-write-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "query-tailored-context-inject",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limit-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limit-drain",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limit-precheck",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limiter",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "reaper-daemon-launcher",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "release-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "research-quality-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "result-truncator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "review-spawner",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-frontmatter-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-md-routing-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-router-prompt-suggest",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "scope-creep-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "scope-marker-portability-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "scope-proportionality",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "secret-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "self-install",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "self-knowledge-refresh",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-changelog",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-cleanup",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-end-reap",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-heartbeat",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-init",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-learning",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-resume",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-sanity",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-start-stash-reapply",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-start-worktree-nudge",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-startup-protocol",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-summary-reminder",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-watchdog-launcher",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-wrapup-trigger",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-failure-monitor",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-feedback-tracker",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-frontmatter-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-invocation-logger",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-md-routing-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-post-execution-analysis",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-router-prompt-suggest",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-synthesis-scanner",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-tracker",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-usage-tracker",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "stash-budget-warn",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "state-heartbeat",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "subagent-context-injector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "surface-fix-detector",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "symlink-mutation-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-completed",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-created",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "teammate-idle",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "token-budget-monitor",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "tool-sequence-capture",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "trust-score-validator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "untracked-work-preservation-guard",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "user-prompt-capture",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "validation-lock-cleanup",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "validator-soak-weekly",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "work-queue-sync",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-behavior-evidence",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-harness-gap-policy",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-scope-classification",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-scope-overrides",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-session-id",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-acc-pipeline",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-adr-tombstone",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-apply-efficiency-profile",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-aspirational-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-check-mcp-servers",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-active-primitive-index",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adoption-profile",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-tombstone",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-agent-message",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-architecture-readiness",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-auth-probe",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-bootstrap",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-boring-reliability",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-ci-local",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-discipline-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-config-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-consumer-fleet-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-coordination-status",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-core-skills-check",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-credential-safe-run",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-cross-instance-drill",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-demotion-loop-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-dispatch-smoke",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-harness",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-memory-lifecycle",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-tools",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctrine-proposer",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-engram-bundle",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-engram-cloud-docker-smoke",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-export-consumer-evidence",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-federation-trigger-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-flow-register",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-headless-service-drill",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-import-consumer-evidence",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-init",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-key-learnings-capture",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-lab-first-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-manifest-tier-claim-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-merge-queue-worker",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-new-adr",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-preamble-budget",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-queue-drain",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-registry-lock",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-release-check",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-runtime-hook-reality",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-self-improvement-discipline-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-self-improvement-loop",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-coordination",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-start-budget",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-silent-failure-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-smoke",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-status",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-task-submit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-test-efficiency-plan",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-tier-claim-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-usage-report",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-validation-break",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-validation-status",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-weekly-config-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-wip-safety-score",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worker-run-once",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worktree-triage",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-architecture-readiness-06fbe1ac",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-auth-probe-dc36addf",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-boring-reliability-c8805364",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-discipline-audit-940d76af",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-init-c3577131",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-instance-init",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-new-adr-561e4a84",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-primitive-harvester",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-recovery-drill",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-service-control-plane",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-backlog",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-work-inventory",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worktree-triage-19c3f535",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cosd",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cost-predict",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-create-release",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-decision-triage",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-demo-first-run-onboarding",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-demo-portability-proof",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-dependency-lane",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-deps-update",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-doc-review-personas",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-docs-execution-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-document-feature-append",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-dogfood-score",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-domain-model",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-edit-coop",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-generate-project-settings",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-generate-compact-catalog",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-stream-statusline",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-timing-wrapper",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-timing-report",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-install-garak",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-install-promptfoo",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-invariant-check-helper",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-llm-status",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-merge-to-main",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-ops-runbook",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-orchestrator",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-harness-coverage",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-surface-reduce",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-usage-map",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-project-scaffold",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-proof-drill-select",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-pytest-with-summary",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-radar-merge",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-redteam-aggregate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-risk-register",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-rules-export",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-run-all-tests",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-run-redteam-scenario",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-red-team",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-audit-writer",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-red-team-abf374e8",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-set-security-profile",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-setup",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-doc-review-personas",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-multi-provider-fallback",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-qwen-fallback",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-sprint-test-summary",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-all",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-cognitive-os-full",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-run-inventory",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-skip-registry",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-uninstall",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-upgrade",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-verify-archived",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-weekly-aspirational-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-skill",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-harness-coverage-skill",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "codebase-itinerary-capture",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "control-plane-audit",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "control-plane-audit-hourly",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bus-py-filesystem-interrupt",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "base-py-inbound-signal",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-preserve",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-primitive-harvester-0ff3f530",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-service-readiness-gate",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapters",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-observe-primitives",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-portable-ai-overlay",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-record-onboarding",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-promote-lifecycle-primitives-to-contracts",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
     }
   ],
   "display_name": "VS Code Copilot",

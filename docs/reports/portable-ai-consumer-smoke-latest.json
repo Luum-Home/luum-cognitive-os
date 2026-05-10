@@ -1,14 +1,14 @@
 {
   "adapter_manifest_count": 26,
   "consumer_fixture": "tempdir",
-  "generated_at": "2026-05-09T21:31:24+00:00",
-  "lifecycle_derived_count": 281,
+  "generated_at": "2026-05-10T14:14:52+00:00",
+  "lifecycle_derived_count": 0,
   "no_canonical_mutation": true,
-  "overlay_file_count": 383,
+  "overlay_file_count": 389,
   "policy": "The `.ai` tree is a generated overlay until ADR-258 Phase 5 decides otherwise.",
-  "primitive_file_count": 301,
+  "primitive_file_count": 307,
   "profile_count": 26,
-  "registry_backed_count": 20,
+  "registry_backed_count": 307,
   "schema_version": "portable-ai-consumer-smoke.v1",
   "status": "pass"
 }

@@ -1,8 +1,8 @@
 # Primitive Service/Headless Smoke — Latest
 
-Generated: 2026-05-09T21:31:26+00:00
+Generated: 2026-05-10T14:14:50+00:00
 Status: `pass`
 Mode: `headless-shell-service-equivalent`
-Ledger rows: 4
-Primitive ids: `destructive-git-blocker, large-file-advisor, reinvention-check, skill-router`
+Ledger rows: 5
+Primitive ids: `destructive-git-blocker, destructive-rm-blocker, large-file-advisor, reinvention-check, skill-router`
 Content-free rows: `True`

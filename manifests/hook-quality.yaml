@@ -3,6 +3,8 @@ hooks:
   aci-observation-capture:
     behavior_tests:
     - tests/contracts/test_aci_observation_capture_hook.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_promotion_propose_only.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_observe_only
@@ -48,6 +50,8 @@ hooks:
   adr-relevance-suggest:
     behavior_tests:
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_adr_relevance_hook.py
     - tests/unit/test_adr_router.py
     bypass_policy: not_required_warning_only
@@ -65,6 +69,8 @@ hooks:
     script: hooks/adr-relevance-suggest.sh
   adr-section-validator:
     behavior_tests:
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     criticality: quality
@@ -80,7 +86,9 @@ hooks:
     scope: os-only
     script: hooks/adr-section-validator.sh
   agent-bash-cwd-enforcer:
-    behavior_tests: []
+    behavior_tests:
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     bypass_policy: not_required_warning_only
     criticality: coordination
     event: PreToolUse
@@ -116,6 +124,8 @@ hooks:
   agent-control-inbound-guard:
     behavior_tests:
     - tests/contracts/test_agent_control_primitive_lifecycle.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_primitive_coherence_audit.py
     bypass_policy: not_required_warning_only
     criticality: coordination
@@ -364,6 +374,8 @@ hooks:
     - tests/behavior/test_safety_mesh_2.py
     - tests/chaos/test_auto_rollback_trigger_exercised.py
     - tests/contracts/test_auto_rollback_safety_contract.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_codex_guard_layer.py
@@ -405,6 +417,8 @@ hooks:
     - tests/chaos/test_auto_verify_exercised.py
     - tests/chaos/test_killswitch_exercise.py
     - tests/contracts/test_harness_engineering_docs.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_chaos_template.py
     - tests/unit/test_governance_artifact_consumption.py
@@ -491,7 +505,9 @@ hooks:
     behavior_tests:
     - tests/behavior/test_adr108_ledger_hook_wiring.py
     - tests/behavior/test_claim_validator.py
+    - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/contracts/test_red_team_harness_primitives.py
     - tests/contracts/test_redteam_portability_coverage.py
@@ -647,7 +663,9 @@ hooks:
   confidence-gate:
     behavior_tests:
     - tests/behavior/test_safety_mesh_2.py
+    - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_efficiency_optimization.py
@@ -670,6 +688,8 @@ hooks:
   confidentiality-enforcer:
     behavior_tests:
     - tests/behavior/test_confidentiality_enforcer.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
@@ -709,6 +729,8 @@ hooks:
     - tests/behavior/test_cos_index_and_global_init.py
     - tests/behavior/test_hook_architecture.py
     - tests/chaos/test_content_policy_exercised.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/contracts/test_primitive_harness_partials_contract.py
     - tests/unit/test_capability_level5.py
     - tests/unit/test_chaos_template.py
@@ -752,6 +774,8 @@ hooks:
     behavior_tests:
     - tests/behavior/test_compaction_protection.py
     - tests/contracts/test_context_budget_hook_wiring.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_observe_only
     criticality: standard
@@ -857,6 +881,8 @@ hooks:
   cosd-auth-guard:
     behavior_tests:
     - tests/contracts/test_cosd_auth_primitives.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     bypass_policy: not_required_observe_only
     criticality: standard
     event: PreToolUse
@@ -1112,6 +1138,9 @@ hooks:
     - tests/behavior/test_agent_resilience.py
     - tests/behavior/test_hook_architecture.py
     - tests/behavior/test_run_flight_recorder.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_closure_smokes.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_codex_guard_layer.py
     - tests/unit/test_dispatch_gate_perf.py
     - tests/unit/test_registered_hook_behaviors.py
@@ -1135,6 +1164,8 @@ hooks:
     behavior_tests:
     - tests/behavior/test_cos_friction_report.py
     - tests/behavior/test_hooks_batch1.py
+    - tests/contracts/test_opencode_native_adapter_design.py
+    - tests/contracts/test_primitive_contract_registry.py
     - tests/unit/test_codex_guard_layer.py
     bypass_policy: not_required_warning_only
     criticality: quality
@@ -2118,6 +2149,7 @@ hooks:
     behavior_tests:
     - tests/chaos/test_reinvention_check_fires.py
     - tests/contracts/test_fd_invariant.py
+    - tests/contracts/test_opencode_native_adapter_design.py
     - tests/contracts/test_p95_hook_latency.py
     - tests/contracts/test_portable_ai_overlay.py
     - tests/contracts/test_primitive_closure_smokes.py

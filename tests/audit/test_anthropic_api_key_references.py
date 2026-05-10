@@ -7,6 +7,7 @@ surfaces and historical docs should not introduce unclassified references.
 
 from __future__ import annotations
 
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -102,9 +103,23 @@ ALLOWED_REFERENCES: tuple[AllowedReference, ...] = (
 _ALLOWED_BY_PATH = {entry.path: entry for entry in ALLOWED_REFERENCES}
 
 
+def _iter_tracked_paths() -> list[Path]:
+    result = subprocess.run(
+        ["git", "ls-files", "-z"],
+        cwd=PROJECT_ROOT,
+        check=True,
+        capture_output=True,
+    )
+    return [
+        PROJECT_ROOT / raw.decode("utf-8")
+        for raw in result.stdout.split(b"\0")
+        if raw
+    ]
+
+
 def _iter_text_files() -> list[Path]:
     paths: list[Path] = []
-    for path in PROJECT_ROOT.rglob("*"):
+    for path in _iter_tracked_paths():
         if not path.is_file():
             continue
         rel_path = path.relative_to(PROJECT_ROOT).as_posix()

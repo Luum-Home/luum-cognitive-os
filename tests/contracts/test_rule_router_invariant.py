@@ -39,10 +39,6 @@ def _all_rule_paths() -> list[Path]:
 # ---------------------------------------------------------------------------
 
 
-@pytest.mark.xfail(
-    reason="ADR-179 PoC: only 5 rules migrated; remaining ~60 are backlog",
-    strict=False,
-)
 def test_every_agent_instruction_rule_has_routing_patterns():
     missing = []
     for path in _all_rule_paths():

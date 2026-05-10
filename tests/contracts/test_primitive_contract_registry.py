@@ -147,8 +147,24 @@ def test_opencode_enforcement_claims_are_limited_to_signed_plugin_smoke_slice() 
     signed = {
         "destructive-git-blocker",
         "destructive-rm-blocker",
+        "reinvention-check",
         "large-file-advisor",
         "skill-router",
+        "aci-observation-capture",
+        "adr-relevance-suggest",
+        "adr-section-validator",
+        "agent-bash-cwd-enforcer",
+        "agent-control-inbound-guard",
+        "auto-rollback-trigger",
+        "auto-verify",
+        "claim-validator",
+        "confidence-gate",
+        "confidentiality-enforcer",
+        "content-policy",
+        "context-watchdog",
+        "cosd-auth-guard",
+        "dispatch-gate",
+        "doc-sync-detector",
     }
     for contract in _contracts():
         fidelity = contract["projection"]["opencode"]["fidelity"]
@@ -156,5 +172,5 @@ def test_opencode_enforcement_claims_are_limited_to_signed_plugin_smoke_slice() 
             assert fidelity == "governed-wrapper-enforced", contract["id"]
             assert "cos-primitive-guard.js" in contract["projection"]["opencode"]["surface"]
         else:
-            assert fidelity == "host-plugin-lifecycle-capable", contract["id"]
+            assert fidelity == "structural-advisory", contract["id"]
             assert fidelity not in ENFORCEMENT_FIDELITY

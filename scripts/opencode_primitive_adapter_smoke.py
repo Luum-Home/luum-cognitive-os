@@ -46,30 +46,48 @@ def _run_node_smoke(tmp: Path) -> dict[str, Any]:
     node_script = tmp / "smoke.mjs"
     node_script.write_text(
         """
-import { CosPrimitiveGuard } from './consumer/.opencode/plugins/cos-primitive-guard.js';
+import { CosPrimitiveGuard, SIGNED_PRIMITIVES } from './consumer/.opencode/plugins/cos-primitive-guard.js';
 const root = process.env.COGNITIVE_OS_PROJECT_DIR;
 const plugin = await CosPrimitiveGuard({ directory: root, worktree: root });
-const blocked = {};
-for (const [key, command, marker] of [
-  ['destructive-git-blocker', 'git reset --hard private-branch-name', 'destructive-git-blocker'],
-  ['destructive-rm-blocker', 'rm -rf private-target-dir', 'destructive-rm-blocker'],
-  ['skill-router', 'pip install --upgrade private-package-name', 'skill-router'],
-]) {
+const beforeCases = [
+  ['destructive-git-blocker', 'bash', { command: 'git reset --hard private-branch-name' }, true],
+  ['destructive-rm-blocker', 'bash', { command: 'rm -rf private-target-dir' }, true],
+  ['skill-router', 'bash', { command: 'pip install --upgrade private-package-name' }, true],
+  ['large-file-advisor', 'read', { filePath: `${root}/large-private-file.txt` }, false],
+  ['reinvention-check', 'agent', { prompt: 'create duplicate_helper.py for a duplicate primitive' }, false],
+  ['adr-relevance-suggest', 'agent', { prompt: 'change architecture and find ADR context' }, false],
+  ['adr-section-validator', 'write', { filePath: 'docs/adrs/ADR-999-private.md', content: 'missing sections' }, false],
+  ['agent-bash-cwd-enforcer', 'bash', { command: 'cd .. && pwd' }, false],
+  ['agent-control-inbound-guard', 'bash', { command: 'echo x > .cognitive-os/agent-control/inbox/private.json' }, true],
+  ['claim-validator', 'agent', { prompt: 'claim completed with no evidence' }, true],
+  ['confidence-gate', 'agent', { prompt: '100% confident, no uncertainty' }, false],
+  ['confidentiality-enforcer', 'write', { filePath: 'notes.txt', content: 'private customer boundary fixture' }, true],
+  ['content-policy', 'write', { filePath: 'policy.txt', content: 'unsafe content policy fixture' }, true],
+  ['cosd-auth-guard', 'bash', { command: 'curl http://cosd/admin/write' }, true],
+  ['dispatch-gate', 'agent', { prompt: 'do everything in this unbounded task' }, true],
+];
+const afterCases = [
+  ['aci-observation-capture', 'agent', { output: 'aci observation complete' }],
+  ['auto-rollback-trigger', 'bash', { output: 'rollback candidate detected' }],
+  ['auto-verify', 'bash', { output: 'verification recommended' }],
+  ['context-watchdog', 'bash', { output: 'context threshold reached' }],
+  ['doc-sync-detector', 'edit', { output: 'doc sync drift detected' }],
+];
+const outcomes = {};
+for (const [key, tool, args, shouldThrow] of beforeCases) {
+  let threw = false;
   try {
-    await plugin['tool.execute.before'](
-      { tool: 'bash', args: { command } },
-      { args: { command } }
-    );
-    blocked[key] = false;
+    await plugin['tool.execute.before']({ tool, args }, { args });
   } catch (err) {
-    blocked[key] = String(err.message || err).includes(marker);
+    threw = String(err.message || err).includes(key);
   }
+  outcomes[key] = shouldThrow ? threw : !threw;
 }
-await plugin['tool.execute.before'](
-  { tool: 'read', args: { filePath: `${root}/large-private-file.txt` } },
-  { args: { filePath: `${root}/large-private-file.txt` } }
-);
-console.log(JSON.stringify({ blocked }));
+for (const [key, tool, args] of afterCases) {
+  await plugin['tool.execute.after']({ tool, args: {} }, { tool, args });
+  outcomes[key] = true;
+}
+console.log(JSON.stringify({ outcomes, signed: SIGNED_PRIMITIVES }));
 """.strip()
         + "\n",
         encoding="utf-8",
@@ -83,12 +101,14 @@ console.log(JSON.stringify({ blocked }));
     result = subprocess.run(["node", str(node_script)], text=True, capture_output=True, check=False, env=env, timeout=15)
     ledger = project / ".cognitive-os" / "metrics" / "primitive-interventions.jsonl"
     rows = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines() if line.strip()] if ledger.exists() else []
-    leaked = "private-branch-name" in json.dumps(rows) or "large-private-file" in json.dumps(rows)
+    leaked = "private-branch-name" in json.dumps(rows) or "large-private-file" in json.dumps(rows) or "private-package-name" in json.dumps(rows) or "private-target-dir" in json.dumps(rows)
+    parsed = json.loads(result.stdout or "{}") if result.returncode == 0 and result.stdout.strip() else {}
     return {
         "node_returncode": result.returncode,
         "node_stdout": result.stdout.strip(),
         "node_stderr_tail": result.stderr[-500:],
-        "blocked": json.loads(result.stdout or "{}" ).get("blocked", {}) if result.returncode == 0 and result.stdout.strip() else {},
+        "outcomes": parsed.get("outcomes", {}),
+        "signed": parsed.get("signed", []),
         "ledger_rows": rows,
         "ledger_row_count": len(rows),
         "content_free": not leaked,
@@ -98,30 +118,29 @@ console.log(JSON.stringify({ blocked }));
 def build_report() -> dict[str, Any]:
     binary, version = _opencode_version()
     with tempfile.TemporaryDirectory(prefix="cos-opencode-plugin-smoke-") as td:
-        node = _run_node_smoke(Path(td)) if binary else {"ledger_rows": [], "ledger_row_count": 0, "blocked": False, "content_free": False, "node_returncode": None}
+        node = _run_node_smoke(Path(td)) if binary else {"ledger_rows": [], "ledger_row_count": 0, "outcomes": {}, "signed": [], "content_free": False, "node_returncode": None}
     rows = node.get("ledger_rows", [])
-    has_git_block = any(row.get("primitive_id") == "destructive-git-blocker" and row.get("action_kind") == "block" for row in rows)
-    has_large_advise = any(row.get("primitive_id") == "large-file-advisor" and row.get("action_kind") == "advise" for row in rows)
-    blocked = node.get("blocked", {}) if isinstance(node.get("blocked"), dict) else {}
-    has_rm_block = any(row.get("primitive_id") == "destructive-rm-blocker" and row.get("action_kind") == "block" for row in rows)
-    has_skill_block = any(row.get("primitive_id") == "skill-router" and row.get("action_kind") == "block" for row in rows)
-    status = "pass" if binary and node.get("node_returncode") == 0 and all(blocked.get(key) for key in ("destructive-git-blocker", "destructive-rm-blocker", "skill-router")) and has_git_block and has_rm_block and has_skill_block and has_large_advise and node.get("content_free") else "fail"
+    outcomes = node.get("outcomes", {}) if isinstance(node.get("outcomes"), dict) else {}
+    signed = [str(item) for item in node.get("signed", []) if item]
+    by_id = {str(row.get("primitive_id")) for row in rows}
+    missing_rows = sorted(set(signed) - by_id)
+    failed_outcomes = sorted(key for key in signed if not outcomes.get(key))
+    status = "pass" if binary and node.get("node_returncode") == 0 and signed and not missing_rows and not failed_outcomes and node.get("content_free") else "fail"
     return {
         "schema_version": "opencode-primitive-adapter-smoke.v1",
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "status": status,
         "opencode": {"binary": binary, "version": version},
-        "plugin": {"path": str(PLUGIN.relative_to(ROOT)), "event": "tool.execute.before"},
+        "plugin": {"path": str(PLUGIN.relative_to(ROOT)), "events": ["tool.execute.before", "tool.execute.after"]},
         "checks": {
             "plugin_loaded": node.get("node_returncode") == 0,
-            "blocking_event_threw": all(blocked.get(key) for key in ("destructive-git-blocker", "destructive-rm-blocker", "skill-router")),
-            "destructive_git_ledger_row": has_git_block,
-            "destructive_rm_ledger_row": has_rm_block,
-            "skill_router_ledger_row": has_skill_block,
-            "large_file_advisory_ledger_row": has_large_advise,
+            "all_signed_outcomes_passed": not failed_outcomes,
+            "all_signed_ledger_rows_present": not missing_rows,
             "content_free_rows": bool(node.get("content_free")),
         },
-        "supported_primitives": ["destructive-git-blocker", "destructive-rm-blocker", "large-file-advisor", "skill-router"],
+        "supported_primitives": signed,
+        "missing_ledger_rows": missing_rows,
+        "failed_outcomes": failed_outcomes,
         "ledger_row_count": node.get("ledger_row_count", 0),
         "node_stderr_tail": node.get("node_stderr_tail", ""),
     }
@@ -141,7 +160,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         *[f"- {key}: `{value}`" for key, value in checks.items()],
         "",
-        "This smoke invokes the documented OpenCode project-plugin `tool.execute.before` event shape without model calls. It does not run a paid LLM session.",
+        "This smoke invokes the documented OpenCode project-plugin `tool.execute.before` and `tool.execute.after` event shapes without model calls. It does not run a paid LLM session.",
         "",
     ])
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-Implemented for the signed starter slice — `destructive-git-blocker`, `destructive-rm-blocker`, `large-file-advisor`, and `skill-router` are projected through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and verified by `docs/reports/opencode-primitive-adapter-smoke-latest.md`. Other primitives remain `host-plugin-lifecycle-capable` until their own smoke is signed.
+Implemented for the signed runtime slice — 20 registry-backed primitives are projected through `packages/opencode-adapter/plugins/cos-primitive-guard.js` and verified by `docs/reports/opencode-primitive-adapter-smoke-latest.md`. Remaining registry-backed primitives stay `structural-advisory` for OpenCode until their own smoke is signed.
 
 ## Purpose
 
@@ -48,7 +48,7 @@ The future adapter implementation should generate or validate:
 ## Runtime smoke acceptance
 
 A signed smoke must include all of the following before any primitive is promoted
-from `host-plugin-lifecycle-capable` to enforced in OpenCode. The current signed
+from advisory/plugin-capable design to enforced in OpenCode. The current signed
 starter slice satisfies this for `destructive-git-blocker`,
 `destructive-rm-blocker`, `large-file-advisor`, and `skill-router`:
 
@@ -76,11 +76,11 @@ starter slice satisfies this for `destructive-git-blocker`,
 Current fidelity is split:
 
 ```text
-OpenCode signed starter slice: governed-wrapper-enforced
-OpenCode remaining primitives: host-plugin-lifecycle-capable
+OpenCode signed runtime slice: governed-wrapper-enforced
+OpenCode remaining primitives: structural-advisory until signed runtime smoke
 ```
 
-The signed starter slice is `governed-wrapper-enforced` because COS owns the
+The signed runtime slice is `governed-wrapper-enforced` because COS owns the
 plugin bridge while OpenCode supplies the native project-plugin lifecycle event.
 Do not promote additional primitives until their plugin behavior and ledger rows
 are covered by smoke evidence.

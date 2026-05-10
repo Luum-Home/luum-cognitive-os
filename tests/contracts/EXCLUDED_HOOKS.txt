@@ -166,3 +166,7 @@ lethal-trifecta-gate.sh | CONDITIONAL: registered in cognitive-os.yaml PreToolUs
 concurrent-write-guard-codex-proxy.sh | CONDITIONAL: Codex-only UserPromptSubmit degraded projection for ADR-111 Gate-3; registered through cognitive-os.yaml/.codex hooks, not default .claude/settings.json.
 state-retention-audit.sh | MANUAL_TRIGGER: ADR-199/200 retention audit can archive/reap state; invoked by explicit retention/session cleanup flows, not a default hook matcher
 subagent-capability-preflight.sh | MANUAL_TRIGGER: ADR-203 launch capability preflight wrapper; promote only when a concrete lifecycle projection exists
+
+ai-provider-identity-guard.sh | CONDITIONAL: PostToolUse Edit/Write identity guard; projected only when provider identity policy is enabled.
+
+session-end-cleanup.sh | MANUAL_TRIGGER: session cleanup wrapper for cos-cleanup tier-1; invoked explicitly or by future Stop profile, not default matcher.
