@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: peer-card
-description: Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.
+description: "Use when you need this Cognitive OS skill: Local user-memory peer card (read/edit/forget/explain) backed by Engram FTS5. ADR-077 Phase 1.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [memory, user-model, engram, adr-077]

@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: dogfood-score
-description: Measure the SO's self-build maturity as a composite 0-100 score across test health, skill coverage, hook wiring, ADR discipline, harness portability, commit activity, and doc freshness. Analog to rules/trust-score.md but for the project itself, not for agents.
+description: "Use when you need this Cognitive OS skill: Measure the SO's self-build maturity as a composite 0-100 score across test health, skill coverage, hook wiring, ADR discipline, harness portability, commit activity, and doc freshness. Analog to rules/trust-score.md but for the project itself, not for agents.; do not use when a narrower skill directly matches the task."
 invoke: /dogfood-score
 tag: os-only
 model: haiku

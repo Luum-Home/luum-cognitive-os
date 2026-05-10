@@ -2,12 +2,7 @@
 ---
 name: so-vs-vanilla
 audience: os-only
-description: >
-  A/B benchmark harness that measures Cognitive OS governance value by running
-  the same task under full governance AND with all governance disabled
-  (COS_DISABLE_ALL_GOVERNANCE=1). Produces per-task verdicts and aggregate
-  cost/quality deltas. Trigger: user asks to "prove the SO works",
-  "compare SO vs vanilla", "benchmark governance", or runs `/so-vs-vanilla`.
+description: "Use when you need this Cognitive OS skill: A/B benchmark harness that measures Cognitive OS governance value by running the same task under full governance AND with all governance disabled (COS_DISABLE_ALL_GOVERNANCE=1). Produces per-task verdicts and aggregate cost/quality deltas. Trigger: user asks to \"prove the SO works\", \"compare SO vs vanilla\", \"benchmark governance\", or runs `/so-vs-vanilla`.; do not use when a narrower skill directly matches the task."
 model: sonnet
 version: "1.0.0"
 platforms: ["claude-code"]

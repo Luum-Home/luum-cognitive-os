@@ -1,10 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: rules-export
-description: >
-  Export a snapshot of Cognitive OS rules/ (so-slo, definition-of-done,
-  credential-management, etc.) into an adopting project's docs/08-estandares/
-  directory. Follows the 10-category convention (ADR-054/055).
+description: "Use when you need this Cognitive OS skill: Export a snapshot of Cognitive OS rules/ (so-slo, definition-of-done, credential-management, etc.) into an adopting project's docs/08-estandares/ directory. Follows the 10-category convention (ADR-054/055).; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false

@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: coordination-status
-description: Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.
+description: "Use when you need this Cognitive OS skill: Inspect active multi-session edit locks and decide how to respond when a target file is held by another agent. Read-only introspection for sub-agents.; do not use when a narrower skill directly matches the task."
 invoke: /coordination-status
 tag: os-only
 model: haiku

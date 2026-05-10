@@ -3,7 +3,7 @@
 name: sdd-resume
 command: /sdd-resume
 version: 1.0.0
-description: Resume an SDD pipeline from its last completed phase with timing and state visibility
+description: "Use when you need this Cognitive OS skill: Resume an SDD pipeline from its last completed phase with timing and state visibility; do not use when a narrower skill directly matches the task."
 trigger: User invokes /sdd-resume [change-name] [--from phase], or needs to inspect/continue SDD state
 inputs:
   - change-name (optional): SDD change to resume. If omitted, lists all in-progress changes.
@@ -33,7 +33,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\blast\s+completed\s+(sdd\s+)?phase\b'
     confidence: 0.84
-
 ---
 
 # SDD Resume

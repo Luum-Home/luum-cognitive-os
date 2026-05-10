@@ -2,7 +2,7 @@
 ---
 name: risk-register
 version: 1.0.0
-description: Scaffold STRIDE-based risk-register.md under docs/03-dominio-riesgo/ with impact/likelihood matrix and 6 seed rows (one per STRIDE category). Idempotent.
+description: "Use when you need this Cognitive OS skill: Scaffold STRIDE-based risk-register.md under docs/03-dominio-riesgo/ with impact/likelihood matrix and 6 seed rows (one per STRIDE category). Idempotent.; do not use when a narrower skill directly matches the task."
 invocation: /risk-register --project-dir <path> [--assets "<brief>"] [--overwrite]
 user-invocable: true
 last-updated: 2026-04-21

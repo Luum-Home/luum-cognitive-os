@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: red-team
-description: "Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities"
+description: "Use when you need this Cognitive OS skill: Red team testing for agent prompts — detects injection, jailbreak, and manipulation vulnerabilities; do not use when a narrower skill directly matches the task."
 triggers: ["/red-team", "/redteam", "/promptfoo"]
 audience: os-dev
 version: 1.0.0
@@ -16,7 +16,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\badversarial\s+(prompt|safety)\s+(test|review)\b'
     confidence: 0.86
-
 ---
 
 # /red-team

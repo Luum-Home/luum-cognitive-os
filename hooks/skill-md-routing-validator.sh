@@ -28,6 +28,13 @@ fi
 # ── Read hook input from stdin ────────────────────────────────────────────────
 INPUT="$(cat)"
 
+# Fast path for non-file-writing tool calls. Avoid jq startup for the common
+# Bash/Read/Grep cases exercised on every hook performance lane.
+case "$INPUT" in
+  *'"file_path"'*) ;;
+  *) exit 0 ;;
+esac
+
 # Extract the file_path from the tool input JSON.
 FILE_PATH=""
 if command -v jq &>/dev/null; then

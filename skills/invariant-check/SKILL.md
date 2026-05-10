@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: invariant-check
-description: Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between them, and writes pytest assertions that enforce the relationship. Trigger when a review finds "two values look inconsistent", when landing new numeric constants that might drift across ADR and implementation, or when closing a decision-depth-gate finding of type "two values inconsistent".
+description: "Use when you need this Cognitive OS skill: Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs, proposes invariants between them, and writes pytest assertions that enforce the relationship. Trigger when a review finds \"two values look inconsistent\", when landing new numeric constants that might drift across ADR and implementation, or when closing a decision-depth-gate finding of type \"two values inconsistent\".; do not use when a narrower skill directly matches the task."
 version: 1.0
 audience: project
 summary_line: "Scans a target file pair (ADR + lib, or similar) for numeric-constant pairs…"

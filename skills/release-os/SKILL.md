@@ -2,7 +2,7 @@
 ---
 name: release-os
 command: /release-os
-description: META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills
+description: "Use when you need this Cognitive OS skill: META — orchestrate the full Cognitive OS release by chaining the 5 atomic release skills; do not use when a narrower skill directly matches the task."
 version: 2.0.0
 audience: os
 tags: [release, meta]

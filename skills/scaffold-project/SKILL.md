@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: scaffold-project
-description: Create the .claude/ directory structure, symlink rules, and generate project-specific rules, skills, and hooks using detected-stack.json.
+description: "Use when you need this Cognitive OS skill: Create the .claude/ directory structure, symlink rules, and generate project-specific rules, skills, and hooks using detected-stack.json.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: both
 tags: [init, setup, scaffold]

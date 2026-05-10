@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: generate-config
-description: Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.
+description: "Use when you need this Cognitive OS skill: Read detected-stack.json and generate or update cognitive-os.yaml with detected infrastructure, quality gates, and stack-specific settings.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: both
 tags: [init, setup, config]

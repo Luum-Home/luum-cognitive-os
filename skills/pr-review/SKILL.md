@@ -1,10 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: pr-review
-description: >
-  Pull Request review skill. Gets PR diff against base branch, runs code review
-  with engram context, checks tests/coverage/lint, and produces structured
-  PR review output with file-level comments and PASSED/FAILED status.
+description: "Use when you need this Cognitive OS skill: Pull Request review skill. Gets PR diff against base branch, runs code review with engram context, checks tests/coverage/lint, and produces structured PR review output with file-level comments and PASSED/FAILED status.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false

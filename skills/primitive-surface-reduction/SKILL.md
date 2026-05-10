@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: primitive-surface-reduction
-description: Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.
+description: "Use when you need this Cognitive OS skill: Plan or apply conservative surface reduction for Cognitive OS agentic primitives; OS source repo only, plan by default.; do not use when a narrower skill directly matches the task."
 invoke: /primitive-surface-reduction
 tag: os-only
 model: sonnet

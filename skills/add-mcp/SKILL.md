@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: add-mcp
-description: Step-by-step guide for integrating a new MCP server into the Cognitive OS
+description: "Use when you need this Cognitive OS skill: Step-by-step guide for integrating a new MCP server into the Cognitive OS; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [development, extension, mcp, integrations]

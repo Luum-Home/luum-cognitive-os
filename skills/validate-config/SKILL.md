@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: validate-config
-description: Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks
+description: "Use when you need this Cognitive OS skill: Validate all Cognitive OS configuration files — agents, squads, skills, rules, hooks; do not use when a narrower skill directly matches the task."
 invoke: /validate-config
 version: 1.0.0
 model: sonnet
@@ -18,7 +18,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\b(config|manifest)\s+validation\b'
     confidence: 0.84
-
 ---
 
 # Schema Validation for Cognitive OS Configuration (BMAD v6 Pattern 12)

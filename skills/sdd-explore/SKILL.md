@@ -2,7 +2,7 @@
 ---
 name: sdd-explore
 command: /sdd-explore
-description: Explore and investigate ideas before committing to a change — deep feasibility analysis
+description: "Use when you need this Cognitive OS skill: Explore and investigate ideas before committing to a change — deep feasibility analysis; do not use when a narrower skill directly matches the task."
 trigger: When the orchestrator launches you to think through a feature, investigate the codebase, or clarify requirements
 inputs:
   - topic: What to explore (feature idea, technical question, codebase area)
@@ -37,7 +37,6 @@ routing_patterns:
     confidence: 0.86
   - pattern: '\bpre[- ]?development\s+exploration\b'
     confidence: 0.84
-
 ---
 
 # SDD Explore -- Deep Feasibility Analysis

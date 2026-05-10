@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: primitive-harness-coverage
-description: "Measure effective agentic primitive implementation by surface so agents do not confuse `SCOPE: both` with equal Claude/Codex/CLI/UI behavior."
+description: "Use when you need this Cognitive OS skill: Measure effective agentic primitive implementation by surface so agents do not confuse `SCOPE: both` with equal Claude/Codex/CLI/UI behavior.; do not use when a narrower skill directly matches the task."
 triggers: ["harness coverage", "surface coverage", "primitive harness", "primitive surface", "Claude vs Codex primitives", "CLI primitive coverage", "UI primitive coverage", "scope both parity"]
 audience: both
 version: 1.0.0

@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-status
-description: "Full health check of all Cognitive OS agentic primitives"
+description: "Use when you need this Cognitive OS skill: Full health check of all Cognitive OS agentic primitives; do not use when a narrower skill directly matches the task."
 triggers: ["/cognitive-os-status", "/aos-status", "/health"]
 audience: both
 version: "1.0.0"
@@ -14,7 +14,6 @@ routing_patterns:
     confidence: 0.86
   - pattern: '\b(status|health)\s+(of|for)\s+(cognitive[- ]?os|agentic primitives)\b'
     confidence: 0.84
-
 ---
 
 # /cognitive-os-status

@@ -1,10 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: code-review
-description: >
-  Engram-integrated code review with adversarial protocol. Reviews changed files
-  for quality, security, conventions, and test coverage. Uses engram memory for
-  past review patterns and saves findings for future reference.
+description: "Use when you need this Cognitive OS skill: Engram-integrated code review with adversarial protocol. Reviews changed files for quality, security, conventions, and test coverage. Uses engram memory for past review patterns and saves findings for future reference.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false

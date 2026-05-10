@@ -117,6 +117,24 @@ Backfill policy:
 - Existing queries return identical top-k under `strategy=current`.
 - No private-content portability class is weakened.
 
+
+## Slice 1 implementation note
+
+Slice 1 additive schema landed as an explicit, non-default migration helper:
+
+- `lib/engram_wave2_schema.py` adds nullable `valid_from`, `valid_to`,
+  `memory_class`, and `source_episode` columns to the Engram `observations`
+  table.
+- `scripts/cos-engram-wave2-schema-migrate --check|--write --json` provides an
+  idempotent operator entrypoint.
+- Backfill is deterministic: `valid_from = created_at` when present,
+  `valid_to = memory_relations.superseded_at` for accepted supersession edges,
+  `memory_class = unknown`, and `source_episode` remains null.
+- `strategy=current` remains the default retrieval behavior.
+- Rollback/downgrade path: restore the pre-migration Engram DB backup or keep the
+  additive columns unused; callers that do not opt into Wave 2 fields continue to
+  receive current-strategy results.
+
 ## Slice 2 — Retrieval modes behind flags
 
 Add modes without changing default:

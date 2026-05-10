@@ -2,11 +2,7 @@
 <!-- TIER: 0 -->
 ---
 name: canonical-event-emitter
-description: >
-  Reference skill for harness-agnostic canonical event parity testing. Emits a
-  deterministic sequence of canonical lifecycle events; used by
-  tests/integration/test_harness_agnostic_skill_run.py to verify each harness
-  adapter produces byte-identical events.
+description: "Use when you need this Cognitive OS skill: Reference skill for harness-agnostic canonical event parity testing. Emits a deterministic sequence of canonical lifecycle events; used by tests/integration/test_harness_agnostic_skill_run.py to verify each harness adapter produces byte-identical events.; do not use when a narrower skill directly matches the task."
 version: "1.0.0"
 user-invocable: false
 auto-generated: false

@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: test-contract-repair
-description: Repair failing or misleading tests without greenwashing. Classify the contract, confirm history, fix runtime when needed, and strengthen structural checks into behavioral proof.
+description: "Use when you need this Cognitive OS skill: Repair failing or misleading tests without greenwashing. Classify the contract, confirm history, fix runtime when needed, and strengthen structural checks into behavioral proof.; do not use when a narrower skill directly matches the task."
 invoke: /test-contract-repair
 version: 1.0.0
 audience: os-dev

@@ -2,7 +2,7 @@
 ---
 name: proof-drill
 version: 1.0.0
-description: Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.
+description: "Use when you need this Cognitive OS skill: Select and run opt-in proof drills and smoke checks for COS self-build and consumer-project validation without polluting default test lanes.; do not use when a narrower skill directly matches the task."
 summary_line: Select opt-in proof drills and smoke checks without default-lane pollution.
 audience: both
 platforms: [claude-code, codex, shell]

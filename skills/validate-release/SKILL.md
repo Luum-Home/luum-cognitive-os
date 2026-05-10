@@ -2,7 +2,7 @@
 ---
 name: validate-release
 command: /validate-release
-description: Pre-release readiness check — validates working tree, branch, changelog, and VERSION file
+description: "Use when you need this Cognitive OS skill: Pre-release readiness check — validates working tree, branch, changelog, and VERSION file; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [release, validation]

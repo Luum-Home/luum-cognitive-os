@@ -106,7 +106,7 @@ from lib.paths import runtime_project_root_or_cwd
 from lib.dispatch_gate import DispatchGate, ProviderCircuitBreaker
 from lib.session_budget import SessionBudgetExceeded
 from lib.sandbox_adapter import SandboxUnavailable, build_sandbox_command
-from lib.deferred_tool_loading import plan_tool_loading, provider_native_defer_payload, toolsearch_index
+from lib.deferred_tool_loading import plan_tool_loading, provider_native_defer_payload, record_toolsearch_token_delta, toolsearch_index
 from lib.dispatch_cost_predictor import predict_call_cost
 
 # Rate-limit patterns for cascade advance logic. Kept in sync with
@@ -617,6 +617,15 @@ def dispatch(
                 threshold_tokens=_skill_req.get("toolsearch_threshold_tokens"),
             )
             tool_loading_plan = plan.to_dict()
+            try:
+                tool_loading_plan["token_delta_metric"] = record_toolsearch_token_delta(
+                    project_dir,
+                    plan=plan,
+                    estimated_tool_tokens=int(_skill_req.get("estimated_tool_tokens") or 0),
+                    session_id=session_id,
+                )
+            except Exception:  # noqa: BLE001
+                tool_loading_plan["token_delta_metric"] = {"status": "error"}
             if plan.toolsearch_enabled and plan.deferred_tools:
                 index = toolsearch_index(project_dir)
                 if _skill_req.get("native_defer_loading"):

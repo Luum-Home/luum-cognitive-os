@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-init
-description: META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.
+description: "Use when you need this Cognitive OS skill: META skill — initialize Cognitive OS for a project by chaining detect-stack → generate-config → scaffold-project.; do not use when a narrower skill directly matches the task."
 version: 2.0.0
 last-updated: 2026-04-10
 user-invocable: true

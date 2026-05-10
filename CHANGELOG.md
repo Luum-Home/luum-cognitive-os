@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- Added the H6 skill-description migration/check script, enforced `description: "Use when…"` across SKILL.md frontmatter, and refreshed the compact skill catalog.
+- Added the Engram Wave 2 M1 additive schema migration helper for `valid_from`, `valid_to`, `memory_class`, and `source_episode` while preserving `strategy=current` defaults.
+- Added local ToolSearch token-delta metrics, dispatch metric emission, and `cos-deferred-tool-plan --token-delta` to replace the prior measured-vs-claimed gap.
+- Added the bubblewrap seccomp threat model and opt-in rollout criteria before implementing any BPF profile.
+
 ### Changed
 
 - Synced the radar implementation tracker after `v0.28.0`: C1-C4 adoption cleanup is now audit-pass, and post-0.28 priorities are explicit for H6, Wave 2 M1, ToolSearch metrics, seccomp, Wave 3, and public launch.

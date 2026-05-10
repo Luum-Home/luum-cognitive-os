@@ -1,11 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: repo-forensics
-description: >
-  Deep forensic analysis of git repositories. Clones, analyzes ALL code,
-  dependencies, architecture patterns, tools, features, API endpoints,
-  and produces exhaustive structured reports. Optionally compares with
-  Cognitive OS capabilities.
+description: "Use when you need this Cognitive OS skill: Deep forensic analysis of git repositories. Clones, analyzes ALL code, dependencies, architecture patterns, tools, features, API endpoints, and produces exhaustive structured reports. Optionally compares with Cognitive OS capabilities.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false
@@ -30,7 +26,6 @@ routing_patterns:
     confidence: 0.88
   - pattern: '\banalyze\s+all\s+(code|dependencies|configs)\b'
     confidence: 0.82
-
 ---
 
 ## Purpose

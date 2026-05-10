@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: phoenix-trace-ui
-description: "Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker)"
+description: "Use when you need this Cognitive OS skill: Start the Arize Phoenix LLM-native trace UI locally (pip-based, no Docker); do not use when a narrower skill directly matches the task."
 triggers: ["/phoenix-trace-ui", "/phoenix", "/trace-ui"]
 audience: project
 version: "1.0.0"

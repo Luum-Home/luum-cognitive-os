@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: hook-timing
-description: Report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event filtering, and session scoping.
+description: "Use when you need this Cognitive OS skill: Report hook execution timing statistics (p50/p95/p99) from the COS hook-timing wrapper. Supports live tail, event filtering, and session scoping.; do not use when a narrower skill directly matches the task."
 version: "1.0.0"
 user-invocable: true
 auto-generated: false

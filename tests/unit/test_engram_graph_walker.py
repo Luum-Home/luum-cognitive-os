@@ -275,6 +275,45 @@ class TestMergeIntoResults:
         finally:
             os.unlink(path)
 
+    def test_graph_only_neighbor_preserves_wave2_schema_columns_when_present(self):
+        base = [self._make_obs_dict("obs-A", score=0.9)]
+        neighbors = {"obs-B": {"hops": 1, "relation_path": ["related"]}}
+
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            path = f.name
+        try:
+            conn = _create_test_db(path)
+            conn.execute("ALTER TABLE observations ADD COLUMN valid_from TEXT")
+            conn.execute("ALTER TABLE observations ADD COLUMN valid_to TEXT")
+            conn.execute("ALTER TABLE observations ADD COLUMN memory_class TEXT")
+            conn.execute("ALTER TABLE observations ADD COLUMN source_episode TEXT")
+            _insert_obs(conn, "obs-B", title="Neighbor B")
+            conn.execute(
+                """
+                UPDATE observations
+                SET valid_from = ?, valid_to = ?, memory_class = ?, source_episode = ?
+                WHERE sync_id = ?
+                """,
+                (
+                    "2026-04-27T10:00:00Z",
+                    None,
+                    "semantic",
+                    "session-1",
+                    "obs-B",
+                ),
+            )
+            conn.commit()
+            conn.close()
+
+            result = _walker(path).merge_into_results(base, neighbors)
+            neighbor = next(row for row in result if row["sync_id"] == "obs-B")
+            assert neighbor["valid_from"] == "2026-04-27T10:00:00Z"
+            assert neighbor["valid_to"] is None
+            assert neighbor["memory_class"] == "semantic"
+            assert neighbor["source_episode"] == "session-1"
+        finally:
+            os.unlink(path)
+
     def test_final_score_formula_applied(self):
         """Base score is multiplied by (1 - alpha_graph) in the final_score."""
         base = [self._make_obs_dict("obs-A", score=1.0)]

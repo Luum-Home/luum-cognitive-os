@@ -1,9 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: detect-patterns
-description: >
-  Detect systemic problems in the Cognitive OS codebase: dead metadata,
-  broken chains, phantom entries, and structural tests.
+description: "Use when you need this Cognitive OS skill: Detect systemic problems in the Cognitive OS codebase: dead metadata, broken chains, phantom entries, and structural tests.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 auto-generated: false

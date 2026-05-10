@@ -172,6 +172,12 @@ def test_dispatch_injects_toolsearch_index_when_requested(tmp_path: Path) -> Non
     assert result.success is True
     assert seen["prompt"].startswith("[TOOLSEARCH_INDEX]")
     assert records[0]["dispatch_gate"]["tool_loading"]["status"] == "deferred"
+    metric = records[0]["dispatch_gate"]["tool_loading"]["token_delta_metric"]
+    assert metric["schema_version"] == "toolsearch-token-delta/v1"
+    assert metric["session_id"] == "s1"
+    assert metric["toolsearch_enabled"] is True
+    metric_path = tmp_path / ".cognitive-os" / "metrics" / "toolsearch-token-delta.jsonl"
+    assert metric_path.is_file()
 
 
 @pytest.mark.integration

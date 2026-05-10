@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: llm-status
-description: Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured (with tier and model_map), kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected, recent dispatch totals (calls, tokens, cost, latency), and last-dispatch outcome. Use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost accounting.
+description: "Use when user asks about LLM provider state, rate-limit diagnosis, dispatch debugging, or cost accounting. Purpose: Inspect LLM dispatch state for the current Cognitive OS install — which providers are configured (with tier and model_map), kill-switches active, cascade config from cognitive-os.yaml, active environment keys detected, recent dispatch totals (calls, tokens, cost, latency), and last-dispatch outcome."
 triggers: ["/llm-status", "llm status", "provider status", "/provider-status"]
 audience: both
 version: 2.0.0

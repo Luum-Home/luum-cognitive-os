@@ -1,10 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: eval-repo
-description: >
-  DEPRECATED — renamed to /repo-scout (2026-04-24). This stub preserves
-  backward compatibility for any documentation or workflows referencing
-  /eval-repo. New work should use /repo-scout.
+description: "Use when you need this Cognitive OS skill: DEPRECATED — renamed to /repo-scout (2026-04-24). This stub preserves backward compatibility for any documentation or workflows referencing /eval-repo. New work should use /repo-scout.; do not use when a narrower skill directly matches the task."
 version: 2.0.1
 audience: both
 last-updated: 2026-04-24

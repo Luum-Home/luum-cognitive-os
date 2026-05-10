@@ -2,7 +2,7 @@
 ---
 name: ops-runbook
 version: 1.0.0
-description: Scaffold operations.md + admin-processes.md + monitoring.md under docs/06-backoffice/ (deploy/rollback/on-call/SLOs/alerting). Idempotent.
+description: "Use when you need this Cognitive OS skill: Scaffold operations.md + admin-processes.md + monitoring.md under docs/06-backoffice/ (deploy/rollback/on-call/SLOs/alerting). Idempotent.; do not use when a narrower skill directly matches the task."
 invocation: /ops-runbook --project-dir <path> [--overwrite]
 user-invocable: true
 last-updated: 2026-04-21

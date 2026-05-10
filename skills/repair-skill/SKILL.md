@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: repair-skill
-description: Drain the skill repair queue and propose regeneration or deprecation for degraded skills
+description: "Use when you need this Cognitive OS skill: Drain the skill repair queue and propose regeneration or deprecation for degraded skills; do not use when a narrower skill directly matches the task."
 trigger: repair skill, repair-skill, drain repair queue, fix failing skill, skill repair
 model: sonnet
 effort: sonnet

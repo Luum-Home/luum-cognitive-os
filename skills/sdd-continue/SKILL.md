@@ -2,7 +2,7 @@
 ---
 name: sdd-continue
 command: /sdd-continue
-description: Enhanced SDD continuation with state inspection — determines optimal next action
+description: "Use when you need this Cognitive OS skill: Enhanced SDD continuation with state inspection — determines optimal next action; do not use when a narrower skill directly matches the task."
 trigger: User invokes /sdd-continue [change-name], or orchestrator needs to determine next SDD step
 inputs:
   - change-name (optional): SDD change to continue. If omitted, scans for any in-progress changes.
@@ -23,7 +23,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\binspect\s+sdd\s+state\b'
     confidence: 0.84
-
 ---
 
 # Enhanced SDD Continue (BMAD v6 Pattern 6)

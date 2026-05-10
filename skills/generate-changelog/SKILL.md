@@ -3,7 +3,7 @@
 name: generate-changelog
 invocation_pattern: on-demand  # @on-demand: release pipeline — manual trigger
 command: /generate-changelog
-description: Move [Unreleased] CHANGELOG entries into a versioned release section
+description: "Use when you need this Cognitive OS skill: Move [Unreleased] CHANGELOG entries into a versioned release section; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [release, changelog]

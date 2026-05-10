@@ -3,7 +3,7 @@
 name: vuln-remediation-flow
 invocation_pattern: on-demand
 command: /vuln-remediation-flow
-description: Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation.
+description: "Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract for sandboxed vulnerability remediation.; do not use when a narrower skill directly matches the task."
 version: 0.1.0
 audience: os
 tags: [flows, vulnerability-remediation, cloud-worker, lab]

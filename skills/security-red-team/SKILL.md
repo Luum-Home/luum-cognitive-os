@@ -3,10 +3,7 @@
 name: security-red-team
 invocation_pattern: on-demand
 command: /security-red-team
-description: >
-  Unified red-team primitive for Cognitive OS: inventories attack surface,
-  models threats, runs deterministic abuse probes, scores security controls per
-  primitive, and emits a mitigation backlog.
+description: "Use when you need this Cognitive OS skill: Unified red-team primitive for Cognitive OS: inventories attack surface, models threats, runs deterministic abuse probes, scores security controls per primitive, and emits a mitigation backlog.; do not use when a narrower skill directly matches the task."
 triggers: ["/security-red-team", "/security-redteam", "/sec-red-team"]
 audience: os-dev
 version: 1.0.0

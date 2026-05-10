@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: install-recommended
-description: Detect project stack and recommend relevant skills to install
+description: "Use when you need this Cognitive OS skill: Detect project stack and recommend relevant skills to install; do not use when a narrower skill directly matches the task."
 invoke: /install-recommended
 version: 1.0.0
 audience: project

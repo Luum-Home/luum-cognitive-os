@@ -1,9 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: audit-integrity
-description: >
-  Symlink-aware integrity audit of hooks, libs, and skills.
-  Resolves symlinks before classifying, preventing false ghost reports.
+description: "Use when you need this Cognitive OS skill: Symlink-aware integrity audit of hooks, libs, and skills. Resolves symlinks before classifying, preventing false ghost reports.; do not use when a narrower skill directly matches the task."
 version: 1.0.0
 user-invocable: true
 disable-model-invocation: true

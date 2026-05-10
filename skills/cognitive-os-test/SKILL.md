@@ -1,7 +1,7 @@
 <!-- SCOPE: os-only -->
 ---
 name: cognitive-os-test
-description: Run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not for adopting projects.
+description: "Use when you need this Cognitive OS skill: Run the Cognitive OS test suite with persisted summary (junit + failures + tails). SO-only; not for adopting projects.; do not use when a narrower skill directly matches the task."
 invoke: /cognitive-os-test
 version: 2.0.0
 audience: os-dev
@@ -15,7 +15,6 @@ routing_patterns:
     confidence: 0.90
   - pattern: '\bpersist(ed)?\s+(test\s+)?summary\b'
     confidence: 0.78
-
 ---
 
 # Cognitive OS Test Runner

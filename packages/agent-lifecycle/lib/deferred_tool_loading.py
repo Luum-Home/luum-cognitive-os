@@ -33,9 +33,10 @@ class ToolLoadingPlan:
     deferred_tools: list[str]
     toolsearch_enabled: bool
     reason: str
+    token_delta: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        payload = {
             "schema_version": self.schema_version,
             "status": self.status,
             "visible_tools": self.visible_tools,
@@ -43,6 +44,9 @@ class ToolLoadingPlan:
             "toolsearch_enabled": self.toolsearch_enabled,
             "reason": self.reason,
         }
+        if self.token_delta is not None:
+            payload["token_delta"] = self.token_delta
+        return payload
 
 
 def load_manifest(project_dir: str | Path) -> dict[str, Any]:
@@ -90,7 +94,14 @@ def plan_tool_loading(
             deferred.append(tool.name)
     status = "deferred" if deferred else "eager"
     reason = "threshold_exceeded" if use_toolsearch else "below_threshold"
-    return ToolLoadingPlan(SCHEMA_VERSION, status, visible, deferred, use_toolsearch, reason)
+    token_delta = estimate_toolsearch_token_delta(
+        project_dir,
+        estimated_tool_tokens=estimated_tool_tokens,
+        toolsearch_enabled=use_toolsearch,
+        visible_tools=visible,
+        deferred_tools=deferred,
+    )
+    return ToolLoadingPlan(SCHEMA_VERSION, status, visible, deferred, use_toolsearch, reason, token_delta)
 
 
 def toolsearch_index(project_dir: str | Path) -> dict[str, Any]:
@@ -100,6 +111,80 @@ def toolsearch_index(project_dir: str | Path) -> dict[str, Any]:
         "schema_version": SCHEMA_VERSION,
         "tools": [tool.__dict__ for tool in descriptors(manifest)],
     }
+
+
+def _estimate_tokens(payload: Any) -> int:
+    text = payload if isinstance(payload, str) else json.dumps(payload, sort_keys=True, ensure_ascii=False)
+    return max(1, (len(text) + 3) // 4)
+
+
+def estimate_toolsearch_token_delta(
+    project_dir: str | Path,
+    *,
+    estimated_tool_tokens: int = 0,
+    toolsearch_enabled: bool,
+    visible_tools: list[str],
+    deferred_tools: list[str],
+) -> dict[str, Any]:
+    """Estimate local token delta for ToolSearch vs eager tool loading.
+
+    The baseline is the caller-provided full tool token estimate when present,
+    otherwise a deterministic local proxy derived from the manifest metadata.
+    No tool content or credentials are recorded.
+    """
+    index = toolsearch_index(project_dir)
+    index_by_name = {str(row.get("name")): row for row in index.get("tools", []) if isinstance(row, dict)}
+    manifest_proxy_tokens = _estimate_tokens(index)
+    baseline_tokens = int(estimated_tool_tokens) if int(estimated_tool_tokens or 0) > 0 else manifest_proxy_tokens
+    if not toolsearch_enabled:
+        prompt_tokens = baseline_tokens
+    else:
+        visible_index = {"schema_version": SCHEMA_VERSION, "tools": [index_by_name[name] for name in visible_tools if name in index_by_name]}
+        deferred_index = {"schema_version": SCHEMA_VERSION, "tools": [index_by_name[name] for name in deferred_tools if name in index_by_name]}
+        prompt_tokens = _estimate_tokens(visible_index) + _estimate_tokens(deferred_index)
+    delta = baseline_tokens - prompt_tokens
+    reduction_pct = round((delta / baseline_tokens) * 100.0, 2) if baseline_tokens > 0 else 0.0
+    return {
+        "schema_version": "toolsearch-token-delta/v1",
+        "baseline_tool_tokens": baseline_tokens,
+        "toolsearch_prompt_tokens": prompt_tokens,
+        "estimated_delta_tokens": delta,
+        "estimated_reduction_pct": reduction_pct,
+        "measurement": "local_estimate",
+    }
+
+
+def record_toolsearch_token_delta(
+    project_dir: str | Path,
+    *,
+    plan: ToolLoadingPlan,
+    estimated_tool_tokens: int = 0,
+    session_id: str = "",
+    metrics_path: str | Path | None = None,
+) -> dict[str, Any]:
+    """Append a content-free ToolSearch token delta metric."""
+    root = Path(project_dir).resolve()
+    delta = plan.token_delta or estimate_toolsearch_token_delta(
+        root,
+        estimated_tool_tokens=estimated_tool_tokens,
+        toolsearch_enabled=plan.toolsearch_enabled,
+        visible_tools=plan.visible_tools,
+        deferred_tools=plan.deferred_tools,
+    )
+    payload = {
+        **delta,
+        "timestamp": time.time(),
+        "session_id": session_id,
+        "status": plan.status,
+        "toolsearch_enabled": plan.toolsearch_enabled,
+        "visible_tool_count": len(plan.visible_tools),
+        "deferred_tool_count": len(plan.deferred_tools),
+    }
+    path = Path(metrics_path) if metrics_path else root / ".cognitive-os" / "metrics" / "toolsearch-token-delta.jsonl"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(payload, sort_keys=True) + "\n")
+    return payload
 
 
 

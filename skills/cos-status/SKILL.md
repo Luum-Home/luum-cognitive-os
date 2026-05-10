@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: cos-status
-description: Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks. Use when a user asks about OS state, installation verification, or troubleshooting.
+description: "Use when a user asks about OS state, installation verification, or troubleshooting. Purpose: Display current Cognitive OS state — active profile, skills exposed, hooks wired, rules loaded, packages installed, and health checks."
 triggers: ["/cos-status", "/status", "cos status"]
 audience: both
 version: 1.0.0

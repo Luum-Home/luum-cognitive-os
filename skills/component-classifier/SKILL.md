@@ -1,7 +1,7 @@
 <!-- SCOPE: both -->
 ---
 name: primitive-classifier
-description: "Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE. Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package."
+description: "Use when adding new functionality to determine if it belongs in the OS kernel or should be a cos package. Purpose: Classify a new agentic primitive (skill, hook, rule, lib) as CORE or PACKAGE."
 allowed-tools:
   - Read
   - Grep
