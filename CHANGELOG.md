@@ -1,9 +1,6 @@
-# Changelog
-
-All notable changes to Cognitive OS are documented here.
-Format follows [Keep a Changelog](https://keepachangelog.com/).
-
 ## [Unreleased]
+
+## [0.28.0] - 2026-05-10
 
 ### Added
 
@@ -82,8 +79,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Release notes
 
-- This scope is larger than a patch release. The next tagged release should be treated as a minor release candidate (`0.28.0`) after a 24-48 hour soak because several control-plane hooks and the Wave 2 memory opt-in landed on main today.
-- `/release-os` remains the canonical release orchestrator, but this entry only prepares the changelog/readiness stage; version bump, tag, and push should wait for soak unless the release owner records an explicit waiver.
+- `v0.28.0-rc1` validated the primitive observability wave before final promotion. The final release keeps `.ai` as a generated consumer overlay, not the internal source of truth.
+- The release-confidence bundle passed with Node available via `fnm`: derived artifacts, portable `.ai` overlay, OpenCode primitive adapter smoke, real-consumer shadow smoke, disposable consumer smoke, ACC brief, dogfood score with no missing signals, and primitive/dashboard contract tests.
+- `make test-laptop-integration` previously exhausted the local 900s laptop timeout at 56% without a functional failure; treat the integration lane as requiring a larger timeout or shards before future broad-release attestations.
 
 ## [0.27.1] - 2026-05-06
 
