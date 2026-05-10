@@ -22,22 +22,21 @@ OUTPUT="text"
 MANIFEST_OVERRIDE=""
 
 usage() {
-  cat <<'EOF'
-Usage: manifest-check.sh [--profile NAME] [--json] [--manifest PATH]
-
-Reports status of dependencies declared in manifests/dependencies.yaml.
-
-Options:
-  --profile NAME    Profile to check: default | full (default: default)
-  --json            Emit machine-readable JSON instead of human text
-  --manifest PATH   Override path to manifest (default: manifests/dependencies.yaml)
-  -h, --help        Show this help
-
-Exit codes:
-  0  all required items present
-  1  at least one required item missing
-  2  invalid invocation or manifest validation error
-EOF
+  printf '%s\n' \
+    'Usage: manifest-check.sh [--profile NAME] [--json] [--manifest PATH]' \
+    '' \
+    'Reports status of dependencies declared in manifests/dependencies.yaml.' \
+    '' \
+    'Options:' \
+    '  --profile NAME    Profile to check: default | full (default: default)' \
+    '  --json            Emit machine-readable JSON instead of human text' \
+    '  --manifest PATH   Override path to manifest (default: manifests/dependencies.yaml)' \
+    '  -h, --help        Show this help' \
+    '' \
+    'Exit codes:' \
+    '  0  all required items present' \
+    '  1  at least one required item missing' \
+    '  2  invalid invocation or manifest validation error'
 }
 
 while [[ $# -gt 0 ]]; do

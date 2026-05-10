@@ -24,6 +24,12 @@ source "$(dirname "$0")/_lib/safe-jsonl.sh"
 # ---------------------------------------------------------------------------
 _drain_queue() {
     local _PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+    # Fast no-op path: avoid importing Python modules when no dispatch queue or
+    # active task state exists. This keeps Agent PostToolUse perf tests stable
+    # and production no-op completions cheap.
+    if [ ! -s "$_PROJECT_DIR/.cognitive-os/tasks/dispatch-queue.json" ] && [ ! -s "$_PROJECT_DIR/.cognitive-os/tasks/active-tasks.json" ]; then
+        return 0
+    fi
     local _DRAIN_OUTPUT
     _DRAIN_OUTPUT=$(python3 -c "
 import sys, os
@@ -68,6 +74,9 @@ _record_adr108_agent_completion() {
     [ -n "${INPUT:-}" ] || return 0
     local _tool_use_id _prompt _session _agent_id _task _domains _prompt_lower _domain _domain_lower _domain_singular
     _tool_use_id=$(printf '%s' "$INPUT" | jq -r '.tool_use_id // empty' 2>/dev/null || true)
+    # Synthetic/unit payloads and some legacy harness rows may lack a tool_use_id.
+    # Avoid expensive ledger mutations when there is no stable agent identity.
+    [ -z "$_tool_use_id" ] && [ -z "${COS_TASK_ID:-}" ] && return 0
     _prompt=$(printf '%s' "$INPUT" | jq -r '.tool_input.prompt // .tool_input.description // "unknown task"' 2>/dev/null | head -c 500 || true)
     _session="${COGNITIVE_OS_SESSION_ID:-default-session}"
     _agent_id="${_tool_use_id:-agent-unknown}"

@@ -123,7 +123,7 @@ def test_untracked_survives_agent_launch(tmp_path: Path):
 
 
 def test_modified_tracked_survives(tmp_path: Path):
-    """A staged tracked modification must produce a stash entry."""
+    """A staged tracked modification must produce a copy-plan entry and stay in WT."""
     repo = make_repo(tmp_path / "repo")
 
     tracked = repo / "README.md"
@@ -135,12 +135,14 @@ def test_modified_tracked_survives(tmp_path: Path):
 
     manifest = get_latest_snapshot(repo)
     assert manifest is not None
-    assert manifest.get("tracked_stash_ref") is not None
+    assert manifest.get("tracked_stash_ref") is None
+    assert "README.md" in manifest.get("tracked_files", [])
+    assert "README.md" in manifest.get("tracked_snapshot_files", [])
 
     stash_list = _git(["stash", "list"], cwd=repo).stdout
-    assert "auto-pre-agent-it-agent-002" in stash_list
+    assert "auto-pre-agent-it-agent-002" not in stash_list
 
-    # WT should still have the staged content (--keep-index)
+    # WT should still have the staged content in copy-plan mode.
     assert tracked.read_text() == "modified\n"
 
 
@@ -226,9 +228,12 @@ def test_files_modified_by_agent_in_next_snapshot(tmp_path: Path):
 
     run_hook(repo, agent_id="snap-2")
 
+    manifest = get_latest_snapshot(repo)
+    assert manifest is not None
+    assert "README.md" in manifest.get("tracked_snapshot_files", [])
     stash_list = _git(["stash", "list"], cwd=repo).stdout
-    assert "auto-pre-agent-snap-2" in stash_list
-    # WT still has staged content
+    assert "auto-pre-agent-snap-2" not in stash_list
+    # WT still has staged content in copy-plan mode.
     assert tracked.read_text() == "agent modified\n"
 
 

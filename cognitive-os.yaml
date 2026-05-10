@@ -1680,18 +1680,27 @@ harness:
       script: hooks/auto-refine.sh
       event: PostToolUse
       matcher: Agent
+      default_projection: false
+      claude_projection: false
+      projection_note: Superseded in active Claude projection by hooks/completion-gate.sh to avoid duplicate Agent PostToolUse work.
       scope: os-only
 
     dod-gate:
       script: hooks/dod-gate.sh
       event: PostToolUse
       matcher: Agent
+      default_projection: false
+      claude_projection: false
+      projection_note: Superseded in active Claude projection by hooks/completion-gate.sh to avoid duplicate Agent PostToolUse work.
       scope: os-only
 
     auto-verify:
       script: hooks/auto-verify.sh
       event: PostToolUse
       matcher: Agent
+      default_projection: false
+      claude_projection: false
+      projection_note: Superseded in active Claude projection by hooks/completion-gate.sh to avoid duplicate Agent PostToolUse work.
       scope: both
 
     skill-tracker:

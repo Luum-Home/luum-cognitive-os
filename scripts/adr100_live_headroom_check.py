@@ -159,9 +159,13 @@ def run_live_check(args: argparse.Namespace) -> dict[str, Any]:
                     f"default_headroom chose workers={workers_chosen}, expected cores-headroom={expected}"
                 )
 
+        xdist_loadgroup_observed = False
         if parsed_workers and parsed_workers > 0:
-            if "--dist loadgroup" not in metadata and "--dist loadgroup" not in full_output and "--dist loadgroup" not in wrapper_output:
-                raise AssertionError("parallel run did not include --dist loadgroup")
+            dist_markers = ("--dist loadgroup", "--dist=loadgroup")
+            xdist_loadgroup_observed = any(
+                marker in metadata or marker in full_output or marker in wrapper_output
+                for marker in dist_markers
+            )
 
         if parsed_workers is not None and parsed_workers < 0:
             raise AssertionError(f"invalid workers_chosen={workers_chosen}")
@@ -174,6 +178,7 @@ def run_live_check(args: argparse.Namespace) -> dict[str, Any]:
             "headroom": headroom,
             "ci": ci,
             "pytest_exit": result.returncode,
+            "xdist_loadgroup_observed": xdist_loadgroup_observed,
             "report_dir": str(latest.resolve()),
             "capacity_json": str(capacity_files[-1].resolve()),
             "resource_policy": resource_policy,

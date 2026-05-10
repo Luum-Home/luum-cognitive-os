@@ -43,7 +43,7 @@ fi
 # only relevant to Agent skill executions; generic Bash/Edit/Read performance
 # tests should not pay that cost.
 case "$PAYLOAD" in
-  *'"tool_name"'*'"Agent"'*|*'"tool_name":"Agent"'*) ;;
+  *'"tool_name"'*'"Agent"'*|*'"tool_name":"Agent"'*|*'"skill_name"'*) ;;
   *) exit 0 ;;
 esac
 

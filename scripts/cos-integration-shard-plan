@@ -38,7 +38,8 @@ def main() -> int:
     if not files:
         print("integration shard is empty", file=sys.stderr)
         return 0
-    cmd = [sys.executable, "-m", "pytest", *files, "-m", "not docker", "--timeout=90", "--tb=short", "-q", *args.pytest_arg]
+    python_exe = __import__("os").environ.get("COS_TEST_PYTHON") or sys.executable
+    cmd = [python_exe, "-m", "pytest", *files, "-m", "not docker", "--timeout=90", "--tb=short", "-q", *args.pytest_arg]
     print(json.dumps({"schema_version": "integration-shard-run/v1", "shard": args.shard_index, "command": cmd, "file_count": len(files)}, sort_keys=True), file=sys.stderr)
     return subprocess.call(cmd, cwd=ROOT)
 

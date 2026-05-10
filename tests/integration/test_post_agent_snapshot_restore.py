@@ -81,6 +81,11 @@ def _git_env(repo: Path) -> dict:
     return env
 
 
+def _legacy_snapshot_env(env: dict) -> dict:
+    """Force legacy stash mode for tests that assert stash/marker semantics."""
+    return {**env, "COS_LEGACY_SNAPSHOT": "1"}
+
+
 def _run(cmd: list, cwd: Path, env: dict | None = None, input_text: str = "") -> subprocess.CompletedProcess:
     return subprocess.run(
         cmd,
@@ -166,7 +171,7 @@ def _runtime_markers(repo: Path) -> list[Path]:
 
 def test_happy_path_restore(git_repo: Path):
     """Pre-agent stashes tracked modifications; post-agent applies stash cleanly."""
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     agent_id = "test-agent-happy-001"
 
     # Make WT dirty
@@ -229,7 +234,7 @@ def test_no_stash_noop(git_repo: Path):
 
 def test_conflict_on_apply_nonblocking(git_repo: Path):
     """When git stash apply has a conflict, hook exits 0 and preserves stash."""
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     agent_id = "test-agent-conflict-003"
 
     # Make WT dirty and stash it via pre-hook
@@ -300,7 +305,7 @@ def test_bypass_env_var(git_repo: Path):
 
 def test_marker_file_exact_match(git_repo: Path):
     """When marker file is present, post-hook uses the exact stash_ref in the marker."""
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     agent_id = "test-agent-marker-005"
 
     # Make WT dirty
@@ -340,7 +345,7 @@ def test_deterministic_payload_id_restores_long_running_agent_without_env_id(git
     ran longer than the five-minute fallback window, and post had agent_id=unknown.
     Deterministic IDs from tool_input remove that time dependency.
     """
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     payload = json.dumps(
         {
             "tool_name": "Agent",
@@ -386,14 +391,16 @@ def test_copy_only_marker_is_removed_on_post_noop(git_repo: Path):
     pre_result = _run_pre_hook(git_repo, agent_id, env)
     assert pre_result.returncode == 0, pre_result.stderr
     assert _stash_count(git_repo) == 0
-    marker_path = git_repo / ".cognitive-os" / "runtime" / f"pre-agent-snapshot-{agent_id}.json"
-    assert marker_path.exists()
-    assert json.loads(marker_path.read_text()).get("stash_ref") == ""
+    plan_path = git_repo / ".cognitive-os" / "runtime" / f"pre-agent-plan-{agent_id}.json"
+    assert plan_path.exists()
+    plan = json.loads(plan_path.read_text())
+    assert plan.get("tracked_stash_ref") in {None, ""}
+    assert plan.get("untracked_files") == ["notes.txt"]
 
     post_result = _run_post_hook(git_repo, agent_id, env)
     assert post_result.returncode == 0, post_result.stderr
-    assert not marker_path.exists(), "copy-only marker should be completed and removed"
-    assert any(r.get("action") == "skip_no_stash" for r in _read_metrics(git_repo))
+    assert not plan_path.exists(), "copy-mode plan should be completed and removed"
+    assert any(r.get("action") == "plan_without_marker_cleanup" for r in _read_metrics(git_repo))
 
 
 # ---------------------------------------------------------------------------
@@ -402,7 +409,7 @@ def test_copy_only_marker_is_removed_on_post_noop(git_repo: Path):
 
 def test_fallback_without_marker(git_repo: Path):
     """When AGENT_ID is unknown, hook falls back to most-recent auto-pre-agent stash."""
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     agent_id = "test-agent-fallback-006"
 
     # Make WT dirty
@@ -456,7 +463,7 @@ def test_falsification_rubber_stamp(git_repo: Path, tmp_path: Path):
     on a dirty-WT scenario: the real hook produces a 'restored' metrics entry,
     the rubber-stamp does not.
     """
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     agent_id = "test-agent-falsify-007"
 
     # Make WT dirty and create stash via pre-hook
@@ -508,7 +515,7 @@ def test_falsification_rubber_stamp(git_repo: Path, tmp_path: Path):
 
 def test_marker_v2_restores_by_sha_after_stash_position_drift(git_repo: Path):
     """ADR-221: marker stash_sha survives later stash pushes that shift stash@{N}."""
-    env = _git_env(git_repo)
+    env = _legacy_snapshot_env(_git_env(git_repo))
     agent_id = "test-agent-sha-drift-008"
 
     (git_repo / "readme.txt").write_text("operator wip before agent\n")

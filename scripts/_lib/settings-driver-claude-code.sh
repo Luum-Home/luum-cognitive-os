@@ -352,9 +352,6 @@ cc_driver_emit() {
     "hooks/dequeue-notify.sh"         "true"  \
     "hooks/state-heartbeat.sh"        "true"  \
     "hooks/review-spawner.sh"         "false" \
-    "hooks/auto-verify.sh"            "false" \
-    "hooks/auto-refine.sh"            "false" \
-    "hooks/dod-gate.sh"               "false" \
     "hooks/skill-tracker.sh"          "false" \
     "hooks/skill-post-execution-analysis.sh" "true"  \
     "hooks/orchestrator-decision-trace.sh" "true"  \

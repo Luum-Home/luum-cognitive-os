@@ -51,14 +51,24 @@ From the rendered README, click each link in turn and confirm 200, not
 ### 3. Smoke privacy check
 
 ```
-git log --all -p | \
-  grep -E '(soporte\.esolutions|<consumer-codename-[abc]>|<consumer-service)' | \
-  head -20
+git log --all -p | grep -E 'soporte\.esolutions' | head -20
 ```
 
 Expected output: only the two operator-written disclosure-text matches
-inside `docs/legal/pre-public-readiness-checklist.md`. If anything else
-matches, abort and re-run the rewrite per ADR-218.
+inside `docs/legal/pre-public-readiness-checklist.md`.
+
+Then confirm that sanitized placeholders are present only as placeholders,
+not as real consumer names:
+
+```
+git log --all -p | \
+  grep -E '(<consumer-codename-[abc]>|<consumer-service(-[2-5])?>)' | \
+  head -20
+```
+
+Expected output: placeholder references are allowed in sanitization docs,
+transparency docs, and generated inventories. If any real consumer name or
+service token appears, abort and re-run the rewrite per ADR-218.
 
 ### 4. Origin matches local
 

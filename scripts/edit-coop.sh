@@ -37,7 +37,13 @@
 #
 # POSIX / macOS compatible.
 set -uo pipefail
-source "$(dirname "${BASH_SOURCE[0]}")/_lib/session-id.sh"
+_SESSION_ID_LIB="$(dirname "${BASH_SOURCE[0]}")/_lib/session-id.sh"
+if [ -f "$_SESSION_ID_LIB" ]; then
+  # shellcheck source=/dev/null
+  source "$_SESSION_ID_LIB"
+else
+  cos_session_id() { printf '%s' "${COGNITIVE_OS_SESSION_ID:-${CLAUDE_SESSION_ID:-default-session}}"; }
+fi
 
 LOCK_TTL_SECONDS="${COS_EDIT_LOCK_TTL:-1800}"      # 30 minutes
 LOCK_HEARTBEAT_SECONDS="${COS_EDIT_LOCK_HEARTBEAT:-300}"  # refresh every 5min

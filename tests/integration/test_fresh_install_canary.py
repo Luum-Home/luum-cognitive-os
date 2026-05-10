@@ -199,6 +199,7 @@ class TestReleaseCheckPlumbing:
         expected = {
             "compose-prompt", "exhaustive-prompt", "agent-dashboard", "auto-refine",
             "verification-before-completion", "plan-feature", "session-backlog",
+            "resource-governor", "primitive-authoring", "cos-status",
         }
         assert set(names) == expected, f"core skill names mismatch: {names!r}"
 

@@ -40,6 +40,17 @@ METRICS_DIR="$PROJECT_DIR/.cognitive-os/metrics"
 FINDINGS_JSONL="$METRICS_DIR/review-findings.jsonl"
 BUDGET_STATE="$RUNTIME_DIR/review-budget.json"
 
+# ── Extract producer output before expensive config loads ───────────────────
+# If the agent output is absent or too short there is nothing useful to review.
+# Keep this before mkdir/python config work so the common no-op path stays cheap.
+AGENT_OUTPUT=$(echo "$INPUT" | jq -r '.tool_result // .output // .tool_output // empty' 2>/dev/null || true)
+AGENT_PROMPT=$(echo "$INPUT" | jq -r '.tool_input.description // .tool_input.prompt // empty' 2>/dev/null || true)
+PRODUCER_ID=$(echo "$INPUT" | jq -r '.tool_use_id // "unknown"' 2>/dev/null || true)
+
+if [ -z "$AGENT_OUTPUT" ] || [ ${#AGENT_OUTPUT} -lt 200 ]; then
+  exit 0
+fi
+
 mkdir -p "$RUNTIME_DIR" "$METRICS_DIR"
 
 # ── Read config from cognitive-os.yaml ──────────────────────────────────────
@@ -68,21 +79,12 @@ if [ -n "${COS_REVIEW_ASYNC:-}" ]; then
   ASYNC_REVIEW="$COS_REVIEW_ASYNC"
 fi
 
-# ── Extract producer output ──────────────────────────────────────────────────
-
-AGENT_OUTPUT=$(echo "$INPUT" | jq -r '.tool_result // .output // empty' 2>/dev/null || true)
-AGENT_PROMPT=$(echo "$INPUT" | jq -r '.tool_input.description // .tool_input.prompt // empty' 2>/dev/null || true)
-PRODUCER_ID=$(echo "$INPUT" | jq -r '.tool_use_id // "unknown"' 2>/dev/null || true)
+# ── Producer metadata ────────────────────────────────────────────────────────
 
 # Determine producer model (best-effort: may not be in hook input)
 PRODUCER_MODEL=$(echo "$INPUT" | jq -r '.tool_input.model // "sonnet"' 2>/dev/null || true)
 if [ -z "$PRODUCER_MODEL" ] || [ "$PRODUCER_MODEL" = "null" ]; then
   PRODUCER_MODEL="sonnet"
-fi
-
-# If the agent output is absent or very short, nothing useful to review
-if [ -z "$AGENT_OUTPUT" ] || [ ${#AGENT_OUTPUT} -lt 50 ]; then
-  exit 0
 fi
 
 # ── Stochastic + budget gate ─────────────────────────────────────────────────

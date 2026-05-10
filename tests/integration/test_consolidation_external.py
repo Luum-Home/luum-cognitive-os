@@ -338,7 +338,7 @@ class TestExternalProjectSimulation:
                 f"Core rule {rule_name} is empty or nearly empty"
             )
             body = content.strip()
-            if body.startswith("<!--"):
+            while body.startswith("<!--") and "-->" in body:
                 body = body.split("-->", 1)[1].strip()
             # Each rule should start with a markdown heading after optional metadata.
             assert body.startswith("#"), (

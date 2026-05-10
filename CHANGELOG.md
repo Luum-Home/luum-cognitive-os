@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- Stabilized Agent PostToolUse latency validation by demoting superseded legacy verification hooks from active Claude projection and adding cheap no-op paths for completion/review hooks.
+- Hardened F1 integration shard execution to allow `COS_TEST_PYTHON` when local shells do not have `uv` or compatible `python3` dependencies.
+- Aligned integration tests with current copy-plan snapshot semantics and public-launch privacy placeholder expectations.
+
 ### Added
 
 - Added F1 laptop integration sharding via `scripts/cos-integration-shard-plan`, `make test-laptop-integration-plan`, and `make test-laptop-integration-shard`.
