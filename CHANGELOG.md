@@ -30,6 +30,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Memory Wave 2 Slice 0: retrieval benchmark manifest, fixtures, runner, baseline report, strategy comparison runner, and five comparable retrieval reports.
 - Memory Wave 2 runtime opt-in: M1 temporal validity / supersession-aware reranking and M3 relation support-chain annotations behind `retrieval_strategy="wave2-m1-m3"` or `COS_ENGRAM_RETRIEVAL_STRATEGY=wave2-m1-m3`; `strategy=current` remains default.
 - Memory Wave 2 default decision record documenting why M1 stays opt-in until the remaining multi-hop/source-support blocker is closed.
+- Primitive observability/portability/contracts wave: portable-AI observable overlay, primitive contract registry phase one, runtime evidence dashboard, observable overlay UX, primitive authoring gate, portability test impact mapping, lifecycle registry release seal, observable release proof, and portable standards due-diligence + authoring-plan documentation.
+- Consumer fleet status panel for cross-project audit visibility, plus consumer-leakage cleanup that removes operator/project specifics from core primitive surfaces.
+- Pre-launch history audit tooling (SHA inventories, manifest snapshots, pre/post-rewrite remote/upstream verification) so routine audits do not require re-running filter-repo.
+- Self-programming primitive patterns documentation and OpenCode primitive projection path notes.
+- Tech radar additions: OpenSwarm, EvoSkill, and agno (deep evaluation + radar addendum + index) — extends the prior OpenSage/TaskingAI/Langflow review to the broader consumer-AI surface.
+- Portable primitive tool radar entries linking observable-AI manifests and the primitive contract registry to external candidates.
 
 ### Changed
 
@@ -43,6 +49,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Downgraded or tombstoned stale ADR claims where manifests or docs implied implemented behavior without consuming runtime code.
 - Qualified token-reduction claims as upstream figures unless local ToolSearch metrics exist.
 - Restored and clarified supply-chain digest notes after SBOM sanitization.
+- Hardened context-rot controls so context-budget meters and staleness invariants enforce stricter ceilings under primitive-portability load.
+- Aligned the itinerary hook event across the canonical settings driver, the cognitive-os.yaml registry, and the projected `.claude/settings.json` / `.codex/hooks.json`.
+- Verified primitive documentation alignment across docs/manifests/scripts so observable-portability claims map to runtime evidence.
+- Neutralized package-metadata commit messages during the public-launch history rewrite while preserving the Apache-2.0 to FSL-1.1-MIT transition explanation in `docs/legal/license-faq.md` per ADR-218 transparency posture.
 
 ### Fixed
 
@@ -56,6 +66,12 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 - Fixed test-laptop/unit-lane readiness regressions, suspicious skip classification, hook timing count noise in validation capsules, primitive lifecycle/coverage baseline drift, and snapshot restore tracked-plan baselines.
 - Fixed dependency/adoption contradictions by removing direct `litellm`, `langfuse`, `memu`, and `pytest-smell` references that conflicted with current radar posture.
 - Fixed package mirrors for agent lifecycle and deferred tool loading after runtime adapter work.
+- Cleared remaining laptop audit blockers and unblocked laptop validation gates ahead of the 0.28 soak.
+- Aligned the itinerary matcher hook projection so registry, Claude Code settings, and Codex hooks projections agree on event/scope/matcher.
+- Made primitive gates clean-tree safe so smoke runs do not false-positive on a pristine working tree.
+- Preserved branch upstreams and remotes after history sanitization rewrite (consolidates three patches addressing pre/post-rewrite remote restoration).
+- Hardened final pre-launch scanner gates ahead of public release.
+- Treated package-metadata edits (license/version/name/author/homepage/repository fields in `package.json` and `pyproject.toml`) as non-dependency changes so the dependency-adoption-gate no longer false-positive-blocks metadata-only commits.
 
 ### Security
 
