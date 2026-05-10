@@ -86,8 +86,18 @@ test-laptop-direct: cos-test
 	@COS_TEST_WORKERS_MAX=2 ./cos-test cluster --lane hooks
 
 test-laptop-integration: cos-test
-	@echo "[test-laptop-integration] Explicit SO integration validation: serial, no Docker, lower CPU priority. Still slow/stateful." >&2
-	@nice -n 10 ./cos-test cluster --lane integration
+	@echo "[test-laptop-integration] Explicit SO integration validation via F1 stable shards. Override COS_INTEGRATION_SHARDS=4." >&2
+	@i=0; shards="$${COS_INTEGRATION_SHARDS:-4}"; while [ "$$i" -lt "$$shards" ]; do \
+		echo "[test-laptop-integration] shard $$i/$$shards" >&2; \
+		nice -n 10 scripts/cos-integration-shard-plan --shards "$$shards" --shard-index "$$i" --run || exit $$?; \
+		i=$$((i + 1)); \
+	done
+
+test-laptop-integration-plan:
+	@scripts/cos-integration-shard-plan --shards "$${COS_INTEGRATION_SHARDS:-4}" --json
+
+test-laptop-integration-shard:
+	@nice -n 10 scripts/cos-integration-shard-plan --shards "$${COS_INTEGRATION_SHARDS:-4}" --shard-index "$${SHARD_INDEX:?set SHARD_INDEX=0..N-1}" --run
 
 test-local-wide-no-docker: cos-test
 	@./cos-test broad --no-docker

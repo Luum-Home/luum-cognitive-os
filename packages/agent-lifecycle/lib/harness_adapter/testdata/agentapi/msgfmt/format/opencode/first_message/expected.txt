@@ -1,0 +1,10 @@
+                                                                                                                                        ▄
+                                                                                                       █▀▀█ █▀▀█ █▀▀█ █▀▀▄ █▀▀▀ █▀▀█ █▀▀█ █▀▀█
+                                                                                                       █░░█ █░░█ █▀▀▀ █░░█ █░░░ █░░█ █░░█ █▀▀▀
+                                                                                                       ▀▀▀▀ █▀▀▀ ▀▀▀▀ ▀  ▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
+                                                                                                                                        1.0.98
+
+                                                                                                       Commands                         ctrl+p
+                                                                                                       List sessions                  ctrl+x l
+                                                                                                       Switch model                   ctrl+x m
+                                                                                                       Switch agent                        tab

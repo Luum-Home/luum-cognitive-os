@@ -86,6 +86,14 @@ _WAVE2_TEMPORAL_GRAPH_STRATEGIES = {
     "wave2-m1-m3",
     "temporal-graph",
     "temporal-graph-support-chain",
+    "dual-level",
+    "wave2-m2",
+    "ppr",
+    "wave2-m3-ppr",
+    "hybrid",
+    "wave2-hybrid",
+    "memory-class",
+    "wave2-m4",
 }
 _TEMPORAL_CURRENT_BOOST: float = 1.0
 _TEMPORAL_STALE_PENALTY: float = 1.0
@@ -348,7 +356,7 @@ class EngramLifecycle:
         enriched.sort(key=lambda x: x["adjusted_score"], reverse=True)
 
         if not graph_walk:
-            return self._apply_retrieval_strategy(enriched, retrieval_strategy)
+            return self._apply_retrieval_strategy(enriched, retrieval_strategy, query=query)
 
         # Phase 3: walk memory_relations graph and merge neighbors
         try:
@@ -363,7 +371,7 @@ class EngramLifecycle:
         except Exception:
             pass
 
-        return self._apply_retrieval_strategy(enriched, retrieval_strategy)
+        return self._apply_retrieval_strategy(enriched, retrieval_strategy, query=query)
 
     def reinforce(self, observation_id: str | int) -> bool:
         """Bump reinforcement_count, reset last_reinforced, and increase confidence.
@@ -489,6 +497,8 @@ class EngramLifecycle:
         self,
         results: list[dict[str, Any]],
         retrieval_strategy: str | None,
+        *,
+        query: str = "",
     ) -> list[dict[str, Any]]:
         """Apply optional Wave 2 runtime retrieval behavior.
 
@@ -514,6 +524,11 @@ class EngramLifecycle:
                 if obs.get("sync_id") and not obs.get("graph_only")
             ] or sync_ids
             chains = walker.support_chains(base_sync_ids, sync_ids)
+            ppr_scores = (
+                walker.personalized_pagerank(base_sync_ids, sync_ids)
+                if strategy in {"ppr", "wave2-m3-ppr", "hybrid", "wave2-hybrid"}
+                else {}
+            )
         except Exception:
             return results
 
@@ -530,20 +545,73 @@ class EngramLifecycle:
             if self._observation_is_temporally_stale(obs, status):
                 temporal_delta -= _TEMPORAL_STALE_PENALTY
             wave2_score = base_score + temporal_delta
+            if strategy in {"dual-level", "wave2-m2", "hybrid", "wave2-hybrid"}:
+                wave2_score += self._dual_level_score(query, obs)
             chain = chains.get(sid, [])
             if chain:
                 wave2_score += 0.25
+            if sid in ppr_scores:
+                wave2_score += float(ppr_scores[sid])
+            memory_class = self._memory_class(obs)
+            if strategy in {"memory-class", "wave2-m4", "hybrid", "wave2-hybrid"}:
+                wave2_score += self._memory_class_delta(query, memory_class)
             reranked.append(
                 {
                     **obs,
                     "retrieval_strategy": strategy,
                     "temporal_status": status,
                     "support_chain": chain,
+                    "ppr_score": ppr_scores.get(sid, 0.0),
+                    "memory_class": memory_class,
                     "wave2_score": wave2_score,
                 }
             )
         reranked.sort(key=lambda row: row.get("wave2_score", 0.0), reverse=True)
         return reranked
+
+    @staticmethod
+    def _tokens(text: str) -> set[str]:
+        return {token for token in re.findall(r"[a-z0-9]+", str(text).lower()) if len(token) > 2}
+
+    def _dual_level_score(self, query: str, obs: dict[str, Any]) -> float:
+        query_tokens = self._tokens(query)
+        title_tokens = self._tokens(obs.get("title", ""))
+        topic_tokens = self._tokens(" ".join(str(obs.get(key, "")) for key in ("content", "topic_key", "type")))
+        if not query_tokens:
+            return 0.0
+        entity_union = query_tokens | title_tokens
+        topic_union = query_tokens | topic_tokens
+        entity = (len(query_tokens & title_tokens) / len(entity_union)) if entity_union else 0.0
+        topic = (len(query_tokens & topic_tokens) / len(topic_union)) if topic_union else 0.0
+        return (0.6 * entity) + (0.4 * topic)
+
+    @staticmethod
+    def _memory_class(obs: dict[str, Any]) -> str:
+        explicit = obs.get("memory_class")
+        if explicit:
+            return str(explicit)
+        mapping = {
+            "architecture": "semantic",
+            "decision": "semantic",
+            "pattern": "semantic",
+            "bugfix": "procedural",
+            "config": "procedural",
+            "procedure": "procedural",
+            "discovery": "episodic",
+            "session_summary": "episodic",
+            "passive": "working",
+        }
+        return mapping.get(str(obs.get("type", "")).lower(), "unknown")
+
+    def _memory_class_delta(self, query: str, memory_class: str) -> float:
+        q = query.lower()
+        if memory_class == "procedural" and any(word in q for word in ("how", "run", "start", "test", "fix", "implement")):
+            return 0.05
+        if memory_class == "semantic" and any(word in q for word in ("current", "decision", "policy", "architecture", "posture")):
+            return 0.05
+        if memory_class == "episodic" and any(word in q for word in ("session", "yesterday", "last time", "recall")):
+            return 0.05
+        return 0.0
 
     @staticmethod
     def _observation_is_temporally_current(

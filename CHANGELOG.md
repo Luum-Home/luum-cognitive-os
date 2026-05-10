@@ -7,6 +7,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- Added F1 laptop integration sharding via `scripts/cos-integration-shard-plan`, `make test-laptop-integration-plan`, and `make test-laptop-integration-shard`.
+- Added Wave 2 post-M1 opt-in memory retrieval modes: dual-level scoring, Personalized PageRank, memory-class overlay, and hybrid scoring.
+- Added opt-in bubblewrap seccomp command construction plus strict profile manifest; default sandbox behavior remains namespace-only.
+- Added Wave 3 initial runtime slices: repo-map context selector, optional DSPy structured-skill pilot seam, and vendored agentapi msgfmt golden fixtures with MIT provenance.
 - Added the H6 skill-description migration/check script, enforced `description: "Use when…"` across SKILL.md frontmatter, and refreshed the compact skill catalog.
 - Added the Engram Wave 2 M1 additive schema migration helper for `valid_from`, `valid_to`, `memory_class`, and `source_episode` while preserving `strategy=current` defaults.
 - Added local ToolSearch token-delta metrics, dispatch metric emission, and `cos-deferred-tool-plan --token-delta` to replace the prior measured-vs-claimed gap.

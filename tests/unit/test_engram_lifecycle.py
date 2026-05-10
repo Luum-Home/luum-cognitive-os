@@ -403,6 +403,54 @@ class TestSearch:
         assert results[0]["temporal_status"]["is_current"] is True
         assert results[1]["temporal_status"]["is_superseded"] is True
 
+    def test_wave2_hybrid_strategy_adds_dual_level_ppr_and_memory_class_signals(self):
+        class FakeWalker:
+            def temporal_status(self, sync_ids: list[str]) -> dict[str, dict[str, Any]]:
+                return {sid: {"is_current": False, "is_superseded": False} for sid in sync_ids}
+
+            def support_chains(
+                self,
+                start_sync_ids: list[str],
+                target_sync_ids: list[str],
+            ) -> dict[str, list[str]]:
+                return {"obs-procedure": ["obs-query", "obs-procedure"]}
+
+            def personalized_pagerank(
+                self,
+                seed_sync_ids: list[str],
+                candidate_sync_ids: list[str],
+            ) -> dict[str, float]:
+                return {"obs-procedure": 0.9, "obs-other": 0.1}
+
+        lc = EngramLifecycle(now=lambda: _FIXED_NOW, graph_walker=FakeWalker())
+        procedure = _obs(
+            content="Run tests with cos-test cluster",
+            title="How to run integration tests",
+            obs_id=1,
+            sync_id="obs-procedure",
+            obs_type="bugfix",
+            score=0.1,
+        )
+        other = _obs(
+            content="Unrelated note",
+            title="Other",
+            obs_id=2,
+            sync_id="obs-other",
+            obs_type="discovery",
+            score=0.8,
+        )
+
+        with patch(
+            "lib.engram_lifecycle.engram_client.search_observations",
+            return_value=[other, procedure],
+        ):
+            results = lc.search("how run integration tests", retrieval_strategy="hybrid")
+
+        assert results[0]["sync_id"] == "obs-procedure"
+        assert results[0]["ppr_score"] == 0.9
+        assert results[0]["memory_class"] == "procedural"
+        assert results[0]["retrieval_strategy"] == "hybrid"
+
 
 # ---------------------------------------------------------------------------
 # reinforce() integration (engram_http_client stubbed)

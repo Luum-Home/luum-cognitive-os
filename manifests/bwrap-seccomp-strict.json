@@ -1,0 +1,26 @@
+{
+  "schema_version": "bwrap-seccomp-profile/v1",
+  "profile": "strict",
+  "status": "opt-in",
+  "requires_compiled_bpf_path_env": "COS_BWRAP_SECCOMP_PROFILE_PATH",
+  "blocked_syscalls": [
+    "ptrace",
+    "kexec_load",
+    "finit_module",
+    "init_module",
+    "delete_module",
+    "mount",
+    "umount2",
+    "pivot_root",
+    "swapon",
+    "swapoff",
+    "reboot",
+    "acct",
+    "bpf",
+    "perf_event_open",
+    "keyctl",
+    "add_key",
+    "request_key"
+  ],
+  "notes": "Policy manifest for the opt-in compiled BPF profile. Runtime command construction requires a precompiled profile file path; COS does not enable this by default."
+}

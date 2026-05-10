@@ -338,6 +338,69 @@ class EngramGraphWalker:
             conn.close()
         return chains
 
+    def personalized_pagerank(
+        self,
+        seed_sync_ids: list[str],
+        candidate_sync_ids: list[str],
+        *,
+        damping: float = 0.85,
+        iterations: int = 20,
+    ) -> dict[str, float]:
+        """Return bounded Personalized PageRank scores for candidate memories.
+
+        This is the real Wave 2 M3 runtime algorithm. It remains opt-in through
+        ``EngramLifecycle`` retrieval strategies and reads only
+        ``memory_relations``. Rejected relations are excluded by ``_fetch_edges``.
+        """
+        seeds = [sid for sid in seed_sync_ids if sid]
+        candidates = {sid for sid in candidate_sync_ids if sid}
+        if not seeds or not candidates:
+            return {}
+        conn = self._open_db_readonly()
+        if conn is None:
+            return {}
+        try:
+            graph: dict[str, set[str]] = {sid: set() for sid in set(seeds) | candidates}
+            visited = set(graph)
+            frontier = set(graph)
+            for _ in range(max(1, self.max_depth)):
+                next_frontier: set[str] = set()
+                for node in list(frontier):
+                    for neighbor, _relation in self._fetch_edges(conn, node):
+                        if not neighbor:
+                            continue
+                        graph.setdefault(node, set()).add(neighbor)
+                        graph.setdefault(neighbor, set()).add(node)
+                        if neighbor not in visited:
+                            next_frontier.add(neighbor)
+                visited.update(next_frontier)
+                frontier = next_frontier
+                if not next_frontier:
+                    break
+            if not graph:
+                return {}
+            seed_set = set(seeds)
+            personalization = {node: (1.0 / len(seed_set) if node in seed_set else 0.0) for node in graph}
+            ranks = dict(personalization)
+            for _ in range(max(1, iterations)):
+                next_ranks = {node: (1.0 - damping) * personalization.get(node, 0.0) for node in graph}
+                for node, neighbors in graph.items():
+                    if not neighbors:
+                        continue
+                    share = ranks.get(node, 0.0) / len(neighbors)
+                    for neighbor in neighbors:
+                        next_ranks[neighbor] = next_ranks.get(neighbor, 0.0) + damping * share
+                ranks = next_ranks
+            max_rank = max(ranks.values()) if ranks else 0.0
+            if max_rank <= 0:
+                return {sid: 0.0 for sid in candidates}
+            return {sid: round(ranks.get(sid, 0.0) / max_rank, 6) for sid in candidates}
+        except Exception as exc:
+            _log.debug("personalized_pagerank failed: %s", exc)
+            return {}
+        finally:
+            conn.close()
+
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------

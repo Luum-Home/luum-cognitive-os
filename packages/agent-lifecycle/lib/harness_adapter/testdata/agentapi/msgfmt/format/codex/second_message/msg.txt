@@ -1,0 +1,15 @@
+user
+How many untracked files are there?
+
+⚡ Ran command git status --porcelain
+  ⎿  M cmd/server/server.go
+     M lib/msgfmt/message_box.go
+     M lib/msgfmt/msgfmt.go
+    ... +2 lines
+
+codex
+There are 2 untracked files (`.env` and `forge.yaml`).
+
+› Ask Codex to do anything
+
+gpt-5.1-codex-max default · 100% left · ~/Documents/work/coder_o…

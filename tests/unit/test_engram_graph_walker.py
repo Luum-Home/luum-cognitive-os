@@ -404,6 +404,29 @@ class TestSupportChains:
         finally:
             os.unlink(path)
 
+
+class TestPersonalizedPageRank:
+    def test_ppr_scores_connected_candidate_above_unconnected_candidate(self):
+        with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
+            path = f.name
+        try:
+            conn = _create_test_db(path)
+            for sid in ("obs-query", "obs-impl", "obs-test", "obs-other"):
+                _insert_obs(conn, sid)
+            _insert_relation(conn, "rel-1", "obs-query", "obs-impl", relation="implemented_by")
+            _insert_relation(conn, "rel-2", "obs-impl", "obs-test", relation="verified_by")
+            conn.close()
+
+            result = _walker(path).personalized_pagerank(
+                ["obs-query"],
+                ["obs-test", "obs-other"],
+                iterations=10,
+            )
+
+            assert result["obs-test"] > result["obs-other"]
+        finally:
+            os.unlink(path)
+
     def test_support_chain_respects_depth_limit(self):
         with tempfile.NamedTemporaryFile(suffix=".db", delete=False) as f:
             path = f.name

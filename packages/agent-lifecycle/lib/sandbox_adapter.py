@@ -26,6 +26,7 @@ class SandboxPlan:
     fallback_used: bool = False
     adapter_status: str = "active"
     adapter_hint: str = ""
+    seccomp_profile: str = ""
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -37,6 +38,7 @@ class SandboxPlan:
             "fallback_used": self.fallback_used,
             "adapter_status": self.adapter_status,
             "adapter_hint": self.adapter_hint,
+            "seccomp_profile": self.seccomp_profile,
         }
 
 
@@ -83,6 +85,7 @@ def build_sandbox_command(
     writable_roots: list[str] | None = None,
     network: bool = False,
     backend: str | None = None,
+    seccomp_profile: str | None = None,
     allow_fallback: bool = False,
 ) -> SandboxPlan:
     """Build a sandboxed command line without executing it."""
@@ -91,10 +94,15 @@ def build_sandbox_command(
     workspace_path = str(Path(workspace).resolve())
     selected = backend or available_backend()
     writable = [str(Path(root).resolve()) for root in (writable_roots or [workspace_path])]
+    requested_seccomp = (seccomp_profile or os.environ.get("COS_SANDBOX_BWRAP_SECCOMP_PROFILE", "")).strip().lower()
+    seccomp_fallback_used = False
+    seccomp_hint = ""
 
     if selected == "bubblewrap":
         if not shutil.which("bwrap"):
             raise SandboxUnavailable("bubblewrap backend requested but bwrap is not installed")
+        if requested_seccomp and requested_seccomp not in {"strict"}:
+            raise ValueError("seccomp_profile must be 'strict' when provided")
         wrapped = [
             "bwrap",
             "--ro-bind", "/", "/",
@@ -110,10 +118,39 @@ def build_sandbox_command(
         ]
         if not network:
             wrapped.append("--unshare-net")
+        seccomp_path = os.environ.get("COS_BWRAP_SECCOMP_PROFILE_PATH", "").strip()
+        if requested_seccomp == "strict":
+            if not seccomp_path:
+                if allow_fallback:
+                    seccomp_fallback_used = True
+                    seccomp_hint = "strict seccomp requested but COS_BWRAP_SECCOMP_PROFILE_PATH is unset"
+                    requested_seccomp = ""
+                else:
+                    raise SandboxUnavailable("strict seccomp requested but COS_BWRAP_SECCOMP_PROFILE_PATH is unset")
+            else:
+                wrapped.extend(["--seccomp", "3"])
+                wrapped = [
+                    "bash",
+                    "-lc",
+                    'profile="$1"; shift; exec 3<"$profile"; exec "$@"',
+                    "cos-bwrap-seccomp",
+                    seccomp_path,
+                    *wrapped,
+                ]
         for root in writable:
             wrapped.extend(["--bind", root, root])
         wrapped.extend(["--", *command])
-        return SandboxPlan(SCHEMA_VERSION, "bubblewrap", wrapped, network, writable)
+        return SandboxPlan(
+            SCHEMA_VERSION,
+            "bubblewrap",
+            wrapped,
+            network,
+            writable,
+            fallback_used=seccomp_fallback_used,
+            adapter_status="fallback" if seccomp_fallback_used else "active",
+            adapter_hint=seccomp_hint,
+            seccomp_profile=requested_seccomp,
+        )
 
     if selected == "seatbelt":
         if not shutil.which("sandbox-exec"):

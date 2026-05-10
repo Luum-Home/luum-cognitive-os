@@ -91,3 +91,20 @@ as `COS_SANDBOX_BWRAP_SECCOMP_PROFILE=strict`.
 
 Unset `COS_SANDBOX_BWRAP_SECCOMP_PROFILE` or pass no seccomp option. The current
 namespace-only bubblewrap command remains the stable fallback.
+
+## Implementation note — opt-in command path
+
+The first implementation slice keeps seccomp disabled by default and adds only an
+explicit opt-in path:
+
+- `build_sandbox_command(..., seccomp_profile="strict")` or
+  `COS_SANDBOX_BWRAP_SECCOMP_PROFILE=strict` requests strict seccomp for Linux
+  bubblewrap.
+- `COS_BWRAP_SECCOMP_PROFILE_PATH` must point to a precompiled BPF profile. If it
+  is absent, strict mode fails closed unless the caller explicitly allows
+  fallback.
+- `manifests/bwrap-seccomp-strict.json` records the blocked-syscall policy and
+  keeps compiled-profile generation separate from default command construction.
+
+This closes command-path wiring without pretending the BPF compiler/profile has
+been validated for all workloads. Default behavior remains namespace-only.

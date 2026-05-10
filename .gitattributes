@@ -1,0 +1,3 @@
+
+# Vendored golden terminal transcripts preserve upstream whitespace and markers.
+packages/agent-lifecycle/lib/harness_adapter/testdata/agentapi/msgfmt/** -diff -text

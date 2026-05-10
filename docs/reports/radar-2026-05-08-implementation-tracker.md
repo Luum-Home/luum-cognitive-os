@@ -50,7 +50,7 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 
 | # | Topic | Status | Source / evidence |
 |---|---|---:|---|
-| F1 | `make test-laptop-integration` exhausted local 900s laptop timeout at 56% without functional failure; classify as integration-lane sizing issue (timeout/shards), not a release breaker. | 🔲 follow-up | `[0.28.0]` Release notes, line 89; ADR-072 lane taxonomy + ADR-100 resource-governed test execution. |
+| F1 | `make test-laptop-integration` exhausted local 900s laptop timeout at 56%; classify as sizing issue and run via stable shards. | ✅ implemented | `scripts/cos-integration-shard-plan`, `make test-laptop-integration-plan`, `make test-laptop-integration-shard SHARD_INDEX=N`; ADR-072 lane taxonomy + ADR-100 resource-governed test execution. |
 | F2 | OpenCode primitive adapter smoke requires `node` in PATH; passed during release-confidence bundle via `fnm`, but the environment dependency is implicit. Document as runbook prerequisite or wrap with auto-install. | 🟡 documented in CHANGELOG | `[0.28.0]` Release notes, line 88; `scripts/cos-opencode-primitive-adapter-smoke`. |
 
 **Gate note:** the reassessment and doctrine are intentionally documentation-before-implementation. Runtime adoption work should not start from prose alone; it must pass ADR-254's manifest, audit, and research-check path.
@@ -66,9 +66,9 @@ Candidate change name: `memory-layer-evolution`. Bundled because the four items 
 | # | Topic | Status | Source | License |
 |---|---|---:|---|---|
 | M1 | graphiti bi-temporal schema (`valid_from`/`valid_to`) for Engram observations | ✅ additive migration landed; default retrieval remains `strategy=current` | `lib/engram_wave2_schema.py`, `scripts/cos-engram-wave2-schema-migrate`, `tests/unit/test_engram_wave2_schema.py`; A §🔍2c | Apache-2.0 (schema only) |
-| M2 | LightRAG dual-level (entity + topic) retrieval scoring → `engram_lifecycle.py` | 🟡 blocked on M1 schema + benchmark comparison | A §🔍2a; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
-| M3 | HippoRAG personalized PageRank as alternative mode in `engram_graph_walker.py` | 🟡 relation support-chain runtime port landed; PPR algorithm still pending | A §🔍2b; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (algorithm port) |
-| M4 | `memory_class` enum overlay (`semantic`/`episodic`/`procedural`/`working`); couple `memory_decay` to `working` | 🟡 SDD started; lands after retrieval benchmark + schema | A §🔍12; [`docs/architecture/memory-layer-evolution-sdd.md`](../architecture/memory-layer-evolution-sdd.md) | MIT (MIRIX overlay) |
+| M2 | LightRAG dual-level (entity + topic) retrieval scoring → `engram_lifecycle.py` | ✅ opt-in runtime mode landed | `retrieval_strategy="dual-level"` / `"wave2-m2"`; A §🔍2a | MIT (algorithm port) |
+| M3 | HippoRAG personalized PageRank as alternative mode in `engram_graph_walker.py` | ✅ opt-in PPR runtime mode landed | `EngramGraphWalker.personalized_pagerank()` + `retrieval_strategy="ppr"` / `"hybrid"`; A §🔍2b | MIT (algorithm port) |
+| M4 | `memory_class` enum overlay (`semantic`/`episodic`/`procedural`/`working`); couple `memory_decay` to `working` | ✅ opt-in runtime overlay landed | `retrieval_strategy="memory-class"` / `"hybrid"`; A §🔍12 | MIT (MIRIX overlay) |
 
 **Required ordering**: M1 (schema) before M2/M3/M4 (consumers). M2 and M3 can run in parallel once M1 lands. M4 is overlay, lands last.
 
@@ -155,9 +155,9 @@ closes the remaining blocker or a release owner records an explicit waiver.
 
 | # | Topic | Status | Source | License |
 |---|---|---:|---|---|
-| W3-1 | `lib/repo_map.py`: graph-rank + tree-sitter + token budget. Replaces static allowlist in `lib/context_diet.py` for codegen-context selection | 🟡 design ready | D §🔍9; [`docs/architecture/repo-map-context-selector.md`](../architecture/repo-map-context-selector.md) | Apache-2.0 (Aider port) |
-| W3-2 | DSPy pilot: integrate as dependency for one structured-I/O skill (start with `sdd-verify`). Do **not** touch `lib/skill_router.py`. | 🔲 not started | A §🔍1 | MIT |
-| W3-3 | Vendor `lib/msgfmt/testdata/` from agentapi (11-harness golden fixtures) → `lib/harness_adapter/testdata/`. No Go sidecar. | 🟡 design ready | C §🔍10; [`docs/architecture/harness-golden-fixtures.md`](../architecture/harness-golden-fixtures.md) | MIT (testdata only) |
+| W3-1 | `lib/repo_map.py`: graph-rank + token budget context selector with COS governance overlay | ✅ initial runtime landed | `lib/repo_map.py`, `scripts/cos-repo-map`; D §🔍9 | Apache-2.0 pattern-port |
+| W3-2 | DSPy pilot: optional structured-I/O seam for one skill (`sdd-verify`); do **not** touch `lib/skill_router.py`. | ✅ optional pilot seam landed | `lib/dspy_pilot.py`, `scripts/cos-dspy-pilot`; dependency remains optional | MIT |
+| W3-3 | Vendor `lib/msgfmt/testdata/` from agentapi golden fixtures → `lib/harness_adapter/testdata/`. No Go sidecar. | ✅ testdata vendor landed | `lib/harness_adapter/testdata/agentapi/`, source commit `00ff7ffdc4badcf68b3903dd799cf6e2d4370d86`; C §🔍10 | MIT (testdata only) |
 
 **Independence**: W3-1, W3-2, W3-3 share no files — they can run in parallel once Wave 2 lands. W3-1 and W3-3 now have design docs; W3-2 remains not started.
 
@@ -176,9 +176,8 @@ Listed here for completeness so this tracker is the single source of truth on "w
 Recommended next order after `v0.28.0`:
 
 1. **M2/M4 consumers after M1** — schema substrate is available; keep defaults unchanged until benchmark evidence justifies a switch.
-2. **M3 true PPR mode** — relation support-chain runtime exists, but PageRank itself is still pending.
-3. **T-H4 seccomp BPF implementation** — threat model exists; implement opt-in profile only after workload smokes.
-4. **W3-1/W3-2/W3-3** — parallelizable after Wave 2 substrate decisions: repo-map context selector, DSPy pilot, and agentapi testdata vendor.
+2. **T-H4 seccomp BPF implementation** — opt-in command construction and policy manifest exist; compiled BPF/profile generation still requires workload smokes before any default switch.
+3. **Post-W3 hardening** — repo-map benchmarking, DSPy real dependency pilot when installed, and parser ports over the vendored agentapi fixtures.
 5. **Public launch runbook execution** — operational visibility flip; separate from code release tagging.
 
 ## Maintenance contract
@@ -188,4 +187,4 @@ Recommended next order after `v0.28.0`:
 - When all items in a wave reach ✅ or ⏸, append a closure note ("Wave N closed YYYY-MM-DD in commit X").
 - New radar editions (2026-05-XX+) get their own tracker file. Do not mix waves across editions in one tracker.
 
-**Last updated**: 2026-05-10 by Codex post-0.28 backlog session; H6, M1 schema, and T-H5 are implemented; T-H4 threat model is drafted; Wave 3 remains next work.
+**Last updated**: 2026-05-10 by Codex remaining-technical-backlog session; F1 shards, Wave2 M2/M3/M4 opt-in runtime, T-H4 opt-in seccomp command path, and Wave3 initial slices are implemented.

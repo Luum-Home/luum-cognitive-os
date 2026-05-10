@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+# SCOPE: both
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.integration_shard_plan import plan_shards
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Plan/run shardable laptop integration validation.")
+    parser.add_argument("--shards", type=int, default=int(__import__("os").environ.get("COS_INTEGRATION_SHARDS", "4")))
+    parser.add_argument("--shard-index", type=int)
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--run", action="store_true", help="Run pytest for the selected shard")
+    parser.add_argument("--pytest-arg", action="append", default=[], help="Extra pytest argument; may be repeated")
+    args = parser.parse_args()
+    shards = plan_shards(ROOT, args.shards)
+    payload = {"schema_version": "integration-shard-plan/v1", "shard_count": args.shards, "shards": shards}
+    if args.shard_index is not None:
+        if args.shard_index < 0 or args.shard_index >= args.shards:
+            parser.error("--shard-index out of range")
+        payload["selected"] = shards[args.shard_index]
+    if not args.run:
+        print(json.dumps(payload, indent=2, sort_keys=True) if args.json else "\n".join(" ".join(s["files"]) for s in shards))
+        return 0
+    if args.shard_index is None:
+        parser.error("--run requires --shard-index")
+    files = shards[args.shard_index]["files"]
+    if not files:
+        print("integration shard is empty", file=sys.stderr)
+        return 0
+    cmd = [sys.executable, "-m", "pytest", *files, "-m", "not docker", "--timeout=90", "--tb=short", "-q", *args.pytest_arg]
+    print(json.dumps({"schema_version": "integration-shard-run/v1", "shard": args.shard_index, "command": cmd, "file_count": len(files)}, sort_keys=True), file=sys.stderr)
+    return subprocess.call(cmd, cwd=ROOT)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
