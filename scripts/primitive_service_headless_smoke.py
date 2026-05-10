@@ -98,10 +98,13 @@ def render_markdown(report: dict[str, Any]) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true")
-    parser.add_argument("--no-write", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--check", action="store_true", help="Run validation without updating tracked latest reports (default).")
+    mode.add_argument("--write-report", action="store_true", help="Update tracked docs/reports/*-latest artifacts.")
+    mode.add_argument("--no-write", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args(argv)
     report = build_report()
-    if not args.no_write:
+    if args.write_report:
         DEFAULT_JSON.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         DEFAULT_MD.write_text(render_markdown(report), encoding="utf-8")
     if args.json:

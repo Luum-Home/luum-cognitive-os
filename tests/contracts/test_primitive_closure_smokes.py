@@ -5,11 +5,24 @@ import subprocess
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+TRACKED_SMOKE_REPORTS = (
+    REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.json",
+    REPO_ROOT / "docs" / "reports" / "opencode-primitive-adapter-smoke-latest.md",
+    REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.json",
+    REPO_ROOT / "docs" / "reports" / "portable-ai-consumer-smoke-latest.md",
+    REPO_ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.json",
+    REPO_ROOT / "docs" / "reports" / "primitive-service-headless-smoke-latest.md",
+)
+
+
+def _report_snapshot() -> dict[Path, str]:
+    return {path: path.read_text(encoding="utf-8") for path in TRACKED_SMOKE_REPORTS}
 
 
 def _run_json(script: str) -> dict[str, object]:
+    before = _report_snapshot()
     result = subprocess.run(
-        [str(REPO_ROOT / "scripts" / script), "--json", "--no-write"],
+        [str(REPO_ROOT / "scripts" / script), "--json", "--check"],
         cwd=str(REPO_ROOT),
         text=True,
         capture_output=True,
@@ -17,6 +30,7 @@ def _run_json(script: str) -> dict[str, object]:
         timeout=30,
     )
     assert result.returncode == 0, result.stderr or result.stdout
+    assert _report_snapshot() == before, f"{script} --check dirtied tracked smoke reports"
     return json.loads(result.stdout)
 
 
