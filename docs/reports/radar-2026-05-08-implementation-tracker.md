@@ -40,12 +40,21 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 |---|---|---:|---|---|
 | R1 | Control-plane audit registry drift fix | ✅ | `b55f2fb8` — closed control-plane-audit registry drift before the radar reassessment wave continued. | post-review drift fix |
 | R2 | External Tool Intelligence Plane / project overlay substrate | ✅ | `84570d5a` design doc + `abe9e3cf` ADR-254/manifest/scripts/tests. | full reassessment follow-up |
-| C1 | LiteLLM direct dependency contradicts ADR-049 direct-provider routing | 🔲 cleanup pending | Detected by `scripts/cos-tool-adoption-audit --json` via `manifests/external-tools-adoption.yaml`; remains in `requirements.txt`. | full reassessment P0 |
-| C2 | Langfuse direct dependency contradicts Phoenix/OTel posture | 🔲 cleanup pending | Detected by `scripts/cos-tool-adoption-audit --json`; remains in `requirements.txt`. | full reassessment P0 |
-| C3 | `memu` package likely wrong / requires package verification | 🔲 cleanup pending | Detected by `scripts/cos-tool-adoption-audit --json`; remains in `requirements.txt`. | full reassessment P0 |
-| C4 | `pytest-smell` declared but no visible consumer/gate | 🔲 cleanup pending | Detected by `scripts/cos-tool-adoption-audit --json`; remains in `pyproject.toml`. | full reassessment P0 |
+| C1 | LiteLLM direct dependency contradicts ADR-049 direct-provider routing | ✅ | Removed pre-`v0.28.0`; `scripts/cos-tool-adoption-audit --json` reports `status: pass, findings: 0`. | full reassessment P0 |
+| C2 | Langfuse direct dependency contradicts Phoenix/OTel posture | ✅ | Removed pre-`v0.28.0` (only mlflow comment retains historical mention). | full reassessment P0 |
+| C3 | `memu` package likely wrong / requires package verification | ✅ | Removed pre-`v0.28.0`. | full reassessment P0 |
+| C4 | `pytest-smell` declared but no visible consumer/gate | ✅ | Removed pre-`v0.28.0` from `pyproject.toml`. | full reassessment P0 |
+
+## Post-`v0.28.0` follow-ups (carry into 0.28.1 / 0.29.0)
+
+| # | Topic | Status | Source / evidence |
+|---|---|---:|---|
+| F1 | `make test-laptop-integration` exhausted local 900s laptop timeout at 56% without functional failure; classify as integration-lane sizing issue (timeout/shards), not a release breaker. | 🔲 follow-up | `[0.28.0]` Release notes, line 89; ADR-072 lane taxonomy + ADR-100 resource-governed test execution. |
+| F2 | OpenCode primitive adapter smoke requires `node` in PATH; passed during release-confidence bundle via `fnm`, but the environment dependency is implicit. Document as runbook prerequisite or wrap with auto-install. | 🟡 documented in CHANGELOG | `[0.28.0]` Release notes, line 88; `scripts/cos-opencode-primitive-adapter-smoke`. |
 
 **Gate note:** the reassessment and doctrine are intentionally documentation-before-implementation. Runtime adoption work should not start from prose alone; it must pass ADR-254's manifest, audit, and research-check path.
+
+**Post-0.28 status:** C1-C4 are closed by the adoption audit. Remaining Wave 1 carry-overs are H6 plus the tracked H4/H5 follow-ups below; none block `v0.28.0`.
 
 ## Wave 2 — Memory bundle (10–14 days, single SDD change)
 
@@ -163,6 +172,17 @@ Listed here for completeness so this tracker is the single source of truth on "w
 - 🔲 Temporal / Cadence durable workflows — **rejected**, `@event_wrap` + ADR-226 covers MVP
 - 🔲 Multi-machine cloud orchestration — **rejected**, local-first is positioning
 
+## Post-0.28 prioritization
+
+Recommended next order after `v0.28.0`:
+
+1. **H6 skill description migration** — quick discoverability/dogfood win; expected to improve the weakest dogfood dimension (`skill_coverage=24.85`) once paired with catalog/router refresh.
+2. **M1 schema migration** — master blocker for Wave 2; unlocks M2 LightRAG dual-level scoring and M4 MIRIX `memory_class`.
+3. **T-H5 local ToolSearch metrics** — closes the measured-vs-claimed token delta gap.
+4. **T-H4 seccomp threat model/profile** — security hardening; do threat model before BPF implementation.
+5. **W3-1/W3-2/W3-3** — parallelizable after Wave 2 substrate decisions: repo-map context selector, DSPy pilot, and agentapi testdata vendor.
+6. **Public launch runbook execution** — operational visibility flip; separate from code release tagging.
+
 ## Maintenance contract
 
 - This tracker is **mutable** (status updates, commit references). The radar 2026-05-08 itself is **immutable**.
@@ -170,4 +190,4 @@ Listed here for completeness so this tracker is the single source of truth on "w
 - When all items in a wave reach ✅ or ⏸, append a closure note ("Wave N closed YYYY-MM-DD in commit X").
 - New radar editions (2026-05-XX+) get their own tracker file. Do not mix waves across editions in one tracker.
 
-**Last updated**: 2026-05-08 by Codex session after Wave 2 SDD kickoff.
+**Last updated**: 2026-05-10 by Codex session after `v0.28.0` final release; C1-C4 synced to audit-pass state and post-0.28 priorities clarified.
