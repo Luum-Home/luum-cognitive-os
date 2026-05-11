@@ -300,6 +300,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/holaos-cleanroom-gate.sh\""
           }
         ]
       },
