@@ -8,6 +8,7 @@ sources:
   - docs/reports/p2-plan-reconciliation-2026-05-10.md
   - docs/reports/p3-plan-triage-2026-05-10.md
   - docs/reports/p4-active-tasks-prune-2026-05-11.md
+  - docs/reports/plans-discovery-triage-2026-05-11.md
   - docs/reports/reduction-backlog-latest.md
   - docs/reports/primitive-readiness-lifecycle-backlog-scripts-latest.md
   - docs/reports/pending-plans-audit-2026-04-30.md
@@ -23,10 +24,28 @@ Single source of truth for "what is open across all surfaces". Post v0.28.0 + Op
 
 ## How to use this doc
 
-- **"What's actively open?"** → read §1 Active waves + §2 Post-v0.28.0 follow-ups.
-- **"Is X already done?"** → grep against §3 Recent closures (since v0.27.1).
+- **"What's actively open?"** → read §1 Active waves + §2 Post-v0.28.0 follow-ups + §10 (newly triaged 31 plans).
+- **"Is X already done?"** → grep against §3 Recent closures (since v0.27.1) + §11 audit revalidation drops.
 - **"What did we deprioritize and why?"** → §4 Parked + Tombstoned.
 - **"Full noisy raw backlog?"** → [`docs/reports/session-backlog-latest.md`](session-backlog-latest.md) (promoted from `cos_session_backlog.py` output).
+- **"All 46 plans triaged?"** → §10 cross-references 15 P2/P3 + 31 newly discovered.
+- **"Audit attack order still valid?"** → §11 (3 dropped, 5 kept after revalidation).
+
+## Plan triage inventory snapshot (2026-05-11)
+
+| Coverage | Count | Source |
+|---|---:|---|
+| P2 active plans triaged (Opus refined) | 10 | `p2-plan-reconciliation-2026-05-10.md` |
+| P3 zero-progress plans triaged (Opus refined) | 5 | `p3-plan-triage-2026-05-10.md` |
+| 31 untouched plans triaged (Opus discovery) | 31 | `plans-discovery-triage-2026-05-11.md` |
+| **Total plans on disk classified** | **46/46** | ✅ Full coverage |
+| Classification: ACTIVE | 6 | §10 |
+| Classification: PARTIAL | 11 | §10 |
+| Classification: DEFERRED / SUPERSEDED | 8 | §10 |
+| Classification: ARCHIVE-CANDIDATE | 3 | §10 (+ 2 already COMPLETE from P2) |
+| Classification: TOMBSTONE-CANDIDATE | 2 (workflow-engine + token-optimization, from P3) | §4 |
+| Classification: SDD-ARTIFACT | 3 (test-runner-ergonomics set) | §10 |
+| Classification: ROADMAP-LIVE-DOC | 1 (governed-self-improvement-roadmap) | §10 |
 
 ---
 
@@ -127,6 +146,67 @@ Canonical: [`docs/reports/p4-active-tasks-prune-2026-05-11.md`](p4-active-tasks-
 | Plan to tombstone | Suggested ADR slot | Reason |
 |---|---|---|
 | `features/workflow-engine.md` | Next available ADR-tombstone number | Capability already delivered by `.cognitive-os/workflows/` + `docs/adw-patterns.md` + ADR-036 |
+
+## 10. 31 newly triaged plans (Opus discovery 2026-05-11)
+
+Canonical: [`docs/reports/plans-discovery-triage-2026-05-11.md`](plans-discovery-triage-2026-05-11.md).
+
+### 6 ACTIVE (real pending work)
+
+| Plan | Status | Next action | Effort |
+|---|---|---|---|
+| `adr-064-implementation-plan.md` | 8 DONE / 7 PENDING; ADR-064 not Accepted | Slice 1.1 codex adapter | 1 session |
+| `maintainer-agent-telemetry-promotion-loop.md` | 23 DONE / 17 OPEN; ADR-201 Accepted | Phase 1 ledger rollup (gates everything else) | 2 sessions |
+| `memory-layer-evolution-wave2.md` | 8 DONE / 0 OPEN at top; current Wave 2 | Continue (M1 default promotion blocked on multi-hop) | Multi-session |
+| `multi-session-coordination-primitives-plan.md` | 4 DONE / 18 OPEN; ADR-116 | Batch 1 (work identity everywhere) | 2 sessions |
+| `component-scope-classification.md` Phase 4 | Header says DONE but Phase 4 NOT shipped (stale) | self-install.sh + cos install SCOPE filters | 30 min — quick win |
+| `phoenix-migration-plan.md` Phase 1 | Phase 0 done; 1.1/1.3/1.4 pending | Add `arize-phoenix` to deps; smoke | 1 session |
+
+### 3 ARCHIVE-CANDIDATE (recommend move now)
+
+- `audit-contract-lane-recovery-plan.md` — all `[x]`, header says implemented by ADR-103
+- `auto-rollback-hardening-2026-05-02.md` — all 5 AC `[x]`; ADR-107 Accepted
+- `phase1-dx-active-primitive-index.md` — body reads DONE; ADR-127 ships active index
+
+### 4 SUPERSEDED-BY-ADR
+
+- `pending-attack-plan-2026-05-02.md` (report, not plan — relocate to `docs/reports/archive/`)
+- `docker-to-pip-migration.md` (header SUPERSEDED 2026-04-27 by ADR-042 + ADR-002)
+- `project-audit-package.md` (header SUPERSEDED — already implemented in `packages/project-audit/`)
+
+### 11 PARTIAL (residual scope, mostly shipped)
+
+`adr-118-121-123-slices`, `concurrent-agent-safety-testbed-plan`, `core-vs-extensions-migration-plan` (long-horizon roadmap, tracking-only), `cos-instance-installer-implementation-plan`, `integrity-and-de-theater-sprint`, `multi-ide-swarm-testbed-plan`, `primitive-harvester-implementation-plan`, `skills-rules-canonicalization-workplan`, `startup-circuit-breaker-plan`, `state-retention-reaper-protocol`, `subagent-capability-contract-and-launch-preflight`, `test-resource-governance-sprint`, `cos-test-extension-notes` (reconnaissance doc), `docs-to-skills-audit` (9 SKILL-CANDIDATE conversions remain), `skill-atomicity-audit` (~95 candidates remain, open-ended).
+
+### 3 SDD-ARTIFACT + 1 ROADMAP-LIVE-DOC
+
+- `test-runner-ergonomics-{design,spec,tasks}.md` — companions to COMPLETE proposal; archive when `/sdd-archive` runs
+- `governed-self-improvement-roadmap.md` — live reference doc (no checkbox semantics)
+
+## 11. 2026-04-30 audit revalidation
+
+Canonical detail: [`docs/reports/plans-discovery-triage-2026-05-11.md` §2](plans-discovery-triage-2026-05-11.md).
+
+Audit recommended 8-item attack order. After revalidation (2026-05-11):
+
+| # | Original item | Status today | Verdict |
+|---|---|---|---|
+| 1 | ADR-068 Row 2 test gap | Already shipped (`tests/unit/test_detect_runner_capacity.py:123`) | **DROP** (audit was wrong — recommended already-done work) |
+| 2 | component-scope DoD Phase 4 | self-install.sh has 0 scope refs; cmd/cos has 0 scope flags | **KEEP** — real 30-min quick win |
+| 3 | ADR-068 Phase 2 capacity logging | No logging surface in detect_runner_capacity.py; no CHANGELOG row | **KEEP w/ scope check** |
+| 4 | hook-architecture-v2 Phase 3 timing | Plan marked COMPLETE by Opus P2; timing landed via `hooks/_lib/common.sh` + `tests/audit/test_hook_latency_budget.py` | **DROP** |
+| 5 | phoenix-migration Phase 1 | `arize-phoenix` not in `pyproject.toml` | **KEEP** |
+| 6 | so-existential Phase 1 prune | Deadline 2026-05-08 already past; ratio reduced indirectly by post-v0.28.0 work but not certified | **KEEP** (re-run audit) |
+| 7 | hook-architecture-v2 Phase 2 remainder | Duplicate of #4 | **DROP** |
+| 8 | docs-to-skills 9 conversions | Plan still LIVE; H6 was different work | **KEEP** |
+
+**Net**: 3 DROP, 5 KEEP. The audit's value-per-time recommendations need recalibration. New order (cheapest first):
+
+1. component-scope Phase 4 (30 min) — quick win
+2. phoenix Phase 1.1/1.3 (1 session) — unblocks ADR-058 momentum
+3. docs-to-skills 2-3 highest-value conversions (1 session)
+4. so-existential re-audit + reconcile (1 session)
+5. ADR-068 Phase 2 capacity logging (scope check first; may already be absorbed by ADR-248)
 
 ## Maintenance contract
 

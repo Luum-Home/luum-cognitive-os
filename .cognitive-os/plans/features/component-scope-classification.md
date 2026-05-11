@@ -1,9 +1,19 @@
 <!--
-RECONCILIATION STATUS: DONE — All 4 phases complete. Verified 2026-05-02.
-Superseded for Phases 1-2 by: ADR-031 (aspirational-audit), ws6 commits (3f6a5c1 "SCOPE tags to 380 components", 5acb797 "171 additional SCOPE tags"), scripts/apply-efficiency-profile.sh scope-filter (commit 1f5911c)
-Reconciled: 2026-04-21 (Phases 1-2 only)
-Re-audited: 2026-04-27 — Phase 1 (skills) and Phase 2 (hooks + libs) confirmed complete: 506+ components carry SCOPE tags. Phase 3 (rules) COMPLETED 2026-04-27: all 110 rules/*.md files now carry `<!-- SCOPE: ... -->` tag (108 both, 2 os-only). Templates still pending. Phase 4 (self-install.sh scope filtering and `cos install` filtering) also remains pending. The 5 DoD items at the end of this plan are quality gates that span all phases — none are fully achievable until templates + Phase 4 ship.
-Reason for original SUPERSEDED tag: the classification mechanism (SCOPE tag convention + tagging at scale) shipped. The completion gate over all 433+ components and the installer-side filtering have not.
+RECONCILIATION STATUS: PARTIAL — Phases 1-3 complete; Phase 4 NOT shipped (verified 2026-05-11).
+Header was previously "DONE — All 4 phases complete (2026-05-02)" but plans-discovery-triage-2026-05-11 verified:
+  - grep 'scope|SCOPE' scripts/self-install.sh -> 0 hits
+  - cmd/cos has no scope filter
+  Phase 4 (self-install.sh scope filtering + `cos install --scope` filter) is REAL pending work.
+
+Phase 1 (skills): DONE — verified 2026-04-21
+Phase 2 (hooks + libs): DONE — verified 2026-04-21 (506+ components SCOPE-tagged)
+Phase 3 (rules): DONE — completed 2026-04-27 (110 rules/*.md files SCOPE-tagged: 108 both, 2 os-only)
+Phase 4 (installer scope filter): PENDING — quick win identified by 2026-04-30 audit + revalidated 2026-05-11
+Templates SCOPE tagging: PENDING (the 4 DoD items span Phase 4 + templates)
+
+Reason for original SUPERSEDED tag: the classification mechanism (SCOPE tag convention + tagging at scale) shipped. The installer-side filtering and templates tagging have not.
+
+NEXT ACTION: implement Phase 4 (self-install.sh + cos install scope filters). Audit estimated 30 min.
 -->
 
 # Component Scope Classification
