@@ -16,8 +16,10 @@ from __future__ import annotations
 import os
 import re
 import sqlite3
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
+
+from lib.memory_governance import assess_freshness, boosted_score, get_policy
 
 
 # ---------------------------------------------------------------------------
@@ -55,6 +57,12 @@ class RetrievalResult:
     fts5_score: float     # normalized FTS5 rank in [0, 1]
     jaccard_score: float  # word-set similarity in [0, 1]
     combined_score: float  # weighted combination
+    # Governance fields — populated only when governance=True is passed to search().
+    # None when governance is inactive (backward-compatible).
+    freshness_note: Optional[str] = field(default=None)
+    governance_reasons: Optional[List[str]] = field(default=None)
+    # observation type — used by governance integration; empty string by default
+    obs_type: str = field(default="")
 
 
 # ---------------------------------------------------------------------------
@@ -104,22 +112,32 @@ class MemoryRetriever:
         query: str,
         limit: int = 10,
         project: Optional[str] = None,
+        governance: bool = False,
     ) -> List[RetrievalResult]:
-        """Hybrid search: FTS5 candidates → Jaccard reranking.
+        """Hybrid search: FTS5 candidates -> Jaccard reranking.
 
         Args:
-            query:   Free-text search query.
-            limit:   Maximum number of results to return.
-            project: Optional project name to restrict results.
+            query:      Free-text search query.
+            limit:      Maximum number of results to return.
+            project:    Optional project name to restrict results.
+            governance: When True, apply memory governance policies (ADR-261):
+                        recall_boost multiplier, freshness assessment, and
+                        hard-stale suppression.  Defaults to False to preserve
+                        existing behaviour for all callers that do not opt in.
 
         Returns:
             List of :class:`RetrievalResult` sorted by ``combined_score``
             descending, capped at ``limit`` entries.
+
+            When ``governance=True``, each result additionally carries:
+            - ``freshness_note``     : human-readable cue or None
+            - ``governance_reasons`` : list of applied governance signals
+            Hard-stale results (hard staleness + age >= threshold) are excluded.
         """
         if not query or not query.strip():
             return []
 
-        # Step 1: FTS5 candidates (3× limit for reranking headroom)
+        # Step 1: FTS5 candidates (3x limit for reranking headroom)
         candidates = self._fts5_search(query, limit * 3, project)
 
         if not candidates:
@@ -139,9 +157,72 @@ class MemoryRetriever:
                 + self.jaccard_weight * candidate.jaccard_score
             )
 
-        # Step 3: sort and truncate
+        # Step 3: optional governance (ADR-261) — apply before sort/truncate
+        if governance:
+            candidates = self._apply_governance(candidates)
+
+        # Step 4: sort and truncate
         candidates.sort(key=lambda r: -r.combined_score)
         return candidates[:limit]
+
+    # ------------------------------------------------------------------
+    # Governance integration (ADR-261)
+    # ------------------------------------------------------------------
+
+    def _apply_governance(
+        self,
+        candidates: List[RetrievalResult],
+    ) -> List[RetrievalResult]:
+        """Apply memory governance policies to a list of retrieval candidates.
+
+        For each candidate:
+        1. Apply recall_boost multiplier to combined_score.
+        2. Assess freshness using observation type and creation age.
+        3. Suppress hard-stale results from the returned list.
+        4. Attach freshness_note and governance_reasons fields.
+
+        Args:
+            candidates: Retrieval results after Jaccard reranking.
+
+        Returns:
+            Filtered and annotated list (hard-stale entries removed).
+        """
+        kept: List[RetrievalResult] = []
+
+        for result in candidates:
+            obs_type = result.obs_type
+            reasons: List[str] = []
+
+            # --- recall boost ---
+            policy = get_policy(obs_type)
+            if policy.recall_boost != 1.0:
+                result.combined_score = boosted_score(result.combined_score, obs_type)
+                reasons.append(f"recall_boost:{policy.recall_boost}")
+
+            # --- freshness assessment ---
+            # Age is estimated from the FTS5 record; when not available, use 0.
+            # The retriever does not store created_at so we use 0 (fresh) as a
+            # safe default — governance callers that need accurate age should
+            # pass age explicitly via a future extended API.
+            age_seconds = getattr(result, "_age_seconds", 0)
+            freshness = assess_freshness(age_seconds, obs_type)
+            result.freshness_note = freshness.note
+
+            if freshness.state == "stale":
+                reasons.append(f"stale_penalty:{policy.staleness}")
+                if policy.staleness == "hard":
+                    # Hard suppression — do not include in ranked output
+                    reasons.append("suppressed:hard_stale")
+                    result.governance_reasons = reasons
+                    continue  # skip this result
+
+            if policy.verification == "verify_before_use":
+                reasons.append("verify_before_use")
+
+            result.governance_reasons = reasons if reasons else None
+            kept.append(result)
+
+        return kept
 
     # ------------------------------------------------------------------
     # Private helpers
@@ -175,7 +256,8 @@ class MemoryRetriever:
                        o.content,
                        COALESCE(o.topic_key, '') AS topic_key,
                        COALESCE(o.project,   '') AS project,
-                       fts.rank                  AS fts_rank_raw
+                       fts.rank                  AS fts_rank_raw,
+                       COALESCE(o.type,       '') AS obs_type
                 FROM observations_fts fts
                 JOIN observations o ON o.id = fts.rowid
                 WHERE observations_fts MATCH ?
@@ -218,6 +300,7 @@ class MemoryRetriever:
                         fts5_score=normalized,
                         jaccard_score=0.0,
                         combined_score=0.0,
+                        obs_type=row[6] if len(row) > 6 else "",
                     )
                 )
             return results

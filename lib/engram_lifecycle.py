@@ -48,6 +48,7 @@ if _LIB_DIR not in sys.path:
 
 from lib import engram_client  # noqa: E402 (after sys.path setup)
 from lib import engram_http_client  # noqa: E402 (after sys.path setup)
+from lib.memory_governance import assess_freshness, get_policy  # noqa: E402 (ADR-261)
 
 # Path to engram binary — same override as engram_client
 _ENGRAM_BIN = os.environ.get("ENGRAM_BIN", "engram")
@@ -269,7 +270,7 @@ class EngramLifecycle:
             The created observation dict, or ``None`` on failure.
         """
         decay_class = self._decay_class_for_type(type_)
-        content_with_trailer = self.build_content_with_trailer(content, decay_class)
+        content_with_trailer = self.build_content_with_trailer(content, decay_class, type_=type_)
         return engram_client.save_observation(
             title,
             content_with_trailer,
@@ -433,18 +434,41 @@ class EngramLifecycle:
     # Trailer helpers
     # ------------------------------------------------------------------
 
-    def build_content_with_trailer(self, content: str, decay_class: str) -> str:
+    def build_content_with_trailer(self, content: str, decay_class: str, type_: str = "") -> str:
         """Append a lifecycle trailer with default values to *content*.
+
+        ADR-261 additive: when *type_* is a governed type, the
+        ``governance_freshness_state`` field is written into the trailer and
+        the Ebbinghaus tau is overridden by the governance staleness threshold.
 
         Args:
             content:     Original observation body.
             decay_class: One of the keys in DECAY_TAU.
+            type_:       Optional engram observation type (used for ADR-261
+                         governance override).  Empty string = no override.
 
         Returns:
             Content string with trailer block appended.
         """
         trailer = self.default_trailer()
         trailer["decay_class"] = decay_class
+
+        # ADR-261 §4: governance staleness threshold overrides Ebbinghaus tau
+        # and freshness state is emitted for governed types only.
+        if type_:
+            policy = get_policy(type_)
+            if policy.stale_after_seconds is not None:
+                # Convert seconds -> days for tau override
+                governance_tau_days = policy.stale_after_seconds / 86400.0
+                # Store as tau_override so _apply_decay can pick it up
+                trailer["governance_tau_days"] = governance_tau_days
+            if policy.staleness != "never":
+                # Freshness state at write time is always "fresh" for a new
+                # observation (age = 0); emit the field so downstream readers
+                # know governance is active for this type.
+                freshness = assess_freshness(0, type_)
+                trailer["governance_freshness_state"] = freshness.state
+
         return self._append_trailer_json(content, trailer)
 
     def default_trailer(self) -> dict[str, Any]:
@@ -634,6 +658,11 @@ class EngramLifecycle:
     def _apply_decay(self, trailer: dict[str, Any] | None) -> float:
         """Compute current retention R(t) from the trailer.
 
+        ADR-261 §4: if the trailer carries a ``governance_tau_days`` override
+        (written by ``build_content_with_trailer`` for governed types), that
+        value replaces the class-based tau so that the Ebbinghaus decay is
+        consistent with the governance staleness threshold.
+
         Args:
             trailer: Parsed trailer dict, or None for observations without a trailer.
 
@@ -651,8 +680,13 @@ class EngramLifecycle:
             now = self._now()
             t_days = max(0.0, (now - last_reinforced).total_seconds() / 86400.0)
 
-            decay_class = trailer.get("decay_class", "manual")
-            tau = float(self.DECAY_TAU.get(decay_class, self.DECAY_TAU["manual"]))
+            # ADR-261 §4: governance tau override takes precedence over decay class
+            governance_tau = trailer.get("governance_tau_days")
+            if governance_tau is not None:
+                tau = float(governance_tau)
+            else:
+                decay_class = trailer.get("decay_class", "manual")
+                tau = float(self.DECAY_TAU.get(decay_class, self.DECAY_TAU["manual"]))
             return decay_retention(t_days, tau)
         except Exception:
             return 1.0
