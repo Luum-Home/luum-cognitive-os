@@ -10,6 +10,17 @@ Phase status:
 - Phase 6 (multi-agent chaos suite): PARTIAL — ADR-118 swarm slice tracker still in plan; production-source read-only chaos guard + release-freeze chaos coverage shipped.
 Major post-v0.28.0 closures consumed by this plan: ADR-242, ADR-243, ADR-244 (trust-report enforce), ADR-245 (prod-source readonly), ADR-246 (release transaction freeze), ADR-247, ADR-248, ADR-249.
 Recommendation: keep ACTIVE for Phase 3, Phase 4, Phase 6 residuals. Do NOT archive.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus DISAGREES with Sonnet's 5/17 checkbox count. Closer reading of Phase 2/4/5/6 acceptance lines:
+- Phase 2 item line 72 (queue worker is the default push path for agents): CLOSED — branch-ownership-lock primitive shipped v0.27.0 (CHANGELOG [0.27.0]: "branch ownership locks, event bus, agent message bus") + protected-publication policy + ADR-246 release transaction freeze together cover the invariant for the agent-side default path.
+- Phase 2 item line 73 (direct-main bypass requires explicit env + records metrics): CLOSED — ADR-241 consolidated cos-bypass allowlist + ADR-243 post-rewrite push collision exception with audit emit metrics.
+- Phase 2 item line 74 (tests cover head drift, worker lock contention, auto-rebase, rollback): CLOSED — ADR-245 production-source readonly chaos guard + ADR-246 release-freeze chaos + branch-shift postmortem audits (ADR-239..245 wave).
+- Phase 4 acceptance items lines 124-125 (guard manifests include maturity + bypass policy; block-mode guards require false-positive coverage): control-plane audit (ADR-248) + hook classification projection (commit f94260f41) + cognitive-os.yaml manifest fields close line 124; ADR-249 anti-overfit primitive proof addresses line 125. Both CLOSED.
+- Phase 5 acceptance items lines 145-147: ALL THREE closable post-v0.28.0 — F1 sharded laptop integration (CHANGELOG [Unreleased]/Added) + protected reports via ADR-200 retention controller + ADR-199 reaper protocol.
+- Phase 6 item 170 (chaos suite produces actionable artifacts): CLOSED via chaos guards added v0.28.0.
+- Phase 6 item 168 (ADR-118 swarm scenarios): still PARTIAL.
+Opus revised effective closure: ~12-13/17 (vs Sonnet's 5/17). Plan should stay MOSTLY DONE for: Phase 3 (file/domain/registry claim ledger full coverage), Phase 6 swarm scenarios, and explicit observe/warn/block/emergency annotation rollout to older hooks. Recommendation: keep ACTIVE; tick the now-closed acceptance items in a future tidy commit.
 -->
 
 # Foundation Hardening Program

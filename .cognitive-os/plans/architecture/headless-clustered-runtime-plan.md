@@ -13,6 +13,14 @@ Phase status:
 - Phase 4 (Kubernetes): NOT STARTED. Per External Tool Adoption Doctrine, distributed workflow engines and multi-machine orchestration are explicitly DEFER/REJECT. This phase remains aspirational until a Shape-B trigger fires per ADR-132.
 - Phase 5 (autonomous repair): NOT STARTED — guarded by non-negotiable constraint "Do not claim autonomous repair without testable proof path".
 Recommendation: keep ACTIVE for Phases 1-2 follow-through; treat Phases 4-5 as DEFER per doctrine. Do NOT archive.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus AGREES with Sonnet's PARTIAL framing. Concrete cross-check against unchecked items at lines 195-205:
+- Phase 1 acceptance lines 195-197 (unattended safe-mode/kill-switch, protected-publication, VM-restart idempotency proofs): ADR-246 release transaction freeze + ADR-241 cos-bypass allowlist + branch-ownership-lock cover the publication path implicitly; explicit kill-switch and VM-restart idempotency single-contract proofs not yet shipped. Stay open.
+- Phase 2 acceptance lines 198-200 (queue/worker contract + lease tests): docs/runbooks/run-cos-in-docker.md exists but queue/worker contract document + lease tests pending.
+- Phase 3 acceptance lines 201-202: docs/runbooks/run-cos-in-docker.md serves as partial container contract; no-host-path proof still open.
+- Phases 4-5 (Kubernetes + autonomous repair): explicit DEFER per External Tool Adoption Doctrine (ADR-132) — no Shape-B trigger has fired.
+Opus confirms: PARTIAL. Recommendation stands.
 -->
 
 # Headless and Clustered Runtime Plan

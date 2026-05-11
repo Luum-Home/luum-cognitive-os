@@ -10,6 +10,20 @@ Phase status (best-effort cross-check against current code):
 - Phase 6 (upstream duplication): PARTIAL — ADR-254 External Tool Intelligence Plane + ADR-255 Feature-to-External-Tool Due Diligence ratify the recurring overlap review process and manifest-backed BUILD-vs-ADOPT gates.
 - Phase 7 (self-referential governance cap): PARTIAL — primitive-lifecycle recommendations exclude meta-governance from default surface (one acceptance already checked); ROI ledger and lab-by-default for harvester remain partial.
 Recommendation: keep ACTIVE; this is a cross-cutting umbrella for tier work that continues into 0.29. Do NOT archive.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus partially DISAGREES with Sonnet's near-zero checkbox count. Several acceptance items are objectively closable now:
+- Item line 101 (Readiness reports top latency offenders): closable via scripts/hook-timing-wrapper.sh + .cognitive-os/metrics/hook-timing.jsonl + tests/audit/test_hook_latency_budget.py.
+- Item line 102 (Lifecycle manifest has latency budget coverage for blocking runtime hooks): CLOSED per ADR-237 test execution efficiency protocol + manifest budget gates.
+- Item line 104 (p95 hook budget tests cover real body latency vs wrapper/safe-mode): tests/audit/test_hook_latency_budget.py is exactly this; CLOSED.
+- Item line 124 (Path/root mismatches detected by tests): CLOSED via canonical root resolver + pre-launch history audit tooling (commit ed4e1f705).
+- Item line 142 (Capability matrix used by readiness/projection checks): CLOSED by feature reality matrix consumed in readiness (CHANGELOG [0.28.0] "Capability and feature reality surfaces"; commit a4d758b3d).
+- Item line 143 (Missing harness events visible as degraded/gap): CLOSED by harness-adapter event capture (ADR-033) + control-plane audit (ADR-248).
+- Item line 144 (No product claim says cross-harness support where projection is fallback-only): CLOSED by ADR-217 cross-stack adoption truth audit + capability-coverage matrix (ADR-252).
+- Item line 163 (Readiness/lifecycle report lists upstream-overlap candidates): CLOSED by ADR-254 External Tool Intelligence Plane + ADR-255 feature-to-tool due diligence.
+- Item line 185 (Active default surface contains no Lab primitives): CLOSED by primitive_lifecycle.py distribution filter (already noted by Sonnet as the one checked item).
+- Item line 186 (Meta-governance promotion requires ROI + false-positive evidence): CLOSED by ADR-249 anti-overfit primitive proof + dogfood-score gates.
+Opus revised effective closure: ~10-12/23 (vs Sonnet's strict ~1/23). Plan still PARTIAL — Phase 1 acceptance lines 58-61 (per-distribution active primitive counts in cos status default output) + Phase 2 token-budget targets + Phase 4 single-command `cos explain last-block` remain genuinely open. Recommendation stands: keep ACTIVE as cross-cutting umbrella.
 -->
 
 # DX Tax Reduction Plan

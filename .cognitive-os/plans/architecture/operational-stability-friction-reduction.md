@@ -1,8 +1,15 @@
 <!--
-RECONCILIATION STATUS: ACTIVATE — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
-Decision: ACTIVATE.
-Rationale: The plan explicitly references ADR-123 (which has shipped multi-slice tracking under .cognitive-os/plans/architecture/adr-118-121-123-slices.md) and ADR-124 distribution tiers; both are accepted ADRs in active maintenance. Post-v0.28.0 work directly aligned with this plan: ADR-248 control-plane audit loop + remediation queue feed Phase 1 friction telemetry; ADR-237 test execution efficiency protocol + ADR-072 lane taxonomy advance Phase 6 diff-aware lanes; tiered cleanup primitive (CHANGELOG [0.28.0]) advances Phase 4 repair CLI. The plan should not stay in P3-zero-progress because real underlying work is closing its phases. Promote to P2 active under the same umbrella as governance-tools-consolidation.md and external-review-readiness-plan.md, and in the next reconciliation pass cross-check the existing `cos status` and `cos governance roi` surfaces against this plan's Phase 5 acceptance criteria.
+RECONCILIATION STATUS: ACTIVATE WITH SCOPE REDUCTION — 2026-05-11 (Opus refinement of 2026-05-10 Sonnet pass)
+Reconciled-by: P3 plan triage Opus re-triage (see docs/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
+Decision: ACTIVATE — but only Phases 2, 3, 7, 8. Phases 1, 4, 5, 6 are MOSTLY-DELIVERED and should be closed out (acceptance items checked off, not re-implemented).
+Opus rationale (delta from Sonnet full ACTIVATE): Sonnet correctly identified strong overlap with shipped ADRs but recommended full ACTIVATE alongside governance umbrellas. Opus deeper read shows the overlap is large enough that several phases are effectively *done* and should not be re-planned — they should be reconciled via checking off acceptance items:
+  • Phase 1 (friction telemetry): DELIVERED. ADR-248 control-plane audit loop ships findings-by-ADR metrics, recurrence count, time-to-remediate, false-positive rate, plus the remediation queue at `.cognitive-os/tasks/control-plane-remediation.jsonl`. ADR-247 manifest-driven postmortem-regression audits give the per-class evidence.
+  • Phase 4 (repair CLI / safe reapers): DELIVERED. CHANGELOG [0.28.0] ships `scripts/cos-cleanup.sh` with tiered cleanup + session-end cleanup hook + risk-tier separation. ADR-248 adds `--apply-safe-fixes` with declared `safe_class` whitelist matching this plan's "dry-run default + safe reversible repair only" requirement.
+  • Phase 5 (unified cos status): PARTIALLY DELIVERED. `cos status` and `cos governance roi` exist; the 4-question matrix (SAFE TO WORK/LAUNCH/VALIDATE/PUSH) needs only acceptance-item cross-check.
+  • Phase 6 (diff-aware lanes): DELIVERED. ADR-072 lane taxonomy + ADR-237 test execution efficiency + `cos-test focused/cluster/broad` + F1 sharded laptop integration (CHANGELOG [Unreleased]) cover lane taxonomy, diff classifier, and recommended-lane reporting.
+  • Phases 2, 3, 7, 8 (guard maturity metadata, adaptive profiles, distribution boundary, productization threshold): NOT YET DELIVERED — these remain the actual active work. ADR-124 distribution tiers is the substrate; the per-hook maturity metadata + profile resolver + distribution metadata + core-install audit is still genuine future work.
+ACTION: Promote to active P2 with explicit scope = Phases 2+3+7+8. In the next reconciliation pass, walk Phase 1/4/5/6 acceptance bullets and check off the items already met (recommendation only here; no checkbox edits in this triage).
+Sonnet 2026-05-10 decision: ACTIVATE (whole plan). Opus disagreement: SCOPE-REDUCE — Phases 1, 4, 6 are delivered; Phase 5 partial; only Phases 2, 3, 7, 8 carry net-new active work.
 -->
 
 # Operational Stability and Friction Reduction Program

@@ -15,6 +15,15 @@ Phase status:
 - Phase 6 (ADR-210 fleet/cloud confidence): future-only as designed.
 Major post-v0.28.0 closures consumed by this plan: ADR-247 (manifest-driven postmortem audits), ADR-248 (control-plane audit loop with hook-fast lane + remediation queue), ADR-249 (anti-overfit primitive proof), ADR-251 (agent orchestration adapter boundary), ADR-252 (capability coverage matrix + feature reality ledger), ADR-254 (External Tool Intelligence Plane), ADR-256/257/258 (primitive contract registry + portable-AI overlay), and ADR-244 (trust-report claim validator must enforce).
 Recommendation: keep ACTIVE for Phase 4-5 residual items; do NOT archive. Many checkbox items below remain unchecked because they are now satisfied by ADRs that shipped after this plan was written; treat the ADR list above as the authoritative closure ledger and use this plan only for the remaining experiment/canary substrate.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus DISAGREES with Sonnet's "HEAVY-DELTA / MOSTLY DONE" framing — Phase 4 is more fully closed than Sonnet credited:
+- Item line 70 (gate public claims against current evidence): CLOSED by ADR-244 (trust-report claim validator MUST enforce) + capability/feature reality matrix (commit a4d758b3d).
+- Item line 71 (skill performance lifecycle states + demotion/archive receipts): CLOSED by v0.27.0 skill lifecycle ladder (CHANGELOG [0.27.0]: "Activated the skill lifecycle ladder"); scripts/cos-promotion-proposer + scripts/cos-demotion-proposer + SkillStore SQLite schema (ADR-176) + tests/contracts/test_promotion_propose_only.py all present.
+- Item line 72 (imported-pattern closure audit): CLOSED via scripts/cos-tool-adoption-audit reporting pass=0 findings (radar tracker C1-C4 rows confirm) + ADR-208 dependency-adoption-gate (commit 8437c768a).
+- Item line 74 (full closure audit for imported patterns claimed active/core/self-improving): CLOSED by capability-coverage matrix + feature reality ledger (ADR-252).
+Only Phase 5 items remain genuinely open: line 78 (experiment/canary schema) and line 79 (outcome-failure queue). Phase 6 lines 84-85 are future-only by design.
+Opus revised status: MOSTLY DONE (effective ~28-30/32 closed). Recommendation: keep ACTIVE narrowly for Phase 5 experiment/canary substrate; consider splitting Phase 5 into its own plan once that work starts, then archive the rest.
 -->
 
 # ADR-200+ Closure Plan
