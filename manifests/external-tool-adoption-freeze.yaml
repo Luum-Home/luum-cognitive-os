@@ -1,0 +1,49 @@
+schema_version: external-tool-adoption-freeze/v1
+status: active
+purpose: |
+  Mechanical kill-switch for external-tool adoption work (radar additions,
+  new annex F documents, new entries in manifests/external-tools-adoption.yaml).
+  When frozen: true, hooks/adoption-freeze-gate.sh blocks commits that touch
+  the gated paths until operator flips frozen: false. Designed for the
+  pre-commercial / pre-SaaS phase per ADR-267 Layer 2.
+
+frozen: true
+frozen_at: '2026-05-11T17:35:00Z'
+frozen_by: operator (commercial/SaaS pivot decision)
+freeze_reason: |
+  Luum-cognitive-os is heading toward commercial/SaaS distribution per operator
+  decision 2026-05-11. The 6 external-pattern adoptions already in main
+  (ADR-260..264) are defendible under clean-room doctrine for the current state,
+  but accumulating more adoptions without IP counsel review compounds risk
+  (ADR-267 Gap 1). Freeze remains active until:
+  1. IP counsel review of the 6 existing adoptions completes with documented opinion
+  2. Patent/trademark searches (USPTO + TESS) completed for Holaboss + holaOS
+  3. Operator sign-off after legal review with documented commercial-use scope
+  Reference: audit-2026-05-11, ADR-259 (umbrella posture), ADR-267 (enforcement).
+
+unfreeze_requires:
+  - legal-ip-review-completed
+  - operator-explicit-sign-off
+  - patent-search-documented
+  - trademark-search-documented
+
+gated_path_globs:
+  - 'docs/research/*-annex-*-*.md'
+  - 'docs/research/*-comparison-*.md'
+  - 'docs/reports/external-tools-radar-*.md'
+  - 'docs/research/repo-scout/deep/*.md'
+  - 'manifests/external-tools-adoption.yaml'
+
+freeze_history:
+  - frozen_at: '2026-05-11T17:35:00Z'
+    by: operator
+    reason: commercial/SaaS pivot — adoption debt compounding risk per ADR-267 Gap 1
+    sha: pending-commit
+
+bypass_env_var: COS_ALLOW_FREEZE_TOGGLE
+bypass_purpose: |
+  When the freeze yaml itself needs to be edited (to flip frozen, record
+  history, or change gated_path_globs), the gate would otherwise block its
+  own toggle. COS_ALLOW_FREEZE_TOGGLE=1 permits a commit that touches ONLY
+  this manifest file. Every other gated path remains blocked until
+  frozen: false.
