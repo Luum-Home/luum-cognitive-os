@@ -34,6 +34,7 @@ from lib.intent_arbiter import (  # noqa: E402
     submit_intent,
     utc_now_iso,
 )
+from lib import cosd_grant as _cosd_grant  # noqa: E402  # ADR-260
 
 
 def resolve_project_dir(raw: str | None) -> Path:
@@ -193,7 +194,21 @@ def make_handler(project_dir: Path, *, token: str | None = None, transport: str 
             self.wfile.write(body)
 
         def _authorized(self) -> bool:
-            return bearer_authorized(self.headers.get("Authorization"), token)
+            header = self.headers.get("Authorization") or ""
+            client_ip = self.client_address[0] if self.client_address else "127.0.0.1"
+            # ADR-260: Grant scheme takes precedence over Bearer when both are sent.
+            if header.startswith("Grant "):
+                grant_token = header[len("Grant "):].strip()
+                claims = _cosd_grant.verify_token(grant_token, client_ip=client_ip)
+                return claims is not None
+            if header.startswith("Bearer "):
+                print(
+                    "[cosd] DEPRECATION: bearer token auth; migrate to Grant tokens (ADR-260)",
+                    file=sys.stderr,
+                )
+                return bearer_authorized(header, token)
+            # No auth header; legacy bearer path preserves behavior when token is None.
+            return bearer_authorized(header, token)
 
         def _reject_unauthorized(self, endpoint: str) -> None:
             append_api_audit(project_dir, {
