@@ -7,7 +7,7 @@ a reviewer agent (different model — cross-review matrix) reads the output and
 checks:
   1. Trust score validation — did the agent provide evidence for its claims?
   2. Claim accuracy — did the agent claim to write files that don't exist?
-     Did it claim tests pass when they don't?
+     Did it claim tests pass when they didn't?
   3. Acceptance-criteria coverage — are all stated AC verifiable?
 
 Findings are persisted to:
@@ -114,8 +114,16 @@ def daily_budget_state(state_file: Path | None = None) -> dict[str, int]:
         data = json.loads(raw)
         if not isinstance(data, dict):
             return {}
-        # Sanitize: values must be ints
-        return {k: int(v) for k, v in data.items() if isinstance(k, str)}
+        # Sanitize: values must be ints; skip non-int-castable entries
+        result: dict[str, int] = {}
+        for k, v in data.items():
+            if not isinstance(k, str):
+                continue
+            try:
+                result[k] = int(v)
+            except (TypeError, ValueError):
+                continue
+        return result
     except (json.JSONDecodeError, OSError, ValueError):
         return {}
 
@@ -435,6 +443,7 @@ def parse_review_response(response: str) -> dict[str, Any]:
         result["parse_warnings"] = issues
 
     return result
+
 
 
 def evaluate_review_quality(parsed_finding: dict[str, Any]) -> dict[str, Any]:
