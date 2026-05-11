@@ -17,14 +17,14 @@ Accepted
 
 On 2026-05-10 a systematic external due-diligence sweep included a deep
 comparison of luum-agent-os against holaOS (Holaboss AI, 2026), documented in
-`.private/holaos-research/holaos-comparison-2026-05-10.md`. holaOS is an agent-computer
+[private clean-room research dossier]. holaOS is an agent-computer
 platform — an Electron + TypeScript runtime (Fastify, SQLite) in which humans
 and agents share a persistent, inspectable workspace. It solves a number of
 problems luum-agent-os has partially addressed: session-level memory governance,
 tool-replay budgeting, skill auto-evolution, context-reserve compaction, HMAC
 grants, and proactive context bootstrapping.
 
-Annex E of that research (`.private/holaos-research/holaos-annex-e-architecture-risks.md`)
+Annex E of that research ([private clean-room research dossier])
 assessed holaOS as high-value for pattern adoption and simultaneously identified
 a blocking license constraint. holaOS is published under Apache 2.0 **modified
 with BSL-like clauses**: section 1.a prohibits using holaOS source code to
@@ -34,7 +34,7 @@ those terms unilaterally at any time. Under the project's `[license-policy]`
 rule (§10, `rules/RULES-COMPACT.md`), BSL-like licenses are classified as
 BLOCK for code adoption.
 
-Annex F (`.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`) established
+Annex F (private clean-room compliance dossier — internal records) established
 the operational posture and the clean-room protocol. The conclusion: holaOS
 ideas, algorithms, state machines, taxonomies, and policies are freely adoptable
 under 17 USC §102(b) — copyright does not protect ideas, procedures, or
@@ -97,7 +97,7 @@ Each ADR that adopts a holaOS pattern (ADR-260, ADR-261, …) must:
 (c) Include a `pattern_source` frontmatter field using the schema from
     Annex F §4.2:
     ```yaml
-    pattern_source: "holaos-comparison-2026-05-10.md::Annex<X>::<section>"
+    pattern_source: "holaos-comparison-2026-05-10::Annex<X>::<section>"
     holaos_files_read_by_research: []
     holaos_files_blocked_for_impl: ["ALL"]
     ```
@@ -109,7 +109,7 @@ Each ADR that adopts a holaOS pattern (ADR-260, ADR-261, …) must:
     <scope>: <change>
 
     Pattern adopted from holaOS (clean-room rewrite).
-    Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
+    Refs: [private clean-room research dossier]
     Source-pattern: <annex>::<section>
     License: Apache-2.0 modified (BSL-like). No source code copied.
     ```
@@ -135,8 +135,8 @@ Every verified adoption must produce three artifacts:
     Reviewer ID). Created via `mem_save` immediately after a verified commit,
     before session close.
 
-(ii) **Append-only registry entry** in `.private/holaos-research/holaos-adoptions.md`
-    (to be created before the first adoption commit). The file is evidence of
+(ii) **Append-only registry entry** in the private holaOS adoptions registry
+    (to be created before the first adoption commit — see internal records). The file is evidence of
     due diligence and must never have rows edited or deleted.
 
 (iii) **Pre-commit gate execution** via `hooks/external-pattern-cleanroom-gate.sh` (to be
@@ -196,7 +196,7 @@ The following artifacts are required before the first adoption ADR (ADR-260+)
 can be filed. They are design-level work items; no implementation is performed
 in this ADR.
 
-1. **Create `.private/holaos-research/holaos-adoptions.md`**: append-only registry with
+1. **Create the private holaOS adoptions registry** (internal records): append-only registry with
    the table schema from Annex F §7.2. Schema columns: Feature, Fecha, ADR ref,
    Implementer agent ID, Grep verify, Status. The file must exist and carry the
    table header before any adoption commit lands.
@@ -215,7 +215,7 @@ in this ADR.
 
 4. **File ADR-260, ADR-261, … as needed**: each adoption ADR references this
    ADR-259 and targets one or more Annexes. Assignments are tracked in
-   `.private/holaos-research/holaos-adoptions.md`.
+   the private holaOS adoptions registry (internal records).
 
 ---
 
@@ -258,9 +258,9 @@ in this ADR.
 
 ## References
 
-- `.private/holaos-research/holaos-comparison-2026-05-10.md` — master research document;
+- [private clean-room research dossier] — master research document;
   primary source for the architectural comparison and license classification
-- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — operational clean-room
+- [private compliance dossier — see internal records] — operational clean-room
   protocol; primary source for the decision constraints codified here
 - `rules/RULES-COMPACT.md` §10 `[license-policy]` — project rule that classifies
   BSL-like licenses as BLOCK for code adoption
@@ -276,3 +276,8 @@ in this ADR.
   non-infringing original work
 - EU Directive 2009/24/EC — software protection regime relevant for European
   distribution scenarios
+
+---
+*This ADR references a private clean-room research dossier whose specific
+file paths and section headings are intentionally redacted from this public
+record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd3b).*
