@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 163
+Total skills: 164
 
 ## os (18)
 
@@ -110,7 +110,7 @@ Total skills: 163
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 | worktree-triage | Compare a worktree to main and produce a safe port/validate/remove checklist. |
 
-## project (70)
+## project (71)
 
 | Skill | Description |
 |-------|-------------|
@@ -127,6 +127,7 @@ Total skills: 163
 | cost-predict | Estimate task cost from historical metrics and default phase routing. |
 | coverage-enforcement | Run Go test coverage for all services, enforce thresholds from… |
 | deep-research | Multi-hop research skill for deep investigation of topics. |
+| deep-tool-research | Run a canonical 7-annex deep evaluation of an external tool (memory/agent OS/eval/RAG family). |
 | devbox-checkpoint | Save and restore environment state snapshots using devbox |
 | doc-sync | Synchronize documentation that became stale after code changes |
 | document-feature | Generate or update structured feature documentation using 3-layer detection… |

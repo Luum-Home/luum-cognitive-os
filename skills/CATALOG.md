@@ -112,6 +112,7 @@
 | self-review | Lightweight 4-question post-implementation checklist for non-SDD work | `/self-review` | project |
 | web-crawler | Fetch and convert web pages to LLM-ready markdown using Crawl4AI | `/web-crawler` | project |
 | deep-research | Multi-hop research with configurable depth (quick/standard/deep/exhaustive), structured reports | `/deep-research` | project |
+| deep-tool-research | Canonical 7-annex deep evaluation of an external tool (A–G fixed taxonomy) after repo-scout pass; produces parent comparison doc + annexes for cross-tool comparability | `/deep-tool-research <tool>` | both |
 | research-protocol | Meta-skill: systematic investigation methodology (DISCOVER/ANALYZE/COMPARE/SYNTHESIZE) | `/research-protocol` | project |
 | audit-website | 6-category website audit (SEO, Performance, Security, Content/UX, Accessibility, Schema.org) | `/audit-website` | project |
 | persistent-agent | Create persistent agents with state across sessions: identity profile, event log | `/create-persistent-agent` | project |

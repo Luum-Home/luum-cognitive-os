@@ -21,6 +21,17 @@ All Engram topic keys MUST use one of these prefixes:
 | `sprint/{sprint-id}/...` | Sprint goals, status, retros | `sprint/2026-w12/goal`, `sprint/2026-w12/retro` |
 | `config/{topic}` | Configuration decisions, env setup, infrastructure | `config/docker-compose/ports`, `config/auth/realm-setup` |
 | `bugfix/{service}/{issue}` | Bug investigations and fixes | `bugfix/gateway/jwt-expiry-race`, `bugfix/api/db-reconnect` |
+| `tech-radar/{repo}` | Single-tool radar verdict (REJECT/HOLD/ASSESS/TRIAL/ADOPT + adoption-kind). Round-1 saves from radar/repo-scout phases. | `tech-radar/helix-db`, `tech-radar/ifixai`, `tech-radar/megamemory` |
+| `tech-radar/{repo}/primitives` | Extractable primitives detail for a tool (ranked port list, clean-room vs vendor decision, evidence cites). Round-2 deep-annex saves. | `tech-radar/helix-db/primitives`, `tech-radar/ifixai/primitives` |
+
+### Tech-Radar 2-Slice Convention
+
+The `tech-radar/` namespace intentionally uses two parallel slices per tool:
+
+- **Verdict slice** (`tech-radar/{repo}`): the radar classification (REJECT / HOLD / ASSESS / TRIAL / ADOPT), adoption-kind (vendor / pattern-only / CLI-adapter / etc.), license, version, peer comparison, blocking risks. Written during repo-scout / radar Phase 4-8.
+- **Primitives slice** (`tech-radar/{repo}/primitives`): the ranked extractable-primitive list with file:line evidence cites, port-vs-clean-room decisions, advocated landing order, and consolidated cross-annex findings. Written during deep-annex Phase 9+.
+
+The two slices are intentionally separate (different content types, different write phases, different consumers) and MUST reference each other via a `See also: tech-radar/{repo}/{slice} (#<partner-id>)` header at the top of each observation. Do NOT collapse them into a single key — the verdict slice is short-and-stable; the primitives slice grows as annexes accumulate.
 
 ## Migration from Legacy Flat Keys
 
@@ -155,6 +166,7 @@ memory:
       - sprint
       - config
       - bugfix
+      - tech-radar
     legacy_fallback: true        # Search old sdd/ prefix as fallback
     migrate_on_read: true        # Re-save under new prefix when old data is read
 ```

@@ -1,5 +1,5 @@
 schema_version: 1
-generated_at: '2026-05-09T19:46:25+00:00'
+generated_at: '2026-05-11T16:57:51+00:00'
 policy: Deterministic cross-instance lock; drift must be explicit before Shape-B federation.
 primitives:
 - id: hooks/_lib/agent-context.sh
@@ -312,6 +312,17 @@ primitives:
   - .claude/settings.json
   - hooks/clarification-gate.sh
   sha256: a7d408e3dcaa4ecc9f573e2aeeadcfdb161356e790a2fa9ae6485f0352a0e361
+- id: hooks/codebase-itinerary-capture.sh
+  kind: hook
+  owner_adr: ADR-256
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - hooks/codebase-itinerary-capture.sh
+  sha256: 93ad0c07c4b759cf18ab346faeea20551fea85c1ba46f49b129871093342777b
 - id: hooks/completeness-check.sh
   kind: hook
   owner_adr: ADR-126
@@ -404,13 +415,37 @@ primitives:
 - id: hooks/context-watchdog.sh
   kind: hook
   owner_adr: ADR-186
-  lifecycle_state: active
+  lifecycle_state: advisory
   maturity: advisory
   distribution: maintainer
   runtime_projection: true
   projection_targets:
   - hooks/context-watchdog.sh
-  sha256: 92c5d0ad8640583907beed772fc4473b4e8a2efc968a73f8dba50429656c2561
+  sha256: 771a39a584c716ed39de3b416846916b04de6ed04d002bec9c64683598025c3b
+- id: hooks/control-plane-audit-hourly.sh
+  kind: hook
+  owner_adr: ADR-248
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/control-plane-audit-hourly.sh
+  sha256: 0344a1c2965e282654499222fa6a70e2ed0123b7c722bd785bb76ec8dfdde717
+- id: hooks/control-plane-audit.sh
+  kind: hook
+  owner_adr: ADR-248
+  lifecycle_state: blocking
+  maturity: blocking
+  distribution: core
+  runtime_projection: true
+  projection_targets:
+  - .claude/settings.json
+  - .codex/hooks.json
+  - hooks/control-plane-audit.sh
+  sha256: 15d67fca433cd4fe2e61c65fee747f1727e82c7ad406f38e5eee9ea36cdf1853
 - id: hooks/cos-executor-daemon-launcher.sh
   kind: hook
   owner_adr: ADR-126
@@ -571,13 +606,13 @@ primitives:
 - id: hooks/document-ingest-guard.sh
   kind: hook
   owner_adr: ADR-186
-  lifecycle_state: active
-  maturity: advisory
+  lifecycle_state: blocking
+  maturity: blocking
   distribution: maintainer
   runtime_projection: true
   projection_targets:
   - hooks/document-ingest-guard.sh
-  sha256: d3a2ec2300aa81c713860ec17552404d7de75bd4b2d562a5ac9443649789aea7
+  sha256: 997885b9ff69c844e71403e4e429312f3435963a82eab4611dbec4e631c98734
 - id: hooks/dod-gate.sh
   kind: hook
   owner_adr: ADR-126
@@ -1884,6 +1919,16 @@ primitives:
   - scripts/active_primitive_index.py
   - docs/adrs/ADR-127-active-primitive-index.md
   sha256: 37bf943b58d07bde68d634280f0bcd887951307a6efac25b4a42bddf03212235
+- id: scripts/cos-adapters
+  kind: script
+  owner_adr: ADR-258
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-adapters
+  sha256: 64df5fc8d461e78547c2647b6cc407d023d7edcd94a42d72bb88e7fec12e6b25
 - id: scripts/cos-adoption-profile
   kind: script
   owner_adr: ADR-124
@@ -2298,6 +2343,26 @@ primitives:
   projection_targets:
   - scripts/cos-new-adr
   sha256: 8dc5955068d5d0cb99f49448b46ff7c0ed36addc8d70baaecdcfd637beefd303
+- id: scripts/cos-observe-primitives
+  kind: script
+  owner_adr: ADR-256
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-observe-primitives
+  sha256: d0168f313414d9f08de38ca99dea66663003ed1c51ecacd8e6367e0ac1c2e295
+- id: scripts/cos-portable-ai-overlay
+  kind: script
+  owner_adr: ADR-258
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-portable-ai-overlay
+  sha256: f70a7733cfb265f61ade6d0627cd60f8bf269dd5e0c86a9c5a9ab8a5227ebdb7
 - id: scripts/cos-preamble-budget
   kind: script
   owner_adr: ADR-125
@@ -2321,6 +2386,16 @@ primitives:
   - scripts/cos-queue-drain
   - scripts/cos_service_control_plane.py
   sha256: 11e0fe94c2d2ccce03d1efbc047f93f8074708731d13853409d2f5ae44220d68
+- id: scripts/cos-record-onboarding.sh
+  kind: script
+  owner_adr: ADR-126
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-record-onboarding.sh
+  sha256: e07d576b5e467adee6346c12ebebfe3f18915f861427d5d3862dc949f434331a
 - id: scripts/cos-registry-lock
   kind: script
   owner_adr: ADR-136
@@ -2383,6 +2458,16 @@ primitives:
   - lib/self_improvement_loop.py
   - docs/adrs/ADR-134-headless-self-improvement-proposer.md
   sha256: 1f7f40d236ab6b8ef5c87ae57fce04bb086b21a53f5a0566a7f87187d95048a7
+- id: scripts/cos-service-readiness-gate
+  kind: script
+  owner_adr: ADR-211
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  runtime_projection: false
+  projection_targets:
+  - scripts/cos-service-readiness-gate
+  sha256: d428b54e227a35ea8b35bf7538bf7e9de0d1fbbda97d0400efc43fe705754860
 - id: scripts/cos-session-coordination
   kind: script
   owner_adr: ADR-183
@@ -3001,6 +3086,16 @@ primitives:
   projection_targets:
   - scripts/project_scaffold.py
   sha256: 7f06744de4b2ca33959dc47b93afc2aed193080fd7b4ecdfbc86a27eb631e7d2
+- id: scripts/promote_lifecycle_primitives_to_contracts.py
+  kind: script
+  owner_adr: ADR-256
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: maintainer
+  runtime_projection: false
+  projection_targets:
+  - scripts/promote_lifecycle_primitives_to_contracts.py
+  sha256: dc4a73815fd3d05fcac4522c5e1882aa6bf08b333d5b33bd9a0bf5979a1e307e
 - id: scripts/proof-drill-select
   kind: script
   owner_adr: ADR-166
