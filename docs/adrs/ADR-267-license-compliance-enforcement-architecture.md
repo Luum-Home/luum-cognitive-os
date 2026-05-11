@@ -9,7 +9,7 @@ Proposed (2026-05-11)
 After the 2026-05-11 multi-tool deep-research batch (HelixDB / iFixAi / MegaMemory; 19 docs across `docs/research/*-annex-*-2026-05-11.md` + 3 radar addenda + 4 self-critique cluster reports + 3 ADRs Proposed: ADR-261..266) and the pre-commit license audit triggered by operator, two enforcement gaps were surfaced that compound risk over time:
 
 - **Gap 1**: Every new external-tool adoption goes through `/repo-scout` + `/deep-tool-research` and produces an Annex F (compliance / clean-room protocol). Each individual adoption is **defendible under fair-use / clean-room doctrine** today. The risk is *accumulation*: we do not have mechanical limits or signals that say "we now hold N tools pending legal validation; further adoption raises aggregate risk."
-- **Gap 2**: Hook coverage on the actual commit-time defenses is *paper-thin*. The two existing clean-room gates (`hooks/external-pattern-cleanroom-gate.sh`, `hooks/holaos-cleanroom-gate.sh`) are tool-specific or hardcoded to absent paths (`/tmp/upstream-pattern-source/`) and currently skip silently in most sessions. `rules/license-policy.md` is policy text, not enforcement; no hook reads it on `git commit`.
+- **Gap 2**: Hook coverage on the actual commit-time defenses is *paper-thin*. The two existing clean-room gates (`hooks/external-pattern-cleanroom-gate.sh`, `hooks/external-pattern-cleanroom-gate.sh`) are tool-specific or hardcoded to absent paths (`/tmp/upstream-pattern-source/`) and currently skip silently in most sessions. `rules/license-policy.md` is policy text, not enforcement; no hook reads it on `git commit`.
 
 The two scenarios the operator wants ready for:
 
@@ -23,7 +23,7 @@ The two scenarios the operator wants ready for:
 | Surface | What it does today | Limitation |
 |---|---|---|
 | `hooks/external-pattern-cleanroom-gate.sh` | Pre-commit; matches `git commit`; scans staged files for literal strings from `/tmp/upstream-pattern-source/` | Hardcoded to a single absent directory; skip silently if source absent. Mostly inert. |
-| `hooks/holaos-cleanroom-gate.sh` | Same shape as above, holaOS-specific | Single tool. |
+| `hooks/external-pattern-cleanroom-gate.sh` | Same shape as above, holaOS-specific | Single tool. |
 | `scripts/cos-dependency-adoption-gate` (ADR-208) | Pre-commit on dependency-manifest additions; requires `manifests/<dep>-adoption.yaml` evidence | Validates *process* (is the manifest present?); does NOT classify the dependency's licence against `rules/license-policy.md`. |
 | `rules/license-policy.md` | Doc with BLOCKER / SAFE table | No hook reads it on commit. |
 
