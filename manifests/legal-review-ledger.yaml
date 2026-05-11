@@ -1,0 +1,100 @@
+schema_version: legal-review-ledger/v1
+status: active
+contract: |
+  Append-only registry of legal reviews. Each entry records counsel
+  decision, evidence path, and SHA256 of counsel memo for tamper-evidence.
+  New entries MUST be appended at the end of `entries:`; existing entries
+  MUST NOT be edited in-place except to fill `pending` → finalized fields
+  via `cos-legal-approve` (which preserves prior state in `freeze_history`-style
+  amendment if applicable). Enforced by tests/contracts/test_legal_review_ledger_append_only.py.
+
+# Seed entries: tools that already have Annex F docs as of ADR-270 acceptance.
+# All `decision: pending` until counsel review completes.
+entries:
+  - tool: holaOS
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: .private/external-pattern-research/annex-f-compliance-cleanroom.md
+
+  - tool: hermes
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md
+
+  - tool: pi-coding-agent
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md
+
+  - tool: openharness
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md
+
+  - tool: sprut-agent-kit
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md
+
+  - tool: helixdb
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md
+
+  - tool: megamemory
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md
+
+  - tool: ifixai
+    adr_ref: ADR-259
+    counsel: ""
+    memo_path: ""
+    memo_sha256: ""
+    decision: pending
+    conditions: null
+    review_date: null
+    reviewed_at: null
+    annex_f_path: docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md

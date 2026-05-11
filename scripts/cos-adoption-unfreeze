@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""cos-adoption-unfreeze — Per-tool unfreeze gated by counsel evidence.
+
+ADR-270 primitive #6. Pre-flight checks (ALL must pass):
+  1. USPTO patent report exists for tool AND no CRITICAL (unless --accept-patent-risk).
+  2. USPTO trademark report exists for tool.
+  3. Annex F has `reviewed-by-legal: yes`.
+  4. Ledger entry exists for tool with decision approved or approved-with-conditions.
+  5. If approved-with-conditions: --ack-conditions required.
+"""
+from __future__ import annotations
+
+import argparse
+import glob
+import json
+import re
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+try:
+    import yaml
+except ImportError:  # pragma: no cover
+    print("ERROR: PyYAML is required", file=sys.stderr)
+    sys.exit(2)
+
+ROOT = Path(__file__).resolve().parents[1]
+FREEZE_PATH = ROOT / "manifests" / "external-tool-adoption-freeze.yaml"
+LEDGER_PATH = ROOT / "manifests" / "legal-review-ledger.yaml"
+
+
+def _load_yaml(path: Path) -> dict:
+    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+
+def _check_patent_report(tool: str, accept_risk: bool) -> tuple[bool, str]:
+    files = sorted(glob.glob(str(ROOT / f"docs/reports/uspto-patent-{tool}-*.json")))
+    if not files:
+        return False, f"no patent report: docs/reports/uspto-patent-{tool}-*.json"
+    latest = Path(files[-1])
+    try:
+        data = json.loads(latest.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return False, f"patent report unreadable ({exc})"
+    has_critical = data.get("summary", {}).get("has_critical", False)
+    if has_critical and not accept_risk:
+        return False, f"CRITICAL patent finding in {latest.name} (override with --accept-patent-risk)"
+    return True, f"patent report OK: {latest.name}"
+
+
+def _check_tm_report(tool: str) -> tuple[bool, str]:
+    pats = (
+        f"docs/reports/uspto-tm-{tool}-*.json",
+        f"docs/reports/uspto-tm-*{tool}*-*.json",
+    )
+    files: list[str] = []
+    for p in pats:
+        files.extend(glob.glob(str(ROOT / p)))
+    if not files:
+        return False, f"no trademark report matching uspto-tm-{tool}-*.json"
+    return True, f"trademark report OK: {Path(sorted(files)[-1]).name}"
+
+
+def _check_ledger(tool: str, ack_conditions: bool) -> tuple[bool, str, dict | None]:
+    if not LEDGER_PATH.exists():
+        return False, "ledger missing", None
+    data = _load_yaml(LEDGER_PATH)
+    entries = data.get("entries", []) or []
+    # latest entry for this tool
+    candidates = [e for e in entries if e.get("tool") == tool]
+    if not candidates:
+        return False, f"no ledger entry for tool '{tool}'", None
+    entry = candidates[-1]
+    decision = str(entry.get("decision", "")).lower()
+    if decision not in ("approved", "approved-with-conditions"):
+        return False, f"ledger decision is '{decision}' (need approved or approved-with-conditions)", entry
+    if decision == "approved-with-conditions" and not ack_conditions:
+        return False, "decision has conditions; pass --ack-conditions to proceed", entry
+    return True, f"ledger OK: {decision}", entry
+
+
+def _check_annex_f(entry: dict | None) -> tuple[bool, str]:
+    if not entry:
+        return False, "no ledger entry to derive annex path"
+    annex_rel = entry.get("annex_f_path", "")
+    if not annex_rel:
+        return False, "ledger entry has no annex_f_path"
+    annex_path = ROOT / annex_rel
+    if not annex_path.exists():
+        return False, f"annex F missing: {annex_rel}"
+    text = annex_path.read_text(encoding="utf-8")
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
+    if not m:
+        return False, f"annex F has no frontmatter: {annex_rel}"
+    fm = yaml.safe_load(m.group(1)) or {}
+    if str(fm.get("reviewed-by-legal", "")).lower() != "yes":
+        return False, f"annex F reviewed-by-legal != yes ({annex_rel})"
+    return True, f"annex F reviewed-by-legal: yes ({annex_rel})"
+
+
+def unfreeze_tool(tool: str, operator: str, reason: str, evidence_bundle: str) -> None:
+    """Add tool to `unfrozen_tools` list and append freeze_history entry."""
+    data = _load_yaml(FREEZE_PATH)
+    unfrozen = data.get("unfrozen_tools", []) or []
+    if tool not in unfrozen:
+        unfrozen.append(tool)
+    data["unfrozen_tools"] = unfrozen
+    # Also remove from frozen_tools list if present (granular control).
+    frozen_tools = data.get("frozen_tools", []) or []
+    if tool in frozen_tools:
+        frozen_tools = [t for t in frozen_tools if t != tool]
+        data["frozen_tools"] = frozen_tools
+    history = data.get("freeze_history", []) or []
+    history.append(
+        {
+            "unfrozen_at": datetime.now(timezone.utc).isoformat(),
+            "tool": tool,
+            "by": operator,
+            "reason": reason,
+            "evidence_bundle": evidence_bundle,
+        }
+    )
+    data["freeze_history"] = history
+    FREEZE_PATH.write_text(yaml.safe_dump(data, default_flow_style=False, sort_keys=False), encoding="utf-8")
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Per-tool adoption unfreeze (ADR-270 #6)")
+    parser.add_argument("--tool", required=True)
+    parser.add_argument("--evidence-bundle", required=True, help="path to counsel zip")
+    parser.add_argument("--operator", required=True)
+    parser.add_argument("--reason", required=True)
+    parser.add_argument("--accept-patent-risk", action="store_true",
+                        help="override patent CRITICAL finding (logged)")
+    parser.add_argument("--ack-conditions", action="store_true",
+                        help="acknowledge conditions for approved-with-conditions decisions")
+    args = parser.parse_args(argv)
+
+    checks: list[tuple[str, bool, str]] = []
+    ok_p, msg_p = _check_patent_report(args.tool, args.accept_patent_risk)
+    checks.append(("patent-report", ok_p, msg_p))
+    ok_t, msg_t = _check_tm_report(args.tool)
+    checks.append(("trademark-report", ok_t, msg_t))
+    ok_l, msg_l, ledger_entry = _check_ledger(args.tool, args.ack_conditions)
+    checks.append(("ledger", ok_l, msg_l))
+    ok_a, msg_a = _check_annex_f(ledger_entry) if ok_l else (False, "skipped (ledger failed)")
+    checks.append(("annex-f", ok_a, msg_a))
+
+    all_ok = all(ok for _, ok, _ in checks)
+    print(f"Pre-flight for tool '{args.tool}':")
+    for name, ok, msg in checks:
+        flag = "PASS" if ok else "FAIL"
+        print(f"  [{flag}] {name}: {msg}")
+
+    if not all_ok:
+        print("\nUnfreeze BLOCKED. Resolve failing gates and retry.")
+        return 1
+
+    unfreeze_tool(
+        tool=args.tool,
+        operator=args.operator,
+        reason=args.reason,
+        evidence_bundle=args.evidence_bundle,
+    )
+    print(f"\nOK: tool '{args.tool}' added to unfrozen_tools in {FREEZE_PATH.name}.")
+    print("Global frozen flag preserved; per-tool override granular.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

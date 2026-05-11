@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""cos-counsel-outreach-draft — Template-driven email drafter.
+
+ADR-270 primitive #4. Produces a markdown draft for operator review. NEVER
+sends. The output is intended to be copy-pasted into the operator's mail
+client.
+"""
+from __future__ import annotations
+
+import argparse
+import os
+import re
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+TEMPLATES_DIR = ROOT / "templates" / "counsel-outreach"
+
+VALID_TEMPLATES = {
+    "clean-room-permission": "clean-room-permission.md",
+    "license-clarification": "license-clarification.md",
+    "review-request": "review-request.md",
+}
+
+
+def fill_template(content: str, substitutions: dict[str, str]) -> str:
+    """Replace {{KEY}} tokens with substitutions. Unknown tokens are kept verbatim
+    so the operator can fill them by hand."""
+    def repl(match: re.Match[str]) -> str:
+        key = match.group(1)
+        return substitutions.get(key, "{{" + key + "}}")
+    return re.sub(r"\{\{([A-Z_]+)\}\}", repl, content)
+
+
+def build_draft(
+    tool: str,
+    to: str,
+    template: str,
+    counsel_packet: str | None,
+    operator_name: str,
+    operator_email: str,
+) -> str:
+    tpl_file = TEMPLATES_DIR / VALID_TEMPLATES[template]
+    if not tpl_file.exists():
+        raise FileNotFoundError(f"Template not found: {tpl_file}")
+    raw = tpl_file.read_text(encoding="utf-8")
+    subs = {
+        "TOOL": tool,
+        "TO": to,
+        "FROM": operator_email or "(set FROM)",
+        "DATE": datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+        "OPERATOR_NAME": operator_name or "(set --operator-name)",
+        "OPERATOR_EMAIL": operator_email or "(set --operator-email)",
+        "COUNSEL_PACKET_NAME": Path(counsel_packet).name if counsel_packet else "(no packet attached)",
+        # Common placeholders left for operator fill:
+        # TOOL_URL, LICENSE_SPDX, PRODUCER, PRODUCER_CONTACT, COUNSEL_CONTACT,
+        # ADOPTION_TYPE, ADR_REF, AMBIGUOUS_CLAUSES, OPERATOR_SCHED_LINK
+    }
+    return fill_template(raw, subs)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Draft counsel/producer outreach email (ADR-270 #4)")
+    parser.add_argument("--tool", required=True)
+    parser.add_argument("--to", required=True)
+    parser.add_argument("--template", required=True, choices=list(VALID_TEMPLATES.keys()))
+    parser.add_argument("--counsel-packet", default="")
+    parser.add_argument("--operator-name", default=os.environ.get("COS_OPERATOR_NAME", ""))
+    parser.add_argument("--operator-email", default=os.environ.get("COS_OPERATOR_EMAIL", ""))
+    parser.add_argument("--output", default="")
+    args = parser.parse_args(argv)
+
+    draft = build_draft(
+        tool=args.tool,
+        to=args.to,
+        template=args.template,
+        counsel_packet=args.counsel_packet or None,
+        operator_name=args.operator_name,
+        operator_email=args.operator_email,
+    )
+
+    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    out = Path(args.output) if args.output else Path(f"drafts/email-{args.tool}-{date}.md")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(draft, encoding="utf-8")
+    print(f"Wrote draft: {out}")
+    print("NOTE: Draft is NOT sent automatically. Copy to your mail client.")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

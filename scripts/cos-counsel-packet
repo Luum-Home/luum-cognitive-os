@@ -1,0 +1,238 @@
+#!/usr/bin/env python3
+"""cos-counsel-packet — Bundle evidence for IP counsel review.
+
+ADR-270 primitive #3. Produces a zip with organized folder structure:
+  README.md (cover page) | ADR/ | AnnexF/ | USPTO/ | LICENSE/ | CleanRoom/ | ExistingADRs/
+"""
+from __future__ import annotations
+
+import argparse
+import glob
+import re
+import sys
+import zipfile
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+EXISTING_ADRS = ["ADR-259", "ADR-267", "ADR-269"]
+
+
+def _find_annex_f(tool: str) -> Path | None:
+    # Look in docs/research/<tool>-annex-f-*.md and .private/external-pattern-research/
+    candidates: list[Path] = []
+    candidates.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/research/{tool}-annex-f-*.md")))
+    candidates.extend(Path(p) for p in glob.glob(str(ROOT / f".private/external-pattern-research/{tool}*annex-f*.md")))
+    candidates.extend(Path(p) for p in glob.glob(str(ROOT / f".private/external-pattern-research/annex-f-*.md")))
+    return candidates[0] if candidates else None
+
+
+def _find_uspto_reports(tool: str) -> list[Path]:
+    reports: list[Path] = []
+    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/reports/uspto-patent-{tool}-*.json")))
+    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/reports/uspto-tm-{tool}-*.json")))
+    reports.extend(Path(p) for p in glob.glob(str(ROOT / f"docs/reports/uspto-tm-*{tool}*-*.json")))
+    return sorted(set(reports))
+
+
+def _find_license_snapshot(tool: str) -> list[Path]:
+    matches: list[Path] = []
+    for pattern in (
+        f".private/external-source-cache/{tool}/LICENSE*",
+        f".private/external-pattern-research/{tool}*LICENSE*",
+        f"docs/research/{tool}-LICENSE*",
+    ):
+        matches.extend(Path(p) for p in glob.glob(str(ROOT / pattern)))
+    return matches
+
+
+def _find_cleanroom_evidence(tool: str) -> list[Path]:
+    """Scan lib/, packages/*/lib/, scripts/ for files with attribution headers
+    naming this tool. Returns sample of up to 20 files.
+    """
+    pattern = re.compile(rf"#\s*(?:Ported|Adapted|Inspired by|Derived from)\s+(?:from\s+)?['\"`]?{re.escape(tool)}['\"`]?", re.IGNORECASE)
+    found: list[Path] = []
+    search_dirs = [ROOT / "lib", ROOT / "scripts"]
+    for pkg_lib in glob.glob(str(ROOT / "packages/*/lib")):
+        search_dirs.append(Path(pkg_lib))
+    for d in search_dirs:
+        if not d.is_dir():
+            continue
+        for path in d.rglob("*.py"):
+            try:
+                head = path.read_text(encoding="utf-8", errors="ignore").splitlines()[:30]
+            except Exception:
+                continue
+            blob = "\n".join(head)
+            if pattern.search(blob):
+                found.append(path)
+                if len(found) >= 20:
+                    return found
+    return found
+
+
+def _find_adr(adr_ref: str) -> Path | None:
+    """adr_ref like "ADR-259"; prefer an Accepted status when multiple match."""
+    num = adr_ref.replace("ADR-", "")
+    matches = sorted(glob.glob(str(ROOT / f"docs/adrs/ADR-{num}-*.md")))
+    if not matches:
+        return None
+    accepted_re = re.compile(r"^---\n(.*?)\n---\n", re.DOTALL)
+    for path_str in matches:
+        p = Path(path_str)
+        try:
+            head = p.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        m = accepted_re.match(head)
+        if m and re.search(r"^status:\s*accepted\s*$", m.group(1), re.IGNORECASE | re.MULTILINE):
+            return p
+    return Path(matches[0])
+
+
+def _cover_page(tool: str, adr_ref: str, license_files: list[Path], adoption_type: str) -> str:
+    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    license_spdx = ""
+    for lf in license_files:
+        try:
+            license_spdx = lf.read_text(encoding="utf-8", errors="ignore").splitlines()[0][:120]
+            break
+        except Exception:
+            pass
+    return f"""# Counsel Evidence Packet — {tool}
+
+- Date assembled: {date}
+- Primary ADR: {adr_ref}
+- Adoption type: {adoption_type}
+- License (first line of upstream LICENSE): {license_spdx or "(not bundled)"}
+
+## Contents
+
+- `ADR/` — primary adoption ADR ({adr_ref})
+- `AnnexF/` — clean-room compliance protocol document
+- `USPTO/` — patent and trademark search reports
+- `LICENSE/` — upstream license snapshots (verbatim)
+- `CleanRoom/` — repository files bearing attribution headers for this tool
+- `ExistingADRs/` — sibling ADRs (259/267/269) providing the umbrella governance
+
+## Claims to validate
+
+1. Adoption posture (clean-room patterns-only with attribution-on-file) is
+   defensible under the upstream license for a commercial SaaS product.
+2. USPTO findings do not reveal blocking patent or trademark risk.
+3. Counsel may attach conditions (specific attribution wording, NOTICE file,
+   third-party-notices.md, no-fork covenant, etc.).
+
+## Counsel signature block
+
+- Counsel name: ______________________________
+- Firm: ______________________________
+- Bar admission: ______________________________
+- Decision: [ ] approved   [ ] approved with conditions   [ ] rejected
+- Conditions (if any):
+
+
+- Signature / date: ______________________________
+
+---
+Packet generated by `cos-counsel-packet` (ADR-270 primitive #3).
+"""
+
+
+def build_packet(
+    tool: str,
+    adr_ref: str,
+    output: Path,
+    include_annex_f: bool,
+    include_uspto: bool,
+    include_license: bool,
+    include_cleanroom: bool,
+    adoption_type: str,
+) -> dict:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    manifest: dict = {"tool": tool, "adr_ref": adr_ref, "files": []}
+
+    with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as zf:
+        # ADR
+        adr_path = _find_adr(adr_ref)
+        if adr_path and adr_path.exists():
+            zf.write(adr_path, f"ADR/{adr_path.name}")
+            manifest["files"].append(f"ADR/{adr_path.name}")
+        # Annex F
+        if include_annex_f:
+            annex = _find_annex_f(tool)
+            if annex and annex.exists():
+                zf.write(annex, f"AnnexF/{annex.name}")
+                manifest["files"].append(f"AnnexF/{annex.name}")
+        # USPTO reports
+        license_files: list[Path] = []
+        if include_uspto:
+            for r in _find_uspto_reports(tool):
+                zf.write(r, f"USPTO/{r.name}")
+                manifest["files"].append(f"USPTO/{r.name}")
+        # License snapshot
+        if include_license:
+            license_files = _find_license_snapshot(tool)
+            for lf in license_files:
+                zf.write(lf, f"LICENSE/{lf.name}")
+                manifest["files"].append(f"LICENSE/{lf.name}")
+        # Clean-room evidence
+        if include_cleanroom:
+            for cf in _find_cleanroom_evidence(tool):
+                arc = f"CleanRoom/{cf.relative_to(ROOT).as_posix().replace('/', '__')}"
+                zf.write(cf, arc)
+                manifest["files"].append(arc)
+        # Sibling ADRs
+        for sib in EXISTING_ADRS:
+            if sib == adr_ref:
+                continue
+            sp = _find_adr(sib)
+            if sp:
+                zf.write(sp, f"ExistingADRs/{sp.name}")
+                manifest["files"].append(f"ExistingADRs/{sp.name}")
+        # Cover page
+        cover = _cover_page(tool, adr_ref, license_files, adoption_type)
+        zf.writestr("README.md", cover)
+        manifest["files"].append("README.md")
+
+    return manifest
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Bundle evidence for IP counsel review (ADR-270 #3)")
+    parser.add_argument("--tool", required=True)
+    parser.add_argument("--adr", required=True, help="primary adoption ADR (e.g., ADR-259)")
+    parser.add_argument("--include-annex-f", default="true")
+    parser.add_argument("--include-uspto-reports", default="true")
+    parser.add_argument("--include-license-snapshot", default="true")
+    parser.add_argument("--include-cleanroom-evidence", default="true")
+    parser.add_argument("--adoption-type", default="patterns-only-clean-room",
+                        help="patterns-only-clean-room | vendored | dependency")
+    parser.add_argument("--output", default="")
+    args = parser.parse_args(argv)
+
+    def _b(v: str) -> bool:
+        return str(v).lower() in ("1", "true", "yes")
+
+    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    out = Path(args.output) if args.output else Path(f"/tmp/counsel-{args.tool}-{date}.zip")
+
+    manifest = build_packet(
+        tool=args.tool,
+        adr_ref=args.adr,
+        output=out,
+        include_annex_f=_b(args.include_annex_f),
+        include_uspto=_b(args.include_uspto_reports),
+        include_license=_b(args.include_license_snapshot),
+        include_cleanroom=_b(args.include_cleanroom_evidence),
+        adoption_type=args.adoption_type,
+    )
+    print(f"Wrote: {out}")
+    print(f"Files in packet: {len(manifest['files'])}")
+    for f in manifest["files"][:20]:
+        print(f"  - {f}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

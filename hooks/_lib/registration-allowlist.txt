@@ -253,3 +253,8 @@ attribution-completeness-validator.sh
 # caught by symlink-mutation-guard.sh). Wiring deferred until ADR-267 reaches
 # Accepted status and profile projection is updated.
 lib-symlink-divergence-detector.sh
+# 2026-05-11: ADR-270 Tier 2 — clean-room-ast-similarity-gate.sh
+# manual_trigger pending ADR-270 acceptance + soak per ADR-270 §Phase 3.
+# Detects symbol-renamed clones of external-source-cache Python content.
+# Wiring deferred until Phase 3 soak confirms acceptable false-positive rate.
+clean-room-ast-similarity-gate.sh

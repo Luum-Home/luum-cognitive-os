@@ -360,3 +360,17 @@ entries:
     a same-named counterpart in packages/*/lib/ AND neither is a symlink to
     the other AND content differs.
   next_action: Keep active; promote to error severity for typechange events.
+- path: hooks/legal-review-required-on-runtime-import.sh
+  status: active
+  rationale: |
+    ADR-270 Primitive 8. PreToolUse Bash gate matching `git commit`. Scans
+    staged .py files in lib/, packages/*/lib/, scripts/ for attribution
+    headers ("# Ported from <tool>" / "# Adapted from <tool>" / etc.).
+    Blocks commit when the referenced tool's entry in
+    manifests/legal-review-ledger.yaml is not `approved` or
+    `approved-with-conditions`. Registered in settings-driver-claude-code.sh
+    pre_bash group, all three security profiles, and the
+    apply-efficiency-profile.sh sanity loop. Logs to
+    .cognitive-os/logs/legal-review-required.jsonl.
+    Bypass: COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT=1 (logged).
+  next_action: Keep active; revisit threshold list if BLOCKER license set expands.

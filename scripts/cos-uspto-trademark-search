@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+"""cos-uspto-trademark-search — Query USPTO TSDR for wordmarks.
+
+ADR-270 primitive #2. USPTO TSDR Data API:
+https://developer.uspto.gov/api-catalog/tsdr-data-api
+
+Some endpoints require an API key (USPTO_TSDR_API_KEY env var). Without a key
+we issue a public-endpoint request and gracefully degrade. The CLI also has
+an --offline mode for tests that synthesizes a deterministic stub response.
+"""
+from __future__ import annotations
+
+import argparse
+import difflib
+import json
+import os
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+from urllib import error, parse, request
+
+# TSDR public search endpoint (Open Data API). Different deployments expose
+# different shapes; we treat any 4xx/5xx as a degraded result rather than fatal.
+TSDR_BASE = "https://tsdrapi.uspto.gov/ts/cd/casestatus"
+DEFAULT_REPORTS_DIR = Path("docs/reports")
+
+
+def _normalize_mark(mark: str) -> str:
+    return "".join(c.lower() for c in mark if c.isalnum())
+
+
+def _fuzzy_score(a: str, b: str) -> float:
+    return round(difflib.SequenceMatcher(None, _normalize_mark(a), _normalize_mark(b)).ratio(), 3)
+
+
+def _query_tsdr(mark: str, international_class: str) -> dict[str, Any]:
+    """Issue a best-effort TSDR query.
+
+    Returns a result envelope with either `marks: [...]` or `error: ...`.
+    Real TSDR requires either a serial number or registration number for
+    most endpoints; when only a wordmark is given we use the public
+    `/word-mark/<MARK>` shape if available, otherwise return a
+    structured "needs-api-key" message.
+    """
+    api_key = os.environ.get("USPTO_TSDR_API_KEY", "")
+    qs = parse.urlencode({"q": mark, "ic": international_class}) if international_class else parse.urlencode({"q": mark})
+    url = f"{TSDR_BASE}/wordmark/?{qs}"
+    headers = {"Accept": "application/json"}
+    if api_key:
+        headers["USPTO-API-KEY"] = api_key
+
+    req = request.Request(url, headers=headers, method="GET")
+    attempts = 0
+    while attempts < 2:
+        attempts += 1
+        try:
+            with request.urlopen(req, timeout=15) as resp:
+                raw = resp.read().decode("utf-8", errors="replace")
+                try:
+                    return {"marks": json.loads(raw)}
+                except json.JSONDecodeError:
+                    return {"error": "malformed-json", "raw": raw[:500]}
+        except error.HTTPError as exc:
+            if exc.code in (401, 403):
+                return {
+                    "error": "auth-required",
+                    "detail": "TSDR endpoint requires USPTO_TSDR_API_KEY env var",
+                    "status": exc.code,
+                }
+            if exc.code in (429, 503):
+                time.sleep(2 * attempts)
+                continue
+            if exc.code == 404:
+                return {"marks": []}
+            return {"error": "http", "code": exc.code, "detail": exc.reason}
+        except error.URLError as exc:
+            time.sleep(1)
+            last = str(exc.reason)
+        except Exception as exc:  # pragma: no cover
+            return {"error": "unexpected", "detail": str(exc)}
+    return {"error": "network", "detail": last if "last" in locals() else "unknown"}
+
+
+def build_report(
+    marks: list[str], international_class: str, results_by_mark: dict[str, dict[str, Any]]
+) -> dict[str, Any]:
+    timestamp = datetime.now(timezone.utc).isoformat()
+    classified: list[dict[str, Any]] = []
+    for mark in marks:
+        result = results_by_mark.get(mark, {})
+        raw_marks = result.get("marks", []) if isinstance(result, dict) else []
+        similar = []
+        for rm in raw_marks or []:
+            wordmark = rm.get("wordmark") or rm.get("mark") or ""
+            similar.append(
+                {
+                    "wordmark": wordmark,
+                    "status": (rm.get("status") or rm.get("status_code") or "unknown").upper(),
+                    "owner": rm.get("owner"),
+                    "filing_date": rm.get("filing_date"),
+                    "international_class": rm.get("international_class") or international_class,
+                    "fuzzy_score": _fuzzy_score(mark, wordmark) if wordmark else 0.0,
+                }
+            )
+        classified.append(
+            {
+                "queried_mark": mark,
+                "international_class": international_class or "(any)",
+                "result_envelope": result,
+                "similar_marks": similar,
+                "any_live": any(s["status"] == "LIVE" for s in similar),
+            }
+        )
+    return {
+        "schema_version": "uspto-trademark-report/v1",
+        "timestamp": timestamp,
+        "query": {
+            "marks": marks,
+            "international_class": international_class,
+            "endpoint": TSDR_BASE,
+        },
+        "summary": {
+            "marks_queried": len(marks),
+            "any_live_match": any(c["any_live"] for c in classified),
+        },
+        "classified": classified,
+    }
+
+
+def render_markdown(report: dict[str, Any]) -> str:
+    lines = [
+        f"# USPTO Trademark Search ({', '.join(report['query']['marks'])})",
+        "",
+        f"- Timestamp: {report['timestamp']}",
+        f"- International class: {report['query']['international_class'] or '(any)'}",
+        f"- Any LIVE match: {'YES' if report['summary']['any_live_match'] else 'no'}",
+        "",
+    ]
+    for entry in report["classified"]:
+        lines.append(f"## {entry['queried_mark']}")
+        if not entry["similar_marks"]:
+            err = entry["result_envelope"].get("error") if isinstance(entry["result_envelope"], dict) else None
+            lines.append(f"- _no results returned_" + (f" (error: {err})" if err else ""))
+        for sim in entry["similar_marks"]:
+            lines.append(
+                f"- [{sim['status']}] {sim['wordmark']} — owner: {sim.get('owner') or 'n/a'}, "
+                f"IC: {sim.get('international_class') or 'n/a'}, "
+                f"filed: {sim.get('filing_date') or 'n/a'}, "
+                f"fuzzy: {sim['fuzzy_score']}"
+            )
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
+def _default_output(marks: list[str]) -> Path:
+    slug = "-".join(_normalize_mark(m) for m in marks)[:60] or "mark"
+    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return DEFAULT_REPORTS_DIR / f"uspto-tm-{slug}-{date}.json"
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="USPTO TSDR trademark search (ADR-270 #2)")
+    parser.add_argument("--mark", action="append", required=True, help="wordmark (repeatable)")
+    parser.add_argument("--international-class", default="", help="e.g. 042 (software services)")
+    parser.add_argument("--output", default="", help="output JSON path (auto-named if blank)")
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--markdown", action="store_true")
+    parser.add_argument("--offline", action="store_true", help="skip API for tests")
+    args = parser.parse_args(argv)
+
+    marks: list[str] = args.mark
+    if args.offline:
+        results = {m: {"marks": []} for m in marks}
+    else:
+        results = {m: _query_tsdr(m, args.international_class) for m in marks}
+
+    report = build_report(marks, args.international_class, results)
+
+    if args.json:
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 0
+
+    out_path = Path(args.output) if args.output else _default_output(marks)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Wrote: {out_path}")
+    if args.markdown:
+        md_path = out_path.with_suffix(".md")
+        md_path.write_text(render_markdown(report), encoding="utf-8")
+        print(f"Wrote: {md_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

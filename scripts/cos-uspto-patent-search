@@ -1,0 +1,197 @@
+#!/usr/bin/env python3
+"""cos-uspto-patent-search — Query USPTO PatentsView for producer/keywords.
+
+ADR-270 primitive #1. Stores raw API response + relevance classification.
+
+USPTO PatentsView API: https://search.patentsview.org/api/v1/patent/
+The API is free; some endpoints accept an X-Api-Key header (set
+USPTO_PATENTSVIEW_API_KEY env var). Without a key the CLI still works at the
+default rate limit.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+from urllib import error, request
+
+API_URL = "https://search.patentsview.org/api/v1/patent/"
+DEFAULT_REPORTS_DIR = Path("docs/reports")
+
+
+def _classify(patent: dict[str, Any], keywords: list[str]) -> str:
+    """Heuristic relevance scoring based on keyword overlap with title/abstract."""
+    title = (patent.get("patent_title") or "").lower()
+    abstract = (patent.get("patent_abstract") or "").lower()
+    text = f"{title} {abstract}"
+    hits = sum(1 for kw in keywords if kw.lower() in text)
+    if not keywords:
+        return "LOW"
+    if hits >= max(2, len(keywords) // 2):
+        return "CRITICAL"
+    if hits >= 1:
+        return "HIGH"
+    return "LOW"
+
+
+def _query_patents_view(
+    producer: str, keywords: list[str], max_results: int
+) -> dict[str, Any]:
+    """POST to PatentsView. Returns parsed JSON or error envelope."""
+    payload = {
+        "q": {"assignees.assignee_organization": producer},
+        "f": [
+            "patent_id",
+            "patent_title",
+            "patent_abstract",
+            "patent_date",
+            "assignees.assignee_organization",
+        ],
+        "o": {"size": max_results},
+    }
+    body = json.dumps(payload).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
+    api_key = os.environ.get("USPTO_PATENTSVIEW_API_KEY", "")
+    if api_key:
+        headers["X-Api-Key"] = api_key
+    req = request.Request(API_URL, data=body, headers=headers, method="POST")
+    attempts = 0
+    last_err = ""
+    while attempts < 3:
+        attempts += 1
+        try:
+            with request.urlopen(req, timeout=20) as resp:
+                raw = resp.read().decode("utf-8")
+                try:
+                    return json.loads(raw)
+                except json.JSONDecodeError as exc:
+                    return {"error": "malformed-json", "detail": str(exc), "raw": raw[:500]}
+        except error.HTTPError as exc:
+            if exc.code in (429, 503):
+                time.sleep(2 * attempts)
+                last_err = f"HTTP {exc.code}"
+                continue
+            return {"error": "http", "code": exc.code, "detail": exc.reason}
+        except error.URLError as exc:
+            last_err = f"URLError {exc.reason}"
+            time.sleep(1)
+        except Exception as exc:  # pragma: no cover - defensive
+            return {"error": "unexpected", "detail": str(exc)}
+    return {"error": "rate-limited-or-network", "detail": last_err}
+
+
+def build_report(
+    producer: str, keywords: list[str], max_results: int, api_response: dict[str, Any]
+) -> dict[str, Any]:
+    """Wrap API response in a stable report envelope."""
+    timestamp = datetime.now(timezone.utc).isoformat()
+    patents = api_response.get("patents", []) if isinstance(api_response, dict) else []
+    classified: list[dict[str, Any]] = []
+    counts = {"CRITICAL": 0, "HIGH": 0, "LOW": 0}
+    for patent in patents or []:
+        rel = _classify(patent, keywords)
+        counts[rel] = counts.get(rel, 0) + 1
+        classified.append(
+            {
+                "patent_id": patent.get("patent_id"),
+                "title": patent.get("patent_title"),
+                "date": patent.get("patent_date"),
+                "relevance": rel,
+                "snippet": (patent.get("patent_abstract") or "")[:240],
+            }
+        )
+    return {
+        "schema_version": "uspto-patent-report/v1",
+        "timestamp": timestamp,
+        "query": {
+            "producer": producer,
+            "keywords": keywords,
+            "max_results": max_results,
+            "endpoint": API_URL,
+        },
+        "summary": {
+            "total_returned": len(patents) if isinstance(patents, list) else 0,
+            "counts_by_relevance": counts,
+            "has_critical": counts.get("CRITICAL", 0) > 0,
+        },
+        "classified": classified,
+        "raw_response": api_response,
+    }
+
+
+def render_markdown(report: dict[str, Any]) -> str:
+    summary = report["summary"]
+    lines = [
+        f"# USPTO Patent Search — {report['query']['producer']}",
+        "",
+        f"- Timestamp: {report['timestamp']}",
+        f"- Keywords: {', '.join(report['query']['keywords']) or '(none)'}",
+        f"- Total returned: {summary['total_returned']}",
+        f"- Counts: {summary['counts_by_relevance']}",
+        f"- CRITICAL findings: {'YES' if summary['has_critical'] else 'no'}",
+        "",
+        "## Classified results",
+        "",
+    ]
+    for entry in report["classified"]:
+        lines.append(
+            f"- [{entry['relevance']}] {entry['patent_id']} — {entry['title']} ({entry['date']})"
+        )
+        if entry.get("snippet"):
+            lines.append(f"    > {entry['snippet'][:160]}...")
+    if not report["classified"]:
+        lines.append("_(no patents returned)_")
+    return "\n".join(lines) + "\n"
+
+
+def _default_output(producer: str) -> Path:
+    slug = "".join(c.lower() if c.isalnum() else "-" for c in producer).strip("-")
+    date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return DEFAULT_REPORTS_DIR / f"uspto-patent-{slug}-{date}.json"
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="USPTO PatentsView producer search (ADR-270 #1)")
+    parser.add_argument("--producer", required=True, help="assignee_organization to query")
+    parser.add_argument("--keywords", default="", help="comma-separated relevance keywords")
+    parser.add_argument("--max-results", type=int, default=50)
+    parser.add_argument("--output", default="", help="output JSON path (auto-named if blank)")
+    parser.add_argument("--json", action="store_true", help="emit JSON on stdout instead of file")
+    parser.add_argument("--markdown", action="store_true", help="also write markdown report")
+    parser.add_argument("--offline", action="store_true", help="skip API call (for tests)")
+    args = parser.parse_args(argv)
+
+    keywords = [k.strip() for k in args.keywords.split(",") if k.strip()]
+    if args.offline:
+        api_response: dict[str, Any] = {
+            "patents": [],
+            "_offline": True,
+            "_note": "offline mode — no API call issued",
+        }
+    else:
+        api_response = _query_patents_view(args.producer, keywords, args.max_results)
+
+    report = build_report(args.producer, keywords, args.max_results, api_response)
+
+    if args.json:
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 0
+
+    out_path = Path(args.output) if args.output else _default_output(args.producer)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"Wrote: {out_path}")
+    if args.markdown:
+        md_path = out_path.with_suffix(".md")
+        md_path.write_text(render_markdown(report), encoding="utf-8")
+        print(f"Wrote: {md_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
