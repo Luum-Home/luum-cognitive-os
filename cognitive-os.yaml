@@ -1952,4 +1952,22 @@ harness:
       event: Stop
       scope: os-only
 
+# ---------------------------------------------------------------------------
+# Evolve Loop Spike (ADR-262) — opt-in, disabled by default during spike window
+# ---------------------------------------------------------------------------
+evolve:
+  enabled: false          # spike mode: opt-in. Set to true to activate LLM extraction.
+  cadence_turns: 3        # run review every N agent turns
+  confidence_threshold: 0.72  # minimum confidence for a proposal to be enqueued
+  queue_cap: 50           # hard cap on pending proposals
 
+
+# ADR-263 — Tool-Replay Budget Ledger (per-session cap + PREVIEW/REFERENCE_ONLY modes)
+tool_replay_ledger:
+  enabled: true
+  char_cap_per_session: 20000
+  item_cap_per_session: 10
+  ttl_hours: 4
+  max_tracked_ledgers: 64
+  spillover_dir: .cognitive-os/sessions/{session_id}/spillover
+  metric_log: .cognitive-os/metrics/tool-replay-ledger.jsonl

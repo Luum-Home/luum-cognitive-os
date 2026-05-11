@@ -81,6 +81,136 @@ if [ "$RESPONSE_LEN" -le "$MAX_CHARS" ]; then
   exit 0
 fi
 
+# --- ADR-263: Tool-Replay Budget Ledger lookup ---
+# Consult the per-session ledger before truncating.
+# Modes: fresh → apply smart_truncator fallback (current behaviour)
+#        preview → apply catalog thresholds for this tool
+#        reference_only → replace with [REF:...] pointer + write spillover
+TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // "Bash"' 2>/dev/null || echo "Bash")
+TOOL_ARGS=$(echo "$INPUT" | jq -r '.tool_input | tostring' 2>/dev/null | head -c 500 || echo "")
+
+LEDGER_ENABLED=$(grep -A3 "tool_replay_ledger:" "$CONFIG" 2>/dev/null | grep "enabled:" | awk '{print $2}' || echo "true")
+
+if [ "${LEDGER_ENABLED:-true}" = "true" ]; then
+  export _LEDGER_TOOL_NAME="$TOOL_NAME"
+  export _LEDGER_TOOL_ARGS="$TOOL_ARGS"
+  export _LEDGER_RESULT_CHARS="$RESPONSE_LEN"
+  export _LEDGER_SESSION_ID="${CLAUDE_SESSION_ID:-}"
+  export _LEDGER_LIB="$PROJECT_DIR/lib"
+  export _LEDGER_PROJECT_DIR="$PROJECT_DIR"
+
+  LEDGER_RESULT=$(python3 -c '
+import sys, os
+sys.path.insert(0, os.environ["_LEDGER_LIB"])
+try:
+    from tool_replay_ledger import ToolReplayLedger, compute_target_hash, Mode
+    session_id = os.environ.get("_LEDGER_SESSION_ID") or None
+    tool_name  = os.environ.get("_LEDGER_TOOL_NAME", "Bash")
+    tool_args  = os.environ.get("_LEDGER_TOOL_ARGS", "")
+    result_chars = int(os.environ.get("_LEDGER_RESULT_CHARS", "0"))
+    project_dir  = os.environ.get("_LEDGER_PROJECT_DIR", ".")
+    os.environ["PROJECT_DIR"] = project_dir
+
+    target_hash = compute_target_hash(tool_args)
+    ledger = ToolReplayLedger(session_id=session_id)
+    decision = ledger.record(tool_name, target_hash, result_chars)
+    # Output: "mode|target_hash|session_dir"
+    print(f"{decision.mode.value}|{target_hash}|{ledger._session_id}")
+except Exception as e:
+    # Graceful degradation: fall through to existing behaviour
+    print("fresh|unknown|default")
+' 2>/dev/null)
+
+  LEDGER_MODE=$(echo "$LEDGER_RESULT" | cut -d'|' -f1)
+  LEDGER_TARGET_HASH=$(echo "$LEDGER_RESULT" | cut -d'|' -f2)
+  LEDGER_SESSION_ID_RESOLVED=$(echo "$LEDGER_RESULT" | cut -d'|' -f3)
+
+  case "${LEDGER_MODE:-fresh}" in
+    reference_only)
+      # Write spillover and replace output with [REF:...] pointer
+      SPILLOVER_RESULT=$(export _REF_TOOL="$TOOL_NAME"; \
+        export _REF_HASH="$LEDGER_TARGET_HASH"; \
+        export _REF_SID="$LEDGER_SESSION_ID_RESOLVED"; \
+        export _REF_CONTENT="$RESPONSE"; \
+        export _LEDGER_LIB="$PROJECT_DIR/lib"; \
+        export _LEDGER_PROJECT_DIR="$PROJECT_DIR"; \
+        python3 -c '
+import sys, os
+sys.path.insert(0, os.environ["_LEDGER_LIB"])
+try:
+    from tool_replay_ledger import ToolReplayLedger
+    session_id   = os.environ.get("_REF_SID")
+    tool_name    = os.environ.get("_REF_TOOL", "Bash")
+    target_hash  = os.environ.get("_REF_HASH", "unknown")
+    content      = os.environ.get("_REF_CONTENT", "")
+    os.environ["PROJECT_DIR"] = os.environ.get("_LEDGER_PROJECT_DIR", ".")
+    ledger = ToolReplayLedger(session_id=session_id)
+    spill_path = ledger.write_spillover(tool_name, target_hash, content)
+    pointer    = ledger.make_pointer(tool_name, target_hash, spill_path)
+    print(pointer)
+except Exception as e:
+    print("")
+' 2>/dev/null)
+
+      if [ -n "$SPILLOVER_RESULT" ]; then
+        RESULT=$(echo "$INPUT" | jq --arg tr "$SPILLOVER_RESULT" '.tool_response = $tr' 2>/dev/null)
+        if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
+          echo "$RESULT"
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#SPILLOVER_RESULT},\"method\":\"reference_only\",\"tool\":\"${TOOL_NAME}\"}"
+          safe_jsonl_append "$METRICS_FILE" "$ENTRY"
+          exit 0
+        fi
+      fi
+      # Fall through to smart_truncator if spillover write failed
+      ;;
+
+    preview)
+      # Apply catalog thresholds for this tool
+      PREVIEW_RESULT=$(export _PREV_TOOL="$TOOL_NAME"; \
+        export _PREV_CONTENT="$RESPONSE"; \
+        export _LEDGER_LIB="$PROJECT_DIR/lib"; \
+        python3 -c '
+import sys, os
+sys.path.insert(0, os.environ["_LEDGER_LIB"])
+try:
+    from tool_budget_catalog import get_entry
+    tool_name = os.environ.get("_PREV_TOOL", "Bash")
+    content   = os.environ.get("_PREV_CONTENT", "")
+    entry     = get_entry(tool_name)
+    # Only truncate if content exceeds trim_threshold (hysteresis)
+    if len(content) <= entry.trim_threshold_chars:
+        print(content, end="")
+    else:
+        limit = entry.preview_max_chars
+        head  = content[:limit // 2]
+        tail  = content[-(limit // 2):]
+        msg   = f"\n... [PREVIEW: {len(content)} chars, showing {limit//2}+{limit//2}] ...\n"
+        print(head + msg + tail, end="")
+except Exception:
+    print("")
+' 2>/dev/null)
+
+      if [ -n "$PREVIEW_RESULT" ] && [ "${#PREVIEW_RESULT}" -lt "$RESPONSE_LEN" ]; then
+        RESULT=$(echo "$INPUT" | jq --arg tr "$PREVIEW_RESULT" '.tool_response = $tr' 2>/dev/null)
+        if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
+          echo "$RESULT"
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#PREVIEW_RESULT},\"method\":\"preview\",\"tool\":\"${TOOL_NAME}\"}"
+          safe_jsonl_append "$METRICS_FILE" "$ENTRY"
+          exit 0
+        fi
+      fi
+      # Fall through to smart_truncator if preview produced no reduction
+      ;;
+
+    fresh|*)
+      # FRESH: fall through to existing smart_truncator behaviour below
+      ;;
+  esac
+fi
+# --- End ADR-263 ledger lookup ---
+
 # --- Check never_truncate_patterns ---
 # If the response contains critical patterns, do NOT truncate
 if [ -n "$PATTERNS" ]; then
