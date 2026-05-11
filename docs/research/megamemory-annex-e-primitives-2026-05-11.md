@@ -6,6 +6,8 @@ source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 license_constraint: "MIT — vendoring legally allowed; per-primitive decision recorded below."
 ---
 
+> **License attribution.** Code excerpts and structural descriptions quoted from `0xK3vin/MegaMemory` v1.6.2 (MIT License, Copyright (c) 2026 0xk3vin — see https://github.com/0xK3vin/MegaMemory/blob/main/LICENSE). MIT permits direct vendoring with copyright preservation. See [`megamemory-annex-f-compliance-cleanroom-2026-05-11.md`](megamemory-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol and port-vs-vendor decisions.
+
 # Annex E — Extractable Primitives (ranked)
 
 MIT license permits direct vendoring. For each primitive below the table records:

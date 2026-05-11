@@ -14,6 +14,8 @@ related_docs:
   - docs/patterns/ecosystem-tools.md
 ---
 
+> **License attribution.** Code excerpts and structural descriptions quoted from `0xK3vin/MegaMemory` v1.6.2 (MIT License, Copyright (c) 2026 0xk3vin — see https://github.com/0xK3vin/MegaMemory/blob/main/LICENSE). MIT permits direct vendoring with copyright preservation. See [`megamemory-annex-f-compliance-cleanroom-2026-05-11.md`](../research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol and port-vs-vendor decisions.
+
 # External Tools Radar — MegaMemory Addendum (2026-05-11)
 
 ## Decision
