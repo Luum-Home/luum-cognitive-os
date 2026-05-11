@@ -24,7 +24,7 @@ Session ID resolution order:
     3. ``pid-<pid>`` fallback.
 
 Pattern adopted from holaOS (clean-room rewrite).
-Source-pattern: docs/research/holaos-annex-g-surprise-findings.md §G1
+Source-pattern: .private/holaos-research/holaos-annex-g-surprise-findings.md §G1
 """
 
 from __future__ import annotations

@@ -9,7 +9,7 @@ Accepted
 **Tier:** core
 **Authors:** orchestrator (Claude Sonnet 4.6)
 **Implements:** ADR-259 (holaOS Adoption Posture — patterns only)
-**Source-pattern:** `docs/research/holaos-annex-b-cost-budget.md` §B1
+**Source-pattern:** `.private/holaos-research/holaos-annex-b-cost-budget.md` §B1
 **Related:** rule `result-management`, ADR-016 (Context Diet), ADR-049 (LLM Dispatch), ADR-186 (Budget Enforcement)
 
 ---
@@ -38,7 +38,7 @@ Un único umbral global de 5 000 chars controla todos los tool results, sin dist
 
 ### Gaps identificados
 
-La tabla de delta documentada en `docs/research/holaos-annex-b-cost-budget.md` §1.3 identifica tres brechas críticas frente al patrón de referencia:
+La tabla de delta documentada en `.private/holaos-research/holaos-annex-b-cost-budget.md` §1.3 identifica tres brechas críticas frente al patrón de referencia:
 
 1. **Sin acumulador cross-tool.** Cada llamada a un tool empieza el budget desde cero. Si en una sesión SDD-apply el agente ejecuta `grep gigante`, luego `find gigante`, luego `cat gigante`, cada uno aporta hasta 5 000 chars truncados al contexto del modelo — sin que haya ningún mecanismo que detecte la saturación acumulada.
 
@@ -303,7 +303,7 @@ El campo `chars_saved` (result_chars - pointer_chars cuando REFERENCE_ONLY, resu
     # debe retornar 0 matches (o "0 matches" si /tmp/holaOS-investigation ausente)
 
 [ ] Commit message usa template Annex F §6:
-    Source-pattern: docs/research/holaos-annex-b-cost-budget.md §B1
+    Source-pattern: .private/holaos-research/holaos-annex-b-cost-budget.md §B1
 ```
 
 ---
@@ -371,7 +371,7 @@ El campo `chars_saved` (result_chars - pointer_chars cuando REFERENCE_ONLY, resu
 
 ## Compliance Certification
 
-Este ADR adopta el patrón de ledger por sesión descrito en `docs/research/holaos-annex-b-cost-budget.md` §B1 bajo el protocolo clean-room de `docs/research/holaos-annex-f-compliance-cleanroom.md`.
+Este ADR adopta el patrón de ledger por sesión descrito en `.private/holaos-research/holaos-annex-b-cost-budget.md` §B1 bajo el protocolo clean-room de `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`.
 
 ```yaml
 pattern_source: "holaos-comparison-2026-05-10.md::AnnexB::§B1 (tool-replay budget ledger)"
@@ -393,7 +393,7 @@ holaos_files_blocked_for_impl: ["ALL"]
 <scope>: <change>
 
 Pattern adopted from holaOS (clean-room rewrite).
-Refs: docs/research/holaos-comparison-2026-05-10.md
+Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
 Source-pattern: AnnexB::§B1.tool-replay-budget-ledger
 License: Apache-2.0 modified (BSL-like). No source code copied.
 ```
@@ -412,8 +412,8 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 ## References
 
-- `docs/research/holaos-annex-b-cost-budget.md` §B1 — especificación abstracta del patrón adoptado
-- `docs/research/holaos-annex-f-compliance-cleanroom.md` — protocolo clean-room y checklist de compliance
+- `.private/holaos-research/holaos-annex-b-cost-budget.md` §B1 — especificación abstracta del patrón adoptado
+- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — protocolo clean-room y checklist de compliance
 - `docs/adrs/ADR-259-holaos-adoption-posture-patterns-only.md` — ADR paraguas (postura patterns-only)
 - `docs/adrs/ADR-016-context-diet.md` — ADR de Context Diet (relacionado: gestión de headroom)
 - `docs/adrs/ADR-049-llm-dispatch.md` — LLM Dispatch (destino de la métrica `chars_saved_per_session`)

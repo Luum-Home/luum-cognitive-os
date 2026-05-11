@@ -10,7 +10,7 @@
 **Authors:** orchestrator (Claude Sonnet 4.6)
 **Spike Duration:** 3-4 days (time-boxed)
 **Implements:** ADR-259 (holaOS Adoption Posture — patterns only)
-**Source-pattern:** `docs/research/holaos-annex-c-evolution.md` §Feature 1 (Evolve loop post-run)
+**Source-pattern:** `.private/holaos-research/holaos-annex-c-evolution.md` §Feature 1 (Evolve loop post-run)
 **Related:** hook `auto-skill-generator`, rule `auto-skill-generation`, `self-improvement-protocol`,
 ADR-049 (LLM dispatch), ADR-259, ADR-260
 
@@ -35,7 +35,7 @@ luum-agent-os has a functioning but limited skill auto-generation pipeline:
 
 ### Identified gaps (from Annex C §1.3)
 
-The research annex `docs/research/holaos-annex-c-evolution.md` §Feature 1 identified five
+The research annex `.private/holaos-research/holaos-annex-c-evolution.md` §Feature 1 identified five
 concrete gaps against a patterns-only reference for LLM-driven evolve loops:
 
 1. **No cadence gate**: the hook fires on every Agent completion, generating redundant drafts
@@ -333,7 +333,7 @@ Checklist (Annex F §5):
       (not mirroring `runtime/api-server/src/evolve*.ts`)
 - [x] Audit trail: engram observation to be created at `topic_key: compliance/holaos-adoption/evolve-loop`
       after first verified commit
-- [x] Registry entry to be appended to `docs/compliance/holaos-adoptions.md` before first commit
+- [x] Registry entry to be appended to `.private/holaos-research/holaos-adoptions.md` before first commit
 - [x] `hooks/holaos-cleanroom-gate.sh` to run on pre-commit for adoption commits
 - [x] Status is **Spike**, not Accepted — implementation is exploratory pending exit criteria
 - [x] No `/tmp/holaOS*` paths appear anywhere in this document
@@ -367,9 +367,9 @@ Checklist (Annex F §5):
 
 ## References
 
-- `docs/research/holaos-annex-c-evolution.md` §Feature 1 — abstract specification that is the
+- `.private/holaos-research/holaos-annex-c-evolution.md` §Feature 1 — abstract specification that is the
   pattern source for this ADR; primary reference for the evolve loop design
-- `docs/research/holaos-annex-f-compliance-cleanroom.md` — clean-room protocol; governs
+- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — clean-room protocol; governs
   identifier choice, prompt authorship, and audit trail requirements
 - ADR-259 — holaOS Adoption Posture (patterns-only library with clean-room rewrite); parent
   governance ADR; all obligations in §3–§5 apply to this ADR

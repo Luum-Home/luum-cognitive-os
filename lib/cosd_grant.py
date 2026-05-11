@@ -19,7 +19,7 @@ Public surface (per ADR-260 §1):
     GrantClaims  (dataclass)
 
 Pattern adopted from holaOS (clean-room rewrite).
-Refs: docs/research/holaos-comparison-2026-05-10.md
+Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
 Source-pattern: AnnexD::§1.grant-signing
 License: Apache-2.0 modified (BSL-like). No source code copied.
 """

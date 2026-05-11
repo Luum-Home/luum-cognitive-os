@@ -9,7 +9,7 @@ Accepted
 **Tier:** core
 **Authors:** orchestrator (Claude Sonnet 4.6)
 **Implements:** ADR-259 (holaOS Adoption Posture — patterns only)
-**Source-pattern:** `docs/research/holaos-annex-g-surprise-findings.md` §G1 (Capability HTTP result envelope)
+**Source-pattern:** `.private/holaos-research/holaos-annex-g-surprise-findings.md` §G1 (Capability HTTP result envelope)
 **Related:** ADR-263 (tool-replay ledger — ortogonal y composable), ADR-016 (context diet)
 
 ---
@@ -234,7 +234,7 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
     (gate pasa con WARN si /tmp/holaOS-investigation no existe en CI)
 
 [ ] Commit message incluye template F§6:
-    Source-pattern: docs/research/holaos-annex-g-surprise-findings.md §G1
+    Source-pattern: .private/holaos-research/holaos-annex-g-surprise-findings.md §G1
 ```
 
 ---
@@ -311,8 +311,8 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
 
 ## Compliance Certification
 
-Este ADR adopta el patrón descrito en `docs/research/holaos-annex-g-surprise-findings.md` §G1
-bajo el protocolo clean-room establecido en `docs/research/holaos-annex-f-compliance-cleanroom.md`.
+Este ADR adopta el patrón descrito en `.private/holaos-research/holaos-annex-g-surprise-findings.md` §G1
+bajo el protocolo clean-room establecido en `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`.
 
 Declaraciones de compliance per Annex F §4.2:
 
@@ -348,7 +348,7 @@ Commit messages para commits de implementación DEBEN incluir:
 
 ```
 Pattern adopted from holaOS (clean-room rewrite).
-Refs: docs/research/holaos-comparison-2026-05-10.md
+Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
 Source-pattern: AnnexG::§G1.capability-envelope
 License: Apache-2.0 modified (BSL-like). No source code copied.
 ```
@@ -382,8 +382,8 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 ## References
 
-- `docs/research/holaos-annex-g-surprise-findings.md` §G1 — especificación abstracta fuente
-- `docs/research/holaos-annex-f-compliance-cleanroom.md` — protocolo clean-room y checklist
+- `.private/holaos-research/holaos-annex-g-surprise-findings.md` §G1 — especificación abstracta fuente
+- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — protocolo clean-room y checklist
 - ADR-259 — holaOS Adoption Posture (política umbrella de adopción patterns-only)
 - ADR-263 — Tool-Replay Ledger (ortogonal y composable con este ADR)
 - ADR-016 — Context Diet (contexto de reducción de ventana de contexto en luum)

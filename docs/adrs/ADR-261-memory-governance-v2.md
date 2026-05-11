@@ -9,7 +9,7 @@ Accepted
 **Tier:** core
 **Authors:** orchestrator (Claude Opus 4.7)
 **Implements:** ADR-259 (holaOS Adoption Posture — patterns only)
-**Source-pattern:** `docs/research/holaos-annex-a-memory.md` §Feature 1
+**Source-pattern:** `.private/holaos-research/holaos-annex-a-memory.md` §Feature 1
 **Related:** ADR-078 (Mid-Task Memory Tool — Hermes port), ADR-071 (Ebbinghaus lifecycle
 decay), ADR-259 (holaOS Adoption Posture)
 
@@ -51,7 +51,7 @@ This design creates three concrete problems:
 
 ### Research finding
 
-The research annex `docs/research/holaos-annex-a-memory.md` §Feature 1 documents that the
+The research annex `.private/holaos-research/holaos-annex-a-memory.md` §Feature 1 documents that the
 reference system addresses these three problems with a static rule table keyed on memory type.
 Each entry in the table carries a verification policy, a staleness policy, a staleness
 threshold in seconds, and a recall score multiplier. The freshness state is computed at query
@@ -269,7 +269,7 @@ vocabulary; `FreshnessResult.note=None` when `state=="stable"` to reduce noise.
     # must return 0 matches in any staged diff (absent /tmp path = WARN, not FAIL)
 
 [ ] Commit message uses Annex F §6 template:
-    Source-pattern: docs/research/holaos-annex-a-memory.md §Feature 1
+    Source-pattern: .private/holaos-research/holaos-annex-a-memory.md §Feature 1
 ```
 
 ---
@@ -367,8 +367,8 @@ vocabulary; `FreshnessResult.note=None` when `state=="stable"` to reduce noise.
 
 ## Compliance Certification
 
-This ADR adopts a pattern from `docs/research/holaos-annex-a-memory.md` §Feature 1 under the
-clean-room protocol defined in `docs/research/holaos-annex-f-compliance-cleanroom.md`.
+This ADR adopts a pattern from `.private/holaos-research/holaos-annex-a-memory.md` §Feature 1 under the
+clean-room protocol defined in `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`.
 
 Compliance declarations per Annex F §4.2:
 
@@ -395,13 +395,13 @@ Implementer agents operating under this ADR MUST NOT read `/tmp/holaOS*` or any 
 identified as a mirror of the reference source. Any prompt containing such paths or literal
 source fragments requires immediate execution halt and emission of:
 `NEEDS_CLARIFICATION: prompt contains holaOS source references; resend with only the abstract
-spec (docs/research/holaos-annex-a-memory.md §Feature 1).`
+spec (.private/holaos-research/holaos-annex-a-memory.md §Feature 1).`
 
 Commit messages for all implementation commits MUST include:
 
 ```
 Pattern adopted from holaOS (clean-room rewrite).
-Refs: docs/research/holaos-comparison-2026-05-10.md
+Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
 Source-pattern: AnnexA::§Feature1.typed-memory-governance
 License: Apache-2.0 modified (BSL-like). No source code copied.
 ```
@@ -435,9 +435,9 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 ## References
 
-- `docs/research/holaos-annex-a-memory.md` §Feature 1 — abstract specification source for
+- `.private/holaos-research/holaos-annex-a-memory.md` §Feature 1 — abstract specification source for
   the typed memory governance pattern
-- `docs/research/holaos-annex-f-compliance-cleanroom.md` — clean-room protocol and compliance
+- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — clean-room protocol and compliance
   checklist
 - ADR-259 — holaOS Adoption Posture (umbrella patterns-only policy; this ADR is its second
   concrete implementation)
