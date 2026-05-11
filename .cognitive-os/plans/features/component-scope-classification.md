@@ -1,19 +1,26 @@
 <!--
-RECONCILIATION STATUS: PARTIAL — Phases 1-3 complete; Phase 4 NOT shipped (verified 2026-05-11).
-Header was previously "DONE — All 4 phases complete (2026-05-02)" but plans-discovery-triage-2026-05-11 verified:
-  - grep 'scope|SCOPE' scripts/self-install.sh -> 0 hits
-  - cmd/cos has no scope filter
-  Phase 4 (self-install.sh scope filtering + `cos install --scope` filter) is REAL pending work.
+RECONCILIATION STATUS: DONE — All 4 phases complete. Re-verified 2026-05-11.
 
 Phase 1 (skills): DONE — verified 2026-04-21
 Phase 2 (hooks + libs): DONE — verified 2026-04-21 (506+ components SCOPE-tagged)
 Phase 3 (rules): DONE — completed 2026-04-27 (110 rules/*.md files SCOPE-tagged: 108 both, 2 os-only)
-Phase 4 (installer scope filter): PENDING — quick win identified by 2026-04-30 audit + revalidated 2026-05-11
-Templates SCOPE tagging: PENDING (the 4 DoD items span Phase 4 + templates)
+Phase 4 (installer scope filter): DONE — verified 2026-05-11 via:
+  - install.sh --scope=SCOPE flag (project|both|all) — see install.sh:67 + 167-186
+  - COS_INSTALL_SCOPE env var propagation — install.sh:453
+  - scripts/cos_init.py::scope_allows() filters file copies by SCOPE tag — lines 210-225
+  - scripts/cos_init.py::skill_scope_allows() filters skills by audience — line 225+
+  - Main entry parses COS_INSTALL_SCOPE — line 1433
+  - Tests: tests/integration/test_install_scope.py + tests/contracts/test_primitive_scope_classification.py (10/10 pass)
 
-Reason for original SUPERSEDED tag: the classification mechanism (SCOPE tag convention + tagging at scale) shipped. The installer-side filtering and templates tagging have not.
+CORRECTION HISTORY: A 2026-04-30 audit recommended "implement self-install.sh scope filter +
+cos install scope filter" as a quick win. A 2026-05-11 verification agent grep'd
+scripts/self-install.sh (0 hits) and cmd/cos (no scope) and confirmed the audit, briefly
+re-opening this plan as PARTIAL. BOTH WERE WRONG — they checked the wrong files. The
+filter lives in install.sh (root, bash entry point) + scripts/cos_init.py (Python
+implementation). The original DONE header (2026-05-02) was correct. This correction
+demonstrates why bilateral proof (cite-files + run-tests) beats grep-only verification.
 
-NEXT ACTION: implement Phase 4 (self-install.sh + cos install scope filters). Audit estimated 30 min.
+Templates SCOPE tagging: still PENDING — separate concern from installer filter.
 -->
 
 # Component Scope Classification

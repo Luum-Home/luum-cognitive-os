@@ -159,7 +159,7 @@ Canonical: [`docs/reports/plans-discovery-triage-2026-05-11.md`](plans-discovery
 | `maintainer-agent-telemetry-promotion-loop.md` | 23 DONE / 17 OPEN; ADR-201 Accepted | Phase 1 ledger rollup (gates everything else) | 2 sessions |
 | `memory-layer-evolution-wave2.md` | 8 DONE / 0 OPEN at top; current Wave 2 | Continue (M1 default promotion blocked on multi-hop) | Multi-session |
 | `multi-session-coordination-primitives-plan.md` | 4 DONE / 18 OPEN; ADR-116 | Batch 1 (work identity everywhere) | 2 sessions |
-| `component-scope-classification.md` Phase 4 | Header says DONE but Phase 4 NOT shipped (stale) | self-install.sh + cos install SCOPE filters | 30 min — quick win |
+| ~~`component-scope-classification.md` Phase 4~~ | ✅ **DONE-VERIFIED** 2026-05-11 — `install.sh --scope=` + `scripts/cos_init.py::scope_allows()` + 10/10 tests pass | — (re-verified; prior PENDING claim was incorrect) | — |
 | `phoenix-migration-plan.md` Phase 1 | Phase 0 done; 1.1/1.3/1.4 pending | Add `arize-phoenix` to deps; smoke | 1 session |
 
 ### 3 ARCHIVE-CANDIDATE (recommend move now)
@@ -192,7 +192,7 @@ Audit recommended 8-item attack order. After revalidation (2026-05-11):
 | # | Original item | Status today | Verdict |
 |---|---|---|---|
 | 1 | ADR-068 Row 2 test gap | Already shipped (`tests/unit/test_detect_runner_capacity.py:123`) | **DROP** (audit was wrong — recommended already-done work) |
-| 2 | component-scope DoD Phase 4 | self-install.sh has 0 scope refs; cmd/cos has 0 scope flags | **KEEP** — real 30-min quick win |
+| 2 | component-scope DoD Phase 4 | **Already shipped — verified 2026-05-11**: `install.sh --scope=` + `scripts/cos_init.py::scope_allows()` + 10/10 tests in `tests/integration/test_install_scope.py` + `tests/contracts/test_primitive_scope_classification.py`. Prior verification agent checked WRONG files (`scripts/self-install.sh` + `cmd/cos`); real filter lives in `install.sh` (root) + `cos_init.py`. | **DROP** (audit was wrong; verification agent was also wrong) |
 | 3 | ADR-068 Phase 2 capacity logging | No logging surface in detect_runner_capacity.py; no CHANGELOG row | **KEEP w/ scope check** |
 | 4 | hook-architecture-v2 Phase 3 timing | Plan marked COMPLETE by Opus P2; timing landed via `hooks/_lib/common.sh` + `tests/audit/test_hook_latency_budget.py` | **DROP** |
 | 5 | phoenix-migration Phase 1 | `arize-phoenix` not in `pyproject.toml` | **KEEP** |
