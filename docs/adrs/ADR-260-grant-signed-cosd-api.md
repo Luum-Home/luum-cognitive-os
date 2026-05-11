@@ -9,7 +9,7 @@ Accepted
 **Tier:** core
 **Authors:** orchestrator (Claude Opus 4.7)
 **Implements:** ADR-259 (holaOS Adoption Posture — patterns only) — first concrete P0 adoption
-**Source-pattern:** `.private/holaos-research/holaos-annex-d-security-plan.md` §1 (Grant signing)
+**Source-pattern:** Internal compliance dossier §Grant signing
 **Related:** ADR-006 (license compliance), ADR-193, ADR-194, ADR-196, rule `[cosd-secure-api]`
 
 ---
@@ -56,7 +56,7 @@ equals the blast radius of full daemon control until manual rotation.
 
 ### Research finding and pattern source
 
-The research annex `.private/holaos-research/holaos-annex-d-security-plan.md` §1 describes a HMAC-signed
+The research annex [private clean-room research dossier] §Grant signing describes a HMAC-signed
 capability grant pattern (referred to here as "the pattern") that addresses all four gaps:
 short-lived tokens with an embedded TTL, scope baked into the signed payload, a nonce per issuance
 to enable replay detection, and per-grant audit identity. The research annex further identifies a
@@ -272,7 +272,7 @@ The following criteria must pass before this ADR is considered implemented:
     (Note: /tmp/holaOS-investigation may be absent in CI — gate passes with WARN)
 
 [ ] Commit message uses Annex F §6 template:
-    Source-pattern: .private/holaos-research/holaos-annex-d-security-plan.md §1 (Grant signing)
+    Source-pattern: [private compliance dossier — see internal records] §Grant signing
 ```
 
 ---
@@ -359,8 +359,8 @@ a clear migration path without an emergency cutover.
 
 ## Compliance Certification
 
-This ADR adopts a pattern from `.private/holaos-research/holaos-annex-d-security-plan.md` §1 under the
-clean-room protocol defined in `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`.
+This ADR adopts a pattern from [private clean-room research dossier] §Grant signing under the
+clean-room protocol defined in [private compliance dossier — see internal records].
 
 Compliance declarations per Annex F §4.2:
 
@@ -394,7 +394,7 @@ Commit messages for all implementation commits MUST include:
 
 ```
 Pattern adopted from holaOS (clean-room rewrite).
-Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
+Refs: [private clean-room research dossier]
 Source-pattern: AnnexD::§1.grant-signing
 License: Apache-2.0 modified (BSL-like). No source code copied.
 ```
@@ -428,9 +428,9 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 ## References
 
-- `.private/holaos-research/holaos-annex-d-security-plan.md` §1 — abstract specification source for the
+- [private clean-room research dossier] §Grant signing — abstract specification source for the
   grant signing pattern
-- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — clean-room protocol and compliance
+- [private compliance dossier — see internal records] — clean-room protocol and compliance
   checklist
 - ADR-259 — holaOS Adoption Posture (umbrella patterns-only policy; this ADR is its first
   concrete implementation)
@@ -443,3 +443,8 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 - `rules/cosd-secure-api.md` — rule to be updated with Grant scheme and deprecation timeline
 - RFC 2104 — HMAC: Keyed-Hashing for Message Authentication
 - RFC 4648 §5 — Base 64 Encoding with URL and Filename Safe Alphabet (base64url)
+
+---
+*This ADR references a private clean-room research dossier whose specific
+file paths and section headings are intentionally redacted from this public
+record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd3b).*

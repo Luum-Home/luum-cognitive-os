@@ -9,7 +9,7 @@ Accepted
 **Tier:** core
 **Authors:** orchestrator (Claude Sonnet 4.6)
 **Implements:** ADR-259 (holaOS Adoption Posture — patterns only)
-**Source-pattern:** `.private/holaos-research/holaos-annex-g-surprise-findings.md` §G1 (Capability HTTP result envelope)
+**Source-pattern:** Internal compliance dossier §Capability HTTP result envelope (AnnexG::§G1)
 **Related:** ADR-263 (tool-replay ledger — ortogonal y composable), ADR-016 (context diet)
 
 ---
@@ -37,7 +37,7 @@ individual.
 
 ### Patrón identificado en investigación
 
-El Anexo G §G1 del estudio holaOS identifica un patrón de infraestructura transversal: cuando un
+El [private clean-room research dossier] §Capability HTTP result envelope del estudio holaOS identifica un patrón de infraestructura transversal: cuando un
 tool result supera un threshold, en lugar de descartarlo o truncarlo ciegamente, se lo reemplaza
 por un **envelope estructurado** que preserva:
 
@@ -52,7 +52,7 @@ caminos independientes y se componen sin conflicto.
 
 ### Threshold derivado de luum
 
-El Anexo G §G1 usa 32 KB como threshold, derivado del harness `pi` de holaOS. Para luum con
+El [private clean-room research dossier] §Capability HTTP result envelope usa 32 KB como threshold, derivado del harness `pi` de holaOS. Para luum con
 Claude Code (ventana de 200K tokens, 1 token ≈ 4 bytes):
 
 - 28 KB ≈ 7 000 tokens ≈ 3.5% del contexto disponible.
@@ -234,7 +234,7 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
     (gate pasa con WARN si /tmp/holaOS-investigation no existe en CI)
 
 [ ] Commit message incluye template F§6:
-    Source-pattern: .private/holaos-research/holaos-annex-g-surprise-findings.md §G1
+    Source-pattern: [private compliance dossier — see internal records] §Capability HTTP result envelope
 ```
 
 ---
@@ -311,8 +311,8 @@ Cuando el ledger dice `REFERENCE_ONLY`, el envelope se renderiza con `preview_te
 
 ## Compliance Certification
 
-Este ADR adopta el patrón descrito en `.private/holaos-research/holaos-annex-g-surprise-findings.md` §G1
-bajo el protocolo clean-room establecido en `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`.
+Este ADR adopta el patrón descrito en [private clean-room research dossier] §Capability HTTP result envelope
+bajo el protocolo clean-room establecido en [private compliance dossier — see internal records].
 
 Declaraciones de compliance per Annex F §4.2:
 
@@ -348,7 +348,7 @@ Commit messages para commits de implementación DEBEN incluir:
 
 ```
 Pattern adopted from holaOS (clean-room rewrite).
-Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
+Refs: [private clean-room research dossier]
 Source-pattern: AnnexG::§G1.capability-envelope
 License: Apache-2.0 modified (BSL-like). No source code copied.
 ```
@@ -382,11 +382,16 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 ## References
 
-- `.private/holaos-research/holaos-annex-g-surprise-findings.md` §G1 — especificación abstracta fuente
-- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — protocolo clean-room y checklist
+- [private clean-room research dossier] §Capability HTTP result envelope — especificación abstracta fuente
+- [private compliance dossier — see internal records] — protocolo clean-room y checklist
 - ADR-259 — holaOS Adoption Posture (política umbrella de adopción patterns-only)
 - ADR-263 — Tool-Replay Ledger (ortogonal y composable con este ADR)
 - ADR-016 — Context Diet (contexto de reducción de ventana de contexto en luum)
 - `lib/smart_truncator.py` — módulo existente que este ADR complementa (no reemplaza)
 - `lib/agent_runner.py` — punto de integración primario
 - `lib/dispatch_helper.py` — punto de integración secundario
+
+---
+*This ADR references a private clean-room research dossier whose specific
+file paths and section headings are intentionally redacted from this public
+record per ADR-267 §Layer 4 and the privatize-research migration (commit e961fd3b).*
