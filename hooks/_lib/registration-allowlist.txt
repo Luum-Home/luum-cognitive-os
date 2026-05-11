@@ -237,3 +237,19 @@ session-end-cleanup.sh
 # for the main reconstruction profile. The legacy profile scanner cannot model
 # manifest lanes yet, so keep it allowlisted until profile projection grows lane support.
 control-plane-audit.sh
+
+# 2026-05-11: ADR-267 Layer 1 hooks (Accepted). Wired in efficiency profile +
+# settings.json and security-profile JSONs. Manifest lifecycle entries pending
+# follow-up; allowlisted in the meantime.
+adoption-freeze-gate.sh
+dependency-license-classifier.sh
+research-to-runtime-firewall.sh
+spdx-header-required.sh
+external-cache-content-leak.sh
+attribution-completeness-validator.sh
+# 2026-05-11: ADR-267 follow-up — lib-symlink-divergence-detector.sh
+# manual_trigger pending ADR-267 acceptance. This hook detects silent content
+# drift between lib/*.py and packages/*/lib/*.py caused by rm+overwrite (not
+# caught by symlink-mutation-guard.sh). Wiring deferred until ADR-267 reaches
+# Accepted status and profile projection is updated.
+lib-symlink-divergence-detector.sh

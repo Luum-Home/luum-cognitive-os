@@ -317,3 +317,38 @@ entries:
   status: active
   rationale: Active inbound control guard for stop/pause/resume signals at hook boundaries.
   next_action: Keep projected while bidirectional agent control relies on filesystem inbound signals.
+- path: hooks/spdx-header-required.sh
+  status: active
+  rationale: |
+    ADR-267 Hook #4 (Layer 1). Pre-commit gate; new files in lib/, packages/*/lib/,
+    scripts/ (.py/.sh/.js/.ts) must carry SPDX-License-Identifier in first 10 lines.
+    Existing files at install snapshot are grandfathered via manifests/spdx-grandfather.txt.
+    Bypass: COS_ALLOW_MISSING_SPDX=1 (logged).
+  next_action: Monitor false-positive rate; tighten grandfather list when feasible.
+- path: hooks/external-cache-content-leak.sh
+  status: active
+  rationale: |
+    ADR-267 Hook #2 (Layer 1). Generalises external-pattern-cleanroom-gate.sh to
+    scan staged content against the whole .cognitive-os/external-source-cache/ tree.
+    Bypass: COS_ALLOW_EXTERNAL_CACHE_LEAK=1 (logged).
+  next_action: Tune token threshold + generic allowlist after soak.
+- path: hooks/attribution-completeness-validator.sh
+  status: active
+  rationale: |
+    ADR-267 Hook #5 (Layer 1). Pre-commit gate for docs/research/*-annex-*.md
+    requiring Source-Pattern / License / Clean-Room-Protocol header fields plus
+    per-block source attribution on verbatim code fences.
+    Bypass: COS_ALLOW_INCOMPLETE_ATTRIBUTION=1 (logged).
+  next_action: Promote annex-glob to a structured frontmatter schema after first 5 annexes pass.
+- path: hooks/history-rewrite-documented.sh
+  status: active
+  rationale: |
+    ADR-269 Primitive 2. SessionStart non-blocking warn for recovery bundles
+    (.cognitive-os/recovery/pre-history-sanitization-*.bundle) not registered
+    in manifests/history-rewrite-ledger.yaml. Registered in Claude Code driver
+    (settings-driver-claude-code.sh maintainer SessionStart group),
+    all three security profiles (minimal/standard/paranoid), and the
+    apply-efficiency-profile.sh sanity loop. Logs to
+    .cognitive-os/logs/history-rewrite-documented.jsonl.
+    Bypass: COS_ALLOW_UNDOCUMENTED_REWRITES=1 (logged).
+  next_action: Keep active; promote ledger auto-register when cos-history-sanitization --execute auto-writes ledger entries.
