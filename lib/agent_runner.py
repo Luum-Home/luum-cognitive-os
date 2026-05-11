@@ -45,6 +45,37 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from lib.paths import runtime_project_root_or_cwd
+from lib.tool_result_envelope import wrap_if_large, ENVELOPE_THRESHOLD
+
+# ── Envelope helpers ───────────────────────────────────────────────────────────
+
+
+def _session_envelope_dir(project: Path, sid: str) -> Path:
+    """Return the spillover directory for tool result envelopes."""
+    return project / ".cognitive-os" / "sessions" / sid / "envelopes"
+
+
+def wrap_tool_result(
+    raw_output: str,
+    tool_name: str,
+    target_hint: str,
+    project: Path,
+    sid: str,
+) -> tuple[str, bool]:
+    """Wrap a tool result with an envelope if it exceeds the threshold.
+
+    Returns:
+        (result_text, was_enveloped): the processed text and whether enveloping occurred.
+    """
+    result_text = wrap_if_large(
+        raw_result=raw_output,
+        tool_name=tool_name,
+        target_hint=target_hint,
+        spillover_dir=str(_session_envelope_dir(project, sid)),
+    )
+    was_enveloped = len(raw_output) > ENVELOPE_THRESHOLD
+    return result_text, was_enveloped
+
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 
@@ -293,12 +324,46 @@ def spawn(
             "output": loop_result.tokens_out,
         }
 
-        # Emit ToolUse events from the loop's tool_log
+        # Emit ToolUse events from the loop's tool_log.
+        # For each entry that carries a raw result, wrap it through the envelope
+        # before it would reach the model context (ADR-264).
         for entry in loop_result.tool_log:
+            tool_name_entry = entry.get("tool") or entry.get("tool_name") or "unknown"
+
+            # Wrap any raw output stored in the log entry (ADR-264 integration).
+            raw_output = entry.get("output") or entry.get("result") or ""
+            if raw_output:
+                wrapped, was_enveloped = wrap_tool_result(
+                    raw_output=raw_output,
+                    tool_name=tool_name_entry,
+                    target_hint=entry.get("target") or entry.get("input_summary") or "",
+                    project=project,
+                    sid=sid,
+                )
+                if was_enveloped:
+                    # Log envelope event to agent-heartbeat.jsonl (ADR-264 §3).
+                    heartbeat_path = (
+                        project / ".cognitive-os" / "sessions" / sid / "agent-heartbeat.jsonl"
+                    )
+                    _append_event(
+                        heartbeat_path,
+                        {
+                            "event": "tool_result_enveloped",
+                            "tool_name": tool_name_entry,
+                            "full_chars": len(raw_output),
+                            "preview_chars": min(len(raw_output), 7 * 1024),
+                        },
+                    )
+                    # Update the entry in-place so callers see the wrapped version.
+                    if "output" in entry:
+                        entry["output"] = wrapped
+                    elif "result" in entry:
+                        entry["result"] = wrapped
+
             te = _make_event(
                 "tool_use_end",
                 sid,
-                tool_name=entry.get("tool") or entry.get("tool_name") or "unknown",
+                tool_name=tool_name_entry,
                 exit_status=entry.get("status") or "unknown",
                 agent_id=sid,
             )

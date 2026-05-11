@@ -32,6 +32,7 @@ from typing import Any, Dict, List, Optional
 
 from lib.config_loader import read_top_level_int as _cl_read_top_level_int
 from lib.paths import project_root
+from lib.tool_result_envelope import wrap_if_large
 
 # ---------------------------------------------------------------------------
 # Internal helpers — thin shims that delegate to lib.config_loader
@@ -250,6 +251,34 @@ def dequeue_ready_agents() -> List[Dict[str, Any]]:
         )
 
     return result
+
+
+def wrap_dispatch_tool_result(
+    raw_result: str,
+    tool_name: str,
+    target_hint: str = "",
+    spillover_dir: Optional[str] = None,
+) -> str:
+    """Wrap a dispatched tool result with an envelope if it exceeds the threshold.
+
+    Idempotent: if the result already contains the envelope marker (applied by
+    ``lib.agent_runner`` upstream), returns it unchanged (ADR-264 §4).
+
+    Args:
+        raw_result:    Full tool output string.
+        tool_name:     Name of the tool that produced the result.
+        target_hint:   Human-readable hint about what was targeted.
+        spillover_dir: Override spillover directory (for testing).
+
+    Returns:
+        Envelope string if ``raw_result`` exceeds the threshold, else ``raw_result``.
+    """
+    return wrap_if_large(
+        raw_result=raw_result,
+        tool_name=tool_name,
+        target_hint=target_hint,
+        spillover_dir=spillover_dir,
+    )
 
 
 def format_dispatch_status(
