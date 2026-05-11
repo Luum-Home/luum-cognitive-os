@@ -17,14 +17,14 @@ Accepted
 
 On 2026-05-10 a systematic external due-diligence sweep included a deep
 comparison of luum-agent-os against holaOS (Holaboss AI, 2026), documented in
-`docs/research/holaos-comparison-2026-05-10.md`. holaOS is an agent-computer
+`.private/holaos-research/holaos-comparison-2026-05-10.md`. holaOS is an agent-computer
 platform — an Electron + TypeScript runtime (Fastify, SQLite) in which humans
 and agents share a persistent, inspectable workspace. It solves a number of
 problems luum-agent-os has partially addressed: session-level memory governance,
 tool-replay budgeting, skill auto-evolution, context-reserve compaction, HMAC
 grants, and proactive context bootstrapping.
 
-Annex E of that research (`docs/research/holaos-annex-e-architecture-risks.md`)
+Annex E of that research (`.private/holaos-research/holaos-annex-e-architecture-risks.md`)
 assessed holaOS as high-value for pattern adoption and simultaneously identified
 a blocking license constraint. holaOS is published under Apache 2.0 **modified
 with BSL-like clauses**: section 1.a prohibits using holaOS source code to
@@ -34,7 +34,7 @@ those terms unilaterally at any time. Under the project's `[license-policy]`
 rule (§10, `rules/RULES-COMPACT.md`), BSL-like licenses are classified as
 BLOCK for code adoption.
 
-Annex F (`docs/research/holaos-annex-f-compliance-cleanroom.md`) established
+Annex F (`.private/holaos-research/holaos-annex-f-compliance-cleanroom.md`) established
 the operational posture and the clean-room protocol. The conclusion: holaOS
 ideas, algorithms, state machines, taxonomies, and policies are freely adoptable
 under 17 USC §102(b) — copyright does not protect ideas, procedures, or
@@ -109,7 +109,7 @@ Each ADR that adopts a holaOS pattern (ADR-260, ADR-261, …) must:
     <scope>: <change>
 
     Pattern adopted from holaOS (clean-room rewrite).
-    Refs: docs/research/holaos-comparison-2026-05-10.md
+    Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
     Source-pattern: <annex>::<section>
     License: Apache-2.0 modified (BSL-like). No source code copied.
     ```
@@ -135,7 +135,7 @@ Every verified adoption must produce three artifacts:
     Reviewer ID). Created via `mem_save` immediately after a verified commit,
     before session close.
 
-(ii) **Append-only registry entry** in `docs/compliance/holaos-adoptions.md`
+(ii) **Append-only registry entry** in `.private/holaos-research/holaos-adoptions.md`
     (to be created before the first adoption commit). The file is evidence of
     due diligence and must never have rows edited or deleted.
 
@@ -196,7 +196,7 @@ The following artifacts are required before the first adoption ADR (ADR-260+)
 can be filed. They are design-level work items; no implementation is performed
 in this ADR.
 
-1. **Create `docs/compliance/holaos-adoptions.md`**: append-only registry with
+1. **Create `.private/holaos-research/holaos-adoptions.md`**: append-only registry with
    the table schema from Annex F §7.2. Schema columns: Feature, Fecha, ADR ref,
    Implementer agent ID, Grep verify, Status. The file must exist and carry the
    table header before any adoption commit lands.
@@ -215,7 +215,7 @@ in this ADR.
 
 4. **File ADR-260, ADR-261, … as needed**: each adoption ADR references this
    ADR-259 and targets one or more Annexes. Assignments are tracked in
-   `docs/compliance/holaos-adoptions.md`.
+   `.private/holaos-research/holaos-adoptions.md`.
 
 ---
 
@@ -258,9 +258,9 @@ in this ADR.
 
 ## References
 
-- `docs/research/holaos-comparison-2026-05-10.md` — master research document;
+- `.private/holaos-research/holaos-comparison-2026-05-10.md` — master research document;
   primary source for the architectural comparison and license classification
-- `docs/research/holaos-annex-f-compliance-cleanroom.md` — operational clean-room
+- `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — operational clean-room
   protocol; primary source for the decision constraints codified here
 - `rules/RULES-COMPACT.md` §10 `[license-policy]` — project rule that classifies
   BSL-like licenses as BLOCK for code adoption

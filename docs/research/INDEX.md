@@ -36,7 +36,6 @@
 | [obsidian-doc-graph-ai-agent-memory-2026-05-05.md](obsidian-doc-graph-ai-agent-memory-2026-05-05.md) | Obsidian doc-graph for memory | 2026-05-05 |
 | **[orchestration-coverage-gap-analysis-2026-05-06.md](orchestration-coverage-gap-analysis-2026-05-06.md)** | ★ Gap analysis with C1–C4 contract | 2026-05-06 |
 | [wisc-framework-analysis.md](wisc-framework-analysis.md) | WISC framework | — |
-| **[holaos-comparison-2026-05-10.md](holaos-comparison-2026-05-10.md)** | ★ holaOS agent computer — licencia BSL-like, top-10 patrones, 5 Opus annexes pending | 2026-05-10 |
 
 ---
 
