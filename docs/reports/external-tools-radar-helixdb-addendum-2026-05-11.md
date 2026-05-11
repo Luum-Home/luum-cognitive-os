@@ -2,7 +2,10 @@
 report_type: external-tools-radar-addendum
 subject: HelixDB/helix-db
 generated_at: 2026-05-11
-status: reject-runtime / hold-pattern-only
+status: reject-runtime / trial-patterns
+pattern_lane_history:
+  - 2026-05-11 initial: HOLD pattern-only
+  - 2026-05-11 reconciled: TRIAL-PATTERNS (cluster-B coherence audit; annex E identifies 3 primitives, clean-room 3-5 PW combined; consistent with TRIAL-PATTERNS doctrine in docs/architecture/external-tool-adapter-taxonomy.md; iFixAi Phase 12 precedent)
 related_adrs: [ADR-065, ADR-247, ADR-254]
 source_artifacts:
   - docs/research/repo-scout/deep/HelixDB__helix-db-2026-05-11.md
@@ -21,7 +24,7 @@ related_docs:
 
 ## Decision
 
-Add [HelixDB/helix-db](https://github.com/HelixDB/helix-db) to the tech radar as **REJECT for runtime/dependency adoption** and **HOLD / pattern-only** for clean-room schema and DSL study. The blocking signal is license: AGPL-3.0 is on the BLOCK list in `rules/license-policy.md`, and the project is positioned as the AGPL "Lite" half of an open-core split with a closed "Enterprise" tier — the same shape that produced past SSPL/ELv2 traps for downstream adopters.
+Add [HelixDB/helix-db](https://github.com/HelixDB/helix-db) to the tech radar as **REJECT for runtime/dependency adoption** and **TRIAL-PATTERNS** for clean-room schema and DSL study (promoted from HOLD on 2026-05-11 — see Recommendation §2 for rationale). The blocking signal is license: AGPL-3.0 is on the BLOCK list in `rules/license-policy.md`, and the project is positioned as the AGPL "Lite" half of an open-core split with a closed "Enterprise" tier — the same shape that produced past SSPL/ELv2 traps for downstream adopters.
 
 The non-license signals are otherwise interesting (Rust, LMDB-backed unified graph+vector store, compiled type-safe HelixQL, built-in embeddings, native MCP surface, YC/Nvidia/Vercel funding, 4.4k stars, active releases). That is why it does not get a clean REJECT-and-forget verdict — only the dependency lane is closed; the pattern lane stays open.
 
@@ -31,8 +34,8 @@ The non-license signals are otherwise interesting (Rust, LMDB-backed unified gra
 |---|---|---|
 | Dependency / library embed | `rejected` | License-blocked (AGPL-3.0). |
 | Operator-installed external service | `rejected` | AGPL §13 network-use risk on default paths; not worth legal review when alternatives exist. |
-| Schema port (graph+vector primary types, vectorize-this-field annotation) | `pattern-only` | Reference idea for future Engram graph-memory work. |
-| Algorithm port (HelixQL compiled-query lowering) | `pattern-only` | Clean-room only; HelixQL itself is AGPL. |
+| Schema port (graph+vector primary types, vectorize-this-field annotation) | `trial-patterns` | Reference idea for future Engram graph-memory work; promoted from `pattern-only` on 2026-05-11 (cluster-B coherence audit). |
+| Algorithm port (HelixQL compiled-query lowering) | `trial-patterns` | Clean-room only; HelixQL itself is AGPL. Promoted from `pattern-only` on 2026-05-11. |
 | Test-data vendor | not applicable | No fixture utility identified. |
 | Runtime adapter candidate | not applicable | Blocked upstream of any adapter work. |
 
@@ -60,7 +63,7 @@ Concrete COS-side anchors for any future pattern extraction:
 ## Recommendation
 
 1. **Do not embed, link, or host as a default COS service.** AGPL-3.0 viral terms + open-core split = highest-class license risk for COS.
-2. **Keep on the radar as HOLD / pattern-only.** The five primitive-extraction candidates in the deep eval (compiled DSL, unified graph+vector schema, LMDB-backed graph+vector layout, MCP-on-the-DB pattern, schema-level embed annotation) are worth referencing when Engram's graph-memory phase needs design inputs.
+2. **Keep on the radar as TRIAL-PATTERNS.** Pattern lane promoted from HOLD to TRIAL-PATTERNS on 2026-05-11 after cluster-B coherence audit: annex E identifies 3 primitives with clean-room cost 3-5 PW combined, consistent with TRIAL-PATTERNS doctrine in `docs/architecture/external-tool-adapter-taxonomy.md`. Precedent: iFixAi (Phase 12) — same shape, TRIAL-PATTERNS posture. The five primitive-extraction candidates in the deep eval (compiled DSL, unified graph+vector schema, LMDB-backed graph+vector layout, MCP-on-the-DB pattern, schema-level embed annotation) are worth referencing when Engram's graph-memory phase needs design inputs; the top 3 in annex E §E.1-E.3 are the trial-patterns targets.
 3. **Prefer Graphiti (Apache-2.0) and LightRAG/HippoRAG (per existing doctrine rows) as the primary memory-tier references.** HelixDB is a corroborating data point, not a primary reference.
 4. **Re-evaluate only on license change or specific COS need.** Triggers: upstream relicense to Apache/MIT/BSD; or COS commits to a compiled-DSL memory query surface and HelixQL remains the best public example.
 

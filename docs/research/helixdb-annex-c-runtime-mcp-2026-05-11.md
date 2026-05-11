@@ -6,6 +6,8 @@ scope: research-only
 license_constraint: "AGPL-3.0 — pattern-only adoption, clean-room rewrite required. No code, identifiers, comments or test fixtures may be reused."
 ---
 
+> **License compliance disclaimer.** Structural descriptions and value references in this annex are paraphrased from upstream HelixDB (AGPL-3.0, https://github.com/HelixDB/helix-db). No verbatim source code is vendored into COS — code-block fences contain pseudo-syntax sketches, factual config values, or API surface enumerations that are non-creative or fair-use. Clean-room rewrites of any documented primitive MUST reference these annexes as **inputs**, not derive directly from upstream source. See [`helixdb-annex-d-license-opencore-risk-2026-05-11.md`](helixdb-annex-d-license-opencore-risk-2026-05-11.md) for the full license disposition (REJECT runtime / TRIAL-PATTERNS clean-room-only).
+
 # Annex C — Runtime gateway, worker pool, and MCP surface
 
 ## C.1 Gateway boot path (`helix-container/src/main.rs`)

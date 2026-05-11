@@ -6,6 +6,8 @@ scope: research-only
 license_constraint: "AGPL-3.0 — pattern-only adoption, clean-room rewrite required. This annex evaluates *why* the license blocks runtime adoption; it does not re-litigate the verdict."
 ---
 
+> **License compliance disclaimer.** Structural descriptions and value references in this annex are paraphrased from upstream HelixDB (AGPL-3.0, https://github.com/HelixDB/helix-db). No verbatim source code is vendored into COS — code-block fences contain pseudo-syntax sketches, factual config values, or API surface enumerations that are non-creative or fair-use. Clean-room rewrites of any documented primitive MUST reference these annexes as **inputs**, not derive directly from upstream source. See [`helixdb-annex-d-license-opencore-risk-2026-05-11.md`](helixdb-annex-d-license-opencore-risk-2026-05-11.md) for the full license disposition (REJECT runtime / TRIAL-PATTERNS clean-room-only).
+
 # Annex D — License and open-core risk
 
 ## D.1 The verbatim AGPL-3.0 §13 obligation

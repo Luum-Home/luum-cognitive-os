@@ -6,6 +6,8 @@ scope: research-only
 license_constraint: "AGPL-3.0 — pattern-only adoption, clean-room rewrite required. No code, identifiers, comments or test fixtures may be reused."
 ---
 
+> **License compliance disclaimer.** Structural descriptions and value references in this annex are paraphrased from upstream HelixDB (AGPL-3.0, https://github.com/HelixDB/helix-db). No verbatim source code is vendored into COS — code-block fences contain pseudo-syntax sketches, factual config values, or API surface enumerations that are non-creative or fair-use. Clean-room rewrites of any documented primitive MUST reference these annexes as **inputs**, not derive directly from upstream source. See [`helixdb-annex-d-license-opencore-risk-2026-05-11.md`](helixdb-annex-d-license-opencore-risk-2026-05-11.md) for the full license disposition (REJECT runtime / TRIAL-PATTERNS clean-room-only).
+
 # Annex B — Vector + FTS indexing & reranker fusion
 
 ## B.1 HNSW implementation
@@ -153,7 +155,9 @@ The repo includes a real reranker layer at `helix-db/src/helix_engine/reranker/`
 ```
 ef = 768 default, .clamp(10, 512)
 ```
-The default of 768 is silently downgraded to 512 by the clamp; the value 768 never reaches the rest of the system. Either the default or the clamp upper bound is wrong. This is the kind of bug a clean-room implementer can avoid by writing a test that asserts `HNSWConfig::default().ef == documented_default`.
+The default of 768 is silently downgraded to 512 by the clamp; the value 768 never reaches the rest of the system. Either the default or the clamp upper bound is wrong.
+
+**Upstream observation only.** HelixDB is REJECT runtime per AGPL-3.0; Engram retains SQLite — no COS HNSW implementation is planned. If the AGPL disposition ever reverses, file this inconsistency upstream with HelixDB. See annex E §E.4.5 sidebar and `docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` Finding 10 for the cluster-D ruling that scopes this observation.
 
 ## B.6 Clean-room constraint
 

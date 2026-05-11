@@ -5,9 +5,19 @@ parent: helixdb-comparison-2026-05-11.md
 scope: research-only
 license_constraint: "AGPL-3.0 — pattern-only adoption, clean-room rewrite required. Every primitive below MUST be implemented from first principles, NOT by translating helix source. ADR-required before any implementation begins."
 engram_topic_key: tech-radar/helix-db/primitives
+verdict_runtime: REJECT
+verdict_pattern: TRIAL-PATTERNS
+verdict_pattern_history:
+  - 2026-05-11 initial: HOLD / pattern-only
+  - 2026-05-11 reconciled: TRIAL-PATTERNS (cluster-B coherence audit; top 3 primitives below, clean-room 3-5 PW combined; iFixAi Phase 12 precedent)
 ---
 
 # Annex E — Ranked extractable primitives
+
+## §1 — Verdict
+
+- **Runtime / dependency**: REJECT (AGPL-3.0 BLOCK — see parent §4 and addendum).
+- **Pattern lane**: TRIAL-PATTERNS. Promoted from HOLD on 2026-05-11 after cluster-B coherence audit: the top 3 primitives below (E.1 typed-ADT MCP surface, E.2 reranker fusion, E.3 hoisted-embedding / IO-continuation) total 3-5 PW clean-room cost — consistent with TRIAL-PATTERNS doctrine in `docs/architecture/external-tool-adapter-taxonomy.md`. Precedent: iFixAi (Phase 12) — same shape, TRIAL-PATTERNS posture. Primitives §E.4-E.9 remain HOLD/conditional/anti-recommended as already noted.
 
 Ranking criterion: **extraction value = alignment with COS roadmap × novelty over already-shipped Engram × clean-room cost⁻¹**.
 
@@ -117,6 +127,10 @@ Why it is **not** advocated today: Engram's surface is Python+MCP. Adding a DSL 
 Effort if adopted: 6–10 PW.
 
 ---
+
+## E.4.5 — Sidebar: upstream HNSW default-clamp inconsistency (NOT a COS roadmap item)
+
+Upstream observation only (HelixDB has a default-clamp inconsistency in `vector_core.rs:48-61` — see annex B §B.5: `HNSWConfig::new` default `ef=768` is silently clamped to `[10, 512]`). Not a COS roadmap item — Engram retains SQLite (annex A §A.4) and HelixDB is REJECT runtime. If AGPL disposition ever reverses, file upstream with HelixDB. Recorded as a footnote per cluster-D claim-quality ruling (2026-05-11): reframed from "test a clean-room reimplementation should catch" to upstream-only observation, because the bug has zero relevance to COS unless we adopt HelixDB's HNSW — which we are NOT.
 
 ## E.5 — Filter-aware HNSW
 
