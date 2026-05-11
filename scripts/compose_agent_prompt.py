@@ -39,12 +39,12 @@ FALLBACK_TRAPS = [
     ),
     (
         r"lib/[a-zA-Z0-9_]+\.py",
-        "lib/*.py are SYMLINKS → packages/*/lib/*.py. Never replace package files. "
+        "SOME lib/*.py (~22%) are SYMLINKS to packages/*/lib/*.py — most are real files. Always check with ls -la per file. Run scripts/cos-lib-symlink-invariant-audit.py if a same-named file exists in both. "
         "Verify: ls -la lib/<file>.py",
     ),
     (
         r"packages/",
-        "lib/*.py are SYMLINKS → packages/*/lib/*.py. Never replace package files. "
+        "SOME lib/*.py (~22%) are SYMLINKS to packages/*/lib/*.py — most are real files. Always check with ls -la per file. Run scripts/cos-lib-symlink-invariant-audit.py if a same-named file exists in both. "
         "Verify symlinks first: ls -la lib/",
     ),
     (

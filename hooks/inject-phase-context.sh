@@ -194,7 +194,7 @@ if [[ -n "$AGENT_PROMPT" ]]; then
   # lib/ symlink trap
   if echo "$AGENT_PROMPT" | grep -qiE 'lib/|packages/.*lib|duplicate.*lib|dedup'; then
     GOTCHAS="${GOTCHAS}
-WARNING: lib/*.py are SYMLINKS to packages/*/lib/*.py — NOT duplicates. Verify with: ls -la lib/<file>.py. NEVER replace files in packages/*/lib/."
+WARNING: SOME lib/*.py (~22%, 68 of 314) are SYMLINKS to packages/*/lib/*.py. Most are real files. ALWAYS verify per file with: ls -la lib/<file>.py. If <file>.py exists in BOTH lib/ AND packages/*/lib/, run scripts/cos-lib-symlink-invariant-audit.py to detect silent drift (3 confirmed drifts as of 2026-05-11 — see ADR-267 §Layer 1 Hook #7). NEVER replace files in packages/*/lib/ without checking symlink direction first."
   fi
 
   # settings.json trap
