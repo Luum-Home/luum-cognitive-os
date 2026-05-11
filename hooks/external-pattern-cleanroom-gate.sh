@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # SCOPE: os-only
-# holaos-cleanroom-gate.sh — Pre-commit clean-room gate for holaOS adoptions
+# external-pattern-cleanroom-gate.sh — Pre-commit clean-room gate for external-pattern adoptions
 #
 # ADR-259 §Implementation plan + Annexe F §7 audit trail.
-# Verifies that no staged file contains literal strings from holaOS source.
+# Verifies that no staged file contains literal strings from upstream pattern source.
 # Runs as PreToolUse/Bash hook matching `git commit` commands.
 #
 # Event:    PreToolUse
@@ -15,17 +15,17 @@
 #   1 — leak detected, commit blocked
 #
 # Environment variables:
-#   COS_ALLOW_HOLAOS_LEAK=1  — bypass gate (logged as action: "bypass")
+#   COS_ALLOW_UPSTREAM_PATTERN_LEAK=1  — bypass gate (logged as action: "bypass")
 #
-# Logs to: .cognitive-os/logs/holaos-cleanroom-gate.jsonl
+# Logs to: .cognitive-os/logs/external-pattern-cleanroom-gate.jsonl
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 LOG_DIR="$ROOT_DIR/.cognitive-os/logs"
-LOG_FILE="$LOG_DIR/holaos-cleanroom-gate.jsonl"
-HOLAOS_SOURCE="/tmp/holaOS-investigation"
+LOG_FILE="$LOG_DIR/external-pattern-cleanroom-gate.jsonl"
+UPSTREAM_SOURCE="/tmp/upstream-pattern-source"
 
 TIMESTAMP="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 
@@ -48,14 +48,14 @@ if [[ "$COMMAND" != *"git commit"* ]]; then
 fi
 
 # ── Bypass mode ──────────────────────────────────────────────────────────────
-if [ "${COS_ALLOW_HOLAOS_LEAK:-0}" = "1" ]; then
-  _log "{\"timestamp\":\"$TIMESTAMP\",\"action\":\"bypass\",\"reason\":\"COS_ALLOW_HOLAOS_LEAK=1\"}"
+if [ "${COS_ALLOW_UPSTREAM_PATTERN_LEAK:-0}" = "1" ]; then
+  _log "{\"timestamp\":\"$TIMESTAMP\",\"action\":\"bypass\",\"reason\":\"COS_ALLOW_UPSTREAM_PATTERN_LEAK=1\"}"
   exit 0
 fi
 
-# ── Skip gracefully if holaOS source repo is absent ──────────────────────────
-if [ ! -d "$HOLAOS_SOURCE" ]; then
-  _log "{\"timestamp\":\"$TIMESTAMP\",\"action\":\"skip\",\"reason\":\"source repo absent\",\"path\":\"$HOLAOS_SOURCE\"}"
+# ── Skip gracefully if upstream pattern source repo is absent ──────────────────────────
+if [ ! -d "$UPSTREAM_SOURCE" ]; then
+  _log "{\"timestamp\":\"$TIMESTAMP\",\"action\":\"skip\",\"reason\":\"source repo absent\",\"path\":\"$UPSTREAM_SOURCE\"}"
   exit 0
 fi
 
@@ -109,20 +109,20 @@ while IFS= read -r rel_file; do
     # Skip generic tokens
     is_generic "$token" && continue
 
-    # Search for exact token in holaOS source
-    if grep -rqF "$token" "$HOLAOS_SOURCE" 2>/dev/null; then
+    # Search for exact token in upstream pattern source
+    if grep -rqF "$token" "$UPSTREAM_SOURCE" 2>/dev/null; then
       # Escape token for JSON
       safe_token="$(printf '%s' "$token" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().strip()))' 2>/dev/null || printf '"%s"' "$token")"
       safe_file="$(printf '%s' "$rel_file" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().strip()))' 2>/dev/null || printf '"%s"' "$rel_file")"
 
       _log "{\"timestamp\":\"$TIMESTAMP\",\"file\":$safe_file,\"token\":$safe_token,\"action\":\"block\"}"
 
-      echo "HOLAOS CLEANROOM VIOLATION: token $token found in staged file $rel_file matches holaOS source." >&2
+      echo "UPSTREAM PATTERN CLEANROOM VIOLATION: token $token found in staged file $rel_file matches upstream pattern source." >&2
       echo "  File:  $rel_file" >&2
       echo "  Token: $token" >&2
       echo "" >&2
       echo "COMMIT BLOCKED (ADR-259 clean-room policy)." >&2
-      echo "If this is a false positive, set COS_ALLOW_HOLAOS_LEAK=1 to bypass (logged)." >&2
+      echo "If this is a false positive, set COS_ALLOW_UPSTREAM_PATTERN_LEAK=1 to bypass (logged)." >&2
       exit 1
     fi
   done <<EOF

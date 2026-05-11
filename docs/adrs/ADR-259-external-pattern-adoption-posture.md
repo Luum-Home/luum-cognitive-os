@@ -139,10 +139,10 @@ Every verified adoption must produce three artifacts:
     (to be created before the first adoption commit). The file is evidence of
     due diligence and must never have rows edited or deleted.
 
-(iii) **Pre-commit gate execution** via `hooks/holaos-cleanroom-gate.sh` (to be
+(iii) **Pre-commit gate execution** via `hooks/external-pattern-cleanroom-gate.sh` (to be
     implemented per §8 of the Implementation Plan in this ADR). The hook scans
     staged diffs for literal tokens matching holaOS source and blocks commits on
-    any match. Executions are logged to `.cognitive-os/audit/holaos-cleanroom-gate.jsonl`.
+    any match. Executions are logged to `.cognitive-os/audit/external-pattern-cleanroom-gate.jsonl`.
 
 ---
 
@@ -183,7 +183,7 @@ Every verified adoption must produce three artifacts:
 - The per-adoption ADR template (`docs/adrs/templates/adoption-from-holaos.template.md`,
   to be created) pre-populates checklist, frontmatter schema, and commit message
   template, reducing the governance friction to filling in blanks.
-- `hooks/holaos-cleanroom-gate.sh` automates the most error-prone checklist item
+- `hooks/external-pattern-cleanroom-gate.sh` automates the most error-prone checklist item
   (grep verification), making compliance low-effort once the hook is installed.
 - This ADR-259 is cited by reference in all derived ADRs; the rationale does not
   need to be re-litigated in each one.
@@ -201,7 +201,7 @@ in this ADR.
    Implementer agent ID, Grep verify, Status. The file must exist and carry the
    table header before any adoption commit lands.
 
-2. **Design and implement `hooks/holaos-cleanroom-gate.sh`**: behavior as
+2. **Design and implement `hooks/external-pattern-cleanroom-gate.sh`**: behavior as
    specified in Annex F §7.3 — staged diff scanning, generic-token exclusion
    list, JSONL audit log, graceful pass when `/tmp/holaOS-investigation` is
    absent (CI-clean environment). Register in `scripts/apply-efficiency-profile.sh`

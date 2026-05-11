@@ -414,7 +414,7 @@ License: Apache-2.0 modified (BSL-like). No source code copied.
 
 - `.private/holaos-research/holaos-annex-b-cost-budget.md` §B1 — especificación abstracta del patrón adoptado
 - `.private/holaos-research/holaos-annex-f-compliance-cleanroom.md` — protocolo clean-room y checklist de compliance
-- `docs/adrs/ADR-259-holaos-adoption-posture-patterns-only.md` — ADR paraguas (postura patterns-only)
+- `docs/adrs/ADR-259-external-pattern-adoption-posture.md` — ADR paraguas (postura patterns-only)
 - `docs/adrs/ADR-016-context-diet.md` — ADR de Context Diet (relacionado: gestión de headroom)
 - `docs/adrs/ADR-049-llm-dispatch.md` — LLM Dispatch (destino de la métrica `chars_saved_per_session`)
 - `docs/adrs/ADR-186-budget-enforcement.md` — Budget Enforcement ADR-186 (complementario, no reemplazado)

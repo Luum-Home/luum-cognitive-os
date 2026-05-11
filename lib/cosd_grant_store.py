@@ -11,8 +11,8 @@ Defaults:
     db path: .cognitive-os/state/cosd-nonce-store.db (mode 0600)
     max:     10000 live nonces; eviction triggered when row count > max/2
 
-Pattern adopted from holaOS (clean-room rewrite).
-Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
+Pattern adopted from external pattern (see ADR-259) (clean-room rewrite).
+Refs: .private/external-pattern-research/external-pattern-comparison-2026-05-10.md
 Source-pattern: AnnexD::§1.grant-signing (luum addition — not in reference)
 License: Apache-2.0 modified (BSL-like). No source code copied.
 """

@@ -23,8 +23,8 @@ Session ID resolution order:
     2. ``.cognitive-os/sessions/.current`` file (first line).
     3. ``pid-<pid>`` fallback.
 
-Pattern adopted from holaOS (clean-room rewrite).
-Source-pattern: .private/holaos-research/holaos-annex-g-surprise-findings.md §G1
+Pattern adopted from external pattern (see ADR-259) (clean-room rewrite).
+Source-pattern: .private/external-pattern-research/external-pattern-annex-g-surprise-findings.md §G1
 """
 
 from __future__ import annotations
