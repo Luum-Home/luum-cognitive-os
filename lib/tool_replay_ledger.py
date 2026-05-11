@@ -2,7 +2,7 @@
 ADR-263 — Tool-Replay Budget Ledger
 Per-session SQLite ledger with FRESH/PREVIEW/REFERENCE_ONLY modes.
 
-Source-pattern: .private/holaos-research/holaos-annex-b-cost-budget.md §B1 (clean-room rewrite)
+Source-pattern: .private/external-pattern-research/external-pattern-annex-b-cost-budget.md §B1 (clean-room rewrite)
 License: Apache-2.0 modified. No source code copied from reference pattern.
 """
 

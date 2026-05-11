@@ -6,7 +6,7 @@ ADR-262 §Decision 1: reads session turn logs, calls the LLM via lib.dispatch,
 filters by confidence threshold, deduplicates, and enqueues passing proposals.
 
 Clean-room implementation per ADR-259. LLM prompt authored from functional
-criteria in ADR-262 §Decision 1 — no holaOS source material incorporated.
+criteria in ADR-262 §Decision 1 — no external pattern (ADR-259) source material incorporated.
 """
 
 from __future__ import annotations

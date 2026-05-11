@@ -321,7 +321,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/holaos-cleanroom-gate.sh\""
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/external-pattern-cleanroom-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/external-pattern-cleanroom-gate.sh\""
           },
           {
             "type": "command",

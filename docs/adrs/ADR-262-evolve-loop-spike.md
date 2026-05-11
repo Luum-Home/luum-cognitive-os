@@ -334,7 +334,7 @@ Checklist (Annex F §5):
 - [x] Audit trail: engram observation to be created at `topic_key: compliance/holaos-adoption/evolve-loop`
       after first verified commit
 - [x] Registry entry to be appended to `.private/holaos-research/holaos-adoptions.md` before first commit
-- [x] `hooks/holaos-cleanroom-gate.sh` to run on pre-commit for adoption commits
+- [x] `hooks/external-pattern-cleanroom-gate.sh` to run on pre-commit for adoption commits
 - [x] Status is **Spike**, not Accepted — implementation is exploratory pending exit criteria
 - [x] No `/tmp/holaOS*` paths appear anywhere in this document
 

@@ -18,8 +18,8 @@ Public surface (per ADR-260 §1):
     verify_token(token, required_scope=None) -> GrantClaims | None
     GrantClaims  (dataclass)
 
-Pattern adopted from holaOS (clean-room rewrite).
-Refs: .private/holaos-research/holaos-comparison-2026-05-10.md
+Pattern adopted from external pattern (see ADR-259) (clean-room rewrite).
+Refs: .private/external-pattern-research/external-pattern-comparison-2026-05-10.md
 Source-pattern: AnnexD::§1.grant-signing
 License: Apache-2.0 modified (BSL-like). No source code copied.
 """

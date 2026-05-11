@@ -211,7 +211,7 @@ cc_driver_emit() {
     "hooks/orchestrator-skill-invocation-gate.sh" "false" \
     "hooks/release-guard.sh"                 "false" \
     "hooks/control-plane-audit.sh"            "false" \
-    "hooks/holaos-cleanroom-gate.sh"           "false" \
+    "hooks/external-pattern-cleanroom-gate.sh"           "false" \
   )
 
   local pre_read

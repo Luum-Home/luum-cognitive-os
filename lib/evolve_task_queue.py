@@ -5,7 +5,7 @@
 ADR-262 §Decision 2: persistent queue at .cognitive-os/state/evolve-proposals.db.
 Supports enqueue, list_pending, approve, reject, mark_promoted operations.
 
-Clean-room implementation per ADR-259. No holaOS source material used.
+Clean-room implementation per ADR-259. No external pattern (ADR-259) source material used.
 """
 
 from __future__ import annotations
