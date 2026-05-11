@@ -12,6 +12,7 @@
 - History sanitization narrative published: [`docs/history/HISTORY-SANITIZATION-2026-05-08.md`](../history/HISTORY-SANITIZATION-2026-05-08.md)
 - Recovery mirror present off-repo at the operator's recovery directory
 - Local working tree clean (`git status` is empty)
+- **`node` available in PATH** (via `fnm`, `nvm`, or system install). Required by `scripts/cos-opencode-primitive-adapter-smoke` in the release-confidence bundle. Verify: `command -v node && node --version`. If missing, install before proceeding (e.g. `fnm install --lts && fnm use lts-latest`).
 
 ---
 

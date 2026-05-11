@@ -51,7 +51,13 @@ Mirrors the pattern of [`docs/research/orchestration-gaps/IMPLEMENTATION-CHECKLI
 | # | Topic | Status | Source / evidence |
 |---|---|---:|---|
 | F1 | `make test-laptop-integration` exhausted local 900s laptop timeout at 56%; classify as sizing issue and run via stable shards. | ✅ implemented | `scripts/cos-integration-shard-plan`, `make test-laptop-integration-plan`, `make test-laptop-integration-shard SHARD_INDEX=N`; ADR-072 lane taxonomy + ADR-100 resource-governed test execution. |
-| F2 | OpenCode primitive adapter smoke requires `node` in PATH; passed during release-confidence bundle via `fnm`, but the environment dependency is implicit. Document as runbook prerequisite or wrap with auto-install. | 🟡 documented in CHANGELOG | `[0.28.0]` Release notes, line 88; `scripts/cos-opencode-primitive-adapter-smoke`. |
+| F2 | OpenCode primitive adapter smoke requires `node` in PATH; passed during release-confidence bundle via `fnm`. Document as runbook prerequisite. | ✅ documented | `docs/runbooks/public-launch-day.md` Prerequisites; CHANGELOG `[0.28.0]` Release notes. |
+| F3 | Portability tests for 7 new SCOPE: both libs/scripts (lib/{repo_map,dspy_pilot,integration_shard_plan}.py, packages/.../agentapi_msgfmt.py, scripts/cos-{repo-map,dspy-pilot,integration-shard-plan}). | ✅ implemented | `tests/red_team/portability/test_*.py` (7 files, 22 probes total — bilateral + falsification each); gate `hooks/scope-marker-portability-gate.sh` exits 0. |
+| T-H4 BPF compilation | Strict seccomp BPF profile generation/compilation for bwrap. Manifest + opt-in command construction shipped in v0.28.0. | ⏸ parked | Requires workload smokes + threat-model validation per `docs/security/bwrap-seccomp-threat-model.md`; activate after benchmark evidence; not a release blocker. |
+| T-public-launch | T-0 GitHub visibility flip per `docs/runbooks/public-launch-day.md`. | ⏸ operator decision | Manual single-person action; runbook stable; no auto-execution path. |
+| T-W3-bench | Wave 3 hardening — repo-map benchmarking against pure `lib/context_diet.py`. | 🔲 follow-up | Compare graph-rank token efficiency on real codebases before promoting `lib/repo_map.py` past optional pilot. |
+| T-W3-dspy-real | Wave 3 hardening — DSPy real dependency pilot when installed (sdd-verify integration). | 🔲 follow-up | Today the seam is opt-in; turn on real DSPy structured-skill compile path once a benchmark proves quality delta. |
+| T-W3-parsers | Wave 3 hardening — parser ports over vendored agentapi fixtures (golden test → real adapter parsing for each harness). | 🔲 follow-up | `lib/harness_adapter/testdata/agentapi/` is vendored; per-harness parser conformance still pending. |
 
 **Gate note:** the reassessment and doctrine are intentionally documentation-before-implementation. Runtime adoption work should not start from prose alone; it must pass ADR-254's manifest, audit, and research-check path.
 
