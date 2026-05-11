@@ -59,7 +59,7 @@ Implications for compliance:
 
 ## 5. Pre-commit gate recommendation
 
-A `hooks/ifixai-cleanroom-gate.sh` check (analogous to `hooks/holaos-cleanroom-gate.sh` if present) should verify:
+A `hooks/ifixai-cleanroom-gate.sh` check (analogous to `hooks/external-pattern-cleanroom-gate.sh` if present) should verify:
 
 1. No file in `lib/`, `scripts/`, or `skills/` contains the string `ifixai` as an import path without a corresponding compliance comment citing this annex.
 2. Any eval-run manifest under `runs/` that references iFixAi numbers carries the "drift-signal, not certified score" label.
