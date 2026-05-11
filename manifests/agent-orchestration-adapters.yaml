@@ -251,6 +251,7 @@ core_file_allowlist:
 - lib/dispatch_helper.py
 - lib/dispatch_model_advisor.py
 - lib/dispatch_optimizer.py
+- lib/evolve_task_queue.py
 - lib/file_mutation_queue.py
 - lib/handoff_dispatcher.py
 - lib/handoff_envelope.py
@@ -276,6 +277,7 @@ core_file_allowlist:
 - lib/session_state.py
 - lib/session_watchdog_lib.py
 - lib/token_budget_monitor.py
+- lib/tool_budget_catalog.py
 - lib/work_queue.py
 - lib/worktree_audit.py
 - packages/adaptive-workflow/lib/token_budget_monitor.py
