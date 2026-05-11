@@ -2,6 +2,17 @@
 related-adr: ADR-134
 ---
 
+<!--
+RECONCILIATION STATUS: NEAR-COMPLETE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Status:
+- Phase 1 (Proposal loop): DONE (all 7 items already checked).
+- Phase 2 (Doctrine proposer): DONE (all 4 items already checked).
+- Phase 3 (Consumer evidence import/export): DONE (all 8 items already checked); reinforced post-v0.28.0 by consumer fleet status panel (commit 2dd2e0144) and consumer-leakage cleanup (39ce28fb4).
+- Phase 4 (Background proposer): NOT STARTED — scheduled propose-only runner not yet shipped; deliberately deferred until ADR-201 PromoteFromTelemetry stabilizes (already gated by Phase 3 of adr-200-plus-closure-plan.md).
+Recommendation: keep ACTIVE for Phase 4 only; do NOT archive. Phase 4 should pick up after the ADR-200-plus closure plan's Phase 6 fleet-confidence boundary clarifies aggregation-only constraints.
+-->
+
 # Headless Self-Improvement Proposer Plan
 
 ## Goal

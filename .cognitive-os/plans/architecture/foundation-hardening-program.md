@@ -1,3 +1,17 @@
+<!--
+RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Phase status:
+- Phase 1 (validation capsule hardening): DONE (all 5 acceptance items checked).
+- Phase 2 (single-writer main): MOSTLY DONE — branch-worktree-closure primitive cited; ADR-242 git-filter-repo wrapper preserves remote and ADR-243 post-rewrite push collision exception close the head-drift gap; ADR-246 release-transaction freeze covers high-risk publish paths; queue worker default-push acceptance item not formally checked but covered by protected-publication policy.
+- Phase 3 (WIP ownership ledger): PARTIAL — task/file claim ledger exists; stash provenance hardening landed via ADR-117 stash-mutation reversibility; full file/domain/registry coverage still partial.
+- Phase 4 (guard maturity levels): PARTIAL — manifest fields exist via cognitive-os.yaml + control-plane audit (ADR-248); explicit observe/warn/block/emergency annotation still inconsistent across older hooks.
+- Phase 5 (test lane taxonomy and budgets): DONE — ADR-072 + .cognitive-os/test-lanes.yaml + cos-test focused/cluster/broad + ADR-237 test execution efficiency protocol close lane budgets and failure semantics; F1 sharded laptop integration (CHANGELOG [Unreleased]/Added) closes the only post-0.28 carry-over.
+- Phase 6 (multi-agent chaos suite): PARTIAL — ADR-118 swarm slice tracker still in plan; production-source read-only chaos guard + release-freeze chaos coverage shipped.
+Major post-v0.28.0 closures consumed by this plan: ADR-242, ADR-243, ADR-244 (trust-report enforce), ADR-245 (prod-source readonly), ADR-246 (release transaction freeze), ADR-247, ADR-248, ADR-249.
+Recommendation: keep ACTIVE for Phase 3, Phase 4, Phase 6 residuals. Do NOT archive.
+-->
+
 # Foundation Hardening Program
 
 ## Goal

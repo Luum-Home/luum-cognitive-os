@@ -1,5 +1,15 @@
 <!--
-RECONCILIATION STATUS: PARTIAL_DONE — Phases 1+2 complete, Phases 3-5 pending
+RECONCILIATION STATUS: COMPLETE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+All 5 phases of this plan are shipped per the body's "Last updated: 2026-05-01 / Status: ALL PHASES (1-5) COMPLETE" header. Post-v0.28.0 reinforcement:
+- Phase 3 (timing): scripts/hook-timing-wrapper.sh + tests/audit/test_hook_latency_budget.py confirmed; integrated into the radar tracker H4 follow-ups.
+- Phase 4 (hook composition): hooks/_lib/hook-pipe.sh + tests/audit/test_hook_pipe.py confirmed.
+- Phase 5 (DISABLE_HOOK_*): hooks/_lib/common.sh check_disabled_env + tests/audit/test_hook_disable_env.py confirmed.
+- Itinerary hook event alignment landed post-0.28 (commits 73fbdfa93, 0183c24fb) — keeps registry / settings.json / .codex/hooks.json projections in sync, which is the long-tail risk this plan called out as "Profile JSON files diverge from docs over time".
+- Control-plane audit loop (ADR-248) + classification projection (commit f94260f41) provide the manifest-vs-runtime parity test the plan §13 requested.
+Recommendation: archive — move file to .cognitive-os/plans/archive/ in a future tidy commit. (Recommendation only; do NOT physically move now per reconciliation scope.)
+Older inline reconciliation history (preserved for audit):
+PARTIAL_DONE — Phases 1+2 complete, Phases 3-5 pending
 Superseded for Phase 1 by: scripts/apply-efficiency-profile.sh + scripts/set-security-profile.sh (ws7 commit 329deb2), ADR-028a (runtime feature flags), ADR-029 (reinvention-check wiring), ADR-027 (slim-profile work)
 Reconciled: 2026-04-21 (Phase 1 only)
 Re-audited: 2026-04-27 — Phase 1 (3-profile model + 41 tests + JSON profile files) confirmed shipped via apply-efficiency-profile.sh + set-security-profile.sh. Phase 2 (set-security-profile.sh missing SubagentStart/UserPromptSubmit/PreCompact event coverage — grep returns 0 matches), Phase 3 (timing instrumentation), Phase 4 (hook-pipe), Phase 5 (disable env vars) remain real work.

@@ -2,6 +2,21 @@
 related-adrs: ADR-200, ADR-201, ADR-202, ADR-203, ADR-204, ADR-205, ADR-206, ADR-207, ADR-208, ADR-209, ADR-210, ADR-211
 ---
 
+<!--
+RECONCILIATION STATUS: HEAVY-DELTA / MOSTLY DONE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Phase status:
+- Phase 0 (inventory): DONE.
+- Phase 1 (ADR-202 private-content): DONE — all 7 items checked, projection guard tests pass.
+- Phase 2 (ADR-204 signal/ADR-205 trace): DONE — trace_joiner + run-trace flight recorder + cos observe run shipped.
+- Phase 3 (ADR-201 ledger + Maintainer loop): DONE — Performance Ledger, dedup helper, PromoteFromTelemetry, dry-run Maintainer with ADR-164 propose-only boundary all shipped.
+- Phase 4 (domain closures ADR-206/207/208): PARTIAL — ADR-208 dependency-adoption-gate slice landed (8437c768a treats package-metadata as non-dependency edits; scripts/cos-tool-adoption-audit reports pass=0 findings post-v0.28.0). ADR-206 (public claim gate) and ADR-207 (skill performance lifecycle states) still partial; ADR-252 capability-coverage matrix + feature reality ledger (commit a4d758b3d) closes most of the public-claim and capability surfaces.
+- Phase 5 (ADR-209/211 experiment + service launch gates): PARTIAL — service-mode readiness CLI item is the only one checked; experiment/canary schema and outcome-failure queue still pending.
+- Phase 6 (ADR-210 fleet/cloud confidence): future-only as designed.
+Major post-v0.28.0 closures consumed by this plan: ADR-247 (manifest-driven postmortem audits), ADR-248 (control-plane audit loop with hook-fast lane + remediation queue), ADR-249 (anti-overfit primitive proof), ADR-251 (agent orchestration adapter boundary), ADR-252 (capability coverage matrix + feature reality ledger), ADR-254 (External Tool Intelligence Plane), ADR-256/257/258 (primitive contract registry + portable-AI overlay), and ADR-244 (trust-report claim validator must enforce).
+Recommendation: keep ACTIVE for Phase 4-5 residual items; do NOT archive. Many checkbox items below remain unchecked because they are now satisfied by ADRs that shipped after this plan was written; treat the ADR list above as the authoritative closure ledger and use this plan only for the remaining experiment/canary substrate.
+-->
+
 # ADR-200+ Closure Plan
 
 ## Goal

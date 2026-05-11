@@ -1,3 +1,17 @@
+<!--
+RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Phase status (best-effort cross-check against current code):
+- Phase 1 (cognitive load): PARTIAL — readiness/active surface primitives shipped (scripts/cos-status.sh, primitive_lifecycle.py); first-run docs decision tree still informal.
+- Phase 2 (token tax): PARTIAL — RULES-COMPACT.md exists; ToolSearch token-delta metrics shipped (lib/deferred_tool_loading.py + scripts/cos-deferred-tool-plan --token-delta; CHANGELOG [Unreleased]/Added). Distribution-specific budgets still aspirational.
+- Phase 3 (latency): PARTIAL/DONE — scripts/hook-timing-wrapper.sh + tests/audit/test_hook_latency_budget.py + lifecycle manifest latency budgets per ADR-237 (test execution efficiency protocol) close most acceptance items; high-latency demotion/repair messaging remains advisory.
+- Phase 4 (indirection): PARTIAL — block events emit trace ids via lib/trace_joiner.py + .cognitive-os/runs/*/trace.json (ADR-205 closure); `cos explain last-block` not yet a single-command CLI.
+- Phase 5 (harness coupling): PARTIAL — ADR-251 (agent orchestration adapter boundary) + ADR-250 (skill router retrieval adapter) + ADR-258 (portable AI overlay) + scripts/cos-opencode-primitive-adapter-smoke close several items; capability matrix consumed by readiness checks via feature reality matrix (CHANGELOG [0.28.0] "Capability and feature reality surfaces").
+- Phase 6 (upstream duplication): PARTIAL — ADR-254 External Tool Intelligence Plane + ADR-255 Feature-to-External-Tool Due Diligence ratify the recurring overlap review process and manifest-backed BUILD-vs-ADOPT gates.
+- Phase 7 (self-referential governance cap): PARTIAL — primitive-lifecycle recommendations exclude meta-governance from default surface (one acceptance already checked); ROI ledger and lab-by-default for harvester remain partial.
+Recommendation: keep ACTIVE; this is a cross-cutting umbrella for tier work that continues into 0.29. Do NOT archive.
+-->
+
 # DX Tax Reduction Plan
 
 ## Goal

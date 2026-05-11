@@ -1,3 +1,15 @@
+<!--
+RECONCILIATION STATUS: COMPLETE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (re-run after lost session, see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Evidence (post-v0.28.0):
+- ADR-072 (Test Lane Taxonomy) ratified the lane registry at .cognitive-os/test-lanes.yaml; auto-marker injection is live in tests/conftest.py and audited by tests/audit/test_marker_coverage.py.
+- cos-test focused/cluster/broad shipped under cmd/cos-test/internal/cli/ and is the canonical entry point; Makefile targets emit deprecation warnings via existing wrappers.
+- F1 followup landed sharded laptop integration: scripts/cos-integration-shard-plan + make test-laptop-integration-plan/-shard (CHANGELOG [Unreleased]/Added; tracker F1 row).
+- ADR-066/072 enforce polyglot quality gates including Python snake_case (tests/audit/test_python_naming.py) and bash kebab-case (tests/audit/test_bash_naming.py) — derived primitives of this plan.
+- AC3 (cos-test focused <30s on 1-3 file diff) remains qualified: subcommand exists; <30s bound only verifiable on clean tree, current branch has 22+ tracked modifications. No further work required to declare the plan complete; the wall-time invariant moves to ADR-237 (test execution efficiency protocol) as a budget gate, not a per-plan AC.
+Recommendation: move file to .cognitive-os/plans/archive/ in a future tidy commit (do NOT physically move now per reconciliation scope).
+-->
+
 # Proposal: Test Runner Ergonomics
 
 > SDD propose phase. Source: explore observation #14950 (`sdd/test-runner-ergonomics/explore`).

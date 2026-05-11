@@ -1,5 +1,10 @@
 <!--
-RECONCILIATION STATUS: SUPERSEDED
+RECONCILIATION STATUS: TOMBSTONE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
+Decision: TOMBSTONE (already in archive/; this strengthens the prior SUPERSEDED tag to a tombstone).
+Rationale: Plan is already file-located under archive/. All 8 workstreams (TO-1 through TO-8) are either superseded by accepted ADRs (ADR-027 SO slimming, ADR-044 context payload slimming, ADR-049 direct-provider routing) or by shipped runtime: ws3 prompt cache (78.5% input cost reduction), ws1 EXCLUDED_RULES (14→87 rules excluded), ws2 SmartTruncator, ToolSearch token-delta metrics in lib/deferred_tool_loading.py + scripts/cos-deferred-tool-plan --token-delta (CHANGELOG [Unreleased]/Added). The token-reduction figure has also been doctrinally re-qualified as upstream-Anthropic per H5 in the radar-2026-05-08 implementation tracker, with local instrumentation as the only acceptable measurement going forward. Keep file in archive/ for historical context only; do not promote back to active. Future token-economy work should be tracked under ADR-237 test execution efficiency protocol or via the External Tool Intelligence Plane (ADR-254) feature-vs-tool benchmark, not by reviving this plan.
+Older inline reconciliation history (preserved for audit):
+SUPERSEDED
 Superseded by: ADR-027 (SO slimming — context overhead pillar), ADR-044 (context payload slimming — non-rule agentic primitives), ws1 EXCLUDED_RULES (14→87 rules excluded), ws2 SmartTruncator, ws3 prompt cache (78.5% input cost reduction)
 Reconciled: 2026-04-21
 Reason: the 8 largest waste sources enumerated (TO-1 through TO-8) all have shipped agentic primitives or ADR coverage. The target ">95% efficiency" is being measured via SLO 10/11 (startup-benchmark.sh) rather than this plan's KPIs.

@@ -1,5 +1,10 @@
 <!--
-RECONCILIATION STATUS: ON ICE — 2026-04-27
+RECONCILIATION STATUS: TOMBSTONE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
+Decision: TOMBSTONE.
+Rationale: The External Tool Adoption Doctrine (docs/architecture/external-tool-adoption-doctrine.md, ratified by ADR-254) explicitly DEFERs "Distributed workflow engines: Temporal, NATS, Firecracker-primary, OPA-by-default" with the rule "Local-first event bus, file-IPC, release freeze, and worktree governance" instead. ADR-036 (sprint orchestration primitives) plus @event_wrap + ADR-226 cover the MVP slice already, and lib/workflow_engine.py / lib/workflow_types.py do not exist nor are they planned. Building this engine would directly contradict accepted doctrine and duplicate mechanisms COS has decided to integrate (FastMCP, agentapi adapter, MCP) rather than reimplement. Move to .cognitive-os/plans/archive/tombstones/ in a future tidy commit (recommendation only; do not move now). If a Shape-B trigger ever fires for federation/cluster runtime per ADR-132, revisit via ADR-254 manifest/audit/research-check path — not by reviving this plan as-is.
+Older inline reconciliation history (preserved for audit):
+ON ICE — 2026-04-27
 Related ADRs: ADR-036 (sprint orchestration primitives — MVP shipped 2026-04-20: CLI + manifest + canonical events + example spec)
 Reconciled: 2026-04-21 (initial scope note); re-audited 2026-04-27 (no engineering progress)
 Audit 2026-04-27: lib/workflow_engine.py and lib/workflow_types.py do not exist. .cognitive-os/workflows/ contains only bugfix-pipeline.yaml + feature-pipeline.yaml, neither matching the 5 pre-built workflows the plan specifies. tests/unit/test_workflow_engine.py absent. Zero commits in last 60 reference workflow-engine. Marked ON ICE — re-activate when SDD pipeline failure recovery becomes a recurring pain point (signal: ≥3 incidents where a partial pipeline can't resume) or operator prioritizes.

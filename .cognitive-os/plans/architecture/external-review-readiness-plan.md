@@ -1,3 +1,16 @@
+<!--
+RECONCILIATION STATUS: MOSTLY DONE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Phase status:
+- Phase 0 (evidence baseline + readiness report): DONE (all 4 acceptance items checked).
+- Phase 1 (friction budget + demotion gate): DONE (all 3 acceptance items checked); reinforced by primitive-lifecycle --recommendations consuming ROI/friction.
+- Phase 2 (wire safety primitives into real flows): DONE (all 3 acceptance items checked); reinforced post-v0.28.0 by ADR-239 isolated worktree default for write agents and ADR-243 post-rewrite push collision exception.
+- Phase 3 (active surface reduction): PARTIAL — runtime coverage caveat (2026-05-03 note in body) still applies; primitive contract registry phase one (ADR-257) and observable overlay UX provide the substrate to close it. Acceptance items not yet checked.
+- Phase 4 (production border-case suite): PARTIAL — chaos guard for production-source read-only landed (commit d3c179730 / ADR-245); release-transaction freeze (ADR-246) + history sanitization recovery (ADR-218 execute slice) cover several scenarios; the full named scenario list remains a backlog item.
+- Phase 5 (product packaging proof): PARTIAL — public-launch transparency package + verify-public-release + launch-day runbook (CHANGELOG [0.28.0]) close the product-claims surface; Lean/Core 5-minute proof path not yet a single command.
+Recommendation: keep ACTIVE; this is the umbrella for the public-launch and post-launch hardening work. Do NOT archive until Phases 3-5 complete.
+-->
+
 # External Review Readiness Plan
 
 ## Goal

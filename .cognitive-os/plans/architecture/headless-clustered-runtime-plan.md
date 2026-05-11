@@ -2,6 +2,19 @@
 related-adr: ADR-084
 ---
 
+<!--
+RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Phase status:
+- Phase 0 (current local harness): ACTIVE as designed.
+- Phase 1 (headless single-node): MOSTLY DONE — `cos run-task` contract documented (docs/architecture/cos-run-task-contract.md cited); 5 of 8 tracking items checked; unattended safe-mode/kill-switch + protected-publication + VM-restart idempotency proofs not yet shipped (some implicitly covered by ADR-246 release-transaction freeze for publication paths).
+- Phase 2 (queue-backed worker): PARTIAL — research documented (cloud-worker-runtime-tooling-research-2026-05.md); worker-lease tests pending; queue worker referenced as default push path in foundation-hardening-program.md Phase 2.
+- Phase 3 (container): DOCUMENTED — Docker worker bootstrap shipped in v0.26.0 (`scripts/cos-cloud-worker-bootstrap.sh` + `docs/runbooks/run-cos-in-docker.md`); container contract document item still unchecked.
+- Phase 4 (Kubernetes): NOT STARTED. Per External Tool Adoption Doctrine, distributed workflow engines and multi-machine orchestration are explicitly DEFER/REJECT. This phase remains aspirational until a Shape-B trigger fires per ADR-132.
+- Phase 5 (autonomous repair): NOT STARTED — guarded by non-negotiable constraint "Do not claim autonomous repair without testable proof path".
+Recommendation: keep ACTIVE for Phases 1-2 follow-through; treat Phases 4-5 as DEFER per doctrine. Do NOT archive.
+-->
+
 # Headless and Clustered Runtime Plan
 
 This plan implements ADR-027 in phases. It is intentionally staged so Cognitive

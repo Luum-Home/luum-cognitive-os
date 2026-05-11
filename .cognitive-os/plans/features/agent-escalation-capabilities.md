@@ -1,5 +1,10 @@
 <!--
-RECONCILIATION STATUS: ON ICE — 2026-04-27
+RECONCILIATION STATUS: ARCHIVE (parking lot) — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
+Decision: ARCHIVE.
+Rationale: The plan remains coherent and consistent with existing primitives (lib/escalation_detector.py, lib/agent_bus.py, lib/dispatch_helper.py, lib/model_router.py), and post-v0.28.0 work has actually expanded several substrates the plan needed (ADR-251 agent orchestration adapter boundary, ADR-049 LLM dispatch + retry contract per ADR-228). However it is not on the current roadmap waves (Memory Wave 2 M2/M4, T-H4 seccomp, Wave 3 hardening, public-launch runbook execution per docs/reports/radar-2026-05-08-implementation-tracker.md), and the original ON-ICE trigger conditions still hold: no concrete agent failure mode has signalled horizontal escalation as the cure. Park in archive/ (recommendation only; do not move now); reactivate when (a) recurring capability-ceiling incidents accrue, or (b) operator explicitly prioritizes.
+Older inline reconciliation history (preserved for audit):
+ON ICE — 2026-04-27
 Related ADRs: ADR-036 (sprint orchestration primitives), ADR-038 (preamble v2 — reasoning-cycles cap + retry diversity + memory tiers)
 Reconciled: 2026-04-21 (initial scope note); re-audited 2026-04-27 (no engineering progress)
 Audit 2026-04-27: All 24 DoD items unchecked. grep of lib/escalation_detector.py, lib/dispatch_helper.py, lib/model_router.py finds zero occurrences of publish_escalation, _upgrade_model, handle_capability_escalation, NEEDS_DEEPER_REASONING. Zero commits in last 60 entries touch escalation. Base lib files exist but were not extended. Marked ON ICE — re-activate when (a) a concrete agent failure mode signals horizontal escalation as the cure, or (b) operator explicitly prioritizes.

@@ -1,3 +1,10 @@
+<!--
+RECONCILIATION STATUS: ACTIVATE — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
+Decision: ACTIVATE.
+Rationale: The plan explicitly references ADR-123 (which has shipped multi-slice tracking under .cognitive-os/plans/architecture/adr-118-121-123-slices.md) and ADR-124 distribution tiers; both are accepted ADRs in active maintenance. Post-v0.28.0 work directly aligned with this plan: ADR-248 control-plane audit loop + remediation queue feed Phase 1 friction telemetry; ADR-237 test execution efficiency protocol + ADR-072 lane taxonomy advance Phase 6 diff-aware lanes; tiered cleanup primitive (CHANGELOG [0.28.0]) advances Phase 4 repair CLI. The plan should not stay in P3-zero-progress because real underlying work is closing its phases. Promote to P2 active under the same umbrella as governance-tools-consolidation.md and external-review-readiness-plan.md, and in the next reconciliation pass cross-check the existing `cos status` and `cos governance roi` surfaces against this plan's Phase 5 acceptance criteria.
+-->
+
 # Operational Stability and Friction Reduction Program
 
 ## Goal

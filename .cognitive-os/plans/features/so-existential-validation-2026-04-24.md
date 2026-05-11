@@ -1,3 +1,14 @@
+<!--
+RECONCILIATION STATUS: PARTIAL — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P2 plan reconciliation (see docs/reports/p2-plan-reconciliation-2026-05-10.md)
+Phase status:
+- Phase 1 (Aggressive Prune): MOSTLY DONE — DELETE batch archived, DEFER markers added; DORMANT test/promote loop ongoing as background work; ratio<0.25 exit not yet certified.
+- Phase 2 (Install Timing): MOSTLY DONE — scripts/install-timing-test.sh + Makefile target + 5 baseline runs (mean=38.8s, p95=43s) + tests/contracts/test_install_timing.py shipped pre-0.28; verdict commit on README PnP claim not yet recorded as a separate commit but baseline meets <300s threshold so claim retention is supported by data.
+- Phase 3 (Core vs Extensions): IN PROGRESS — classification audit + migration plan exist; wave migrations not executed; deferred to post-launch tidy waves. /install-skill + /install-hook on-demand contracts NOT shipped.
+Recent post-v0.28.0 evidence: feature reality matrix (a4d758b3d) and consumer fleet status panel (2dd2e0144) provide the visibility surface this plan asked for; consumer leakage cleanup (39ce28fb4) reduces the dormant_aspirational surface further.
+Recommendation: keep ACTIVE; Phase 3 wave execution is the live thread. Do NOT archive.
+-->
+
 # Plan: SO Existential Validation
 
 > Governed by ADR-059. 3 phases. Target completion: 2026-05-15 (3 weeks).

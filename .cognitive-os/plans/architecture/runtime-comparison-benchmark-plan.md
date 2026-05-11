@@ -3,6 +3,14 @@ no-adr-required: true
 rationale: benchmark specification — axes, workloads, metrics, and execution phases with no architectural decision content
 ---
 
+<!--
+RECONCILIATION STATUS: ARCHIVE (parking lot) — 2026-05-10 (post-v0.28.0)
+Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
+Decision: ARCHIVE.
+Rationale: Comparing COS against vanilla Claude/Codex/OpenCode and prior-art systems across workstation/VM/container/pod/cluster surfaces remains potentially valuable as marketing/positioning evidence and as a source of governance-overhead truth (the doctrine demands measurable hook overhead per ADR-237). However this plan competes with the explicit DEFER posture for cluster/Kubernetes runtimes in the External Tool Adoption Doctrine and in ADR-049 LLM dispatch posture; the only currently funded surfaces are workstation and (post-v0.26.0) Docker container worker. The Phase 1 local baseline can be revisited opportunistically without keeping this plan on the active P2 list. Park in .cognitive-os/plans/archive/ (recommendation only; do not move now); reactivate when (a) external buyers explicitly request comparative benchmarks, or (b) Shape-B federation/cluster trigger fires per ADR-132.
+-->
+
+
 # Runtime Comparison Benchmark Plan
 
 This plan extends ADR-027 with a competitive benchmark matrix. The goal is not
