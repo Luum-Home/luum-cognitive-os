@@ -5,6 +5,8 @@ parent: docs/research/megamemory-comparison-2026-05-11.md
 source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 ---
 
+> **License attribution.** Code excerpts and structural descriptions quoted from `0xK3vin/MegaMemory` v1.6.2 (MIT License, Copyright (c) 2026 0xk3vin — see https://github.com/0xK3vin/MegaMemory/blob/main/LICENSE). MIT permits direct vendoring with copyright preservation. See [`megamemory-annex-f-compliance-cleanroom-2026-05-11.md`](megamemory-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol and port-vs-vendor decisions.
+
 # Annex A — Concept Graph & Relation Model
 
 Drills the data model: the 6 concept kinds, the 5 relation types, the SQLite v4 schema, and a side-by-side with Engram's `memory_relations` typed graph.

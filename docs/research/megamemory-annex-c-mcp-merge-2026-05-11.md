@@ -5,6 +5,8 @@ parent: docs/research/megamemory-comparison-2026-05-11.md
 source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 ---
 
+> **License attribution.** Code excerpts and structural descriptions quoted from `0xK3vin/MegaMemory` v1.6.2 (MIT License, Copyright (c) 2026 0xk3vin — see https://github.com/0xK3vin/MegaMemory/blob/main/LICENSE). MIT permits direct vendoring with copyright preservation. See [`megamemory-annex-f-compliance-cleanroom-2026-05-11.md`](megamemory-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol and port-vs-vendor decisions.
+
 # Annex C — MCP Tool Surface & Conflict-Merge
 
 Enumerates all 9 MCP tools, drills the two-way merge engine, and contrasts MegaMemory's explicit `list_conflicts` / `resolve_conflict` tools against Engram's `judgment_required` envelope + per-candidate `mem_judge` heuristic.

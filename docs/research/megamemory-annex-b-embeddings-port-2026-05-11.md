@@ -6,6 +6,8 @@ source-repo: ".cognitive-os/external-source-cache/MegaMemory (v1.6.2)"
 port_target: lib/engram_lifecycle.py (LightRAG dual-level slice)
 ---
 
+> **License attribution.** Code excerpts and structural descriptions quoted from `0xK3vin/MegaMemory` v1.6.2 (MIT License, Copyright (c) 2026 0xk3vin — see https://github.com/0xK3vin/MegaMemory/blob/main/LICENSE). MIT permits direct vendoring with copyright preservation. See [`megamemory-annex-f-compliance-cleanroom-2026-05-11.md`](megamemory-annex-f-compliance-cleanroom-2026-05-11.md) for the full compliance protocol and port-vs-vendor decisions.
+
 # Annex B — In-Process Embeddings (the canonical port target)
 
 This is the **only** MegaMemory primitive worth porting now. Everything else in MegaMemory either duplicates Engram or is below COS governance/bus-factor floor. This annex pins exactly what the pattern is, why it's better than what we have, and what the Python port looks like.
