@@ -1,0 +1,8 @@
+schema_version: ast-similarity-baseline/v1
+generated: 2026-05-11
+note: |
+  ACCEPTED AST similarity hits — symbol-renamed or structurally-identical
+  units from external-source-cache that have been reviewed and are permitted
+  (e.g. common Python idioms, boilerplate). New hits NOT in this file block
+  commits. See rules/clean-room-detection-limits.md for tier matrix.
+accepted:
