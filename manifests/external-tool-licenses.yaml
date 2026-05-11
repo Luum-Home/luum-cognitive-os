@@ -1,0 +1,144 @@
+# external-tool-licenses.yaml
+# Operator-maintained manifest of upstream tools vendored or ported into Cognitive OS.
+# Each entry corresponds to one upstream project. Fields:
+#   name          - Human-readable project name
+#   upstream_url  - Canonical upstream repository URL
+#   spdx          - SPDX license identifier (use UNKNOWN if unconfirmed)
+#   status        - ALLOWED | BLOCKED | HOLD | TRIAL-PATTERNS | PATTERN-ONLY
+#   copyright     - Exact copyright line from upstream LICENSE (MISSING if not found)
+#   attribution   - Attribution line to include in NOTICE
+#   cos_files     - COS source files that contain ported/adapted code
+#   annex_f       - Path to the Annex F compliance dossier (relative to repo root)
+#   notes         - Free-form compliance notes
+#
+# Schema version: 1
+# Last updated: 2026-05-11
+
+schema_version: 1
+
+entries:
+
+  - name: "Hermes Agent"
+    upstream_url: "https://github.com/NousResearch/Hermes-Function-Calling"
+    spdx: "MIT"
+    status: "ALLOWED"
+    copyright: "Copyright (c) NousResearch"
+    attribution: "Original work © NousResearch, ported and adapted by Cognitive OS contributors"
+    cos_files:
+      - "lib/memory_manager.py"
+      - "lib/context_compressor.py"
+      - "lib/prompt_cache.py"
+      - "lib/error_insights.py"
+      - "lib/review_agent.py"
+      - "packages/agent-lifecycle/lib/review_agent.py"
+      - "packages/verification-audit/lib/error_classifier.py"
+    annex_f: "docs/research/hermes-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      Backfill: ports predate ADR-259/ADR-267. Exact copyright line from upstream LICENSE
+      not extracted (confirmed MIT, copyright holder NousResearch). Precise copyright year
+      and wording must be confirmed against
+      https://github.com/NousResearch/Hermes-Function-Calling/blob/main/LICENSE before
+      legal review closes. lib/review_agent.py has a substantive duplicate in
+      packages/agent-lifecycle/lib/review_agent.py — tracked separately.
+
+  - name: "HKUDS/OpenHarness"
+    upstream_url: "https://github.com/HKUDS/OpenHarness"
+    spdx: "MIT"
+    status: "ALLOWED"
+    copyright: "Copyright (c) 2025 OpenHarness Contributors"
+    attribution: "Ports HttpHookDefinition and PromptHookDefinition from HKUDS/OpenHarness (MIT), adapted to COS conventions."
+    cos_files:
+      - "lib/hook_types.py"
+    annex_f: "docs/research/openharness-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      Commit hash recorded at source: 7873f0d109174a57b3b1af7aa5397a6b3b0bd551.
+      Source path: src/openharness/hooks/schemas.py. MIT confirmed via WebFetch
+      2026-05-11. Attribution is complete inline at lib/hook_types.py lines 4-6.
+
+  - name: "Pi coding-agent"
+    upstream_url: "UNKNOWN"
+    spdx: "MIT"
+    status: "HOLD"
+    copyright: "MISSING — upstream not identifiable"
+    attribution: "PENDING — upstream URL and copyright holder must be supplied before attribution can be authored"
+    cos_files:
+      - "lib/file_mutation_queue.py"
+    annex_f: "docs/research/pi-coding-agent-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      BLOCKED pending upstream identification. MIT claimed inline only.
+      Two GitHub searches returned zero matching repositories. No upstream URL, commit
+      hash, or copyright holder recorded in source file. Author of original port must
+      supply: (1) canonical upstream URL, (2) exact copyright line, (3) commit hash.
+      Do NOT distribute until resolved.
+
+  - name: "Sprut Agent Kit"
+    upstream_url: "https://github.com/AlekseiUL/sprut-agent-kit"
+    spdx: "MIT"
+    status: "BLOCKED"
+    copyright: "MISSING — LICENSE file returned HTTP 404; copyright holder unknown"
+    attribution: "PENDING — cannot be authored; copyright holder and license file unverifiable"
+    cos_files:
+      - "packages/verification-audit/lib/research_scoring.py"
+    annex_f: "docs/research/sprut-agent-kit-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      Worst-case attribution profile: COS source file contains only bare name reference
+      with no URL, commit, license, or copyright. Upstream MIT claimed in README but
+      LICENSE file returned 404. Copyright holder and year unknown. HOLD — cannot
+      distribute until attribution gap is closed.
+
+  - name: "HelixDB"
+    upstream_url: "https://github.com/HelixDB/helix-db"
+    spdx: "AGPL-3.0"
+    status: "TRIAL-PATTERNS"
+    copyright: "Copyright (c) HelixDB contributors (GNU AGPL-3.0)"
+    attribution: "Clean-room derived from behavioral spec; no helix-db source referenced. Design patterns documented in Annex F."
+    cos_files: []
+    annex_f: "docs/research/helixdb-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      REJECT runtime / TRIAL-PATTERNS pattern-only. AGPL-3.0 §13 triggers copyleft on
+      any network interaction. Three authorised TRIAL-PATTERNS primitives: typed-ADT
+      agent-call surface, reranker fusion (RRF+MMR), hoisted-embedding/IO-continuation.
+      Clean-room two-engineer protocol required. No upstream code vendored.
+
+  - name: "iFixAi"
+    upstream_url: "https://github.com/ifixai-ai/iFixAi"
+    spdx: "Apache-2.0"
+    status: "PATTERN-ONLY"
+    copyright: "Copyright 2026 iMe"
+    attribution: "Original work © 2026 iMe (Apache-2.0). Pattern-only adoption. Modified by Cognitive OS contributors."
+    cos_files: []
+    annex_f: "docs/research/ifixai-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      Apache-2.0. Pattern-only preferred over vendoring (uncalibrated thresholds,
+      iMe open-core split risk, project age ~1 week at eval). Pinned to v1.0.0
+      commit 2e56c4f. Upstream NOTICE file presence not independently verified —
+      required check before any vendoring. Mandatory-minimum inspection cap mechanic
+      blocked pending ADR-265.
+
+  - name: "MegaMemory"
+    upstream_url: "UNKNOWN — upstream repository URL not recorded"
+    spdx: "MIT"
+    status: "PATTERN-ONLY"
+    copyright: "Copyright (c) 2026 0xk3vin"
+    attribution: "Original work © 2026 0xk3vin (MIT). Port/pattern adoption by Cognitive OS contributors."
+    cos_files: []
+    annex_f: "docs/research/megamemory-annex-f-compliance-cleanroom-2026-05-11.md"
+    notes: >
+      MIT confirmed verbatim. Copyright: "MIT License / Copyright (c) 2026 0xk3vin".
+      Pattern-only preferred (single-author bus factor, <10k node ceiling, MCP fragmentation
+      risk). Planned ports: resolve_conflict MCP tool wrapper over mem_judge; ONNX embedder
+      deferred to LightRAG slice. Upstream repository URL not recorded — gap flagged.
+
+  - name: "holaOS"
+    upstream_url: "CONFIDENTIAL"
+    spdx: "PROPRIETARY"
+    status: "HOLD"
+    copyright: "CONFIDENTIAL — see internal compliance dossier"
+    attribution: "Reference: internal compliance dossier (Apache-2.0 modified BSL-like terms; distribution restricted)"
+    cos_files: []
+    annex_f: "internal compliance dossier"
+    notes: >
+      License classification: Apache-2.0 with BSL-like additional restrictions.
+      Distribution status under review. Upstream URL and compliance details available
+      in internal compliance dossier only — do NOT include private repository paths
+      in this manifest. Treat as HOLD until legal review closes.
