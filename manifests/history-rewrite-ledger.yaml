@@ -1,0 +1,27 @@
+schema_version: history-rewrite-ledger/v1
+# Append-only registry of every git history rewrite performed against this
+# repository (ADR-269). New entries MUST be appended at the bottom; modifying
+# or removing prior entries breaks the append-only contract enforced by
+# tests/contracts/test_history_rewrite_ledger_append_only.py.
+#
+# To register a rewrite manually use:
+#   scripts/cos-history-rewrite-audit --register <bundle> --adr ADR-NNN --reason "..."
+#
+# For automated invocations via cos-history-sanitization --execute or
+# cos-filter-repo-wrap.sh, the ledger entry is appended automatically when the
+# operator passes --adr-ref ADR-NNN.
+entries:
+  - timestamp: '2026-05-11T17:32:04Z'
+    operator: MatiasNAmendola
+    adr_ref: ADR-268
+    reason: |
+      Defensive sanitization of external-pattern attribution per ADR-268.
+      ADR-261..264 paper trail retained in ADRs themselves. This is the seed
+      event for ADR-269 — it triggered the realization that history rewrites
+      require machine-enforced documentation, not just operator goodwill.
+    bundle_path: .cognitive-os/recovery/pre-history-sanitization-20260511T173204Z.bundle
+    sha_before: aabc49b3
+    sha_after: f9d7cc54
+    rewrite_scope: commit-messages-only
+    tool: git-filter-repo
+    invocation: 'cos-history-sanitization --execute (operator-driven, governed by manifests/history-sanitization.yaml)'

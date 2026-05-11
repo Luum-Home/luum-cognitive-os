@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""ADR-269 Primitive 3 — operator CLI for history-rewrite ledger audit.
+
+Usage:
+  cos-history-rewrite-audit --list [--json]
+  cos-history-rewrite-audit --orphans [--json]
+  cos-history-rewrite-audit --register <bundle> --adr ADR-NNN --reason "..." \
+      [--operator NAME] [--sha-before SHA] [--sha-after SHA] \
+      [--scope SCOPE] [--tool TOOL] [--invocation STR] [--json]
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.history_rewrite_ledger import (  # noqa: E402
+    LedgerEntry,
+    LedgerError,
+    append_entry,
+    find_entries_with_missing_adr,
+    find_orphan_bundles,
+    find_orphan_entries,
+    list_entries,
+    validate_adr_accepted,
+)
+
+
+def _cmd_list(project_dir: Path, as_json: bool) -> int:
+    entries = list_entries(project_dir)
+    enriched = []
+    for entry in entries:
+        bundle = project_dir / entry.bundle_path
+        ok, reason = validate_adr_accepted(project_dir, entry.adr_ref)
+        enriched.append(
+            {
+                "entry": entry.to_dict(),
+                "bundle_exists": bundle.exists(),
+                "adr_accepted": ok,
+                "adr_check": reason,
+            }
+        )
+    if as_json:
+        print(json.dumps({"schema_version": "history-rewrite-audit/v1", "entries": enriched}, indent=2))
+        return 0
+    if not enriched:
+        print("(no ledger entries)")
+        return 0
+    print(f"{'TIMESTAMP':<22} {'ADR':<10} {'SCOPE':<24} {'BUNDLE':<8} {'ADR_OK':<7} BUNDLE_PATH")
+    for item in enriched:
+        e = item["entry"]
+        be = "yes" if item["bundle_exists"] else "MISSING"
+        ao = "yes" if item["adr_accepted"] else "NO"
+        print(f"{e['timestamp']:<22} {e['adr_ref']:<10} {e['rewrite_scope']:<24} {be:<8} {ao:<7} {e['bundle_path']}")
+    return 0
+
+
+def _cmd_orphans(project_dir: Path, as_json: bool) -> int:
+    orphan_bundles = find_orphan_bundles(project_dir)
+    orphan_entries = find_orphan_entries(project_dir)
+    bad_adr = find_entries_with_missing_adr(project_dir)
+    payload = {
+        "schema_version": "history-rewrite-audit/v1",
+        "orphan_bundles": [str(p.relative_to(project_dir)) for p in orphan_bundles],
+        "orphan_entries": [e.to_dict() for e in orphan_entries],
+        "entries_with_missing_or_unaccepted_adr": [e.to_dict() for e in bad_adr],
+    }
+    if as_json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"Orphan bundles (on disk, no ledger entry): {len(orphan_bundles)}")
+        for p in orphan_bundles:
+            print(f"  - {p.relative_to(project_dir)}")
+        print(f"Orphan entries (ledger entry, no bundle on disk): {len(orphan_entries)}")
+        for e in orphan_entries:
+            print(f"  - {e.bundle_path}  (adr={e.adr_ref}, ts={e.timestamp})")
+        print(f"Entries with unaccepted/missing ADR: {len(bad_adr)}")
+        for e in bad_adr:
+            ok, why = validate_adr_accepted(project_dir, e.adr_ref)
+            print(f"  - {e.bundle_path}  adr={e.adr_ref}  reason={why}")
+    # Non-zero exit only when there are orphan_bundles (the main actionable case)
+    return 1 if orphan_bundles else 0
+
+
+def _cmd_register(args: argparse.Namespace, project_dir: Path, as_json: bool) -> int:
+    bundle = Path(args.register)
+    if not bundle.is_absolute():
+        bundle_abs = (project_dir / bundle).resolve()
+    else:
+        bundle_abs = bundle.resolve()
+    if not bundle_abs.exists():
+        msg = f"bundle not found: {bundle_abs}"
+        if as_json:
+            print(json.dumps({"status": "error", "code": "bundle-not-found", "message": msg}))
+        else:
+            print(f"ERROR: {msg}", file=sys.stderr)
+        return 2
+    rel = bundle_abs.relative_to(project_dir.resolve()).as_posix()
+    entry = LedgerEntry(
+        timestamp="",  # filled by append_entry
+        operator=args.operator or "",
+        adr_ref=args.adr,
+        reason=args.reason,
+        bundle_path=rel,
+        sha_before=args.sha_before or "",
+        sha_after=args.sha_after or "",
+        rewrite_scope=args.scope or "unknown",
+        tool=args.tool or "git-filter-repo",
+        invocation=args.invocation or "manual --register via cos-history-rewrite-audit",
+    )
+    try:
+        path = append_entry(project_dir, entry, validate_adr=not args.skip_adr_check)
+    except LedgerError as exc:
+        if as_json:
+            print(json.dumps({"status": "error", "code": exc.code, "message": exc.message}))
+        else:
+            print(f"ERROR: {exc.code}: {exc.message}", file=sys.stderr)
+        return 2
+    payload = {"status": "ok", "ledger_path": str(path), "entry": entry.to_dict()}
+    if as_json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"Registered: {rel} -> {entry.adr_ref}")
+        print(f"Ledger: {path}")
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="ADR-269 history-rewrite ledger audit CLI.")
+    parser.add_argument("--project-dir", type=Path, default=ROOT)
+    parser.add_argument("--json", action="store_true")
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--list", action="store_true")
+    mode.add_argument("--orphans", action="store_true")
+    mode.add_argument("--register", metavar="BUNDLE", help="Path to bundle file to register")
+    # Register options
+    parser.add_argument("--adr", help="ADR-NNN reference (required with --register)")
+    parser.add_argument("--reason", help="Free-form rationale (required with --register)")
+    parser.add_argument("--operator", help="Operator id (defaults to git user)")
+    parser.add_argument("--sha-before", dest="sha_before")
+    parser.add_argument("--sha-after", dest="sha_after")
+    parser.add_argument("--scope", help="commit-messages-only | blob-content | metadata | all")
+    parser.add_argument("--tool", default="git-filter-repo")
+    parser.add_argument("--invocation", help="Command-line invocation string")
+    parser.add_argument(
+        "--skip-adr-check",
+        action="store_true",
+        help="(Discouraged) skip ADR-accepted validation when registering.",
+    )
+    args = parser.parse_args(argv)
+    project_dir = args.project_dir.resolve()
+
+    if args.list:
+        return _cmd_list(project_dir, args.json)
+    if args.orphans:
+        return _cmd_orphans(project_dir, args.json)
+    if args.register:
+        if not args.adr or not args.reason:
+            parser.error("--register requires --adr and --reason")
+        return _cmd_register(args, project_dir, args.json)
+    parser.error("one of --list / --orphans / --register required")
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

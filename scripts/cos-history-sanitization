@@ -55,7 +55,33 @@ def main() -> int:
         help="Skip the interactive 'REWRITE' confirmation. CI/automation only — operator-driven runs should NOT use this.",
     )
     parser.add_argument("--json", action="store_true", help="Emit JSON instead of human-readable summary")
+    parser.add_argument(
+        "--adr-ref",
+        dest="adr_ref",
+        default=None,
+        help="ADR-NNN reference documenting this rewrite (REQUIRED with --execute per ADR-269).",
+    )
+    parser.add_argument(
+        "--reason",
+        default=None,
+        help="Free-form rationale for the rewrite (recorded in the ledger entry).",
+    )
+    parser.add_argument(
+        "--operator",
+        default=None,
+        help="Operator identifier recorded in the ledger entry (defaults to $USER).",
+    )
     args = parser.parse_args()
+
+    if args.execute and not args.adr_ref:
+        msg = (
+            "ERROR: history rewrites require ADR documentation per ADR-269.\n"
+            "  Re-run with --adr-ref ADR-NNN where ADR-NNN is an Accepted ADR\n"
+            "  documenting the rewrite rationale. If no such ADR exists, create\n"
+            "  one first using docs/adrs/templates/history-rewrite.template.md."
+        )
+        print(msg, file=sys.stderr)
+        return 2
 
     if args.execute:
         # Execute path: build dry-run report first as the gating audit.
@@ -89,7 +115,13 @@ def main() -> int:
 
         # Run the rewrite
         try:
-            result = execute(args.project_dir, confirmed=confirmed)
+            result = execute(
+                args.project_dir,
+                confirmed=confirmed,
+                adr_ref=args.adr_ref,
+                reason=args.reason,
+                operator=args.operator,
+            )
         except SanitizationError as exc:
             error_payload = {
                 "schema_version": "history-sanitization-execute-error/v1",

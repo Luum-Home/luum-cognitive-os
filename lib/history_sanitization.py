@@ -639,7 +639,7 @@ def _metadata_message_callback(replacements: list[tuple[bytes, bytes]]) -> str:
     )
 
 
-def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]], manifest: dict[str, Any], backup_path: Path | None = None) -> subprocess.CompletedProcess[str]:
+def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, Any]], manifest: dict[str, Any], backup_path: Path | None = None, adr_ref: str | None = None) -> subprocess.CompletedProcess[str]:
     replacements = _literal_replacements(rules)
     passthrough: list[str] = []
     if metadata_rewrite_enabled(manifest):
@@ -670,6 +670,8 @@ def _run_filter_repo(project_dir: Path, rules_file: Path, rules: list[dict[str, 
     ]
     if backup_path is not None:
         cmd.extend(["--backup-mirror", str(backup_path)])
+    if adr_ref:
+        cmd.extend(["--adr-ref", str(adr_ref)])
     cmd.append("--")
     cmd.extend(passthrough)
     proc = subprocess.run(
@@ -863,6 +865,9 @@ def execute(
     *,
     confirmed: bool,
     timestamp: str | None = None,
+    adr_ref: str | None = None,
+    reason: str | None = None,
+    operator: str | None = None,
 ) -> dict[str, Any]:
     """Run the actual history rewrite per ADR-218.
 
@@ -891,6 +896,14 @@ def execute(
         raise SanitizationError(
             "operator-confirmation-required",
             "execute() refuses to proceed without confirmed=True; the CLI is responsible for the y/n prompt.",
+        )
+
+    # ADR-269 mandatory documentation requirement.
+    if not adr_ref or not str(adr_ref).strip():
+        raise SanitizationError(
+            "adr-ref-required",
+            "history rewrites require ADR documentation per ADR-269. "
+            "Pass --adr-ref ADR-NNN naming an Accepted ADR.",
         )
 
     project = project_dir.resolve()
@@ -956,7 +969,7 @@ def execute(
 
     # 6. Run filter-repo (THE destructive step)
     try:
-        _run_filter_repo(project, rules_file, replacement_rules, manifest, backup_path)
+        _run_filter_repo(project, rules_file, replacement_rules, manifest, backup_path, adr_ref=adr_ref)
     finally:
         # The rules file is intentionally kept for forensic audit (report
         # references it). It can be deleted by the operator post-verify.
@@ -1019,6 +1032,42 @@ def execute(
     all_clean = all(v == 0 for v in remaining_hits.values())
     count_preserved = pre_commit_count == post_commit_count
 
+    # ADR-269 ledger entry — auto-append on successful rewrite.
+    ledger_entry_path: str | None = None
+    ledger_entry_error: str | None = None
+    try:
+        from lib.history_rewrite_ledger import LedgerEntry, append_entry  # local import to avoid cycles
+        bundle_rel = f".cognitive-os/recovery/pre-history-sanitization-{ts}.bundle"
+        entry = LedgerEntry(
+            timestamp="",  # filled by append_entry
+            operator=operator or os.environ.get("USER", "") or "unknown",
+            adr_ref=str(adr_ref),
+            reason=(reason or f"history rewrite governed by {adr_ref}").strip(),
+            bundle_path=bundle_rel,
+            sha_before=pre_head[:8],
+            sha_after=post_head[:8],
+            rewrite_scope=(
+                "all" if metadata_rewrite_enabled(manifest) and commit_message_rewrite_enabled(manifest)
+                else "metadata" if metadata_rewrite_enabled(manifest)
+                else "commit-messages-only" if commit_message_rewrite_enabled(manifest)
+                else "blob-content"
+            ),
+            tool="git-filter-repo",
+            invocation=f"cos-history-sanitization --execute --adr-ref {adr_ref}",
+        )
+        # Validate ADR if it exists in repo; do NOT block rewrite (already done).
+        # If ADR-NNN cannot be validated, record the entry anyway with a warning.
+        try:
+            ledger_entry_path = str(append_entry(project, entry, validate_adr=True))
+        except Exception as exc_inner:
+            try:
+                ledger_entry_path = str(append_entry(project, entry, validate_adr=False))
+                ledger_entry_error = f"ADR validation failed but entry recorded: {exc_inner}"
+            except Exception as exc_outer:
+                ledger_entry_error = f"ledger append failed: {exc_outer}"
+    except Exception as exc:
+        ledger_entry_error = f"ledger module unavailable: {exc}"
+
     return {
         "schema_version": SCHEMA_VERSION,
         "status": "ok" if (all_clean and count_preserved) else "completed-with-warnings",
@@ -1036,4 +1085,7 @@ def execute(
         "rules_hash": rules_hash,
         "metadata_rewrite_enabled": metadata_rewrite_enabled(manifest),
         "commit_message_rewrite_enabled": commit_message_rewrite_enabled(manifest),
+        "adr_ref": adr_ref,
+        "ledger_entry_path": ledger_entry_path,
+        "ledger_entry_error": ledger_entry_error,
     }

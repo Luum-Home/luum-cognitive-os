@@ -8,6 +8,9 @@ BACKUP_MIRROR=""
 RECOVERY_JSON=""
 FORCE_RE_RUN=0
 DRY_RUN=0
+ADR_REF=""
+ADR_REASON=""
+ADR_OPERATOR=""
 PASSTHROUGH=()
 
 while [ "$#" -gt 0 ]; do
@@ -18,6 +21,9 @@ while [ "$#" -gt 0 ]; do
     --recovery-json) RECOVERY_JSON="$2"; shift 2 ;;
     --force-re-run) FORCE_RE_RUN=1; shift ;;
     --dry-run) DRY_RUN=1; shift ;;
+    --adr-ref) ADR_REF="$2"; shift 2 ;;
+    --reason) ADR_REASON="$2"; shift 2 ;;
+    --operator) ADR_OPERATOR="$2"; shift 2 ;;
     --) shift; PASSTHROUGH=("$@"); break ;;
     *) echo "cos-filter-repo-wrap: unknown arg $1" >&2; exit 2 ;;
   esac
@@ -25,6 +31,17 @@ done
 
 [ -n "$RULES_FILE" ] || { echo "cos-filter-repo-wrap: --rules required" >&2; exit 2; }
 [ -f "$RULES_FILE" ] || { echo "cos-filter-repo-wrap: rules file not found: $RULES_FILE" >&2; exit 2; }
+
+# ADR-269 mandatory documentation requirement (skipped for dry-run plans).
+if [ "$DRY_RUN" != "1" ] && [ -z "$ADR_REF" ]; then
+  cat >&2 <<EOF
+ERROR: history rewrites require ADR documentation per ADR-269.
+  Re-run with --adr-ref ADR-NNN where ADR-NNN is an Accepted ADR
+  documenting the rewrite rationale. If no such ADR exists, create
+  one first using docs/adrs/templates/history-rewrite.template.md.
+EOF
+  exit 2
+fi
 PROJECT_DIR="$(cd "$PROJECT_DIR" && pwd)"
 RUNTIME_DIR="$PROJECT_DIR/.cognitive-os/runtime"
 mkdir -p "$RUNTIME_DIR"
@@ -204,4 +221,44 @@ payload={
 for path in sys.argv[1:]:
     p=pathlib.Path(path); p.parent.mkdir(parents=True, exist_ok=True); p.write_text(json.dumps(payload, indent=2, sort_keys=True)+'\n')
 PY
+
+# ADR-269 ledger append on success.
+if [ "$RC" = "0" ] && [ -n "$ADR_REF" ] && [ -n "$BACKUP_MIRROR" ]; then
+  PYTHONPATH="$PROJECT_DIR" python3 - "$PROJECT_DIR" "$ADR_REF" "$ADR_REASON" "$ADR_OPERATOR" "$BACKUP_MIRROR" "$PRE_HEAD" "$POST_HEAD" <<'PY' >&2 || true
+import sys, os
+from pathlib import Path
+project, adr, reason, operator, backup, pre, post = sys.argv[1:8]
+sys.path.insert(0, project)
+try:
+    from lib.history_rewrite_ledger import LedgerEntry, append_entry
+    bundle_rel = backup
+    pr = Path(project)
+    bp = Path(backup)
+    if bp.is_absolute():
+        try:
+            bundle_rel = bp.relative_to(pr).as_posix()
+        except ValueError:
+            bundle_rel = backup
+    entry = LedgerEntry(
+        timestamp="",
+        operator=operator or os.environ.get("USER", "") or "unknown",
+        adr_ref=adr,
+        reason=(reason or f"history rewrite governed by {adr}").strip(),
+        bundle_path=bundle_rel,
+        sha_before=(pre or "")[:8],
+        sha_after=(post or "")[:8],
+        rewrite_scope="filter-repo-wrapper",
+        tool="git-filter-repo",
+        invocation=f"cos-filter-repo-wrap.sh --adr-ref {adr}",
+    )
+    try:
+        path = append_entry(pr, entry, validate_adr=True)
+    except Exception:
+        path = append_entry(pr, entry, validate_adr=False)
+    print(f"cos-filter-repo-wrap: ledger entry appended -> {path}")
+except Exception as exc:
+    print(f"cos-filter-repo-wrap: ledger append skipped ({exc})")
+PY
+fi
+
 exit "$RC"
