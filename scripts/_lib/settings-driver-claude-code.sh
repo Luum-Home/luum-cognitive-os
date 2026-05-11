@@ -151,6 +151,7 @@ cc_driver_emit() {
       "hooks/session-startup-protocol.sh"     "false" \
       "hooks/mcp-scan.sh"                     "true"  \
       "hooks/dangerous-env-flag-detector.sh" "false" \
+      "hooks/history-rewrite-documented.sh"   "false" \
     )
   fi
 
@@ -213,6 +214,11 @@ cc_driver_emit() {
     "hooks/control-plane-audit.sh"            "false" \
     "hooks/external-pattern-cleanroom-gate.sh"           "false" \
     "hooks/adoption-freeze-gate.sh"           "false" \
+    "hooks/dependency-license-classifier.sh"   "false" \
+    "hooks/research-to-runtime-firewall.sh"    "false" \
+    "hooks/spdx-header-required.sh"            "false" \
+    "hooks/external-cache-content-leak.sh"     "false" \
+    "hooks/attribution-completeness-validator.sh" "false" \
   )
 
   local pre_read
