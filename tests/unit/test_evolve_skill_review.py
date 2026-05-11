@@ -85,7 +85,7 @@ class TestSmokeTest:
         proposals = [
             VALID_PROPOSAL,
             {
-                "kind": "skill_patch",
+                "kind": "skill_revision",
                 "title": "improve-deploy: add health check step",
                 "rationale": "Observed deploy skill missing health check validation.",
                 "draft": "Add step: wait for health endpoint 200 before marking deploy complete.",

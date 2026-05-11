@@ -231,7 +231,7 @@ class TestRejectCommand:
 
         queue = EvolveTaskQueue(db_path=tmp_path / "test.db")
         pid = queue.enqueue(EvolveProposal(
-            kind="skill_patch",
+            kind="skill_revision",
             title="Rejectable skill",
             rationale="Meh",
             draft="# Draft",

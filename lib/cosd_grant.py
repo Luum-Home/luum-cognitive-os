@@ -19,7 +19,7 @@ Public surface (per ADR-260 §1):
     GrantClaims  (dataclass)
 
 Pattern adopted from external pattern (see ADR-259) (clean-room rewrite).
-Refs: .private/external-pattern-research/external-pattern-comparison-2026-05-10.md
+Refs: .private/external-pattern-research/comparison-2026-05-10.md
 Source-pattern: AnnexD::§1.grant-signing
 License: Apache-2.0 modified (BSL-like). No source code copied.
 """

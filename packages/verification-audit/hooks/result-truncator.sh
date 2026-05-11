@@ -84,8 +84,8 @@ fi
 # --- ADR-263: Tool-Replay Budget Ledger lookup ---
 # Consult the per-session ledger before truncating.
 # Modes: fresh → apply smart_truncator fallback (current behaviour)
-#        preview → apply catalog thresholds for this tool
-#        reference_only → replace with [REF:...] pointer + write spillover
+#        compact → apply catalog thresholds for this tool
+#        pointer_only → replace with [REF:...] pointer + write spillover
 TOOL_NAME=$(echo "$INPUT" | jq -r '.tool_name // "Bash"' 2>/dev/null || echo "Bash")
 TOOL_ARGS=$(echo "$INPUT" | jq -r '.tool_input | tostring' 2>/dev/null | head -c 500 || echo "")
 
@@ -126,7 +126,7 @@ except Exception as e:
   LEDGER_SESSION_ID_RESOLVED=$(echo "$LEDGER_RESULT" | cut -d'|' -f3)
 
   case "${LEDGER_MODE:-fresh}" in
-    reference_only)
+    pointer_only)
       # Write spillover and replace output with [REF:...] pointer
       SPILLOVER_RESULT=$(export _REF_TOOL="$TOOL_NAME"; \
         export _REF_HASH="$LEDGER_TARGET_HASH"; \
@@ -157,7 +157,7 @@ except Exception as e:
         if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
           echo "$RESULT"
           TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#SPILLOVER_RESULT},\"method\":\"reference_only\",\"tool\":\"${TOOL_NAME}\"}"
+          ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#SPILLOVER_RESULT},\"method\":\"pointer_only\",\"tool\":\"${TOOL_NAME}\"}"
           safe_jsonl_append "$METRICS_FILE" "$ENTRY"
           exit 0
         fi
@@ -165,7 +165,7 @@ except Exception as e:
       # Fall through to smart_truncator if spillover write failed
       ;;
 
-    preview)
+    compact)
       # Apply catalog thresholds for this tool
       PREVIEW_RESULT=$(export _PREV_TOOL="$TOOL_NAME"; \
         export _PREV_CONTENT="$RESPONSE"; \
@@ -196,7 +196,7 @@ except Exception:
         if [ $? -eq 0 ] && [ -n "$RESULT" ]; then
           echo "$RESULT"
           TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#PREVIEW_RESULT},\"method\":\"preview\",\"tool\":\"${TOOL_NAME}\"}"
+          ENTRY="{\"timestamp\":\"${TIMESTAMP}\",\"original_chars\":${RESPONSE_LEN},\"truncated_chars\":${#PREVIEW_RESULT},\"method\":\"compact\",\"tool\":\"${TOOL_NAME}\"}"
           safe_jsonl_append "$METRICS_FILE" "$ENTRY"
           exit 0
         fi

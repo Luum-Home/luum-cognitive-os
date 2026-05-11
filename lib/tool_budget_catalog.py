@@ -2,7 +2,7 @@
 ADR-263 — Tool Budget Catalog
 Per-tool char thresholds derived from luum truncation-events.jsonl distribution.
 
-Source-pattern: .private/external-pattern-research/external-pattern-annex-b-cost-budget.md §B1 (clean-room)
+Source-pattern: .private/external-pattern-research/annex-b-cost-budget.md §B1 (clean-room)
 Thresholds are NOT copied from the reference catalog; they are independently
 derived from the real distribution of tool outputs in this repository.
 

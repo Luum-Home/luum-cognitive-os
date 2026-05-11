@@ -24,7 +24,7 @@ Session ID resolution order:
     3. ``pid-<pid>`` fallback.
 
 Pattern adopted from external pattern (see ADR-259) (clean-room rewrite).
-Source-pattern: .private/external-pattern-research/external-pattern-annex-g-surprise-findings.md §G1
+Source-pattern: .private/external-pattern-research/annex-g-surprise-findings.md §G1
 """
 
 from __future__ import annotations

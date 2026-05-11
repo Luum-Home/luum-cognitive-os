@@ -2,7 +2,7 @@
 ADR-263 — Tool-Replay Budget Ledger
 Per-session SQLite ledger with FRESH/PREVIEW/REFERENCE_ONLY modes.
 
-Source-pattern: .private/external-pattern-research/external-pattern-annex-b-cost-budget.md §B1 (clean-room rewrite)
+Source-pattern: .private/external-pattern-research/annex-b-cost-budget.md §B1 (clean-room rewrite)
 License: Apache-2.0 modified. No source code copied from reference pattern.
 """
 
@@ -40,8 +40,8 @@ _POINTER_CHARS: int = 120
 
 class Mode(Enum):
     FRESH = "fresh"
-    PREVIEW = "preview"
-    REFERENCE_ONLY = "reference_only"
+    PREVIEW = "compact"
+    REFERENCE_ONLY = "pointer_only"
 
 
 @dataclass

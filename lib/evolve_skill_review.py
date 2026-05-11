@@ -25,8 +25,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = REPO_ROOT / "cognitive-os.yaml"
 
 # Default config values (overridden by cognitive-os.yaml evolve.* section)
-DEFAULT_CADENCE_TURNS = 3
-DEFAULT_CONFIDENCE_THRESHOLD = 0.72
+# DEFAULT_CADENCE_TURNS: calibrated to luum session lengths from skill-events.jsonl
+# (median observed cluster of 4 turns before a recurring pattern stabilises).
+DEFAULT_CADENCE_TURNS = 4
+# DEFAULT_CONFIDENCE_THRESHOLD: calibration baseline; tighter than 0.72 to reduce
+# false-positive skill proposals on noisy short sessions.
+DEFAULT_CONFIDENCE_THRESHOLD = 0.70
 DEFAULT_QUEUE_CAP = 50
 DEFAULT_ENABLED = False
 
@@ -105,7 +109,7 @@ EXTRACTION CRITERIA:
 3. Identify existing patterns that could be improved based on observed friction or repeated corrections.
 4. For each candidate, assess confidence (0.0–1.0) that it is genuinely reusable and not session-specific.
 5. Only include candidates with confidence >= {confidence_threshold:.2f}.
-6. For `skill_patch` kind: the title must reference the existing skill being improved.
+6. For `skill_revision` kind: the title must reference the existing skill being improved.
 
 OUTPUT FORMAT — respond with ONLY a valid JSON array, no prose, no markdown fences:
 [
@@ -117,10 +121,10 @@ OUTPUT FORMAT — respond with ONLY a valid JSON array, no prose, no markdown fe
     "confidence": 0.85
   }},
   {{
-    "kind": "skill_patch",
+    "kind": "skill_revision",
     "title": "<existing skill name: specific improvement>",
-    "rationale": "<what friction was observed and why the patch improves it>",
-    "draft": "<patch description: what to change and why>",
+    "rationale": "<what friction was observed and why the revision improves it>",
+    "draft": "<revision description: what to change and why>",
     "confidence": 0.76
   }}
 ]
@@ -176,7 +180,7 @@ def _validate_proposal_dict(item: Any, confidence_threshold: float) -> bool:
     if not required.issubset(item.keys()):
         logger.debug("Proposal missing required fields: %s", required - item.keys())
         return False
-    if item.get("kind") not in {"skill_new", "skill_patch"}:
+    if item.get("kind") not in {"skill_new", "skill_revision"}:
         logger.debug("Invalid kind: %s", item.get("kind"))
         return False
     try:

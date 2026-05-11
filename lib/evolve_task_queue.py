@@ -28,7 +28,7 @@ ERROR_LEARNING_PATH = REPO_ROOT / ".cognitive-os" / "error-learning.jsonl"
 
 QUEUE_CAP = 50  # Hard cap on pending proposals
 
-VALID_KINDS = {"skill_new", "skill_patch"}
+VALID_KINDS = {"skill_new", "skill_revision"}
 VALID_STATUSES = {"pending", "approved", "rejected", "promoted"}
 
 _CREATE_TABLE_SQL = """
@@ -56,7 +56,7 @@ class EvolveProposal:
     Fields mirror the evolve_proposals table schema (ADR-262 §Decision 2).
     """
 
-    kind: str  # 'skill_new' | 'skill_patch'
+    kind: str  # 'skill_new' | 'skill_revision'
     title: str
     rationale: str
     draft: str

@@ -255,7 +255,7 @@ class TestComputeFingerprint:
 
     def test_different_kind_different_fingerprint(self) -> None:
         fp1 = compute_fingerprint("skill_new", "T", "D")
-        fp2 = compute_fingerprint("skill_patch", "T", "D")
+        fp2 = compute_fingerprint("skill_revision", "T", "D")
         assert fp1 != fp2
 
     def test_fingerprint_is_sha256_hex(self) -> None:
