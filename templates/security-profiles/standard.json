@@ -300,6 +300,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/attribution-completeness-validator.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"/hooks/lib-symlink-divergence-detector.sh\""
           }
         ]
       },

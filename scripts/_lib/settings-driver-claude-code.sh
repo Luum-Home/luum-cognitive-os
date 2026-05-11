@@ -219,6 +219,7 @@ cc_driver_emit() {
     "hooks/spdx-header-required.sh"            "false" \
     "hooks/external-cache-content-leak.sh"     "false" \
     "hooks/attribution-completeness-validator.sh" "false" \
+    "hooks/lib-symlink-divergence-detector.sh" "false" \
   )
 
   local pre_read

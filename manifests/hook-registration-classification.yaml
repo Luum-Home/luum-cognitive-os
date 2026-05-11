@@ -352,3 +352,11 @@ entries:
     .cognitive-os/logs/history-rewrite-documented.jsonl.
     Bypass: COS_ALLOW_UNDOCUMENTED_REWRITES=1 (logged).
   next_action: Keep active; promote ledger auto-register when cos-history-sanitization --execute auto-writes ledger entries.
+- path: hooks/lib-symlink-divergence-detector.sh
+  status: active
+  rationale: |
+    Closes the silent-drift gap exposed by review_agent.py audit 2026-05-11.
+    PreToolUse Bash gate that blocks commits when a file staged to lib/ has
+    a same-named counterpart in packages/*/lib/ AND neither is a symlink to
+    the other AND content differs.
+  next_action: Keep active; promote to error severity for typechange events.

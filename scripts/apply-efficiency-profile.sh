@@ -150,6 +150,7 @@ run_claude_code_driver() {
     dependency-license-classifier.sh research-to-runtime-firewall.sh \
     spdx-header-required.sh external-cache-content-leak.sh attribution-completeness-validator.sh \
     history-rewrite-documented.sh \
+    lib-symlink-divergence-detector.sh \
 ; do
     if ! grep -q "$hook" "$SETTINGS_FILE"; then
       echo "Warning: expected hook '$hook' missing from settings.json after apply." >&2
