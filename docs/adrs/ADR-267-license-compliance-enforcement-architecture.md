@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed (2026-05-11)
+Accepted (2026-05-11)
 
 ## Context
 
@@ -207,3 +207,20 @@ Each hook ships with golden-file tests proving:
 - `docs/research/orchestrator-self-critique-cluster-d-claim-quality-2026-05-11.md` Finding 9 — surfaced the mandatory-minimum cap as governance, not primitive; precedent for compliance-as-content
 - `docs/architecture/external-tool-adoption-doctrine.md` — adopt commodity mechanisms, build governance semantics
 - `docs/architecture/external-tool-adapter-taxonomy.md` — adoption kinds (dependency / CLI adapter / schema port / algorithm port / testdata vendor / operator-installed / pattern-only)
+
+## Implementation Status (2026-05-11)
+
+Phase 1 + Phase 2 Layer-1 hooks landed in two sessions (2026-05-11). Status of the six hooks defined in §Layer 1:
+
+| # | Hook | Status | Notes |
+|---|---|---|---|
+| 1 | `hooks/dependency-license-classifier.sh` | landed | Pre-commit BLOCKER-string scan on staged dep-manifest diffs (`requirements.txt`, `pyproject.toml`, `package.json`, `Cargo.toml`). Bypass: `COS_ALLOW_LICENSE_CLASSIFIER_BYPASS=1`. Log: `dependency-license-classifier.jsonl`. |
+| 2 | `hooks/external-cache-content-leak.sh` | landed | Generalises `external-pattern-cleanroom-gate.sh` to the whole `.cognitive-os/external-source-cache/` tree. Bypass: `COS_ALLOW_EXTERNAL_CACHE_LEAK=1`. Log: `external-cache-content-leak.jsonl`. |
+| 3 | `hooks/adoption-freeze-gate.sh` | landed (Phase 1) | Reads `manifests/external-tool-adoption-freeze.yaml`; blocks gated paths when `frozen: true`. Bypass: `COS_ALLOW_ADOPTION_FREEZE_BYPASS=1`, manifest-only toggle via `COS_ALLOW_FREEZE_TOGGLE=1`. |
+| 4 | `hooks/spdx-header-required.sh` | landed | NEW files under `lib/`, `packages/*/lib/`, `scripts/` (.py/.sh/.js/.ts) MUST carry `SPDX-License-Identifier:` in first 10 lines. Existing files at hook-install snapshot time are grandfathered (`manifests/spdx-grandfather.txt`). Bypass: `COS_ALLOW_MISSING_SPDX=1`. |
+| 5 | `hooks/attribution-completeness-validator.sh` | landed | `docs/research/*-annex-*.md` must carry `Source-Pattern:` + `License:` + `Clean-Room-Protocol:` and per-block attribution for verbatim code fences. Bypass: `COS_ALLOW_INCOMPLETE_ATTRIBUTION=1`. |
+| 6 | `hooks/research-to-runtime-firewall.sh` | landed | Blocks runtime files referencing `.cognitive-os/external-source-cache/`. Bypass: `COS_ALLOW_RESEARCH_RUNTIME_LEAK=1`. |
+
+Layer 2 (governance manifests + adoption-debt audit) and Layer 3 (legal-review-gate ADR) remain on the original roadmap and are tracked as Phase 3 / Phase 4 follow-ups.
+
+A separate ADR (ADR-268) documents the defensive history sanitization performed on the same day; it cross-references this ADR as the forward enforcement mechanism that replaces ad-hoc attribution discipline.
