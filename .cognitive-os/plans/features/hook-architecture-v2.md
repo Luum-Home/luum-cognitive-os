@@ -8,6 +8,9 @@ All 5 phases of this plan are shipped per the body's "Last updated: 2026-05-01 /
 - Itinerary hook event alignment landed post-0.28 (commits 73fbdfa93, 0183c24fb) — keeps registry / settings.json / .codex/hooks.json projections in sync, which is the long-tail risk this plan called out as "Profile JSON files diverge from docs over time".
 - Control-plane audit loop (ADR-248) + classification projection (commit f94260f41) provide the manifest-vs-runtime parity test the plan §13 requested.
 Recommendation: archive — move file to .cognitive-os/plans/archive/ in a future tidy commit. (Recommendation only; do NOT physically move now per reconciliation scope.)
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Verified hooks/_lib/common.sh check_disabled_env at lines 181-194; tests/audit/test_hook_disable_env.py + test_hook_pipe.py + test_hook_latency_budget.py all present; rules/hook-security-profiles.md §"Per-Session Hook Suppression (DISABLE_HOOK_* env vars)" line 51+ documents the pattern. The 14 still-unchecked checkboxes (lines 492-505 documenting Profile JSON parity + 658-665 final acceptance sweep) are documentation-sync hygiene (hook-count test counters, profile JSON cross-references, comparison-matrix updates) — none represent missing implementation; the plan body's "Last updated: 2026-05-01 / Status: ALL PHASES (1-5) COMPLETE" header is authoritative. Opus AGREES with Sonnet: COMPLETE. Recommendation stands: ARCHIVE in next tidy commit.
 Older inline reconciliation history (preserved for audit):
 PARTIAL_DONE — Phases 1+2 complete, Phases 3-5 pending
 Superseded for Phase 1 by: scripts/apply-efficiency-profile.sh + scripts/set-security-profile.sh (ws7 commit 329deb2), ADR-028a (runtime feature flags), ADR-029 (reinvention-check wiring), ADR-027 (slim-profile work)

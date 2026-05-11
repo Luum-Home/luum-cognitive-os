@@ -9,6 +9,13 @@ Phase status:
 - Phase 4 (production border-case suite): PARTIAL — chaos guard for production-source read-only landed (commit d3c179730 / ADR-245); release-transaction freeze (ADR-246) + history sanitization recovery (ADR-218 execute slice) cover several scenarios; the full named scenario list remains a backlog item.
 - Phase 5 (product packaging proof): PARTIAL — public-launch transparency package + verify-public-release + launch-day runbook (CHANGELOG [0.28.0]) close the product-claims surface; Lean/Core 5-minute proof path not yet a single command.
 Recommendation: keep ACTIVE; this is the umbrella for the public-launch and post-launch hardening work. Do NOT archive until Phases 3-5 complete.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus AGREES with Sonnet's MOSTLY DONE framing. Concrete reinforcement on the still-open phases:
+- Phase 3 acceptance lines 130-132: ADR-257 primitive contract registry phase one + observable overlay UX provide the substrate; per-distribution active-surface trim is the missing operator-facing step. No commit closes this post-v0.28.0.
+- Phase 4 acceptance lines 151-152: ADR-218 history sanitization execute slice + ADR-246 release transaction freeze + ADR-245 production-source readonly chaos guard collectively cover most named scenarios; the full enumerated scenario list still needs explicit ticking. No new closure post-v0.28.0 beyond pre-launch hardening already noted.
+- Phase 5 acceptance lines 169-171: TRANSPARENCY.md + verify-public-release + launch-day runbook (CHANGELOG [0.28.0]) cover line 171 (product claims match evidence); lines 169-170 (Lean/Core 5-min proof + Strict/Maintainer concurrency proof) remain open — no single-command proof path shipped.
+Opus revised status: MOSTLY DONE (Sonnet was correct). Recommendation stands: keep ACTIVE as the umbrella for ongoing public-launch hardening.
 -->
 
 # External Review Readiness Plan

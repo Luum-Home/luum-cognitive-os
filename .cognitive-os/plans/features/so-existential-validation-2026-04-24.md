@@ -7,6 +7,14 @@ Phase status:
 - Phase 3 (Core vs Extensions): IN PROGRESS — classification audit + migration plan exist; wave migrations not executed; deferred to post-launch tidy waves. /install-skill + /install-hook on-demand contracts NOT shipped.
 Recent post-v0.28.0 evidence: feature reality matrix (a4d758b3d) and consumer fleet status panel (2dd2e0144) provide the visibility surface this plan asked for; consumer leakage cleanup (39ce28fb4) reduces the dormant_aspirational surface further.
 Recommendation: keep ACTIVE; Phase 3 wave execution is the live thread. Do NOT archive.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus AGREES with Sonnet — no NEW Phase 1/2/3 acceptance items have closed since the v0.28.0 cut. Re-verification:
+- Phase 1: dormant_aspirational_ratio<0.25 + ASPIRATIONAL==0 exit metrics not yet certified by a fresh aspirational-audit run; DORMANT test/promote work continues as background; no honesty-record commit on README PnP claim in git log v0.27.1..HEAD beyond the pre-0.28 baseline.
+- Phase 2: install-timing baseline (mean=38.8s, p95=43s) supports retention of PnP claim per data; verdict commit not separately recorded but baseline meets <300s threshold — same as Sonnet noted.
+- Phase 3: /install-skill and /install-hook still DO NOT exist as skill files (grep of skills/ confirms); wave migrations (cos-advisory-llm, cos-sdd) not executed in git log.
+Post-v0.28.0 indirect reinforcement persists: feature reality matrix (a4d758b3d), consumer fleet status panel (2dd2e0144), consumer-leakage cleanup (39ce28fb4) all REDUCE the dormant_aspirational surface but no commit re-runs aspirational-audit to certify the <0.25 exit metric.
+Opus confirms: PARTIAL. Recommendation stands: keep ACTIVE; the live thread is Phase 3 wave execution + Phase 1 exit-metric certification.
 -->
 
 # Plan: SO Existential Validation

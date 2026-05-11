@@ -11,6 +11,9 @@ Status:
 - Phase 3 (Consumer evidence import/export): DONE (all 8 items already checked); reinforced post-v0.28.0 by consumer fleet status panel (commit 2dd2e0144) and consumer-leakage cleanup (39ce28fb4).
 - Phase 4 (Background proposer): NOT STARTED — scheduled propose-only runner not yet shipped; deliberately deferred until ADR-201 PromoteFromTelemetry stabilizes (already gated by Phase 3 of adr-200-plus-closure-plan.md).
 Recommendation: keep ACTIVE for Phase 4 only; do NOT archive. Phase 4 should pick up after the ADR-200-plus closure plan's Phase 6 fleet-confidence boundary clarifies aggregation-only constraints.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Verified all Phase 1-3 scripts exist on disk: scripts/cos-self-improvement-loop, cos-self-improvement-discipline-gate, cos-doctrine-proposer, cos-export-consumer-evidence, cos-import-consumer-evidence, cos-registry-lock, cos-engram-bundle, cos-engram-import-propose, cos-federation-trigger-audit, cos-cross-instance-drill. .cognitive-os/improvements/proposals/ contains generated proposal artifact (self-improvement-proposals-20260503T045251Z.json). Phase 4 (scheduled propose-only runner) remains the only open item, deliberately gated on ADR-201 PromoteFromTelemetry stabilization per ADR-200-plus-closure-plan Phase 3 (which is also DONE — but Phase 6 fleet boundary still future-only). Opus AGREES with Sonnet: NEAR-COMPLETE. Recommendation stands: keep ACTIVE narrowly for Phase 4.
 -->
 
 # Headless Self-Improvement Proposer Plan

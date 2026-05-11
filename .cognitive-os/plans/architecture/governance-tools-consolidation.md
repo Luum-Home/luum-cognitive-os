@@ -11,6 +11,15 @@ Phase status:
 - Phase 7 (ROI dashboard): PARTIAL/DONE — `cos governance roi` shipped with primitive_lifecycle.py --recommendations consuming it (3 of 5 items checked).
 - Phase 8 (aggressive archive/delete trial): NOT STARTED.
 Recommendation: keep ACTIVE for Phase 2 (ledger consolidation), Phase 5 (default-surface trim), Phase 8 (archive trial). Do NOT archive.
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Opus DISAGREES with Sonnet's body-checkbox-only count (4/35). Concrete acceptance items objectively closable beyond what Sonnet credited:
+- Phase 1 acceptance items lines 65-67: governance_class metadata is consumed by 4 scripts — scripts/primitive_lifecycle.py (validator at line 53 + lifecycle gate at line 244), scripts/active_primitive_index.py (line 89), scripts/cos_manifest_tier_claim_audit.py (line 72), scripts/portable_ai_overlay.py (line 191). ADR-247 + ADR-248 fail-closed on missing metadata. Items 65 ("Every projected default hook has governance class metadata") and 67 ("Missing metadata fails audit") are EFFECTIVELY CLOSED; item 66 (core report contains no meta-governance) is closed by primitive-lifecycle filter.
+- Phase 3 acceptance items lines 99-101 (root + --project-dir + resolved-root diagnostics): canonical resolver is consumed across hooks + scripts + pre-launch history audit tooling (commit ed4e1f705 verifies remotes/upstreams via root resolver). All three CLOSED.
+- Phase 4 acceptance items lines 117-119 (no stash residue, dirty WIP recoverable, blocked launches cannot orphan stashes): ADR-117 stash-mutation reversibility (named stashes, apply-by-name, audited to stash-ops.jsonl, lock-coordinated, budget-bounded ≤5/session) closes all three.
+- Phase 6 acceptance items lines 147-149: trivial-fix bypass per adaptive-bypass rule, medium+ SDD recommendation via lib/sdd_pipeline.py, routing-decision logging via model-directive hook + decision_tracker. All three CLOSED.
+- Phase 7 acceptance line 173 (top friction causes feed ADR-123 telemetry): CLOSED by cos governance roi + primitive_lifecycle.py --recommendations.
+Opus revised effective closure: ~16-18/35 (vs Sonnet's 4/35). Plan stays PARTIAL because Phase 2 (canonical single-source claim writer + duplicate-ledger consolidation), Phase 5 (default-surface trim items lines 133-135, 207-211, 216-219), and Phase 8 (archive trial) remain genuinely open. Recommendation: keep ACTIVE narrowly; tick the now-closed acceptance items in a future tidy commit; consider extracting Phase 8 into its own plan.
 -->
 
 # Governance Tools Consolidation Plan

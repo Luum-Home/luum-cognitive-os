@@ -8,6 +8,9 @@ Evidence (post-v0.28.0):
 - ADR-066/072 enforce polyglot quality gates including Python snake_case (tests/audit/test_python_naming.py) and bash kebab-case (tests/audit/test_bash_naming.py) — derived primitives of this plan.
 - AC3 (cos-test focused <30s on 1-3 file diff) remains qualified: subcommand exists; <30s bound only verifiable on clean tree, current branch has 22+ tracked modifications. No further work required to declare the plan complete; the wall-time invariant moves to ADR-237 (test execution efficiency protocol) as a budget gate, not a per-plan AC.
 Recommendation: move file to .cognitive-os/plans/archive/ in a future tidy commit (do NOT physically move now per reconciliation scope).
+
+OPUS REFINEMENT — 2026-05-11 (post-v0.28.0):
+Verified `cmd/cos-test/internal/cli/focused.go` ships `cos-test focused` (diff-driven + explicit paths), peers cluster/broad present, `scripts/cos-integration-shard-plan` confirmed, `.cognitive-os/test-lanes.yaml` confirmed, `tests/audit/test_marker_coverage.py` confirmed. F1 row in docs/reports/radar-2026-05-08-implementation-tracker.md shows shipped status. Opus AGREES with Sonnet: COMPLETE. Recommendation stands: ARCHIVE in next tidy commit.
 -->
 
 # Proposal: Test Runner Ergonomics

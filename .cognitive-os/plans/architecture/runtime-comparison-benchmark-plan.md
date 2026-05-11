@@ -4,10 +4,11 @@ rationale: benchmark specification — axes, workloads, metrics, and execution p
 ---
 
 <!--
-RECONCILIATION STATUS: ARCHIVE (parking lot) — 2026-05-10 (post-v0.28.0)
-Reconciled-by: P3 plan triage (see docs/reports/p3-plan-triage-2026-05-10.md)
-Decision: ARCHIVE.
-Rationale: Comparing COS against vanilla Claude/Codex/OpenCode and prior-art systems across workstation/VM/container/pod/cluster surfaces remains potentially valuable as marketing/positioning evidence and as a source of governance-overhead truth (the doctrine demands measurable hook overhead per ADR-237). However this plan competes with the explicit DEFER posture for cluster/Kubernetes runtimes in the External Tool Adoption Doctrine and in ADR-049 LLM dispatch posture; the only currently funded surfaces are workstation and (post-v0.26.0) Docker container worker. The Phase 1 local baseline can be revisited opportunistically without keeping this plan on the active P2 list. Park in .cognitive-os/plans/archive/ (recommendation only; do not move now); reactivate when (a) external buyers explicitly request comparative benchmarks, or (b) Shape-B federation/cluster trigger fires per ADR-132.
+RECONCILIATION STATUS: ARCHIVE — 2026-05-11 (Opus refinement of 2026-05-10 Sonnet pass)
+Reconciled-by: P3 plan triage Opus re-triage (see docs/reports/p3-plan-triage-2026-05-10.md §Opus refinement)
+Decision: ARCHIVE — confirmed (NOT TOMBSTONE).
+Opus rationale (agrees with Sonnet ARCHIVE; explicitly rejects TOMBSTONE-by-T-W3-bench-subsumption hypothesis): The deep-check question was whether T-W3-bench (Wave 3 hardening — repo-map benchmarking) already covers the benchmark substrate need and therefore this plan should be TOMBSTONED. Evidence in docs/reports/radar-2026-05-08-implementation-tracker.md shows T-W3-bench is scoped narrowly to ONE comparison (`lib/repo_map.py` graph-rank vs pure `lib/context_diet.py` on real codebases for token efficiency) — a single workload axis, not the 8-workload × 6-environment × 9-configuration matrix this plan envisions. T-W3-bench also does not cover prior-art comparison (Agent Zero, OpenClaw, Hermes Agent, Pi, GGA) or cross-harness comparison (Claude Code vs Codex vs OpenCode) that gives this plan its positioning value. Therefore T-W3-bench does NOT subsume this plan; ARCHIVE remains correct, NOT TOMBSTONE. The plan's cluster/Kubernetes axes remain DEFER per External Tool Adoption Doctrine + ADR-049; Phase 1 workstation+container baseline can be revisited opportunistically when external buyers explicitly request comparative benchmarks or Shape-B federation/cluster trigger fires per ADR-132. Park in .cognitive-os/plans/archive/ (recommendation only; do not move now).
+Sonnet 2026-05-10 decision: ARCHIVE. Opus agreement: ARCHIVE confirmed; subsumption-by-T-W3-bench hypothesis explicitly tested and rejected.
 -->
 
 
