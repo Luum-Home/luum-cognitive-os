@@ -1,6 +1,6 @@
 # Primitive Authority Audit — Latest
 
-Generated: 2026-05-12T16:47:27+00:00
+Generated: 2026-05-12T17:06:00+00:00
 Status: `pass`
 
 ## Summary

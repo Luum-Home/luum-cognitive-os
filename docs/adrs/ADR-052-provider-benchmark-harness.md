@@ -129,6 +129,27 @@ Optionally appended to `.cognitive-os/metrics/benchmark-results.jsonl` or anothe
 - ADR-051 Phase 1+ (for multi-step task benchmarks) — done (Phase 1)
 - Real provider adapters — future opt-in extension, not required for the implemented contract
 
+## Operational Guide
+
+### What changes for the operator
+
+Use the shipped benchmark harness as the no-cost quality smoke before trusting provider-routing changes. The implemented path is fixture-backed and deterministic; real provider calls and LLM-as-judge scoring are deliberately opt-in so CI and local checks do not spend tokens or depend on network availability.
+
+### Daily operational pattern
+
+1. Add or update task-set YAML under `docs/benchmarks/` when a provider-quality question becomes repeatable.
+2. Run `scripts/benchmark-providers` or `python3 scripts/benchmark_providers.py` against the smoke task set for a local baseline.
+3. Treat JSON/JSONL output as evidence for ADR-053 routing proposals, not as an automatic dispatch change.
+4. If enabling real providers or judge scoring, record the run context and cost because that mode is outside the no-cost contract.
+
+### When sources disagree
+
+If benchmark output conflicts with anecdotal session quality, prefer reproducible benchmark artifacts for routing proposals and open a new/updated task set that captures the anecdotal failure. If fixture results pass but live providers fail, classify it as adapter/provider drift rather than a benchmark-harness failure.
+
+### Reading guide for cold readers
+
+Start with `docs/benchmarks/provider-quality-smoke.yaml`, then inspect `scripts/benchmark_providers.py` and `tests/unit/test_provider_benchmark_and_optimizer.py`. The ADR is implemented for deterministic offline evidence; curated task expansion, live adapters, and subjective judge rotation remain future operational work.
+
 ## Related
 
 - ADR-049 — cascade mechanics

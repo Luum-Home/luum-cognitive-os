@@ -17,7 +17,6 @@ import json
 import os
 import subprocess
 import sys
-import textwrap
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
@@ -39,25 +38,26 @@ def _seed_surface(project_dir: Path, rel: str, content: str) -> None:
     p.write_text(content, encoding="utf-8")
 
 
+def _load_contracts() -> list[dict]:
+    """Import CONTRACTS from the audit script so tests track new contracts automatically."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("xref_audit", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.CONTRACTS
+
+
 def _seed_full_coverage(project_dir: Path) -> None:
-    """Populate every surface listed in CONTRACTS with all required tokens."""
-    # All tokens combined into one blob, written to every surface
-    blob = textwrap.dedent("""
-        cos-pending-truth-close cos-adr-close cos-session-start-projector
-        cos-closure-trust-signal STATUS-TAXONOMY cos-pending-truth-aggregator
-        pending-truth-architecture.md
-    """)
-    surfaces = [
-        "docs/00-MOCs/operations.md",
-        "docs/00-MOCs/quality.md",
-        "docs/architecture/pending-truth-architecture.md",
-        "docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md",
-        "docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md",
-        "docs/adrs/ADR-275-closure-and-projection-primitives.md",
-        "scripts/cos-adr-close",
-        "scripts/cos-pending-truth-close",
-        "manifests/control-plane-audits.yaml",
-    ]
+    """Populate every surface listed in CONTRACTS with all required tokens.
+
+    Derived dynamically so adding new contracts to the audit script does
+    not silently break the test bilateral pass.
+    """
+    contracts = _load_contracts()
+    blob = " ".join(c["grep"] for c in contracts) + "\n"
+    surfaces: set[str] = set()
+    for c in contracts:
+        surfaces.update(c["required_in"])
     for rel in surfaces:
         _seed_surface(project_dir, rel, blob)
 
