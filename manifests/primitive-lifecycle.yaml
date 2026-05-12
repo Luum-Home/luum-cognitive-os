@@ -8952,6 +8952,72 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: scripts/cos-product-answer
+  kind: script
+  owner_adr: ADR-280
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-product-answer
+  runtime_projection: false
+  behavior_evidence: Skill-facing CLI for ADR-280/281 product question-to-evidence answers; queries the product question bank and claim-evidence manifests.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos-product-answer
+  - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle and contract registry if it stops being a shared primitive surface.
+  sunset_criteria: Archive after 90 days with no references from docs, skills, scripts, or tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-product-answer-refresh
+  kind: script
+  owner_adr: ADR-282
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-product-answer-refresh
+  runtime_projection: false
+  behavior_evidence: Skill-facing CLI to regenerate ADR-282 product answer cards and routing index from the product question bank.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos-product-answer-refresh
+  - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle and contract registry if it stops being a shared primitive surface.
+  sunset_criteria: Archive after 90 days with no references from docs, skills, scripts, or tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: scripts/cos-public-claim-gate
+  kind: script
+  owner_adr: ADR-206
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-public-claim-gate
+  runtime_projection: false
+  behavior_evidence: Skill-facing CLI for ADR-206 public claim decommission gate; scans for disallowed public-facing claim patterns.
+  evidence_commands:
+  - python3 -m py_compile scripts/cos-public-claim-gate
+  - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+  rollback_or_repair_command: Remove from primitive lifecycle and contract registry if it stops being a shared primitive surface.
+  sunset_criteria: Archive after 90 days with no references from docs, skills, scripts, or tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
 - id: skills/self-improve/SKILL.md
   kind: skill
   owner_adr: ADR-083
