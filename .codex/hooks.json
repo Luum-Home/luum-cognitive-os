@@ -345,5 +345,16 @@
       ],
       "matcher": "shutdown"
     }
-  ]
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "command": [
+          "python3",
+          "scripts/cos-session-start-projector"
+        ],
+        "description": "ADR-275 session-start projector"
+      }
+    ]
+  }
 }
