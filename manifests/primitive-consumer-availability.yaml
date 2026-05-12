@@ -153,6 +153,12 @@ items:
 - path: skills/proof-drill/SKILL.md
   status: maintainer-only
   rationale: Opt-in proof-drill selector for SO validation and explicit consumer boundary checks; not loaded by default lanes.
+- path: skills/session-pending-brief/SKILL.md
+  status: maintainer-only
+  rationale: Session-start projector skill over SO ADR/pending-truth ledgers; consumer projects should not receive it unless a session-governance package explicitly projects those ledgers.
+- path: skills/session-pending-close/SKILL.md
+  status: maintainer-only
+  rationale: Audited closure skill for SO pending-truth and ADR lifecycle ledgers; not a default consumer-project primitive.
 - path: scripts/proof-drill-select
   status: maintainer-only
   rationale: Proof-drill selector wrapper for governed opt-in validation; not a default consumer command.
@@ -289,6 +295,9 @@ items:
 - path: scripts/cos-key-learnings-capture
   status: lifecycle-declared-maintainer
   rationale: Opt-in team learning-capture helper; lifecycle metadata controls projection before consumer claims.
+- path: scripts/cos-subprocess-timeout-audit.py
+  status: maintainer-only
+  rationale: ADR-278 maintainer/control-plane audit over this repository's subprocess timeout discipline; consumer projects should not receive it as a default runtime primitive.
 patterns:
 - pattern: scripts/**
   status: so-local-only
