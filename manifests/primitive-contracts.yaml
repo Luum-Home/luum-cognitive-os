@@ -2613,8 +2613,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -4075,8 +4075,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -4752,8 +4752,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5032,8 +5032,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5087,8 +5087,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5592,8 +5592,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -5872,8 +5872,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -6042,8 +6042,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -8000,8 +8000,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -8113,8 +8113,8 @@ contracts:
       surface: generated AGENTS/.ai advisory projection unless a governed wrapper
         is separately signed
     opencode:
-      fidelity: governed-wrapper-enforced
-      surface: packages/opencode-adapter/plugins/cos-primitive-guard.js
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
@@ -16494,9 +16494,10 @@ contracts:
   requires:
   - respect_declared_scope
   - preserve_projection_fidelity
+  - emit_intervention
   actions:
-    preferred: document
-    fallback: document
+    preferred: advise
+    fallback: observe
     reason_codes:
     - adapter_compile_api
   evidence:
@@ -18194,6 +18195,310 @@ contracts:
       fidelity: structural-advisory
       surface: generated .ai/OpenCode advisory projection; no runtime enforcement
         claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: none
+    service_mode: unsupported
+- id: skill-self-improve
+  family: skill
+  source: skills/self-improve/SKILL.md
+  lifecycle_ref: skills/self-improve/SKILL.md
+  generated_from_lifecycle: true
+  intent: Meta skill orchestrating analyze-improvements and apply-improvements with a mandatory human gate.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - skills/self-improve/SKILL.md
+  requires:
+  - respect_declared_scope
+  - preserve_privacy
+  - emit_intervention
+  actions:
+    preferred: advise
+    fallback: observe
+    reason_codes:
+    - lifecycle_promoted_contract
+  evidence:
+    metrics: []
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/audit/test_agent_training_harness_claims.py
+    evidence_commands:
+    - python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+    - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: none
+    service_mode: unsupported
+- id: skill-agent-kpis
+  family: skill
+  source: skills/agent-kpis/SKILL.md
+  lifecycle_ref: skills/agent-kpis/SKILL.md
+  generated_from_lifecycle: true
+  intent: Skill-facing KPI dashboard over skill metrics, error learning, task state, and Engram feedback.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - skills/agent-kpis/SKILL.md
+  requires:
+  - respect_declared_scope
+  - preserve_privacy
+  - emit_intervention
+  actions:
+    preferred: advise
+    fallback: observe
+    reason_codes:
+    - lifecycle_promoted_contract
+  evidence:
+    metrics:
+    - .cognitive-os/metrics/kpi-history.jsonl
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/audit/test_agent_training_harness_claims.py
+    evidence_commands:
+    - python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+    - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: none
+    service_mode: unsupported
+- id: rule-self-improvement-protocol
+  family: rule
+  source: rules/self-improvement-protocol.md
+  lifecycle_ref: rules/self-improvement-protocol.md
+  generated_from_lifecycle: true
+  intent: Governance rule separating auto-applicable improvements from human-approval-required primitive rewrites.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - rules/self-improvement-protocol.md
+  requires:
+  - respect_declared_scope
+  - preserve_privacy
+  - emit_intervention
+  actions:
+    preferred: advise
+    fallback: observe
+    reason_codes:
+    - lifecycle_promoted_contract
+  evidence:
+    metrics: []
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/audit/test_agent_training_harness_claims.py
+    evidence_commands:
+    - python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+    - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: none
+    service_mode: unsupported
+- id: script-cos-product-answer
+  family: script
+  source: scripts/cos-product-answer
+  lifecycle_ref: scripts/cos-product-answer
+  generated_from_lifecycle: true
+  intent: Skill-facing CLI for ADR-280/281 product question-to-evidence answers; queries the product question bank and claim-evidence manifests.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - scripts/cos-product-answer
+  requires:
+  - respect_declared_scope
+  - preserve_projection_fidelity
+  - emit_intervention
+  actions:
+    preferred: advise
+    fallback: observe
+    reason_codes:
+    - lifecycle_promoted_contract
+  evidence:
+    metrics: []
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/contracts/test_primitive_readiness_ledger_contract.py
+    evidence_commands:
+    - python3 -m py_compile scripts/cos-product-answer
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: none
+    service_mode: unsupported
+- id: script-cos-product-answer-refresh
+  family: script
+  source: scripts/cos-product-answer-refresh
+  lifecycle_ref: scripts/cos-product-answer-refresh
+  generated_from_lifecycle: true
+  intent: Skill-facing CLI to regenerate ADR-282 product answer cards and routing index from the product question bank.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - scripts/cos-product-answer-refresh
+  requires:
+  - respect_declared_scope
+  - preserve_projection_fidelity
+  - emit_intervention
+  actions:
+    preferred: advise
+    fallback: observe
+    reason_codes:
+    - lifecycle_promoted_contract
+  evidence:
+    metrics: []
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/contracts/test_primitive_readiness_ledger_contract.py
+    evidence_commands:
+    - python3 -m py_compile scripts/cos-product-answer-refresh
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: none
+    service_mode: unsupported
+- id: script-cos-public-claim-gate
+  family: script
+  source: scripts/cos-public-claim-gate
+  lifecycle_ref: scripts/cos-public-claim-gate
+  generated_from_lifecycle: true
+  intent: Skill-facing CLI for ADR-206 public claim decommission gate; scans for disallowed public-facing claim patterns.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - scripts/cos-public-claim-gate
+  requires:
+  - respect_declared_scope
+  - preserve_projection_fidelity
+  - emit_intervention
+  actions:
+    preferred: advise
+    fallback: observe
+    reason_codes:
+    - lifecycle_promoted_contract
+  evidence:
+    metrics: []
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/contracts/test_primitive_readiness_ledger_contract.py
+    evidence_commands:
+    - python3 -m py_compile scripts/cos-public-claim-gate
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
     cursor:
       fidelity: structural-advisory
       surface: generated Cursor rules/context only
