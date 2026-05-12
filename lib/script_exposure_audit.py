@@ -135,6 +135,26 @@ def classify_script(row: dict[str, Any], disposition: dict[str, Any] | None = No
         recommendation = "no-action"
         owner = str(disposition.get("owner") or "script orchestration")
         rationale = f"Manual ADR-283 disposition classifies this as an internal backend owned by {owner}."
+    elif role == "maintainer-tool" and skill_consumers == 0 and disposition_resolution == "operator_workflow":
+        priority = "OK"
+        finding = "maintainer-tool-operator-workflow"
+        exposure_class = "OK-operator-workflow"
+        recommendation = "no-action"
+        owner = str(disposition.get("owner") or "maintainer/operator workflow")
+        rationale = f"Manual ADR-283 disposition classifies this as an operator workflow owned by {owner}."
+    elif role == "maintainer-tool" and skill_consumers == 0 and disposition_resolution == "documented_maintainer_tool":
+        priority = "OK"
+        finding = "maintainer-tool-documented"
+        exposure_class = "OK-documented-maintainer"
+        recommendation = "no-action"
+        evidence = str(disposition.get("evidence") or "docs/tests evidence")
+        rationale = f"Manual ADR-283 disposition keeps this as a documented maintainer tool based on {evidence}."
+    elif role == "maintainer-tool" and skill_consumers == 0 and disposition_resolution == "test_fixture":
+        priority = "OK"
+        finding = "maintainer-tool-test-fixture"
+        exposure_class = "OK-test-fixture"
+        recommendation = "no-action"
+        rationale = "Manual ADR-283 disposition classifies this as a test fixture or smoke target; no skill required by default."
     elif role == "agentic-primitive" and skill_consumers == 0:
         priority = "P0"
         finding = "agentic-primitive-without-skill-consumer"

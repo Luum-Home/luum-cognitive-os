@@ -123,6 +123,56 @@ def test_internal_backend_disposition_resolves_p2_script_orchestrated() -> None:
     assert finding["exposure_class"] == "OK-internal-backend"
 
 
+def test_operator_workflow_disposition_resolves_p2_script_orchestrated() -> None:
+    row = _row("scripts/operator-workflow.sh", "maintainer-tool", total=1, families={"script": 1})
+
+    finding = classify_script(
+        row,
+        {
+            "path": "scripts/operator-workflow.sh",
+            "resolution": "operator_workflow",
+            "owner": "maintainer/operator workflow",
+            "rationale": "Synthetic operator workflow classification.",
+        },
+    )
+
+    assert finding["priority"] == "OK"
+    assert finding["exposure_class"] == "OK-operator-workflow"
+
+
+def test_documented_maintainer_disposition_resolves_doc_test_p2() -> None:
+    row = _row("scripts/documented-tool", "maintainer-tool", total=2, families={"doc": 1, "test": 1})
+
+    finding = classify_script(
+        row,
+        {
+            "path": "scripts/documented-tool",
+            "resolution": "documented_maintainer_tool",
+            "evidence": "docs/tests evidence",
+            "rationale": "Synthetic documented maintainer classification.",
+        },
+    )
+
+    assert finding["priority"] == "OK"
+    assert finding["exposure_class"] == "OK-documented-maintainer"
+
+
+def test_test_fixture_disposition_resolves_test_only_p2() -> None:
+    row = _row("scripts/test-fixture", "maintainer-tool", total=1, families={"test": 1})
+
+    finding = classify_script(
+        row,
+        {
+            "path": "scripts/test-fixture",
+            "resolution": "test_fixture",
+            "rationale": "Synthetic test fixture classification.",
+        },
+    )
+
+    assert finding["priority"] == "OK"
+    assert finding["exposure_class"] == "OK-test-fixture"
+
+
 def test_explicit_maintainer_classification_resolves_p2() -> None:
     row = _row("scripts/internal", "maintainer-tool", total=2, families={"doc": 1, "test": 1})
     row["role_source"] = "override"

@@ -38,6 +38,14 @@ def _write_ledger(path: Path) -> None:
                         "consumer_families": {"script": 1},
                         "consumers": [{"family": "script", "path": "scripts/internal-wrapper"}],
                     },
+                    {
+                        "path": "scripts/operator-workflow.sh",
+                        "role": "maintainer-tool",
+                        "skill_consumers": 0,
+                        "total_consumers": 1,
+                        "consumer_families": {"script": 1},
+                        "consumers": [{"family": "script", "path": "scripts/operator-scheduler"}],
+                    },
                 ],
             }
         ),
@@ -62,7 +70,7 @@ def test_cli_outputs_json_report(tmp_path: Path) -> None:
     assert report["schema_version"] == "script-exposure-audit/v1"
     assert report["summary"]["by_priority"]["P0"] == 1
     assert report["summary"]["by_exposure_class"]["P0-unrouted"] == 1
-    assert report["summary"]["by_priority"]["P2"] == 2
+    assert report["summary"]["by_priority"]["P2"] == 3
 
 
 def test_cli_fail_p0_exits_two(tmp_path: Path) -> None:
@@ -99,6 +107,10 @@ def test_cli_accepts_dispositions_manifest(tmp_path: Path) -> None:
                 "    resolution: internal_backend",
                 "    owner: synthetic wrapper",
                 "    rationale: synthetic backend",
+                "  - path: scripts/operator-workflow.sh",
+                "    resolution: operator_workflow",
+                "    owner: synthetic operator",
+                "    rationale: synthetic operator workflow",
             ]
         )
         + "\n",
@@ -125,6 +137,7 @@ def test_cli_accepts_dispositions_manifest(tmp_path: Path) -> None:
     assert result.returncode == 0
     report = json.loads(result.stdout)
     assert report["summary"]["by_priority"]["P0"] == 0
-    assert report["summary"]["by_priority"]["P2"] == 1
+    assert report["summary"]["by_priority"].get("P2", 0) == 1
     assert report["summary"]["by_exposure_class"]["OK-documented-route"] == 1
     assert report["summary"]["by_exposure_class"]["OK-internal-backend"] == 1
+    assert report["summary"]["by_exposure_class"]["OK-operator-workflow"] == 1
