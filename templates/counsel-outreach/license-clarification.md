@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 Subject: License clarification request — {{TOOL}} ({{LICENSE_SPDX}})
 
 To: {{TO}}

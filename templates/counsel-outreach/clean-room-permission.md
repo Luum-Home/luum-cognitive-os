@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 Subject: Clean-room adoption notice — {{TOOL}} patterns in luum-cognitive-os
 
 To: {{TO}}

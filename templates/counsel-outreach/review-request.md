@@ -1,3 +1,5 @@
+<!-- SCOPE: os-only -->
+
 Subject: IP review request — {{TOOL}} adoption in luum-cognitive-os
 
 To: {{TO}}
