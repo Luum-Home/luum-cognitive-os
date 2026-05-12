@@ -63,7 +63,7 @@ Examples: `docs/reports/aspirational-audit-2026-05-08.md`, `docs/reports/ai-agen
 Format: three-digit zero-padded number + lowercase-hyphenated slug.  
 Example: `docs/adrs/ADR-014-sdd-fast-path.md`
 
-**Deprecated redirect stubs:** `docs/architecture/adrs/` is an ADR-087 migration stub directory. Files there start with `# Moved` and point to canonical ADRs under `docs/adrs/`. Treat `docs/adrs/` as authoritative. Do not create or edit ADRs in `docs/architecture/adrs/`.
+**Canonical location:** `docs/adrs/` is the only ADR directory. The legacy `docs/architecture/adrs/` namespace (ADR-087) was removed on 2026-05-12.
 
 When writing a new ADR: copy the structure from the most recent `docs/adrs/ADR-NNN-*.md` file. Increment NNN sequentially.
 

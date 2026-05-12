@@ -24,7 +24,7 @@ The following pieces already support the long-term portability direction:
 
 - [internal/provider/codex.go](../../internal/provider/codex.go) provides a real Codex provider adapter.
 - [pkg/hook/context.go](../../pkg/hook/context.go) defines a canonical provider-agnostic context model.
-- [docs/architecture/adrs/008-multi-tool-support.md](adrs/008-multi-tool-support.md) documents the decision to avoid Claude-only lock-in.
+- [docs/adrs/ADR-008-multi-tool-support.md](../adrs/ADR-008-multi-tool-support.md) documents the decision to avoid Claude-only lock-in.
 - [docs/architecture/cross-tool-landscape.md](cross-tool-landscape.md) documents cross-tool portability tiers and ecosystem constraints.
 
 ## Where the Real Lock-In Still Lives
