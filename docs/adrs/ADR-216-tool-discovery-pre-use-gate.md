@@ -2,15 +2,14 @@
 adr: 216
 title: Tool Discovery Pre-Use Gate
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-06'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'tool-discovery pre-use manifest, evaluator CLI, Bash gate integration, and tests implement the gate'
 ---
 
 # ADR-216 — Tool Discovery Pre-Use Gate

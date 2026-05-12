@@ -2,15 +2,14 @@
 adr: 212
 title: Cross-Stack License Audit Toolchain
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-06'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'cross-stack license audit manifest, CLI wrapper, scanner scripts, and tests implement the audit toolchain'
 ---
 
 # ADR-212 — Cross-Stack License Audit Toolchain

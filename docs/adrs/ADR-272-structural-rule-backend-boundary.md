@@ -9,8 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'policy-only: boundary decision constraining future structural backend integrations; no runtime implementation is claimed'
 ---
 
 # ADR-272: Structural Rule Backend Boundary

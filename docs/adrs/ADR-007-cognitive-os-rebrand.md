@@ -9,8 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'governance-only: naming/prose rebrand decision; intentionally no physical rename implementation surface'
 ---
 
 # ADR-007: Rebrand from Agent OS to Cognitive OS

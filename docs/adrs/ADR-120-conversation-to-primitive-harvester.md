@@ -2,15 +2,14 @@
 adr: 120
 title: Conversation-to-Primitive Harvester
 status: accepted
-implementation_status: not-applicable
+implementation_status: partial
 date: '2026-05-02'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'primitive harvester architecture exists, but this ADR is not evidenced as a fully closed runtime harvester implementation'
 ---
 
 # ADR-120: Conversation-to-Primitive Harvester
