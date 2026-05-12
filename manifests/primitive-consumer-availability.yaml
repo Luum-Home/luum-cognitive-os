@@ -298,6 +298,9 @@ items:
 - path: scripts/cos-subprocess-timeout-audit.py
   status: maintainer-only
   rationale: ADR-278 maintainer/control-plane audit over this repository's subprocess timeout discipline; consumer projects should not receive it as a default runtime primitive.
+- path: scripts/adr_verification_audit.py
+  status: maintainer-only
+  rationale: ADR verification evidence-strength audit for this repository's ADR contract; not a default consumer-project runtime primitive.
 patterns:
 - pattern: scripts/**
   status: so-local-only
