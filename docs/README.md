@@ -43,6 +43,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR Implementation Status Backfill — 2026-05-12](reports/adr-implementation-status-backfill-2026-05-12.md) — first conservative frontmatter backfill and remaining Active/Unclassified scope.
 - [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains canonical primitives, portable contracts, harness/runtime projection, fidelity, consumer-fleet impact, service/headless impact, and the `.ai/` product-overlay lesson.
 - [Agent Training Harness](architecture/agent-training-harness.md) — canonical contract for operational agent training via telemetry, memory, evals, and governed primitive updates; explicitly not provider-weight fine-tuning.
+- [Agent Training Harness Gap Audit — 2026-05-12](reports/agent-training-harness-gap-audit-2026-05-12.md) — closure audit for the training-harness manifest, claim gate, and prioritized lifecycle metadata.
 - [Portable `.ai` Consumer Package Spec](architecture/portable-ai-consumer-package-spec.md) — README-first Markdown package shape generated from the maintainer overlay for consumer projects.
 - [OpenCode Native Primitive Adapter Design](architecture/opencode-native-primitive-adapter-design.md) — native permissions/plugins design and smoke criteria before OpenCode runtime enforcement claims.
 - [Primitive Contract Registry Implementation Plan](architecture/primitive-contract-registry-implementation-plan.md) — phased plan for ADR-256 before runtime implementation.
