@@ -7,6 +7,10 @@
 > `cos-adr-close` invocation AND when an agent discovers any documentation
 > contradiction during work.
 
+## Purpose
+
+Enforce that every documentation contradiction discovered during a session terminates in either a code/manifest fix or an explicit ledger debt entry — never as an unreviewed comment.
+
 ## The rule (one sentence)
 
 **Every documentation contradiction discovered during a session MUST

@@ -1,9 +1,14 @@
+<!-- SCOPE: both -->
 # Memory Governance v2 — Typed Memory Policies
 
 **Trigger:** `[memory-governance]`
 **ADR:** [ADR-261](../docs/adrs/ADR-261-memory-governance-v2.md)
 **Related:** ADR-071 (Ebbinghaus lifecycle decay), ADR-078 (Mid-Task Memory Tool)
 **Single source of truth for policy values:** `lib/memory_governance.py` — `_POLICY_TABLE`
+
+## Purpose
+
+Declare typed memory governance policies (lifecycle decay, retention, mid-task tool budgets) so consumers of the memory layer can rely on uniform contract enforcement.
 
 ---
 

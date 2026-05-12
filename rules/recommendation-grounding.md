@@ -1,3 +1,4 @@
+<!-- SCOPE: both -->
 ---
 rule: recommendation-grounding
 status: draft
@@ -11,6 +12,11 @@ related:
   - rules/RULES-COMPACT.md §12 (research-first protocol)
   - skills/deep-tool-research/SKILL.md §7 (acceptance criteria)
 ---
+
+## Purpose
+
+When producing P0/P1/P2/P3 priority tables in research synthesis docs, ground each recommendation in either an explicit operator signal or a recorded decision; ungrounded recommendations are advisory and flagged for triage, not auto-actioned.
+
 
 # Recommendation Grounding — Cite Operational Signals Before You Rank
 
