@@ -110,7 +110,7 @@ describes volatile coverage or harness facts:
 ## ACC refresh integration
 
 The ACC adapter `documentation_truth` already wires audit findings into
-capability classification (ADR-031). At session close, the wrapup
+capability classification (ADR-277). At session close, the wrapup
 explicitly checks this adapter's output and notes any stale
 capability classification as a follow-up.
 
@@ -125,4 +125,4 @@ The rule is enforced by:
 - `scripts/documentation_truth_audit.py --fail-on-block` (CI gate)
 - `skills/session-wrapup/SKILL.md` Step 2b (per-session)
 - ADR-277 (canonical contract)
-- The control-plane `documentation_truth` audit (hourly)
+- The control-plane `documentation_truth` audit through ACC refresh/session wrapup
