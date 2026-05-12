@@ -1,3 +1,17 @@
+---
+adr: 255
+title: Feature-to-External-Tool Due Diligence
+status: accepted
+implementation_status: implemented
+date: '2026-05-08'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-255 — Feature-to-External-Tool Due Diligence
 
 ## Status

@@ -1,3 +1,17 @@
+---
+adr: 254
+title: External Tool Intelligence Plane and Project Overlays
+status: accepted
+implementation_status: partial
+date: '2026-05-08'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-254 — External Tool Intelligence Plane and Project Overlays
 
 status: accepted

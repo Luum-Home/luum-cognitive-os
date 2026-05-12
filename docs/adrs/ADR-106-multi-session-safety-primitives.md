@@ -1,3 +1,17 @@
+---
+adr: 106
+title: Multi-Session Safety Primitives
+status: accepted
+implementation_status: implemented
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-106 — Multi-Session Safety Primitives
 
 <!-- SCOPE: OS -->

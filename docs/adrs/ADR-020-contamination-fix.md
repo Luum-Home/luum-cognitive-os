@@ -1,3 +1,17 @@
+---
+adr: 20
+title: Contamination Fix -- Remove Project-Specific Code from OS
+status: accepted
+implementation_status: partial
+date: '2026-04-13'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-020: Contamination Fix -- Remove Project-Specific Code from OS
 
 **Date:** 2026-04-13

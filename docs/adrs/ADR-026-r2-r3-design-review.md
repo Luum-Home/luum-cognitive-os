@@ -1,3 +1,17 @@
+---
+adr: 26
+title: R2 and R3 Consolidation — Design Review
+status: accepted
+implementation_status: partial
+date: '2026-04-17'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-026: R2 and R3 Consolidation — Design Review
 
 **Date:** 2026-04-17

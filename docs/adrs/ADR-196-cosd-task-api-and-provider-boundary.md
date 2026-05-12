@@ -1,3 +1,17 @@
+---
+adr: 196
+title: cosd Task API and Provider Boundary
+status: accepted
+implementation_status: partial
+date: '2026-05-06'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-196: cosd Task API and Provider Boundary
 
 ## Status

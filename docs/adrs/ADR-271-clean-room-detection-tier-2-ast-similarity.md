@@ -1,3 +1,17 @@
+---
+adr: 271
+title: 'Clean-Room Detection Tier 2: AST-Normalized Similarity'
+status: proposed
+implementation_status: planned
+date: '2026-05-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-270 — Clean-Room Detection Tier 2: AST-Normalized Similarity
 
 ## Status

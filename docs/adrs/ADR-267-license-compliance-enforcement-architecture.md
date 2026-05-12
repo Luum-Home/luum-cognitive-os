@@ -1,3 +1,17 @@
+---
+adr: 267
+title: License-Compliance Enforcement Architecture
+status: accepted
+implementation_status: partial
+date: '2026-05-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-267 — License-Compliance Enforcement Architecture
 
 ## Status

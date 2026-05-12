@@ -1,3 +1,17 @@
+---
+adr: 33
+title: Harness-agnostic event capture layer
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit pending/deferred/planned scope
+---
+
 # ADR-033 — Harness-agnostic event capture layer
 
 **Status**: Accepted

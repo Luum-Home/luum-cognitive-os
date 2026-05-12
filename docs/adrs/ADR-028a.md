@@ -1,3 +1,17 @@
+---
+adr: 28a
+title: 'Addendum: Reconciliation with pre-existing plans'
+status: accepted
+implementation_status: implemented
+date: '2026-04-18'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-028a — Addendum: Reconciliation with pre-existing plans
 
 **Status**: Addendum to ADR-028

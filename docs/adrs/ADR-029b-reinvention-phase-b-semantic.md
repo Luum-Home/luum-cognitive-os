@@ -1,3 +1,17 @@
+---
+adr: 29b
+title: 'Reinvention gate Phase B: semantic similarity'
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-029b — Reinvention gate Phase B: semantic similarity
 
 **Status**: Accepted (Phase B-α MVP); Phase B-β (embeddings) deferred

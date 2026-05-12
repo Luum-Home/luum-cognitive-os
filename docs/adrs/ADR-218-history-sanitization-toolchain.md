@@ -1,3 +1,17 @@
+---
+adr: 218
+title: History Sanitization Toolchain
+status: accepted
+implementation_status: partial
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-218 — History Sanitization Toolchain
 
 ## Status

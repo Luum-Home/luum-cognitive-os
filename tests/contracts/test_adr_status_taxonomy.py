@@ -79,7 +79,7 @@ def test_adr_index_is_generated_from_current_taxonomy() -> None:
     assert "### Active / Implemented (" in index
     assert "### Active / Partial (" in index
     assert "### Active / Deferred (" in index
-    assert "### Active / Unclassified (" in index
+    assert "### Active / Unclassified (" not in index
 
 
 def test_audit_adrs_rejects_nested_status_maps(tmp_path: Path) -> None:

@@ -1,3 +1,17 @@
+---
+adr: 28b
+title: 'Addendum: D1.C Replanned Around agent_bus'
+status: accepted
+implementation_status: implemented
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-028b — Addendum: D1.C Replanned Around agent_bus
 
 **Status**: Addendum to ADR-028

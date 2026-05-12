@@ -1,3 +1,17 @@
+---
+adr: 86
+title: Hook Execution Observability
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-086: Hook Execution Observability
 
 <!-- Renumbered-from: attempted ADR-085 during the ADR reservation race documented in ADR-089. -->

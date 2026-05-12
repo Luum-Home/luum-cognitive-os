@@ -1,3 +1,17 @@
+---
+adr: 127
+title: Active Primitive Index
+status: accepted
+implementation_status: partial
+date: '2026-05-12'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-127: Active Primitive Index
 
 ## Status

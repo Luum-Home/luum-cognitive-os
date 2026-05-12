@@ -1,3 +1,17 @@
+---
+adr: 83
+title: Governed Self-Improvement Loop
+status: accepted
+implementation_status: partial
+date: '2026-04-29'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-083 — Governed Self-Improvement Loop
 
 <!-- SCOPE: OS -->

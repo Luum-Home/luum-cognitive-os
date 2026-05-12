@@ -1,3 +1,17 @@
+---
+adr: 232
+title: Sandbox Adapter Tiers
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-232 — Sandbox Adapter Tiers
 
 ## Status

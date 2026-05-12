@@ -1,3 +1,17 @@
+---
+adr: 107
+title: Human-Approved Rollback Boundary
+status: accepted
+implementation_status: partial
+date: '2026-05-02'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted record with explicit partial/phase scope
+---
+
 # ADR-107 — Human-Approved Rollback Boundary
 
 <!-- SCOPE: both -->

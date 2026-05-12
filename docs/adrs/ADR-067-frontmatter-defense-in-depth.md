@@ -1,3 +1,17 @@
+---
+adr: 67
+title: Defense-in-Depth for SKILL.md Frontmatter Quality
+status: proposed
+implementation_status: planned
+date: '2026-04-24'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-067 — Defense-in-Depth for SKILL.md Frontmatter Quality
 
 ## Status

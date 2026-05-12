@@ -1,3 +1,17 @@
+---
+adr: 50
+title: Per-Skill Routing Policy
+status: accepted
+implementation_status: partial
+date: '2026-04-21'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-050 — Per-Skill Routing Policy
 
 ## Status

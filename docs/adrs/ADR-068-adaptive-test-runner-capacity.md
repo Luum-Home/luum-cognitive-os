@@ -1,3 +1,17 @@
+---
+adr: 68
+title: Adaptive Test Runner Capacity Detection
+status: accepted
+implementation_status: partial
+date: '2026-04-30'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted/implemented text with explicit partial/deferred scope
+---
+
 # ADR-068: Adaptive Test Runner Capacity Detection
 
 ## Status

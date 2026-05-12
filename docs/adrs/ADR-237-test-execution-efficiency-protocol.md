@@ -1,3 +1,17 @@
+---
+adr: 237
+title: Test Execution Efficiency Protocol
+status: accepted
+implementation_status: implemented
+date: '2026-05-07'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit accepted/implemented status
+---
+
 # ADR-237 — Test Execution Efficiency Protocol
 
 ## Status

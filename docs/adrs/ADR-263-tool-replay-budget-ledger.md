@@ -1,3 +1,18 @@
+---
+adr: 263
+title: 'Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes'
+status: accepted
+implementation_status: not-applicable
+date: '2026-05-11'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: accepted decision/policy record with no explicit implementation
+  surface
+---
+
 # ADR-263 — Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes
 
 ## Status

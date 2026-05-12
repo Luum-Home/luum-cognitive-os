@@ -1,3 +1,17 @@
+---
+adr: 33b
+title: Duration Correlation and Aider Version Dispatch Hardening
+status: accepted
+implementation_status: partial
+date: '2026-04-20'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation evidence plus partial/deferred/future signal
+---
+
 # ADR-033b — Duration Correlation and Aider Version Dispatch Hardening
 
 **Status**: Accepted

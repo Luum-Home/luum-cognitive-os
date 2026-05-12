@@ -1,3 +1,17 @@
+---
+adr: 70
+title: Convention Enforcement — From Documentation to Mechanism
+status: proposed
+implementation_status: planned
+date: '2026-04-27'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit proposed status without accepted status
+---
+
 # ADR-070: Convention Enforcement — From Documentation to Mechanism
 
 ## Status

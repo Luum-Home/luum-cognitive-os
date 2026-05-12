@@ -1,3 +1,17 @@
+---
+adr: 128
+title: Data Layer Integrity Fixes
+status: proposed
+implementation_status: planned
+date: '2026-05-03'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: explicit prose status migration for previously prose-only ADR
+---
+
 # ADR-128 — Data Layer Integrity Fixes
 
 ## Status

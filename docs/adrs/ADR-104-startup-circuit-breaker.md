@@ -1,3 +1,17 @@
+---
+adr: 104
+title: Startup Circuit Breaker and Safe Mode
+status: accepted
+implementation_status: implemented
+date: '2026-05-01'
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: []
+classification_basis: implementation/shipped/delivered evidence
+---
+
 # ADR-104 — Startup Circuit Breaker and Safe Mode
 
 <!-- SCOPE: OS -->
