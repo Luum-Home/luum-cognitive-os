@@ -84,3 +84,11 @@ Run the full consumer projection proof:
 ```bash
 python3 -m pytest tests/behavior/test_consumer_project_projection.py -q
 ```
+
+<!-- GENERATED:documentation-truth:primitive_authority_write_effects:start -->
+Generated documentation truth: primitive authority/write-effects.
+Authority audit status: pass.
+Scripts audited: 531; blockers: 0; dynamic smokes: 4; dynamic blocks: 0.
+Contract surfaces: manifests/primitive-authority.yaml; scripts/primitive_authority_audit.py; ACC adapter authority_write_effects.
+Sources: docs/reports/primitive-authority-latest.json; docs/adrs/ADR-276-primitive-authority-write-effects.md.
+<!-- GENERATED:documentation-truth:primitive_authority_write_effects:end -->

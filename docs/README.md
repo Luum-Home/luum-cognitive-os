@@ -33,6 +33,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 ## Key Documents
 
 - [ADR-276: Primitive Authority and Write-Effects Audit](adrs/ADR-276-primitive-authority-write-effects.md) — accepted contract for `manifests/primitive-authority.yaml`, `scripts/primitive_authority_audit.py`, dynamic filesystem-delta smokes, and ACC `authority_write_effects`.
+- [ADR-277: Documentation Truth Control](adrs/ADR-277-documentation-truth-control.md) — accepted contract for `manifests/documentation-truth-claims.yaml`, `scripts/documentation_truth_audit.py`, generated truth blocks, and ACC `documentation_truth`.
 - [ADR-256: Primitive Contract Registry and Runtime Evidence Ledger](adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) — implemented root contract connecting primitive definitions, projection fidelity, consumer/service impact, intervention evidence, codebase itinerary, and run traces.
 - [ADR-257: Primitive Contract Registry Phase 1](adrs/ADR-257-primitive-contract-registry-phase-1.md) — implemented first `manifests/primitive-contracts.yaml` slice for five high-value primitives and structural-enforcement guard tests.
 - [ADR-258: Portable `.ai` Overlay for Agentic Primitives](adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md) — accepted generated `.ai` overlay/export surface grounded in a 40+ source external due-diligence sweep.
@@ -124,6 +125,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [Primitive Readiness Ledger Family Extension Plan](architecture/primitive-readiness-ledger-family-extension.md) — staged plan for extending readiness ledgers from scripts to hooks, skills, and rules.
 - [Consumer Project Primitive Accessibility](architecture/consumer-project-primitive-accessibility.md) — downstream-project projection contract for implemented native and structural harnesses, with runtime-enforcement limits kept explicit.
 - [Primitive Authority and Write-Effects Boundary](architecture/primitive-authority-write-effects.md) — canonical read/write authority model joining scope, projection, propose-only imports, protected config writes, Shell/CI projection, no-mutation smokes, and the ADR-276 authority audit.
+- [Documentation Truth Control](architecture/documentation-truth-control.md) — canonical manifest-driven audit that prevents volatile docs from contradicting generated reports, with generated truth blocks and ACC `documentation_truth`.
 - [Consumer Fleet Audit](architecture/consumer-fleet-audit.md) — read-only panel joining installation registry, install metadata, registry locks, claim signatures, and targeted validation lanes for downstream SO adopters.
 - [ADR-189: Harness Implementation Coverage for Agentic Primitives](adrs/ADR-189-harness-implementation-coverage.md) — separates `SCOPE` intent from effective Claude/Codex/Shell-CI implementation states.
 - [Harness Action Receipts](architecture/harness-action-receipts.md) — vendor-neutral receipt and trust model for Codex `::git-*` directives, Git operations, merge queues, and future harness action telemetry.

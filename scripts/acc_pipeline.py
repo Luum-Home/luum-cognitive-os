@@ -46,6 +46,7 @@ DEFAULT_WEIGHTS = {
     "primitive_intervention": 2,
     "codebase_itinerary": 1,
     "authority_write_effects": 3,
+    "documentation_truth": 2,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -308,6 +309,7 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
         ("primitive_fitness_ledger", ["python3", "scripts/primitive_fitness_ledger.py", "--project-dir", "."]),
         ("primitive_authority_audit", ["python3", "scripts/primitive_authority_audit.py", "--project-dir", ".", "--json"]),
+        ("documentation_truth_audit", ["python3", "scripts/documentation_truth_audit.py", "--project-dir", ".", "--update-generated", "--json"]),
     ]
     if include_slow:
         commands.append(("primitive_coverage", ["python3", "scripts/primitive_coverage.py", "--project-dir", ".", "--adapter", "cognitive-os", "--format", "json"]))
@@ -1008,6 +1010,49 @@ def load_authority_write_effects(root: Path) -> tuple[AdapterStatus, list[Capabi
     return AdapterStatus("ok", str(path.relative_to(root)), summary=summary), capabilities, findings
 
 
+def load_documentation_truth(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "documentation-truth-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", str(path.relative_to(root)), error="missing documentation truth report"), [], []
+    data = read_json(path)
+    summary = data.get("summary", {}) if isinstance(data, dict) else {}
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for row in data.get("rows", []) if isinstance(data, dict) else []:
+        claim = str(row.get("claim_id") or "unknown")
+        grouped.setdefault(claim, []).append(row)
+    for claim, rows in sorted(grouped.items()):
+        block_rows = [row for row in rows if row.get("status") == "block"]
+        mapping = "stale" if block_rows else "aligned"
+        evidence = [f"checks:{len(rows)}", f"blocks:{len(block_rows)}"]
+        evidence.extend(f"block:{row.get('check')}:{row.get('doc') or ''}" for row in block_rows[:5])
+        capabilities.append(Capability(
+            id=f"documentation_truth:{claim}",
+            kind="documentation_truth",
+            source={"path": str(path.relative_to(root)), "claim": claim},
+            risk="high" if any(row.get("severity") == "high" for row in rows) else "medium",
+            signature={"status": mapping, "checks": len(rows), "blocks": len(block_rows)},
+            represented_by=[{"kind": "documentation_truth_claim", "id": claim, "role": "stale-prose-boundary"}],
+            mapping_status=mapping,
+            confidence=0.9 if mapping == "aligned" else 0.82,
+            consumer_accessibility="so-local-only",
+            lifecycle_status="real",
+            evidence=evidence[:10],
+            weight=DEFAULT_WEIGHTS["documentation_truth"],
+        ))
+        for row in block_rows:
+            findings.append(Finding(
+                f"documentation_truth:{claim}",
+                str(row.get("severity") or "medium"),
+                "stale",
+                str(row.get("message") or "Documentation truth claim is stale or contradicted"),
+                [str(item) for item in row.get("evidence", [])[:8]],
+                str(row.get("next_action") or "update docs, source report, or truth manifest"),
+            ))
+    return AdapterStatus("ok", str(path.relative_to(root)), summary=summary), capabilities, findings
+
+
 def load_primitive_interventions(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
     path = root / ".cognitive-os" / "metrics" / "primitive-interventions.jsonl"
     if not path.exists():
@@ -1372,6 +1417,9 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     authority_status, authority_capabilities, authority_findings = load_authority_write_effects(root)
     capabilities.extend(authority_capabilities)
     findings.extend(authority_findings)
+    documentation_truth_status, documentation_truth_capabilities, documentation_truth_findings = load_documentation_truth(root)
+    capabilities.extend(documentation_truth_capabilities)
+    findings.extend(documentation_truth_findings)
     intervention_status, intervention_capabilities, intervention_findings = load_primitive_interventions(root)
     capabilities.extend(intervention_capabilities)
     findings.extend(intervention_findings)
@@ -1392,6 +1440,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "harness_coverage": harness_coverage_status,
         "projection_fidelity": projection_fidelity_status,
         "authority_write_effects": authority_status,
+        "documentation_truth": documentation_truth_status,
         "primitive_interventions": intervention_status,
         "codebase_itinerary": itinerary_status,
         **readiness_adapters,

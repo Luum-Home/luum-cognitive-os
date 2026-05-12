@@ -90,3 +90,11 @@ A primitive can be described as available to consumer projects only when all are
 3. A temp consumer project proof installs/projects the primitive or its family.
 4. The generated readiness ledger no longer marks the row as SO-local only.
 5. Manual documentation names the exact harnesses proved, not all IDEs by default.
+
+<!-- GENERATED:documentation-truth:consumer_projection_harnesses:start -->
+Generated documentation truth: consumer projection harnesses.
+Implemented harnesses (22): agents-md, aider, amp-code, augment-code, claude, cline, codex, continue-dev, cursor, factory-droid, gemini-cli, goose, jetbrains-junie, kilo-code, kimi-code, opencode, qoder, qwen-code, shell-ci, vscode-copilot, warp, zed-ai.
+Projection fidelity summary: {"aligned": 1842, "contracts": 307, "gaps": 0, "pending_runtime_smoke": 0, "projection_rows": 1842, "unknown": 0}.
+Structural projection is not runtime enforcement; native lifecycle enforcement remains harness-specific.
+Sources: manifests/harness-projection.yaml; docs/reports/primitive-projection-fidelity-latest.json.
+<!-- GENERATED:documentation-truth:consumer_projection_harnesses:end -->
