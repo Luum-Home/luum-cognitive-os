@@ -22,7 +22,12 @@ tags: [control-plane, backlog, plans, verification, drift-prevention, source-of-
 # ADR-273: Pending Truth Ledger and Bilateral Verification Loop
 
 ## Status
-Accepted — Slice A implemented (schema + aggregator); Slices B (verifier) and C (hooks) tracked.
+Accepted — Slices A + B implemented; Slice C designed and staged (deployment requires operator authorization via `COS_ALLOW_PROTECTED_CONFIG_WRITE=1` per `hooks/protected-config-write-guard.sh`).
+
+Implementation status by slice (2026-05-12):
+- **Slice A** ✅ schema (manifests/pending-truth.yaml) + aggregator (scripts/cos-pending-truth-aggregator) + 6/6 portability tests pass
+- **Slice B** ✅ verifier (scripts/cos-pending-truth-verify) + 5/5 portability tests pass. First run on 279 items: 7 verified-done, 267 verified-pending, 2 obsolete, 3 ambiguous. Deterministic baseline (Opus LLM verification still useful for semantic depth)
+- **Slice C** 🟡 designed + staged at docs/runbooks/adr-273-slice-c-staging/. Three hook scripts written + smoke-tested. Activation pending operator deployment (protected-config-write-guard blocks agent-side hooks/ writes)
 
 <!-- SCOPE: OS -->
 

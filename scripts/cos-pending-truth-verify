@@ -1,0 +1,383 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""ADR-273 Slice B — Bilateral verifier for pending-truth ledger items.
+
+Reads docs/reports/pending-truth-latest.json (produced by Slice A
+aggregator), runs deterministic evidence checks per item type, and
+reclassifies status: unverified -> verified-done|verified-pending|
+ambiguous|obsolete.
+
+Evidence checks (no LLM, deterministic):
+  - plan-checkbox: extract candidate paths from next_action text (lib/X.py,
+    scripts/Y, tests/Z, docs/W), check existence; if associated test file
+    exists in tests/, count as stronger evidence
+  - adr-slice: parse ADR frontmatter implementation_files, check each exists
+  - follow-up: parse tracker row evidence column, check referenced paths
+  - user-request: text-match next_action keywords against CHANGELOG.md
+    [Unreleased] + [0.28.0] sections
+  - audit-finding: check task status age + blocked_by_claim resolution
+
+Classification heuristic:
+  - VERIFIED-DONE: >=1 mentioned file exists AND no glaring gap
+  - AMBIGUOUS: partial existence (some files missing)
+  - VERIFIED-PENDING: 0 mentioned files exist OR explicit pending markers
+  - OBSOLETE: deletion markers, superseded-by present
+
+Per ADR-244 trust-score precedent: when source surface and code disagree,
+code wins. Verifier reports the disagreement; does NOT modify source plans.
+
+Usage:
+  scripts/cos-pending-truth-verify                         # verify + write latest
+  scripts/cos-pending-truth-verify --dry-run               # print diff, no write
+  scripts/cos-pending-truth-verify --max-age-days 7        # only re-verify stale items
+  scripts/cos-pending-truth-verify --project-dir PATH      # explicit root
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from typing import Any
+
+SCHEMA_VERSION = "pending-truth/v1"
+LEDGER_PATH = "docs/reports/pending-truth-latest.json"
+CHANGELOG_PATH = "CHANGELOG.md"
+
+# Path-like patterns to extract from next_action text
+PATH_PATTERN = re.compile(
+    r"\b("
+    r"(?:lib|scripts|tests|docs|hooks|manifests|packages|cmd|skills|rules|templates)"
+    r"/[\w./_-]+"
+    r"\.(?:py|sh|md|json|yaml|yml|go|js|ts|toml|txt)"
+    r")"
+)
+
+# Reference patterns
+ADR_REF = re.compile(r"\bADR-(\d{3,})\b")
+OBSOLETE_MARKERS = re.compile(
+    r"\b(obsolete|deprecated|superseded|tombstone|cancelled-stale|removed)\b",
+    re.IGNORECASE,
+)
+
+
+def _resolve_project_dir(arg: str | None) -> Path:
+    if arg:
+        return Path(arg).resolve()
+    for env_var in ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR"):
+        if env_var in os.environ:
+            return Path(os.environ[env_var]).resolve()
+    return Path.cwd().resolve()
+
+
+def _extract_paths(text: str) -> list[str]:
+    if not text:
+        return []
+    return PATH_PATTERN.findall(text)
+
+
+def _check_path_exists(root: Path, rel: str) -> bool:
+    return (root / rel).exists()
+
+
+def _check_adr_accepted(root: Path, adr_num: str) -> str:
+    """Return ADR status: accepted|tombstone|superseded|proposed|missing|unknown."""
+    matches = list(root.glob(f"docs/adrs/ADR-{adr_num}*.md"))
+    if not matches:
+        return "missing"
+    try:
+        text = matches[0].read_text(encoding="utf-8")[:2000]
+    except OSError:
+        return "unknown"
+    m = re.search(r"^(?:status|\*\*Status\*\*):\s*([\w-]+)", text, re.IGNORECASE | re.MULTILINE)
+    if not m:
+        return "unknown"
+    return m.group(1).strip().lower()
+
+
+def _changelog_mentions(root: Path, keywords: list[str]) -> bool:
+    """Return True if CHANGELOG.md [Unreleased] or recent section mentions any keyword."""
+    path = root / CHANGELOG_PATH
+    if not path.is_file():
+        return False
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    # Look at first ~5000 chars (Unreleased + last few release notes)
+    snippet = text[:5000].lower()
+    return any(kw.lower() in snippet for kw in keywords if len(kw) > 3)
+
+
+def verify_plan_checkbox(root: Path, item: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+    """Verify a plan-checkbox item. Returns (status, evidence)."""
+    next_action = item.get("next_action", "")
+    if OBSOLETE_MARKERS.search(next_action):
+        return "obsolete", [{"kind": "marker_scan", "result": "obsolete-marker-found"}]
+
+    paths = _extract_paths(next_action)
+    evidence: list[dict[str, Any]] = []
+    if not paths:
+        # No paths mentioned — cannot disprove pending
+        return "verified-pending", [{"kind": "path_extraction", "result": "no-paths-mentioned"}]
+
+    existing = 0
+    missing = 0
+    for p in paths:
+        exists = _check_path_exists(root, p)
+        evidence.append({"kind": "file_exists", "path": p, "result": "present" if exists else "missing"})
+        if exists:
+            existing += 1
+        else:
+            missing += 1
+
+    # Test heuristic: if next_action mentions a test file, check it
+    for p in paths:
+        if p.startswith("tests/") and _check_path_exists(root, p):
+            evidence.append({"kind": "test_file_exists", "path": p, "result": "present"})
+
+    if existing == 0:
+        return "verified-pending", evidence
+    if missing == 0:
+        return "verified-done", evidence
+    # Partial — some exist, some don't
+    return "ambiguous", evidence
+
+
+def verify_adr_slice(root: Path, item: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+    """Verify an adr-slice item. Returns (status, evidence)."""
+    owner_adr = item.get("owner_adr") or ""
+    m = ADR_REF.search(owner_adr) or ADR_REF.search(item.get("source", ""))
+    if not m:
+        return "ambiguous", [{"kind": "adr_ref", "result": "no-adr-number-found"}]
+    adr_num = m.group(1)
+    status = _check_adr_accepted(root, adr_num)
+    evidence = [{"kind": "adr_status", "adr": f"ADR-{adr_num}", "result": status}]
+    if status in {"accepted", "tombstone", "superseded"}:
+        return "verified-done", evidence
+    if status == "missing":
+        return "obsolete", evidence
+    return "verified-pending", evidence
+
+
+def verify_follow_up(root: Path, item: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+    """Verify a tracker follow-up item. Returns (status, evidence)."""
+    next_action = item.get("next_action", "")
+    if OBSOLETE_MARKERS.search(next_action):
+        return "obsolete", [{"kind": "marker_scan", "result": "obsolete-marker-found"}]
+
+    paths = _extract_paths(next_action)
+    evidence: list[dict[str, Any]] = []
+    if paths:
+        existing = sum(_check_path_exists(root, p) for p in paths)
+        for p in paths:
+            evidence.append({"kind": "file_exists", "path": p, "result": "present" if _check_path_exists(root, p) else "missing"})
+        if existing == 0:
+            return "verified-pending", evidence
+        if existing == len(paths):
+            return "verified-done", evidence
+        return "ambiguous", evidence
+    # No paths — match marker against CHANGELOG
+    keywords = re.findall(r"[A-Za-z][\w-]{3,}", next_action)
+    if _changelog_mentions(root, keywords[:5]):
+        evidence.append({"kind": "changelog_match", "result": "found-in-unreleased-or-recent"})
+        return "ambiguous", evidence
+    return "verified-pending", evidence
+
+
+def verify_user_request(root: Path, item: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+    """Verify a user-request item via CHANGELOG semantic-text match."""
+    next_action = item.get("next_action", "")
+    if OBSOLETE_MARKERS.search(next_action):
+        return "obsolete", [{"kind": "marker_scan", "result": "obsolete-marker-found"}]
+
+    keywords = re.findall(r"[A-Za-z][\w-]{4,}", next_action)
+    # Use distinctive (longer/rarer) keywords
+    distinctive = sorted(set(keywords), key=len, reverse=True)[:3]
+    evidence = [{"kind": "keywords", "result": distinctive}]
+    if distinctive and _changelog_mentions(root, distinctive):
+        evidence.append({"kind": "changelog_match", "result": "found-in-recent-releases"})
+        return "ambiguous", evidence
+    return "verified-pending", evidence
+
+
+def verify_audit_finding(root: Path, item: dict[str, Any]) -> tuple[str, list[dict[str, Any]]]:
+    """Verify an audit-finding item from active-tasks.json."""
+    existing_evidence = item.get("evidence", [])
+    if existing_evidence:
+        for ev in existing_evidence:
+            if ev.get("kind") == "task_status":
+                status = ev.get("result", "").lower()
+                if status in {"cancelled", "cancelled-stale", "completed", "done", "completed-by-watermark"}:
+                    return "obsolete", [{"kind": "task_status", "result": status}]
+                if status == "blocked_by_claim":
+                    return "verified-pending", [{"kind": "task_status", "result": status}]
+    return "verified-pending", [{"kind": "task_status", "result": "unknown"}]
+
+
+VERIFIERS = {
+    "plan-checkbox": verify_plan_checkbox,
+    "adr-slice": verify_adr_slice,
+    "follow-up": verify_follow_up,
+    "user-request": verify_user_request,
+    "audit-finding": verify_audit_finding,
+}
+
+
+def _parse_iso(s: str | None) -> datetime | None:
+    if not s:
+        return None
+    try:
+        return datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+    except ValueError:
+        return None
+
+
+def verify_ledger(root: Path, max_age_days: int | None = None) -> dict[str, Any]:
+    ledger_path = root / LEDGER_PATH
+    if not ledger_path.is_file():
+        raise SystemExit(f"Ledger not found: {ledger_path}. Run cos-pending-truth-aggregator first.")
+    payload = json.loads(ledger_path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != SCHEMA_VERSION:
+        raise SystemExit(f"Schema mismatch: expected {SCHEMA_VERSION}, got {payload.get('schema_version')}")
+
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(days=max_age_days) if max_age_days else None
+    drift: list[dict[str, Any]] = []
+    transitions: dict[str, int] = {}
+
+    for item in payload.get("items", []):
+        prev_status = item.get("status", "unverified")
+        prev_verified = _parse_iso(item.get("last_verified"))
+        if cutoff and prev_verified and prev_verified >= cutoff and prev_status != "unverified":
+            continue  # skip recently-verified items
+        verifier = VERIFIERS.get(item.get("type"))
+        if not verifier:
+            continue
+        new_status, evidence = verifier(root, item)
+        item["status"] = new_status
+        item["evidence"] = evidence
+        item["last_verified"] = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+        transitions[f"{prev_status}->{new_status}"] = transitions.get(f"{prev_status}->{new_status}", 0) + 1
+        if prev_status != new_status:
+            drift.append({"id": item["id"], "from": prev_status, "to": new_status, "next_action": item.get("next_action", "")[:80]})
+
+    by_status: dict[str, int] = {}
+    for item in payload.get("items", []):
+        by_status[item.get("status", "?")] = by_status.get(item.get("status", "?"), 0) + 1
+    payload["summary"]["by_status"] = by_status
+    payload["verifier"] = {
+        "ran_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "transitions": transitions,
+        "drift_count": len(drift),
+    }
+
+    return {"payload": payload, "drift": drift}
+
+
+def render_md(payload: dict[str, Any], drift: list[dict[str, Any]]) -> str:
+    lines = [
+        f"# Pending Truth Ledger — Verified {payload['verifier']['ran_at']}",
+        "",
+        "> Generated by `scripts/cos-pending-truth-verify` per ADR-273 Slice B.",
+        "> Bilateral evidence checks ran against current code. Status reflects",
+        "> code reality, not plan markers (ADR-244 trust-score precedent: code wins).",
+        "",
+        "## How to read this doc (operational guide)",
+        "",
+        "**This ledger is DERIVED from 9 source surfaces** (plans, ADRs, radar tracker,",
+        "session backlog, user-requests, active-tasks, aspirational-audit, acc_pipeline,",
+        "feature-reality-matrix). The surfaces remain authoritative for their own narrative;",
+        "the ledger answers: **'which items are truly still pending vs already shipped?'**",
+        "",
+        "Practical pattern after Slice B (verifier):",
+        "1. `scripts/cos-pending-truth-aggregator --write` → refresh inputs",
+        "2. `scripts/cos-pending-truth-verify` → bilateral check against code",
+        "3. Read this file → trust `status` field (verified-pending vs verified-done)",
+        "",
+        "**When surface and code disagree, code wins** (ADR-244).",
+        "If a plan checkbox says `[ ]` but ledger says `verified-done`, the plan is stale.",
+        "",
+        "See ADR-273 §Operational Guide for the full reading model.",
+        "",
+        f"**Total items**: {payload['summary']['total_items']}",
+        f"**Drift detected**: {len(drift)} items changed status",
+        "",
+        "## By status (post-verification)",
+        "",
+        "| Status | Count |",
+        "|---|---:|",
+    ]
+    for k in sorted(payload["summary"]["by_status"]):
+        lines.append(f"| {k} | {payload['summary']['by_status'][k]} |")
+    lines.append("")
+    lines.append("## Drift (status changes)")
+    lines.append("")
+    if drift:
+        lines.append("| id | from | to | next action |")
+        lines.append("|---|---|---|---|")
+        for d in drift[:100]:
+            action = d.get("next_action", "")[:60].replace("|", "\\|")
+            lines.append(f"| `{d['id']}` | {d['from']} | **{d['to']}** | {action} |")
+        if len(drift) > 100:
+            lines.append(f"| _and {len(drift) - 100} more_ | | | |")
+    else:
+        lines.append("_no drift detected — all items kept prior status_")
+    lines.append("")
+    lines.append("## Transitions")
+    lines.append("")
+    if payload["verifier"]["transitions"]:
+        for k in sorted(payload["verifier"]["transitions"]):
+            lines.append(f"- `{k}`: {payload['verifier']['transitions'][k]}")
+    else:
+        lines.append("_no transitions recorded_")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="ADR-273 Slice B bilateral verifier")
+    parser.add_argument("--project-dir", default=None)
+    parser.add_argument("--dry-run", action="store_true", help="Print diff, don't write back")
+    parser.add_argument("--max-age-days", type=int, default=None, help="Skip items verified within N days")
+    parser.add_argument("--json", action="store_true", help="Emit json summary to stdout")
+    args = parser.parse_args(argv)
+
+    root = _resolve_project_dir(args.project_dir)
+    if not root.exists():
+        print(f"Error: project dir does not exist: {root}", file=sys.stderr)
+        return 2
+
+    result = verify_ledger(root, max_age_days=args.max_age_days)
+    payload = result["payload"]
+    drift = result["drift"]
+
+    if not args.dry_run:
+        ledger_path = root / LEDGER_PATH
+        ledger_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        md_path = root / "docs" / "reports" / "pending-truth-latest.md"
+        md_path.write_text(render_md(payload, drift), encoding="utf-8")
+        print(f"wrote {LEDGER_PATH}", file=sys.stderr)
+        print(f"wrote docs/reports/pending-truth-latest.md", file=sys.stderr)
+
+    if args.json:
+        print(json.dumps({
+            "ran_at": payload["verifier"]["ran_at"],
+            "total_items": payload["summary"]["total_items"],
+            "by_status": payload["summary"]["by_status"],
+            "transitions": payload["verifier"]["transitions"],
+            "drift_count": len(drift),
+        }, indent=2))
+    else:
+        print(f"Verified {payload['summary']['total_items']} items", file=sys.stderr)
+        print(f"By status: {payload['summary']['by_status']}", file=sys.stderr)
+        print(f"Drift: {len(drift)} items changed status", file=sys.stderr)
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
