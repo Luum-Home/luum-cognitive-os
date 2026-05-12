@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """audit_adrs.py — Validate ADR YAML frontmatter and implementation file existence.
 
-Walks docs/adrs/*.md and docs/architecture/adrs/*.md, parses the YAML
+Walks docs/adrs/*.md, parses the YAML
 frontmatter block (between leading --- delimiters), and reports:
 
   MISSING_FRONTMATTER      — ADR has no YAML frontmatter (warn only)
@@ -45,7 +45,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 ADR_DIRS: list[Path] = [
     REPO_ROOT / "docs" / "adrs",
-    REPO_ROOT / "docs" / "architecture" / "adrs",
 ]
 
 # ── Finding level constants ───────────────────────────────────────────────────
