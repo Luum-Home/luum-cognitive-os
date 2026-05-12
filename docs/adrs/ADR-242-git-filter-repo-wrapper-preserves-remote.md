@@ -78,6 +78,65 @@ Wrapper responsibilities:
 `lib/history_sanitization.py:execute()` delegates entirely to the wrapper
 and surfaces the recovery artifact path to the caller.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: every `git filter-repo --execute` invocation silently stripped `origin`. The operator re-added it by hand 4–5 times in a single session. Parallel runs against overlapping rule sets produced inconsistent SHAs with no warning.
+
+After this ADR: `scripts/cos-filter-repo-wrap.sh` is the only call site for `git filter-repo --execute` within the governed toolchain. It handles remote preservation, idempotency checking, and recovery artifact creation automatically.
+
+| Concern | Before | After |
+|---|---|---|
+| `origin` URL after rewrite | stripped; re-add by hand | automatically restored by wrapper |
+| Accidental re-run with same rules | silent re-mutation | refused (idempotency guard checks triple hash) |
+| Rollback evidence | shell history only | timestamped mirror + `recovery.json` at `.cognitive-os/runtime/` |
+| Audit trail | none | entry in `stash-ops.jsonl` per rewrite |
+
+### Daily operational pattern
+
+**Normal rewrite path (all three concerns handled automatically):**
+```bash
+bash scripts/cos-filter-repo-wrap.sh --adr-ref ADR-NNN --rules /path/to/rules.txt
+# OR via the Python entry point:
+python3 -c "from lib.history_sanitization import execute; execute(rules='/path/to/rules.txt', adr_ref='ADR-NNN')"
+```
+
+**To verify remotes survived:**
+```bash
+git remote -v   # origin and push-url should be present unchanged
+```
+
+**If you need to re-run with the same rule set against the same HEAD** (e.g., after a rule-set bug fix that didn't actually change output):
+```bash
+bash scripts/cos-filter-repo-wrap.sh --force-re-run --adr-ref ADR-NNN --rules /path/to/rules.txt
+# --force-re-run is logged; use only when you have confirmed the prior run was wrong
+```
+
+**To inspect the recovery artifact from the last run:**
+```bash
+cat .cognitive-os/runtime/recovery.json
+# Fields: pre_head, post_head, backup_mirror_path, rules_hash, timestamp
+```
+
+**To verify the wrapper is wired correctly:**
+```bash
+python3 -m pytest tests/behavior/test_filter_repo_wrap.py -q
+bash scripts/cos-filter-repo-wrap.sh --dry-run --rules /tmp/empty-rules.txt
+test -x scripts/cos-filter-repo-wrap.sh
+```
+
+### When sources disagree
+
+If `.cognitive-os/runtime/last-filter-repo.json` records the same `(rules_hash, HEAD, env_subset)` triple but you believe the prior run was incorrect:
+
+- Use `--force-re-run`. This is logged to `stash-ops.jsonl` with a `forced_rerun: true` flag so reviewers can see the override.
+- Do NOT delete `last-filter-repo.json` manually to bypass the guard — deletion is not logged and defeats the idempotency trail.
+
+If `recovery.json` exists but the backup mirror path it cites does not exist on disk:
+
+- The mirror was reaped or the path changed. Rollback is not available from that artifact. Check `stash-ops.jsonl` for the entry; the `backup_mirror_path` field there is the historical record.
+
 ## Alternatives rejected
 
 - **Re-add origin after every run via a post-hook** — rejected because it

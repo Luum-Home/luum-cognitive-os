@@ -1,4 +1,4 @@
-# Operational Guide Audit — 2026-05-12T14:26:50Z
+# Operational Guide Audit — 2026-05-12T14:31:06Z
 
 > Per ADR-274. Schema: `operational-guide-audit/v1`.
 > Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence
@@ -29,26 +29,21 @@ this audit + `adr-section-validator.sh` extension close the loop.
 
 | Verdict | Count |
 |---|---:|
-| compliant | 1 |
+| compliant | 6 |
 | exempt | 1 |
-| missing | 60 |
+| missing | 55 |
 | not-applicable | 222 |
 
 ## By priority (backfill queue)
 
 | Priority | Count |
 |---|---:|
-| P0 | 60 |
+| P0 | 55 |
 
 ## Backfill list (P0 + P1)
 
 | Priority | ADR | Verdict | Age (days) | Path |
 |---|---|---|---:|---|
-| P0 | `ADR-269-mandatory-adr-reference-for-history-rewrites` | missing | 1 | `docs/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md` |
-| P0 | `ADR-239-isolated-worktree-default-for-write-agents` | missing | 4 | `docs/adrs/ADR-239-isolated-worktree-default-for-write-agents.md` |
-| P0 | `ADR-241-consolidated-cos-bypass-allowlist` | missing | 4 | `docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md` |
-| P0 | `ADR-242-git-filter-repo-wrapper-preserves-remote` | missing | 4 | `docs/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md` |
-| P0 | `ADR-243-post-rewrite-push-collision-exception` | missing | 4 | `docs/adrs/ADR-243-post-rewrite-push-collision-exception.md` |
 | P0 | `ADR-244-trust-report-claim-validator-must-enforce` | missing | 4 | `docs/adrs/ADR-244-trust-report-claim-validator-must-enforce.md` |
 | P0 | `ADR-245-chaos-tests-readonly-production-source` | missing | 4 | `docs/adrs/ADR-245-chaos-tests-readonly-production-source.md` |
 | P0 | `ADR-246-release-transaction-freeze` | missing | 4 | `docs/adrs/ADR-246-release-transaction-freeze.md` |
@@ -94,4 +89,9 @@ this audit + `adr-section-validator.sh` extension close the loop.
 | P0 | `ADR-150-acc-projection-profiles-and-harness-registry` | missing | 8 | `docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md` |
 | P0 | `ADR-151-consumer-availability-classification` | missing | 8 | `docs/adrs/ADR-151-consumer-availability-classification.md` |
 | P0 | `ADR-152-shell-ci-projection-and-local-surface-defaults` | missing | 8 | `docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md` |
-| _and 10 more not shown_ | | | | |
+| P0 | `ADR-153-acc-fail-new-and-harness-proof-boundary` | missing | 8 | `docs/adrs/ADR-153-acc-fail-new-and-harness-proof-boundary.md` |
+| P0 | `ADR-154-multi-ide-structural-harness-projection` | missing | 8 | `docs/adrs/ADR-154-multi-ide-structural-harness-projection.md` |
+| P0 | `ADR-155-shell-ci-formal-harness` | missing | 8 | `docs/adrs/ADR-155-shell-ci-formal-harness.md` |
+| P0 | `ADR-156-qwen-code-structural-harness-projection` | missing | 8 | `docs/adrs/ADR-156-qwen-code-structural-harness-projection.md` |
+| P0 | `ADR-157-kimi-code-cli-structural-harness-projection` | missing | 8 | `docs/adrs/ADR-157-kimi-code-cli-structural-harness-projection.md` |
+| _and 5 more not shown_ | | | | |
