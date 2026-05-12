@@ -140,6 +140,42 @@ COS canonical contracts
 The impact analysis for this distinction is recorded in
 [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
 
+
+### Compiler gap and target architecture
+
+The current maintainer `.ai/adapters/*` surface is descriptive: it declares
+adapter fidelity and links to primitive rows. It does not itself install Cursor,
+Windsurf, Copilot, Continue, Aider, or other native files. Actual projection
+exists in separate COS harness drivers such as `scripts/cos_init.py`.
+
+The next architecture target is a compiler boundary, not a canonical-source
+migration:
+
+```text
+manifests/primitive-contracts.yaml
+  + manifests/primitive-lifecycle.yaml
+  + manifests/harness-projection.yaml
+  + rules/ skills/ hooks/ scripts/
+    -> adapter compiler
+      -> AGENTS.md bounded blocks
+      -> .cursor/rules/*.mdc
+      -> .github/copilot-instructions.md
+      -> .windsurf/rules/*.md or .windsurfrules
+      -> CLAUDE.md / .claude/*
+      -> CONVENTIONS.md / .aider.conf.yml
+      -> opencode.json / .opencode/plugins/* where runtime-capable
+```
+
+The compiler must preserve fidelity. A primitive that is `structural-advisory`
+may become instructions or rules; it must not become a runtime-blocking claim.
+A primitive that is `governed-wrapper-enforced`, `native-lifecycle-enforced`, or
+`ci-enforced` may be projected into the matching runtime or CI surface only when
+the proof level supports that claim.
+
+A `rulesync`-style backend may be useful for structural instruction files, but it
+cannot replace COS's contract registry because generic rule sync tools do not own
+COS runtime evidence, lifecycle state, or per-harness enforcement claims.
+
 ## OpenCode adapter correction
 
 OpenCode should not be treated as instruction-only. Current official OpenCode

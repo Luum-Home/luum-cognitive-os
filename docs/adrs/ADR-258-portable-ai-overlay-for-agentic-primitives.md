@@ -195,6 +195,14 @@ Documentation consequence: future docs must name whether they mean the
 maintainer generated overlay or the consumer package view whenever `.ai/` is
 discussed.
 
+
+Projection consequence: the generated overlay is not enough by itself to make
+portability effective for a user opening Cursor, Windsurf, Copilot, Aider, or a
+similar host. ADR-258 therefore leaves a follow-up compiler problem: native IDE
+files should be generated from COS contracts/profiles, or delegated through a
+governed `rulesync`-style backend, while preserving declared fidelity. This is a
+projection/compiler gap, not evidence that `.ai/` should become canonical.
+
 ## Consequences
 
 ### Positive

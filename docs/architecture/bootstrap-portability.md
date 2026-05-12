@@ -198,6 +198,14 @@ etc.) and optional consumer-friendly `.ai/` views.
 The impact analysis is recorded in
 [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
 
+
+Practical implication: bootstrap should grow a clearly named compiler/projection
+step for consumer-facing rule files. The system already has harness drivers; the
+missing product affordance is a coherent path that turns canonical contracts into
+native files such as `AGENTS.md` bounded blocks, `.cursor/rules/*.mdc`, Copilot
+instructions, Windsurf rules, and Aider conventions without flattening all
+projection fidelity into generic instructions.
+
 ## Success Condition
 
 Bootstrap portability is succeeding when:
