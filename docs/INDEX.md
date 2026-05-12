@@ -1,6 +1,15 @@
 # Cognitive OS — Documentation Index
 
-> **How to use this index** — This file is the single navigation entry-point for the `docs/` tree (about 1 200 files, 32 subdirectories). Read it top-to-bottom once to orient yourself, then jump directly to the section you need. Sections are ordered by access frequency for an LLM agent: ADRs → Runbooks → Session handoffs → Architecture → Reference. Each major subdirectory is linked; high-value root-level files are linked directly. No file is auto-generated — every description was written from the source.
+> **Two ways to navigate.** If you know what you need by name, this flat index is the place. If you only know your *intent* ("I'm onboarding", "I need to make a decision", "I'm shipping a release"), start at a **Map of Content (MOC)** in [`00-MOCs/`](00-MOCs/):
+>
+> - [00-MOCs/decisions.md](00-MOCs/decisions.md) — write/supersede an ADR
+> - [00-MOCs/architecture.md](00-MOCs/architecture.md) — system design + patterns
+> - [00-MOCs/workflow.md](00-MOCs/workflow.md) — SDD, sprints, agent orchestration, runbooks
+> - [00-MOCs/quality.md](00-MOCs/quality.md) — tests, gates, security, compliance
+> - [00-MOCs/operations.md](00-MOCs/operations.md) — incidents, releases, capabilities
+> - [00-MOCs/onboarding.md](00-MOCs/onboarding.md) — first-time orientation (humans + agents)
+>
+> **How to use this index** — This file is the exhaustive flat catalogue for the `docs/` tree (about 1 200 files, 32 subdirectories). Read it top-to-bottom once to orient yourself, then jump directly to the section you need. Sections are ordered by access frequency for an LLM agent: ADRs → Runbooks → Session handoffs → Architecture → Reference. Each major subdirectory is linked; high-value root-level files are linked directly. No file is auto-generated — every description was written from the source.
 
 ---
 
