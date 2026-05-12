@@ -1,0 +1,136 @@
+schema_version: pending-truth/v1
+status: active
+owner: platform-control-plane
+purpose: |
+  Single canonical ledger of pending COS work items, aggregated from 9
+  source surfaces (plans, ADRs, tracker, master-pending, session-backlog,
+  active-tasks, user-requests, capability-matrix, aspirational-audit) and
+  bilaterally verified against current code state.
+
+  Per ADR-273. Slice A (this manifest + aggregator) ships read-only
+  derivation. Slice B (verifier) and Slice C (hooks) are tracked
+  follow-ups that build on this schema.
+
+policy:
+  derived_from_sources: true
+  canonical_for_question: "What pending work items exist in COS?"
+  refresh_command: scripts/cos-pending-truth-aggregator --write
+  verify_command: scripts/cos-pending-truth-verify  # ADR-273 Slice B (pending)
+
+source_surfaces:
+  - kind: plan-checkbox
+    glob: .cognitive-os/plans/{features,architecture,roadmaps}/*.md
+    match: '^- \[ \]'
+    note: "Every unmarked checkbox becomes one ledger item"
+  - kind: adr-slice
+    glob: docs/adrs/ADR-*.md
+    match: '^status: (proposed|draft|in-progress)'
+    note: "Every non-accepted/non-tombstone ADR becomes one ledger item"
+  - kind: follow-up
+    path: docs/reports/radar-2026-05-08-implementation-tracker.md
+    match: '🔲|🟡 follow-up'
+    note: "Every open follow-up row in the radar tracker"
+  - kind: user-request
+    glob: .cognitive-os/sessions/*/user-requests.jsonl
+    match: '"status":"pending"'
+    note: "Every pending user-request across all session JSONLs"
+  - kind: audit-finding
+    path: .cognitive-os/tasks/active-tasks.json
+    match: 'status != cancelled|cancelled-stale|completed-by-watermark'
+    note: "Every non-stale active-task"
+
+status_taxonomy:
+  - id: verified-pending
+    meaning: Bilateral evidence check failed; truly open
+    set_by: verifier (Slice B)
+  - id: verified-done
+    meaning: Bilateral evidence check passed; ledger marked stale, source needs update
+    set_by: verifier (Slice B)
+  - id: ambiguous
+    meaning: Partial evidence; plan/ADR-owner decision required
+    set_by: verifier (Slice B)
+  - id: obsolete
+    meaning: Context no longer applies (file deleted, dep removed)
+    set_by: verifier (Slice B)
+  - id: unverified
+    meaning: Item ingested but not yet bilateral-verified
+    set_by: aggregator (Slice A — default for all items in v1)
+
+# ── Sample items (one per type) — demonstrate schema ──────────────────
+# These will be replaced/expanded by the aggregator on first run.
+items:
+  - id: 'plan:component-scope-classification:phase-4-installer-filter'
+    type: plan-checkbox
+    source: .cognitive-os/plans/features/component-scope-classification.md
+    status: verified-done
+    last_verified: 2026-05-12T00:00:00Z
+    evidence:
+      - kind: file_exists
+        path: scripts/cos_init.py
+        result: present
+      - kind: grep
+        pattern: 'COS_INSTALL_SCOPE'
+        path: scripts/cos_init.py
+        result: 'present at line 1433'
+      - kind: tests_pass
+        cmd: 'pytest tests/integration/test_install_scope.py tests/contracts/test_primitive_scope_classification.py -q'
+        result: '10 passed'
+    next_action: 'Source plan header should be updated to DONE'
+    owner_adr: null
+    effort_estimate: 'verified-done; no action'
+
+  - id: 'adr-slice:ADR-273:slice-B-verifier'
+    type: adr-slice
+    source: docs/adrs/ADR-273-pending-truth-ledger-and-bilateral-verification.md
+    status: unverified
+    last_verified: null
+    evidence:
+      - kind: file_exists
+        path: scripts/cos-pending-truth-verify
+        result: 'check on next aggregator run'
+    next_action: 'Implement Slice B per ADR-273 §3'
+    owner_adr: ADR-273
+    effort_estimate: 1 session
+
+  - id: 'follow-up:radar-2026-05-08:T-W3-bench'
+    type: follow-up
+    source: docs/reports/radar-2026-05-08-implementation-tracker.md
+    status: unverified
+    last_verified: null
+    evidence:
+      - kind: file_exists
+        path: docs/reports/repo-map-benchmark-latest.json
+        result: 'check on next aggregator run'
+    next_action: 'Wave 3 hardening — repo-map benchmarking vs context_diet.py'
+    owner_adr: null
+    effort_estimate: 1-2 sessions
+
+  - id: 'user-request:1776802521:test-fragility-audit'
+    type: user-request
+    source: .cognitive-os/sessions/1776802521-37253-1dab3d36/user-requests.jsonl
+    status: verified-pending
+    last_verified: 2026-05-11T00:00:00Z
+    evidence:
+      - kind: grep
+        pattern: 'fragility|snapshot.*literal|threshold.*absolute'
+        path: docs/reports/
+        result: 'no comprehensive sweep doc found'
+    next_action: |
+      Audit 6357 passing tests for fragility patterns (literal snapshots,
+      absolute thresholds, hardcoded counts, env without skipif). Per
+      P1 retriage 2026-05-11 (Opus): the only STILL-VALID user-request
+      after dedup.
+    owner_adr: null
+    effort_estimate: 2-3 sessions
+
+  - id: 'audit-finding:active-tasks:p4-3-stash-auto-reapply'
+    type: audit-finding
+    source: .cognitive-os/tasks/active-tasks.json
+    status: unverified
+    last_verified: null
+    evidence:
+      - kind: task_status
+        result: blocked_by_claim
+    next_action: 'P4.3 stash auto-reapply — currently blocked by claim'
+    owner_adr: null
+    effort_estimate: TBD pending unblock

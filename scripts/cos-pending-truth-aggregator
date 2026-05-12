@@ -1,0 +1,327 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""ADR-273 Slice A — Aggregate pending-work items from 5 source surfaces.
+
+Read-only walk of plan checkboxes, ADR proposed/draft, radar tracker
+follow-ups, user-requests jsonl, and active-tasks. Emit normalized items
+to docs/reports/pending-truth-latest.{json,md}.
+
+This script does NOT verify items against code — that's Slice B's job
+(scripts/cos-pending-truth-verify, tracked as follow-up). All items
+ingested by this script default to `status: unverified`.
+
+Usage:
+  scripts/cos-pending-truth-aggregator                 # print JSON to stdout
+  scripts/cos-pending-truth-aggregator --json          # same, explicit
+  scripts/cos-pending-truth-aggregator --write         # write json + md reports
+  scripts/cos-pending-truth-aggregator --project-dir PATH
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+SCHEMA_VERSION = "pending-truth/v1"
+
+PLAN_GLOBS = [
+    ".cognitive-os/plans/features/*.md",
+    ".cognitive-os/plans/architecture/*.md",
+    ".cognitive-os/plans/roadmaps/*.md",
+]
+ADR_GLOB = "docs/adrs/ADR-*.md"
+USER_REQ_GLOB = ".cognitive-os/sessions/*/user-requests.jsonl"
+ACTIVE_TASKS = ".cognitive-os/tasks/active-tasks.json"
+RADAR_TRACKER = "docs/reports/radar-2026-05-08-implementation-tracker.md"
+
+OPEN_CHECKBOX_RE = re.compile(r"^- \[ \]\s+(.+)$", re.MULTILINE)
+ADR_STATUS_RE = re.compile(r"^(?:status|\*\*Status\*\*):\s*(.+?)$", re.MULTILINE | re.IGNORECASE)
+TRACKER_OPEN_RE = re.compile(r"^\|\s*([\w\.-]+)\s*\|.*?\|\s*🔲", re.MULTILINE)
+
+NON_ACCEPTED_STATUSES = {"proposed", "draft", "in-progress", "pending"}
+
+
+def _resolve_project_dir(arg: str | None) -> Path:
+    if arg:
+        return Path(arg).resolve()
+    for env_var in ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR"):
+        if env_var in os.environ:
+            return Path(os.environ[env_var]).resolve()
+    return Path.cwd().resolve()
+
+
+def _slugify(text: str, maxlen: int = 60) -> str:
+    s = re.sub(r"[^A-Za-z0-9-]+", "-", text.lower()).strip("-")
+    return s[:maxlen]
+
+
+def _rel(path: Path, root: Path) -> str:
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
+def collect_plan_checkboxes(root: Path) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for glob in PLAN_GLOBS:
+        for path in root.glob(glob):
+            try:
+                text = path.read_text(encoding="utf-8")
+            except OSError:
+                continue
+            plan_slug = _slugify(path.stem)
+            for match in OPEN_CHECKBOX_RE.finditer(text):
+                line_no = text[: match.start()].count("\n") + 1
+                checkbox_text = match.group(1).strip()
+                item_id = f"plan:{plan_slug}:{_slugify(checkbox_text, 50)}"
+                items.append({
+                    "id": item_id,
+                    "type": "plan-checkbox",
+                    "source": f"{_rel(path, root)}:L{line_no}",
+                    "status": "unverified",
+                    "last_verified": None,
+                    "evidence": [],
+                    "next_action": checkbox_text,
+                    "owner_adr": None,
+                    "effort_estimate": "unknown",
+                })
+    return items
+
+
+def collect_adr_slices(root: Path) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for path in root.glob(ADR_GLOB):
+        try:
+            text = path.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        statuses = ADR_STATUS_RE.findall(text[:2000])
+        if not statuses:
+            continue
+        status_norm = statuses[0].strip().lower().split()[0]
+        if status_norm not in NON_ACCEPTED_STATUSES:
+            continue
+        adr_num = re.match(r"ADR-(\d+)", path.stem)
+        adr_id = f"adr-slice:ADR-{adr_num.group(1) if adr_num else path.stem}"
+        items.append({
+            "id": adr_id,
+            "type": "adr-slice",
+            "source": _rel(path, root),
+            "status": "unverified",
+            "last_verified": None,
+            "evidence": [],
+            "next_action": f"Resolve ADR status '{status_norm}' → accept/tombstone/superseded",
+            "owner_adr": path.stem.split("-", 2)[0] + "-" + (adr_num.group(1) if adr_num else ""),
+            "effort_estimate": "varies",
+        })
+    return items
+
+
+def collect_tracker_followups(root: Path) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    path = root / RADAR_TRACKER
+    if not path.is_file():
+        return items
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return items
+    for match in TRACKER_OPEN_RE.finditer(text):
+        marker = match.group(1).strip()
+        item_id = f"follow-up:radar-2026-05-08:{_slugify(marker, 50)}"
+        items.append({
+            "id": item_id,
+            "type": "follow-up",
+            "source": _rel(path, root),
+            "status": "unverified",
+            "last_verified": None,
+            "evidence": [],
+            "next_action": f"Resolve tracker follow-up: {marker}",
+            "owner_adr": None,
+            "effort_estimate": "unknown",
+        })
+    return items
+
+
+def collect_user_requests(root: Path) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    for path in root.glob(USER_REQ_GLOB):
+        try:
+            with path.open(encoding="utf-8") as fh:
+                for line_no, line in enumerate(fh, start=1):
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        record = json.loads(line)
+                    except json.JSONDecodeError:
+                        continue
+                    if record.get("status") != "pending":
+                        continue
+                    msg = record.get("message", "").strip()
+                    session_id = path.parent.name
+                    item_id = f"user-request:{session_id}:{_slugify(msg, 40)}"
+                    items.append({
+                        "id": item_id,
+                        "type": "user-request",
+                        "source": f"{_rel(path, root)}:L{line_no}",
+                        "status": "unverified",
+                        "last_verified": None,
+                        "evidence": [],
+                        "next_action": msg,
+                        "owner_adr": None,
+                        "effort_estimate": "unknown",
+                    })
+        except OSError:
+            continue
+    return items
+
+
+def collect_active_tasks(root: Path) -> list[dict[str, Any]]:
+    items: list[dict[str, Any]] = []
+    path = root / ACTIVE_TASKS
+    if not path.is_file():
+        return items
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return items
+    tasks = data.get("tasks", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])
+    skip_statuses = {"cancelled", "cancelled-stale", "completed-by-watermark", "completed", "done"}
+    for task in tasks:
+        if not isinstance(task, dict):
+            continue
+        status = task.get("status", "").strip().lower()
+        if status in skip_statuses:
+            continue
+        task_id = task.get("id", "unknown")
+        desc = task.get("description", task.get("title", "?")).strip()
+        item_id = f"audit-finding:active-tasks:{_slugify(task_id, 50)}"
+        items.append({
+            "id": item_id,
+            "type": "audit-finding",
+            "source": _rel(path, root),
+            "status": "unverified",
+            "last_verified": None,
+            "evidence": [{"kind": "task_status", "result": status or "unknown"}],
+            "next_action": desc,
+            "owner_adr": None,
+            "effort_estimate": "TBD",
+        })
+    return items
+
+
+def aggregate(root: Path) -> dict[str, Any]:
+    items: list[dict[str, Any]] = []
+    items.extend(collect_plan_checkboxes(root))
+    items.extend(collect_adr_slices(root))
+    items.extend(collect_tracker_followups(root))
+    items.extend(collect_user_requests(root))
+    items.extend(collect_active_tasks(root))
+
+    by_type: dict[str, int] = {}
+    by_status: dict[str, int] = {}
+    for item in items:
+        by_type[item["type"]] = by_type.get(item["type"], 0) + 1
+        by_status[item["status"]] = by_status.get(item["status"], 0) + 1
+
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "project_dir": "<repo-root>",  # placeholder for portability; absolute path filtered
+        "summary": {
+            "total_items": len(items),
+            "by_type": by_type,
+            "by_status": by_status,
+        },
+        "items": items,
+    }
+
+
+def render_md(payload: dict[str, Any]) -> str:
+    lines = [
+        f"# Pending Truth Ledger — Aggregated {payload['generated_at']}",
+        "",
+        "> Generated by `scripts/cos-pending-truth-aggregator` per ADR-273 Slice A.",
+        "> This is the **single canonical query target** for 'what is pending in COS'.",
+        "> All items default to `status: unverified` until Slice B (verifier) runs.",
+        "",
+        f"**Total items**: {payload['summary']['total_items']}",
+        "",
+        "## By type",
+        "",
+        "| Type | Count |",
+        "|---|---:|",
+    ]
+    for k in sorted(payload["summary"]["by_type"]):
+        lines.append(f"| {k} | {payload['summary']['by_type'][k]} |")
+    lines.append("")
+    lines.append("## By status")
+    lines.append("")
+    lines.append("| Status | Count |")
+    lines.append("|---|---:|")
+    for k in sorted(payload["summary"]["by_status"]):
+        lines.append(f"| {k} | {payload['summary']['by_status'][k]} |")
+    lines.append("")
+    lines.append("## Items (first 50 of each type)")
+    lines.append("")
+    by_type: dict[str, list[dict[str, Any]]] = {}
+    for item in payload["items"]:
+        by_type.setdefault(item["type"], []).append(item)
+    for t in sorted(by_type):
+        lines.append(f"### {t} ({len(by_type[t])} items)")
+        lines.append("")
+        lines.append("| id | source | next action |")
+        lines.append("|---|---|---|")
+        for item in by_type[t][:50]:
+            action = item.get("next_action", "")[:80].replace("|", "\\|")
+            lines.append(f"| `{item['id']}` | `{item['source']}` | {action} |")
+        if len(by_type[t]) > 50:
+            lines.append(f"| _and {len(by_type[t]) - 50} more not shown_ | | |")
+        lines.append("")
+    lines.append("## Next steps")
+    lines.append("")
+    lines.append("- **Slice B** — `scripts/cos-pending-truth-verify` (pending): for each item, run bilateral evidence checks and update `status` from `unverified` to `verified-pending` / `verified-done` / `ambiguous` / `obsolete`.")
+    lines.append("- **Slice C** — hooks: PostToolUse Edit detection of plan-item-closing commits + Stop weekly verifier run + PreCommit staleness gate.")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="ADR-273 Slice A pending-truth aggregator")
+    parser.add_argument("--project-dir", default=None, help="Project root (default: env or cwd)")
+    parser.add_argument("--json", action="store_true", help="Print JSON to stdout (default)")
+    parser.add_argument("--write", action="store_true", help="Write json + md reports to docs/reports/")
+    args = parser.parse_args(argv)
+
+    root = _resolve_project_dir(args.project_dir)
+    if not root.exists():
+        print(f"Error: project dir does not exist: {root}", file=sys.stderr)
+        return 2
+
+    payload = aggregate(root)
+
+    if args.write:
+        reports = root / "docs" / "reports"
+        reports.mkdir(parents=True, exist_ok=True)
+        json_path = reports / "pending-truth-latest.json"
+        md_path = reports / "pending-truth-latest.md"
+        json_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        md_path.write_text(render_md(payload), encoding="utf-8")
+        print(f"wrote {_rel(json_path, root)}", file=sys.stderr)
+        print(f"wrote {_rel(md_path, root)}", file=sys.stderr)
+        print(f"items: {payload['summary']['total_items']}", file=sys.stderr)
+        return 0
+
+    print(json.dumps(payload, indent=2, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
