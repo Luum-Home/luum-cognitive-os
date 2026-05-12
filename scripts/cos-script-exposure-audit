@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+"""CLI for ADR-283 script exposure audit."""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from lib.script_exposure_audit import (  # noqa: E402
+    ScriptExposureAuditError,
+    build_audit,
+    render_markdown,
+)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--project-dir", type=Path, default=ROOT)
+    parser.add_argument("--ledger", type=Path, help="Override scripts readiness ledger path")
+    parser.add_argument("--format", choices=["markdown", "json"], default="markdown")
+    parser.add_argument("--json", action="store_true", help="Alias for --format json")
+    parser.add_argument("--limit-per-priority", type=int, default=None, help="Limit rendered findings per priority")
+    parser.add_argument("--json-out", type=Path, help="Write full JSON report to this path")
+    parser.add_argument("--md-out", type=Path, help="Write Markdown report to this path")
+    parser.add_argument("--fail-p0", action="store_true", help="Exit 2 when P0 findings exist")
+    args = parser.parse_args()
+
+    output_format = "json" if args.json else args.format
+    try:
+        report = build_audit(args.project_dir, args.ledger, limit_per_priority=args.limit_per_priority)
+    except (ScriptExposureAuditError, json.JSONDecodeError) as exc:
+        error = {"schema_version": "script-exposure-audit/v1", "adr": "ADR-283", "status": "fail", "error": str(exc)}
+        if output_format == "json":
+            print(json.dumps(error, indent=2, sort_keys=True))
+        else:
+            print(f"script-exposure-audit: fail: {exc}", file=sys.stderr)
+        return 2
+
+    if args.json_out:
+        args.json_out.parent.mkdir(parents=True, exist_ok=True)
+        args.json_out.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    if args.md_out:
+        args.md_out.parent.mkdir(parents=True, exist_ok=True)
+        args.md_out.write_text(render_markdown(report), encoding="utf-8")
+
+    if output_format == "json":
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(render_markdown(report), end="")
+
+    return 2 if args.fail_p0 and report["summary"]["by_priority"].get("P0", 0) else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
