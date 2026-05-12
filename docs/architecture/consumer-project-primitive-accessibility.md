@@ -8,21 +8,22 @@ A downstream project that implements Cognitive OS does not automatically have ac
 
 ## Current automated proof
 
-The current automated consumer projection proof covers the default install path for Claude Code and OpenAI Codex:
+The current automated consumer projection proof covers the default install path for implemented native and structural harnesses:
 
 ```bash
 python3 -m pytest tests/behavior/test_consumer_project_projection.py -q
 ```
 
-That behavior test runs `scripts/cos_init.py --default --harness claude` and `scripts/cos_init.py --default --harness codex` inside temporary consumer projects and verifies that the project receives:
+That behavior test runs `scripts/cos_init.py --default --harness <harness>` inside temporary consumer projects and verifies that each implemented harness receives its declared project-local projection surface. Native lifecycle harnesses (`claude`, `codex`) receive hook/rule/skill projection plus harness settings. Structural harnesses receive instruction/config/context files, MCP placeholders, or Shell/CI command/workflow projection as declared by the harness driver.
 
-- `.cognitive-os/install-meta.json`
-- harness settings (`.claude/settings.json` or `.codex/hooks.json`)
-- projected hooks under `.cognitive-os/hooks/cos/`
-- projected rules under `.cognitive-os/rules/cos/`
-- projected skills under `.cognitive-os/skills/cos/`
+The proof currently covers:
 
-The ACC consumer-projection adapter additionally runs both `--default` and `--full` for implemented harnesses when `python3 scripts/acc_pipeline.py --project-dir . --refresh` is used. This proves projected hooks/rules/skills for Claude Code and OpenAI Codex across those two profiles. It does not prove third-party IDE native integration or availability of every SO-local primitive.
+- native/settings lifecycle projection: `claude`, `codex`;
+- AGENTS/instruction-file structural projection: `agents-md`, `kimi-code`, `warp`, `amp-code`, `qoder`, `goose`, `aider`;
+- IDE/config structural projection: `opencode`, `vscode-copilot`, `cursor`, `qwen-code`, `gemini-cli`, `jetbrains-junie`, `factory-droid`, `cline`, `continue-dev`, `kilo-code`, `zed-ai`, `augment-code`;
+- shell/CI structural projection: `shell-ci`.
+
+The ACC consumer-projection adapter additionally runs implemented harness/profile checks when `python3 scripts/acc_pipeline.py --project-dir . --refresh` is used. Structural projection proves project-local files are generated; it does not claim runtime enforcement parity or availability of every SO-local primitive.
 
 ## Current ledger evidence
 
@@ -67,18 +68,18 @@ The machine-readable registry is `manifests/harness-projection.yaml`. ACC treats
 
 | Harness / IDE | Current consumer proof | Current safe claim | Next proof needed |
 |---|---|---|---|
-| Claude Code | Automated default/full install projection proof passes in ACC. | Default and full profiles project hooks, rules, and skills into consumer projects. | Selected lifecycle candidate promotion proof. |
-| OpenAI Codex | Automated default/full install projection proof passes in ACC. | Default and full profiles project Codex settings plus COS hooks/rules/skills into consumer projects. | Codex runtime parity proof beyond file projection. |
-| Cursor | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define Cursor settings/rules/MCP projection driver and temp-project proof. |
-| Windsurf | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define Windsurf settings/rules/MCP projection driver and temp-project proof. |
-| VS Code Copilot | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define instruction/task/MCP projection surface and temp-project proof. |
-| Google Antigravity | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Audit supported config/tool format and add projection proof. |
-| OpenCode | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define wrapper or native config projection and temp-project proof. |
-| Qwen Code | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Define Qwen Code settings/skills/hooks/MCP projection and temp-project proof. |
-| Kimi Code | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native consumer projection. | Research local config surface, then add projection proof. |
-| MiniMax MaxClaw / MiniMax Agent | Declared in `manifests/harness-projection.yaml` as `planned`. | Not signed as native local projection; may be hosted-agent/provider surface instead. | Decide harness-vs-provider boundary before implementation. |
-| DeepSeek provider integrations | Declared in `manifests/harness-projection.yaml` as `planned`. | Track as provider compatibility, not first-party IDE support. | Promote only if a first-party coding harness/project config is identified. |
-| Shell/CI | CLI scripts are available in the SO repo; consumer projection depends on install/profile. | Use deterministic CLI entrypoints only when project install path exposes them. | Add temp-project shell/CI projection test. |
+| Claude Code | Implemented native lifecycle/settings projection. | Default/full profiles project hooks, rules, skills, and `.claude/settings.json` into consumer projects. | Selected runtime parity and candidate promotion proof. |
+| OpenAI Codex | Implemented native lifecycle/settings projection. | Default/full profiles project hooks, rules, skills, and `.codex/hooks.json` into consumer projects. | Runtime parity proof beyond file projection for Codex-limited event shapes. |
+| Cursor | Implemented structural projection. | Project-local `.cursor/rules/cognitive-os.mdc` and MCP placeholder are generated; no native runtime enforcement claimed. | Native/runtime adapter proof if Cursor lifecycle support is adopted. |
+| VS Code Copilot | Implemented structural projection. | Project-local `.github/copilot-instructions.md` and `.vscode/mcp.json` are generated; no runtime enforcement claimed. | Runtime-capable proof only if host support exists. |
+| Agents.md-native tools | Implemented structural projection. | Bounded `AGENTS.md` block points agents to projected `.cognitive-os` rules and skills. | Tool-specific native adapter proof where available. |
+| OpenCode | Implemented structural projection, with separate signed plugin smoke for a runtime subset. | `opencode.json` is generated; runtime enforcement is limited to primitives covered by the OpenCode adapter smoke. | Expand signed plugin smoke before claiming broader runtime enforcement. |
+| Qwen Code | Implemented structural projection. | `QWEN.md` and `.qwen/settings.json` are generated; no native runtime enforcement claimed. | Native runtime proof if Qwen exposes enforceable lifecycle events. |
+| Kimi Code | Implemented structural projection. | Bounded `AGENTS.md` block plus `.kimi/mcp.json`/README are generated. | Native runtime proof if available. |
+| Gemini CLI | Implemented structural projection. | `GEMINI.md` and `.gemini/settings.json` are generated. | Native runtime proof if available. |
+| Warp / Amp / Qoder / Factory Droid / Cline / Continue / Kilo / Zed / Augment / Goose / Aider | Implemented structural projection. | Project-local instruction/config files are generated per harness driver; no runtime enforcement parity is implied. | Harness-specific native/runtime proof. |
+| Shell/CI | Implemented structural command/workflow projection. | Declared commands are copied to `.cognitive-os/scripts/cos/`, symlinked from `scripts/`, and wired into `.github/workflows/cognitive-os-shell-ci.yml`. | Behavioral side-effect proof for each projected command under real arguments. |
+| Windsurf / Google Antigravity / MiniMax MaxClaw / DeepSeek provider / Kiro | Planned. | Roadmap-only; no consumer availability inherited from implemented harnesses. | Add explicit projection driver and temp-project proof. |
 
 ## Acceptance criteria for future claims
 

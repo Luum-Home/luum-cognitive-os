@@ -1,0 +1,131 @@
+schema_version: primitive-authority.v1
+owner_adr: ADR-276
+purpose: >-
+  Declare and derive read/write authority for Cognitive OS agentic primitives so
+  scope and projection visibility are not mistaken for mutation permission.
+authority_modes:
+  observe-only:
+    meaning: Read declared evidence and emit stdout, metrics, or generated reports only.
+    may_write_defaults: [reports, metrics]
+  propose-only:
+    meaning: Convert evidence into review artifacts without mutating runtime primitive state.
+    may_write_defaults: [os_review_artifacts]
+  project-local-write:
+    meaning: Mutate only the explicitly selected consumer/project workspace.
+    may_write_defaults: [project_generated_artifacts]
+  os-maintainer-write:
+    meaning: Mutate SO repository files only for maintainer tasks, never default consumer projection.
+    may_write_defaults: [os_repo]
+  profile-projection-write:
+    meaning: Install or project declared COS surfaces into a consumer project.
+    may_write_defaults: [projection_roots]
+  dangerous-human-approved:
+    meaning: Mutate destructive/protected surfaces only after explicit operator approval and rollback review.
+    may_write_defaults: []
+surfaces:
+  reports:
+    globs: [docs/reports/**, .cognitive-os/reports/**]
+  metrics:
+    globs: [.cognitive-os/metrics/**]
+  os_review_artifacts:
+    globs: [.cognitive-os/improvements/proposals/**, docs/proposals/**]
+  project_generated_artifacts:
+    globs: [.cognitive-os/**, .ai/**]
+  projection_roots:
+    globs:
+      - .cognitive-os/**
+      - .claude/**
+      - .codex/**
+      - .cursor/**
+      - .github/workflows/**
+      - .vscode/**
+      - .qwen/**
+      - .kimi/**
+      - .gemini/**
+      - scripts/*
+      - AGENTS.md
+      - QWEN.md
+      - GEMINI.md
+      - CONVENTIONS.md
+  os_live_primitives:
+    globs: [hooks/**, rules/**, skills/**, scripts/**, templates/**, manifests/**, .claude/**, .codex/**]
+  consumer_source:
+    globs: [src/**, lib/**, app/**, packages/**, internal/**, cmd/**]
+  secrets:
+    globs: [.env, .env.*, secrets/**, "*.pem", "*.key"]
+derivation:
+  inputs:
+    - manifests/primitive-scope-classification.yaml
+    - manifests/primitive-consumer-availability.yaml
+    - manifests/primitive-projection-profiles.yaml
+    - manifests/shell-ci-projection.yaml
+    - docs/reports/primitive-readiness-ledger-scripts-latest.json
+    - manifests/protected-config-write-policy.yaml
+  rules:
+    - id: explicit-entry-wins
+      when: path listed in entries
+      mode: entry.authority.mode
+    - id: consumer-improvement-proposals
+      when: path contains consumer-improvement-proposals or cos_consumer_improvement_proposals.py
+      mode: propose-only
+    - id: shell-ci-command
+      when: path listed in manifests/shell-ci-projection.yaml commands
+      mode: profile-projection-write
+    - id: profile-driver
+      when: path listed in manifests/primitive-projection-profiles.yaml profile_driver_scripts
+      mode: profile-projection-write
+    - id: install-profile-managed
+      when: readiness consumer_accessibility is install-profile-managed
+      mode: profile-projection-write
+    - id: os-only-default
+      when: scope is os-only
+      mode: os-maintainer-write
+    - id: shared-default
+      when: scope is project or both
+      mode: observe-only
+blocking_contradictions:
+  - id: propose-only-live-write
+    description: propose-only primitive writes live hooks/rules/skills/scripts/templates/manifests or harness settings.
+  - id: observe-only-live-write
+    description: observe-only primitive writes live primitive/control-plane surfaces instead of reports or metrics.
+  - id: project-shared-os-maintainer-write
+    description: project/both scoped primitive derives os-maintainer-write without an explicit maintainer-only override.
+  - id: os-only-projected
+    description: os-only primitive appears in consumer projection output.
+entries:
+  - path: scripts/cos-import-consumer-improvement-proposals
+    authority:
+      mode: propose-only
+      may_read: [proposal_bundle]
+      may_write: [os_review_artifacts]
+      forbidden_write: [os_live_primitives, consumer_source, secrets]
+  - path: scripts/cos-export-consumer-improvement-proposals
+    authority:
+      mode: propose-only
+      may_read: [consumer_artifacts, consumer_metrics]
+      may_write: [proposal_bundle]
+      forbidden_write: [os_live_primitives, secrets]
+  - path: scripts/cos_consumer_improvement_proposals.py
+    authority:
+      mode: propose-only
+      may_read: [consumer_artifacts, consumer_metrics, proposal_bundle]
+      may_write: [os_review_artifacts, proposal_bundle]
+      forbidden_write: [os_live_primitives, consumer_source, secrets]
+  - path: scripts/project_shell_ci.py
+    authority:
+      mode: profile-projection-write
+      may_read: [os_repo, projection_manifest]
+      may_write: [projection_roots]
+      forbidden_write: [secrets, user_global_config]
+  - path: scripts/cos-portable-ai-real-consumer-smoke
+    authority:
+      mode: observe-only
+      may_read: [consumer_registry, consumer_metadata, os_repo]
+      may_write: [reports]
+      forbidden_write: [consumer_source, os_live_primitives, secrets]
+  - path: scripts/portable_ai_real_consumer_smoke.py
+    authority:
+      mode: observe-only
+      may_read: [consumer_registry, consumer_metadata, os_repo]
+      may_write: [reports]
+      forbidden_write: [consumer_source, os_live_primitives, secrets]
