@@ -1,1 +1,0 @@
-../../packages/ecosystem-tools/rules/ecosystem-tools.md
