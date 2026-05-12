@@ -23,7 +23,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 
 | Metric | Count | Notes |
 |---|---|---|
-| Total hook files on disk (`hooks/*.sh`) | **222** | Flat invocable hook scripts under `hooks/`; refreshed after adding the document-ingest guard. |
+| Total hook files on disk (`hooks/*.sh`) | **237** | Flat invocable hook scripts under `hooks/`; refreshed after adding the document-ingest guard. |
 | Library helpers (`hooks/_lib/*.sh`) | **13** | Sourced by other hooks, not invocable directly (cache.sh, common.sh, etc.) |
 | Invocable hooks (`hooks/*.sh`, excl. `_lib/`) | **118** (flat list) | `_lib/` is a subdir, so counts unchanged |
 | **Functional-wired** (full profile) | **55** | Registered in `.claude/settings.json` |
@@ -32,7 +32,7 @@ the remaining risk is promotion/wiring debt, not nonexistent hook files.
 | **Functional-unwired-by-design** | **22** | In `full` but NOT in `standard`/`lean` — only active at top tier |
 | **Orphan** (in no profile anywhere) | **41** | Exist on disk, never wired — incl. 3 cluster-D names |
 | **Stub** (placeholder-only bodies) | **0** | Inspected all `<10 non-comment-line` hooks; all three have real logic |
-| **Code-dead** (ref'd by skill/rule/doc but no file) | **0 distinct names** | Prior code-dead hooks now exist; non-default wiring is tracked by `hooks/_lib/registration-allowlist.txt` |
+| **Code-dead** (ref'd by skill/rule/doc but no file) | **1 distinct name** (`deep-research-axis-gate.sh`) | `skills/deep-tool-research` documents an intended axis-gate hook; tracked in EXPECTED_CODE_DEAD until implemented. |
 | **Referenced-but-unused** (wired but matcher rarely triggers) | **unknown** | Requires runtime telemetry — flagged for Capa 4 |
 
 Project-gotchas claim is **"48/93 hooks intentionally not wired"**. Current reality is
