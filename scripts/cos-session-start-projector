@@ -1,0 +1,360 @@
+#!/usr/bin/env python3
+# SCOPE: both
+"""ADR-275 — Session-start projector for pending-truth + audit state.
+
+Reads existing reports (no aggregation — that's ADR-273's aggregator's job)
+and emits a bounded human-readable summary + JSON for any IDE/harness
+SessionStart hook.
+
+Sources scanned (each optional; missing files = empty section):
+  docs/reports/pending-truth-latest.json          (ADR-273)
+  docs/reports/operational-guide-audit-latest.json (ADR-274)
+  .cognitive-os/tasks/control-plane-remediation.jsonl (ADR-248)
+  docs/runbooks/*-staging/                         (operator-deploy queues)
+  git status + ahead/behind                        (branch state)
+
+Usage:
+  python3 scripts/cos-session-start-projector            # human text to stderr
+  python3 scripts/cos-session-start-projector --json     # machine output stdout
+  python3 scripts/cos-session-start-projector --limit 10 # top-N items
+  COS_PROJECTOR_NOCACHE=1 python3 scripts/cos-session-start-projector
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+SCHEMA_VERSION = "session-start-projection/v1"
+DEFAULT_LIMIT = 5
+CACHE_TTL_SECONDS = 60
+CACHE_PATH = ".cognitive-os/runtime/session-start-projection.cache.json"
+
+
+def _resolve_project_dir(arg: str | None) -> Path:
+    if arg:
+        return Path(arg).resolve()
+    for env_var in ("COGNITIVE_OS_PROJECT_DIR", "CODEX_PROJECT_DIR", "CLAUDE_PROJECT_DIR"):
+        if env_var in os.environ:
+            return Path(os.environ[env_var]).resolve()
+    return Path.cwd().resolve()
+
+
+def _load_json(path: Path) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _load_jsonl(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    out: list[dict[str, Any]] = []
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                out.append(json.loads(line))
+            except json.JSONDecodeError:
+                continue
+    except OSError:
+        return out
+    return out
+
+
+def _git(cwd: Path, *args: str) -> str:
+    try:
+        cp = subprocess.run(
+            ["git", *args],
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False,
+        )
+        return cp.stdout.strip()
+    except (OSError, subprocess.TimeoutExpired):
+        return ""
+
+
+def collect_pending_truth(root: Path, limit: int) -> dict[str, Any]:
+    payload = _load_json(root / "docs/reports/pending-truth-latest.json")
+    if not payload:
+        return {"total": 0, "by_status": {}, "top_actionable": []}
+    items = payload.get("items", []) or []
+    by_status: dict[str, int] = {}
+    for it in items:
+        s = it.get("status", "unknown")
+        by_status[s] = by_status.get(s, 0) + 1
+    # Top actionable = verified-pending items, ordered by next_action presence + recency
+    actionable = [it for it in items if it.get("status") == "verified-pending"]
+    actionable.sort(key=lambda it: (
+        0 if (it.get("next_action") or "").strip() else 1,
+        it.get("source", ""),
+    ))
+    top = [
+        {
+            "id": it.get("id"),
+            "type": it.get("type"),
+            "source": it.get("source"),
+            "next_action": (it.get("next_action") or "")[:120],
+        }
+        for it in actionable[:limit]
+    ]
+    return {
+        "total": len(items),
+        "by_status": by_status,
+        "top_actionable": top,
+    }
+
+
+def collect_operational_guide(root: Path, limit: int) -> dict[str, Any]:
+    payload = _load_json(root / "docs/reports/operational-guide-audit-latest.json")
+    if not payload:
+        return {"total_p0": 0, "total_p1": 0, "top_backfill": []}
+    summary = payload.get("summary", {})
+    by_priority = summary.get("by_priority", {}) or {}
+    results = payload.get("results", []) or []
+    backfill = [r for r in results if r.get("priority") in ("P0", "P1")]
+    backfill.sort(key=lambda r: (r.get("priority", "P9"), r.get("age_days") or 99999))
+    top = [
+        {
+            "adr": r.get("adr"),
+            "priority": r.get("priority"),
+            "verdict": r.get("verdict"),
+            "age_days": r.get("age_days"),
+            "path": r.get("path"),
+        }
+        for r in backfill[:limit]
+    ]
+    return {
+        "total_p0": by_priority.get("P0", 0),
+        "total_p1": by_priority.get("P1", 0),
+        "top_backfill": top,
+    }
+
+
+def collect_control_plane(root: Path) -> dict[str, Any]:
+    entries = _load_jsonl(root / ".cognitive-os/tasks/control-plane-remediation.jsonl")
+    # Each entry typically has {adr, severity, code, message, status}
+    open_findings = [e for e in entries if e.get("status") not in {"resolved", "closed"}]
+    by_adr: dict[str, int] = {}
+    for e in open_findings:
+        adr = e.get("adr", "unknown")
+        by_adr[adr] = by_adr.get(adr, 0) + 1
+    return {
+        "open_findings": len(open_findings),
+        "by_adr": by_adr,
+    }
+
+
+def collect_staged_deployments(root: Path) -> dict[str, Any]:
+    runbooks = root / "docs/runbooks"
+    if not runbooks.is_dir():
+        return {"dirs": []}
+    staged: list[str] = []
+    for p in sorted(runbooks.iterdir()):
+        if not p.is_dir():
+            continue
+        if p.name.endswith("-staging") or "staging" in p.name.lower():
+            staged.append(p.relative_to(root).as_posix())
+    return {"dirs": staged}
+
+
+def collect_git_state(root: Path) -> dict[str, Any]:
+    branch = _git(root, "rev-parse", "--abbrev-ref", "HEAD") or "unknown"
+    dirty_out = _git(root, "status", "--porcelain")
+    dirty = bool(dirty_out)
+    # Ahead/behind upstream (best-effort)
+    ahead = 0
+    behind = 0
+    rev_out = _git(root, "rev-list", "--left-right", "--count", "@{u}...HEAD")
+    if rev_out:
+        try:
+            parts = rev_out.split()
+            if len(parts) == 2:
+                behind = int(parts[0])
+                ahead = int(parts[1])
+        except ValueError:
+            pass
+    return {
+        "branch": branch,
+        "ahead": ahead,
+        "behind": behind,
+        "dirty": dirty,
+    }
+
+
+def suggest_next_actions(
+    pending: dict[str, Any],
+    og: dict[str, Any],
+    cp: dict[str, Any],
+    staged: dict[str, Any],
+    git_state: dict[str, Any],
+    limit: int,
+) -> list[dict[str, Any]]:
+    """Rank cheapest unblocking moves first."""
+    actions: list[dict[str, Any]] = []
+    if staged["dirs"]:
+        for d in staged["dirs"][:2]:
+            actions.append({
+                "kind": "operator-deploy-staged",
+                "target": d,
+                "reason": "staged hooks/patches block future enforcement; deploying is one-step and reversible",
+            })
+    if git_state["ahead"] > 0 and git_state["branch"] != "main":
+        actions.append({
+            "kind": "push-via-merge-queue",
+            "target": git_state["branch"],
+            "reason": f"{git_state['ahead']} commit(s) ahead of upstream; enqueue via scripts/cos-merge-queue.sh",
+        })
+    for item in og["top_backfill"][:2]:
+        actions.append({
+            "kind": "operational-guide-backfill",
+            "target": item["adr"],
+            "reason": f"P{1 if item['priority'] == 'P1' else 0} ADR-274 backfill (age {item['age_days']}d)",
+        })
+    for item in pending["top_actionable"][:2]:
+        actions.append({
+            "kind": "pending-truth-close",
+            "target": item["id"],
+            "reason": f"{item['type']} from {item['source']}; verify with cos-pending-truth-close --dry-run",
+        })
+    return actions[:limit]
+
+
+def build_projection(root: Path, limit: int) -> dict[str, Any]:
+    pending = collect_pending_truth(root, limit)
+    og = collect_operational_guide(root, limit)
+    cp = collect_control_plane(root)
+    staged = collect_staged_deployments(root)
+    git_state = collect_git_state(root)
+    actions = suggest_next_actions(pending, og, cp, staged, git_state, limit)
+    return {
+        "schema_version": SCHEMA_VERSION,
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "project_dir": "<repo-root>",
+        "sections": {
+            "pending_truth": pending,
+            "operational_guide": og,
+            "control_plane": cp,
+            "staged_deployments": staged,
+            "git_state": git_state,
+        },
+        "suggested_next_actions": actions,
+    }
+
+
+def render_human(payload: dict[str, Any]) -> str:
+    s = payload["sections"]
+    lines: list[str] = []
+    lines.append(f"=== Cognitive OS — Session Start Projection (ADR-275) ===")
+    lines.append(f"generated_at: {payload['generated_at']}")
+    lines.append("")
+    # Git state
+    g = s["git_state"]
+    git_line = f"git: branch={g['branch']} ahead={g['ahead']} behind={g['behind']} dirty={g['dirty']}"
+    lines.append(git_line)
+    # Pending truth
+    pt = s["pending_truth"]
+    lines.append(f"pending-truth ledger: {pt['total']} items {dict(pt['by_status'])}")
+    # OG
+    og = s["operational_guide"]
+    lines.append(f"operational-guide backfill: P0={og['total_p0']} P1={og['total_p1']}")
+    # Control plane
+    cp = s["control_plane"]
+    lines.append(f"control-plane open findings: {cp['open_findings']}")
+    # Staged
+    st = s["staged_deployments"]
+    if st["dirs"]:
+        lines.append(f"staged-for-operator-deploy: {len(st['dirs'])} dir(s)")
+        for d in st["dirs"]:
+            lines.append(f"  - {d}")
+    lines.append("")
+    actions = payload["suggested_next_actions"]
+    if actions:
+        lines.append("Suggested next actions (top-{}):".format(len(actions)))
+        for i, a in enumerate(actions, 1):
+            lines.append(f"  {i}. [{a['kind']}] {a['target']}")
+            lines.append(f"     → {a['reason']}")
+    else:
+        lines.append("No actionable items — system at rest.")
+    lines.append("")
+    lines.append("Run `python3 scripts/cos-session-start-projector --json` for machine output.")
+    return "\n".join(lines)
+
+
+def _cache_read(root: Path) -> dict[str, Any] | None:
+    if os.environ.get("COS_PROJECTOR_NOCACHE") == "1":
+        return None
+    cache = root / CACHE_PATH
+    if not cache.exists():
+        return None
+    try:
+        mtime = cache.stat().st_mtime
+        if time.time() - mtime > CACHE_TTL_SECONDS:
+            return None
+        return json.loads(cache.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def _cache_write(root: Path, payload: dict[str, Any]) -> None:
+    cache = root / CACHE_PATH
+    try:
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        cache.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    except OSError:
+        pass  # cache is best-effort
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="ADR-275 session-start projector")
+    parser.add_argument("--project-dir", default=None)
+    parser.add_argument("--json", action="store_true", help="Emit machine JSON to stdout")
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=int(os.environ.get("COS_PROJECTOR_LIMIT", DEFAULT_LIMIT)),
+        help="Top-N actionable items per section (default 5)",
+    )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Emit human summary to stdout instead of stderr",
+    )
+    args = parser.parse_args(argv)
+
+    root = _resolve_project_dir(args.project_dir)
+    if not root.exists():
+        print(f"Error: project dir does not exist: {root}", file=sys.stderr)
+        return 2
+
+    payload = _cache_read(root)
+    if payload is None:
+        payload = build_projection(root, args.limit)
+        _cache_write(root, payload)
+
+    if args.json:
+        print(json.dumps(payload, indent=2, ensure_ascii=False))
+    else:
+        text = render_human(payload)
+        out = sys.stdout if (args.strict or os.environ.get("COS_PROJECTOR_STRICT") == "1") else sys.stderr
+        print(text, file=out)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
