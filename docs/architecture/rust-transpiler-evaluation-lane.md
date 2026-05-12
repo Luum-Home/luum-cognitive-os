@@ -65,6 +65,31 @@ Outcome:
 - `tnk` generated a Cargo project for `scripts/agentic_mastery_summary.py` only after `--project` retry, but `cargo check` failed; the other two candidates were blocked by unsupported syntax or parse errors.
 - Neither tool qualifies as an official migration assistant yet.
 
+
+## Scope Correction
+
+The initial script-mode run tests direct applicability to real COS scripts. It does not prove what the tools can do on their intended subset.
+
+A fair second pass uses capability fixtures:
+
+- pure functions over ints/lists
+- simple parsing without external IO
+- list/dict transformations
+
+Run capability mode with:
+
+```bash
+PATH="/path/to/py2many/bin:/path/to/tnk/bin:$PATH"   scripts/cos-rust-transpiler-eval --mode capability   --json-out docs/reports/rust-transpiler-capability-eval-2026-05-12.json   --md-out docs/reports/rust-transpiler-capability-eval-2026-05-12.md
+```
+
+Capability report:
+
+- `docs/reports/rust-transpiler-capability-eval-2026-05-12.md`
+- `docs/reports/rust-transpiler-capability-eval-2026-05-12.json`
+- `docs/reports/rust-transpiler-scope-correction-2026-05-12.md`
+
+Current capability finding: `tnk` passes a narrow pure int/list fixture with Rust compile and stdout parity; neither tool handles the broader parsing/dict fixtures well enough for official adoption yet.
+
 ## Decision
 
 Keep transpilers in lab/evaluation status. Continue manual Rust slices with golden parity tests as the production migration method.

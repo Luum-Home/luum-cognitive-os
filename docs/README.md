@@ -32,6 +32,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [Rust Transpiler Scope Correction — 2026-05-12](reports/rust-transpiler-scope-correction-2026-05-12.md) — clarifies that the first transpiler run tested real COS scripts, then adds a fair capability fixture probe.
 - [Rust Transpiler Evaluation Lane](architecture/rust-transpiler-evaluation-lane.md) — repeatable lab lane for evaluating py2many/Tsuchinoko as Rust migration assistants without automatic replacement.
 - [Rust Migration Script Inventory — 2026-05-12](architecture/rust-migration-script-inventory.md) — classifies tracked Python, Go, and Bash surfaces into core runtime, CLI, diagnostics, test helpers, generators, and legacy before any Rust migration.
 - [ADR-283: Script Exposure Audit and Invocation Ratchet](adrs/ADR-283-script-exposure-audit-and-invocation-ratchet.md) — P0/P1/P2/P3 audit for scripts that are agentic primitives or maintainer tools without clear skill, hook, router, consumer, or demotion paths.

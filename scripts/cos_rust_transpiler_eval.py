@@ -14,11 +14,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-DEFAULT_CANDIDATES = [
+SCRIPT_CANDIDATES = [
     "scripts/agentic_mastery_summary.py",
     "scripts/regen_catalog_bullets.py",
     "scripts/backfill_cost_events.py",
 ]
+CAPABILITY_CANDIDATES = [
+    "tests/fixtures/rust_transpiler_eval/pure_ints_lists.py",
+    "tests/fixtures/rust_transpiler_eval/simple_parse_no_io.py",
+    "tests/fixtures/rust_transpiler_eval/list_dict_transform.py",
+]
+DEFAULT_CANDIDATES = SCRIPT_CANDIDATES
 DEFAULT_TOOLS = ["py2many", "tnk"]
 
 
@@ -33,6 +39,10 @@ class RunResult:
     stderr_excerpt: str
     compile_exit_code: int | None
     compile_excerpt: str
+    python_exit_code: int | None
+    python_stdout: str
+    rust_stdout: str
+    parity_status: str
     manual_fix_cost: str
     status: str
 
@@ -47,6 +57,10 @@ class RunResult:
             "stderr_excerpt": self.stderr_excerpt,
             "compile_exit_code": self.compile_exit_code,
             "compile_excerpt": self.compile_excerpt,
+            "python_exit_code": self.python_exit_code,
+            "python_stdout": self.python_stdout,
+            "rust_stdout": self.rust_stdout,
+            "parity_status": self.parity_status,
             "manual_fix_cost": self.manual_fix_cost,
             "status": self.status,
         }
@@ -78,7 +92,14 @@ def _sanitize(text: str, project_dir: Path) -> str:
     text = re.sub(r"/private/var/folders/[^\s)]+", "<tmp>", text)
     text = re.sub(r"/var/folders/[^\s)]+", "<tmp>", text)
     text = re.sub(r"/tmp/[^\s)]+", "<tmp>", text)
+    text = re.sub(r"/(?:Users|home)/[^\s:]+(?:/[^\s:]+)*/\.rustup", "<rustup>", text)
+    text = re.sub(r"/(?:Users|home)/[^\s:]+", "<home-path>", text)
     return text
+
+
+def _python_expected(project_dir: Path, candidate: Path, timeout: int) -> tuple[int | None, str]:
+    result = _run(["python3", str(candidate)], project_dir, timeout)
+    return result.returncode, result.stdout.strip()
 
 
 def _manual_fix_cost(exit_code: int | None, generated: list[str], compile_exit_code: int | None, stdout: str, stderr: str) -> tuple[str, str]:
@@ -104,6 +125,32 @@ def _cargo_check_project(project_output: Path, timeout: int) -> tuple[int, str]:
         result = _run(["cargo", "check"], probe, timeout)
         return result.returncode, _excerpt(result.stdout + result.stderr)
 
+def _run_single_rust(source: Path, timeout: int) -> tuple[int | None, str]:
+    if not source.exists() or source.stat().st_size == 0 or source.read_text(errors="ignore").strip() == "FAILED":
+        return None, ""
+    with tempfile.TemporaryDirectory(prefix="cos-rust-transpiler-run-") as tmp:
+        tmp_path = Path(tmp)
+        (tmp_path / "src").mkdir()
+        shutil.copy2(source, tmp_path / "src" / "main.rs")
+        cargo_text = (
+            "[package]\nname = \"cos_transpiler_probe_run\"\nversion = \"0.1.0\"\nedition = \"2021\"\n\n"
+            "[dependencies]\nanyhow = \"1\"\n"
+        )
+        if "pathlib" in source.read_text(errors="ignore"):
+            cargo_text += "pathlib = \"0.0.0\"\n"
+        (tmp_path / "Cargo.toml").write_text(cargo_text, encoding="utf-8")
+        result = _run(["cargo", "run", "--quiet"], tmp_path, timeout)
+        return result.returncode, result.stdout.strip()
+
+
+def _parity_status(compile_code: int | None, python_code: int | None, python_stdout: str, rust_stdout: str) -> str:
+    if python_code != 0:
+        return "python-baseline-failed"
+    if compile_code != 0:
+        return "not-checkable"
+    return "pass" if python_stdout == rust_stdout else "mismatch"
+
+
 def _compile_single_rust(source: Path, timeout: int) -> tuple[int | None, str]:
     if not source.exists() or source.stat().st_size == 0 or source.read_text(errors="ignore").strip() == "FAILED":
         return None, ""
@@ -111,11 +158,13 @@ def _compile_single_rust(source: Path, timeout: int) -> tuple[int | None, str]:
         tmp_path = Path(tmp)
         (tmp_path / "src").mkdir()
         shutil.copy2(source, tmp_path / "src" / "main.rs")
-        (tmp_path / "Cargo.toml").write_text(
+        cargo_text = (
             "[package]\nname = \"cos_transpiler_probe\"\nversion = \"0.1.0\"\nedition = \"2021\"\n\n"
-            "[dependencies]\nanyhow = \"1\"\npathlib = \"0.1\"\n",
-            encoding="utf-8",
+            "[dependencies]\nanyhow = \"1\"\n"
         )
+        if "pathlib" in source.read_text(errors="ignore"):
+            cargo_text += "pathlib = \"0.0.0\"\n"
+        (tmp_path / "Cargo.toml").write_text(cargo_text, encoding="utf-8")
         result = _run(["cargo", "check"], tmp_path, timeout)
         return result.returncode, _excerpt(result.stdout + result.stderr)
 
@@ -123,7 +172,23 @@ def _compile_single_rust(source: Path, timeout: int) -> tuple[int | None, str]:
 def eval_py2many(project_dir: Path, candidate: Path, out_dir: Path, timeout: int) -> RunResult:
     tool_path = shutil.which("py2many")
     if not tool_path:
-        return RunResult("py2many", _candidate_label(project_dir, candidate), None, [], 0, "", "py2many not found on PATH", None, "", "blocked", "tool-missing")
+        return RunResult(
+            "py2many",
+            _candidate_label(project_dir, candidate),
+            None,
+            [],
+            0,
+            "",
+            "py2many not found on PATH",
+            None,
+            "",
+            None,
+            "",
+            "",
+            "not-run",
+            "blocked",
+            "tool-missing",
+        )
     start = time.monotonic()
     output_dir = out_dir / "py2many"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -132,6 +197,9 @@ def eval_py2many(project_dir: Path, candidate: Path, out_dir: Path, timeout: int
     expected = output_dir / (candidate.stem + ".rs")
     generated = [str(expected.relative_to(out_dir))] if expected.exists() else []
     compile_code, compile_excerpt = _compile_single_rust(expected, timeout)
+    python_code, python_stdout = _python_expected(project_dir, candidate, timeout)
+    rust_code, rust_stdout = _run_single_rust(expected, timeout) if compile_code == 0 else (None, "")
+    parity = _parity_status(compile_code, python_code, python_stdout, rust_stdout)
     cost, status = _manual_fix_cost(result.returncode, generated, compile_code, result.stdout, result.stderr)
     return RunResult(
         "py2many",
@@ -143,6 +211,10 @@ def eval_py2many(project_dir: Path, candidate: Path, out_dir: Path, timeout: int
         _sanitize(_excerpt(result.stderr), project_dir),
         compile_code,
         _sanitize(compile_excerpt, project_dir),
+        python_code,
+        _sanitize(_excerpt(python_stdout), project_dir),
+        _sanitize(_excerpt(rust_stdout), project_dir),
+        parity if rust_code in (0, None) else "rust-run-failed",
         cost,
         status,
     )
@@ -151,7 +223,23 @@ def eval_py2many(project_dir: Path, candidate: Path, out_dir: Path, timeout: int
 def eval_tnk(project_dir: Path, candidate: Path, out_dir: Path, timeout: int) -> RunResult:
     tool_path = shutil.which("tnk")
     if not tool_path:
-        return RunResult("tnk", _candidate_label(project_dir, candidate), None, [], 0, "", "tnk not found on PATH", None, "", "blocked", "tool-missing")
+        return RunResult(
+            "tnk",
+            _candidate_label(project_dir, candidate),
+            None,
+            [],
+            0,
+            "",
+            "tnk not found on PATH",
+            None,
+            "",
+            None,
+            "",
+            "",
+            "not-run",
+            "blocked",
+            "tool-missing",
+        )
     start = time.monotonic()
     output_dir = out_dir / "tnk"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -175,6 +263,9 @@ def eval_tnk(project_dir: Path, candidate: Path, out_dir: Path, timeout: int) ->
             if (project_output / "Cargo.toml").exists():
                 compile_code, compile_excerpt = _cargo_check_project(project_output, timeout)
     elapsed = int((time.monotonic() - start) * 1000)
+    python_code, python_stdout = _python_expected(project_dir, candidate, timeout)
+    rust_code, rust_stdout = _run_single_rust(direct_output, timeout) if compile_code == 0 and direct_output.exists() else (None, "")
+    parity = _parity_status(compile_code, python_code, python_stdout, rust_stdout)
     cost, status = _manual_fix_cost(result.returncode, generated, compile_code, stdout, stderr)
     return RunResult(
         "tnk",
@@ -186,6 +277,10 @@ def eval_tnk(project_dir: Path, candidate: Path, out_dir: Path, timeout: int) ->
         _sanitize(_excerpt(stderr), project_dir),
         compile_code,
         _sanitize(compile_excerpt, project_dir),
+        python_code,
+        _sanitize(_excerpt(python_stdout), project_dir),
+        _sanitize(_excerpt(rust_stdout), project_dir),
+        parity if rust_code in (0, None) else "rust-run-failed",
         cost,
         status,
     )
@@ -200,17 +295,18 @@ def render_markdown(payload: dict[str, Any]) -> str:
         "",
         "## Summary",
         "",
-        "| Tool | Candidate | Status | Exit | Compile | Manual fix cost | Generated files |",
-        "|---|---|---:|---:|---:|---|---:|",
+        "| Tool | Candidate | Status | Exit | Compile | Parity | Manual fix cost | Generated files |",
+        "|---|---|---:|---:|---:|---|---|---:|",
     ]
     for row in payload["results"]:
         lines.append(
-            "| {tool} | `{candidate}` | {status} | {exit_code} | {compile_exit_code} | {manual_fix_cost} | {generated} |".format(
+            "| {tool} | `{candidate}` | {status} | {exit_code} | {compile_exit_code} | {parity_status} | {manual_fix_cost} | {generated} |".format(
                 tool=row["tool"],
                 candidate=row["candidate"],
                 status=row["status"],
                 exit_code="n/a" if row["exit_code"] is None else row["exit_code"],
                 compile_exit_code="n/a" if row["compile_exit_code"] is None else row["compile_exit_code"],
+                parity_status=row["parity_status"],
                 manual_fix_cost=row["manual_fix_cost"],
                 generated=len(row["generated_files"]),
             )
@@ -230,6 +326,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=Path.cwd())
     parser.add_argument("--candidate", action="append", default=[])
+    parser.add_argument("--mode", choices=["scripts", "capability"], default="scripts")
     parser.add_argument("--tool", choices=DEFAULT_TOOLS, action="append", default=[])
     parser.add_argument("--out-dir", type=Path, default=Path(".cognitive-os/transpiler-eval/latest"))
     parser.add_argument("--json-out", type=Path)
@@ -238,7 +335,8 @@ def main() -> int:
     args = parser.parse_args()
 
     project_dir = args.project_dir.resolve()
-    candidates = [project_dir / path for path in (args.candidate or DEFAULT_CANDIDATES)]
+    default_candidates = CAPABILITY_CANDIDATES if args.mode == "capability" else DEFAULT_CANDIDATES
+    candidates = [project_dir / path for path in (args.candidate or default_candidates)]
     tools = args.tool or DEFAULT_TOOLS
     out_dir = args.out_dir if args.out_dir.is_absolute() else project_dir / args.out_dir
     for tool_dir in (out_dir / "py2many", out_dir / "tnk"):
@@ -258,6 +356,7 @@ def main() -> int:
         "project_dir": "<repo-root>",
         "candidates": [str(path.relative_to(project_dir)) if path.is_relative_to(project_dir) else str(path) for path in candidates],
         "tools": tools,
+        "mode": args.mode,
         "results": [result.to_dict() for result in results],
     }
     if args.json_out:
