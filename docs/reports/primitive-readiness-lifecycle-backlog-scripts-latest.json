@@ -1,12 +1,60 @@
 {
-  "items": [],
+  "items": [
+    {
+      "confidence": "medium",
+      "consumer_families": {
+        "config": 5,
+        "doc": 8,
+        "hook": 1,
+        "script": 5,
+        "test": 2
+      },
+      "install_surface": null,
+      "next_action": "create ADR-126 lifecycle row or downgrade role before claiming shared/harness-portable support",
+      "path": "scripts/cos-session-start-projector",
+      "priority": "medium",
+      "protected_install_surface": false,
+      "reason": "wrapper/CLI agentic primitive lacks lifecycle metadata",
+      "recommended_distribution": "maintainer",
+      "recommended_kind": "script",
+      "recommended_lifecycle_state": "candidate",
+      "recommended_maturity": "advisory",
+      "role_source": "wrapper",
+      "skill_consumers": 0,
+      "total_consumers": 21,
+      "wrapper_for": "scripts/cos-merge-queue.sh"
+    },
+    {
+      "confidence": "medium",
+      "consumer_families": {
+        "config": 3,
+        "doc": 1,
+        "script": 1,
+        "test": 1
+      },
+      "install_surface": null,
+      "next_action": "create ADR-126 lifecycle row or downgrade role before claiming shared/harness-portable support",
+      "path": "scripts/portable_ai_overlay.py",
+      "priority": "medium",
+      "protected_install_surface": false,
+      "reason": "wrapper/CLI agentic primitive lacks lifecycle metadata",
+      "recommended_distribution": "maintainer",
+      "recommended_kind": "script",
+      "recommended_lifecycle_state": "candidate",
+      "recommended_maturity": "advisory",
+      "role_source": "wrapper",
+      "skill_consumers": 0,
+      "total_consumers": 6,
+      "wrapper_for": "scripts/cos_init.py"
+    }
+  ],
   "purpose": "agentic primitives missing ADR-126 lifecycle metadata",
   "schema_version": 1,
   "summary": {
     "high": 0,
-    "medium": 0,
+    "medium": 2,
     "protected": 0,
-    "total": 0
+    "total": 2
   },
   "target_family": "scripts"
 }
