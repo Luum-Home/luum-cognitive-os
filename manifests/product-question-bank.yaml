@@ -1,0 +1,144 @@
+schema_version: product-question-bank/v1
+adr: ADR-280
+status: active
+default_question_id: differentiator
+questions:
+  differentiator:
+    category: positioning
+    aliases:
+      - diferenciador
+      - factor diferenciador
+      - cual es nuestro diferenciador
+      - cuál es nuestro diferenciador
+      - what is our differentiator
+      - product wedge
+      - moat
+    keywords: [diferenciador, differentiator, wedge, moat, posicionamiento, positioning]
+    approved_sources:
+      - .cognitive-os/strategy/01-commercial-brief-v2.md
+      - docs/business/product-messaging.md
+      - docs/business/cos-vs-vanilla-dx-review.md
+      - docs/business/value-proposition.md
+      - docs/architecture/agentic-kernel-philosophy.md
+    related_claims:
+      - differentiator_behavioral_governance
+      - claim_verification_wedge
+      - cross_harness_behavioral_intelligence
+      - cost_to_outcome
+      - replay_restore_receipts
+      - governed_self_improvement
+      - generic_tracing_is_not_unique
+    answer_short: Cognitive OS is the behavioral governance and evidence layer for agentic development; it makes coding agents prove work, coordinate safely, expose cost/risk, and leave replayable receipts across supported tools.
+    answer_long: Cognitive OS should not be positioned as another IDE, generic multi-agent framework, tracing dashboard, or model wrapper. The defensible wedge is making fast but opaque coding agents verifiable, governable, coordinated, and portable. It checks whether agents actually verified completion claims, controls multi-agent and blast-radius risk, connects cost to verified outcomes, and preserves evidence that can be replayed or restored where the substrate is enabled.
+    recommended_pitch: AI agents ship faster. Cognitive OS makes them prove it.
+    unsafe_claims_to_avoid:
+      - universal cross-IDE parity
+      - autonomous self-improvement
+      - generic agent-step tracing as unique
+      - framework-agnostic support as the sole differentiator
+      - 13-layer OS as first-contact messaging
+    gaps:
+      - Competitive claims against Datadog, Dynatrace, Langfuse, AgentOps, or Galileo require fresh external fact-checking before publication.
+      - Some cross-harness and replay/restore claims remain maturity-scoped rather than universal.
+  non_differentiators:
+    category: positioning-boundary
+    aliases:
+      - que no es diferenciador
+      - qué no es diferenciador
+      - what is not unique
+      - commodity claims
+    keywords: [commodity, unico, único, not unique, no es diferenciador, tracing]
+    approved_sources:
+      - .cognitive-os/strategy/01-commercial-brief-v2.md
+      - docs/business/feature-reality-audit.md
+      - docs/business/product-messaging.md
+    related_claims:
+      - generic_tracing_is_not_unique
+      - cross_harness_behavioral_intelligence
+    answer_short: COS should not claim generic tracing, framework-agnostic support, cross-IDE observability, or a large OS surface as unique by themselves.
+    answer_long: >-
+      Those claims are either commodity, already pursued by adjacent tools, or too broad for first-contact product messaging. COS should use them as supporting substrate and lead with behavioral governance: verification, coordination, cost-to-outcome, receipts, and governed improvement.
+    recommended_pitch: Do not sell more platform; sell fewer unverified agent actions reaching production.
+    unsafe_claims_to_avoid:
+      - nobody else has agent-step tracing
+      - every IDE has identical COS enforcement
+      - COS is valuable because it has many hooks and rules
+    gaps:
+      - Keep the competitor list refreshed before using named comparisons publicly.
+  existing_primitives:
+    category: primitive-map
+    aliases:
+      - que primitivas existen
+      - qué primitivas existen
+      - existing primitives
+      - primitives that answer this
+    keywords: [primitivas, primitives, existente, existing, answer]
+    approved_sources:
+      - docs/adrs/ADR-120-conversation-to-primitive-harvester.md
+      - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+      - docs/adrs/ADR-206-aspirational-claim-decommission-gate.md
+      - docs/architecture/primitive-fitness-evaluation-contract.md
+      - docs/architecture/claim-verification-matrix.md
+    related_claims:
+      - claim_verification_wedge
+      - governed_self_improvement
+      - product_answer_primitive
+    answer_short: Existing primitives cover claim verification, public-claim safety, primitive fitness, telemetry promotion, conversation harvesting, product zones, and documentation truth; ADR-280 adds the missing product-answer composition primitive.
+    answer_long: >-
+      The system already has strong pieces: claim gates for whether agents really verified work, ADR-206 for unsafe public claims, primitive fitness for promotion decisions, ADR-201 for telemetry-to-proposal loops, ADR-120 for conversation-to-primitive classification, and product-zone/readiness ledgers for maturity. The gap was a single read-only primitive that composes those sources into product and commercial answers with evidence and trust reporting.
+    recommended_pitch: The product now uses its own trust doctrine for product messaging.
+    unsafe_claims_to_avoid:
+      - product answers are automatically publication-approved
+      - private strategy docs are safe public copy
+    gaps:
+      - Future iterations should connect ADR-252 feature reality rows directly instead of relying only on curated claim manifests.
+  automation_gap:
+    category: automation
+    aliases:
+      - que automatizacion falta
+      - qué automatización falta
+      - can this be automated
+      - se puede automatizar
+      - automatizar preguntas comerciales
+    keywords: [automatizar, automate, automation, preguntas, questions, comercial, commercial]
+    approved_sources:
+      - docs/adrs/ADR-280-product-question-to-evidence-primitive.md
+      - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+      - docs/adrs/ADR-206-aspirational-claim-decommission-gate.md
+      - docs/architecture/primitive-fitness-evaluation-contract.md
+    related_claims:
+      - product_answer_primitive
+      - governed_self_improvement
+    answer_short: Yes. Automate product answers as read-only question-to-evidence reports, then let maintainers update manifests and evidence through governed review.
+    answer_long: The safe automation path is not autonomous marketing copy. It is deterministic retrieval from a question bank, evidence manifest, product docs, claim gate, and generated trust report. Maintainer loops can propose changes when evidence drifts, but publication and risky competitive claims remain human-reviewed.
+    recommended_pitch: If COS sells trust, its own messaging must be generated from trust-backed evidence.
+    unsafe_claims_to_avoid:
+      - marketing copy updates itself without review
+      - stale competitive claims are safe because they came from a manifest
+    gaps:
+      - Add scheduled drift checks once the first question bank stabilizes.
+  landing_pitch:
+    category: messaging
+    aliases:
+      - landing pitch
+      - frase landing
+      - pitch comercial
+      - tagline
+    keywords: [landing, pitch, tagline, slogan, frase]
+    approved_sources:
+      - .cognitive-os/strategy/01-commercial-brief-v2.md
+      - docs/business/product-messaging.md
+      - docs/business/value-proposition.md
+    related_claims:
+      - differentiator_behavioral_governance
+      - claim_verification_wedge
+      - generic_tracing_is_not_unique
+    answer_short: AI agents ship faster. Cognitive OS makes them prove it.
+    answer_long: >-
+      The best first-contact pitch should be pain-first and evidence-first: agents are fast but opaque, and COS makes their claims verifiable before risky work lands. Avoid leading with platform size or architecture inventory.
+    recommended_pitch: Tu agente programa más rápido. Cognitive OS lo obliga a probarlo.
+    unsafe_claims_to_avoid:
+      - the only operating system for all agents
+      - no competitor has any observability
+    gaps:
+      - A/B copy should be validated with the five-minute demo and current dogfood metrics.

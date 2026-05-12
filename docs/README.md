@@ -32,6 +32,8 @@ The repo still contains ambitious future architecture for squads, manager agents
 
 ## Key Documents
 
+- [ADR-280: Product Question-to-Evidence Primitive](adrs/ADR-280-product-question-to-evidence-primitive.md) — manifest-backed `scripts/cos-product-answer` primitive for answering product/commercial questions with claim evidence, unsafe wording boundaries, gaps, and trust reports.
+- [Product Answer Playbook](business/product-answer-playbook.md) — operator guide for evidence-backed product answers and manual publication checks.
 - [ADR-279: Orphan Repo-Scan Process Audit](adrs/ADR-279-orphan-repo-scan-process-audit.md) — accepted dry-run-first primitive for detecting and optionally killing stale PPID=1 Claude/zsh/grep-style repo scans with metrics and behavior tests.
 - [ADR-276: Primitive Authority and Write-Effects Audit](adrs/ADR-276-primitive-authority-write-effects.md) — accepted contract for `manifests/primitive-authority.yaml`, `scripts/primitive_authority_audit.py`, dynamic filesystem-delta smokes, and ACC `authority_write_effects`.
 - [ADR-277: Documentation Truth Control](adrs/ADR-277-documentation-truth-control.md) — accepted contract for `manifests/documentation-truth-claims.yaml`, `scripts/documentation_truth_audit.py`, generated truth blocks, and ACC `documentation_truth`.

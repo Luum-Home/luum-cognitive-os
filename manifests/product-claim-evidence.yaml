@@ -1,0 +1,114 @@
+schema_version: product-claim-evidence/v1
+adr: ADR-280
+status: active
+status_order: [real, partial-real, partial, aspirational, blocked]
+claims:
+  differentiator_behavioral_governance:
+    status: partial-real
+    maturity: supported_by_docs_and_primitives
+    confidence: 0.82
+    summary: Cognitive OS differentiates as behavioral governance plus an evidence layer for agentic development.
+    approved_wording: Cognitive OS makes coding agents verifiable, governable, coordinated, and portable with executable evidence for what they did.
+    evidence:
+      - docs/business/product-messaging.md
+      - docs/business/cos-vs-vanilla-dx-review.md
+      - docs/business/value-proposition.md
+      - docs/architecture/agentic-kernel-philosophy.md
+      - .cognitive-os/strategy/01-commercial-brief-v2.md
+    boundaries:
+      - Do not frame COS as another IDE, generic tracing dashboard, or model wrapper.
+      - Keep cross-harness claims scoped to supported/evidenced drivers.
+  claim_verification_wedge:
+    status: real
+    maturity: implemented_primitives
+    confidence: 0.88
+    summary: COS gates agent completion claims on evidence rather than accepting agent prose.
+    approved_wording: Cognitive OS checks whether the agent actually verified the work it claims is done.
+    evidence:
+      - docs/architecture/claim-verification-matrix.md
+      - docs/adrs/ADR-105-claim-verification-contract.md
+      - scripts/orchestrator_claim_gate.py
+      - scripts/verify_plan_claims.py
+      - tests/contracts/test_orchestrator_claim_gate.py
+    boundaries:
+      - Do not claim every natural-language statement is automatically verifiable.
+  cross_harness_behavioral_intelligence:
+    status: partial
+    maturity: architecture_and_partial_runtime
+    confidence: 0.68
+    summary: COS can position toward behavioral intelligence across harnesses, but parity is not universal.
+    approved_wording: Cognitive OS records normalized evidence so teams can compare agent behavior across supported harnesses.
+    evidence:
+      - docs/model-evolution-resilience.md
+      - docs/architecture/ide-agnostic-primitive-projection.md
+      - docs/adrs/ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md
+      - docs/business/cos-vs-vanilla-dx-review.md
+    boundaries:
+      - Do not claim universal cross-IDE runtime parity.
+      - Do not claim competitors lack all cross-IDE observability.
+  cost_to_outcome:
+    status: partial
+    maturity: metrics_substrate
+    confidence: 0.66
+    summary: COS has cost, dispatch, and performance-ledger substrate for outcome-oriented analysis, but public numbers require fresh evidence.
+    approved_wording: Cognitive OS is designed to connect agent cost to verified outcomes, not only token usage.
+    evidence:
+      - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+      - docs/architecture/primitive-fitness-evaluation-contract.md
+      - lib/performance_ledger.py
+      - scripts/cos-performance-ledger
+    boundaries:
+      - Do not publish savings percentages or dollar claims without a current metrics report.
+  replay_restore_receipts:
+    status: partial-real
+    maturity: implemented_substrate_with_hardening_pending
+    confidence: 0.76
+    summary: Shadow-git and event-substrate docs support replay/restore positioning with maturity caveats.
+    approved_wording: Cognitive OS can attach governance events to replayable receipts and restore-oriented checkpoints where the substrate is enabled.
+    evidence:
+      - docs/adrs/ADR-227-shadow-git-checkpoint-substrate.md
+      - lib/shadow_git.py
+      - docs/business/product-messaging.md
+      - docs/business/value-proposition.md
+    boundaries:
+      - Avoid implying every harness and deployment mode has identical rewind semantics.
+  governed_self_improvement:
+    status: partial-real
+    maturity: propose_only_loop
+    confidence: 0.79
+    summary: COS supports telemetry-guided proposals, not autonomous mutation.
+    approved_wording: Cognitive OS can propose primitive improvements from telemetry under human approval.
+    evidence:
+      - docs/adrs/ADR-201-maintainer-agent-telemetry-promotion-loop.md
+      - docs/architecture/primitive-fitness-evaluation-contract.md
+      - scripts/cos-promote-from-telemetry
+      - scripts/cos-maintainer-agent
+    boundaries:
+      - Do not claim autonomous self-improvement.
+      - Do not claim automatic reconfiguration without approval.
+  generic_tracing_is_not_unique:
+    status: real
+    maturity: documented_positioning_boundary
+    confidence: 0.84
+    summary: Generic cross-IDE observability and agent-step tracing are not safe unique differentiator claims.
+    approved_wording: COS should not lead with generic tracing; it should lead with evidence-backed behavioral governance.
+    evidence:
+      - .cognitive-os/strategy/01-commercial-brief-v2.md
+      - docs/business/product-messaging.md
+      - docs/business/feature-reality-audit.md
+    boundaries:
+      - Do not claim agent-step tracing or framework-agnostic support as unique by itself.
+  product_answer_primitive:
+    status: real
+    maturity: implemented_adr_280
+    confidence: 0.86
+    summary: Product/commercial questions are answerable through a manifest-backed evidence primitive.
+    approved_wording: COS answers product questions from versioned evidence manifests and reports claim safety alongside the answer.
+    evidence:
+      - docs/adrs/ADR-280-product-question-to-evidence-primitive.md
+      - manifests/product-question-bank.yaml
+      - manifests/product-claim-evidence.yaml
+      - lib/product_answer.py
+      - scripts/cos-product-answer
+    boundaries:
+      - Generated answers are not publication approval for volatile competitive claims.

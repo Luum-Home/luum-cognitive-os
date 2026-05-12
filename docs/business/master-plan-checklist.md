@@ -31,6 +31,7 @@
 - [x] The product promise is documented in [Durable Product Master Plan](durable-product-master-plan.md).
 - [x] The product promise is documented in [Master Plan Execution Requirements](master-plan-execution-requirements.md).
 - [x] Product positioning is documented in [Product Messaging](product-messaging.md).
+- [x] Product and commercial answers are now evidence-backed through [ADR-280](../adrs/ADR-280-product-question-to-evidence-primitive.md), [Product Answer Playbook](product-answer-playbook.md), `manifests/product-question-bank.yaml`, `manifests/product-claim-evidence.yaml`, and `scripts/cos-product-answer`.
 
 ## 2. Protected Core
 
