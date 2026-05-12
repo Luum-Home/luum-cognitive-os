@@ -120,6 +120,15 @@ CONTRACTS: list[dict[str, Any]] = [
             "skills/session-pending-brief/SKILL.md",
         ],
     },
+    {
+        "primitive": "cos-subprocess-timeout-audit",
+        "grep": "cos-subprocess-timeout-audit",
+        "required_in": [
+            "docs/adrs/ADR-278-subprocess-run-timeout-discipline.md",
+            "manifests/control-plane-audits.yaml",
+            "manifests/documentation-truth-claims.yaml",
+        ],
+    },
 ]
 
 

@@ -139,3 +139,31 @@ claims:
       doc: docs/architecture/pending-truth-architecture.md
       marker: session_pending_protocol
       required: false
+  subprocess_timeout_discipline:
+    severity: medium
+    description: >-
+      subprocess.run timeout discipline (ADR-278) must remain documented;
+      the audit, allowlist, and test-conftest safety net must be
+      discoverable in their canonical locations.
+    facts:
+      audit_report_command: scripts/cos-subprocess-timeout-audit.py
+      allowlist: manifests/subprocess-timeout-allowlist.yaml
+      test_default: tests/conftest.py
+    source_reports:
+      - manifests/subprocess-timeout-allowlist.yaml
+    required_docs:
+      - docs/adrs/ADR-278-subprocess-run-timeout-discipline.md
+    required_phrases:
+      - cos-subprocess-timeout-audit.py
+      - subprocess-timeout-allowlist.yaml
+      - COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT
+      - subprocess.run
+      - timeout=
+    forbidden_phrases:
+      - untimed subprocess calls are harmless
+      - pytest-timeout always kills hung subprocesses
+      - the timeout keyword is optional in production
+    generated_block:
+      doc: docs/adrs/ADR-278-subprocess-run-timeout-discipline.md
+      marker: subprocess_timeout_discipline
+      required: false

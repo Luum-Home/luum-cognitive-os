@@ -48,6 +48,7 @@ lanes:
       - operational-guide-coverage
       - closure-trust-signal
       - doc-cross-reference-coverage
+      - subprocess-timeout-coverage
       - adr-partial-lifecycle
   pre-public:
     description: Pre-public release-readiness sweep.
@@ -63,6 +64,7 @@ lanes:
       - operational-guide-coverage
       - closure-trust-signal
       - doc-cross-reference-coverage
+      - subprocess-timeout-coverage
       - adr-partial-lifecycle
 
 audits:
@@ -127,6 +129,12 @@ audits:
     adr: ADR-275
     command: [python3, scripts/cos-doc-cross-reference-audit.py]
     expected_schema: doc-cross-reference-audit/v1
+    consumes_sensitive_values: false
+    mutates: false
+  subprocess-timeout-coverage:
+    adr: ADR-278
+    command: [python3, scripts/cos-subprocess-timeout-audit.py]
+    expected_schema: subprocess-timeout-audit/v1
     consumes_sensitive_values: false
     mutates: false
   adr-partial-lifecycle:

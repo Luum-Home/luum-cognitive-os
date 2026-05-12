@@ -1,0 +1,14 @@
+schema_version: subprocess-timeout-allowlist/v1
+owner_adr: ADR-278
+purpose: >-
+  Allowlist of subprocess.run(...) call sites that intentionally omit
+  timeout= (long-running watchers, REPLs, servers, or known-bounded
+  external commands). Every entry MUST include a rationale and an
+  owner. Audit (scripts/cos-subprocess-timeout-audit.py) honors this
+  list; everything else without timeout= becomes a warn finding.
+
+  Per ADR-278, defaults to empty: the bias is "add timeout=, justify
+  omission". Operators add entries only when omission is genuinely
+  required (e.g., interactive subprocess streaming stdout to user).
+
+entries: []

@@ -39,7 +39,7 @@ ACC consumes the report through the `documentation_truth` adapter.
 
 <!-- GENERATED:documentation-truth:documentation_truth_control:start -->
 Generated documentation truth: documentation truth control.
-Declared truth claims (4): consumer_projection_harnesses, documentation_truth_control, primitive_authority_write_effects, session_pending_protocol.
+Declared truth claims (5): consumer_projection_harnesses, documentation_truth_control, primitive_authority_write_effects, session_pending_protocol, subprocess_timeout_discipline.
 Contract surfaces: manifests/documentation-truth-claims.yaml; scripts/documentation_truth_audit.py; ACC adapter documentation_truth.
 Report surfaces: docs/reports/documentation-truth-latest.json; docs/reports/documentation-truth-latest.md.
 <!-- GENERATED:documentation-truth:documentation_truth_control:end -->
