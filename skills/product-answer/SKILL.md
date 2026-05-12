@@ -35,6 +35,9 @@ wedge. It is not a project-facing adopter skill.
 
 - The user asks: "cuál es nuestro diferenciador?", "what is our moat/wedge?",
   "qué decimos de competidores?", "pricing", "ICP", "pitch", "landing".
+- The user asks about already-analyzed external tools, competitors, or adjacent
+  agent frameworks such as Hermes, Agent Zero, OpenClaw, Langfuse, AgentOps,
+  Datadog, Dynatrace, or Galileo.
 - The user asks whether a product/commercial claim is safe.
 - The user asks what primitives answer a product or commercial question.
 - The answer should be short, evidence-backed, and token-efficient.
@@ -42,11 +45,36 @@ wedge. It is not a project-facing adopter skill.
 ## Do not use when
 
 - The user asks to edit product-answer code or manifests; use normal coding flow.
-- The user asks for fresh competitor facts or current market research; browse or
-  run a dedicated research workflow because ADR-282 cards intentionally flag
-  named-competitor claims as freshness-sensitive.
+- The user asks for fresh competitor facts or current market research **and**
+  the local Tech Radar / external-tool corpus has already been checked. ADR-282
+  cards flag named-competitor claims as freshness-sensitive, but the first move
+  is the local radar, not internet search.
 - The question is about a consumer project's product positioning, not Cognitive
   OS itself.
+
+
+## Tool and competitor grounding order
+
+For questions about external tools or competitors, avoid spending tokens on web
+research before checking local evidence. Inspect these compact/local surfaces in
+order:
+
+1. `docs/reports/external-tools-radar-INDEX.md` — chronological entry point for
+   analyzed tools and radar editions.
+2. `manifests/external-tools-adoption.yaml` and
+   `manifests/feature-tool-due-diligence.yaml` — machine-readable adoption and
+   BUILD-vs-tool decisions.
+3. `docs/vs-alternatives.md`, `docs/component-sources.md`, and
+   `docs/business/competitive-reassessment-openclaw-hermes-2026-04.md` — local
+   positioning for Hermes, Agent Zero, OpenClaw, and adjacent alternatives.
+4. Relevant repo-scout or deep-research reports under `docs/research/` and
+   `docs/reports/external-tools-*`.
+5. Only then browse, and only for volatile facts: current stars, current feature
+   claims, licensing changes, pricing, acquisitions, or publication-grade named
+   comparisons.
+
+When the local corpus already contains an analysis, answer from it and state the
+freshness boundary instead of re-researching the tool.
 
 ## Fast path
 

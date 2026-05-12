@@ -299,6 +299,9 @@ questions:
     - .cognitive-os/strategy/01-commercial-brief-v2.md
     - docs/business/feature-reality-audit.md
     - docs/business/product-messaging.md
+    - docs/reports/external-tools-radar-INDEX.md
+    - docs/vs-alternatives.md
+    - docs/component-sources.md
     related_claims:
     - competitor_positioning_factcheck_required
     - generic_tracing_is_not_unique
@@ -309,12 +312,17 @@ questions:
     answer_long: The safer competitive frame is that observability and agent-step
       tracing are increasingly commodity, while COS focuses on whether agent work
       is verified, coordinated, cost/risk-aware, and receipt-backed before it lands.
-      Use named competitor comparisons only after current external fact-checking.
+      For tools already analyzed by COS, start from the local Tech Radar, external-tool
+      adoption manifests, and vs-alternatives/component-source docs before browsing.
+      Use internet research only for volatile named-competitor facts or publication-grade
+      current comparisons.
     recommended_pitch: Tracing tells you what happened; Cognitive OS tells you whether
       the agent proved the work and stayed inside operational boundaries.
     unsafe_claims_to_avoid:
     - no competitor has cross-IDE observability
     - agent-step tracing is unique to COS
     - all named competitor claims are current without fresh research
+    - bypassing local Tech Radar and re-researching already-analyzed tools by default
     gaps:
-    - Run a fresh competitor fact-check before publishing named comparisons.
+    - Consult the local Tech Radar and external-tool manifests before browsing for tool comparisons.
+    - Run a fresh competitor fact-check before publishing volatile named comparisons.
