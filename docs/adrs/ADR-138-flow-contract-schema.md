@@ -185,6 +185,86 @@ This ADR is satisfied when:
 - [ADR-141](ADR-141-engram-cloud-cross-instance-replication.md) — adds `engram_project_scope`, `air_gapped_compatible` fields to `required_flow_shape`.
 - [ADR-142](ADR-142-compliance-audit-air-gapped-surface.md) — adds `tenant_id`, `audit_class` fields to `required_flow_shape`.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, each cloud flow primitive could invent its own contract shape.
+The propose-only properties (blocked actions, human approval, framing-exercise
+statement) existed only as constants in individual proposer scripts (ADR-134,
+ADR-135) with no machine-auditable enforcement at registration time.
+
+After this ADR:
+
+- `manifests/flow-contract-schema.yaml` is the single canonical contract shape.
+  Every flow registered under the bootstrap plan must satisfy it at registration
+  time; partial conformance fails validation.
+- The `human_approval_required: true` field is hardcoded. A flow cannot propose
+  to remove it. Any attempt to set it to `false` is rejected at registration.
+- The `lifecycle_state` must start at `lab` for every new flow. Promotion to
+  `sandbox`, `advisory`, or beyond requires the evidence block ADR-126 mandates.
+- The `framing_exercise_statement` field now has a concrete home with 5 required
+  axes. Missing any axis blocks promotion out of `lab`.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "What fields does my new flow contract YAML need?" — All fields under
+  `required_flow_shape` in `manifests/flow-contract-schema.yaml` are required.
+  The field-level rules in §Decision enumerate every constraint.
+- "Can this flow auto-merge or auto-promote primitives?" — No. `auto_merge` and
+  `auto_promote_core_or_team` are in `blocked_actions` and cannot be removed.
+- "When does the schema become shared across multiple flows?" — After the second
+  flow registers without modification. Until then the schema is `exemplary` and
+  may be extended via ADR-138a.
+
+**Does not answer:**
+- Whether a specific flow's `success_condition.verifier` command works in the
+  current environment. The schema enforces structural presence; you must run the
+  verifier to confirm correctness.
+- Which flows have been registered. Inspect the skills directory and the landscape
+  manifest for that inventory.
+
+### Daily operational pattern
+
+**Registering a new flow:**
+
+1. Create `skills/<flow-name>/flow_contract.yaml` with all fields from
+   `manifests/flow-contract-schema.yaml §required_flow_shape`.
+2. Set `lifecycle_state: lab`. All other lifecycle states require promotion
+   evidence.
+3. Confirm the `success_condition.verifier` is executable from CI without
+   maintainer-machine paths (`~/` paths fail validation per
+   `bootstrap-portability.md`).
+4. Run the registration audit (once `scripts/cos-flow-register.sh` exists):
+   ```bash
+   bash scripts/cos-flow-register.sh skills/<flow-name>/flow_contract.yaml
+   ```
+   Until that script exists, the maintainer validates the YAML manually against
+   the schema before landing the second flow.
+
+**Promoting a flow from `lab` to `sandbox`:**
+
+1. Collect the evidence block specified in ADR-126.
+2. Update `lifecycle_state` in the flow's `flow_contract.yaml`.
+3. The audit enforces that evidence is present before accepting the promotion.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without context:
+
+1. Read ADR-137 first — it commits the `Framing B → Framing A` trajectory and
+   introduces the framing-exercise statement requirement that this schema enforces.
+2. Read `manifests/flow-contract-schema.yaml` — the schema is the single source
+   of truth for what a flow contract must contain.
+3. The five `blocked_actions` (auto_merge, auto_promote_core_or_team,
+   invent_evidence, bypass_governance_gate, direct_main_push) are the
+   propose-only safety boundary generalised from ADR-134 / ADR-135. They are
+   non-negotiable minimums for every flow.
+4. The `promotion rule for the schema itself` (§Decision, near the end) explains
+   when the schema transitions from `exemplary` to `shared`. Until the second flow
+   lands, schema changes happen in this ADR; after that, they require a new ADR.
+
 ## Alternatives rejected
 
 - Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.

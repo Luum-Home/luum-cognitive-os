@@ -118,6 +118,30 @@ EOF
   fi
 fi
 
+# ─── Step 3: ADR lifecycle and generated-index gates ────────────────────────
+
+staged_files_for_adr_gate=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || true)
+if printf '%s
+' "$staged_files_for_adr_gate" | grep -qE '^(docs/adrs/ADR-|docs/adrs/INDEX\.md|docs/reports/adr-partial-backlog-latest\.md|scripts/audit_adrs\.py|scripts/generate_adr_index\.py|scripts/cos-adr-)'; then
+  if command -v python3 >/dev/null 2>&1; then
+    if ! python3 "$ROOT_DIR/scripts/audit_adrs.py" --strict >/dev/null; then
+      echo "COMMIT BLOCKED: ADR lifecycle audit failed." >&2
+      echo "Run: python3 scripts/audit_adrs.py --strict" >&2
+      exit 1
+    fi
+    if ! python3 "$ROOT_DIR/scripts/generate_adr_index.py" --check >/dev/null; then
+      echo "COMMIT BLOCKED: docs/adrs/INDEX.md is stale." >&2
+      echo "Run: python3 scripts/generate_adr_index.py" >&2
+      exit 1
+    fi
+    if [ -x "$ROOT_DIR/scripts/cos-adr-partial-ledger" ] && ! python3 "$ROOT_DIR/scripts/cos-adr-partial-ledger" --check >/dev/null; then
+      echo "COMMIT BLOCKED: docs/reports/adr-partial-backlog-latest.md is stale." >&2
+      echo "Run: python3 scripts/cos-adr-partial-ledger" >&2
+      exit 1
+    fi
+  fi
+fi
+
 # ─── All clear ───────────────────────────────────────────────────────────────
 
 derived_gate="$ROOT_DIR/scripts/derived_artifact_gate.py"

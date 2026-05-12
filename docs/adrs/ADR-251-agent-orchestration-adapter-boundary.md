@@ -3,7 +3,8 @@
 adr: 251
 title: Agent Orchestration Adapter Boundary
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'boundary manifest, audit, benchmark fixtures, and tests implement the orchestration adapter boundary scope'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
@@ -168,6 +169,72 @@ Negative:
   chaos/cross-harness tests remain necessary.
 - Optional framework adapters remain future work until they satisfy license,
   footprint, benchmark, and governance-boundary requirements.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, COS had accumulated first-party primitives for agent lifecycle,
+handoff, dispatch, release freeze, worktree ownership, file-IPC, and background
+daemons across multiple ADRs (ADR-057, 081, 190, 223, 226, 228, 230, 233, 235,
+246, 248) with no single boundary declaration. Community orchestration frameworks
+(LangGraph, AutoGen, CrewAI, OpenAI Agents SDK) could only be considered by
+importing them directly into COS core — mixing governance policy with optional
+dependency.
+
+After this ADR:
+
+- COS owns: policy/safety gates, work ownership, branch/worktree boundaries,
+  release freeze preconditions, evidence receipts, budget/retry/circuit-breaker,
+  telemetry, remediation queues, cross-harness normalization.
+- External orchestration engines (LangGraph, AutoGen, CrewAI, OpenAI Agents SDK)
+  are **adapter candidates only**. They schedule and coordinate; they do not
+  bypass COS governance.
+- Core COS hot-path files must NOT import optional orchestration frameworks
+  directly (`langgraph`, `autogen`, `crewai`, etc.). Declared adapters in
+  `manifests/agent-orchestration-adapters.yaml` are the only permitted path.
+- Any new lifecycle, handoff, queue, daemon, dispatch, or worker primitive
+  must be declared in the manifest as a core surface or adapter.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Can I use LangGraph to coordinate agents?" — Yes, as a declared adapter with
+  `status: candidate`. The adapter must prove it maps handoffs into ADR-230
+  envelopes and passes the ADR-251 benchmark.
+- "How do I know if the boundary is respected?" — Run
+  `python3 scripts/agent-orchestration-boundary-audit.py --json`. It checks
+  that core hot-path files do not import undeclared frameworks.
+- "What failure modes must an adapter prove before it becomes default?" — See
+  §Benchmark doctrine: write-agent lifecycle, branch divergence, handoff cycle
+  detection, receiver-death receipt, budget refusal before provider calls,
+  file-IPC cross-session, release freeze blocking.
+
+**Does not answer:**
+- Whether the currently active adapters (`cos_file_ipc_minimal`,
+  `cos_handoff_envelope`, `cos_dispatch_gate`) are free of race conditions.
+  That requires chaos/cross-harness tests beyond the static boundary audit.
+- Whether a candidate adapter satisfies the license and footprint requirements
+  without checking `manifests/agent-orchestration-adapters.yaml`.
+
+### Daily operational pattern
+
+1. Verify the orchestration boundary on any change to agent launch or handoff paths:
+   ```bash
+   python3 scripts/agent-orchestration-boundary-audit.py --json
+   python3 scripts/agent-orchestration-benchmark.py --json
+   ```
+2. To propose a new orchestration engine as an adapter:
+   - Add an entry to `manifests/agent-orchestration-adapters.yaml` with
+     `status: candidate` and the full declaration fields.
+   - Write benchmark fixtures that cover the incident-shaped failure modes in §Benchmark doctrine.
+   - Keep core COS imports unchanged until the adapter satisfies license,
+     footprint, benchmark, and governance boundary review.
+3. Full verification:
+   ```bash
+   python3 -m pytest tests/unit/test_agent_orchestration_boundary_audit.py tests/unit/test_agent_orchestration_benchmark.py -q
+   scripts/cos-control-plane-audit --lane hook-fast --json
+   ```
 
 ## Alternatives rejected
 

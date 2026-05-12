@@ -191,6 +191,87 @@ air_gapped_compatible: true|false  # can the flow operate in local-only mode?
 - `scripts/engram-sync.sh` — existing sync script; unchanged except `--cloud` passthrough.
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — cross-machine Engram discovery prerequisite this ADR satisfies.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, cloud workers had no live memory channel to the
+maintainer machine. Cross-instance memory required manual bundle/import
+cycles via `scripts/engram-sync.sh` (git-jsonl mode), which is async
+and requires git push/pull.
+
+After this ADR, three Engram sync modes coexist; no mode deprecates
+another:
+
+| Mode | When to use |
+|---|---|
+| `local-only` | Default. Air-gap, offline, or new installs. |
+| `git-jsonl` | Cross-device maintainer sync or air-gap fallback. Always available. |
+| `engram-cloud` | Worker↔central live replication. Requires `engram cloud serve`. |
+
+To enable cloud mode:
+```bash
+export ENGRAM_CLOUD_AUTOSYNC=1
+export ENGRAM_CLOUD_TOKEN=<project-scoped-token>
+export ENGRAM_CLOUD_SERVER=http://localhost:8080
+bash scripts/cos-engram-cloud-enroll  # provision project-scoped token
+```
+
+The git-jsonl export continues to run even when `--cloud` is active;
+cloud sync is additive.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is cloud sync active for this session?" — Check
+  `agent-audit-trail.jsonl` for rows with `event: engram_cloud_sync`
+  and `mode: engram-cloud`. A row with `mode: local-only` and
+  `observation_count: 0` confirms cloud sync is intentionally off.
+- "Did a conflict occur during sync?" — Look for
+  `event: engram_conflict_resolved` in the audit trail. The row
+  carries the judgment outcome.
+- "Is this flow air-gap compatible?" — Read `air_gapped_compatible`
+  in the flow contract. `false` means live cloud sync is required.
+
+**Does not answer:**
+- `engram cloud serve` availability or uptime. COS does not manage
+  the cloud server lifecycle; the operator is responsible.
+- Token rotation schedule. Rotate by re-running
+  `scripts/cos-engram-cloud-enroll --rotate`. COS does not enforce a
+  rotation cadence.
+
+### Daily operational pattern
+
+1. **Air-gapped / default**: nothing to do. Git-jsonl sync runs on
+   session-end hooks automatically; cloud sync is inactive.
+2. **Cloud-enabled**: start `engram cloud serve` (or point to a
+   remote server via `ENGRAM_CLOUD_SERVER`), then set
+   `ENGRAM_CLOUD_AUTOSYNC=1` in the worker environment.
+3. After a sync session, verify observations are replicating:
+   ```bash
+   grep "engram_cloud_sync" .cognitive-os/runtime/agent-audit-trail.jsonl | tail -5
+   ```
+4. Conflict resolution: if `mem_save` returns `judgment_required:
+   true`, the runtime surfaces the conflict via `mem_judge` calls.
+   No manual intervention required for the happy path.
+
+### When sources disagree
+
+If a worker's observations are not appearing on the central instance:
+
+1. Check `ENGRAM_CLOUD_AUTOSYNC` and `ENGRAM_CLOUD_TOKEN` are set in
+   the worker environment.
+2. Verify the worker's `ENGRAM_CLOUD_ALLOWED_PROJECTS` matches the
+   flow's `engram_project_scope`.
+3. Check the audit trail for `direction: push` rows with an `error`
+   field — this indicates a queued push that failed. Connectivity
+   restored → the queue drains automatically.
+4. If cloud is unavailable, fall back to git-jsonl:
+   `bash scripts/engram-sync.sh` (no `--cloud` flag).
+
+The local SQLite database (`~/.engram/engram.db`) is always
+authoritative. The cloud is replication-only; it does not overwrite local.
+
 ## Alternatives rejected
 
 - Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.

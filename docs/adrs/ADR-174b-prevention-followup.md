@@ -19,6 +19,8 @@ implementation_files:
   - tests/unit/test_routing_pattern_deriver.py
   - tests/unit/test_auto_skill_generator_routing.py
   - tests/contracts/test_validator_promotion_trigger.py
+tier: maintainer
+tags: [routing, validation, soak, follow-up]
 ---
 # ADR-174b — Prevention Followup
 

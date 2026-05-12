@@ -110,3 +110,104 @@ def test_audit_adrs_requires_implementation_status_for_frontmatter(tmp_path: Pat
     assert result["level"] == "FAIL"
     assert result["code"] == "INVALID_IMPLEMENTATION_STATUS"
     assert "implementation_status is required" in result["message"]
+
+
+def test_audit_adrs_enforces_future_frontmatter_contract_for_new_adrs(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    adr = tmp_path / "ADR-276-missing-contract.md"
+    adr.write_text(
+        "---\nadr: 276\ntitle: Missing Contract\nstatus: accepted\nimplementation_status: partial\ndate: 2026-05-12\n---\n# ADR-276\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {276})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "MISSING_REQUIRED_FRONTMATTER"
+    assert "classification_basis" in result["message"]
+
+
+def test_audit_adrs_requires_not_applicable_prefix_for_new_adrs(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    adr = tmp_path / "ADR-276-bad-na.md"
+    adr.write_text(
+        "---\n"
+        "adr: 276\n"
+        "title: Bad NA\n"
+        "status: accepted\n"
+        "implementation_status: not-applicable\n"
+        "classification_basis: no work here\n"
+        "implementation_files: []\n"
+        "tier: maintainer\n"
+        "tags: []\n"
+        "---\n# ADR-276\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {276})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "INVALID_CLASSIFICATION_BASIS"
+    assert "governance-only" in result["message"]
+
+
+def test_audit_adrs_rejects_new_accepted_empty_files_without_policy_basis(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    adr = tmp_path / "ADR-276-empty-files.md"
+    adr.write_text(
+        "---\n"
+        "adr: 276\n"
+        "title: Empty Files\n"
+        "status: accepted\n"
+        "implementation_status: partial\n"
+        "classification_basis: 'partial: implementation remains pending'\n"
+        "implementation_files: []\n"
+        "tier: maintainer\n"
+        "tags: []\n"
+        "---\n# ADR-276\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {276})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "INVALID_STATUS_TRANSITION"
+    assert "empty implementation_files" in result["message"]
+
+
+def test_audit_adrs_rejects_new_implemented_with_in_scope_future_work(tmp_path: Path) -> None:
+    from scripts.audit_adrs import audit_file
+
+    proof = tmp_path / "proof.txt"
+    proof.write_text("proof", encoding="utf-8")
+    adr = tmp_path / "ADR-276-future-work.md"
+    adr.write_text(
+        "---\n"
+        "adr: 276\n"
+        "title: Future Work\n"
+        "status: accepted\n"
+        "implementation_status: implemented\n"
+        "classification_basis: 'implemented with tests'\n"
+        f"implementation_files:\n  - {proof}\n"
+        "tier: maintainer\n"
+        "tags: []\n"
+        "---\n# ADR-276\n\nFuture work remains for runtime enforcement.\n",
+        encoding="utf-8",
+    )
+
+    result = audit_file(adr, {276})
+    assert result["level"] == "FAIL"
+    assert result["code"] == "INVALID_STATUS_TRANSITION"
+    assert "future" in result["message"]
+
+
+def test_adr_partial_ledger_is_generated() -> None:
+    result = subprocess.run(
+        ["python3", "scripts/cos-adr-partial-ledger", "--check"],
+        cwd=REPO_ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr

@@ -222,6 +222,91 @@ unless `COS_ALLOW_AGENT_PREAMBLE_OVERRUN=1`.
 - The metric log adds another JSONL but mirrors the existing
   `metrics/` pattern.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the ADR-038 Wave 2 context budgets were declared in
+`cognitive-os.yaml` but never enforced. Each new `additionalContext`
+hook added silently to the orchestrator's prompt with no measurement or
+gate.
+
+After this ADR:
+
+- Every `UserPromptSubmit` produces a row in
+  `.cognitive-os/metrics/context-budget.jsonl` showing the
+  breakdown: preamble chars, additional-context chars, total chars,
+  estimated tokens, verdict (`PASS` / `WARN` / `BLOCK`), and ratio
+  used.
+- Hooks that emit `additionalContext` call
+  `hooks/_lib/context_budget_lib.sh:context_budget_emit_or_skip`
+  before injection. If the remaining budget is exhausted, the hook
+  skips its injection and emits a stderr warning.
+- At `BLOCK` threshold (> 1.5 × budget), `hooks/context-budget-meter.sh`
+  returns non-zero. Override with `COS_ALLOW_CONTEXT_BUDGET_OVERRUN=1`.
+- The sub-agent preamble (`hooks/subagent-context-injector.sh`) is
+  also counted; overrun logs under `layer=static`.
+
+Budget thresholds are in `cognitive-os.yaml` under `context_budget:`.
+Adjust them there, not by disabling the meter.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "How much context are hooks injecting per prompt?" — Read the latest
+  rows in `.cognitive-os/metrics/context-budget.jsonl`.
+- "Which hook is consuming most of the budget?" — The per-hook
+  accountant (`context_budget_lib.sh`) logs each injection before
+  emitting. Compare injection sizes across hook names in the metrics
+  file.
+- "Is the budget correctly calibrated for my workload?" — If the WARN
+  rate in the metrics log is above ~8 % or the BLOCK rate above ~2 %
+  on normal prompts, the budget thresholds in `cognitive-os.yaml`
+  need raising.
+
+**Does not answer:**
+- Whether the context *content* is useful or correct. The meter counts
+  tokens; quality review is the operator's concern.
+- Sub-agent accumulated cost across a session. Per-session drift is
+  tracked by Phoenix observability (ADR-058) if activated.
+
+### Daily operational pattern
+
+1. The meter runs automatically; no operator action required.
+2. After a session where prompts felt sluggish or `BLOCK` was hit:
+   ```bash
+   python3 -c "
+   import json
+   with open('.cognitive-os/metrics/context-budget.jsonl') as f:
+       for line in f:
+           r = json.loads(line)
+           if r.get('verdict') in ('WARN','BLOCK'):
+               print(r['ts'], r['verdict'], r['ratio_used'], r['total_chars'])
+   "
+   ```
+3. If a specific hook is starving later hooks, reorder priority in
+   `cognitive-os.yaml`. The first hooks in the chain are authoritative;
+   later hooks are starved when budget runs out.
+4. For a single prompt that legitimately needs verbose context:
+   `COS_ALLOW_CONTEXT_BUDGET_OVERRUN=1` — the override is logged in
+   the metrics row.
+
+### When sources disagree
+
+If the meter shows `BLOCK` but the operator believes the content volume
+is correct:
+
+1. Check whether the budget thresholds in `cognitive-os.yaml` are
+   stale for the current hook set (they were calibrated at Wave 2
+   with fewer hooks).
+2. If the heuristic tokenizer (`len(text) // 4`) is over-counting for
+   code-heavy text, enable `COS_USE_REAL_TOKENIZER=1` (requires
+   `pip install tiktoken`) to get more accurate counts.
+3. A legitimate workload that consistently requires a larger budget
+   should update `static_max_tokens` / `turn_max_tokens` in
+   `cognitive-os.yaml` with a comment citing the ADR that motivated
+   the change. Do not simply override with the env var long-term.
+
 ## Alternatives rejected
 
 - **Hard cap with no override**: would block real work when the

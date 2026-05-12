@@ -264,6 +264,63 @@ available for emergencies but creates a paper trail.
    operators.
 9. Tests in `tests/contracts/`, `tests/integration/`, `tests/red_team/portability/`.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: running `git filter-repo`, `cos-history-sanitization --execute`, or `cos-filter-repo-wrap.sh` required no ADR reference and produced no ledger entry. Orphan recovery bundles under `.cognitive-os/recovery/` accumulated silently with no machine-visible link to a rationale.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| `cos-history-sanitization --execute` | runs without any documentation requirement | requires `--adr-ref ADR-NNN` (fails at invocation if absent) |
+| `cos-filter-repo-wrap.sh` | runs without documentation | requires `--adr-ref ADR-NNN`; auto-writes ledger entry on success |
+| Direct `git filter-repo` | not intercepted | classified as DESTRUCTIVE; must use wrapper or set `COS_ALLOW_DESTRUCTIVE_GIT=1` (audit-logged) |
+| `manifests/history-rewrite-ledger.yaml` | did not exist | append-only registry of every rewrite; queried by `cos-history-rewrite-audit` |
+| Session startup | silent | `hooks/history-rewrite-documented.sh` emits a visible WARNING if any bundle lacks a ledger entry |
+
+The four primitives work together: the pre-gate (Primitive 4) requires the ADR at execution time; the ledger (Primitive 1) stores the evidence; the CLI (Primitive 3) lets the operator inspect or remediate; the startup hook (Primitive 2) surfaces any orphan that slipped through.
+
+### Daily operational pattern
+
+**Before a history rewrite:**
+
+1. Author or confirm an Accepted ADR documenting why the rewrite is needed. A template exists at `docs/adrs/templates/history-rewrite.template.md`.
+2. Run the governed wrapper:
+   ```bash
+   scripts/cos-history-sanitization --execute --adr-ref ADR-NNN [other flags]
+   # or
+   bash scripts/cos-filter-repo-wrap.sh --adr-ref ADR-NNN --rules /path/to/rules.txt
+   ```
+   The wrapper auto-writes a ledger entry on success. No additional step needed.
+
+**To inspect the audit trail at any time:**
+```bash
+scripts/cos-history-rewrite-audit --list
+# Full table: timestamp, operator, ADR ref, bundle path, SHA before/after
+
+scripts/cos-history-rewrite-audit --orphans
+# Bundles with no ledger entry, ledger entries with missing bundles,
+# entries pointing at non-existent ADRs
+```
+
+**If a session-start warning fires** (orphan bundle detected):
+```bash
+scripts/cos-history-rewrite-audit --register .cognitive-os/recovery/<bundle> \
+  --adr ADR-NNN --reason "retroactive registration: <why>"
+```
+
+### Reading guide for cold readers
+
+If you encounter this ADR without conversation context:
+
+1. Read `manifests/history-rewrite-ledger.yaml` for every rewrite that has been performed against this repository and its rationale.
+2. Read `scripts/cos-history-rewrite-audit --list` output for the current operational state (bundles, ADR cross-references, orphans).
+3. Read ADR-268 (the 2026-05-11 defensive sanitization) as the seed event and concrete example of what this ledger records.
+4. Read ADR-242 for the wrapper mechanics (remote preservation, idempotency guard, recovery artifact) — ADR-269 adds the documentation requirement on top of those safety primitives.
+5. The session-start hook (`hooks/history-rewrite-documented.sh`) is the daily signal: if it fires, there is an orphan bundle. Resolve via `--register` before proceeding with other work.
+
 ## Alternatives considered
 
 - **Advisory documentation only** (status quo). Rejected — does not scale to

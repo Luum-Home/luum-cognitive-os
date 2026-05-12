@@ -374,3 +374,28 @@ entries:
     .cognitive-os/logs/legal-review-required.jsonl.
     Bypass: COS_ALLOW_PRE_LEGAL_REVIEW_IMPORT=1 (logged).
   next_action: Keep active; revisit threshold list if BLOCKER license set expands.
+- path: hooks/pending-truth-drift-detector.sh
+  status: conditional_opt_in
+  rationale: ADR-273 Slice C anti-drift hook. PostToolUse Edit/Write advisory
+    that nudges agents/operators when a commit touches paths mentioned in
+    pending-truth-latest.json next_action/evidence. Non-blocking. Not
+    registered globally because semantic projection requires per-session
+    operator opt-in.
+  next_action: Promote to active once operator has reviewed drift-nudge
+    frequency on their workflow (see docs/runbooks/adr-273-slice-c-staging).
+- path: hooks/pending-truth-verify-weekly.sh
+  status: conditional_opt_in
+  rationale: ADR-273 Slice C async hook on Stop. Fires
+    scripts/cos-pending-truth-verify in background if ledger >7d stale.
+    Non-blocking, fire-and-forget. Not registered globally so operators can
+    opt in per profile.
+  next_action: Wire into Stop hook chain via apply-efficiency-profile.sh
+    maintainer once the operator opts in.
+- path: hooks/pending-truth-staleness-gate.sh
+  status: conditional_opt_in
+  rationale: ADR-273 Slice C PreToolUse Bash advisory. On `git commit*` if
+    the ledger is older than 30 days, emits a non-blocking warning to
+    refresh aggregator+verifier. Not registered globally because the
+    threshold is opinionated per operator.
+  next_action: Promote to active after operator review of staleness
+    threshold; alternatively, register only in maintainer profile.

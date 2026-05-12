@@ -78,6 +78,38 @@ Kiro remains `planned` with `proof_level: none`. The Kiro path is now documented
 - Some vendors may change config paths; structural proof must be refreshed when official docs change.
 - Aider remains context-only; it has no COS hook/MCP projection in this slice.
 
+## Operational Guide
+
+### What changes for the operator
+
+ADR-159 added AGENTS.md-native harnesses. This ADR adds the rules/MCP/context batch (Cline, Continue.dev, Kilo Code, Zed AI, Augment/Auggie, Goose, Aider) and a Kiro adapter design path. After this ADR:
+
+- `scripts/cos_init.py` accepts the seven new harness IDs and writes the project-local files listed in §Decision.
+- `manifests/harness-projection.yaml` marks all seven as `implemented` with `structural` proof level.
+- `docs/architecture/kiro-lifecycle-adapter-design.md` records the staged adapter path for Kiro — this is a design artifact, not an implementation claim. Kiro remains `planned`/`none` in `manifests/ai-agent-harness-landscape.yaml`.
+- Generated MCP/settings placeholders contain no credentials and grant no tools by default.
+
+The operator benefit: consumer projects can receive project-local guidance for these tools without any global IDE settings or manual file creation.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Does COS project structural files for Cline / Continue.dev / Kilo Code / Zed AI / Augment / Goose / Aider?" — yes; run `python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new` to verify.
+- "What Kiro implementation plan exists?" — read `docs/architecture/kiro-lifecycle-adapter-design.md`; it documents the event-mapping stages required before native-lifecycle promotion.
+- "Are MCP placeholders safe to commit?" — yes; they contain no credentials and grant no tools.
+
+**Does not answer:**
+- Whether the projected rules files are effective at runtime in these tools — no account-backed smoke was run for this batch.
+- Whether Kiro's hook system maps cleanly to COS events — the adapter design documents the plan; validation requires an event-mapping experiment and runtime smoke before promotion.
+
+### Reading guide for cold readers
+
+1. Run `python3 -m pytest tests/behavior/test_consumer_project_projection.py -q` to verify the seven harnesses appear in the projection count.
+2. Read `manifests/harness-projection.yaml` for proof level per harness.
+3. Read `docs/architecture/kiro-lifecycle-adapter-design.md` for the staged Kiro path.
+4. Inspect `docs/manual-tests/rules-mcp-structural-projection.md` for the manual proof checklist.
+5. The file paths generated per harness are listed in §Decision; they are all project-local and safe to inspect.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

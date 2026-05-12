@@ -83,6 +83,37 @@ All generated MCP settings are empty placeholders. COS does not write user-globa
 - Structural files may need adjustment if vendors change project config paths.
 - Factory and Kiro both expose hook systems, but COS native lifecycle parity remains unimplemented until event payload mapping and runtime smoke are done.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, `scripts/cos_init.py` could project structural harness files only for the harnesses already listed in `manifests/harness-projection.yaml`. Six new harnesses (Gemini CLI, Warp, Amp, JetBrains Junie, Qoder, Factory Droid) had no projection entry. After this ADR:
+
+- `scripts/cos_init.py` accepts the six new harness IDs and writes only project-local files — no user-global config or credentials are touched.
+- `manifests/harness-projection.yaml` marks all six as `implemented` with `structural` proof level.
+- `manifests/ai-agent-harness-landscape.yaml` marks Kiro as `lifecycle-investigation` (not implemented projection), preventing premature promotion.
+- The `manifests/harness-implementation-phases.yaml` tracks the Kiro lifecycle path separately so native-lifecycle promotion stays evidence-gated.
+
+Generated files are limited to the paths listed in §Decision. No account-backed runtime smoke was performed; structural files may need adjustment if vendors change project config paths.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Does COS project structural files for Warp / Amp / JetBrains Junie / Qoder / Factory Droid / Gemini CLI?" — yes; run `python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new` to verify projection counts.
+- "What proof level does each harness have?" — read `manifests/harness-projection.yaml`; these six are `structural`.
+- "Is Kiro implemented?" — `manifests/ai-agent-harness-landscape.yaml` shows `planned`/`none` with `lifecycle-investigation` status.
+
+**Does not answer:**
+- Whether the projected files work at runtime in these tools — no account-backed smoke was run. Structural projection proves files are generated; runtime proof requires a separate smoke lane.
+
+### Reading guide for cold readers
+
+1. Run `python3 -m pytest tests/behavior/test_consumer_project_projection.py -q` to verify structural projection counts.
+2. Read `manifests/harness-projection.yaml` to see which harnesses are `implemented`, `planned`, or `blocked`.
+3. Read `manifests/ai-agent-harness-landscape.yaml` for Kiro's lifecycle-investigation status and the evidence required before native-lifecycle promotion.
+4. The generated files for each harness are listed in §Decision; inspect them in a temp-project install to see what COS writes.
+5. `docs/manual-tests/agents-md-native-structural-projection.md` contains the manual proof checklist for this batch.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

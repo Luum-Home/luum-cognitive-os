@@ -181,6 +181,88 @@ audit_class: access_control|change_management|availability|processing_integrity|
 - `hooks/git-commit-scope-guard.sh` — confirms `.cognitive-os/runtime/agent-audit-trail.jsonl` as the canonical audit file.
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the plan whose audit-trail signal this ADR formalises.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, COS produced extensive JSONL audit signal
+(`blast-radius.jsonl`, `hook-timing.jsonl`, etc.) but these files were
+not bridged to a compliance-consumable shape. Per-flow attribution was
+absent; air-gap deployment was undocumented; and the GDPR erasure path
+did not exist.
+
+After this ADR:
+
+- `.cognitive-os/runtime/agent-audit-trail.jsonl` is the **canonical
+  compliance evidence surface**. All compliance queries start here.
+- Every audit row produced by a cloud worker carries `tenant_id` (flow
+  ID + launch timestamp) and `audit_class` (one of: `access_control`,
+  `change_management`, `availability`, `processing_integrity`,
+  `confidentiality`, `privacy`, `sync`).
+- Air-gap deployment is explicitly supported: all required audit rows
+  write to local JSONL first; network transmission is additive.
+- `scripts/cos-audit-archive` compresses rows older than a configurable
+  retention window without deleting them — use this to manage log size
+  during a SOC 2 audit window without truncating evidence.
+- GDPR erasure procedure is documented in
+  `docs/architecture/gdpr-erasure-procedure.md`. Each erasure is
+  recorded in the audit trail with `audit_class: privacy`.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which audit rows belong to flow run X?" — Filter
+  `agent-audit-trail.jsonl` by `tenant_id` containing the flow ID.
+- "Did this flow produce access-control evidence?" — Filter by
+  `audit_class: access_control` and `flow_id`.
+- "Is this deployment air-gap compatible?" — Check the flow contract's
+  `air_gapped_compatible` field. If `true`, the flow never requires a
+  network call to produce audit rows.
+- "Can we serve a SOC 2 audit from local files?" — Yes. The
+  append-only JSONL committed to git provides the evidence trail.
+  `scripts/cos-audit-archive` is the retention helper.
+
+**Does not answer:**
+- Whether COS is SOC 2 certified. This ADR provides the machinery;
+  certification is an operator-level concern.
+- Automated GDPR erasure. COS documents and records the erasure path;
+  the operator executes it. Automated erasure is not implemented.
+
+### Daily operational pattern
+
+1. Flow registration: flow contracts must include `tenant_id` and
+   `audit_class` fields (validated by `scripts/cos-flow-register.sh`).
+2. During a SOC 2 audit window: do not truncate
+   `agent-audit-trail.jsonl`. Use `scripts/cos-audit-archive` to
+   compress old rows rather than deleting them.
+3. To query all rows for a specific flow run:
+   ```bash
+   grep '"tenant_id": "my-flow-' .cognitive-os/runtime/agent-audit-trail.jsonl
+   ```
+4. For GDPR erasure: follow
+   `docs/architecture/gdpr-erasure-procedure.md`. After erasure,
+   append a row with `audit_class: privacy`, `event:
+   observation_erased`, and the observation ID.
+
+### When sources disagree
+
+If a compliance query returns rows without `tenant_id` or `audit_class`:
+
+- These are pre-ADR rows. By migration convention, rows without
+  `tenant_id` are classified as `maintainer` tenant; rows without
+  `audit_class` are classified as `change_management`. This is noted
+  in the ADR and is the correct interpretation for audit queries.
+- New flows after this ADR must produce fully attributed rows. If a
+  new flow's rows lack these fields, the flow registration was not
+  validated by `scripts/cos-flow-register.sh`.
+
+If the audit trail shows a row but the corresponding Engram observation
+is missing (e.g. after erasure):
+
+- The audit row records the event; the observation content is gone.
+  This is correct GDPR behavior: the erasure record itself is retained,
+  not the erased content.
+
 ## Alternatives rejected
 
 - Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.

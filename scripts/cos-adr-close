@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+"""Close or reclassify an ADR implementation_status and refresh generated ADR artifacts."""
+from __future__ import annotations
+
+import argparse
+import re
+import subprocess
+import sys
+from pathlib import Path
+from typing import Any
+
+import yaml
+
+ROOT = Path(__file__).resolve().parents[1]
+ADRS = ROOT / "docs" / "adrs"
+VALID_TARGETS = {"implemented", "partial", "partial-blocked", "blocked", "deferred", "planned", "not-applicable", "resolved"}
+
+
+def _adr_key(value: str) -> str:
+    m = re.search(r"(\d+[a-z]?)", value, re.IGNORECASE)
+    if not m:
+        raise SystemExit(f"Invalid ADR reference: {value}")
+    raw = m.group(1)
+    num = re.match(r"\d+", raw).group(0)  # type: ignore[union-attr]
+    suffix = raw[len(num):].lower()
+    return f"{int(num):03d}{suffix}"
+
+
+def _find_adr(ref: str) -> Path:
+    key = _adr_key(ref)
+    for path in sorted(ADRS.glob("ADR-*.md")):
+        m = re.match(r"ADR-(\d+)([a-z]?)", path.name, re.IGNORECASE)
+        if not m:
+            continue
+        candidate = f"{int(m.group(1)):03d}{m.group(2).lower()}"
+        if candidate == key:
+            return path
+    raise SystemExit(f"ADR {ref} not found under {ADRS.relative_to(ROOT)}")
+
+
+def _load(path: Path) -> tuple[dict[str, Any], str]:
+    text = path.read_text(encoding="utf-8")
+    if not text.startswith("---\n") or "\n---\n" not in text:
+        raise SystemExit(f"{path.relative_to(ROOT)} has no YAML frontmatter")
+    raw, body = text.split("\n---\n", 1)
+    data = yaml.safe_load(raw.removeprefix("---\n")) or {}
+    if not isinstance(data, dict):
+        raise SystemExit(f"{path.relative_to(ROOT)} frontmatter is not a mapping")
+    return data, body
+
+
+def _dump(path: Path, fm: dict[str, Any], body: str) -> None:
+    rendered = yaml.safe_dump(fm, sort_keys=False, allow_unicode=True).strip()
+    path.write_text(f"---\n{rendered}\n---\n{body}", encoding="utf-8")
+
+
+def _append_evidence(body: str, evidence: list[str], basis: str) -> str:
+    if not evidence:
+        return body
+    block = ["", "## Implementation Evidence", "", f"Closure basis: {basis}", ""]
+    block.extend(f"- `{item}`" for item in evidence)
+    block.append("")
+    if "## Implementation Evidence" in body:
+        return body.rstrip() + "\n" + "\n".join(block[3:]) + "\n"
+    return body.rstrip() + "\n" + "\n".join(block) + "\n"
+
+
+def _run(cmd: list[str]) -> None:
+    result = subprocess.run(cmd, cwd=ROOT, text=True)
+    if result.returncode != 0:
+        raise SystemExit(result.returncode)
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("adr", help="ADR reference, e.g. ADR-234")
+    target = parser.add_mutually_exclusive_group(required=True)
+    for status in sorted(VALID_TARGETS):
+        target.add_argument(f"--{status}", action="store_const", const=status, dest="target_status")
+    parser.add_argument("--basis", required=True, help="classification_basis to write")
+    parser.add_argument("--evidence", action="append", default=[], help="Evidence path/command; repeatable")
+    parser.add_argument("--follow-up-adr", default=None, help="Follow-up ADR for remaining work, if any")
+    parser.add_argument("--owner", default=None, help="Optional owner for partial backlog tracking")
+    parser.add_argument("--remaining", default=None, help="Optional remaining work summary for partial backlog tracking")
+    parser.add_argument("--no-generate", action="store_true", help="Do not regenerate index/partial ledger")
+    args = parser.parse_args(argv)
+
+    path = _find_adr(args.adr)
+    fm, body = _load(path)
+    fm["implementation_status"] = args.target_status
+    fm["classification_basis"] = args.basis
+    if args.evidence:
+        current = fm.get("implementation_files") or []
+        if not isinstance(current, list):
+            current = []
+        for item in args.evidence:
+            if item not in current and (ROOT / item).exists():
+                current.append(item)
+        fm["implementation_files"] = current
+        body = _append_evidence(body, args.evidence, args.basis)
+    if args.follow_up_adr:
+        fm["follow_up_adr"] = args.follow_up_adr
+    if args.owner:
+        fm["owner"] = args.owner
+    if args.remaining:
+        fm["partial_remaining"] = args.remaining
+
+    _dump(path, fm, body)
+    if not args.no_generate:
+        _run([sys.executable, "scripts/generate_adr_index.py"])
+        _run([sys.executable, "scripts/cos-adr-partial-ledger"])
+    print(f"updated {path.relative_to(ROOT)} -> implementation_status={args.target_status}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

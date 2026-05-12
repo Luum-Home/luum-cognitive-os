@@ -13,6 +13,13 @@
 # hooks/_lib/killswitch_check.sh — sourced by hooks; exempt from hook-matcher wiring
 # ─────────────────────────────────────────────────────────────────────────────
 #
+# ── conditional_opt_in (ADR-273 Slice C, registered in manifests/hook-registration-classification.yaml) ──
+# pending-truth-drift-detector.sh — PostToolUse Edit/Write; advisory drift nudge
+# pending-truth-verify-weekly.sh  — Stop async; fires cos-pending-truth-verify if ledger >7d stale
+# pending-truth-staleness-gate.sh — PreToolUse Bash; advisory on git commit if ledger >30d
+# These remain conditional_opt_in until operator promotes via maintainer profile.
+# ─────────────────────────────────────────────────────────────────────────────
+#
 # ── Hooks delegated to settings-driver-claude-code.sh (ADR-095 Phase 2) ──────
 # tool-sequence-capture.sh  — PostToolUse[*]; appends JSONL to tool-sequences.jsonl
 # codebase-itinerary-capture.sh  — PostToolUse[Read|Grep|Glob|LS]; appends content-free access metadata

@@ -9,8 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'governance-only: architectural scope-control doctrine with no direct implementation work item'
 ---
 
 # ADR-133: Expansion Without Monsterization

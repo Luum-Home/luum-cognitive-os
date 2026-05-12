@@ -2,15 +2,14 @@
 adr: 112
 title: Codex Governed Tool Layer
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-02'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'governed runner and Codex guard scripts exist and list canonical hook chains for Codex surfaces'
 ---
 
 # ADR-112 — Codex Governed Tool Layer

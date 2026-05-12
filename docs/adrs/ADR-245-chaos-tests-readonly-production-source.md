@@ -3,7 +3,8 @@
 adr: 245
 title: Chaos Tests Run with Read-Only Production Source
 status: accepted
-implementation_status: partial
+implementation_status: implemented
+classification_basis: 'chaos read-only workspace fixture and regression tests satisfy the ADR source-protection scope'
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -88,6 +89,84 @@ trips the protection.
 ad-hoc env-var workaround from ADR-238 follow-up and uses the proper
 fixture. The simulated regression is injected into a *test fixture*
 copy of the resolver, not the production module.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, chaos tests could write to `lib/`, `scripts/`, or `hooks/`
+during a test run. The mutation persisted after the test, affected subsequent
+imports in the same session, and could contaminate concurrent agents reading
+the same checkout. There was no automatic detection or revert.
+
+After this ADR, the `chaos_readonly_workspace` autouse fixture in
+`tests/chaos/conftest.py` enforces read-only protection for `lib/`, `scripts/`,
+and `hooks/` for every chaos test:
+
+- **Default (all platforms):** The fixture snapshots file fingerprints before
+  the test. After the test, any file whose fingerprint changed is reverted from
+  a tempdir copy and the test is marked failed with a named-file assertion and
+  diff.
+- **Linux `chaos-strict` lane (opt-in):** `bwrap --ro-bind` makes the
+  protected directories genuinely read-only at the kernel level; writes produce
+  `EROFS` immediately.
+- **macOS opt-in:** A `chmod -R u-w` over a copy-on-write clone provides the
+  same guarantee without `mount`.
+
+The operator does not need to invoke anything. Protection is automatic for the
+`tests/chaos/` lane via the autouse fixture.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Can a chaos test silently overwrite a production module?" — No. Either the
+  test fails loudly at teardown (portable mode) or the write is rejected
+  immediately (`chaos-strict` mode).
+- "Which file was mutated and what changed?" — The assertion message names the
+  file and includes the diff.
+- "Does this protect all write paths?" — Yes. The snapshot-and-revert catches
+  all write mechanisms (`open`, `pathlib`, `shutil`, subprocess shell,
+  `os.rename`), not just explicit `open(..., 'w')` calls.
+
+**Does not answer:**
+- Whether a chaos test that legitimately needs a temporary file under `lib/`
+  is correct to do so. Such tests would need to declare an explicit allow-list
+  and use a tempdir overlay (no current examples identified).
+- Whether mutations outside `lib/`, `scripts/`, and `hooks/` are safe.
+  Protection scope is fixed to those three directories in Slice A.
+
+### Daily operational pattern
+
+1. Run chaos tests normally — protection is automatic:
+   ```bash
+   python3 -m pytest tests/chaos/ -q
+   ```
+2. If a chaos test fails with a "protected file mutated" assertion, the
+   failing test's teardown logs the file name and diff. Fix the test to
+   inject the regression via a fixture copy instead of writing to the
+   production module.
+3. To verify the fixture is installed:
+   ```bash
+   python3 -m pytest tests/chaos/test_global_verify_regression_catches.py -q
+   test -f docs/runbooks/chaos-test-isolation.md
+   ```
+4. For CI runs where `bwrap` is available and you want immediate-failure
+   semantics, run under the `chaos-strict` lane. See
+   `docs/runbooks/chaos-test-isolation.md` for the exact invocation.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without session context:
+
+1. The bug that motivated this ADR: `tests/chaos/test_global_verify_regression_catches.py`
+   replaced `lib/targeted_test_resolver.py` (149 lines of production code)
+   with a 2-line stub during a test run on 2026-05-08. The mutation was not
+   reverted and broke unrelated tests.
+2. The fix is in `tests/chaos/conftest.py` — look for `chaos_readonly_workspace`.
+3. The runbook at `docs/runbooks/chaos-test-isolation.md` describes both
+   execution modes and diagnostic steps when the protection trips.
+4. The protection scope is intentionally limited to `lib/`, `scripts/`, and
+   `hooks/` — not the entire working tree — to keep the snapshot cost small.
 
 ## Alternatives rejected
 

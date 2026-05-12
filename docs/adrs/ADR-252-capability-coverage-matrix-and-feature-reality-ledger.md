@@ -4,6 +4,7 @@ adr: 252
 title: Capability Coverage Matrix and Feature Reality Ledger
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A establishes the matrix for ADR-230+; historical COS feature classification remains intentionally incomplete'
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []
@@ -150,6 +151,70 @@ Negative:
   to ensure tests are behavioral rather than structural.
 - Slice A does not classify every historical COS feature. It establishes the
   contract and covers the recent ADR-230+ control-plane line first.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, answering "is capability X actually implemented and wired?"
+required reading the ADR (which only says "accepted"), then checking whether
+scripts/hooks/skills existed, then checking whether they were wired to consumers,
+then checking whether tests existed — with no single place joining all four.
+
+After this ADR:
+
+- `manifests/capability-coverage.yaml` is the single source of truth. Each
+  capability entry joins: owner ADR → implementation paths → consumer/wiring
+  paths → tests/evidence → runtime receipts → control-plane audits → known gaps.
+- The reality level (`REAL`, `PARTIAL`, `ROADMAP`, `LAB`, `DORMANT`,
+  `DEPRECATED`, `RESOLVED`) replaces verbal claims. A `REAL` capability must
+  have evidence for all four pillars.
+- `docs/capabilities/MATRIX.md` is the generated human-readable view. Use it
+  for cold-reading current state without scanning dozens of ADRs.
+- `docs/reports/capability-coverage-latest.json` is the machine-readable report
+  consumed by the control-plane audit.
+- **Hard rule:** If a capability is not in the matrix, it cannot be treated as a
+  public COS capability claim.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is capability X actually real or aspirational?" — Read the matrix entry's
+  `reality_level`. `ROADMAP`, `LAB`, or `DORMANT` means it is not public-claim
+  safe.
+- "Which capabilities have wiring or receipt gaps right now?" — Run
+  `python3 scripts/cos-capability-matrix --json` and filter findings by
+  `public_claim: true` + `reality_level != REAL`.
+- "An ADR was accepted last month — why isn't it in the matrix?" — Because it
+  was not registered. Add an entry to `manifests/capability-coverage.yaml` with
+  the owner ADR and initial reality level.
+
+**Does not answer:**
+- Whether the evidence declared in the matrix is behaviorally sufficient. That
+  is ADR-249's responsibility (proof quality audit).
+- Whether every historical COS feature is classified. Slice A covers the
+  ADR-230+ control-plane line. Older capabilities are added incrementally.
+
+### Daily operational pattern
+
+1. When a new ADR lands, register the capability it delivers:
+   - Add an entry to `manifests/capability-coverage.yaml` with the ADR number,
+     initial `reality_level: PARTIAL` (since it is usually not fully wired yet),
+     and known gaps.
+2. To refresh the generated matrix and report:
+   ```bash
+   python3 scripts/cos-capability-matrix --write
+   ```
+3. To run the read-only audit (used by hook-fast):
+   ```bash
+   python3 scripts/cos-capability-matrix --json
+   python3 scripts/cos-capability-matrix --check-generated --json
+   ```
+4. Full verification:
+   ```bash
+   python3 -m pytest tests/unit/test_capability_matrix.py -q
+   scripts/cos-control-plane-audit --lane hook-fast --json
+   ```
 
 ## Alternatives rejected
 

@@ -201,6 +201,85 @@ read-only findings to the session that owns the mutation.
   machines. Cross-machine concurrency is out of scope here and would be
   addressed by the manager-of-managers daemon (ADR-184).
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, two concurrent Claude Code sessions could hold the same
+branch simultaneously with no mutual visibility. A second session issuing
+`git commit` or `git push` on a branch already held by the first session
+would succeed silently, producing the destructive race documented in
+`docs/reports/postmortem-cross-session-collision-2026-05-05.md`.
+
+After this ADR:
+
+- The first session that issues a destructive git op on a branch
+  acquires a lease at `.cognitive-os/runtime/branch-locks/<branch-slug>.lock`.
+- Any subsequent session targeting the same branch is hard-blocked with
+  a clear error naming the holder and the acquisition time.
+- The lock releases automatically on session-end (Stop hook), on
+  explicit `bash scripts/cos-branch-release <branch>`, or when the TTL
+  expires and the holder PID is no longer alive.
+- Auditor agents remain unaffected: read-only intake does not require a
+  writer lock.
+
+The operator can bypass the block with
+`COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE=1` (analogous to
+`COS_ALLOW_DESTRUCTIVE_GIT`). Use this only when the lock is stale and
+the zombie reaper has not yet released it.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Why is my `git commit` blocked?" — Another session holds the writer
+  lock. Check the lock file at
+  `.cognitive-os/runtime/branch-locks/<branch-slug>.lock` for the holder
+  session ID and acquisition time.
+- "Can I review another session's work without acquiring its lock?" —
+  Yes. Auditors operate read-only; only writers need the lock.
+- "What happens if the holding session crashes?" — The zombie reaper
+  checks the holder PID via `cos_session_registry.is_alive()`. Once the
+  PID is dead and the TTL has not been renewed, the lock is released
+  (within ~5 minutes under normal conditions).
+
+**Does not answer:**
+- Cross-machine concurrency. The lock is per-machine local. Cross-machine
+  coordination is ADR-184 (manager-of-managers daemon) territory.
+- Direct terminal `git` commands issued outside any Claude Code session.
+  The PreToolUse hook only fires for Claude-tool-issued Bash; a terminal
+  commit bypasses the lock.
+
+### Daily operational pattern
+
+1. Open a Claude Code session on branch `feature/X`.
+2. The first destructive git op (commit, push, rebase, etc.) acquires the
+   lock silently. No operator action required.
+3. If a second session tries to commit to `feature/X`, it hits a hard
+   block with a message identifying the holder.
+4. The blocked session should either switch to a different branch or wait
+   for the first session to release (Stop hook or explicit
+   `scripts/cos-branch-release feature/X`).
+5. Lock files are git-ignored; they are runtime state, not committed
+   artifacts.
+
+### When sources disagree
+
+If `hooks/branch-ownership-lock.sh` reports a block but the operator
+knows the holding session is dead:
+
+1. Check the lock file directly:
+   `cat .cognitive-os/runtime/branch-locks/<branch-slug>.lock`
+   and verify `pid` against `ps aux`.
+2. If the PID is dead and the `expires_at` has passed, the zombie reaper
+   should have released it. If it hasn't, run
+   `bash scripts/cos-branch-release <branch>` manually.
+3. If the lock shows a valid live PID for a session you believe is not
+   working on this branch, use `COS_ALLOW_BRANCH_OWNERSHIP_OVERRIDE=1`
+   and file a bug.
+
+The lock file is authoritative. If an agent verbally claims "no one else
+holds the branch" but the lock file disagrees, the file wins.
+
 ## Alternatives rejected
 
 - **`flock` on `.git/refs/heads/<branch>`**: too coarse, would block

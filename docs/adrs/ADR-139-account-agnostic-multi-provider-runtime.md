@@ -171,6 +171,82 @@ provider_capabilities:
 - Rules §10 (`license-policy`) — primary gate for dependency licenses; this ADR adds provider-SDK specificity.
 - [`dx-cloud-flow-bootstrap-plan.md`](../architecture/dx-cloud-flow-bootstrap-plan.md) — the operational plan that requires this credential posture.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, cloud workers and ephemeral sandboxes could inherit the
+maintainer's personal API keys from the ambient environment via
+`export ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY"`. There was no structural
+guarantee, only convention.
+
+After this ADR:
+
+- Every runtime surface (local, cloud worker, ephemeral sandbox) uses
+  credentials supplied by **that surface's caller**, never forwarded
+  from an outer context.
+- Flow contracts must declare `credential_source`, `billing_identity`,
+  and `provider_capabilities`. `scripts/cos-flow-register.sh` rejects
+  flows missing these fields.
+- Cloud workers use generic variable names (`LLM_PRIMARY_API_KEY`,
+  `LLM_FALLBACK_API_KEY`) rather than vendor-branded names; mapping to
+  actual vendor keys happens at injection time.
+- Per-flow cost attribution is structural: every LLM call appends a row
+  to `.cognitive-os/runtime/agent-audit-trail.jsonl` with
+  `billing_identity` set.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is this flow using my personal account?" — Check the flow contract's
+  `credential_source` field. `byok-maintainer` means yes; `byok-project`
+  or `proxied` means no.
+- "Which flows were promoted beyond `advisory`?" — A flow with
+  `credential_source: byok-maintainer` cannot be promoted beyond
+  `advisory`. Check `lifecycle_state` in the flow contract.
+- "What provider capabilities does this flow use?" — Read the
+  `provider_capabilities` list in the flow contract. Undeclared
+  capability calls are logged as contract violations.
+
+**Does not answer:**
+- Whether the operator's DPA with an external provider is in place.
+  The `provider_capabilities` list is the evidence surface for ISO 27001
+  supplier review; the DPA itself is the operator's responsibility.
+- Cost aggregation across flows. `billing_identity` enables grouping;
+  rollup is the operator's cost dashboard concern.
+
+### Daily operational pattern
+
+1. When registering a new flow:
+   ```bash
+   # Ensure flow_contract.yaml includes:
+   # credential_source: byok-project
+   # billing_identity: my-project-slug
+   # provider_capabilities: [text-completion, code-generation]
+   bash scripts/cos-flow-register.sh flows/my-flow/flow_contract.yaml
+   ```
+2. The registration script rejects missing fields; fix the contract
+   before proceeding.
+3. At runtime, inject credentials from CI secrets or a secret store
+   as `LLM_PRIMARY_API_KEY` — never copy from the maintainer shell.
+4. Review `agent-audit-trail.jsonl` rows with `event: llm_call` to
+   verify `billing_identity` attribution.
+
+### When sources disagree
+
+If a worker call appears in the audit trail with `billing_identity:
+byok-maintainer` when the flow contract declares `byok-project`:
+
+1. The credential injection wrapper may be passing the wrong env var.
+   Check whether the launch script maps `LLM_PRIMARY_API_KEY` to the
+   project-scoped key, not the maintainer key.
+2. If the audit row was produced by an old worker before this ADR was
+   adopted, it is a pre-ADR row and the default classification
+   (`maintainer` tenant, `byok-maintainer`) applies per ADR-142 §2
+   migration semantics.
+3. The audit trail row is the evidence; if it disagrees with the flow
+   contract, investigate the injection path and fix it.
+
 ## Alternatives rejected
 
 - Leave the ADR without an alternatives section — rejected because ADR-067+ audit contracts require a falsifiable record of considered options.

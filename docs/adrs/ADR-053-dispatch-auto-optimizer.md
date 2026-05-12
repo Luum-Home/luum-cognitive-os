@@ -8,6 +8,8 @@ implementation_files:
   - lib/dispatch_optimizer.py
   - scripts/auto-tune-routing
   - tests/unit/test_provider_benchmark_and_optimizer.py
+tier: maintainer
+tags: [dispatch, providers, optimizer]
 ---
 
 # ADR-053 — Dispatch Auto-Optimizer

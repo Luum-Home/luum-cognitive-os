@@ -9,7 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: explicit not implemented yet signal
+classification_basis: 'Slices A-B are implemented; automatic branch migration for existing worktrees remains explicitly not implemented'
 ---
 
 # ADR-225 — Branch-Per-Task Mode

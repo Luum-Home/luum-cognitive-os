@@ -4,6 +4,7 @@ adr: 105
 title: Bilateral Claim Verification Contract
 status: implemented
 implementation_status: partial
+classification_basis: 'ADR status explicitly says Partially Implemented; verification hooks/scripts exist but the contract is not marked closed'
 date: 2026-05-02
 supersedes: []
 superseded_by: null

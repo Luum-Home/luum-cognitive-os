@@ -62,6 +62,10 @@ CODE_ADR_RELATION_CHAIN_LONG = "ADR_RELATION_CHAIN_LONG"
 CODE_ADR_RELATION_CYCLE = "ADR_RELATION_CYCLE"
 CODE_INVALID_STATUS = "INVALID_STATUS"
 CODE_INVALID_IMPLEMENTATION_STATUS = "INVALID_IMPLEMENTATION_STATUS"
+CODE_MISSING_REQUIRED_FRONTMATTER = "MISSING_REQUIRED_FRONTMATTER"
+CODE_INVALID_CLASSIFICATION_BASIS = "INVALID_CLASSIFICATION_BASIS"
+CODE_INVALID_STATUS_TRANSITION = "INVALID_STATUS_TRANSITION"
+CODE_INDEX_STALE = "ADR_INDEX_STALE"
 
 # Status values that require implementation_files verification
 IMPLEMENTED_STATUSES = {"implemented"}
@@ -69,10 +73,43 @@ IMPLEMENTED_STATUSES = {"implemented"}
 # Valid status values
 VALID_STATUSES = {"proposed", "exploration", "accepted", "implemented", "resolved", "superseded", "deprecated", "tombstone"}
 VALID_IMPLEMENTATION_STATUSES = {"not-applicable", "planned", "partial", "partial-blocked", "blocked", "deferred", "implemented", "resolved"}
+REQUIRED_FRONTMATTER_FIELDS = {
+    "adr",
+    "title",
+    "status",
+    "implementation_status",
+    "classification_basis",
+    "implementation_files",
+    "tier",
+    "tags",
+}
+TERMINAL_STATUSES = {"tombstone", "superseded", "deprecated"}
+NOT_APPLICABLE_PREFIXES = ("governance-only:", "policy-only:")
+PARTIAL_BASIS_RE = re.compile(
+    r"\b(partial|slice|phase|future|deferred|pending|blocked|follow-up|remaining|remains|not implemented|staged|operator|rollout|incomplete|migration|planned)\b",
+    re.IGNORECASE,
+)
+FUTURE_WORK_RE = re.compile(
+    r"\b(slice a implemented|future work|future slice|future slices|not implemented yet|remaining work|remains follow-up|deferred|pending|planned|staged for operator|runtime enforcement remains)\b",
+    re.IGNORECASE,
+)
+IMPLEMENTED_CLOSURE_RE = re.compile(
+    r"\b(implemented|closed|complete|satisf(?:y|ies|ied)|no remaining in-scope|no remaining in scope|design-only|contract scope|policy-only|governance-only)\b",
+    re.IGNORECASE,
+)
+OUT_OF_SCOPE_FUTURE_RE = re.compile(
+    r"\b(no remaining in-scope|no remaining in scope|future .*?(separate|out of scope|out-of-scope)|separate implementation scope|design-only|contract scope|not core closure)\b",
+    re.IGNORECASE,
+)
 
 # Relationship-chain budget: current reconstruction allows short lineage, but
 # chains longer than this need consolidation instead of another ADR-on-ADR layer.
 MAX_RELATION_CHAIN_DEPTH = 2
+# Historical ADRs are normalized by the backfill reports but may not have every
+# future authoring field populated. The hard authoring contract applies to new
+# ADRs from ADR-276 onward; set COS_STRICT_ADR_LIFECYCLE_ALL=1 to audit legacy
+# records with the same strictness during explicit cleanup sprints.
+NEW_ADR_CONTRACT_MIN_ADR = 276
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -346,12 +383,151 @@ def _suggest_frontmatter(path: Path, body: str) -> str:
         "date: YYYY-MM-DD",
         "supersedes: []",
         "superseded_by: null",
+        "classification_basis: planned: prose-only migration suggestion requires operator triage",
         "implementation_files: []",
         "tier: standard",
         "tags: []",
         "---",
     ]
     return "\n".join(lines)
+
+
+def _has_section(body: str, names: tuple[str, ...]) -> bool:
+    for name in names:
+        if re.search(rf"^##\s+{re.escape(name)}\b", body, re.MULTILINE | re.IGNORECASE):
+            return True
+    return False
+
+
+def _has_implemented_evidence(fm: dict[str, Any], body: str, classification_basis: str) -> bool:
+    impl_files = fm.get("implementation_files") or []
+    if isinstance(impl_files, list) and impl_files:
+        return True
+    if _has_section(body, ("Implementation Evidence", "Implementation", "Verification", "Operational Guide")):
+        return True
+    return bool(IMPLEMENTED_CLOSURE_RE.search(classification_basis))
+
+
+def _append_fail(findings: list[dict[str, Any]], base: dict[str, Any], code: str, message: str, **extra: Any) -> None:
+    findings.append({**base, "level": LEVEL_FAIL, "code": code, "message": message, **extra})
+
+
+def _strict_lifecycle_applies(base: dict[str, Any]) -> bool:
+    return bool(base.get("adr", 0) >= NEW_ADR_CONTRACT_MIN_ADR or __import__("os").environ.get("COS_STRICT_ADR_LIFECYCLE_ALL") == "1")
+
+
+def _validate_lifecycle_contract(
+    base: dict[str, Any],
+    fm: dict[str, Any],
+    body: str,
+    status: str,
+    implementation_status: str,
+    impl_files: list[str],
+) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    strict_lifecycle = _strict_lifecycle_applies(base)
+
+    required_fields = REQUIRED_FRONTMATTER_FIELDS if strict_lifecycle else {"adr", "title", "status", "implementation_status", "implementation_files", "tier", "tags"}
+    missing = sorted(field for field in required_fields if field not in fm)
+    if missing:
+        _append_fail(
+            findings,
+            base,
+            CODE_MISSING_REQUIRED_FRONTMATTER,
+            "ADR frontmatter is missing required field(s): " + ", ".join(missing),
+            missing_fields=missing,
+        )
+
+    classification_basis = str(fm.get("classification_basis") or "").strip()
+    if strict_lifecycle and not classification_basis:
+        _append_fail(
+            findings,
+            base,
+            CODE_INVALID_CLASSIFICATION_BASIS,
+            "classification_basis is required and must explain the implementation_status classification",
+        )
+
+    if "tags" in fm and not isinstance(fm.get("tags"), list):
+        _append_fail(findings, base, CODE_MISSING_REQUIRED_FRONTMATTER, "tags must be a YAML list")
+    if "implementation_files" in fm and not isinstance(fm.get("implementation_files") or [], list):
+        _append_fail(findings, base, CODE_MISSING_REQUIRED_FRONTMATTER, "implementation_files must be a YAML list")
+
+    if strict_lifecycle and implementation_status == "not-applicable" and not classification_basis.startswith(NOT_APPLICABLE_PREFIXES):
+        _append_fail(
+            findings,
+            base,
+            CODE_INVALID_CLASSIFICATION_BASIS,
+            "not-applicable requires classification_basis to start with governance-only: or policy-only:",
+            classification_basis=classification_basis,
+        )
+
+    if strict_lifecycle and status == "accepted" and not impl_files:
+        allowed_empty = implementation_status == "planned" or (
+            implementation_status == "not-applicable" and classification_basis.startswith(NOT_APPLICABLE_PREFIXES)
+        )
+        if not allowed_empty:
+            _append_fail(
+                findings,
+                base,
+                CODE_INVALID_STATUS_TRANSITION,
+                "accepted ADRs with empty implementation_files must be planned, governance-only, or policy-only",
+                implementation_status=implementation_status,
+            )
+
+    if strict_lifecycle and status == "accepted" and impl_files and implementation_status in {"not-applicable", "planned"}:
+        _append_fail(
+            findings,
+            base,
+            CODE_INVALID_STATUS_TRANSITION,
+            "accepted ADRs with implementation_files must classify implementation_status as implemented or partial/blocked/deferred/resolved",
+            implementation_status=implementation_status,
+        )
+
+    if status in TERMINAL_STATUSES and implementation_status not in {"not-applicable", "resolved"}:
+        _append_fail(
+            findings,
+            base,
+            CODE_INVALID_STATUS_TRANSITION,
+            "tombstone/superseded/deprecated ADRs must use implementation_status not-applicable or resolved",
+            implementation_status=implementation_status,
+        )
+
+    if status == "exploration" and implementation_status not in {"not-applicable", "planned"}:
+        _append_fail(
+            findings,
+            base,
+            CODE_INVALID_STATUS_TRANSITION,
+            "exploration ADRs must not claim implemented/partial execution status",
+            implementation_status=implementation_status,
+        )
+
+    if strict_lifecycle and implementation_status == "implemented":
+        if not _has_implemented_evidence(fm, body, classification_basis):
+            _append_fail(
+                findings,
+                base,
+                CODE_INVALID_STATUS_TRANSITION,
+                "implemented ADRs require implementation_files, an evidence/verification section, or explicit closure basis",
+            )
+        if FUTURE_WORK_RE.search(body) and not OUT_OF_SCOPE_FUTURE_RE.search(classification_basis):
+            _append_fail(
+                findings,
+                base,
+                CODE_INVALID_STATUS_TRANSITION,
+                "implemented ADR text mentions future/deferred/not-implemented work; classification_basis must state that future work is separate/out of scope or that no in-scope work remains",
+            )
+
+    if strict_lifecycle and implementation_status in {"partial", "partial-blocked", "blocked", "deferred"}:
+        if not PARTIAL_BASIS_RE.search(classification_basis):
+            _append_fail(
+                findings,
+                base,
+                CODE_INVALID_CLASSIFICATION_BASIS,
+                "partial/deferred/blocked ADRs require classification_basis to name the remaining, deferred, blocked, staged, rollout, or follow-up work",
+                classification_basis=classification_basis,
+            )
+
+    return findings
 
 
 # ── Audit core ────────────────────────────────────────────────────────────────
@@ -361,7 +537,7 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
     """Audit a single ADR file. Returns a findings dict."""
     adr_num = _adr_number_from_filename(path) or 0
     text = path.read_text(encoding="utf-8")
-    fm_str, _body = _extract_frontmatter(text)
+    fm_str, body = _extract_frontmatter(text)
 
     try:
         rel_path = str(path.relative_to(REPO_ROOT))
@@ -419,6 +595,8 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
     supersedes: list[int] = fm.get("supersedes") or []
 
     findings: list[dict[str, Any]] = []
+    strict_lifecycle = _strict_lifecycle_applies(base)
+    findings.extend(_validate_lifecycle_contract(base, fm, body, status, implementation_status, impl_files))
 
     if status and status not in VALID_STATUSES:
         findings.append(
@@ -456,7 +634,8 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
             )
 
     # ── Implementation file verification ─────────────────────────────────────
-    if status in IMPLEMENTED_STATUSES:
+    present: list[str] = []
+    if impl_files and (status in IMPLEMENTED_STATUSES or strict_lifecycle):
         present, missing = _verify_implementation_files(impl_files)
         if missing:
             findings.append(
@@ -468,20 +647,11 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
                     "missing_files": missing,
                     "files_verified": len(present),
                     "message": (
-                        f"status={status!r} but {len(missing)} file(s) missing: "
+                        f"{len(missing)} declared implementation_file(s) missing: "
                         + ", ".join(missing)
                     ),
                 }
             )
-        else:
-            return {
-                **base,
-                "level": LEVEL_OK,
-                "code": CODE_OK if not findings else findings[0]["code"],
-                "status": status,
-                "files_verified": len(present),
-                "message": f"OK — {len(present)} file(s) verified",
-            }
 
     if findings:
         # Return worst finding first
@@ -493,8 +663,8 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
         "level": LEVEL_OK,
         "code": "OK",
         "status": status,
-        "files_verified": 0,
-        "message": f"OK — status={status!r}, no implementation_files declared",
+        "files_verified": len(present),
+        "message": (f"OK — {len(present)} file(s) verified" if present else f"OK — status={status!r}, no implementation_files declared"),
     }
 
 

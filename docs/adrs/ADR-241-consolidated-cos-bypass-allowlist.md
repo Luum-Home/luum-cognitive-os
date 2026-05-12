@@ -4,6 +4,7 @@ adr: 241
 title: Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist
 status: accepted
 implementation_status: partial
+classification_basis: 'Slice A resolver/hook integration is active; broad ecosystem bypass consolidation remains future expansion'
 date: 2026-05-08
 supersedes: []
 superseded_by: null
@@ -87,6 +88,62 @@ Semantics:
 Stable keys are short, hook-aligned, and lower_snake_case, e.g.
 `destructive_git`, `commit_guard`, `main_branch_write`, `claim_gate`,
 `push_collision`, `direct_push`.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: seven separately named bypass environment variables, each with a different naming convention and scope. There was no single reference document listing them all.
+
+After this ADR: one allowlist variable (`COS_BYPASS`) and one resolver (`hooks/_lib/bypass-resolver.sh`) cover all gate bypasses. The canonical reference is `docs/security/bypass-cheatsheet.md`.
+
+**Stable key mapping (legacy env → new key):**
+
+| Legacy env var | New `COS_BYPASS` key | Gate hook |
+|---|---|---|
+| `COS_ALLOW_DESTRUCTIVE_GIT` | `destructive_git` | `hooks/destructive-git-blocker.sh` |
+| `COS_BYPASS_COMMIT_GUARD` | `commit_guard` | `hooks/commit-guard.sh` |
+| `COS_ALLOW_MAIN_BRANCH_WRITE` | `main_branch_write` | `hooks/branch-ownership-lock.sh` |
+| `COS_ALLOW_UNPROVEN_SCOPE_BOTH` | `unproven_scope_both` | `hooks/orchestrator-claim-gate.sh` |
+| `COS_ORCHESTRATOR_CLAIM_GATE_MODE` | `claim_gate` | `hooks/orchestrator-claim-gate.sh` |
+| `DISABLE_HOOK_PUSH_COLLISION_CHECK` | `push_collision` | `hooks/push-collision-check.sh` |
+| `COS_ALLOW_DIRECT_PUSH` | `direct_push` | `hooks/push-collision-check.sh` |
+
+Legacy env vars remain as back-compat aliases for one release. Both forms resolve via the shared `cos_bypass_allows <key>` function.
+
+### Daily operational pattern
+
+**To bypass a single gate for one command:**
+```bash
+COS_BYPASS=destructive_git git filter-repo --execute ...
+# Comma-separate for multiple keys:
+COS_BYPASS=destructive_git,push_collision git push --force-with-lease
+```
+
+**When inline `VAR=val cmd` does not reach `PreToolUse` hooks** (the original incident failure mode), use the runtime file instead:
+```bash
+echo "destructive_git,commit_guard" > .cognitive-os/runtime/bypass.env
+# hooks/_lib/bypass-resolver.sh reads this file; PreToolUse hooks see it
+# Clear after session:
+rm .cognitive-os/runtime/bypass.env
+```
+
+**To discover which key to use:** consult `docs/security/bypass-cheatsheet.md` — it lists every key, what it disables, the audit-trail entry produced, and an example invocation.
+
+**To verify the resolver is wired correctly:**
+```bash
+python3 -m pytest tests/behavior/test_bypass_resolver.py -q
+grep -RIn "cos_bypass_allows" hooks/
+```
+
+### Reading guide for cold readers
+
+If you encounter this ADR without session context:
+
+1. Read `docs/security/bypass-cheatsheet.md` for the complete and current key list — this is the single document to consult during an incident.
+2. Read `hooks/_lib/bypass-resolver.sh` for the resolution logic: it checks `COS_BYPASS`, then back-compat env vars, then `.cognitive-os/runtime/bypass.env`.
+3. The original incident (2026-05-08) had the operator pasting bypass envs 8+ times by trial and error — the cheatsheet and resolver exist to eliminate that friction without removing the governance value of the individual gates.
+4. The runtime file (`.cognitive-os/runtime/bypass.env`) is the mechanism that makes `PreToolUse` hooks see the same bypass scope as bash hooks — use it whenever inline env-var form fails.
 
 ## Alternatives rejected
 

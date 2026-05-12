@@ -62,6 +62,43 @@ These harnesses install the same `.cognitive-os/` rules, skills, hooks, template
 - These drivers do not enforce lifecycle hooks natively. Runtime enforcement still requires Claude/Codex hooks or governed wrapper paths.
 - Generated MCP files are placeholders until specific MCP servers are configured by users or future profiles.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: OpenCode, VS Code Copilot, and Cursor were planned harnesses — visible in the roadmap but not executable by `cos_init.py` or counted in ACC.
+
+After this ADR, these three IDEs can receive a COS projection without accounts:
+
+| Harness | Entry point | Generated files |
+|---|---|---|
+| `opencode` | `cos_init.py --harness opencode` | `opencode.json` |
+| `vscode-copilot` | `cos_init.py --harness vscode-copilot` | `.github/copilot-instructions.md`, `.vscode/mcp.json` |
+| `cursor` | `cos_init.py --harness cursor` | `.cursor/rules/cognitive-os.mdc`, `.cursor/mcp.json` |
+
+ACC records `opencode/default`, `opencode/full`, `vscode-copilot/default`, `vscode-copilot/full`, `cursor/default`, `cursor/full` projection counts. To verify:
+```bash
+python3 scripts/acc_pipeline.py --project-dir . --refresh --fail-new
+```
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Can I use COS with Cursor / OpenCode / VS Code Copilot today?" — Yes for project-local instruction and MCP placeholder projection. The generated files point the IDE to COS rules and skills.
+- "Are the lifecycle hooks (like `SessionStart`) available in these IDEs?" — No. Native lifecycle hooks are only enforced in Claude Code and Codex. These harnesses project instructions/config only.
+- "Is ACC proof of real runtime behavior in these IDEs?" — No. ACC proves structural projection (temp-project files are generated and syntactically correct), not IDE runtime behavior.
+
+**Does not answer:**
+- "Will MCP servers work out of the box?" — Generated MCP files contain empty `mcpServers` placeholders. Concrete server configuration is left to the operator or a future profile.
+- "Is OpenCode / Cursor / VS Code Copilot installed and authenticated?" — Structural projection is account-free; runtime use requires installation and credentials.
+
+### Reading guide for cold readers
+
+1. Run `python3 scripts/cos_init.py --harness cursor --project-dir /tmp/test-consumer` (or `opencode`, `vscode-copilot`) to see what a structural projection produces.
+2. Read `manifests/harness-projection.yaml` to understand the `implemented` vs `planned` boundary and the structural-proof limitations noted for these three harnesses.
+3. Read `tests/behavior/test_consumer_project_projection.py` to see exactly which files are asserted in each harness's temp-project proof.
+4. For Claude/Codex lifecycle hooks, see those harness ADRs — these three harnesses intentionally do not claim hook parity.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

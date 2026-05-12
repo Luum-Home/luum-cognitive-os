@@ -168,6 +168,91 @@ A "startup minimal context" mode:
 - Interaction with context-watchdog thresholds (50/70/85%) — slim startup pushes the 70% warning later, which is desirable.
 - Cross-agent coordination: when Agent B's rule index and this ADR's slash-command directory both exist, they should share a unified `.claude/commands/` namespace to avoid collisions.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, every Claude Code session ingested the full non-rule startup
+payload (~8,175 tokens) unconditionally: global CLAUDE.md in full prose, the
+complete engram protocol block, the full SDD pipeline specification, all skill
+catalog listings, and verbose session hook output.
+
+After this ADR (as phases complete):
+
+| Payload | Before | After |
+|---|---|---|
+| Global CLAUDE.md engram block | ~525 tok (full prose) | 3-line summary + `/engram-help` pointer |
+| SDD pipeline spec in CLAUDE.md | ~800 tok (full text) | 3-line summary + `/sdd-help` pointer |
+| Skills catalog listing (harness) | ~3,500 tok full descriptions | ~2,500 tok via 80-char `summary_line` field |
+| SessionStart hook stdout | 125–375 tok narrative | ≤1 actionable line per condition |
+| Total non-rule startup | ~8,175 tok | ~4,800 tok (target) |
+
+Phase 2 is partially implemented: `summary_line` frontmatter is present on 88
+skills, the catalog generator prefers it, and `skills/CATALOG-COMPACT.md` has
+shrunk by ~270 tokens. The `/engram-help`, `/sdd-help`, `/skills-search`
+slash-command files are **blocked** on `.claude/commands/` write permission
+(see Resolution Log).
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Why does `skills/CATALOG-COMPACT.md` have a `summary_line` field in each
+  skill's frontmatter?" — This ADR introduced that convention to let the harness
+  use a short (≤80 char) description in catalog listings while keeping the full
+  body for on-demand expansion.
+- "Where is the full engram protocol once CLAUDE.md is slimmed?" — The
+  `/engram-help` slash command (`.claude/commands/engram-help.md`) loads it
+  on demand. Until that file is created, the full text remains in CLAUDE.md.
+- "Is slimming opt-in or default?" — Opt-in via `STARTUP_SLIM=true` or
+  `scripts/startup-slim.sh --apply`. Default behavior is unchanged until Phase 4.
+
+**Does not answer:**
+- How to measure actual token counts at session start. That requires the
+  `startup-tokens-probe.sh` hook from §Implementation Sketch Phase 4 — not yet
+  built.
+- Whether the harness reads the `description` or `summary_line` frontmatter field.
+  This is an open question flagged in §Open Questions; verify empirically before
+  claiming the catalog savings are realised.
+
+### Daily operational pattern
+
+**If you want to add a new skill and minimise its startup token cost:**
+
+1. Add `summary_line: "<≤80 chars>"` to the skill's `SKILL.md` frontmatter.
+2. Keep the full description in the `description` field body (used by `Skill`
+   tool when the skill is invoked).
+3. Regenerate the compact catalog:
+   ```bash
+   python3 scripts/generate_compact_catalog.py
+   ```
+4. Confirm `skills/CATALOG-COMPACT.md` reflects the short summary.
+
+**If you need the full engram protocol in a session (before slash commands exist):**
+
+Read `~/.claude/CLAUDE.md` §Engram Persistent Memory Protocol directly, or
+invoke `mem_context` / `mem_search` — the tools are always available regardless
+of what the startup payload contains.
+
+**When slash-command files become unblocked:**
+
+Run `bash scripts/startup-slim.sh --apply` from a context with write permission
+to `.claude/commands/`. It will create the four command files and back up the
+current CLAUDE.md before modifying it.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without context:
+
+1. The immediate implemented artifact is `scripts/generate_compact_catalog.py` +
+   the `summary_line` convention on SKILL.md files. Both are present and
+   functional today.
+2. The slash-command layer (`/engram-help`, `/sdd-help`, `/skills-search`) is
+   specified but not yet deployed — see the Resolution Log for the blocked status.
+3. The token savings estimates in §Target Payload are conservative design targets,
+   not measured actuals. Measurement tooling is in §Implementation Sketch Phase 4.
+4. This ADR covers **non-rule** context only. Rule slimming is a separate workstream
+   (originally Agent B, referenced as ADR-043, since deprecated in ADR-171).
+
 ## Resolution Log
 
 ### 2026-04-21 — Phase 2 (partial): frontmatter migration + catalog generator

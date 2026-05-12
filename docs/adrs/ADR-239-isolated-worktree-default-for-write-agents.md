@@ -156,6 +156,73 @@ Semantics:
 | `main_worktree` | legacy opt-in | inject/rewrite to the default-branch worktree | single-agent only; unsafe for parallel write agents |
 | `branch` | opt-in | inject current branch's worktree path | safer than shared main only when branch has one owner |
 
+## Operational Guide
+
+### What changes for the operator
+
+The single changed setting is `cognitive-os.yaml`:
+
+```yaml
+# Before (old default — unsafe for concurrent write agents)
+orchestration:
+  sub_agent_cwd: main_worktree
+
+# After (new default — each write agent gets its own worktree)
+orchestration:
+  sub_agent_cwd: isolated_worktree
+```
+
+That one-line change triggers a cascade through the hook stack:
+
+| Hook / script | Old behavior (`main_worktree`) | New behavior (`isolated_worktree`) |
+|---|---|---|
+| `hooks/agent-working-dir-inject.sh` | injected the shared operator worktree path | defers to `agent-prelaunch.sh`; does NOT inject a shared path |
+| `hooks/agent-bash-cwd-enforcer.sh` | rewrote git commands back to main worktree | stands down; no rewriting in isolated mode |
+| `hooks/agent-prelaunch.sh` | optional worktree lifecycle | canonical place: prepares dedicated worktree per write agent |
+| `scripts/cos-agent-worktree-prepare` | not the primary path | primary primitive: creates dedicated worktree + branch per agent |
+| `hooks/destructive-git-blocker.sh` | blocked destructive ops | also blocks raw branch context changes (`git switch`, `git checkout <branch>`) |
+
+Legacy `main_worktree` mode remains available as an explicit opt-in for single-agent sessions where the operator intends to control the branch directly.
+
+### What this answers (and what it doesn't)
+
+| Question | Before (`main_worktree`) | After (`isolated_worktree`) |
+|---|---|---|
+| "Can two write agents commit in parallel without contending?" | No — shared `.git/index.lock` caused contention | Yes — each agent has its own worktree and index |
+| "Will a write agent's branch creation affect my operator session?" | Yes — branch switch in main worktree was invisible to operator | No — agent writes to its own worktree; operator HEAD never shifts |
+| "Where did this agent commit?" | Ambiguous — could be any branch the shared HEAD was on | The dedicated branch created by `cos-agent-worktree-prepare` for that agent |
+| "Can I still use the old mode?" | n/a | Yes — `sub_agent_cwd: main_worktree` remains, documented as legacy/single-agent only |
+
+This ADR does NOT guarantee that agent worktrees are cleaned up automatically. Abandoned worktrees must be reaped; the manifest-scoped cleanup path is tracked as a follow-up.
+
+### Daily operational pattern
+
+Normal operation requires no operator action — the `isolated_worktree` default is configured and the hook stack handles agent lifecycle transparently.
+
+**If a write agent needs to be launched with the old shared-main behavior** (e.g., a legacy integration test that explicitly exercises `main_worktree` rewriting):
+```bash
+# Override per-session in cognitive-os.yaml or pass explicit mode:
+sub_agent_cwd: main_worktree   # single-agent only; document the reason
+```
+
+**If branch context changes need to be allowed** (e.g., an explicit operator-authorized branch switch):
+```bash
+COS_ALLOW_BRANCH_SWITCH=1 git switch <branch>
+# Or use --allow-branch-switch with the governed wrapper
+```
+
+**To verify the current policy:**
+```bash
+grep -A2 "sub_agent_cwd" cognitive-os.yaml
+```
+
+**To run the acceptance tests for the isolation stack:**
+```bash
+python3 -m pytest tests/integration/test_agent_working_dir_inject.py \
+  tests/integration/test_cwd_enforcer_rewrite.py \
+  tests/unit/test_destructive_git_block.py -q
+```
+
 ## Alternatives rejected
 
 - **Keep `main_worktree` and rely on branch locks** — rejected because branch locks protect the branch that is current at write time. They do not prevent a previous shell command from moving the shared worktree to another branch, nor do they remove `.git/index.lock` contention among parallel agents.

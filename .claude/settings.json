@@ -105,6 +105,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"$CLAUDE_PROJECT_DIR/hooks/history-rewrite-documented.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" SessionStart \"python3 $CLAUDE_PROJECT_DIR/scripts/cos-session-start-projector\""
           }
         ]
       }
@@ -869,9 +873,7 @@
         ]
       }
     ],
-    "TaskCompleted": [
-
-    ]
+    "TaskCompleted": []
   },
   "permissions": {
     "deny": [

@@ -45,6 +45,7 @@ lanes:
       - skill-router-retrieval
       - agent-orchestration-boundary
       - capability-coverage
+      - operational-guide-coverage
   pre-public:
     description: Pre-public release-readiness sweep.
     max_seconds: 180
@@ -56,6 +57,7 @@ lanes:
       - pre-public-risk
       - agent-orchestration-boundary
       - capability-coverage
+      - operational-guide-coverage
 
 audits:
   primitive-coherence:
@@ -101,5 +103,11 @@ audits:
     adr: ADR-252
     command: [python3, scripts/cos-capability-matrix, --json]
     expected_schema: capability-coverage/v1
+    consumes_sensitive_values: false
+    mutates: false
+  operational-guide-coverage:
+    adr: ADR-274
+    command: [python3, scripts/cos-operational-guide-audit.py, --json]
+    expected_schema: operational-guide-audit/v1
     consumes_sensitive_values: false
     mutates: false

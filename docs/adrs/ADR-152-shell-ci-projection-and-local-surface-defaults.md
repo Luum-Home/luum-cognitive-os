@@ -57,6 +57,49 @@ Finally, extract duplicated hook artifact-status loaders into `hooks/_lib/artifa
 - Broad local-surface defaults must be reviewed if a future package wants to project more scripts/rules/skills by default.
 - Shell/CI projection currently proves structural projection and syntax, not every runtime behavior.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: 15 shell/CI candidate scripts stayed partial in ACC because shell/CI had no projection path separate from the IDE harness initializer. Hook artifact-status loaders were duplicated across `auto-verify.sh` and `dod-gate.sh`.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Shell/CI candidate scripts | Partial (no projection path) | Projected via `manifests/shell-ci-projection.yaml` and `scripts/project_shell_ci.py` |
+| Hook artifact loaders | Duplicated in 2 hooks | Centralized in `hooks/_lib/artifact-status.sh` |
+| Unprojected `scripts/**` | Unclassified | SO-local by pattern default |
+| Unprojected `hooks/_lib/**` | Unclassified | Support files (not standalone consumer capabilities) |
+
+To run shell/CI projection standalone:
+```bash
+python3 scripts/project_shell_ci.py --project-root . --profile default
+```
+
+To verify the hook extraction:
+```bash
+bash -n hooks/_lib/artifact-status.sh hooks/auto-verify.sh hooks/dod-gate.sh
+```
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Which shell/CI commands are projected and available in consumer projects?" — See `manifests/shell-ci-projection.yaml` for the declared 15 commands and generated workflow.
+- "Why does ACC show zero partial weight for scripts I didn't explicitly classify?" — Pattern defaults in `manifests/primitive-consumer-availability.yaml` classify unprojected `scripts/**` as SO-local.
+- "Is the hook artifact loader shared or copied?" — `hooks/_lib/artifact-status.sh` is now the single source; `auto-verify.sh` and `dod-gate.sh` source it.
+
+**Does not answer:**
+- "Will every projected shell/CI command succeed in the consumer's stack?" — Projection proves structural syntax and command paths. Runtime success depends on the consumer's installed dependencies.
+- "Is ACC reporting perfect coverage?" — Perfect coverage for the declared scope only. Future new scripts/rules/skills require explicit classification or they trigger the `--fail-new` gate (see ADR-153).
+
+### Reading guide for cold readers
+
+1. Read `manifests/shell-ci-projection.yaml` to see which commands are declared for shell/CI projection.
+2. Run `python3 scripts/project_shell_ci.py --project-root . --profile default` to see what gets generated in a temp consumer project.
+3. Read `hooks/_lib/artifact-status.sh` to understand the centralized artifact-status loading contract.
+4. Check `docs/acc/latest.json` for current `partial_weight`, `unverified_weight`, and `stale_weight` — all should be 0 for the declared scope after a successful ACC refresh.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

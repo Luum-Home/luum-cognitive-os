@@ -4,6 +4,7 @@ adr: 116
 title: Multi-Session Coordination Primitives
 status: accepted
 implementation_status: partial
+classification_basis: 'multi-session primitive set spans multiple phases; implemented files exist but several coordination surfaces remain rollout scope'
 date: 2026-05-02
 supersedes: []
 superseded_by: null

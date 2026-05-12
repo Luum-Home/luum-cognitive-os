@@ -2,34 +2,58 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 284 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 347 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (89)
+### Active / Implemented (157)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
+| [009](ADR-009-package-architecture.md) | Package Architecture -- 375 Agentic Primitives Reclassified | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
+| [009](ADR-009-package-architecture.md) | Package Architecture -- 375 Agentic Primitives Reclassified | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
+| [009](ADR-009-package-architecture.md) | Package Architecture -- 375 Agentic Primitives Reclassified | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 |
+| [010](ADR-010-hook-architecture-v2.md) | Hook Architecture v2 -- 10 Event Types, 3 Security Profiles | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 to 2026-04-13 |
+| [010](ADR-010-hook-architecture-v2.md) | Hook Architecture v2 -- 10 Event Types, 3 Security Profiles | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 to 2026-04-13 |
+| [010](ADR-010-hook-architecture-v2.md) | Hook Architecture v2 -- 10 Event Types, 3 Security Profiles | accepted | implemented | 2026-03-28 | **Date:** 2026-03-28 to 2026-04-13 |
 | [012](ADR-012-prompt-driven-governance.md) | Prompt-Driven Governance -- Declarative Hook Logic | accepted | implemented | 2026-03-29 | **Date:** 2026-03-29 |
 | [027](ADR-027.md) | SO Slimming — Test Strategy, Context Overhead, Resource Consumption | accepted | implemented | 2026-04-21 | ACCEPTED (2026-04-21) — WS1-WS3 shipped, included in v0.12.0 release. Implementation commits: 8dc4a6e, 9bd895b, 15d67eb. Resolved by ADR-027a. Originally propos |
 | [027a](ADR-027a.md) | Addendum: Reconciliation with main baseline | accepted | implemented | 2026-04-18 | **Supersedes**: ADR-027 §Baseline (context overhead table), §KPIs row "CLAUDE.md tokens loaded on session start" |
 | [028](ADR-028.md) | SO Reliability & Observability Framework | accepted | implemented | 2026-04-21 | ACCEPTED (2026-04-21) — Full 6-pillar framework CLOSED. Addenda ADR-028a/b/c resolved all PENDING items (commit 423bd86). Originally proposed 2026-04-17. |
 | [028a](ADR-028a.md) | Addendum: Reconciliation with pre-existing plans | accepted | implemented | 2026-04-18 | **Amends**: ADR-028 D1.A, D1.C, D4 |
 | [028b](ADR-028b.md) | Addendum: D1.C Replanned Around agent_bus | accepted | implemented | 2026-04-20 | **Supersedes**: ADR-028 D1.C (original spec, lines 166–214) |
+| [037](ADR-037-self-knowledge-base.md) | Self-Knowledge Base | accepted | implemented | 2026-04-20 | Sub-agents spend 3-10K tokens per session grepping source files to answer basic questions: |
+| [037](ADR-037-self-knowledge-base.md) | Self-Knowledge Base | accepted | implemented | 2026-04-20 | Sub-agents spend 3-10K tokens per session grepping source files to answer basic questions: |
+| [037](ADR-037-self-knowledge-base.md) | Self-Knowledge Base | accepted | implemented | 2026-04-20 | Sub-agents spend 3-10K tokens per session grepping source files to answer basic questions: |
 | [040](ADR-040-query-tailored-context-injection.md) | Query-Tailored Context Injection | accepted | implemented | 2026-04-30 | **Deciders**: Matias Amendola |
 | [049](ADR-049-llm-gateway-selection-and-overflow-providers.md) | LLM Gateway Selection + Overflow Provider Strategy | accepted | implemented | 2026-04-21 | **Accepted** — 2026-04-21. Supersedes implicit adoption of `litellm` (present |
 | [051](ADR-051-qwen-agent-loop.md) | Qwen Agent Loop (Tool-Use Parity with Claude Code Agent) | accepted | implemented | 2026-04-21 | - **Status**: Accepted (2026-04-21) — Phases 1, 2, 3, 4 all DELIVERED this session. Commits: MVP phase 1, 1e6542c (phase 2), 534814e (phase 3), 925dff5 (phase 4 |
 | [052](ADR-052-provider-benchmark-harness.md) | Provider Benchmark Harness | implemented | implemented |  | **Implemented for the no-cost offline harness scope.** The repository now ships a |
 | [053](ADR-053-dispatch-auto-optimizer.md) | Dispatch Auto-Optimizer | implemented | implemented |  | **Implemented for reviewed proposal generation.** The repository now ships a |
 | [080](ADR-080-hermes-cross-harness-adoption.md) | Hermes Cross-Harness Adoption (Umbrella) | accepted | implemented | 2026-04-30 | **Author**: Maintainer |
+| [088](ADR-088-provenance-trailer-ppid-chain.md) | Provenance trailer attribution via PPID chain | accepted | implemented | 2026-04-30 | Accepted. |
+| [088](ADR-088-provenance-trailer-ppid-chain.md) | Provenance trailer attribution via PPID chain | accepted | implemented | 2026-04-30 | Accepted. |
+| [088](ADR-088-provenance-trailer-ppid-chain.md) | Provenance trailer attribution via PPID chain | accepted | implemented | 2026-04-30 | Accepted. |
+| [092](ADR-092-harness-skills-sync-path.md) | Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination | accepted | implemented | 2026-04-30 | As of 2026-04-16, the project has 126 skill directories under `skills/`. The Claude Code harness |
+| [092](ADR-092-harness-skills-sync-path.md) | Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination | accepted | implemented | 2026-04-30 | As of 2026-04-16, the project has 126 skill directories under `skills/`. The Claude Code harness |
+| [092](ADR-092-harness-skills-sync-path.md) | Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination | accepted | implemented | 2026-04-30 | As of 2026-04-16, the project has 126 skill directories under `skills/`. The Claude Code harness |
+| [099](ADR-099-pre-agent-snapshot-copy-on-untracked.md) | Pre-agent snapshot: copy-on-untracked instead of stash-sweep | accepted | implemented | 2026-04-30 | **Supersedes**: (part of ADR-003 Mechanism A) |
+| [099](ADR-099-pre-agent-snapshot-copy-on-untracked.md) | Pre-agent snapshot: copy-on-untracked instead of stash-sweep | accepted | implemented | 2026-04-30 | **Supersedes**: (part of ADR-003 Mechanism A) |
+| [099](ADR-099-pre-agent-snapshot-copy-on-untracked.md) | Pre-agent snapshot: copy-on-untracked instead of stash-sweep | accepted | implemented | 2026-04-30 | **Supersedes**: (part of ADR-003 Mechanism A) |
 | [100](ADR-100-resource-governed-test-execution.md) | Resource-Governed Test Execution | accepted | implemented | 2026-04-30 | **Author**: Maintainer |
 | [104](ADR-104-startup-circuit-breaker.md) | Startup Circuit Breaker and Safe Mode | accepted | implemented | 2026-05-01 | **Author**: Maintainer |
 | [106](ADR-106-multi-session-safety-primitives.md) | Multi-Session Safety Primitives | accepted | implemented | 2026-05-02 | **Author**: Maintainer |
 | [108](ADR-108-concurrent-agent-safety-layer.md) | Concurrent Agent Safety Layer | accepted | implemented | 2026-05-02 | **Author**: Maintainer + Cognitive OS |
 | [109](ADR-109-validation-capsule-worktree-isolation.md) | Validation Capsule Worktree Isolation | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
+| [112](ADR-112-codex-governed-tool-layer.md) | Codex Governed Tool Layer | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
+| [112](ADR-112-codex-governed-tool-layer.md) | Codex Governed Tool Layer | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
+| [112](ADR-112-codex-governed-tool-layer.md) | Codex Governed Tool Layer | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
 | [113](ADR-113-validation-capsule-liveness.md) | Validation Capsule Liveness Primitives | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
+| [114](ADR-114-hook-quality-system.md) | Hook Quality System | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
+| [114](ADR-114-hook-quality-system.md) | Hook Quality System | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
+| [114](ADR-114-hook-quality-system.md) | Hook Quality System | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. |
 | [115](ADR-115-safe-worktree-sweeper.md) | Safe Worktree Sweeper | accepted | implemented | 2026-05-02 | Accepted — 2026-05-02. Scope: OS core. Related: ADR-109, ADR-111, ADR-113. |
 | [119](ADR-119-session-filesystem-reaper.md) | Session Filesystem Reaper | implemented | implemented | 2026-05-02 | Accepted — 2026-05-02. Related: ADR-102, ADR-106, ADR-111, ADR-116, ADR-117. |
 | [123](ADR-123-operational-stability-friction-reduction.md) | Operational Stability and Friction Reduction Program | implemented | implemented | 2026-05-02 | Implemented — 2026-05-08 status sync |
@@ -60,6 +84,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [159](ADR-159-agents-md-native-structural-harness-batch.md) | AGENTS.md-native Structural Harness Batch and Kiro Lifecycle Investigation | accepted | implemented | 2026-05-05 | **Accepted** — 2026-05-05 |
 | [160](ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md) | Rules/MCP Structural Harness Batch and Kiro Adapter Design | implemented | implemented | 2026-05-05 | **Implemented for structural projection and Kiro design scope** — 2026-05-05. The seven rules/MCP harness projections and Kiro adapter design artifacts exist an |
 | [161](ADR-161-remote-control-plane-and-provider-adapter-boundary.md) | Remote Control Plane and Provider Adapter Boundary | implemented | implemented | 2026-05-05 | **Implemented for boundary/inventory scope** — 2026-05-05. The remote ingress versus provider/executor adapter boundary, alternatives manifest, report, manual t |
+| [164](ADR-164-host-cli-bridge-security-boundary.md) | Host CLI Bridge Security Boundary | implemented | implemented | 2026-05-05 | **Implemented for the design-only security contract scope** — 2026-05-05. |
 | [165](ADR-165-proof-drill-and-smoke-opt-in-primitives.md) | Proof Drill and Smoke Opt-In Agentic Primitives | implemented | implemented | 2026-05-05 | **Implemented for the proof-drill registry and smoke opt-in primitive scope** — 2026-05-05. The ADR closes the governed registry, agent procedure, manual proof  |
 | [166](ADR-166-expected-skip-registry-and-opt-in-test-lanes.md) | Expected Skip Registry and Opt-In Test Lanes | implemented | implemented | 2026-05-05 | **Implemented for the first enforcement slice** — 2026-05-05. |
 | [167](ADR-167-proof-drill-selector-and-acc-evidence-adapter.md) | Proof Drill Selector and ACC Evidence Adapter | implemented | implemented | 2026-05-05 | **Implemented for the proof-drill selector, evidence recorder, ACC adapter, instance-profile projection, and runtime-flag registry scope** — 2026-05-05. Live pr |
@@ -79,11 +104,29 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [186](ADR-186-context-budget-enforcement.md) | Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as `lib/context_budget.py`, a shared hook accountant, a UserPromptSubmit meter, and hook-level budget checks. Filed in response to tod |
 | [188](ADR-188-mandatory-skill-invocation-at-high-confidence.md) | Mandatory Skill Invocation at High Router Confidence | accepted | implemented | 2026-05-06 | **Accepted (2026-05-06).** Implementation landed on session branch |
 | [189](ADR-189-harness-implementation-coverage.md) | Surface Implementation Coverage for Agentic Primitives | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [192](ADR-192-surface-5-adopt-bubbletea.md) | Surface 5 Bubble Tea Adoption | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [192](ADR-192-surface-5-adopt-bubbletea.md) | Surface 5 Bubble Tea Adoption | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [192](ADR-192-surface-5-adopt-bubbletea.md) | Surface 5 Bubble Tea Adoption | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [198](ADR-198-release-external-readiness-gate.md) | Release External Readiness Gate | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [198](ADR-198-release-external-readiness-gate.md) | Release External Readiness Gate | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [198](ADR-198-release-external-readiness-gate.md) | Release External Readiness Gate | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
 | [199](ADR-199-state-retention-policy-and-reaper-protocol.md) | State Retention Policy and Reaper Protocol | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [200](ADR-200-state-retention-controller.md) | State Retention Controller | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [200](ADR-200-state-retention-controller.md) | State Retention Controller | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
+| [200](ADR-200-state-retention-controller.md) | State Retention Controller | accepted | implemented | 2026-05-06 | Accepted — 2026-05-06 |
 | [201](ADR-201-maintainer-agent-telemetry-promotion-loop.md) | Maintainer Agent and Telemetry Promotion Loop | accepted | implemented | 2026-05-06 | **Report**: `docs/reports/self-improvement-maintainer-agent-gap-2026-05-06.md` |
 | [202](ADR-202-private-content-cross-harness-portability-boundary.md) | Private Content Cross-Harness Portability Boundary | accepted | implemented | 2026-05-06 | **Report**: `docs/reports/private-content-portability-gap-2026-05-06.md` |
+| [203](ADR-203-subagent-capability-contract-and-launch-preflight.md) | Subagent Capability Contract and Launch Preflight | accepted | implemented | 2026-05-06 | **Implementation**: `manifests/subagent-capabilities.yaml`, `scripts/subagent_launch_preflight.py`, `scripts/cos subagent preflight` |
+| [203](ADR-203-subagent-capability-contract-and-launch-preflight.md) | Subagent Capability Contract and Launch Preflight | accepted | implemented | 2026-05-06 | **Implementation**: `manifests/subagent-capabilities.yaml`, `scripts/subagent_launch_preflight.py`, `scripts/cos subagent preflight` |
+| [203](ADR-203-subagent-capability-contract-and-launch-preflight.md) | Subagent Capability Contract and Launch Preflight | accepted | implemented | 2026-05-06 | **Implementation**: `manifests/subagent-capabilities.yaml`, `scripts/subagent_launch_preflight.py`, `scripts/cos subagent preflight` |
 | [210](ADR-210-fleet-aggregated-confidence-boundary.md) | Fleet-Aggregated Confidence Boundary | accepted | implemented | 2026-05-06 | Accepted — Slice A dry-run exporter implemented |
+| [212](ADR-212-cross-stack-license-audit-toolchain.md) | Cross-Stack License Audit Toolchain | accepted | implemented | 2026-05-06 | **Source**: Q2 tool-adoption review, `.cognitive-os/strategy/research/11-cross-stack-license-audit-tools.md` |
+| [212](ADR-212-cross-stack-license-audit-toolchain.md) | Cross-Stack License Audit Toolchain | accepted | implemented | 2026-05-06 | **Source**: Q2 tool-adoption review, `.cognitive-os/strategy/research/11-cross-stack-license-audit-tools.md` |
+| [212](ADR-212-cross-stack-license-audit-toolchain.md) | Cross-Stack License Audit Toolchain | accepted | implemented | 2026-05-06 | **Source**: Q2 tool-adoption review, `.cognitive-os/strategy/research/11-cross-stack-license-audit-tools.md` |
 | [213](ADR-213-agent-preflight-before-stash-snapshot.md) | Agent Preflight Before Stash Snapshot | accepted | implemented | 2026-05-06 | **Source**: `docs/reports/stash-hidden-wip-postmortem-2026-05-06.md` |
+| [216](ADR-216-tool-discovery-pre-use-gate.md) | Tool Discovery Pre-Use Gate | accepted | implemented | 2026-05-06 | **Source**: repeated dogfood evidence of ad-hoc external tool selection over existing COS primitives |
+| [216](ADR-216-tool-discovery-pre-use-gate.md) | Tool Discovery Pre-Use Gate | accepted | implemented | 2026-05-06 | **Source**: repeated dogfood evidence of ad-hoc external tool selection over existing COS primitives |
+| [216](ADR-216-tool-discovery-pre-use-gate.md) | Tool Discovery Pre-Use Gate | accepted | implemented | 2026-05-06 | **Source**: repeated dogfood evidence of ad-hoc external tool selection over existing COS primitives |
 | [219](ADR-219-work-ownership-liveness-preflight.md) | Work Ownership Liveness Preflight | accepted | implemented | 2026-05-06 | During the license-switch work, WIP was preserved to a temporary branch |
 | [222](ADR-222-pre-agent-stash-defer-until-launch-confirmed.md) | Pre-Agent Stash Deferred Until Agent Launch Confirmed | accepted | implemented | 2026-05-07 | **Supersedes (in part)**: the PreToolUse-Agent ordering currently relied on by `pre-agent-snapshot.sh`. |
 | [223](ADR-223-agent-lifecycle-reconstruction.md) | Agent Lifecycle Reconstruction: Worktree-Per-Write-Agent | accepted | implemented | 2026-05-07 | **Source**: `docs/research/multi-agent-orchestration-prior-art-2026-05-06.md`, `docs/research/orchestration-gaps/background-agent-patterns.md`, and the operator |
@@ -93,20 +136,48 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [231](ADR-231-mcp-server-surface-for-cos-primitives.md) | MCP Server Surface for COS Primitives | accepted | implemented | 2026-05-07 | **Source**: [`docs/research/orchestration-gaps/mcp-as-orchestration-bus.md`](../research/orchestration-gaps/mcp-as-orchestration-bus.md) |
 | [232](ADR-232-sandbox-adapter-tiers.md) | Sandbox Adapter Tiers | accepted | implemented | 2026-05-07 | COS needs filesystem/process permission boundaries that are enforced below the prompt layer. Prior-art research recommends OS-native sandbox tiers first: Bubble |
 | [233](ADR-233-cross-session-agent-team-file-ipc.md) | Cross-Session Agent-Team File IPC | accepted | implemented | 2026-05-07 | **Source**: [`docs/research/orchestration-gaps/cross-session-agent-teams.md`](../research/orchestration-gaps/cross-session-agent-teams.md) |
+| [234](ADR-234-approval-policies-as-code.md) | Approval Policies as Code | accepted | implemented | 2026-05-07 | COS has many shell hooks with embedded allow/deny logic. Research recommended a COS-native YAML policy evaluator before adopting heavy engines such as OPA, Ceda |
+| [234](ADR-234-approval-policies-as-code.md) | Approval Policies as Code | accepted | implemented | 2026-05-07 | COS has many shell hooks with embedded allow/deny logic. Research recommended a COS-native YAML policy evaluator before adopting heavy engines such as OPA, Ceda |
+| [234](ADR-234-approval-policies-as-code.md) | Approval Policies as Code | accepted | implemented | 2026-05-07 | COS has many shell hooks with embedded allow/deny logic. Research recommended a COS-native YAML policy evaluator before adopting heavy engines such as OPA, Ceda |
 | [235](ADR-235-detached-agent-daemon.md) | Detached Agent Daemon | accepted | implemented | 2026-05-07 | **Source**: [`docs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md) |
 | [237](ADR-237-test-execution-efficiency-protocol.md) | Test Execution Efficiency Protocol | accepted | implemented | 2026-05-07 | Cognitive OS test lanes are intentionally broad: unit, behavior, integration, chaos, benchmark, audit, smoke, cross-harness, and release gates. Running `make te |
 | [239](ADR-239-isolated-worktree-default-for-write-agents.md) | Isolated Worktree Default for Write Agents | accepted | implemented | 2026-05-08 | Accepted. This ADR records the corrective decision after the 2026-05-08 |
 | [240](ADR-240-primitive-coherence-audit-and-ownership-manifest.md) | Primitive Coherence Audit and Ownership Manifest | accepted | implemented | 2026-05-08 | status: accepted |
+| [242](ADR-242-git-filter-repo-wrapper-preserves-remote.md) | git-filter-repo Wrapper Preserves Remote and Refuses Non-Idempotent Re-Runs | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sani |
+| [243](ADR-243-post-rewrite-push-collision-exception.md) | Post-Rewrite Push-Collision Check Exception | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching po |
+| [244](ADR-244-trust-report-claim-validator-must-enforce.md) | Trust Report Claim-Validator Must Enforce, Not Advise | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` bloc |
+| [245](ADR-245-chaos-tests-readonly-production-source.md) | Chaos Tests Run with Read-Only Production Source | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, |
+| [247](ADR-247-manifest-driven-postmortem-regression-audits.md) | Manifest-Driven Postmortem Regression Audits and External Tool Adapters | accepted | implemented | 2026-05-08 | Accepted. This ADR documents the policy correction made after ADR-242 through |
+| [250](ADR-250-skill-router-retrieval-adapter-boundary.md) | Skill Router Retrieval Adapter Boundary | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. |
+| [251](ADR-251-agent-orchestration-adapter-boundary.md) | Agent Orchestration Adapter Boundary | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented. |
 | [255](ADR-255-feature-to-external-tool-due-diligence.md) | Feature-to-External-Tool Due Diligence | accepted | implemented | 2026-05-08 | Accepted — Slice A implemented |
 | [256](ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) | Primitive Contract Registry and Runtime Evidence Ledger | accepted | implemented | 2026-05-09 | Accepted — implemented through Phases 1–6; all primitive-lifecycle rows are registry-backed; OpenCode signed smoke covers the first 20 runtime primitives |
+| [260](ADR-260-grant-signed-cosd-api.md) | Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [260](ADR-260-grant-signed-cosd-api.md) | Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [260](ADR-260-grant-signed-cosd-api.md) | Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [261](ADR-261-memory-governance-v2.md) | Memory Governance v2: Typed Memory with Verification & Staleness Policies | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [261](ADR-261-memory-governance-v2.md) | Memory Governance v2: Typed Memory with Verification & Staleness Policies | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [261](ADR-261-memory-governance-v2.md) | Memory Governance v2: Typed Memory with Verification & Staleness Policies | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [263](ADR-263-tool-replay-budget-ledger.md) | Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [263](ADR-263-tool-replay-budget-ledger.md) | Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [263](ADR-263-tool-replay-budget-ledger.md) | Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [264](ADR-264-tool-result-envelope.md) | Tool Result Envelope: Compact Envelope Format for Large Tool Outputs | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [264](ADR-264-tool-result-envelope.md) | Tool Result Envelope: Compact Envelope Format for Large Tool Outputs | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [264](ADR-264-tool-result-envelope.md) | Tool Result Envelope: Compact Envelope Format for Large Tool Outputs | accepted | implemented | 2026-05-11 | **Date:** 2026-05-11 |
+| [268](ADR-268-history-sanitization-2026-05-11.md) | Defensive history sanitization for external-pattern attribution | accepted | implemented | 2026-05-11 | Accepted (2026-05-11) |
+| [268](ADR-268-history-sanitization-2026-05-11.md) | Defensive history sanitization for external-pattern attribution | accepted | implemented | 2026-05-11 | Accepted (2026-05-11) |
+| [268](ADR-268-history-sanitization-2026-05-11.md) | Defensive history sanitization for external-pattern attribution | accepted | implemented | 2026-05-11 | Accepted (2026-05-11) |
 | [269](ADR-269-mandatory-adr-reference-for-history-rewrites.md) | Mandatory ADR Reference for History Rewrites | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit set. |
 | [270](ADR-270-legal-compliance-workflow-automation.md) | Legal Compliance Workflow Automation | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit. |
 
-### Active / Partial (123)
+### Active / Partial (130)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [006](ADR-006-agpl-license-compliance.md) | AGPL License Compliance -- Replace Redis and MinIO | accepted | partial | 2026-03-23 | **Date:** 2026-03-23 |
+| [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | partial | 2026-03-28 | **Date:** 2026-03-28 |
+| [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | partial | 2026-03-28 | **Date:** 2026-03-28 |
+| [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | partial | 2026-03-28 | **Date:** 2026-03-28 |
 | [013](ADR-013-security-stack.md) | Security Stack -- 8 Layers, 32 Tools | accepted | partial | 2026-03-29 | **Date:** 2026-03-29 |
 | [014](ADR-014-sdd-fast-path.md) | SDD Fast Path -- Skip Phases for Capable Models | accepted | partial | 2026-03-31 | **Date:** 2026-03-31 |
 | [015](ADR-015-rules-to-hooks-migration.md) | Rules-to-Hooks Migration -- From Context to Enforcement | accepted | partial | 2026-04-10 | **Date:** 2026-04-10 |
@@ -117,6 +188,9 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [020](ADR-020-contamination-fix.md) | Contamination Fix -- Remove Project-Specific Code from OS | accepted | partial | 2026-04-13 | **Date:** 2026-04-13 |
 | [021](ADR-021-vendor-agnostic-with-adapters.md) | Vendor-Agnostic State with Provider Adapters | accepted | partial | 2026-04-16 | **Date:** 2026-04-16 |
 | [022](ADR-022-prompt-type-hooks-adoption.md) | Prompt-Type Hooks Adoption (Haiku-Evaluated Advisories) | accepted | partial | 2026-04-15 | **Date:** 2026-04-15 |
+| [023](ADR-023-updated-input-pattern.md) | Mutate, Don't Block — `updatedInput` for PreToolUse Hooks | accepted | partial | 2026-04-15 | **Date:** 2026-04-15 |
+| [023](ADR-023-updated-input-pattern.md) | Mutate, Don't Block — `updatedInput` for PreToolUse Hooks | accepted | partial | 2026-04-15 | **Date:** 2026-04-15 |
+| [023](ADR-023-updated-input-pattern.md) | Mutate, Don't Block — `updatedInput` for PreToolUse Hooks | accepted | partial | 2026-04-15 | **Date:** 2026-04-15 |
 | [024](ADR-024-task-panel-bridge.md) | Task Panel Bridge — Correlate COS Tasks with Claude Code tool_use_id | accepted | partial | 2026-04-16 | **Date:** 2026-04-16 |
 | [025](ADR-025-install-update-loop.md) | Install/Update Loop — Closing the Advisory-Only Gap | accepted | partial | 2026-04-17 | **Date:** 2026-04-17 |
 | [026](ADR-026-r2-r3-design-review.md) | R2 and R3 Consolidation — Design Review | accepted | partial | 2026-04-17 | **Date:** 2026-04-17 |
@@ -177,6 +251,9 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [111](ADR-111-core-consumer-concurrency-safety-boundary.md) | Core/Consumer Boundary for Concurrent-Agent Safety | accepted | partial | 2026-05-02 | Accepted — Implemented 2026-05-02. Related: ADR-108, ADR-110. |
 | [116](ADR-116-multi-session-coordination-primitives.md) | Multi-Session Coordination Primitives | accepted | partial | 2026-05-02 | **Author**: Maintainer (operator) + Software Architect (analysis) |
 | [118](ADR-118-multi-ide-swarm-testbed.md) | Multi-IDE Swarm Safety Testbed | accepted | partial | 2026-05-02 | Accepted (2026-05-02). This is the automated acceptance-test umbrella for ADR-116 and its transactional coordination rollout. |
+| [120](ADR-120-conversation-to-primitive-harvester.md) | Conversation-to-Primitive Harvester | accepted | partial | 2026-05-02 | Accepted — 2026-05-02 |
+| [120](ADR-120-conversation-to-primitive-harvester.md) | Conversation-to-Primitive Harvester | accepted | partial | 2026-05-02 | Accepted — 2026-05-02 |
+| [120](ADR-120-conversation-to-primitive-harvester.md) | Conversation-to-Primitive Harvester | accepted | partial | 2026-05-02 | Accepted — 2026-05-02 |
 | [121](ADR-121-foundation-hardening-program.md) | Foundation Hardening Program | accepted | partial | 2026-05-02 | Accepted — 2026-05-02 |
 | [127](ADR-127-active-primitive-index.md) | Active Primitive Index | accepted | partial | 2026-05-12 | Accepted for Phase 1 DX. |
 | [135](ADR-135-self-evolving-doctrine-proposals.md) | Self-Evolving Doctrine Proposals | accepted | partial | 2026-05-03 | **Implementation**: `scripts/cos-doctrine-proposer` |
@@ -184,9 +261,10 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [147](ADR-147-agent-capability-coverage-pipeline.md) | Agent Capability Coverage Pipeline | accepted | partial | 2026-05-04 | Accepted — 2026-05-04 |
 | [162](ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | Task Lifecycle, Interruption, Question, Worktree, and PR Protocol | implemented | partial | 2026-05-05 | **Implemented for contract scope** — 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enfor |
 | [163](ADR-163-cos-instance-installer.md) | Cognitive OS Instance Installer | accepted | partial | 2026-05-05 | **Accepted** — 2026-05-05 |
-| [164](ADR-164-host-cli-bridge-security-boundary.md) | Host CLI Bridge Security Boundary | implemented | partial | 2026-05-05 | **Implemented for the design-only security contract scope** — 2026-05-05. |
 | [168](ADR-168-cross-device-dependency-installation.md) | Cross-Device Dependency Installation Contract | implemented | partial | 2026-05-05 | **Implemented for the manifest-driven dry-run installer and credential-safe |
-| [172](ADR-172-multi-surface-ui-architecture.md) | Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian | accepted | partial | 2026-05-05 | Accepted. Supersedes [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md). |
+| [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted | partial | 2026-05-05 | **Deciders**: Maintainer |
+| [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted | partial | 2026-05-05 | **Deciders**: Maintainer |
+| [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted | partial | 2026-05-05 | **Deciders**: Maintainer |
 | [179](ADR-179-rules-auto-derive-routing.md) | Auto-Derived Rule Routing for Agent-Instruction Rules | accepted | partial | 2026-05-05 | **Accepted** — 2026-05-05 |
 | [190](ADR-190-harness-action-receipts.md) | Harness Action Receipts and VCS Event Telemetry | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
 | [191](ADR-191-cos-binary-release-pipeline.md) | COS Binary Release Pipeline | accepted | partial | 2026-05-06 | Accepted — 2026-05-06 |
@@ -207,20 +285,16 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [220](ADR-220-worktree-divergence-audit.md) | Worktree Divergence Audit Toolchain | accepted | partial | 2026-05-06 | **Source**: Operator session 2026-05-06 — sed-fix on `.cognitive-os/preserve-manifests/*` appeared "lost" because commits landed on `main` while the operator wa |
 | [221](ADR-221-stash-ref-by-sha-not-by-position.md) | Stash References by SHA, Not by Position | accepted | partial | 2026-05-06 | **Supersedes (in part)**: the marker-file format produced by `pre-agent-snapshot.sh` and consumed by `post-agent-snapshot-restore.sh`. |
 | [225](ADR-225-branch-per-task-mode.md) | Branch-Per-Task Mode | accepted | partial | 2026-05-07 | Worktree-per-write-agent isolates filesystem mutations, but branch identity still needs a stable operator-visible contract. Without a branch-per-task policy, de |
+| [225](ADR-225-branch-per-task-mode.md) | Branch-Per-Task Mode | accepted | partial | 2026-05-07 | Worktree-per-write-agent isolates filesystem mutations, but branch identity still needs a stable operator-visible contract. Without a branch-per-task policy, de |
+| [225](ADR-225-branch-per-task-mode.md) | Branch-Per-Task Mode | accepted | partial | 2026-05-07 | Worktree-per-write-agent isolates filesystem mutations, but branch identity still needs a stable operator-visible contract. Without a branch-per-task policy, de |
 | [226](ADR-226-event-sourced-session-bus.md) | Event-Sourced Session Bus | accepted | partial | 2026-05-07 | **Extends**: **ADR-205 (Cross-Stream Trace Joiner and Flight Recorder)** — ADR-226 is an *extension* of the Flight Recorder's append-only event substrate, not a |
-| [234](ADR-234-approval-policies-as-code.md) | Approval Policies as Code | accepted | partial | 2026-05-07 | COS has many shell hooks with embedded allow/deny logic. Research recommended a COS-native YAML policy evaluator before adopting heavy engines such as OPA, Ceda |
+| [236](ADR-236-deferred-tool-loading-and-toolsearch.md) | Deferred Tool Loading + ToolSearch Adoption | accepted | partial | 2026-05-07 | The orchestration research recommended adopting the ToolSearch/deferred-loading pattern instead of loading every tool schema into every session. This is not a s |
+| [236](ADR-236-deferred-tool-loading-and-toolsearch.md) | Deferred Tool Loading + ToolSearch Adoption | accepted | partial | 2026-05-07 | The orchestration research recommended adopting the ToolSearch/deferred-loading pattern instead of loading every tool schema into every session. This is not a s |
 | [236](ADR-236-deferred-tool-loading-and-toolsearch.md) | Deferred Tool Loading + ToolSearch Adoption | accepted | partial | 2026-05-07 | The orchestration research recommended adopting the ToolSearch/deferred-loading pattern instead of loading every tool schema into every session. This is not a s |
 | [241](ADR-241-consolidated-cos-bypass-allowlist.md) | Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. Shared resolver, cheatsheet, target hook integration, and behavior tests are active; broad ecosystem bypass consolidation remain |
-| [242](ADR-242-git-filter-repo-wrapper-preserves-remote.md) | git-filter-repo Wrapper Preserves Remote and Refuses Non-Idempotent Re-Runs | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sani |
-| [243](ADR-243-post-rewrite-push-collision-exception.md) | Post-Rewrite Push-Collision Check Exception | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching po |
-| [244](ADR-244-trust-report-claim-validator-must-enforce.md) | Trust Report Claim-Validator Must Enforce, Not Advise | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` bloc |
-| [245](ADR-245-chaos-tests-readonly-production-source.md) | Chaos Tests Run with Read-Only Production Source | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, |
 | [246](ADR-246-release-transaction-freeze.md) | Release Transaction Freeze for Destructive and Public-State Operations | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitiv |
-| [247](ADR-247-manifest-driven-postmortem-regression-audits.md) | Manifest-Driven Postmortem Regression Audits and External Tool Adapters | accepted | partial | 2026-05-08 | Accepted. This ADR documents the policy correction made after ADR-242 through |
 | [248](ADR-248-control-plane-audit-loop.md) | Control-Plane Audit Loop for ADR-239+ Primitive Drift | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
 | [249](ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | Primitive Behavioral Proof and Anti-Overfit Testing | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
-| [250](ADR-250-skill-router-retrieval-adapter-boundary.md) | Skill Router Retrieval Adapter Boundary | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
-| [251](ADR-251-agent-orchestration-adapter-boundary.md) | Agent Orchestration Adapter Boundary | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
 | [252](ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | Capability Coverage Matrix and Feature Reality Ledger | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
 | [254](ADR-254-external-tool-intelligence-plane-and-project-overlays.md) | External Tool Intelligence Plane and Project Overlays | accepted | partial | 2026-05-08 | status: accepted |
 | [257](ADR-257-primitive-contract-registry-phase-1.md) | Primitive Contract Registry Phase 1 | accepted | partial | 2026-05-09 | Accepted — implemented |
@@ -229,6 +303,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [267](ADR-267-license-compliance-enforcement-architecture.md) | License-Compliance Enforcement Architecture | accepted | partial | 2026-05-11 | Accepted (2026-05-11) |
 | [273](ADR-273-pending-truth-ledger-and-bilateral-verification.md) | Pending Truth Ledger and Bilateral Verification Loop | accepted | partial | 2026-05-12 | Accepted — Slices A + B implemented; Slice C designed and staged (deployment requires operator authorization via `COS_ALLOW_PROTECTED_CONFIG_WRITE=1` per `hooks |
 | [274](ADR-274-operational-guide-required-for-capability-adrs.md) | Operational Guide Required for Maintainer-Tier Capability ADRs | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (audit + Phase 1 enforcement). |
+| [275](ADR-275-closure-and-projection-primitives.md) | Closure & Projection Primitives (Pending-Truth Read/Write Symmetry) | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (projector + close primitive + tests). Hook |
 
 ### Active / Partial / Blocked (1)
 
@@ -248,37 +323,25 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 |---|---|---|---|---|---|
 | [137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) | Operational Trajectory — From Governance Layer Over Agents to Embedded Runtime | accepted | planned | 2026-05-03 | **Accepted** for the trajectory itself. The directional commitment (B → A, defined below) is firm. |
 
-### Active / Not Applicable (28)
+### Active / Not Applicable (16)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [007](ADR-007-cognitive-os-rebrand.md) | Rebrand from Agent OS to Cognitive OS | accepted | not-applicable | 2026-03-24 | **Date:** 2026-03-24 |
-| [008](ADR-008-multi-tool-support.md) | Multi-Tool Support -- Not Claude Code-Only | accepted | not-applicable | 2026-03-28 | **Date:** 2026-03-28 |
-| [009](ADR-009-package-architecture.md) | Package Architecture -- 375 Agentic Primitives Reclassified | accepted | not-applicable | 2026-03-28 | **Date:** 2026-03-28 |
-| [010](ADR-010-hook-architecture-v2.md) | Hook Architecture v2 -- 10 Event Types, 3 Security Profiles | accepted | not-applicable | 2026-03-28 | **Date:** 2026-03-28 to 2026-04-13 |
-| [023](ADR-023-updated-input-pattern.md) | Mutate, Don't Block — `updatedInput` for PreToolUse Hooks | accepted | not-applicable | 2026-04-15 | **Date:** 2026-04-15 |
-| [037](ADR-037-self-knowledge-base.md) | Self-Knowledge Base | accepted | not-applicable | 2026-04-20 | Sub-agents spend 3-10K tokens per session grepping source files to answer basic questions: |
-| [088](ADR-088-provenance-trailer-ppid-chain.md) | Provenance trailer attribution via PPID chain | accepted | not-applicable | 2026-04-30 | Accepted. |
-| [092](ADR-092-harness-skills-sync-path.md) | Harness Skills Sync Path — Add `.claude/skills/` as Second Sync Destination | accepted | not-applicable | 2026-04-30 | As of 2026-04-16, the project has 126 skill directories under `skills/`. The Claude Code harness |
-| [099](ADR-099-pre-agent-snapshot-copy-on-untracked.md) | Pre-agent snapshot: copy-on-untracked instead of stash-sweep | accepted | not-applicable | 2026-04-30 | **Supersedes**: (part of ADR-003 Mechanism A) |
+| [007](ADR-007-cognitive-os-rebrand.md) | Rebrand from Agent OS to Cognitive OS | accepted | not-applicable | 2026-03-24 | **Date:** 2026-03-24 |
+| [007](ADR-007-cognitive-os-rebrand.md) | Rebrand from Agent OS to Cognitive OS | accepted | not-applicable | 2026-03-24 | **Date:** 2026-03-24 |
 | [103](ADR-103-audit-contract-lane-recovery.md) | Audit and contract lane recovery before parallel flip | accepted | not-applicable | 2026-05-12 | Accepted. |
-| [112](ADR-112-codex-governed-tool-layer.md) | Codex Governed Tool Layer | accepted | not-applicable | 2026-05-02 | Accepted — 2026-05-02. |
-| [114](ADR-114-hook-quality-system.md) | Hook Quality System | accepted | not-applicable | 2026-05-02 | Accepted — 2026-05-02. |
-| [120](ADR-120-conversation-to-primitive-harvester.md) | Conversation-to-Primitive Harvester | accepted | not-applicable | 2026-05-02 | Accepted — 2026-05-02 |
+| [103](ADR-103-audit-contract-lane-recovery.md) | Audit and contract lane recovery before parallel flip | accepted | not-applicable | 2026-05-12 | Accepted. |
+| [103](ADR-103-audit-contract-lane-recovery.md) | Audit and contract lane recovery before parallel flip | accepted | not-applicable | 2026-05-12 | Accepted. |
+| [122](ADR-122-preflight-gate-refinements.md) | Preflight Gate Refinements | accepted | not-applicable | 2026-05-02 | **Author**: Maintainer (operator) |
+| [122](ADR-122-preflight-gate-refinements.md) | Preflight Gate Refinements | accepted | not-applicable | 2026-05-02 | **Author**: Maintainer (operator) |
 | [122](ADR-122-preflight-gate-refinements.md) | Preflight Gate Refinements | accepted | not-applicable | 2026-05-02 | **Author**: Maintainer (operator) |
 | [133](ADR-133-expansion-without-monsterization.md) | Expansion Without Monsterization | accepted | not-applicable | 2026-05-03 | Accepted — 2026-05-03 |
-| [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted | not-applicable | 2026-05-05 | **Deciders**: Maintainer |
-| [192](ADR-192-surface-5-adopt-bubbletea.md) | Surface 5 Bubble Tea Adoption | accepted | not-applicable | 2026-05-06 | Accepted — 2026-05-06 |
-| [198](ADR-198-release-external-readiness-gate.md) | Release External Readiness Gate | accepted | not-applicable | 2026-05-06 | Accepted — 2026-05-06 |
-| [200](ADR-200-state-retention-controller.md) | State Retention Controller | accepted | not-applicable | 2026-05-06 | Accepted — 2026-05-06 |
-| [203](ADR-203-subagent-capability-contract-and-launch-preflight.md) | Subagent Capability Contract and Launch Preflight | accepted | not-applicable | 2026-05-06 | **Implementation**: `manifests/subagent-capabilities.yaml`, `scripts/subagent_launch_preflight.py`, `scripts/cos subagent preflight` |
-| [212](ADR-212-cross-stack-license-audit-toolchain.md) | Cross-Stack License Audit Toolchain | accepted | not-applicable | 2026-05-06 | **Source**: Q2 tool-adoption review, `.cognitive-os/strategy/research/11-cross-stack-license-audit-tools.md` |
-| [216](ADR-216-tool-discovery-pre-use-gate.md) | Tool Discovery Pre-Use Gate | accepted | not-applicable | 2026-05-06 | **Source**: repeated dogfood evidence of ad-hoc external tool selection over existing COS primitives |
-| [260](ADR-260-grant-signed-cosd-api.md) | Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding | accepted | not-applicable | 2026-05-11 | **Date:** 2026-05-11 |
-| [261](ADR-261-memory-governance-v2.md) | Memory Governance v2: Typed Memory with Verification & Staleness Policies | accepted | not-applicable | 2026-05-11 | **Date:** 2026-05-11 |
-| [263](ADR-263-tool-replay-budget-ledger.md) | Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes | accepted | not-applicable | 2026-05-11 | **Date:** 2026-05-11 |
-| [264](ADR-264-tool-result-envelope.md) | Tool Result Envelope: Compact Envelope Format for Large Tool Outputs | accepted | not-applicable | 2026-05-11 | **Date:** 2026-05-11 |
-| [268](ADR-268-history-sanitization-2026-05-11.md) | Defensive history sanitization for external-pattern attribution | accepted | not-applicable | 2026-05-11 | Accepted (2026-05-11) |
+| [133](ADR-133-expansion-without-monsterization.md) | Expansion Without Monsterization | accepted | not-applicable | 2026-05-03 | Accepted — 2026-05-03 |
+| [133](ADR-133-expansion-without-monsterization.md) | Expansion Without Monsterization | accepted | not-applicable | 2026-05-03 | Accepted — 2026-05-03 |
+| [172](ADR-172-multi-surface-ui-architecture.md) | Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian | accepted | not-applicable | 2026-05-05 | Accepted. Supersedes [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md). |
+| [272](ADR-272-structural-rule-backend-boundary.md) | Structural Rule Backend Boundary | accepted | not-applicable | 2026-05-12 | Status: Accepted |
+| [272](ADR-272-structural-rule-backend-boundary.md) | Structural Rule Backend Boundary | accepted | not-applicable | 2026-05-12 | Status: Accepted |
 | [272](ADR-272-structural-rule-backend-boundary.md) | Structural Rule Backend Boundary | accepted | not-applicable | 2026-05-12 | Status: Accepted |
 
 ## Proposed

@@ -140,6 +140,73 @@ This is preferred over `gh workflow disable` because:
   comments stops responding. Existing mentions on closed issues are
   unaffected.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, eleven GitHub Actions workflow YAML files lived under
+`.github/workflows/` and triggered on push, pull_request, and schedule events.
+Three of them invoked the Anthropic Claude API on every PR or issue event.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Claude API workflows | run on every PR/issue event | renamed to `.disabled`; do not run |
+| Non-Claude workflows | run on push to main and weekly schedule | renamed to `.disabled`; do not run |
+| PR analysis | automated Claude review comment | manual: run `scripts/cos-pr-review.sh <PR>` on demand |
+| Issue triage | automated | explicitly manual during suspension |
+| `@claude` mention response | automated | does not respond during suspension |
+| GitHub billing | increments on every job | zero — no jobs start |
+
+The `.disabled` files remain in the repo. No content is lost. Re-enabling a
+single workflow is `mv .github/workflows/<name>.yml.disabled .github/workflows/<name>.yml`
+and a commit.
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Why are GitHub Actions checks not running on PRs?" — The eleven workflow files
+  have been renamed to `.disabled` pending the local-CI migration (ADR-131).
+- "Can I re-enable a specific workflow?" — Yes. Rename it back to `.yml` and
+  commit. Verify first that the GitHub account has a payment method if the
+  workflow consumes minutes on private repositories.
+- "Did we lose the workflow configurations?" — No. Every `.disabled` file is
+  version-controlled and recoverable.
+
+**Does not answer:**
+- When self-hosted CI or another payment arrangement will make re-enabling safe.
+  That decision is tracked under `backlog/local-ci-migration` in engram.
+- Whether branch protection rules require these checks. Verify in GitHub
+  repository settings before re-enabling, to avoid leaving the base branch
+  unmergeable.
+
+### Daily operational pattern
+
+During suspension, the operator workflow is:
+
+1. **Push changes.** The pre-push hook (`git-hooks/pre-push`) runs
+   `scripts/cos-ci-local.sh` locally (ADR-131). No GitHub Actions jobs start.
+2. **Review a PR.** Run `scripts/cos-pr-review.sh <PR-number>` manually. The
+   script captures the diff, runs local analysis, and posts a comment to the PR.
+3. **Triage an issue.** Open the issue, read it, respond directly. No automation.
+4. **Need cross-platform check.** Run
+   `docker run --rm ubuntu:latest bash scripts/cos-ci-local.sh` from the repo
+   root for a Linux approximation.
+
+### Reading guide for cold readers
+
+If you encounter this ADR without context:
+
+1. The suspension is a billing response, not a code-quality decision. The
+   workflows are correct and recoverable.
+2. ADR-131 is the companion that specifies the local-CI replacement. Read it for
+   the three-layer architecture (pre-push hook, launchd schedules, on-demand CLI).
+3. To check which workflows are suspended, run
+   `ls .github/workflows/*.disabled` — every file listed is a suspended workflow.
+4. The authoritative re-enabling procedure is in this ADR's §Border Cases:
+   rename the file, commit, verify branch protection rules.
+
 ## Alternatives Rejected
 
 - **Pay GitHub more.** Increases recurring spending without addressing

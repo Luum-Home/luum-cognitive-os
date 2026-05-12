@@ -9,8 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'policy-only: lane sequencing decision; no standalone implementation surface beyond later audit/contract lane work'
 ---
 
 # ADR-103: Audit and contract lane recovery before parallel flip

@@ -4,6 +4,7 @@ adr: 168
 title: Cross-Device Dependency Installation Contract
 status: implemented
 implementation_status: partial
+classification_basis: 'manifest-driven dry-run installer exists; setup delegation and richer automation remain follow-up'
 date: 2026-05-05
 supersedes: []
 superseded_by: null
@@ -125,6 +126,50 @@ Docs must include `docs/setup/cross-device-dependencies.md`, explaining:
   everything" remains an invalid claim.
 - Windows/WSL support needs explicit proof rather than being inferred from Linux
   commands.
+
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, setting up a new device required reading scattered prose docs, running multiple one-off installer scripts (`install-aguara.sh`, `install-mcp-scan.sh`, etc.), and manually inferring which dependencies were auth-bound versus safely installable. There was no unified dry-run capability and no way to distinguish what was portable from what required per-machine configuration.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Dependency inventory | Scattered across prose and ad hoc scripts | Single manifest: `manifests/dependencies.yaml` |
+| New-device bootstrap | Multi-script, undocumented order | `scripts/cos-deps-install.sh --profile core --dry-run` then `--apply` |
+| Auth-bound tools | Silently mixed with installable ones | Explicitly reported with manual instructions and `manual_url` |
+| Platform differences | Handled by individual scripts | Expressed per-entry with `macos`/`linux`/`windows_wsl` install commands |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "What is safe to install automatically on a fresh machine?" — `--profile core --apply` installs only portable, non-auth-bound dependencies for the detected platform.
+- "Which dependencies require manual steps?" — The JSON report from `--dry-run --json` lists them in the `manual` and `auth_bound` buckets with `manual_url`.
+- "What travels through git vs. what must be set up per-machine?" — `docs/setup/cross-device-dependencies.md` documents git/Docker/Engram/package-manifest/manual boundaries.
+
+**Does not answer:**
+- "Is the installation complete?" — Auth-bound tools (MCP auth, provider tokens, browser state) are never installed automatically by design.
+- "Which version of a dependency is installed?" — Version pinning is tracked per-entry in the manifest; the installer reports `already_present` vs `installed` but does not enforce versions.
+
+### Daily operational pattern
+
+**On a new device:**
+1. `scripts/cos-deps-install.sh --profile core --platform auto --dry-run --json` — review what would be installed.
+2. `scripts/cos-deps-install.sh --profile core --apply` — install portable dependencies.
+3. Check the `manual` and `auth_bound` output buckets; follow `manual_url` links for those.
+
+**When adding a new dependency:**
+1. Add it to `manifests/dependencies.yaml` with `category`, `profiles`, `syncable`, `auth_bound`, and platform install commands.
+2. Run `python3 -m pytest tests/contracts/test_cross_device_dependencies.py -q` to validate the no-credential-copy invariant and cross-platform metadata.
+
+### Reading guide for cold readers
+
+1. Read `manifests/dependencies.yaml` for the full dependency inventory — each entry declares whether it is auth-bound, which profiles need it, and how to install it per platform.
+2. Read `docs/setup/cross-device-dependencies.md` for the boundary map: what travels via git/Docker/Engram, what must be installed per-machine, and which tools are manual-only.
+3. The critical invariant is: never copy credentials between devices. `tests/contracts/test_cross_device_dependencies.py` enforces this — a failing test means a `never_copy` boundary is missing for a credential-carrying entry.
+4. The `partial` implementation status means `scripts/setup.sh` may still be the legacy path for some dependencies — check `docs/setup/cross-device-dependencies.md` §Legacy for which paths are not yet delegated.
 
 ## Alternatives rejected
 

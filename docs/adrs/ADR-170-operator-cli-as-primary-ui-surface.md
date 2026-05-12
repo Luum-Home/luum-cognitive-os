@@ -19,6 +19,7 @@ implementation_files:
   - docs/architecture/boring-reliability-control-plane.md
   - docs/architecture/cognitive-prosthesis.md
 tier: maintainer
+tags: [ui, cli, superseded]
 ---
 # ADR-170: Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists
 

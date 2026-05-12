@@ -68,6 +68,49 @@ The accepted disposition is **delete + explicit decision record**, not archive-i
 - Any future Paperclip revival must rebuild against the real upstream API rather than relying on old stubs.
 - Existing reports that referenced Paperclip must be read as historical context only.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR, the repository carried Paperclip hooks, client shims, tests, docs, and Docker references that appeared active but exercised only mocked transport behavior. The COS-side client expected REST endpoints (`/api/notifications`, `/api/agents/status`, etc.) that the upstream Paperclip daemon never exposed. Sessions silently spent time on HTTP calls to a mismatched API.
+
+After this ADR:
+
+| Surface | Before | After |
+|---|---|---|
+| Paperclip hooks and symlinks | Present in active hook directories | Removed from active tree |
+| Paperclip client shims | In `lib/` and `packages/` | Removed |
+| Paperclip tests | Passing against mocked transport | Removed (mocked tests obscured real integration state) |
+| ADR-043 | Active ADR for local-daemon path | Replaced by `ADR-043-tombstone.md`; ADR-171 owns the rejection decision |
+| Future revival path | Undefined | Requires a new ADR that verifies the real upstream tRPC API first, starting in a lab profile |
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is Paperclip a supported COS integration?" — No. This ADR hard-purges it. Git history is the archaeology path.
+- "Why did the integration fail?" — The COS client expected REST endpoints; Paperclip exposes tRPC. The mocked tests masked this mismatch.
+- "Can Paperclip be re-added later?" — Yes, but only via a new ADR that demonstrates a working contract against the real upstream API before any code lands.
+
+**Does not answer:**
+- "What Paperclip's actual tRPC API looks like" — consult Paperclip's upstream docs; this ADR does not document the external API.
+
+### Daily operational pattern
+
+No ongoing action required. The decision is a one-time hard-purge. Verify the purge is complete:
+
+```bash
+grep -R -n -i paperclip hooks lib packages scripts tests .claude .codex cognitive-os.yaml docker-compose.cognitive-os.yml --exclude-dir=.git
+```
+
+A clean result (no matches) is the steady-state. If any match appears, it is a regression and must be removed.
+
+### Reading guide for cold readers
+
+1. The core lesson is the **aspirational-not-real failure pattern**: the integration passed stubbed tests without proving an end-to-end contract against the real upstream daemon. This pattern is now a reusable rule — third-party integration primitives need live upstream proof before promotion.
+2. ADR-043 (the predecessor) is represented by `docs/adrs/ADR-043-tombstone.md`; read it for the original local-daemon premise.
+3. ADR-172 (multi-surface UI architecture) documents what UI surfaces replace the dashboard/Paperclip role.
+4. The verification command above is the authoritative check that the purge holds.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |

@@ -66,6 +66,43 @@ These planned entries do not inherit Claude/Codex proof. They remain unverified 
 - Full-profile projection increases `docs/acc/latest.json` size.
 - Planned harness entries require ongoing research as external tools evolve.
 
+## Operational Guide
+
+### What changes for the operator
+
+Before this ADR: ACC ran one projection pass per harness (default profile only). Profile-driver scripts such as `scripts/cos_init.py` appeared as partial consumer debt because they were not themselves projected consumer artifacts. Full-profile skills and rules were counted as unverified even when they were projectable.
+
+After this ADR:
+
+- ACC runs **four** projection passes: `claude/default`, `claude/full`, `codex/default`, `codex/full`. Results are keyed by `harness/profile`.
+- `manifests/primitive-projection-profiles.yaml` defines projection classes (`shared`, `default`, `full`, `profile-driver`, `maintainer-only`). Profile-driver scripts are now correctly classified as their own category — they prove projection but are not themselves consumer artifacts.
+- Planned harnesses (Qwen Code, Kimi Code, MiniMax MaxClaw, DeepSeek) appear in `manifests/harness-projection.yaml` with `status: planned` so they are visible without overstating support.
+
+To refresh ACC with the expanded profile coverage:
+```bash
+python3 scripts/acc_pipeline.py --project-dir . --refresh
+```
+
+### What this answers (and what it doesn't)
+
+**Answers:**
+- "Is a skill/rule available in the default profile only, or also in the full profile?" — `manifests/primitive-projection-profiles.yaml` declares the class for each primitive.
+- "Which harnesses have real temp-project proof?" — Only harnesses with `status: implemented` in `manifests/harness-projection.yaml` are executed by the projection adapter. All others remain roadmap entries.
+- "Is `cos_init.py` a consumer artifact or a driver?" — It is a `profile-driver`; its proof is successful projection output, not direct consumer copying.
+
+**Does not answer:**
+- "What is the runtime behavior of a full-profile projection in a consumer project?" — ACC proves structural projection; runtime behavior depends on the consumer's stack.
+- "When will Qwen/Kimi/MiniMax/DeepSeek reach implemented?" — That depends on future driver and temp-project proof work, tracked as planned entries.
+
+### When sources disagree
+
+If ACC reports a skill or rule as `unverified` but you believe it is projectable:
+1. Check `manifests/primitive-projection-profiles.yaml` for the primitive's declared class. If it is `maintainer-only`, it is intentionally excluded from consumer projection.
+2. If the class is `full` but only `claude/default` proof exists, the primitive is correctly partial until `claude/full` projection runs and counts it.
+3. Rerun `python3 scripts/acc_pipeline.py --project-dir . --refresh` after correcting the manifest entry to confirm the count changes.
+
+The `docs/acc/latest.json` file is the authoritative ACC state; any agent verbal claim about coverage should be verified against that file.
+
 ## Alternatives rejected
 
 | Alternative | Why rejected |
