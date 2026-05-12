@@ -82,6 +82,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     "docs/02-Decisions/adrs/ADR-254-external-tool-intelligence-plane-and-project-overlays.md",  # vaulted ADR artifact
     "docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # ADR title includes control-plane, not active plan
     "docs/02-Decisions/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md",  # vaulted ADR artifact
+    "docs/02-Decisions/adrs/ADR-082-plan-location-convention.md",  # ADR defines the plan convention; not an active plan
     "docs/manual-tests/remote-control-plane-boundary.md",  # manual-test artifact
     "docs/09-Quality/manual-tests/remote-control-plane-boundary.md",  # vaulted manual-test artifact
     "docs/manual-tests/service-control-plane-proof-drills.md",  # manual-test artifact
@@ -104,6 +105,7 @@ ALLOWLIST_RELATIVE: list[str] = [
     ".claude/plugins/",      # plugin skill templates use example paths
     # ADR file that defines the convention (self-referential, historic)
     "docs/adrs/ADR-082-plan-location-convention.md",
+    "docs/02-Decisions/adrs/ADR-082-plan-location-convention.md",
     # Private strategy/research workspace (gitignored), not active OS plan inventory
     ".cognitive-os/strategy/",  # private strategy/research workspace; not canonical active OS plans
     # Measurement / audit artifacts that document the old state

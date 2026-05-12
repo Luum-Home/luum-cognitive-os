@@ -1,14 +1,14 @@
 """Enforcement test for ADR-087: ADR file location convention.
 
 Every .md file matching the ADR naming pattern (ADR-[digits]*.md, case-insensitive)
-must live in `docs/adrs/` — the single canonical root established by ADR-087.
+must live in `docs/02-Decisions/adrs/` — the canonical vaulted root.
 
 Two explicit exemptions (per ADR-087 §"Canonical structure"):
-  1. `docs/architecture/cos-dispatch/adrs/CD-*.md` — subsystem namespace with CD- prefix
+  1. `docs/04-Concepts/architecture/cos-dispatch/adrs/CD-*.md` — subsystem namespace with CD- prefix
   2. One-line redirect stubs (first line is `# Moved`) at old paths — migration artifacts
      governed by ADR-087, to be removed after one release cycle.
 
-Violation = any file matching the ADR pattern found outside `docs/adrs/` that is
+Violation = any file matching the ADR pattern found outside `docs/02-Decisions/adrs/` that is
 neither a cos-dispatch CD- file nor a one-line redirect stub.
 
 This test EXECUTES the check (walks the filesystem) rather than relying on a
@@ -24,11 +24,11 @@ import pytest
 
 REPO = Path(__file__).resolve().parents[2]
 
-CANONICAL_ROOT = REPO / "docs" / "adrs"
+CANONICAL_ROOT = REPO / "docs" / "02-Decisions" / "adrs"
 
 # The cos-dispatch subsystem ADR directory.  Files in here with the CD- prefix
 # are explicitly exempted per ADR-087 §"cos-dispatch namespace decision".
-COS_DISPATCH_ADR_DIR = REPO / "docs" / "architecture" / "cos-dispatch" / "adrs"
+COS_DISPATCH_ADR_DIR = REPO / "docs" / "04-Concepts" / "architecture" / "cos-dispatch" / "adrs"
 
 # Pattern that identifies ADR files: starts with ADR- (case-insensitive) followed
 # by digits, then anything, ending in .md.
@@ -55,8 +55,8 @@ _STUB_MARKER = "# Moved"
 #   .cognitive-os/snapshots/       — pre-agent preservation copies. These may
 #                                    contain historical docs/adrs files verbatim
 #                                    and are not canonical ADR locations.
-#   docs/reports/                  — audit/report artifacts that reference ADRs by number.
-#   docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md
+#   docs/06-Daily/reports/         — audit/report artifacts that reference ADRs by number.
+#   docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md
 #                                  — a pending-work note file, not the ADR itself (the
 #                                    actual ADR-003 was migrated to ADR-094).
 ALLOWLIST_RELATIVE: list[str] = [
@@ -64,7 +64,9 @@ ALLOWLIST_RELATIVE: list[str] = [
     ".cognitive-os/plans/",
     ".cognitive-os/snapshots/",
     "docs/reports/",
+    "docs/06-Daily/reports/",
     "docs/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",
+    "docs/04-Concepts/architecture/harness-adoption-gap/adr-003-hook-registration-pending.md",
 ]
 
 
@@ -131,10 +133,10 @@ def _skip_directory(parts: tuple[str, ...]) -> bool:
 @pytest.mark.audit
 def test_no_adr_files_outside_canonical_root() -> None:
     """Walk the repo and assert no ADR-pattern .md files live outside
-    `docs/adrs/`, except for exempted cos-dispatch CD- files and redirect stubs.
+    `docs/02-Decisions/adrs/`, except for exempted cos-dispatch CD- files and redirect stubs.
 
     Exemptions (per ADR-087):
-      - docs/architecture/cos-dispatch/adrs/CD-NNN-*.md  (subsystem namespace)
+      - docs/04-Concepts/architecture/cos-dispatch/adrs/CD-NNN-*.md  (subsystem namespace)
       - Any file whose first non-empty line is '# Moved'  (migration stub)
     """
     violations: list[str] = []
@@ -172,8 +174,8 @@ def test_no_adr_files_outside_canonical_root() -> None:
 
     assert not violations, (
         f"ADR-087 violation: {len(violations)} ADR file(s) found outside "
-        f"`docs/adrs/`.\n"
-        "Move them to docs/adrs/ or, if they are redirect stubs, ensure the first "
+        f"`docs/02-Decisions/adrs/`.\n"
+        "Move them to docs/02-Decisions/adrs/ or, if they are redirect stubs, ensure the first "
         "line is exactly '# Moved'.\n"
         "For cos-dispatch subsystem ADRs, rename with the CD- prefix.\n"
         "Violations:\n" + "\n".join(f"  - {v}" for v in sorted(violations))
