@@ -122,8 +122,8 @@ manually on 2026-05-12.
 
 ### 4. Hooks (Slice C, not implemented in this ADR)
 
-- **PostToolUse Edit**: when commit touches `lib/X.py` and ≥1 ledger item
-  declares evidence on `lib/X.py`, suggest "should you mark item closed?"
+- **PostToolUse Edit**: when a commit touches a library path and ≥1 ledger
+  item declares matching evidence, suggest "should you mark item closed?"
 - **Stop hook (weekly)**: re-run verifier on items with `last_verified > 7 days`.
 - **PreCommit gate**: block merge-to-main if `pending-truth-latest.json` is
   stale > 30 days.
