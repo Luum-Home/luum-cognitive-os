@@ -29,12 +29,12 @@
       "status": "ok",
       "summary": {
         "categories": {
-          "read": 744
+          "read": 753
         },
-        "rows": 744,
-        "sessions": 742,
+        "rows": 753,
+        "sessions": 751,
         "tools": {
-          "Read": 744
+          "Read": 753
         }
       }
     },
@@ -3154,12 +3154,12 @@
         "by_family": {
           "hooks": 266,
           "rules": 120,
-          "scripts": 537,
+          "scripts": 538,
           "skills": 101,
           "templates": 22
         },
         "by_scope": {
-          "both": 578,
+          "both": 579,
           "os-only": 404,
           "project": 64
         },
@@ -3171,7 +3171,7 @@
           "codex-adapter": 1,
           "codex-adapter-needed": 59,
           "hook-helper-library": 29,
-          "on-demand-command-only": 455,
+          "on-demand-command-only": 456,
           "optional-background-orchestration": 1,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
@@ -3180,7 +3180,7 @@
           "shell-command-only": 12,
           "structural-only-ok": 231
         },
-        "gaps": 869,
+        "gaps": 870,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3189,7 +3189,7 @@
           "codex-adapter": 1,
           "codex-adapter-needed": 59,
           "hook-helper-library": 29,
-          "on-demand-command-only": 455,
+          "on-demand-command-only": 456,
           "optional-background-orchestration": 1,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
@@ -3199,11 +3199,11 @@
           "structural-only-ok": 231
         },
         "gaps_by_status": {
-          "aligned": 803,
+          "aligned": 804,
           "partial": 66
         },
         "harness_projected_or_wired": {
-          "acc-report": 1046,
+          "acc-report": 1047,
           "agents-md": 0,
           "aider": 195,
           "amp-code": 195,
@@ -3214,7 +3214,7 @@
           "continue-dev": 195,
           "cos-cli": 5,
           "cursor": 195,
-          "dashboard": 1046,
+          "dashboard": 1047,
           "factory-droid": 195,
           "gemini-cli": 195,
           "goose": 195,
@@ -3225,7 +3225,7 @@
           "qoder": 195,
           "qwen-code": 195,
           "shell-ci": 15,
-          "tui": 1046,
+          "tui": 1047,
           "vscode-copilot": 195,
           "warp": 195,
           "zed-ai": 195
@@ -3259,7 +3259,7 @@
           "zed-ai": 0
         },
         "surface_projected_or_wired": {
-          "acc-report": 1046,
+          "acc-report": 1047,
           "agents-md": 0,
           "aider": 195,
           "amp-code": 195,
@@ -3270,7 +3270,7 @@
           "continue-dev": 195,
           "cos-cli": 5,
           "cursor": 195,
-          "dashboard": 1046,
+          "dashboard": 1047,
           "factory-droid": 195,
           "gemini-cli": 195,
           "goose": 195,
@@ -3281,7 +3281,7 @@
           "qoder": 195,
           "qwen-code": 195,
           "shell-ci": 15,
-          "tui": 1046,
+          "tui": 1047,
           "vscode-copilot": 195,
           "warp": 195,
           "zed-ai": 195
@@ -3293,7 +3293,7 @@
           "shell-ci": 1,
           "ui": 2
         },
-        "total_primitives": 1046,
+        "total_primitives": 1047,
         "unclassified_gaps": 0
       }
     },
@@ -3329,9 +3329,9 @@
       "summary": {
         "actions": {
           "advise": 4,
-          "allow": 125,
+          "allow": 133,
           "block": 58,
-          "suggest": 346,
+          "suggest": 363,
           "warn": 92
         },
         "primitive_count": 7
@@ -3450,24 +3450,24 @@
         "confidence": {
           "high": 181,
           "low": 23,
-          "medium": 333
+          "medium": 334
         },
         "consumer_accessibility": {
           "install-profile-managed": 19,
           "lifecycle-declared-consumer-candidate": 73,
           "lifecycle-declared-maintainer": 58,
           "skill-referenced-not-projectable": 2,
-          "so-local-only": 385
+          "so-local-only": 386
         },
         "low_confidence_rows": 23,
         "roles": {
           "agentic-primitive": 143,
           "driver-specific": 14,
           "lab": 29,
-          "maintainer-tool": 335,
+          "maintainer-tool": 336,
           "migration-only": 16
         },
-        "total_scripts": 537,
+        "total_scripts": 538,
         "without_consumers": 16
       }
     },
@@ -3784,7 +3784,7 @@
       "evidence": [
         "lifecycle",
         "wrapper_for:scripts/cos_coverage.py",
-        "test_consumers:5",
+        "test_consumers:6",
         "doc_consumers:36",
         "config_consumers:3",
         "script_consumers:1",
@@ -5714,10 +5714,10 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:67",
-        "test_consumers:469",
+        "test_consumers:471",
         "hook_consumers:105",
         "workflow_consumers:1",
-        "doc_consumers:672",
+        "doc_consumers:674",
         "rule_consumers:46",
         "config_consumers:72",
         "script_consumers:310",
@@ -6013,7 +6013,7 @@
         "test_consumers:1",
         "doc_consumers:5",
         "rule_consumers:2",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:4",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -6095,7 +6095,7 @@
         "test_consumers:1",
         "hook_consumers:1",
         "doc_consumers:4",
-        "config_consumers:1",
+        "config_consumers:2",
         "script_consumers:1",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -6951,7 +6951,7 @@
         "skill_consumers:2",
         "test_consumers:2",
         "doc_consumers:3",
-        "config_consumers:2",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -7882,7 +7882,7 @@
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:2",
-        "config_consumers:3",
+        "config_consumers:4",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -10581,7 +10581,7 @@
         "skill_consumers:1",
         "test_consumers:2",
         "doc_consumers:4",
-        "config_consumers:2",
+        "config_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
         "consumer_accessibility:lifecycle-declared-consumer-candidate",
@@ -10658,13 +10658,51 @@
       "confidence": 0.9,
       "consumer_accessibility": "so-local-only",
       "evidence": [
+        "test_consumers:2",
+        "doc_consumers:4",
+        "role_source:heuristic:self-evolution",
+        "consumer_accessibility:so-local-only",
+        "availability_override:so-local-only",
+        "availability_match:pattern",
+        "availability_pattern:scripts/**",
+        "availability_rationale:Scripts are SO-local by default unless exact rows or projection manifests classify them as consumer surfaces."
+      ],
+      "id": "script:scripts/cos-orphan-process-audit.py",
+      "kind": "script",
+      "lifecycle_status": "aspirational",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "consumer_accessibility": "so-local-only",
+          "id": "scripts/cos-orphan-process-audit.py",
+          "kind": "script",
+          "role": "maintainer-tool",
+          "source": "scripts/cos-orphan-process-audit.py"
+        }
+      ],
+      "risk": "medium",
+      "signature": {
+        "distribution": null,
+        "role": "maintainer-tool",
+        "supported_harnesses": []
+      },
+      "source": {
+        "family": "scripts",
+        "path": "scripts/cos-orphan-process-audit.py"
+      },
+      "weight": 3
+    },
+    {
+      "confidence": 0.9,
+      "consumer_accessibility": "so-local-only",
+      "evidence": [
         "lifecycle",
         "skill_consumers:1",
         "test_consumers:1",
         "hook_consumers:2",
         "doc_consumers:4",
         "rule_consumers:1",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -10706,7 +10744,7 @@
         "skill_consumers:1",
         "test_consumers:1",
         "doc_consumers:5",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:4",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -10751,7 +10789,7 @@
         "test_consumers:2",
         "hook_consumers:3",
         "doc_consumers:5",
-        "config_consumers:3",
+        "config_consumers:4",
         "script_consumers:2",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -12856,7 +12894,7 @@
         "test_consumers:1",
         "hook_consumers:1",
         "doc_consumers:8",
-        "config_consumers:7",
+        "config_consumers:8",
         "script_consumers:5",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -18057,7 +18095,7 @@
         "test_consumers:2",
         "doc_consumers:4",
         "rule_consumers:1",
-        "config_consumers:2",
+        "config_consumers:3",
         "script_consumers:3",
         "role_source:lifecycle",
         "lifecycle_state:candidate",
@@ -23950,7 +23988,7 @@
         "wrapper_for:scripts/state_retention_audit.py",
         "test_consumers:9",
         "hook_consumers:3",
-        "doc_consumers:11",
+        "doc_consumers:12",
         "config_consumers:1",
         "script_consumers:2",
         "role_source:usage:repo",
@@ -65763,6 +65801,40 @@
         "family": "scripts",
         "path": "docs/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos-operational-status"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:both",
+        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-orphan-process-audit.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-orphan-process-audit.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-orphan-process-audit.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "both"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-orphan-process-audit.py"
       },
       "weight": 1
     },
@@ -108002,7 +108074,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:131"
+        "intervention_rows:139"
       ],
       "id": "primitive_intervention:destructive-git-blocker",
       "kind": "primitive_intervention",
@@ -108017,7 +108089,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 131
+        "rows": 139
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -108164,7 +108236,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:358"
+        "intervention_rows:375"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -108179,7 +108251,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 358
+        "rows": 375
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -108191,7 +108263,7 @@
       "confidence": 0.78,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "itinerary_rows:744"
+        "itinerary_rows:753"
       ],
       "id": "codebase_itinerary:Read",
       "kind": "codebase_itinerary",
@@ -108207,9 +108279,9 @@
       "risk": "low",
       "signature": {
         "categories": {
-          "read": 744
+          "read": 753
         },
-        "rows": 744
+        "rows": 753
       },
       "source": {
         "path": ".cognitive-os/metrics/codebase-itinerary.jsonl",
@@ -122952,7 +123024,7 @@
       "coverage_debt:71"
     ]
   },
-  "generated_at": "2026-05-12T18:44:49Z",
+  "generated_at": "2026-05-12T19:10:08Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
@@ -123700,9 +123772,9 @@
   "summary": {
     "acc": 0.9839,
     "acc_effective": 0.9902,
-    "aligned_weight": 6101,
+    "aligned_weight": 6105,
     "mapping_weight_by_status": {
-      "aligned": 6101,
+      "aligned": 6105,
       "missing": 0,
       "overexposed": 0,
       "partial": 78,
@@ -123713,7 +123785,7 @@
     "overexposed_weight": 0,
     "partial_weight": 78,
     "stale_weight": 0,
-    "total_weight": 6201,
+    "total_weight": 6205,
     "unverified_weight": 22
   },
   "weights": {

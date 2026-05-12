@@ -142,7 +142,7 @@ python3 scripts/cos-orphan-process-audit.py --ps-fixture /tmp/ps.txt --no-metric
 - The primitive is intentionally narrow; new orphan classes require explicit
   expansion of the classifier and tests.
 
-## Alternatives Rejected
+## Alternatives rejected
 
 | Alternative | Why rejected |
 |---|---|

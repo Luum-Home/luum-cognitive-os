@@ -27,6 +27,7 @@ HYphenated_SCRIPT_ALLOWLIST = {
     "cos-operational-guide-audit.py",
     "cos-closure-trust-signal.py",
     "cos-generate-notices.py",
+    "cos-orphan-process-audit.py",
 }
 
 
