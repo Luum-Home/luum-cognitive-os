@@ -35,16 +35,74 @@ _DEFAULT_TEST_SUBPROCESS_TIMEOUT = float(
 )
 
 if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
+    import signal
+
     _ORIG_SUBPROCESS_RUN = subprocess.run
+    _ORIG_POPEN = subprocess.Popen
+
+    class _ProcessGroupPopen(_ORIG_POPEN):  # type: ignore[misc,valid-type]
+        """Popen that gives each spawned command its own killable process group.
+
+        The important bit is not only `start_new_session=True`; it is also
+        overriding `kill()`/`terminate()`. `subprocess.run(timeout=...)` calls
+        `process.kill()` when the timeout fires. If `kill()` only signals the
+        immediate child, grandchildren can survive and keep inherited stdout or
+        stderr pipes open, causing the final `communicate()` drain to block in
+        `select.poll()`. Killing the process group closes that whole tree.
+        """
+
+        def __init__(self, *args, **kwargs):
+            self._cos_owns_process_group = False
+            if os.name == "posix":
+                caller_sets_session = kwargs.get("start_new_session") is True
+                caller_sets_group = kwargs.get("process_group", None) is not None
+                caller_sets_preexec = kwargs.get("preexec_fn", None) is not None
+                if not caller_sets_session and not caller_sets_group and not caller_sets_preexec:
+                    kwargs["start_new_session"] = True
+                    self._cos_owns_process_group = True
+                elif caller_sets_session or caller_sets_group:
+                    self._cos_owns_process_group = True
+            super().__init__(*args, **kwargs)
+
+        def _signal_process_group(self, sig: int) -> None:
+            if os.name != "posix" or not self._cos_owns_process_group:
+                super().send_signal(sig)
+                return
+            try:
+                os.killpg(os.getpgid(self.pid), sig)
+            except ProcessLookupError:
+                return
+            except OSError:
+                # Fall back to stdlib behavior if the process has already
+                # exited, changed groups, or the platform rejects killpg.
+                super().send_signal(sig)
+
+        def send_signal(self, sig: int) -> None:
+            self._signal_process_group(sig)
+
+        def terminate(self) -> None:
+            if os.name == "posix":
+                self._signal_process_group(signal.SIGTERM)
+            else:
+                super().terminate()
+
+        def kill(self) -> None:
+            if os.name == "posix":
+                self._signal_process_group(signal.SIGKILL)
+            else:
+                super().kill()
 
     def _subprocess_run_with_default_timeout(*args, **kwargs):
-        # If the caller did not pass timeout, inject the default.
+        """Inject default timeout; Popen.kill() handles whole-tree cleanup."""
         if "timeout" not in kwargs:
             kwargs["timeout"] = _DEFAULT_TEST_SUBPROCESS_TIMEOUT
         return _ORIG_SUBPROCESS_RUN(*args, **kwargs)
 
-    # Patch at import time so test modules that import subprocess later
-    # still see the wrapped version (subprocess is a module — late lookup).
+    # Patch at import time so test modules that import subprocess later still
+    # see the wrapped version (subprocess is a module — late lookup). Patching
+    # Popen globally is intentional: it protects direct Popen users as well as
+    # subprocess.run's internal Popen construction.
+    subprocess.Popen = _ProcessGroupPopen  # type: ignore[assignment,misc]
     subprocess.run = _subprocess_run_with_default_timeout  # type: ignore[assignment]
 
 
