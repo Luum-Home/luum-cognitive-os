@@ -9,7 +9,15 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: 'policy-only: boundary decision constraining future structural backend integrations; no runtime implementation is claimed'
+classification_basis: 'policy-only: boundary decision constraining future structural
+  backend integrations; no runtime implementation is claimed'
+verification:
+  level: not-applicable
+  commands:
+  - python3 -m pytest tests/contracts/test_structural_rule_backend_boundary.py -q
+  proves:
+  - decision_state
+  - contract_test
 ---
 
 # ADR-272: Structural Rule Backend Boundary

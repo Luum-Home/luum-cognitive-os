@@ -10,6 +10,12 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: explicit prose status migration for previously prose-only ADR
+verification:
+  level: not-applicable
+  commands:
+  - bash -n hooks/protected-config-write-guard.sh
+  proves:
+  - hook_syntax
 ---
 
 # ADR-266: Extend protected-config-write-guard to intercept Bash file-write commands

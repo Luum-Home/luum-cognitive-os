@@ -10,6 +10,14 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: explicit accepted/implemented status
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/behavior/test_plan_lock_cli.py tests/unit/test_commit_provenance.py
+    -q
+  proves:
+  - behavior_contract
+  - negative_case
 ---
 
 # ADR-106 — Multi-Session Safety Primitives

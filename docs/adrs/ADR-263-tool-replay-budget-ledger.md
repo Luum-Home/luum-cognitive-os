@@ -9,7 +9,14 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: 'tool replay ledger module and tests implement per-session replay budget decisions'
+classification_basis: tool replay ledger module and tests implement per-session replay
+  budget decisions
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/unit/test_tool_replay_ledger.py -q
+  proves:
+  - behavior_contract
 ---
 
 # ADR-263 — Tool-Replay Budget Ledger: Per-Session Cap + Preview/Reference-Only Modes

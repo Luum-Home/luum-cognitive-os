@@ -47,7 +47,7 @@ Every ADR that has YAML frontmatter must include `implementation_status`. Prose-
 | `partial-blocked` | Some accepted slices are implemented and a named blocker remains. |
 | `blocked` | Work cannot proceed until a named blocker clears. |
 | `deferred` | Work is intentionally delayed by policy or sequencing. |
-| `implemented` | Required implementation files/tests exist. |
+| `implemented` | Required implementation files/tests exist and all declared `implementation_files` resolve on disk. |
 | `resolved` | Tracking items are closed. |
 
 `implementation_status` must not replace decision status. For example, an ADR
@@ -98,6 +98,13 @@ scope, while the future operational promotion receives its own `proposed` ADR.
   status and subdivide the Active bucket by implementation status.
 - ADRs with YAML frontmatter must include scalar `implementation_status`; prose-only
   ADRs remain `Active / Unclassified` until gradual frontmatter migration.
+- Every declared `implementation_files` entry is a falsifiable disk claim and
+  must resolve on disk regardless of decision `status` or `implementation_status`.
+  Runtime/generated artifacts that are not committed must be documented outside
+  `implementation_files` or covered by a specialized allowlist audit.
+- `implementation_status: implemented` must fail audit if any declared
+  `implementation_files` entry is missing. A §Operational Guide rendered from
+  §Decision prose is operator documentation, not implementation evidence.
 
 ## Alternatives Rejected
 

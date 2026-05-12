@@ -13,6 +13,14 @@ classification_basis: implementation evidence plus partial/deferred/future signa
 partial_remaining: 'Deferred from this slice:'
 remaining_in_scope: true
 partial_remaining_basis: explicit body remaining signal
+verification:
+  level: strong
+  commands:
+  - python3 scripts/harness_parity_audit.py --source claude --target codex --strict
+    --json
+  proves:
+  - behavior_contract
+  - harness_parity_audit
 ---
 
 # ADR-081 — Codex Harness Adapter

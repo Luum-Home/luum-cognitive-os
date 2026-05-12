@@ -2,13 +2,13 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 288 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 292 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
 
-### Active / Implemented (120)
+### Active / Implemented (124)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -132,6 +132,10 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [270](ADR-270-legal-compliance-workflow-automation.md) | Legal Compliance Workflow Automation | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit. |
 | [276](ADR-276-primitive-authority-write-effects.md) | Primitive Authority and Write-Effects Audit | accepted | implemented | 2026-05-12 | Accepted and implemented for the first ratchet. |
 | [277](ADR-277-documentation-truth-control.md) | Documentation Truth Control | accepted | implemented | 2026-05-12 | Accepted and implemented. |
+| [279](ADR-279-orphan-repo-scan-process-audit.md) | Orphan Repo-Scan Process Audit | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
+| [280](ADR-280-product-question-to-evidence-primitive.md) | Product Question-to-Evidence Primitive | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
+| [281](ADR-281-adr-implementation-reality-audit.md) | ADR Implementation Reality Audit | accepted | implemented | 2026-05-12 | Accepted — Phase 1 shipped 2026-05-12 (audit + allowlist + tests + control-plane wiring). |
+| [282](ADR-282-product-answer-card-cache-and-freshness-ledger.md) | Product Answer Card Cache and Freshness Ledger | accepted | implemented | 2026-05-12 | Accepted and implemented — 2026-05-12. |
 
 ### Active / Partial (118)
 

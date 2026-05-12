@@ -10,6 +10,12 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: explicit prose status migration for previously prose-only ADR
+verification:
+  level: not-applicable
+  commands:
+  - python3 -m pytest tests/audit/test_adr_contracts.py -q -k ADR-265
+  proves:
+  - decision_state
 ---
 
 # ADR-265 — Mandatory-minimum inspection caps for COS eval surfaces

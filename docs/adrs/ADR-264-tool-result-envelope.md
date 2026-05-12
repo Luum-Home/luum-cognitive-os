@@ -9,7 +9,17 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: 'tool result envelope module, agent/dispatch integration, spillover behavior, and tests implement compact result envelopes'
+classification_basis: tool result envelope module, agent/dispatch integration, spillover
+  behavior, and tests implement compact result envelopes
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/unit/test_tool_result_envelope.py tests/red_team/portability/test_tool_result_envelope.py
+    tests/red_team/portability/test_dispatch_helper.py tests/red_team/portability/test_agent_runner.py
+    -q
+  proves:
+  - behavior_contract
+  - integration_contract
 ---
 
 # ADR-264 — Tool Result Envelope: Compact Envelope Format for Large Tool Outputs
