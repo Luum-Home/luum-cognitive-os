@@ -1,4 +1,18 @@
-"""Root conftest.py -- registers all custom markers and provides shared session fixtures."""
+"""Root conftest.py -- registers all custom markers and provides shared session fixtures.
+
+Also installs a default `subprocess.run` timeout at module load time so test
+suites that invoke external scripts cannot hang the whole suite when the
+subprocess is buggy. Tests that need longer can still pass an explicit
+`timeout=` keyword — that wins.
+
+Root-fix per 2026-05-12 session: the contracts/audit suites had ~169 naked
+`subprocess.run(...)` calls without `timeout=`; one hang (test_repository_
+family_ledgers_cover_hooks_skills_and_rules, test_cos_primitive_surface_
+coverage_alias_json_exit_code_contract) blocked the entire suite at ~8%
+completion. Pytest's `--timeout-method=thread` cannot kill an OS subprocess
+spawned without `subprocess.run(timeout=...)`. This wrapper makes the
+default safe; explicit per-call timeouts still override.
+"""
 
 import os
 import shutil
@@ -10,6 +24,28 @@ from typing import Any
 
 import pytest
 import yaml
+
+# ----------------------------------------------------------------------------
+# Default subprocess.run timeout (test-only safety net).
+# ----------------------------------------------------------------------------
+# Override via COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT (seconds). Set to 0 to
+# disable the wrapper entirely (legacy behavior).
+_DEFAULT_TEST_SUBPROCESS_TIMEOUT = float(
+    os.environ.get("COS_TEST_SUBPROCESS_DEFAULT_TIMEOUT", "45")
+)
+
+if _DEFAULT_TEST_SUBPROCESS_TIMEOUT > 0:
+    _ORIG_SUBPROCESS_RUN = subprocess.run
+
+    def _subprocess_run_with_default_timeout(*args, **kwargs):
+        # If the caller did not pass timeout, inject the default.
+        if "timeout" not in kwargs:
+            kwargs["timeout"] = _DEFAULT_TEST_SUBPROCESS_TIMEOUT
+        return _ORIG_SUBPROCESS_RUN(*args, **kwargs)
+
+    # Patch at import time so test modules that import subprocess later
+    # still see the wrapped version (subprocess is a module — late lookup).
+    subprocess.run = _subprocess_run_with_default_timeout  # type: ignore[assignment]
 
 
 def pytest_configure(config):
