@@ -288,7 +288,7 @@ def test_no_stub_hooks(hook_name: str) -> None:
 @pytest.mark.audit
 def test_code_dead_hooks_are_documented() -> None:
     """The known code-dead hooks must match what the scorecard documents."""
-    scorecard = REPO_ROOT / "docs" / "architecture" / "functional-audit" / "scorecard-hooks.md"
+    scorecard = REPO_ROOT / "docs" / "04-Concepts" / "architecture" / "functional-audit" / "scorecard-hooks.md"
     assert scorecard.exists(), f"Missing scorecard at {scorecard}"
     text = scorecard.read_text()
     missing = [name for name in EXPECTED_CODE_DEAD if name not in text]
@@ -301,7 +301,7 @@ def test_code_dead_hooks_are_documented() -> None:
 @pytest.mark.audit
 def test_hook_counts_match_scorecard() -> None:
     """Sanity check: the scorecard records the latest audit refresh."""
-    scorecard = REPO_ROOT / "docs" / "architecture" / "functional-audit" / "scorecard-hooks.md"
+    scorecard = REPO_ROOT / "docs" / "04-Concepts" / "architecture" / "functional-audit" / "scorecard-hooks.md"
     text = scorecard.read_text(encoding="utf-8")
     assert "2026-04-23 audit refresh" in text
     assert f"Total hook files on disk (`hooks/*.sh`) | **{len(HOOKS)}**" in text
