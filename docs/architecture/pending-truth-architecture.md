@@ -60,11 +60,18 @@ operators to edit 5 sources manually for each "done".
     output: docs/reports/operational-guide-audit-latest.{json,md}
 
   scripts/cos-control-plane-audit    (ADR-248)
-    orchestrator: runs 7 audits per lane (hook-fast | hourly | pre-public)
+    orchestrator: runs audits per lane (hook-fast | hourly | pre-public)
     emits findings → .cognitive-os/tasks/control-plane-remediation.jsonl
     + .cognitive-os/metrics/control-plane-audit.jsonl
     operational-guide-coverage is one of the registered audits (ADR-274
-    Phase 3)
+    Phase 3); adr-partial-lifecycle is registered for hourly/pre-public
+    lanes so ADR lifecycle debt becomes normal remediation queue input.
+
+  scripts/cos-adr-partial-ledger + scripts/cos-adr-partial-audit
+    ADR lifecycle bridge: turns Active/partial|blocked|deferred ADRs into
+    docs/reports/adr-partial-backlog-latest.{json,md}, then emits
+    control-plane findings for missing remaining-work metadata, stale
+    partials without follow-up ADRs, and possible close candidates.
 ```
 
 **Trust contract** (ADR-105): the aggregator does not invent. Items only
@@ -85,6 +92,7 @@ scripts/cos-session-start-projector    (ADR-275)
     - pending_truth: by_status counts, top_actionable items
     - operational_guide: P0/P1 counts, top_backfill ADRs
     - control_plane: open findings
+    - adr_partials: partial/deferred/blocked ADR lifecycle backlog
     - staged_deployments: dirs awaiting operator deploy
     - git_state: branch + ahead/behind/dirty
     - suggested_next_actions: ranked cheapest-unblocker first
@@ -110,6 +118,20 @@ parallel sessions see the same projection.
 ---
 
 ## Layer 3 — CLOSE (write side)
+
+**Canonical status vocabulary**: [`docs/adrs/STATUS-TAXONOMY.md`](../adrs/STATUS-TAXONOMY.md)
+defines the decision-status and implementation-status values that all
+closure primitives consume (`accepted | implemented | partial |
+partial-blocked | blocked | deferred | superseded | tombstone |
+not-applicable | resolved`). Both close primitives below validate against
+this vocabulary before writing.
+
+**Trust signal** — `scripts/cos-closure-trust-signal.py` quantifies the
+asymmetry between audited closures (via the primitives below) and
+manual closures (direct source edits): emits HIGH | MEDIUM | LOW | ZERO
+band and feeds the trust-report (ADR-244) via the
+`closure-trust-signal` audit registered in
+`manifests/control-plane-audits.yaml`.
 
 ```
 scripts/cos-pending-truth-close    (ADR-275) — ATOMIC, AUDITED
@@ -138,6 +160,22 @@ scripts/cos-pending-truth-close    (ADR-275) — ATOMIC, AUDITED
 
   schema_version: closure-trail/v1
 ```
+
+Parallel ADR lifecycle closure:
+
+```
+scripts/cos-adr-close
+  unit: ADR decision record rather than task/checkbox
+  updates: implementation_status, classification_basis, evidence fields
+  refreshes: docs/adrs/INDEX.md + ADR partial backlog ledger
+  projection: cos-session-start-projector emits [adr-partial-close]
+              actions from adr-partial-backlog-latest.json
+```
+
+This is intentionally separate from `cos-pending-truth-close`: pending-truth
+closes task items from source surfaces; `cos-adr-close` closes the execution
+state of an architectural decision. The projector now consumes both, so the
+operator sees one ranked action list instead of two disconnected queues.
 
 **Manual closures still work** (editing the source surface directly) —
 the aggregator picks them up on next run. But manual closures land in the
@@ -203,6 +241,7 @@ the ledger.
 | Aggregated ledger | `docs/reports/pending-truth-latest.json` | pending-truth/v1 |
 | Aggregated ledger (human) | `docs/reports/pending-truth-latest.md` | markdown |
 | §Operational Guide audit | `docs/reports/operational-guide-audit-latest.{json,md}` | operational-guide-audit/v1 |
+| ADR partial backlog | `docs/reports/adr-partial-backlog-latest.{json,md}` | adr-partial-backlog/v1 |
 | Control-plane findings | `.cognitive-os/tasks/control-plane-remediation.jsonl` | append-only JSONL |
 | Closure audit trail | `.cognitive-os/audit/closure-trail.jsonl` | closure-trail/v1 |
 | Projection cache | `.cognitive-os/runtime/session-start-projection.cache.json` | session-start-projection/v1 |
@@ -217,6 +256,7 @@ the ledger.
    pending-truth ledger: 279 items {'verified-pending': 267, ...}
    operational-guide backfill: P0=0 P1=0
    control-plane open findings: 134
+   ADR partial backlog: 120 items {'partial': 118, ...}
    staged-for-operator-deploy: 0 dir(s)
    Suggested next actions (top-5): ...
    ```
@@ -225,8 +265,8 @@ the ledger.
    atomically closes + records.
 4. Anti-drift hooks (Slice C) fire opportunistically based on edits and
    the 7d/30d staleness thresholds.
-5. Weekly: control-plane-audit-hourly lane re-runs all 7 audits +
-   recurrence counts; new findings land in remediation queue with
+5. Weekly: control-plane-audit-hourly lane re-runs registered audits,
+   including adr-partial-lifecycle, plus recurrence counts; new findings land in remediation queue with
    time-to-detect / time-to-remediate metrics (ADR-248).
 
 ## Why this beats the prior state
@@ -247,7 +287,9 @@ Not yet implemented; tracked as Phase 2+ of ADR-275:
   vs ~25% Opus-driven. A bounded-scope LLM verifier per item would close
   this gap without polluting the trust signal.
 - **Multi-source atomic close**: one operator action closes a checkbox +
-  its owning ADR + its tracking follow-up in one transaction.
+  its owning ADR + its tracking follow-up in one transaction. The interim
+  bridge is projector-level: pending-truth and ADR lifecycle close actions
+  are ranked together, but still executed by their dedicated close commands.
 - **Trust-report quantification**: unaudited closures (manual edits with
   no closure-trail entry) should explicitly lower the trust score.
 - **Projector top-N ranking heuristic**: current default is age-desc;

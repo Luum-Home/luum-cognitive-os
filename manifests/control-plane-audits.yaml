@@ -47,6 +47,7 @@ lanes:
       - capability-coverage
       - operational-guide-coverage
       - closure-trust-signal
+      - doc-cross-reference-coverage
       - adr-partial-lifecycle
   pre-public:
     description: Pre-public release-readiness sweep.
@@ -61,6 +62,7 @@ lanes:
       - capability-coverage
       - operational-guide-coverage
       - closure-trust-signal
+      - doc-cross-reference-coverage
       - adr-partial-lifecycle
 
 audits:
@@ -119,6 +121,12 @@ audits:
     adr: ADR-275
     command: [python3, scripts/cos-closure-trust-signal.py]
     expected_schema: closure-trust-signal/v1
+    consumes_sensitive_values: false
+    mutates: false
+  doc-cross-reference-coverage:
+    adr: ADR-275
+    command: [python3, scripts/cos-doc-cross-reference-audit.py]
+    expected_schema: doc-cross-reference-audit/v1
     consumes_sensitive_values: false
     mutates: false
   adr-partial-lifecycle:

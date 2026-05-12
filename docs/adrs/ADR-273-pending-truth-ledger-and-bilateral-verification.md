@@ -19,6 +19,8 @@ implementation_files:
   - tests/red_team/portability/test_cos-pending-truth-aggregator.py
 tier: maintainer
 tags: [control-plane, backlog, plans, verification, drift-prevention, source-of-truth, postmortem-2026-05-12]
+partial_remaining: Slices A and B are implemented; Slice C hook deployment is staged and pending operator authorization
+partial_remaining_basis: specific classification_basis
 ---
 # ADR-273: Pending Truth Ledger and Bilateral Verification Loop
 
@@ -304,6 +306,19 @@ python3 -c "import yaml; d=yaml.safe_load(open('manifests/pending-truth.yaml'));
 
 ## Related
 
+- **ADR-274** — Operational Guide contract (specialized audit consuming
+  the same source-of-truth pattern; feeds the same control-plane queue)
+- **ADR-275** — Closure & projection primitives. ADR-275 is the WRITE
+  symmetry counterpart to this ADR's READ side. `cos-pending-truth-close`
+  atomically closes items from this ledger with bilateral proof; the
+  closure-trail audit then proves "this verified-done was not a manual
+  edit". Operational mental model + 4-layer architecture documented in
+  `docs/architecture/pending-truth-architecture.md`.
+- **Companion: ADR lifecycle primitives** (built in parallel during the
+  2026-05-12 work). `scripts/cos-adr-partial-ledger` is the ADR-decision
+  analogue of this aggregator; `scripts/cos-adr-close` is the ADR-decision
+  analogue of `cos-pending-truth-close`. `docs/adrs/STATUS-TAXONOMY.md`
+  canonizes the status vocabulary both sides consume.
 - ADR-082 — Plan location convention (input to aggregator)
 - ADR-127 — Active primitive index (analogous "derived truth" pattern)
 - ADR-247 — Manifest-driven postmortem regression audits (same manifest

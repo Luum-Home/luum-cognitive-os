@@ -6,6 +6,14 @@ Verifies the proof, applies the canonical closure edit to the original
 source, records the closure in `.cognitive-os/audit/closure-trail.jsonl`,
 and re-runs the aggregator to refresh the ledger.
 
+Scope: TASK items (plan-checkbox, follow-up, user-request, audit-finding,
+and ADR-slice as a tracking task). For closing the lifecycle of an ADR
+DECISION (implementation_status, classification_basis, evidence fields)
+use the companion primitive `scripts/cos-adr-close` — same atomic +
+audited shape but for the decision-record domain. The
+`cos-session-start-projector` consumes both into a single ranked
+action list. See `docs/architecture/pending-truth-architecture.md`.
+
 Usage:
   python3 scripts/cos-pending-truth-close --id <ledger-id> --proof <ref>
   python3 scripts/cos-pending-truth-close --id <id> --proof <ref> --dry-run

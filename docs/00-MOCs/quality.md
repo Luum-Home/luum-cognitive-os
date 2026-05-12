@@ -37,6 +37,22 @@ Many rules are enforced as PreToolUse / PostToolUse hooks rather than agent inst
 - [ADR-244 Trust report claim validator must enforce](../adrs/ADR-244-trust-report-claim-validator-must-enforce.md)
 - [`docs/anti-hallucination.md`](../anti-hallucination.md)
 
+### Closure trust signal (ADR-275 Phase 3)
+
+Quantifies "did this 'done' claim go through the atomic close primitive or
+was it a manual edit?" — feeds the trust score per ADR-244.
+
+- `scripts/cos-closure-trust-signal.py` — emits HIGH|MEDIUM|LOW|ZERO band
+  based on `closure-trail.jsonl` coverage of verified-done items in
+  `pending-truth-latest.json`
+- Wired into `cos-control-plane-audit` hourly + pre-public lanes as the
+  `closure-trust-signal` audit ID (see `manifests/control-plane-audits.yaml`)
+- Audit trail: `.cognitive-os/audit/closure-trail.jsonl`
+- Closure primitives (ADR-275): `scripts/cos-pending-truth-close` (tasks)
+  and `scripts/cos-adr-close` (decisions). See
+  [`docs/architecture/pending-truth-architecture.md`](../architecture/pending-truth-architecture.md)
+  for the full 4-layer architecture.
+
 ## Security
 
 - [`docs/security/`](../security/) — security policies

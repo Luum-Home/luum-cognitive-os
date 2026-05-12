@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
-"""Close or reclassify an ADR implementation_status and refresh generated ADR artifacts."""
+# SCOPE: os-only
+"""Close or reclassify an ADR implementation_status and refresh generated ADR artifacts.
+
+Scope: ADR DECISION records. Updates frontmatter fields (status,
+implementation_status, classification_basis, evidence) and refreshes
+docs/adrs/INDEX.md + docs/reports/adr-partial-backlog-latest.{json,md}.
+
+For closing TASK items in plans / follow-ups / user-requests /
+audit-findings, use the companion primitive `scripts/cos-pending-truth-close`
+(ADR-275) — same atomic + audited shape, different domain. The
+`cos-session-start-projector` consumes both into a single ranked
+action list at session start across the 3 harnesses.
+
+Canonical status vocabulary: `docs/adrs/STATUS-TAXONOMY.md`.
+Architectural map: `docs/architecture/pending-truth-architecture.md`.
+"""
 from __future__ import annotations
 
 import argparse
