@@ -1,7 +1,9 @@
 ---
+
 adr: 143
 title: Closure Discipline Gate — Validation Nervous System Must Close With the Change
 status: accepted
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

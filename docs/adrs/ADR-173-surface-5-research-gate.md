@@ -1,7 +1,9 @@
 ---
+
 adr: 173
 title: Surface 5 Research Gate — No Custom TUI/UI Adoption Without Source-Level Proof
 status: accepted
+implementation_status: deferred
 date: 2026-05-06
 supersedes: []
 superseded_by: null

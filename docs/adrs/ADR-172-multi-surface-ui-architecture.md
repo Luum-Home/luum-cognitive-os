@@ -1,7 +1,9 @@
 ---
+
 adr: 172
 title: Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian
 status: accepted
+implementation_status: partial
 date: 2026-05-05
 supersedes: [ADR-170]
 superseded_by: null

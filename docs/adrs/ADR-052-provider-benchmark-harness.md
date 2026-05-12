@@ -1,7 +1,9 @@
 ---
+
 adr: 52
 title: Provider Benchmark Harness
 status: implemented
+implementation_status: implemented
 implementation_files:
   - docs/benchmarks/provider-quality-smoke.yaml
   - scripts/benchmark-providers

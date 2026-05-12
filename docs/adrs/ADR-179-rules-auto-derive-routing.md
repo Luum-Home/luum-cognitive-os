@@ -1,7 +1,9 @@
 ---
+
 adr: 179
 title: Auto-Derived Rule Routing for Agent-Instruction Rules
 status: accepted
+implementation_status: partial
 date: 2026-05-05
 supersedes: []
 superseded_by: null

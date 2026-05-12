@@ -1,7 +1,9 @@
 ---
+
 adr: 85
 title: Reserved architecture decision slot
 status: tombstone
+implementation_status: not-applicable
 date: 2026-05-05
 supersedes: []
 superseded_by: null

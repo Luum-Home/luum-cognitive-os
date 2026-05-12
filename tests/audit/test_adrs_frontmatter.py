@@ -39,7 +39,8 @@ MIGRATED_ADRS: dict[int, Path] = {
 }
 
 VALID_STATUSES = {"proposed", "exploration", "accepted", "implemented", "resolved", "superseded", "deprecated", "tombstone"}
-VALID_TIERS = {"lean", "standard", "strict", "meta"}
+VALID_TIERS = {"lean", "standard", "strict", "meta", "maintainer"}
+VALID_IMPLEMENTATION_STATUSES = {"not-applicable", "planned", "partial", "partial-blocked", "blocked", "deferred", "implemented", "resolved"}
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -114,7 +115,7 @@ def test_frontmatter_parses(migrated_adr: tuple[int, Path, dict]) -> None:
 def test_required_fields_present(migrated_adr: tuple[int, Path, dict]) -> None:
     """Required fields adr, title, status, date must all be present."""
     _, path, fm = migrated_adr
-    for field in ("adr", "title", "status", "date"):
+    for field in ("adr", "title", "status", "date", "implementation_status"):
         assert field in fm, f"{path.name}: missing required field '{field}'"
 
 
@@ -134,6 +135,15 @@ def test_adr_number_matches_filename(migrated_adr: tuple[int, Path, dict]) -> No
     assert fm["adr"] == expected_num, (
         f"{path.name}: frontmatter adr={fm['adr']} does not match "
         f"expected {expected_num} from filename"
+    )
+
+
+@pytest.mark.audit
+def test_implementation_status_is_valid(migrated_adr: tuple[int, Path, dict]) -> None:
+    """implementation_status must be one of the canonical taxonomy values."""
+    _, path, fm = migrated_adr
+    assert fm["implementation_status"] in VALID_IMPLEMENTATION_STATUSES, (
+        f"{path.name}: invalid implementation_status {fm['implementation_status']!r}"
     )
 
 

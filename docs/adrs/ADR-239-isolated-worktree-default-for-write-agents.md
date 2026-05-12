@@ -1,7 +1,9 @@
 ---
+
 adr: 239
 title: Isolated Worktree Default for Write Agents
 status: accepted
+implementation_status: implemented
 date: 2026-05-08
 supersedes: []
 superseded_by: null

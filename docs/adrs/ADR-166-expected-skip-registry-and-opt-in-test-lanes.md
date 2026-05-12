@@ -1,7 +1,9 @@
 ---
+
 adr: 166
 title: Expected Skip Registry and Opt-In Test Lanes
 status: implemented
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

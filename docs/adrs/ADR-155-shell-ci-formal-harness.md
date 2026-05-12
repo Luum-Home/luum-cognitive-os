@@ -1,7 +1,9 @@
 ---
+
 adr: 155
 title: Shell CI Formal Harness Projection
 status: accepted
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

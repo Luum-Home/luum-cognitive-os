@@ -61,12 +61,14 @@ CODE_SUPERSEDES_BROKEN_REF = "SUPERSEDES_BROKEN_REF"
 CODE_ADR_RELATION_CHAIN_LONG = "ADR_RELATION_CHAIN_LONG"
 CODE_ADR_RELATION_CYCLE = "ADR_RELATION_CYCLE"
 CODE_INVALID_STATUS = "INVALID_STATUS"
+CODE_INVALID_IMPLEMENTATION_STATUS = "INVALID_IMPLEMENTATION_STATUS"
 
 # Status values that require implementation_files verification
 IMPLEMENTED_STATUSES = {"implemented"}
 
 # Valid status values
 VALID_STATUSES = {"proposed", "exploration", "accepted", "implemented", "resolved", "superseded", "deprecated", "tombstone"}
+VALID_IMPLEMENTATION_STATUSES = {"not-applicable", "planned", "partial", "partial-blocked", "blocked", "deferred", "implemented", "resolved"}
 
 # Relationship-chain budget: current reconstruction allows short lineage, but
 # chains longer than this need consolidation instead of another ADR-on-ADR layer.
@@ -404,6 +406,15 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
             "message": "frontmatter status must be a scalar string; split mixed lifecycle states into a follow-up ADR",
         }
     status: str = raw_status.lower()
+    raw_impl_status = fm.get("implementation_status", "")
+    if not isinstance(raw_impl_status, str) or not raw_impl_status.strip():
+        return {
+            **base,
+            "level": LEVEL_FAIL,
+            "code": CODE_INVALID_IMPLEMENTATION_STATUS,
+            "message": "frontmatter implementation_status is required and must be a scalar string",
+        }
+    implementation_status: str = raw_impl_status.strip().lower()
     impl_files: list[str] = fm.get("implementation_files") or []
     supersedes: list[int] = fm.get("supersedes") or []
 
@@ -417,6 +428,17 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
                 "code": CODE_INVALID_STATUS,
                 "status": status,
                 "message": f"status={status!r} is not one of {sorted(VALID_STATUSES)}",
+            }
+        )
+
+    if implementation_status not in VALID_IMPLEMENTATION_STATUSES:
+        findings.append(
+            {
+                **base,
+                "level": LEVEL_FAIL,
+                "code": CODE_INVALID_IMPLEMENTATION_STATUS,
+                "implementation_status": implementation_status,
+                "message": f"implementation_status={implementation_status!r} is not one of {sorted(VALID_IMPLEMENTATION_STATUSES)}",
             }
         )
 

@@ -1,7 +1,9 @@
 ---
+
 adr: 129
 title: Safe Worktree Removal — No Silent rm -rf Fallback
 status: accepted
+implementation_status: implemented
 date: 2026-05-02
 supersedes: []
 superseded_by: null

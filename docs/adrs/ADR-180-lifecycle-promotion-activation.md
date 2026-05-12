@@ -1,7 +1,9 @@
 ---
+
 adr: 180
 title: Lifecycle Promotion Activation — Concrete Proposers and Hook Wiring
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

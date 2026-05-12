@@ -1,7 +1,9 @@
 ---
+
 adr: 131
 title: Local-CI Migration — Three-Layer Architecture to Replace GitHub Actions
 status: accepted
+implementation_status: implemented
 date: 2026-05-03
 supersedes: []
 superseded_by: null

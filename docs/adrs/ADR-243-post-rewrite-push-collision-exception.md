@@ -1,7 +1,9 @@
 ---
+
 adr: 243
 title: Post-Rewrite Push-Collision Check Exception
 status: accepted
+implementation_status: partial
 date: 2026-05-08
 supersedes: []
 superseded_by: null

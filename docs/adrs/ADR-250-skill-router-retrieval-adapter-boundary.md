@@ -1,7 +1,9 @@
 ---
+
 adr: 250
 title: Skill Router Retrieval Adapter Boundary
 status: accepted
+implementation_status: partial
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

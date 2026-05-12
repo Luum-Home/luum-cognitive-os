@@ -1,7 +1,9 @@
 ---
+
 adr: 130
 title: Suspend All GitHub Actions Workflows — Preserve as .disabled Until Local-CI Migration
 status: accepted
+implementation_status: implemented
 date: 2026-05-03
 supersedes: []
 superseded_by: null

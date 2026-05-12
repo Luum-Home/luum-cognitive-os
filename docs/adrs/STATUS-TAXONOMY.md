@@ -37,7 +37,7 @@ Use lowercase values in frontmatter.
 
 ## Canonical Implementation Status Values
 
-Use `implementation_status` only when it adds information beyond `status`.
+Every ADR that has YAML frontmatter must include `implementation_status`. Prose-only historical ADRs may remain unclassified until their gradual frontmatter migration batch.
 
 | implementation_status | Meaning |
 |---|---|
@@ -62,7 +62,7 @@ scope, while the future operational promotion receives its own `proposed` ADR.
 
 ## Index Mapping
 
-`docs/adrs/INDEX.md` groups by decision status, not implementation status.
+`docs/adrs/INDEX.md` groups first by decision status. The Active bucket is subdivided by `implementation_status` so accepted decisions remain semantically active while navigation stays bounded.
 
 | Decision status | Bucket |
 |---|---|
@@ -95,7 +95,9 @@ scope, while the future operational promotion receives its own `proposed` ADR.
 - Capability coverage may count `resolved` ADRs when the coverage contract asks
   for accepted-or-resolved ADRs.
 - Generated indexes must display implementation status separately from decision
-  status when both are present.
+  status and subdivide the Active bucket by implementation status.
+- ADRs with YAML frontmatter must include scalar `implementation_status`; prose-only
+  ADRs remain `Active / Unclassified` until gradual frontmatter migration.
 
 ## Alternatives Rejected
 

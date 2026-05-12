@@ -1,7 +1,9 @@
 ---
+
 adr: 141
 title: Engram Cloud as Cross-Instance Replication Transport
 status: implemented
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

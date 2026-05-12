@@ -1,7 +1,9 @@
 ---
+
 adr: 247
 title: Manifest-Driven Postmortem Regression Audits and External Tool Adapters
 status: accepted
+implementation_status: partial
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

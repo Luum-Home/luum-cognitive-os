@@ -1,7 +1,9 @@
 ---
+
 adr: 174
 title: Auto-Derived Primitive Routing for Skills (and Rules)
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 authors: [luum-agent-os]
 supersedes: []

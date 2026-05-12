@@ -1,7 +1,9 @@
 ---
+
 adr: 158
 title: AI Agent Harness Landscape and Proof Backlog
 status: accepted
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

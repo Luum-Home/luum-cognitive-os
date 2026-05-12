@@ -1,7 +1,9 @@
 ---
+
 adr: 248
 title: Control-Plane Audit Loop for ADR-239+ Primitive Drift
 status: accepted
+implementation_status: partial
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

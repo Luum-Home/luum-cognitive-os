@@ -1,7 +1,9 @@
 ---
+
 adr: 160
 title: Rules/MCP Structural Harness Batch and Kiro Adapter Design
 status: implemented
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

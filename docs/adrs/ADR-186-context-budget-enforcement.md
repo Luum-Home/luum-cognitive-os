@@ -1,7 +1,9 @@
 ---
+
 adr: 186
 title: Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

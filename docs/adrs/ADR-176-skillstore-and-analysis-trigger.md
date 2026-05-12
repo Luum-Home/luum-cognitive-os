@@ -1,7 +1,9 @@
 ---
+
 adr: 176
 title: SkillStore SQLite Schema Adoption + Post-Execution Analysis Trigger (Discipline-Gated)
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

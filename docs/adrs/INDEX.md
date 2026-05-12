@@ -2,11 +2,112 @@
 
 ## How to Use This Index
 
-This generated table is the status inventory for all 282 Architecture Decision Record files (ADRs).
+This generated table is the status inventory for all 283 Architecture Decision Record files (ADRs).
 Status semantics are defined in [STATUS-TAXONOMY.md](STATUS-TAXONOMY.md): decision status, implementation status, and index bucket are separate fields.
 Rows link to the canonical ADR file and group by index bucket for human and agent navigation.
 
 ## Active
+
+### Active / Implemented (49)
+
+| ADR | Title | Decision Status | Implementation | Date | Summary |
+|---|---|---|---|---|---|
+| [052](ADR-052-provider-benchmark-harness.md) | Provider Benchmark Harness | implemented | implemented |  | **Implemented for the no-cost offline harness scope.** The repository now ships a |
+| [053](ADR-053-dispatch-auto-optimizer.md) | Dispatch Auto-Optimizer | implemented | implemented |  | **Implemented for reviewed proposal generation.** The repository now ships a |
+| [119](ADR-119-session-filesystem-reaper.md) | Session Filesystem Reaper | implemented | implemented | 2026-05-02 | Accepted — 2026-05-02. Related: ADR-102, ADR-106, ADR-111, ADR-116, ADR-117. |
+| [123](ADR-123-operational-stability-friction-reduction.md) | Operational Stability and Friction Reduction Program | implemented | implemented | 2026-05-02 | Implemented — 2026-05-08 status sync |
+| [129](ADR-129-safe-worktree-removal.md) | Safe Worktree Removal — No Silent rm -rf Fallback | accepted | implemented | 2026-05-02 | Accepted. Implemented in commit `d5ecda43` with the shared |
+| [130](ADR-130-suspend-claude-api-workflows.md) | Suspend All GitHub Actions Workflows — Preserve as .disabled Until Local-CI Migration | accepted | implemented | 2026-05-03 | Accepted. |
+| [131](ADR-131-local-ci-migration.md) | Local-CI Migration — Three-Layer Architecture to Replace GitHub Actions | accepted | implemented | 2026-05-03 | Accepted. Implemented in the same PR that lands this ADR. Companion |
+| [138](ADR-138-flow-contract-schema.md) | Flow Contract Schema — Required Shape for Cloud Flow Manifests | accepted | implemented | 2026-05-03 | **Accepted and materialized for first lab registration.** The companion |
+| [139](ADR-139-account-agnostic-multi-provider-runtime.md) | Account-Agnostic Multi-Provider Runtime | implemented | implemented | 2026-05-04 | **Accepted — Implemented** as the credential and billing posture for all COS runtime surfaces — local maintainer, cloud worker, and ephemeral sandbox. |
+| [140](ADR-140-cross-os-containerized-deployment.md) | Cross-OS Containerized Deployment via Docker Compose | accepted | implemented | 2026-05-04 | **Accepted — Implemented** as the containerised deployment shape for COS cloud |
+| [141](ADR-141-engram-cloud-cross-instance-replication.md) | Engram Cloud as Cross-Instance Replication Transport | implemented | implemented | 2026-05-04 | **Accepted — Implemented** as the replication strategy for Engram observations across COS instances. Local SQLite remains authoritative. Cloud is replication-on |
+| [142](ADR-142-compliance-audit-air-gapped-surface.md) | Compliance, Audit, and Air-Gapped Surface (SOC 2 / ISO 27001 / GDPR) | implemented | implemented | 2026-05-04 | **Accepted — Implemented** as the compliance posture and audit-trail bridge for all COS cloud worker surfaces. |
+| [143](ADR-143-closure-discipline-gate.md) | Closure Discipline Gate — Validation Nervous System Must Close With the Change | accepted | implemented | 2026-05-04 | **Accepted.** Closure discipline is now a first-class blocking maintainer gate. |
+| [144](ADR-144-hook-enforced-rule-projection-contract.md) | Hook-Enforced Rule Projection Contract | accepted | implemented | 2026-05-04 | Accepted. Hook-enforced rule exclusions are now a projection contract, not a prose convention. |
+| [148](ADR-148-adr-authoring-primitive.md) | ADR Authoring Primitive | accepted | implemented | 2026-05-04 | **Accepted** — 2026-05-04 |
+| [149](ADR-149-primitive-duplication-audit.md) | Primitive Duplication Audit | accepted | implemented | 2026-05-04 | **Accepted** — 2026-05-04 |
+| [150](ADR-150-acc-projection-profiles-and-harness-registry.md) | ACC Projection Profiles and Expanded Harness Registry | accepted | implemented | 2026-05-04 | **Accepted** — 2026-05-04 |
+| [151](ADR-151-consumer-availability-classification.md) | Consumer Availability Classification Manifest | implemented | implemented | 2026-05-04 | **Implemented for manifest/classification scope** — 2026-05-04. The consumer availability manifest, ACC adapter, and contract tests named below exist; future sc |
+| [152](ADR-152-shell-ci-projection-and-local-surface-defaults.md) | Shell CI Projection and Local Surface Defaults | implemented | implemented | 2026-05-04 | **Implemented for shell/CI projection and local-surface defaults** — 2026-05-04. The projection manifest, projector, ACC integration, and artifact-status extrac |
+| [153](ADR-153-acc-fail-new-and-harness-proof-boundary.md) | ACC Fail-New Gate and Harness Proof Boundary | accepted | implemented | 2026-05-04 | **Accepted** — 2026-05-04 |
+| [154](ADR-154-multi-ide-structural-harness-projection.md) | Multi-IDE Structural Harness Projection | implemented | implemented | 2026-05-04 | **Implemented for structural projection scope** — 2026-05-04. OpenCode, VS Code Copilot, and Cursor project-local projections are generated and tested; this doe |
+| [155](ADR-155-shell-ci-formal-harness.md) | Shell CI Formal Harness Projection | accepted | implemented | 2026-05-04 | **Accepted** — 2026-05-04 |
+| [156](ADR-156-qwen-code-structural-harness-projection.md) | Qwen Code Structural Harness Projection | implemented | implemented | 2026-05-04 | **Implemented for structural projection scope** — 2026-05-04. Qwen Code project-local settings/context projection is generated and tested; account-backed Qwen r |
+| [157](ADR-157-kimi-code-cli-structural-harness-projection.md) | Kimi Code CLI Structural Harness Projection | implemented | implemented | 2026-05-04 | **Implemented for structural CLI projection scope** — 2026-05-04. Kimi Code project-local CLI context/config projection is generated and tested; authenticated C |
+| [158](ADR-158-ai-agent-harness-landscape-and-proof-backlog.md) | AI Agent Harness Landscape and Proof Backlog | accepted | implemented | 2026-05-04 | **Accepted** — 2026-05-04 |
+| [159](ADR-159-agents-md-native-structural-harness-batch.md) | AGENTS.md-native Structural Harness Batch and Kiro Lifecycle Investigation | accepted | implemented | 2026-05-05 | **Accepted** — 2026-05-05 |
+| [160](ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md) | Rules/MCP Structural Harness Batch and Kiro Adapter Design | implemented | implemented | 2026-05-05 | **Implemented for structural projection and Kiro design scope** — 2026-05-05. The seven rules/MCP harness projections and Kiro adapter design artifacts exist an |
+| [161](ADR-161-remote-control-plane-and-provider-adapter-boundary.md) | Remote Control Plane and Provider Adapter Boundary | implemented | implemented | 2026-05-05 | **Implemented for boundary/inventory scope** — 2026-05-05. The remote ingress versus provider/executor adapter boundary, alternatives manifest, report, manual t |
+| [165](ADR-165-proof-drill-and-smoke-opt-in-primitives.md) | Proof Drill and Smoke Opt-In Agentic Primitives | implemented | implemented | 2026-05-05 | **Implemented for the proof-drill registry and smoke opt-in primitive scope** — 2026-05-05. The ADR closes the governed registry, agent procedure, manual proof  |
+| [166](ADR-166-expected-skip-registry-and-opt-in-test-lanes.md) | Expected Skip Registry and Opt-In Test Lanes | implemented | implemented | 2026-05-05 | **Implemented for the first enforcement slice** — 2026-05-05. |
+| [167](ADR-167-proof-drill-selector-and-acc-evidence-adapter.md) | Proof Drill Selector and ACC Evidence Adapter | implemented | implemented | 2026-05-05 | **Implemented for the proof-drill selector, evidence recorder, ACC adapter, instance-profile projection, and runtime-flag registry scope** — 2026-05-05. Live pr |
+| [169](ADR-169-dashboard-formal-demotion.md) | Dashboard Formal Demotion | accepted | implemented | 2026-05-05 | Accepted. |
+| [171](ADR-171-reject-paperclip-integration.md) | Reject Paperclip Integration — API was Aspirational, Multi-Surface Replaces It | accepted | implemented | 2026-05-05 | Accepted. Supersedes ADR-043. |
+| [174](ADR-174-auto-derived-primitive-routing.md) | Auto-Derived Primitive Routing for Skills (and Rules) | accepted | implemented | 2026-05-05 | As of 2026-05-05, `lib/skill_router.py` contains a hand-maintained |
+| [174b](ADR-174b-prevention-followup.md) | Routing-Pattern Prevention Followup — Auto-Generation and Soak-Driven Promotion | accepted | implemented | 2026-05-05 | Accepted. This ADR owns Part A (auto-generation includes `routing_patterns:`) and the implemented propose-only soak evaluator. The actual advisory-to-blocking p |
+| [175](ADR-175-research-quality-enforcement.md) | Research-quality enforcement for audit reports | accepted | implemented | 2026-05-05 | **Accepted** — 2026-05-05 |
+| [176](ADR-176-skillstore-and-analysis-trigger.md) | SkillStore SQLite Schema Adoption + Post-Execution Analysis Trigger (Discipline-Gated) | accepted | implemented | 2026-05-05 | Accepted. |
+| [177](ADR-177-activate-skill-lifecycle-promotion-ladder.md) | Activate Skill Lifecycle Promotion Ladder | accepted | implemented | 2026-05-06 | Accepted. |
+| [180](ADR-180-lifecycle-promotion-activation.md) | Lifecycle Promotion Activation — Concrete Proposers and Hook Wiring | accepted | implemented | 2026-05-05 | Accepted. |
+| [181](ADR-181-adr-relevance-suggester.md) | ADR Relevance Suggester — Lightweight Routing for Architecture Decisions | accepted | implemented | 2026-05-05 | Accepted — 2026-05-05 |
+| [182](ADR-182-branch-ownership-lock.md) | Branch Ownership Lock — Single-Writer Surface for Concurrent Orchestrators | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as the ADR-182 branch-lock hook, library, CLI wrappers, and contract tests. Filed in response to the cross-session collision incident |
+| [183](ADR-183-cross-session-event-log.md) | Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as an extension of the existing `lib/session_bus.py` plus emit/context hooks. Companion to ADR-182. ADR-182 prevents *conflicts*; ADR- |
+| [184](ADR-184-manager-of-managers-daemon.md) | Manager-of-Managers Daemon — Authoritative Single-Writer for Critical Surfaces | accepted | implemented | 2026-05-05 | **Accepted.** First implementation landed as a local file-queue daemon for ADR identity arbitration. Long-horizon refinement of ADR-163 (cos-instance-installer) |
+| [185](ADR-185-cross-agent-audit-findings.md) | Cross-Agent Audit Findings Queue — Auditor → Implementer Directive Channel | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as the directed message bus, inbox/context hooks, CLI, and tests. Fourth architectural layer companion to ADR-182 (branch |
+| [186](ADR-186-context-budget-enforcement.md) | Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits | accepted | implemented | 2026-05-05 | **Accepted.** Implemented as `lib/context_budget.py`, a shared hook accountant, a UserPromptSubmit meter, and hook-level budget checks. Filed in response to tod |
+| [188](ADR-188-mandatory-skill-invocation-at-high-confidence.md) | Mandatory Skill Invocation at High Router Confidence | accepted | implemented | 2026-05-06 | **Accepted (2026-05-06).** Implementation landed on session branch |
+| [239](ADR-239-isolated-worktree-default-for-write-agents.md) | Isolated Worktree Default for Write Agents | accepted | implemented | 2026-05-08 | Accepted. This ADR records the corrective decision after the 2026-05-08 |
+| [269](ADR-269-mandatory-adr-reference-for-history-rewrites.md) | Mandatory ADR Reference for History Rewrites | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit set. |
+| [270](ADR-270-legal-compliance-workflow-automation.md) | Legal Compliance Workflow Automation | accepted | implemented | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit. |
+
+### Active / Partial (22)
+
+| ADR | Title | Decision Status | Implementation | Date | Summary |
+|---|---|---|---|---|---|
+| [105](ADR-105-claim-verification-contract.md) | Bilateral Claim Verification Contract | implemented | partial | 2026-05-02 | **Author**: Maintainer |
+| [116](ADR-116-multi-session-coordination-primitives.md) | Multi-Session Coordination Primitives | accepted | partial | 2026-05-02 | **Author**: Maintainer (operator) + Software Architect (analysis) |
+| [121](ADR-121-foundation-hardening-program.md) | Foundation Hardening Program | accepted | partial | 2026-05-02 | Accepted — 2026-05-02 |
+| [162](ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | Task Lifecycle, Interruption, Question, Worktree, and PR Protocol | implemented | partial | 2026-05-05 | **Implemented for contract scope** — 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enfor |
+| [163](ADR-163-cos-instance-installer.md) | Cognitive OS Instance Installer | accepted | partial | 2026-05-05 | **Accepted** — 2026-05-05 |
+| [164](ADR-164-host-cli-bridge-security-boundary.md) | Host CLI Bridge Security Boundary | implemented | partial | 2026-05-05 | **Implemented for the design-only security contract scope** — 2026-05-05. |
+| [168](ADR-168-cross-device-dependency-installation.md) | Cross-Device Dependency Installation Contract | implemented | partial | 2026-05-05 | **Implemented for the manifest-driven dry-run installer and credential-safe |
+| [172](ADR-172-multi-surface-ui-architecture.md) | Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian | accepted | partial | 2026-05-05 | Accepted. Supersedes [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md). |
+| [179](ADR-179-rules-auto-derive-routing.md) | Auto-Derived Rule Routing for Agent-Instruction Rules | accepted | partial | 2026-05-05 | **Accepted** — 2026-05-05 |
+| [241](ADR-241-consolidated-cos-bypass-allowlist.md) | Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. Shared resolver, cheatsheet, target hook integration, and behavior tests are active; broad ecosystem bypass consolidation remain |
+| [242](ADR-242-git-filter-repo-wrapper-preserves-remote.md) | git-filter-repo Wrapper Preserves Remote and Refuses Non-Idempotent Re-Runs | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sani |
+| [243](ADR-243-post-rewrite-push-collision-exception.md) | Post-Rewrite Push-Collision Check Exception | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching po |
+| [244](ADR-244-trust-report-claim-validator-must-enforce.md) | Trust Report Claim-Validator Must Enforce, Not Advise | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` bloc |
+| [245](ADR-245-chaos-tests-readonly-production-source.md) | Chaos Tests Run with Read-Only Production Source | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, |
+| [246](ADR-246-release-transaction-freeze.md) | Release Transaction Freeze for Destructive and Public-State Operations | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitiv |
+| [247](ADR-247-manifest-driven-postmortem-regression-audits.md) | Manifest-Driven Postmortem Regression Audits and External Tool Adapters | accepted | partial | 2026-05-08 | Accepted. This ADR documents the policy correction made after ADR-242 through |
+| [248](ADR-248-control-plane-audit-loop.md) | Control-Plane Audit Loop for ADR-239+ Primitive Drift | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
+| [249](ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | Primitive Behavioral Proof and Anti-Overfit Testing | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
+| [250](ADR-250-skill-router-retrieval-adapter-boundary.md) | Skill Router Retrieval Adapter Boundary | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
+| [251](ADR-251-agent-orchestration-adapter-boundary.md) | Agent Orchestration Adapter Boundary | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
+| [252](ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | Capability Coverage Matrix and Feature Reality Ledger | accepted | partial | 2026-05-08 | Accepted — Slice A implemented. |
+| [273](ADR-273-pending-truth-ledger-and-bilateral-verification.md) | Pending Truth Ledger and Bilateral Verification Loop | accepted | partial | 2026-05-12 | Accepted — Slice A implemented (schema + aggregator); Slices B (verifier) and C (hooks) tracked. |
+
+### Active / Partial / Blocked (1)
+
+| ADR | Title | Decision Status | Implementation | Date | Summary |
+|---|---|---|---|---|---|
+| [044](ADR-044-context-payload-slimming.md) | Context Payload Slimming — Non-Rule Startup Payloads | accepted | partial-blocked | 2026-04-20 | **Authors**: Agent C (startup-optimization initiative, stream 3/4) |
+
+### Active / Deferred (1)
+
+| ADR | Title | Decision Status | Implementation | Date | Summary |
+|---|---|---|---|---|---|
+| [173](ADR-173-surface-5-research-gate.md) | Surface 5 Research Gate — No Custom TUI/UI Adoption Without Source-Level Proof | accepted | deferred | 2026-05-06 | **Accepted** — 2026-05-06. |
+
+### Active / Planned (1)
+
+| ADR | Title | Decision Status | Implementation | Date | Summary |
+|---|---|---|---|---|---|
+| [137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) | Operational Trajectory — From Governance Layer Over Agents to Embedded Runtime | accepted | planned | 2026-05-03 | **Accepted** for the trajectory itself. The directional commitment (B → A, defined below) is firm. |
+
+### Active / Unclassified (171)
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
@@ -47,14 +148,11 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [040](ADR-040-query-tailored-context-injection.md) | Query-Tailored Context Injection | accepted |  |  | **Deciders**: Matias Amendola |
 | [041](ADR-041.md) | Exercised Coverage Pipeline (MVP) | accepted |  |  | **Deciders**: luum-agent-os team |
 | [042](ADR-042-valkey-local-daemon.md) | Valkey Local Daemon — Extract from Docker (D34 Partial) | accepted |  |  | **Deciders**: Matias Améndola |
-| [044](ADR-044-context-payload-slimming.md) | Context Payload Slimming — Non-Rule Startup Payloads | accepted | partial-blocked | 2026-04-20 | **Authors**: Agent C (startup-optimization initiative, stream 3/4) |
 | [045](ADR-045-postgres-local-daemon.md) | PostgreSQL Local Daemon — Extract from Docker (D34) | accepted |  |  | **Deciders**: Matias Améndola |
 | [048](ADR-048-docker-container-image-freshness.md) | Docker Container Image Freshness | accepted |  |  | **Accepted** — 2026-04-21. Follow-up to a live incident the same day. |
 | [049](ADR-049-llm-gateway-selection-and-overflow-providers.md) | LLM Gateway Selection + Overflow Provider Strategy | accepted |  |  | **Accepted** — 2026-04-21. Supersedes implicit adoption of `litellm` (present |
 | [050](ADR-050-per-skill-routing-policy.md) | Per-Skill Routing Policy | accepted |  |  | **Accepted** — 2026-04-21. Schema + dispatch integration shipped. Builds on |
 | [051](ADR-051-qwen-agent-loop.md) | Qwen Agent Loop (Tool-Use Parity with Claude Code Agent) | accepted |  |  | - **Status**: Accepted (2026-04-21) — Phases 1, 2, 3, 4 all DELIVERED this session. Commits: MVP phase 1, 1e6542c (phase 2), 534814e (phase 3), 925dff5 (phase 4 |
-| [052](ADR-052-provider-benchmark-harness.md) | Provider Benchmark Harness | implemented |  |  | **Implemented for the no-cost offline harness scope.** The repository now ships a |
-| [053](ADR-053-dispatch-auto-optimizer.md) | Dispatch Auto-Optimizer | implemented |  |  | **Implemented for reviewed proposal generation.** The repository now ships a |
 | [054](ADR-054-project-docs-convention.md) | Project Documentation Convention (10 Categories) | accepted |  |  | **Accepted** — 2026-04-21. Implementation lives in `lib/project_scaffolder.py` |
 | [055](ADR-055-docs-convention-enforcement.md) | Docs Convention Enforcement + Skill Writers | accepted |  |  | **Accepted** — 2026-04-21. Addendum to ADR-054. Implementation lives in |
 | [055b](ADR-055b-destructive-git-block.md) | Destructive Git Op Block (User Context Elevation) | accepted |  |  | **Supersedes**: partial warn-only behavior of `hooks/destructive-git-blocker.sh` |
@@ -102,7 +200,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [102](ADR-102-task-tracker-lifecycle.md) | Task tracker lifecycle: pending → in_progress → terminal, with PID capture and zombie reaper | accepted |  |  | Accepted. |
 | [103](ADR-103-audit-contract-lane-recovery.md) | Audit and contract lane recovery before parallel flip | accepted |  |  | Accepted. |
 | [104](ADR-104-startup-circuit-breaker.md) | Startup Circuit Breaker and Safe Mode | accepted |  |  | **Author**: Maintainer |
-| [105](ADR-105-claim-verification-contract.md) | Bilateral Claim Verification Contract | implemented |  | 2026-05-02 | **Author**: Maintainer |
 | [106](ADR-106-multi-session-safety-primitives.md) | Multi-Session Safety Primitives | accepted |  |  | **Author**: Maintainer |
 | [107](ADR-107-human-approved-rollback.md) | Human-Approved Rollback Boundary | accepted |  |  | **Author**: Maintainer |
 | [108](ADR-108-concurrent-agent-safety-layer.md) | Concurrent Agent Safety Layer | accepted |  |  | **Author**: Maintainer + Cognitive OS |
@@ -113,72 +210,18 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [113](ADR-113-validation-capsule-liveness.md) | Validation Capsule Liveness Primitives | accepted |  |  | Accepted — 2026-05-02. |
 | [114](ADR-114-hook-quality-system.md) | Hook Quality System | accepted |  |  | Accepted — 2026-05-02. |
 | [115](ADR-115-safe-worktree-sweeper.md) | Safe Worktree Sweeper | accepted |  |  | Accepted — 2026-05-02. Scope: OS core. Related: ADR-109, ADR-111, ADR-113. |
-| [116](ADR-116-multi-session-coordination-primitives.md) | Multi-Session Coordination Primitives | accepted |  | 2026-05-02 | **Author**: Maintainer (operator) + Software Architect (analysis) |
 | [118](ADR-118-multi-ide-swarm-testbed.md) | Multi-IDE Swarm Safety Testbed | accepted |  |  | Accepted (2026-05-02). This is the automated acceptance-test umbrella for ADR-116 and its transactional coordination rollout. |
-| [119](ADR-119-session-filesystem-reaper.md) | Session Filesystem Reaper | implemented |  | 2026-05-02 | Accepted — 2026-05-02. Related: ADR-102, ADR-106, ADR-111, ADR-116, ADR-117. |
 | [120](ADR-120-conversation-to-primitive-harvester.md) | Conversation-to-Primitive Harvester | accepted |  |  | Accepted — 2026-05-02 |
-| [121](ADR-121-foundation-hardening-program.md) | Foundation Hardening Program | accepted |  | 2026-05-02 | Accepted — 2026-05-02 |
 | [122](ADR-122-preflight-gate-refinements.md) | Preflight Gate Refinements | accepted |  |  | **Author**: Maintainer (operator) |
-| [123](ADR-123-operational-stability-friction-reduction.md) | Operational Stability and Friction Reduction Program | implemented |  | 2026-05-02 | Implemented — 2026-05-08 status sync |
 | [127](ADR-127-active-primitive-index.md) | Active Primitive Index | accepted |  |  | Accepted for Phase 1 DX. |
-| [129](ADR-129-safe-worktree-removal.md) | Safe Worktree Removal — No Silent rm -rf Fallback | accepted |  | 2026-05-02 | Accepted. Implemented in commit `d5ecda43` with the shared |
-| [130](ADR-130-suspend-claude-api-workflows.md) | Suspend All GitHub Actions Workflows — Preserve as .disabled Until Local-CI Migration | accepted |  | 2026-05-03 | Accepted. |
-| [131](ADR-131-local-ci-migration.md) | Local-CI Migration — Three-Layer Architecture to Replace GitHub Actions | accepted |  | 2026-05-03 | Accepted. Implemented in the same PR that lands this ADR. Companion |
 | [133](ADR-133-expansion-without-monsterization.md) | Expansion Without Monsterization | accepted |  |  | Accepted — 2026-05-03 |
 | [134](ADR-134-headless-self-improvement-proposer.md) | Headless Self-Improvement Proposer | accepted |  |  | **Implementation**: `scripts/cos-self-improvement-loop` |
 | [135](ADR-135-self-evolving-doctrine-proposals.md) | Self-Evolving Doctrine Proposals | accepted |  |  | **Implementation**: `scripts/cos-doctrine-proposer` |
 | [136](ADR-136-cross-instance-learning-runway.md) | Cross-Instance Learning Runway | accepted |  |  | **Implementation**: `scripts/cos_cross_instance_learning.py` |
-| [137](ADR-137-operational-trajectory-governance-layer-to-embedded-runtime.md) | Operational Trajectory — From Governance Layer Over Agents to Embedded Runtime | accepted |  | 2026-05-03 | **Accepted** for the trajectory itself. The directional commitment (B → A, defined below) is firm. |
-| [138](ADR-138-flow-contract-schema.md) | Flow Contract Schema — Required Shape for Cloud Flow Manifests | accepted |  | 2026-05-03 | **Accepted and materialized for first lab registration.** The companion |
-| [139](ADR-139-account-agnostic-multi-provider-runtime.md) | Account-Agnostic Multi-Provider Runtime | implemented |  | 2026-05-04 | **Accepted — Implemented** as the credential and billing posture for all COS runtime surfaces — local maintainer, cloud worker, and ephemeral sandbox. |
-| [140](ADR-140-cross-os-containerized-deployment.md) | Cross-OS Containerized Deployment via Docker Compose | accepted |  | 2026-05-04 | **Accepted — Implemented** as the containerised deployment shape for COS cloud |
-| [141](ADR-141-engram-cloud-cross-instance-replication.md) | Engram Cloud as Cross-Instance Replication Transport | implemented |  | 2026-05-04 | **Accepted — Implemented** as the replication strategy for Engram observations across COS instances. Local SQLite remains authoritative. Cloud is replication-on |
-| [142](ADR-142-compliance-audit-air-gapped-surface.md) | Compliance, Audit, and Air-Gapped Surface (SOC 2 / ISO 27001 / GDPR) | implemented |  | 2026-05-04 | **Accepted — Implemented** as the compliance posture and audit-trail bridge for all COS cloud worker surfaces. |
-| [143](ADR-143-closure-discipline-gate.md) | Closure Discipline Gate — Validation Nervous System Must Close With the Change | accepted |  | 2026-05-04 | **Accepted.** Closure discipline is now a first-class blocking maintainer gate. |
-| [144](ADR-144-hook-enforced-rule-projection-contract.md) | Hook-Enforced Rule Projection Contract | accepted |  | 2026-05-04 | Accepted. Hook-enforced rule exclusions are now a projection contract, not a prose convention. |
 | [145](ADR-145-dependency-lane-split.md) | Split heavy optional dependencies into explicit dependency lanes | accepted |  |  | Date: 2026-05-04 |
 | [146](ADR-146-primitive-readiness-ledger.md) | Primitive Readiness Ledger | accepted |  |  | Accepted — 2026-05-04 |
 | [147](ADR-147-agent-capability-coverage-pipeline.md) | Agent Capability Coverage Pipeline | accepted |  |  | Accepted — 2026-05-04 |
-| [148](ADR-148-adr-authoring-primitive.md) | ADR Authoring Primitive | accepted |  | 2026-05-04 | **Accepted** — 2026-05-04 |
-| [149](ADR-149-primitive-duplication-audit.md) | Primitive Duplication Audit | accepted |  | 2026-05-04 | **Accepted** — 2026-05-04 |
-| [150](ADR-150-acc-projection-profiles-and-harness-registry.md) | ACC Projection Profiles and Expanded Harness Registry | accepted |  | 2026-05-04 | **Accepted** — 2026-05-04 |
-| [151](ADR-151-consumer-availability-classification.md) | Consumer Availability Classification Manifest | implemented |  | 2026-05-04 | **Implemented for manifest/classification scope** — 2026-05-04. The consumer availability manifest, ACC adapter, and contract tests named below exist; future sc |
-| [152](ADR-152-shell-ci-projection-and-local-surface-defaults.md) | Shell CI Projection and Local Surface Defaults | implemented |  | 2026-05-04 | **Implemented for shell/CI projection and local-surface defaults** — 2026-05-04. The projection manifest, projector, ACC integration, and artifact-status extrac |
-| [153](ADR-153-acc-fail-new-and-harness-proof-boundary.md) | ACC Fail-New Gate and Harness Proof Boundary | accepted |  | 2026-05-04 | **Accepted** — 2026-05-04 |
-| [154](ADR-154-multi-ide-structural-harness-projection.md) | Multi-IDE Structural Harness Projection | implemented |  | 2026-05-04 | **Implemented for structural projection scope** — 2026-05-04. OpenCode, VS Code Copilot, and Cursor project-local projections are generated and tested; this doe |
-| [155](ADR-155-shell-ci-formal-harness.md) | Shell CI Formal Harness Projection | accepted |  | 2026-05-04 | **Accepted** — 2026-05-04 |
-| [156](ADR-156-qwen-code-structural-harness-projection.md) | Qwen Code Structural Harness Projection | implemented |  | 2026-05-04 | **Implemented for structural projection scope** — 2026-05-04. Qwen Code project-local settings/context projection is generated and tested; account-backed Qwen r |
-| [157](ADR-157-kimi-code-cli-structural-harness-projection.md) | Kimi Code CLI Structural Harness Projection | implemented |  | 2026-05-04 | **Implemented for structural CLI projection scope** — 2026-05-04. Kimi Code project-local CLI context/config projection is generated and tested; authenticated C |
-| [158](ADR-158-ai-agent-harness-landscape-and-proof-backlog.md) | AI Agent Harness Landscape and Proof Backlog | accepted |  | 2026-05-04 | **Accepted** — 2026-05-04 |
-| [159](ADR-159-agents-md-native-structural-harness-batch.md) | AGENTS.md-native Structural Harness Batch and Kiro Lifecycle Investigation | accepted |  | 2026-05-05 | **Accepted** — 2026-05-05 |
-| [160](ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md) | Rules/MCP Structural Harness Batch and Kiro Adapter Design | implemented |  | 2026-05-05 | **Implemented for structural projection and Kiro design scope** — 2026-05-05. The seven rules/MCP harness projections and Kiro adapter design artifacts exist an |
-| [161](ADR-161-remote-control-plane-and-provider-adapter-boundary.md) | Remote Control Plane and Provider Adapter Boundary | implemented |  | 2026-05-05 | **Implemented for boundary/inventory scope** — 2026-05-05. The remote ingress versus provider/executor adapter boundary, alternatives manifest, report, manual t |
-| [162](ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md) | Task Lifecycle, Interruption, Question, Worktree, and PR Protocol | implemented |  | 2026-05-05 | **Implemented for contract scope** — 2026-05-05. The task lifecycle schema, contract tests, and manual proof checklist exist; full queue/worker/PR runtime enfor |
-| [163](ADR-163-cos-instance-installer.md) | Cognitive OS Instance Installer | accepted |  | 2026-05-05 | **Accepted** — 2026-05-05 |
-| [164](ADR-164-host-cli-bridge-security-boundary.md) | Host CLI Bridge Security Boundary | implemented |  | 2026-05-05 | **Implemented for the design-only security contract scope** — 2026-05-05. |
-| [165](ADR-165-proof-drill-and-smoke-opt-in-primitives.md) | Proof Drill and Smoke Opt-In Agentic Primitives | implemented |  | 2026-05-05 | **Implemented for the proof-drill registry and smoke opt-in primitive scope** — 2026-05-05. The ADR closes the governed registry, agent procedure, manual proof  |
-| [166](ADR-166-expected-skip-registry-and-opt-in-test-lanes.md) | Expected Skip Registry and Opt-In Test Lanes | implemented |  | 2026-05-05 | **Implemented for the first enforcement slice** — 2026-05-05. |
-| [167](ADR-167-proof-drill-selector-and-acc-evidence-adapter.md) | Proof Drill Selector and ACC Evidence Adapter | implemented |  | 2026-05-05 | **Implemented for the proof-drill selector, evidence recorder, ACC adapter, instance-profile projection, and runtime-flag registry scope** — 2026-05-05. Live pr |
-| [168](ADR-168-cross-device-dependency-installation.md) | Cross-Device Dependency Installation Contract | implemented |  | 2026-05-05 | **Implemented for the manifest-driven dry-run installer and credential-safe |
-| [169](ADR-169-dashboard-formal-demotion.md) | Dashboard Formal Demotion | accepted |  | 2026-05-05 | Accepted. |
-| [171](ADR-171-reject-paperclip-integration.md) | Reject Paperclip Integration — API was Aspirational, Multi-Surface Replaces It | accepted |  | 2026-05-05 | Accepted. Supersedes ADR-043. |
-| [172](ADR-172-multi-surface-ui-architecture.md) | Multi-Surface UI Architecture - CLI + Phoenix + Engram Cloud + Obsidian | accepted |  | 2026-05-05 | Accepted. Supersedes [ADR-170](ADR-170-operator-cli-as-primary-ui-surface.md). |
-| [173](ADR-173-surface-5-research-gate.md) | Surface 5 Research Gate — No Custom TUI/UI Adoption Without Source-Level Proof | accepted |  | 2026-05-06 | **Accepted** — 2026-05-06. |
-| [174](ADR-174-auto-derived-primitive-routing.md) | Auto-Derived Primitive Routing for Skills (and Rules) | accepted |  | 2026-05-05 | As of 2026-05-05, `lib/skill_router.py` contains a hand-maintained |
-| [174b](ADR-174b-prevention-followup.md) | Routing-Pattern Prevention Followup — Auto-Generation and Soak-Driven Promotion | accepted | implemented | 2026-05-05 | Accepted. This ADR owns Part A (auto-generation includes `routing_patterns:`) and the implemented propose-only soak evaluator. The actual advisory-to-blocking p |
-| [175](ADR-175-research-quality-enforcement.md) | Research-quality enforcement for audit reports | accepted |  | 2026-05-05 | **Accepted** — 2026-05-05 |
-| [176](ADR-176-skillstore-and-analysis-trigger.md) | SkillStore SQLite Schema Adoption + Post-Execution Analysis Trigger (Discipline-Gated) | accepted |  | 2026-05-05 | Accepted. |
-| [177](ADR-177-activate-skill-lifecycle-promotion-ladder.md) | Activate Skill Lifecycle Promotion Ladder | accepted |  | 2026-05-06 | Accepted. |
 | [178](ADR-178-openharness-primitive-adoption.md) | OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile) | accepted |  |  | **Deciders**: Maintainer |
-| [179](ADR-179-rules-auto-derive-routing.md) | Auto-Derived Rule Routing for Agent-Instruction Rules | accepted |  | 2026-05-05 | **Accepted** — 2026-05-05 |
-| [180](ADR-180-lifecycle-promotion-activation.md) | Lifecycle Promotion Activation — Concrete Proposers and Hook Wiring | accepted |  | 2026-05-05 | Accepted. |
-| [181](ADR-181-adr-relevance-suggester.md) | ADR Relevance Suggester — Lightweight Routing for Architecture Decisions | accepted |  | 2026-05-05 | Accepted — 2026-05-05 |
-| [182](ADR-182-branch-ownership-lock.md) | Branch Ownership Lock — Single-Writer Surface for Concurrent Orchestrators | accepted |  | 2026-05-05 | **Accepted.** Implemented as the ADR-182 branch-lock hook, library, CLI wrappers, and contract tests. Filed in response to the cross-session collision incident |
-| [183](ADR-183-cross-session-event-log.md) | Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators | accepted |  | 2026-05-05 | **Accepted.** Implemented as an extension of the existing `lib/session_bus.py` plus emit/context hooks. Companion to ADR-182. ADR-182 prevents *conflicts*; ADR- |
-| [184](ADR-184-manager-of-managers-daemon.md) | Manager-of-Managers Daemon — Authoritative Single-Writer for Critical Surfaces | accepted |  | 2026-05-05 | **Accepted.** First implementation landed as a local file-queue daemon for ADR identity arbitration. Long-horizon refinement of ADR-163 (cos-instance-installer) |
-| [185](ADR-185-cross-agent-audit-findings.md) | Cross-Agent Audit Findings Queue — Auditor → Implementer Directive Channel | accepted |  | 2026-05-05 | **Accepted.** Implemented as the directed message bus, inbox/context hooks, CLI, and tests. Fourth architectural layer companion to ADR-182 (branch |
-| [186](ADR-186-context-budget-enforcement.md) | Context Budget Enforcement — Activate the ADR-038 Wave 3 Limits | accepted |  | 2026-05-05 | **Accepted.** Implemented as `lib/context_budget.py`, a shared hook accountant, a UserPromptSubmit meter, and hook-level budget checks. Filed in response to tod |
-| [188](ADR-188-mandatory-skill-invocation-at-high-confidence.md) | Mandatory Skill Invocation at High Router Confidence | accepted |  | 2026-05-06 | **Accepted (2026-05-06).** Implementation landed on session branch |
 | [189](ADR-189-harness-implementation-coverage.md) | Surface Implementation Coverage for Agentic Primitives | accepted |  |  | Accepted — 2026-05-06 |
 | [190](ADR-190-harness-action-receipts.md) | Harness Action Receipts and VCS Event Telemetry | accepted |  |  | Accepted — 2026-05-06 |
 | [191](ADR-191-cos-binary-release-pipeline.md) | COS Binary Release Pipeline | accepted |  |  | Accepted — 2026-05-06 |
@@ -224,20 +267,7 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [235](ADR-235-detached-agent-daemon.md) | Detached Agent Daemon | accepted |  |  | **Source**: [`docs/research/orchestration-gaps/background-agent-patterns.md`](../research/orchestration-gaps/background-agent-patterns.md) |
 | [236](ADR-236-deferred-tool-loading-and-toolsearch.md) | Deferred Tool Loading + ToolSearch Adoption | accepted |  |  | The orchestration research recommended adopting the ToolSearch/deferred-loading pattern instead of loading every tool schema into every session. This is not a s |
 | [237](ADR-237-test-execution-efficiency-protocol.md) | Test Execution Efficiency Protocol | accepted |  |  | Cognitive OS test lanes are intentionally broad: unit, behavior, integration, chaos, benchmark, audit, smoke, cross-harness, and release gates. Running `make te |
-| [239](ADR-239-isolated-worktree-default-for-write-agents.md) | Isolated Worktree Default for Write Agents | accepted |  | 2026-05-08 | Accepted. This ADR records the corrective decision after the 2026-05-08 |
 | [240](ADR-240-primitive-coherence-audit-and-ownership-manifest.md) | Primitive Coherence Audit and Ownership Manifest | accepted |  |  | status: accepted |
-| [241](ADR-241-consolidated-cos-bypass-allowlist.md) | Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist | accepted |  | 2026-05-08 | Accepted — Slice A implemented. Shared resolver, cheatsheet, target hook integration, and behavior tests are active; broad ecosystem bypass consolidation remain |
-| [242](ADR-242-git-filter-repo-wrapper-preserves-remote.md) | git-filter-repo Wrapper Preserves Remote and Refuses Non-Idempotent Re-Runs | accepted |  | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-filter-repo-wrap.sh` preserves remotes, refuses idempotent reruns, writes recovery artifacts, and `lib/history_sani |
-| [243](ADR-243-post-rewrite-push-collision-exception.md) | Post-Rewrite Push-Collision Check Exception | accepted |  | 2026-05-08 | Accepted — Slice A implemented. History sanitization writes `.cognitive-os/runtime/last-rewrite.json`; push-collision detection consumes it to allow matching po |
-| [244](ADR-244-trust-report-claim-validator-must-enforce.md) | Trust Report Claim-Validator Must Enforce, Not Advise | accepted |  | 2026-05-08 | Accepted — Slice A implemented. `scripts/claim_enforcer.py` enforces structured `verification:` evidence for high-stakes claims, `hooks/claim-validator.sh` bloc |
-| [245](ADR-245-chaos-tests-readonly-production-source.md) | Chaos Tests Run with Read-Only Production Source | accepted |  | 2026-05-08 | Accepted — Slice A implemented. `tests/chaos/conftest.py` installs `chaos_readonly_workspace`, restores source mutations under `lib/`, `scripts/`, and `hooks/`, |
-| [246](ADR-246-release-transaction-freeze.md) | Release Transaction Freeze for Destructive and Public-State Operations | accepted |  | 2026-05-08 | Accepted — Slice A implemented. `scripts/cos-release-freeze` now provides `--prepare`, `--begin`, `--status`, and `--end`; receipts are written under `.cognitiv |
-| [247](ADR-247-manifest-driven-postmortem-regression-audits.md) | Manifest-Driven Postmortem Regression Audits and External Tool Adapters | accepted |  | 2026-05-08 | Accepted. This ADR documents the policy correction made after ADR-242 through |
-| [248](ADR-248-control-plane-audit-loop.md) | Control-Plane Audit Loop for ADR-239+ Primitive Drift | accepted |  | 2026-05-08 | Accepted — Slice A implemented. |
-| [249](ADR-249-primitive-behavioral-proof-anti-overfit-tests.md) | Primitive Behavioral Proof and Anti-Overfit Testing | accepted |  | 2026-05-08 | Accepted — Slice A implemented. |
-| [250](ADR-250-skill-router-retrieval-adapter-boundary.md) | Skill Router Retrieval Adapter Boundary | accepted |  | 2026-05-08 | Accepted — Slice A implemented. |
-| [251](ADR-251-agent-orchestration-adapter-boundary.md) | Agent Orchestration Adapter Boundary | accepted |  | 2026-05-08 | Accepted — Slice A implemented. |
-| [252](ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md) | Capability Coverage Matrix and Feature Reality Ledger | accepted |  | 2026-05-08 | Accepted — Slice A implemented. |
 | [254](ADR-254-external-tool-intelligence-plane-and-project-overlays.md) | External Tool Intelligence Plane and Project Overlays | accepted |  |  | status: accepted |
 | [255](ADR-255-feature-to-external-tool-due-diligence.md) | Feature-to-External-Tool Due Diligence | accepted |  |  | Accepted — Slice A implemented |
 | [256](ADR-256-primitive-contract-registry-and-runtime-evidence-ledger.md) | Primitive Contract Registry and Runtime Evidence Ledger | accepted |  |  | Accepted — implemented through Phases 1–6; all primitive-lifecycle rows are registry-backed; OpenCode signed smoke covers the first 20 runtime primitives |
@@ -251,8 +281,6 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | [264](ADR-264-tool-result-envelope.md) | Tool Result Envelope: Compact Envelope Format for Large Tool Outputs | accepted |  |  | **Date:** 2026-05-11 |
 | [267](ADR-267-license-compliance-enforcement-architecture.md) | License-Compliance Enforcement Architecture | accepted |  |  | Accepted (2026-05-11) |
 | [268](ADR-268-history-sanitization-2026-05-11.md) | Defensive history sanitization for external-pattern attribution | accepted |  |  | Accepted (2026-05-11) |
-| [269](ADR-269-mandatory-adr-reference-for-history-rewrites.md) | Mandatory ADR Reference for History Rewrites | accepted |  | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit set. |
-| [270](ADR-270-legal-compliance-workflow-automation.md) | Legal Compliance Workflow Automation | accepted |  | 2026-05-11 | Accepted (2026-05-11). Implementation lands in companion commit. |
 | [272](ADR-272-structural-rule-backend-boundary.md) | Structural Rule Backend Boundary | accepted |  |  | Status: Accepted |
 
 ## Proposed
@@ -298,8 +326,8 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
 | [084](ADR-084-headless-clustered-runtime-shape.md) | Headless and Clustered Runtime Shape | superseded |  |  | **Author**: Maintainer |
-| [170](ADR-170-operator-cli-as-primary-ui-surface.md) | Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists | superseded |  | 2026-05-05 | Superseded by [ADR-172](ADR-172-multi-surface-ui-architecture.md) (2026-05-05). |
-| [187](ADR-187-surface-5-adoption-proof-contract.md) | Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI | superseded |  | 2026-05-06 | **Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather |
+| [170](ADR-170-operator-cli-as-primary-ui-surface.md) | Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists | superseded | not-applicable | 2026-05-05 | Superseded by [ADR-172](ADR-172-multi-surface-ui-architecture.md) (2026-05-05). |
+| [187](ADR-187-surface-5-adoption-proof-contract.md) | Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI | superseded | not-applicable | 2026-05-06 | **Superseded by ADR-192** — the proof contract was satisfied by the accepted Bubble Tea adoption decision. Future Surface 5 adoption work extends ADR-192 rather |
 
 </details>
 
@@ -310,14 +338,14 @@ Rows link to the canonical ADR file and group by index bucket for human and agen
 
 | ADR | Title | Decision Status | Implementation | Date | Summary |
 |---|---|---|---|---|---|
-| [003](ADR-003-tombstone.md) | Reserved architecture decision slot | tombstone |  | 2026-05-05 | **Tombstone** — 2026-05-05 |
-| [004](ADR-004-tombstone.md) | Reserved architecture decision slot | tombstone |  | 2026-05-05 | **Tombstone** — 2026-05-05 |
-| [005](ADR-005-tombstone.md) | Reserved architecture decision slot | tombstone |  | 2026-05-05 | **Tombstone** — 2026-05-05 |
-| [043](ADR-043-tombstone.md) | Removed local-daemon integration decision | tombstone |  | 2026-05-05 | **Tombstone** — 2026-05-05 |
-| [046](ADR-046-tombstone.md) | Reserved architecture decision slot | tombstone |  | 2026-05-05 | **Tombstone** — 2026-05-05 |
-| [085](ADR-085-tombstone.md) | Reserved architecture decision slot | tombstone |  | 2026-05-05 | **Tombstone** — 2026-05-05 |
+| [003](ADR-003-tombstone.md) | Reserved architecture decision slot | tombstone | not-applicable | 2026-05-05 | **Tombstone** — 2026-05-05 |
+| [004](ADR-004-tombstone.md) | Reserved architecture decision slot | tombstone | not-applicable | 2026-05-05 | **Tombstone** — 2026-05-05 |
+| [005](ADR-005-tombstone.md) | Reserved architecture decision slot | tombstone | not-applicable | 2026-05-05 | **Tombstone** — 2026-05-05 |
+| [043](ADR-043-tombstone.md) | Removed local-daemon integration decision | tombstone | not-applicable | 2026-05-05 | **Tombstone** — 2026-05-05 |
+| [046](ADR-046-tombstone.md) | Reserved architecture decision slot | tombstone | not-applicable | 2026-05-05 | **Tombstone** — 2026-05-05 |
+| [085](ADR-085-tombstone.md) | Reserved architecture decision slot | tombstone | not-applicable | 2026-05-05 | **Tombstone** — 2026-05-05 |
 | [207](ADR-207-skill-ecosystem-performance-and-lifecycle-closure.md) | Skill Ecosystem Performance and Lifecycle Closure | tombstone |  |  | **Source**: `.cognitive-os/strategy/research/07-skill-ecosystem-evolution.md`, `.cognitive-os/strategy/research/05-hermes-imitation-forensics.md` |
-| [214](ADR-214-tombstone.md) | Reserved — vacated by parallel-session number collision | tombstone |  | 2026-05-06 | **Tombstone** — 2026-05-06 |
+| [214](ADR-214-tombstone.md) | Reserved — vacated by parallel-session number collision | tombstone | not-applicable | 2026-05-06 | **Tombstone** — 2026-05-06 |
 | [224](ADR-224-shadow-state-snapshots-off-repo.md) | Tombstone (consolidated into ADR-227) | tombstone |  |  | status: tombstone |
 | [229](ADR-229-tombstone.md) | Tombstone (consolidated into ADR-228) | tombstone |  |  | status: tombstone |
 | [253](ADR-253-tombstone-squads.md) | Tombstone — squads orchestration superseded by ADR-251 | tombstone | not-applicable | 2026-05-08 | The `packages/squads/` orchestration package (multi-agent team coordination |

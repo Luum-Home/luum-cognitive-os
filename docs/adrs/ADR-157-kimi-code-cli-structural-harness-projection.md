@@ -1,7 +1,9 @@
 ---
+
 adr: 157
 title: Kimi Code CLI Structural Harness Projection
 status: implemented
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

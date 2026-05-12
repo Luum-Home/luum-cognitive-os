@@ -1,7 +1,9 @@
 ---
+
 adr: 105
 title: Bilateral Claim Verification Contract
 status: implemented
+implementation_status: partial
 date: 2026-05-02
 supersedes: []
 superseded_by: null

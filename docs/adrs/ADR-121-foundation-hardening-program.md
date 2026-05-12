@@ -1,7 +1,9 @@
 ---
+
 adr: 121
 title: Foundation Hardening Program
 status: accepted
+implementation_status: partial
 date: 2026-05-02
 supersedes: []
 superseded_by: null

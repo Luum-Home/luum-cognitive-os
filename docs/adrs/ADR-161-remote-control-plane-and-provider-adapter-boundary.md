@@ -1,7 +1,9 @@
 ---
+
 adr: 161
 title: Remote Control Plane and Provider Adapter Boundary
 status: implemented
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

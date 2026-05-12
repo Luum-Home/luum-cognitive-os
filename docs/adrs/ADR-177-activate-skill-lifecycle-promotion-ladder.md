@@ -1,7 +1,9 @@
 ---
+
 adr: 177
 title: Activate Skill Lifecycle Promotion Ladder
 status: accepted
+implementation_status: implemented
 date: 2026-05-06
 supersedes: []
 superseded_by: null

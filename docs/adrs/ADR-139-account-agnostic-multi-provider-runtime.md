@@ -1,7 +1,9 @@
 ---
+
 adr: 139
 title: Account-Agnostic Multi-Provider Runtime
 status: implemented
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

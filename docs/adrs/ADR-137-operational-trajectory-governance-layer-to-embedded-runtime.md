@@ -1,7 +1,9 @@
 ---
+
 adr: 137
 title: Operational Trajectory — From Governance Layer Over Agents to Embedded Runtime
 status: accepted
+implementation_status: planned
 date: 2026-05-03
 supersedes: []
 superseded_by: null

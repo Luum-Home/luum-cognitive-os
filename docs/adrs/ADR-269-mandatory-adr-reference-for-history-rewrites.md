@@ -1,7 +1,9 @@
 ---
+
 adr: 269
 title: Mandatory ADR Reference for History Rewrites
 status: accepted
+implementation_status: implemented
 date: 2026-05-11
 supersedes: []
 superseded_by: null

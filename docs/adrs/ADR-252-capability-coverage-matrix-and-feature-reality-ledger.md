@@ -1,7 +1,9 @@
 ---
+
 adr: 252
 title: Capability Coverage Matrix and Feature Reality Ledger
 status: accepted
+implementation_status: partial
 relationship_chain_exempt: true
 date: 2026-05-08
 supersedes: []

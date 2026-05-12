@@ -1,7 +1,9 @@
 ---
+
 adr: 168
 title: Cross-Device Dependency Installation Contract
 status: implemented
+implementation_status: partial
 date: 2026-05-05
 supersedes: []
 superseded_by: null

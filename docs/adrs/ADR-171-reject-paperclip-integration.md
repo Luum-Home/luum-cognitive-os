@@ -1,7 +1,9 @@
 ---
+
 adr: 171
 title: Reject Paperclip Integration — API was Aspirational, Multi-Surface Replaces It
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: [ADR-043]
 superseded_by: null
