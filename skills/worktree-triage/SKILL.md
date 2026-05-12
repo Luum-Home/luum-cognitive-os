@@ -1,13 +1,13 @@
 <!-- SCOPE: both -->
 ---
 name: worktree-triage
-description: "Use when you need this Cognitive OS skill: Triage a linked Git worktree against a target branch, port only unapplied work, validate, and remove the worktree only when clean and safe.; do not use when a narrower skill directly matches the task."
+description: "Use when you need this Cognitive OS skill: Triage linked Git worktrees or remote cleanup branches against a target branch, port only unapplied work, validate, and remove/delete only when clean and safe.; do not use when a narrower skill directly matches the task."
 user-invocable: true
 version: 1.0.0
 last-updated: 2026-05-02
 audience: both
 tags: [git, worktree, coordination, safety, triage]
-summary_line: "Compare a worktree to main and produce a safe port/validate/remove checklist."
+summary_line: "Compare a worktree or remote branch to main and produce a safe port/validate/remove/delete checklist."
 platforms: ["codex", "claude-code", "generic-cli"]
 prerequisites: ["git"]
 routing_patterns:
@@ -17,6 +17,10 @@ routing_patterns:
     confidence: 0.85
   - pattern: '\bport\s+unapplied\s+work\b'
     confidence: 0.75
+  - pattern: '\bremote\s+branch\s+(cleanup|triage|delete)\b'
+    confidence: 0.85
+  - pattern: '\bpatch[- ]?equivalent\s+branch\b'
+    confidence: 0.85
 ---
 
 # Worktree Triage
@@ -39,6 +43,7 @@ until the checklist is green and the useful work is proven present on the target
 - You need to clean up a worktree but must avoid losing work.
 - A preserve/concurrent cleanup branch references a worktree path.
 - Before running `git worktree remove` on any non-temporary worktree.
+- Before deleting a remote backup/session branch that may already be patch-equivalent to `main`.
 
 ## Step 1: Identify target and worktree
 
@@ -143,6 +148,40 @@ git worktree remove /path/to/bb5a
 ```
 
 
+## Remote branch cleanup path
+
+Use this when a remote branch is not merged by topology but may already be
+patch-equivalent to `main` because the work was replayed, sanitized, renamed, or
+landed through another branch. This path is safe to run while other agents are
+working because dry-run mode is read-only and deletion touches only the named
+remote ref after explicit confirmation.
+
+Dry run a specific branch:
+
+```bash
+scripts/cos-remote-branch-triage \
+  --target origin/main \
+  --branch pre-sanitization-backup-2026-05-11 \
+  --json
+```
+
+The report marks a branch `safe_to_delete: true` only when every commit in
+`origin/main..origin/<branch>` is patch-equivalent to `origin/main` according to
+`git log --cherry-pick`. Branches with unique commits are reported as
+`needs_port` and must not be deleted.
+
+After reviewing the dry-run output, delete only safe branches explicitly:
+
+```bash
+scripts/cos-remote-branch-triage \
+  --target origin/main \
+  --branch pre-sanitization-backup-2026-05-11 \
+  --delete --yes
+```
+
+Deletion refuses to run without `--yes`; protected branches such as `main` and
+`master` are never considered safe deletion candidates.
+
 ## Related cleanup primitive
 
 When the operator confirms there are no active agents and the remaining blockers
@@ -159,5 +198,6 @@ the required path for branch/worktree triage.
 ## Contextual Trigger
 
 Keywords: worktree, linked worktree, bb5a, stale worktree, dirty worktree,
-worktree cleanup, worktree remove, port work, cherry-pick only unapplied,
-stash in worktree, safe to remove.
+worktree cleanup, worktree remove, remote branch cleanup, stale remote branch,
+patch-equivalent branch, delete backup branch, port work, cherry-pick only
+unapplied, stash in worktree, safe to remove.

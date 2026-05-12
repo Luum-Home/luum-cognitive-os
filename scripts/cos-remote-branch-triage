@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# SCOPE: both
+# Audit remote branches for patch-equivalent cleanup candidates.
+set -uo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec python3 "$SCRIPT_DIR/cos_remote_branch_triage.py" "$@"
