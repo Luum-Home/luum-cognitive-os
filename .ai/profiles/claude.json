@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/claude-code",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [
     {
       "claims_runtime_enforcement": true,
@@ -1851,6 +1853,8 @@
   "limitations": [
     "Proof currently covers default profile, not full profile."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "hooks",
     "rules",

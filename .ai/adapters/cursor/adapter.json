@@ -1,7 +1,11 @@
 {
+  "adapter_contract_kind": "declarative-manifest",
+  "compiler_gap_policy": "This generated .ai adapter manifest does not install native IDE files; any compiler must preserve projection_fidelity and must not upgrade structural-advisory rows to enforcement.",
   "display_name": "Cursor",
   "fidelity_policy": "Adapter manifests translate declared portable contracts and never upgrade advisory projections to enforcement.",
   "harness": "cursor",
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_primitive_count": 307,
   "projected_primitives": [
     {

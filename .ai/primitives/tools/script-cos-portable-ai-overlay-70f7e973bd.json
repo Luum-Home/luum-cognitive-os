@@ -14,7 +14,7 @@
       "consumer_fleet": "none",
       "service_mode": "unsupported"
     },
-    "intent": "Wrapper that generates the portable .ai consumer overlay from COS canonical primitive contracts.",
+    "intent": "Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.",
     "present": true,
     "projection_fidelity": {
       "claude": {
@@ -62,7 +62,7 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Wrapper that generates the portable .ai consumer overlay from COS canonical primitive contracts.",
+    "behavior_evidence": "Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.",
     "evidence_commands": [
       "bash -n scripts/cos-portable-ai-overlay",
       "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
@@ -94,21 +94,21 @@
     "evidence": {
       "evidence_commands": [
         "bash -n scripts/cos-portable-ai-overlay",
-        "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+        "python3 -m pytest tests/contracts/test_portable_ai_overlay.py -q"
       ],
       "interventions": [
         ".cognitive-os/metrics/primitive-interventions.jsonl"
       ],
       "metrics": [],
       "proof_tests": [
-        "tests/contracts/test_primitive_readiness_ledger_contract.py"
+        "tests/contracts/test_portable_ai_overlay.py"
       ]
     },
     "impact": {
       "consumer_fleet": "none",
       "service_mode": "unsupported"
     },
-    "intent": "Wrapper that generates the portable .ai consumer overlay from COS canonical primitive contracts.",
+    "intent": "Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

@@ -14,7 +14,7 @@
       "consumer_fleet": "none",
       "service_mode": "unsupported"
     },
-    "intent": "Consumer UX for listing, installing, and verifying portable .ai adapter surfaces.",
+    "intent": "Consumer UX for listing and verifying declarative portable .ai adapter manifests; native IDE file emission remains delegated to harness projection drivers or a future fidelity-preserving adapter compiler.",
     "present": true,
     "projection_fidelity": {
       "claude": {
@@ -62,7 +62,7 @@
     }
   },
   "evidence": {
-    "behavior_evidence": "Consumer UX for listing, installing, and verifying portable .ai adapter surfaces.",
+    "behavior_evidence": "Consumer UX for listing and verifying declarative portable .ai adapter manifests; native IDE file emission remains delegated to harness projection drivers or a future fidelity-preserving adapter compiler.",
     "evidence_commands": [
       "python3 -m py_compile scripts/cos-adapters",
       "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
@@ -94,21 +94,22 @@
     "evidence": {
       "evidence_commands": [
         "python3 -m py_compile scripts/cos-adapters",
-        "python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q"
+        "python3 -m pytest tests/contracts/test_consumer_adapter_ux.py tests/contracts/test_portable_ai_overlay.py -q"
       ],
       "interventions": [
         ".cognitive-os/metrics/primitive-interventions.jsonl"
       ],
       "metrics": [],
       "proof_tests": [
-        "tests/contracts/test_primitive_readiness_ledger_contract.py"
+        "tests/contracts/test_consumer_adapter_ux.py",
+        "tests/contracts/test_portable_ai_overlay.py"
       ]
     },
     "impact": {
       "consumer_fleet": "none",
       "service_mode": "unsupported"
     },
-    "intent": "Consumer UX for listing, installing, and verifying portable .ai adapter surfaces.",
+    "intent": "Consumer UX for listing and verifying declarative portable .ai adapter manifests; native IDE file emission remains delegated to harness projection drivers or a future fidelity-preserving adapter compiler.",
     "is_full_contract": true,
     "projection_fidelity": {
       "claude": {

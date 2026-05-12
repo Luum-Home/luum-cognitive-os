@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/cursor",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [
     {
       "claims_runtime_enforcement": false,
@@ -1852,6 +1854,8 @@
     "Structural project rule/MCP file proof only; no Cursor account-backed runtime invocation in automated tests.",
     "No native COS lifecycle hook parity is claimed."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "rules",
     "instructions",

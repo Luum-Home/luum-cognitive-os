@@ -32,6 +32,7 @@ def list_adapters(root: Path) -> dict[str, Any]:
     for profile in _profiles(root):
         adapter_dir = root / ".ai" / str(profile.get("adapter_directory", ""))
         manifest = adapter_dir / "adapter.json"
+        manifest_data = _load_json(manifest)
         adapters.append({
             "harness": profile.get("harness"),
             "display_name": profile.get("display_name"),
@@ -39,7 +40,11 @@ def list_adapters(root: Path) -> dict[str, Any]:
             "proof_level": profile.get("proof_level"),
             "adapter_directory": profile.get("adapter_directory"),
             "adapter_manifest_exists": manifest.exists(),
-            "projected_primitive_count": _load_json(manifest).get("projected_primitive_count", 0),
+            "adapter_contract_kind": manifest_data.get("adapter_contract_kind"),
+            "native_file_emission": manifest_data.get("native_file_emission"),
+            "native_projection_driver": manifest_data.get("native_projection_driver"),
+            "compiler_gap_policy": manifest_data.get("compiler_gap_policy"),
+            "projected_primitive_count": manifest_data.get("projected_primitive_count", 0),
         })
     return {"schema_version": "cos-adapters-list.v1", "adapter_count": len(adapters), "adapters": adapters}
 
@@ -52,6 +57,10 @@ def verify_adapters(root: Path) -> dict[str, Any]:
             findings.append({"severity": "fail", "id": "missing-adapter-manifest", "harness": adapter["harness"]})
         if adapter.get("proof_level") == "structural" and adapter.get("projected_primitive_count", 0) < 0:
             findings.append({"severity": "fail", "id": "invalid-projected-count", "harness": adapter["harness"]})
+        if adapter["adapter_manifest_exists"] and adapter.get("adapter_contract_kind") != "declarative-manifest":
+            findings.append({"severity": "fail", "id": "adapter-kind-not-declarative", "harness": adapter["harness"]})
+        if adapter["adapter_manifest_exists"] and adapter.get("native_file_emission") is not False:
+            findings.append({"severity": "fail", "id": "adapter-manifest-must-not-claim-native-emission", "harness": adapter["harness"]})
     return {
         "schema_version": "cos-adapters-verify.v1",
         "status": "fail" if any(f["severity"] == "fail" for f in findings) else "pass",
@@ -72,7 +81,9 @@ def install_adapter(root: Path, harness: str, *, execute: bool) -> dict[str, Any
         "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "adapter_directory": profile.get("adapter_directory"),
         "proof_level": profile.get("proof_level"),
-        "note": "This command verifies the generated .ai adapter surface. Host-specific file mutation remains delegated to existing harness projection drivers.",
+        "note": "This command verifies the generated .ai adapter surface. Host-specific file mutation remains delegated to existing harness projection drivers or a future fidelity-preserving adapter compiler.",
+        "native_file_emission": False,
+        "compiler_gap_policy": "cos-adapters is non-mutating for native IDE files; use cos_init.py or a future adapter compiler for actual host file projection.",
     }
     if execute:
         metrics = root / ".cognitive-os" / "metrics"

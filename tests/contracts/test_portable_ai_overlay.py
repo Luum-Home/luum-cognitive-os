@@ -57,10 +57,13 @@ def test_context_records_generated_noncanonical_overlay() -> None:
     context = _json(OVERLAY / "context.json")
     assert context["schema_version"] == "portable-ai-context.v1"
     assert context["status"] == "generated-portable-overlay"
+    assert context["native_file_emission"] is False
+    assert "future adapter compiler" in context["consumer_package_policy"]
+    assert "scripts/cos_init.py" in context["native_projection_drivers"]
     assert "manifests/primitive-contracts.yaml" in context["canonical_source_of_truth"]
     assert "manifests/primitive-lifecycle.yaml" in context["canonical_source_of_truth"]
     assert context["primitive_count"] >= _lifecycle_count()
-    assert context["policy"].startswith("The `.ai` tree is a generated overlay")
+    assert context["policy"].startswith("The `.ai` tree is a generated maintainer overlay")
 
 
 def test_all_lifecycle_primitives_have_ai_overlay_rows() -> None:
@@ -96,6 +99,25 @@ def test_profiles_do_not_overclaim_structural_advisory_enforcement() -> None:
         for row in profile["contract_projection_fidelity"]:
             assert row["fidelity"] == "structural-advisory"
             assert row["claims_runtime_enforcement"] is False
+
+
+def test_adapter_manifests_are_declarative_and_do_not_emit_native_files() -> None:
+    for manifest_path in (OVERLAY / "adapters").glob("*/adapter.json"):
+        manifest = _json(manifest_path)
+        assert manifest["adapter_contract_kind"] == "declarative-manifest"
+        assert manifest["native_file_emission"] is False
+        assert "projection_fidelity" in manifest["compiler_gap_policy"]
+        for row in manifest["projected_primitives"]:
+            if row["fidelity"] == "structural-advisory":
+                assert row["claims_runtime_enforcement"] is False
+
+
+def test_profiles_record_compiler_gap_policy() -> None:
+    for profile_path in (OVERLAY / "profiles").glob("*.json"):
+        profile = _json(profile_path)
+        assert profile["adapter_contract_kind"] == "declarative-fidelity-profile"
+        assert profile["native_file_emission"] is False
+        assert "future adapter compiler" in profile["compiler_gap_policy"]
 
 
 def test_adapters_and_privacy_schemas_exist() -> None:
