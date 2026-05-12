@@ -19,11 +19,13 @@ Observed shape:
 | Dimension | Cognitive OS maintainer repo | Practice consumer repo |
 |---|---|---|
 | Approximate size | 389 files / 3.6 MB | 152 files / 1.2 MB |
-| Primary role | Generated portable overlay/export surface | Human-oriented consumer toolkit |
-| Primitive format | Machine-readable JSON rows | Markdown skills, rules, workflows, hooks |
-| Adapter format | Generated `adapter.json` plus README per harness | `install.sh` scripts plus README per IDE |
+| Primary role | Generated portable overlay/export surface | Editable consumer primitive source/package |
+| Primitive format | Machine-readable JSON rows with contract, lifecycle, evidence, impact, and `projection_fidelity` | Markdown plus YAML frontmatter for skills, rules, workflows, and hooks |
+| Adapter format | Generated `adapter.json` plus README per harness; descriptive, not install scripts | `install.sh` scripts plus README per IDE; mutates native project files |
 | Source of truth | `manifests/primitive-contracts.yaml`, `manifests/primitive-lifecycle.yaml`, `manifests/harness-projection.yaml`, plus `hooks/`, `skills/`, `rules/`, `scripts/` | `.ai/primitives/*`, `.ai/context/*`, `.ai/scripts/*` |
-| Consumer projection | Product/installer flow through `cos_init.py`, `cos-adapters`, harness drivers, ACC, and smoke reports | Already projected into root files such as `AGENTS.md`, `CLAUDE.md`, `.cursor/rules`, `.windsurfrules`, `.github/copilot-instructions.md`, `.codex/AGENTS.md`, `.opencode/agents.md`, `.kiro/instructions.md` |
+| Primitive count shape | Hundreds of catalogued lifecycle/script/hook rows; optimized for audit and fidelity proof | Dozens of human-sized primitives; optimized for direct agent use |
+| IDE output from `.ai/` itself | No direct native-file emission from `.ai/adapters/*`; emission lives in separate COS projection drivers | Yes: adapters write `.cursor/rules/*.mdc`, `.windsurfrules`, `.github/copilot-instructions.md`, `.codex/AGENTS.md`, etc. |
+| Main asset | Honest fidelity matrix and enforcement claims per harness | Working portability loop that a consumer repo can run and inspect |
 
 The difference is intentional, but it was under-documented. Cognitive OS is the
 runtime/product that owns contracts and proof. The practice repo is closer to the
@@ -41,6 +43,9 @@ universal file:
 - Windsurf distinguishes Memories, Rules, Workflows, Skills, and `AGENTS.md`, with `.windsurf/rules/*.md` as a workspace rules surface: <https://docs.windsurf.com/windsurf/cascade/memories>.
 - Continue local rules live under `.continue/rules`, while Hub rules are referenced separately: <https://docs.continue.dev/customize/rules>.
 - GitHub Copilot uses repository custom instructions such as `.github/copilot-instructions.md`: <https://docs.github.com/en/copilot/how-tos/custom-instructions/adding-repository-custom-instructions-for-github-copilot>.
+- The Linux Foundation / Agentic AI Foundation announcement describes `AGENTS.md` as an open project guidance standard and reports adoption across 60,000+ open-source projects and frameworks including Amp, Codex, Cursor, Devin, Factory, Gemini CLI, GitHub Copilot, Jules, and VS Code: <https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation>.
+- `rulesync`-style tools validate the single-source/multi-target compiler pattern: one canonical rules file can generate `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.github/copilot-instructions.md`, `GEMINI.md`, `.windsurfrules`, Aider config, and OpenCode/Codex-friendly outputs. Examples: <https://pypi.org/project/rulesync/> and <https://github.com/dyoshikawa/rulesync>.
+- The `.agents` draft protocol is another convergence signal for keeping portable agent configuration separate from vendor-specific files: <https://dotagentsprotocol.com/>.
 - ACP separates editor-agent transport from the agent's internal primitive model: <https://agentclientprotocol.com/get-started/introduction>.
 
 The common architecture is therefore:
@@ -55,6 +60,40 @@ canonical semantics
 No current cross-IDE convention makes every primitive runtime-enforceable in every
 IDE. Structural instruction projection remains weaker than lifecycle hooks or a
 host plugin adapter.
+
+
+## Compiler gap
+
+The sharper finding is not that one tree is complex and the other is minimal.
+They use opposite models:
+
+```text
+Cognitive OS maintainer `.ai`:
+  canonical contracts elsewhere -> generated `.ai` overlay -> fidelity metadata
+
+Practice consumer `.ai`:
+  editable Markdown primitives -> adapter installers -> native IDE files
+```
+
+Cognitive OS already has product projection outside `.ai` through `cos_init.py`,
+`cos-adapters`, harness drivers, ACC, and consumer smoke tests. However, the
+maintainer `.ai/adapters/*` directory itself is declarative: it explains what
+would be projected and with what fidelity, but it is not the compiler that writes
+native IDE files.
+
+That leaves a real product gap:
+
+```text
+We have:
+  canonical contracts -> generated `.ai` overlay -> fidelity matrix
+
+We still need a clearer path for:
+  canonical contracts -> native IDE files and consumer `.ai` package
+```
+
+The gap should be solved without discarding the fidelity matrix. Projection must
+be filtered by declared fidelity so a structural host receives advisory rules,
+not fake runtime enforcement.
 
 ## Recommendation captured
 
@@ -116,7 +155,18 @@ contracts when it is produced by Cognitive OS.
 
 - Add a consumer-package spec that defines what Cognitive OS should project into
   consumer repos when a human-readable `.ai/` view is requested.
-- Add or extend tests that prove generated consumer `.ai/` packages do not mutate
+- Add a real adapter-compiler plan: either first-party `lib/adapter_compile.py`
+  over COS contracts/profiles, or a governed integration with a `rulesync`-style
+  backend for structural rule files.
+- Treat the root `AGENTS.md` as an output that should be validated or bounded by
+  canonical COS contracts; do not claim it is missing, because this repository
+  already has one.
+- Investigate why generated `.ai/primitives/skills/` currently represents only a
+  tiny skill subset compared with the real `skills/*/SKILL.md` tree; either
+  regenerate full skill coverage or declare explicit overlay exclusions.
+- Ingest the consumer research artifacts from the practice repo into COS docs or
+  reports after re-verifying them against current official docs.
+- Add or extend tests that prove generated consumer `.ai` packages do not mutate
   canonical maintainer files.
 - Keep ACC language tied to `manifests/harness-projection.yaml` proof levels.
 - Avoid runtime-enforcement claims for Cursor, Copilot, Windsurf, Continue, and
@@ -131,4 +181,5 @@ contracts when it is produced by Cognitive OS.
 3. Adapter outputs cite their proof level and never upgrade structural projection to enforcement.
 4. Docs distinguish AGENTS.md/SKILL.md/MCP/ACP from `.ai` instead of treating them as interchangeable.
 5. Any canonical migration of `.ai/` requires a new ADR beyond ADR-258.
+6. A compiler/back-end decision must preserve projection fidelity instead of flattening all rules into the same host claim.
 ```
