@@ -10,8 +10,8 @@ COMPOSE = ROOT / "docker" / "cos-worker" / "docker-compose.yml"
 DOCKERFILE = ROOT / "docker" / "cos-worker" / "Dockerfile"
 ENTRYPOINT = ROOT / "docker" / "cos-worker" / "entrypoint.sh"
 BOOTSTRAP = ROOT / "scripts" / "cos-cloud-worker-bootstrap.sh"
-ADR = ROOT / "docs" / "adrs" / "ADR-140-cross-os-containerized-deployment.md"
-PORTABILITY = ROOT / "docs" / "architecture" / "bootstrap-portability.md"
+ADR = ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-140-cross-os-containerized-deployment.md"
+PORTABILITY = ROOT / "docs" / "04-Concepts" / "architecture" / "bootstrap-portability.md"
 
 
 def _compose_payload() -> dict:

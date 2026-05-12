@@ -20,7 +20,7 @@ import pytest
 # ─── Repo roots ──────────────────────────────────────────────────────────────
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ADRS_DIR = REPO_ROOT / "docs" / "adrs"
+ADRS_DIR = REPO_ROOT / "docs" / "02-Decisions" / "adrs"
 
 # ADR number cutoff: only ADR-067+ are enforced (operator decision #2).
 ENFORCEMENT_CUTOFF = 67

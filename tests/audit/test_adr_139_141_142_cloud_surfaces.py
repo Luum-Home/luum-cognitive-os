@@ -60,7 +60,7 @@ def test_engram_cloud_docker_smoke_script_exists() -> None:
 
 def test_audit_archive_and_gdpr_procedure_exist() -> None:
     archive = ROOT / "scripts" / "cos-audit-archive"
-    gdpr = ROOT / "docs" / "architecture" / "gdpr-erasure-procedure.md"
+    gdpr = ROOT / "docs" / "04-Concepts" / "architecture" / "gdpr-erasure-procedure.md"
 
     assert archive.exists()
     assert gdpr.exists()

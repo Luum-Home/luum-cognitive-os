@@ -25,7 +25,7 @@ def test_engram_command_contract_audit_passes() -> None:
 
 
 def test_engram_command_contract_doc_exists() -> None:
-    doc = ROOT / "docs" / "architecture" / "engram-command-contract.md"
+    doc = ROOT / "docs" / "04-Concepts" / "architecture" / "engram-command-contract.md"
     text = doc.read_text(encoding="utf-8")
 
     assert "engram save <title> <content>" in text

@@ -215,7 +215,7 @@ def test_profile_mapping_references_real_projection_and_adoption_profiles() -> N
     )
     projection_profiles = set(projection_manifest["profiles"])
     lifecycle_profiles = set(adoption_profile.PROFILE_TIERS)
-    adoption_doc = (PROJECT_ROOT / "docs" / "adoption-tiers.md").read_text(
+    adoption_doc = (PROJECT_ROOT / "docs" / "08-References" / "root" / "adoption-tiers.md").read_text(
         encoding="utf-8"
     )
 

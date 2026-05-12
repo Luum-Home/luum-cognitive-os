@@ -126,7 +126,7 @@ def test_blast_radius_adjusts_threshold_from_pipe():
 @pytest.mark.audit
 def test_hook_pipe_documented_in_hooks_md():
     """docs/05-Methodology/root/hooks.md must document the hook composition / pipe library."""
-    hooks_doc = REPO / "docs" / "hooks.md"
+    hooks_doc = REPO / "docs" / "05-Methodology" / "root" / "hooks.md"
     assert hooks_doc.exists(), "docs/05-Methodology/root/hooks.md not found"
 
     content = _read(hooks_doc)

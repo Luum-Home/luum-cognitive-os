@@ -9,7 +9,7 @@ Status: `fail`
 - Tracked files: 5526
 - Scanned text files: 5362
 - Files linked to docs: 1322
-- Findings: 2086
+- Findings: 2084
 
 ## Counts
 
@@ -18,7 +18,7 @@ Status: `fail`
 - `legacy_reference`: 0
 - `legacy_runtime`: 0
 - `historical_allowed`: 913
-- `ambiguous`: 792
+- `ambiguous`: 790
 
 ## Findings
 
@@ -46,8 +46,6 @@ Status: `fail`
 | historical-allowed | P2 | .cognitive-os/plans/features/docs-to-skills-audit.md | 285 | `docs/benchmark-results.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P2 | .cognitive-os/plans/features/docs-to-skills-audit.md | 327 | `docs/benchmark-results.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P2 | .cognitive-os/plans/features/docs-to-skills-audit.md | 328 | `docs/cleanup-verification.md` | Historical file contains an exact documentation path that no longer exists after migration. |
-| ambiguous | P2 | .cognitive-os/plans/features/engram-lifecycle-evolution.md | 5 | `.cognitive-os/docs/02-Decisions/adrs/ADR-071-engram-lifecycle-evolution.md` | Could not normalize documentation reference inside repository root. |
-| ambiguous | P2 | .cognitive-os/plans/features/engram-lifecycle-evolution.md | 6 | `.cognitive-os/docs/03-PoCs/research/llm-wiki-v2-engram-evolution-2026-04-27.md` | Could not normalize documentation reference inside repository root. |
 | ambiguous | P2 | .cognitive-os/plans/features/hook-architecture-v2.md | 69 | `docs/)**` | Reference contains template, regex, shell, or prose syntax and needs human review. |
 | historical-allowed | P2 | .cognitive-os/plans/features/test-runner-ergonomics-tasks.md | 220 | `docs/02-Decisions/adrs/ADR-069-test-lane-taxonomy.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P2 | .cognitive-os/plans/features/test-runner-ergonomics-tasks.md | 221 | `docs/02-Decisions/adrs/ADR-069-test-lane-taxonomy.md` | Historical file contains an exact documentation path that no longer exists after migration. |
@@ -1312,7 +1310,7 @@ Status: `fail`
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-coverage-latest.md | 263 | `docs/99-Archive/archived/cleanup-verification.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-fitness-ledger-latest.json | 6 | `docs/06-Daily/reports/primitive-fitness/*.json` | Historical file contains a documentation glob that no longer matches after migration. |
 | ambiguous | P3 | docs/06-Daily/reports/primitive-gap-matrix-2026-04.md | 290 | `docs/tests` | Reference looks like a directory, prefix, or template rather than an exact file path. |
-| ambiguous | P3 | docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json | 31683 | `docs/rules` | Reference looks like a directory, prefix, or template rather than an exact file path. |
+| ambiguous | P3 | docs/06-Daily/reports/primitive-readiness-ledger-scripts-latest.json | 33284 | `docs/rules` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | ambiguous | P3 | docs/06-Daily/reports/primitive-readiness-review-2026-05-04.md | 30 | `docs/scripts/hooks/rules/skills/config` | Reference looks like a directory, prefix, or template rather than an exact file path. |
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-usage-map-latest.json | 1441 | `docs/04-Concepts/architecture/primitive-coverage-spike-plan-2026-04.md` | Historical file contains an exact documentation path that no longer exists after migration. |
 | historical-allowed | P3 | docs/06-Daily/reports/primitive-usage-map-latest.json | 1988 | `docs/02-Decisions/adrs/ADR-097-task-tracker-lifecycle.md` | Historical file contains an exact documentation path that no longer exists after migration. |

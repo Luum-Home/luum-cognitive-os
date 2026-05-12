@@ -38,19 +38,16 @@ def get_libs(root: Path) -> list[str]:
     return sorted(names)
 
 
-def _is_imported(bare: str, root: Path) -> bool:
-    """Return True if bare module name is imported by at least 1 file outside lib/."""
-    patterns = [
-        re.compile(rf"from\s+lib\.{re.escape(bare)}\s+import"),
-        re.compile(rf"import\s+lib\.{re.escape(bare)}"),
-        re.compile(rf"importlib\.import_module\(\s*[\"']lib\.{re.escape(bare)}[\"']\s*\)"),
-        re.compile(rf"\bpython3?\s+-m\s+{re.escape(bare)}\b"),
-        re.compile(rf"lib/{re.escape(bare)}\.py"),
-        re.compile(rf"lib/{re.escape(bare)}"),
-    ]
-    # Search dirs that are allowed to import from lib/
-    # Includes both .py and .sh files (hooks embed Python via heredocs)
-    search_dirs = ["hooks", "tests", "scripts", "skills", ".cognitive-os"]
+def load_search_corpus(root: Path) -> str:
+    """Return one searchable corpus for files that may wire lib modules.
+
+    The previous implementation re-read the same corpus once per lib module.
+    After the docs vault migration the tracked repository is large enough that
+    the N×M scan can exceed pytest's 30-second timeout. Read each candidate once
+    and run per-lib regexes against the combined text instead.
+    """
+    chunks: list[str] = []
+    search_dirs = ["hooks", "tests", "scripts", "skills", ".cognitive-os", "lib"]
     for dir_name in search_dirs:
         search = root / dir_name
         if not search.exists():
@@ -60,15 +57,28 @@ def _is_imported(bare: str, root: Path) -> bool:
         else:
             candidates = [*search.rglob("*.py"), *search.rglob("*.sh")]
         for candidate in candidates:
-            if "__pycache__" in str(candidate):
+            rel = str(candidate.relative_to(root))
+            if "__pycache__" in rel:
                 continue
             try:
-                content = candidate.read_text(errors="ignore")
+                chunks.append(candidate.read_text(errors="ignore"))
             except OSError:
                 continue
-            if any(p.search(content) for p in patterns):
-                return True
-    return False
+    return "\n".join(chunks)
+
+
+def _is_imported(bare: str, corpus: str) -> bool:
+    """Return True if bare module name is imported by at least 1 non-lib file."""
+    patterns = [
+        re.compile(rf"from\s+lib\.{re.escape(bare)}\s+import"),
+        re.compile(rf"from\s+lib\s+import[^\n#]*\b{re.escape(bare)}\b"),
+        re.compile(rf"import\s+lib\.{re.escape(bare)}"),
+        re.compile(rf"importlib\.import_module\(\s*[\"']lib\.{re.escape(bare)}[\"']\s*\)"),
+        re.compile(rf"\bpython3?\s+-m\s+{re.escape(bare)}\b"),
+        re.compile(rf"lib/{re.escape(bare)}\.py"),
+        re.compile(rf"lib/{re.escape(bare)}"),
+    ]
+    return any(pattern.search(corpus) for pattern in patterns)
 
 
 def load_allowlist(root: Path) -> set[str]:
@@ -92,11 +102,12 @@ def main() -> int:
         print("Lib wiring OK: no lib modules found")
         return 0
 
+    corpus = load_search_corpus(root)
     unwired: list[str] = []
     for lib_name in libs:
         if lib_name in allowlist:
             continue
-        if not _is_imported(lib_name, root):
+        if not _is_imported(lib_name, corpus):
             unwired.append(lib_name)
 
     total = len(libs)

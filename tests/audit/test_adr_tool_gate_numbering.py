@@ -13,8 +13,8 @@ import pytest
 pytestmark = pytest.mark.audit
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ADR_214 = REPO_ROOT / "docs" / "adrs" / "ADR-214-tombstone.md"
-ADR_216 = REPO_ROOT / "docs" / "adrs" / "ADR-216-tool-discovery-pre-use-gate.md"
+ADR_214 = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-214-tombstone.md"
+ADR_216 = REPO_ROOT / "docs" / "02-Decisions" / "adrs" / "ADR-216-tool-discovery-pre-use-gate.md"
 
 SEARCH_ROOTS = [
     REPO_ROOT / "docs",

@@ -1,7 +1,7 @@
 {
   "_profile": "paranoid",
   "_description": "Paranoid security profile \u2014 maximum defense. For pre-production validation and security audits.",
-  "_hook_count": 127,
+  "_hook_count": 157,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -325,6 +325,10 @@
           {
             "type": "command",
             "command": "bash \"/hooks/lib-symlink-divergence-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-staleness-gate.sh\""
           }
         ]
       },
@@ -548,6 +552,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-md-routing-validator.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-drift-detector.sh\""
           }
         ]
       },
@@ -749,6 +757,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/state-retention-audit.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-verify-weekly.sh\""
           }
         ]
       },

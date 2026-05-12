@@ -11,7 +11,7 @@ pytestmark = pytest.mark.audit
 
 REPO = Path(__file__).resolve().parents[2]
 MANIFEST = REPO / "manifests" / "agent-training-harness.yaml"
-CANONICAL_DOC = REPO / "docs" / "architecture" / "agent-training-harness.md"
+CANONICAL_DOC = REPO / "docs" / "04-Concepts" / "architecture" / "agent-training-harness.md"
 
 TRAINING_TERM_RE = re.compile(
     r"\b(train(?:ing|ed)?|fine[- ]?tun(?:e|ing|ed)?|rl|reinforcement learning|entren[a-záéíóúñ]*)\b",

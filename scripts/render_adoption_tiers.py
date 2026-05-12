@@ -29,7 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_PATH = ROOT / "templates" / "adoption-tiers.md.j2"
 PROFILES_DIR = ROOT / "templates" / "security-profiles"
-DEFAULT_OUTPUT = ROOT / "docs" / "adoption-tiers.md"
+DEFAULT_OUTPUT = ROOT / "docs" / "08-References" / "root" / "adoption-tiers.md"
 
 # Profile slug -> JSON filename + tier key
 PROFILE_MAP = {

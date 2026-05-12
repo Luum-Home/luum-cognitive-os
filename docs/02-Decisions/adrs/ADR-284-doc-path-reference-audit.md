@@ -85,6 +85,38 @@ References are classified by semantic surface:
 - The latest audit report is written under the numbered daily reports bucket and
   can be used by future agents as a migration ledger.
 
+## Alternatives rejected
+
+1. **Keep legacy symlink bridges indefinitely.** Rejected because the final vault
+   state requires canonical numbered paths, and compatibility bridges hide broken
+   runtime/doc references instead of forcing repair.
+2. **Use ad hoc grep-only audits.** Rejected because grep cannot distinguish a
+   P0 runtime path from P4 archived history, cannot validate exact/glob targets,
+   and cannot produce a machine-readable migration ledger.
+3. **Fail every historical docs string immediately.** Rejected because migration
+   reports, archived handoffs, and synthetic tests need explicit historical
+   allowances while still remaining visible in counts and reports.
+
+## Verification
+
+The implementation is verified with targeted scanner tests, existing ADR path
+contracts, syntax checks, and runtime smoke commands:
+
+```bash
+scripts/cos-doc-path-audit --json --fail-on legacy-runtime --write-report docs/06-Daily/reports/doc-path-audit-latest.md
+python3 -m pytest tests/audit/test_doc_path_references.py tests/audit/test_doc_paths_tracked.py tests/unit/test_adr_detector.py -q
+python3 -m py_compile scripts/cos_doc_path_audit.py scripts/generate_adr_index.py
+bash -n hooks/*.sh
+cargo test -q
+```
+
+A stricter migration-burn-down gate is intentionally available but not yet green
+until the generated report backlog is repaired:
+
+```bash
+scripts/cos-doc-path-audit --json --fail-on missing,legacy-runtime
+```
+
 ## Acceptance Criteria
 
 1. No exact documentation path references point to missing files under the strict

@@ -22,7 +22,7 @@ import pytest
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RENDERER = REPO_ROOT / "scripts" / "render_adoption_tiers.py"
-COMMITTED_DOC = REPO_ROOT / "docs" / "adoption-tiers.md"
+COMMITTED_DOC = REPO_ROOT / "docs" / "08-References" / "root" / "adoption-tiers.md"
 _GENERATION_NOTICE_PREFIX = "<!-- Generated from"
 
 

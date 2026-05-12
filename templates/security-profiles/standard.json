@@ -1,7 +1,7 @@
 {
   "_profile": "standard",
   "_description": "Standard security profile \u2014 balanced safety and speed. Recommended for daily development.",
-  "_hook_count": 111,
+  "_hook_count": 141,
   "_events_used": [
     "SessionStart",
     "UserPromptSubmit",
@@ -320,6 +320,10 @@
           {
             "type": "command",
             "command": "bash \"/hooks/lib-symlink-divergence-detector.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PreToolUse \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-staleness-gate.sh\""
           }
         ]
       },
@@ -512,6 +516,10 @@
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/rule-md-routing-validator.sh\"",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" PostToolUse \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-drift-detector.sh\""
           }
         ]
       },
@@ -679,6 +687,10 @@
           {
             "type": "command",
             "command": "bash \"$CLAUDE_PROJECT_DIR/hooks/control-plane-audit-hourly.sh\""
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/scripts/hook-timing-wrapper.sh\" Stop \"$CLAUDE_PROJECT_DIR/hooks/pending-truth-verify-weekly.sh\""
           }
         ]
       },

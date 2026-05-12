@@ -28,7 +28,7 @@ import yaml
 # ── Repo root and ADR paths ───────────────────────────────────────────────────
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-ADRS_DIR = REPO_ROOT / "docs" / "adrs"
+ADRS_DIR = REPO_ROOT / "docs" / "02-Decisions" / "adrs"
 
 MIGRATED_ADRS: dict[int, Path] = {
     105: ADRS_DIR / "ADR-105-claim-verification-contract.md",

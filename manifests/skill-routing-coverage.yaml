@@ -11,7 +11,8 @@ purpose: 'Per-category skill routing coverage with explicit semantic universes.
 
   '
 captured_on: '2026-05-05'
-schema_migration_note: 'v1 reported "86.4% coverage / 160 routed / 25 unrouted" against a flat
+schema_migration_note: 'v1 reported "86.4% coverage / 160 routed / 25 unrouted" against
+  a flat
 
   universe of 185 SKILL.md files mixing canonical, runtime-projection, and
 
@@ -33,13 +34,13 @@ coverage_scope:
     location: skills/*/SKILL.md
     routing_required: true
     rationale: Primary skill location, source-of-truth for the public router.
-    universe_size: 169
+    universe_size: 171
     routed_count: 107
-    routed_percent: 63.3
+    routed_percent: 62.6
     disabled_count: 9
     name_mismatch_count: 3
-    eligible_for_routing: 157
-    eligible_routed_percent: 67.5
+    eligible_for_routing: 159
+    eligible_routed_percent: 66.7
   package_bundled_skills:
     location: packages/*/skills/*/SKILL.md
     routing_required: true
@@ -95,11 +96,12 @@ coverage_scope:
     name_mismatch_count: 0
     eligible_for_routing: 0
     eligible_routed_percent: 0.0
-    note: ADR-176 SkillStore + ADR-180 promotion ladder will populate this class as auto-skill-generator runs and skills accumulate
-      evidence.
+    note: ADR-176 SkillStore + ADR-180 promotion ladder will populate this class as
+      auto-skill-generator runs and skills accumulate evidence.
 exemptions:
   disabled_skills:
-    rationale: 'Skills with `disable-model-invocation: true` in frontmatter. These are
+    rationale: 'Skills with `disable-model-invocation: true` in frontmatter. These
+      are
 
       operator-only invocable (slash command) and explicitly NOT meant to be
 
@@ -137,7 +139,8 @@ exemptions:
     - dir: cost-predictor
       name_field: cost-predict
     count: 3
-    fix_action: Update each SKILL.md `name:` field to match directory name, then run routing-pattern migration normally.
+    fix_action: Update each SKILL.md `name:` field to match directory name, then run
+      routing-pattern migration normally.
 runtime_projection_pending_routing:
   status: routing_patterns_missing
   count: 0
@@ -153,12 +156,13 @@ runtime_projection_pending_routing:
       are added.
 
       '
-  resolution_path: Runtime projection skills are ignored in git-clean validation capsules; coverage is enforced for tracked
-    canonical/package skills. Runtime-only projection coverage must be measured by an installer/runtime health check, not
-    this repository contract.
+  resolution_path: Runtime projection skills are ignored in git-clean validation capsules;
+    coverage is enforced for tracked canonical/package skills. Runtime-only projection
+    coverage must be measured by an installer/runtime health check, not this repository
+    contract.
 canonical_pending_routing:
   status: routing_patterns_missing
-  count: 51
+  count: 53
   impact: same as runtime_projection_pending_routing
 package_bundled_pending_routing:
   status: routing_patterns_missing
@@ -167,35 +171,36 @@ package_bundled_pending_routing:
 primary_router_orphan_allowlist:
 - skill: audience-summaries
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 - skill: audit-report
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 - skill: competitive-research
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 - skill: context-analysis
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 - skill: execution-plan
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 - skill: sdd-new
   routing_class: meta-command
-  rationale: Intentional command handled by an orchestration pipeline rather than a SKILL.md directory.
+  rationale: Intentional command handled by an orchestration pipeline rather than
+    a SKILL.md directory.
 - skill: threat-model
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 - skill: traceability-check
   routing_class: runtime-projection-command
-  rationale: Intentional command without tracked SKILL.md in git-clean validation; runtime projection may provide it at install
-    time.
+  rationale: Intentional command without tracked SKILL.md in git-clean validation;
+    runtime projection may provide it at install time.
 profile_routing:
   status: active-profile-aware-ratchet
   profiles:
@@ -265,8 +270,8 @@ baseline:
     kept only as a legacy regression ratchet while category metrics carry truth.
 
     '
-  min_routed_skill_count: 154
-  min_routed_skill_coverage_percent: 94.4
+  min_routed_skill_count: 160
+  min_routed_skill_coverage_percent: 93.5
   skill_roots:
   - skills/*/SKILL.md
   - .cognitive-os/skills/*/SKILL.md
