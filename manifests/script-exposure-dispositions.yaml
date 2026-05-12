@@ -2423,3 +2423,13 @@ scripts:
   - tests/unit/test_portable_sh.py
   rationale: 'ADR-283 P2 doc/test review: referenced by current docs/manifests/tests; keep as documented maintainer surface
     until stale evidence is proven.'
+- path: scripts/cos-rust-transpiler-eval
+  resolution: documented_maintainer_tool
+  evidence: docs/architecture/rust-transpiler-evaluation-lane.md and docs/reports/rust-transpiler-eval-2026-05-12.md
+  rationale: Rust migration lab lane is an explicit maintainer diagnostic command, not a default agent-facing primitive.
+- path: scripts/cos_rust_transpiler_eval.py
+  resolution: internal_backend
+  owner: scripts/cos-rust-transpiler-eval
+  consumers:
+  - scripts/cos-rust-transpiler-eval
+  rationale: Python implementation backend is consumed by the wrapper and should not be exposed as a separate skill surface.
