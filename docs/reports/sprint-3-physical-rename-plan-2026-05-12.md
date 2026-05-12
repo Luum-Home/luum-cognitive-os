@@ -121,17 +121,83 @@ Engram topic key (when run): `sprint-3-physical-rename/state` — orchestrator m
 
 ## Sequence to recommend on resume
 
-Operator's chosen approach on 2026-05-12:
+Operator's original framing on 2026-05-12:
 
 > *"arrancamos con Fase 1+2 SOLO en las carpetas de bajo costo (`08-References/`, `99-Archive/`, `03-PoCs/`) que tienen pocos callers. Si eso anda limpio, escalamos. Si rompe, contenemos."*
 
-Low-risk first batch (start here when execution begins):
+### Real per-directory caller counts (re-measured 2026-05-12)
 
-1. `99-Archive/` ← `docs/archive/` (~3 callers, all `docs/AGENTS.md` mentions or tests guarding the rename — safe)
-2. `08-References/` ← `docs/integrations/`, `docs/migration-from/`, `docs/benchmarks/`, `docs/case-studies/` (~5 callers total)
-3. `03-PoCs/` ← `docs/proposals/`, `docs/research/` (~10 callers; mostly test fixtures)
+The original impact report aggregated subpath mentions and undercounted. Actual non-doc string-literal callers per dir:
 
-After verifying that batch produces a clean test run and at least one session-startup cycle without errors, proceed with the medium-risk batch (`05-Methodology/`, `07-Capabilities/`, `09-Quality/`), then the CRITICAL batch (`02-Decisions/`, `06-Daily/`, `04-Concepts/`, `01-Build-Log/`) last.
+| Source dir | Non-doc callers | Risk | Notes |
+|---|---|---|---|
+| `docs/benchmarks/` | 4 | low | **recommended first target** |
+| `docs/case-studies/` | 5 | low | second target |
+| `docs/integrations/` | 4 | low | |
+| `docs/migration-from/` | 7 | low-medium | |
+| `docs/proposals/` | 7 | medium | |
+| `docs/archive/` | 5+ + **drift-guard test** | medium-high | see BLOCKER below |
+| `docs/research/` | 37 | high | not first-batch material despite "low-risk" framing |
+
+### BLOCKER: docs/archive/ drift guard
+
+Commit `d50a34f9` (other flow, 2026-05-12) created `tests/contracts/test_docs_archive_path_drift.py` which asserts:
+
+```python
+assert "docs/archive/" in (REPO_ROOT / "docs" / "AGENTS.md").read_text()
+assert '"docs/archive/"' in (REPO_ROOT / "scripts" / "docs_execution_audit.py").read_text()
+```
+
+The test **explicitly defends the `docs/archive/` naming**. Renaming requires:
+1. Operator authorization to override the drift contract
+2. Updating the test to assert the new path
+3. Updating `scripts/docs_execution_audit.py` (filters paths from the docs audit)
+4. Updating `tests/contracts/test_orchestrator_verify.py`, `tests/red_team/scenarios/archive-presence-fallacy.yaml`, `tests/audit/test_plan_locations.py`, and `docs/AGENTS.md`
+
+**Default action on resume**: skip `docs/archive/` until operator decides; rename it LAST in its category.
+
+### Revised execution order (operator must reconfirm on resume)
+
+Phase-1+2 starting tier (mechanical, ~4-7 callers each):
+
+1. **`docs/benchmarks/`** → `docs/08-References/benchmarks/` ← **start here**
+2. **`docs/case-studies/`** → `docs/08-References/case-studies/`
+3. **`docs/integrations/`** → `docs/08-References/integrations/`
+4. **`docs/migration-from/`** → `docs/08-References/migration-from/`
+
+Verify after each: tests pass, session-startup hook runs clean, drift-guards (if any new ones appear) still green.
+
+Medium-risk tier (after verifying tier 1):
+
+5. **`docs/proposals/`** → `docs/03-PoCs/proposals/`
+6. **`docs/archive/`** → `docs/99-Archive/` *(only after drift-guard decision)*
+
+High-risk tier (after verifying tier 2):
+
+7. **`docs/research/`** → `docs/03-PoCs/research/` (37 callers — needs explicit batch with test re-run between each)
+
+Then medium tier (05-Methodology/, 07-Capabilities/, 09-Quality/) and finally CRITICAL tier (02-Decisions/, 06-Daily/, 04-Concepts/, 01-Build-Log/).
+
+### Why a new session should reconfirm
+
+This plan documents the pre-execution state. By the time a new session resumes:
+- The other flow may have added more drift-guard tests
+- The caller counts may have changed
+- The schema decisions documented above may need re-validation against current `docs/` state
+
+Re-run the caller scan as the first action on resume:
+
+```bash
+for d in benchmarks case-studies integrations migration-from proposals archive research; do
+  refs=$(grep -rln "docs/$d/" --include="*.py" --include="*.sh" --include="*.go" \
+    --include="*.yaml" --include="*.yml" --include="*.json" . 2>/dev/null \
+    | grep -v ".git/" | grep -v ".venv/" | grep -v "/reference/" \
+    | grep -v "^./docs/" | wc -l | tr -d ' ')
+  echo "docs/$d/: $refs non-doc callers"
+done
+```
+
+If counts have shifted, re-tier the order before execution.
 
 ## Blockers / prerequisites before start
 
