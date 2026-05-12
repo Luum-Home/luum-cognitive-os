@@ -1,0 +1,97 @@
+# Operational Guide Audit — 2026-05-12T14:20:00Z
+
+> Per ADR-274. Schema: `operational-guide-audit/v1`.
+> Audits all `docs/adrs/ADR-*.md` for §Operational Guide section presence
+> on maintainer-tier accepted capability ADRs.
+
+## How to read this doc (operational guide for this audit)
+
+This audit answers: **which ADRs are missing operator-readable context?**
+
+Verdict taxonomy:
+- `compliant` — has §Operational Guide with ≥3 documented sub-sections
+- `partial` — has §Operational Guide but < 3 sub-sections (needs expansion)
+- `missing` — subject to contract but no §Operational Guide present (needs backfill)
+- `exempt` — explicitly marked `<!-- adr-274-exempt: <reason> -->`
+- `not-applicable` — tombstone, superseded, or non-maintainer/non-capability
+
+Priority for backfill (only applies to `missing`/`partial`):
+- **P0** — accepted ≤ 30 days ago
+- **P1** — maintainer-tier accepted (older)
+- **P2** — everything else
+
+Per ADR-274: rules without enforcement are honored ~50% historically;
+this audit + `adr-section-validator.sh` extension close the loop.
+
+**Total ADRs scanned**: 284
+
+## By verdict
+
+| Verdict | Count |
+|---|---:|
+| compliant | 1 |
+| exempt | 1 |
+| missing | 60 |
+| not-applicable | 222 |
+
+## By priority (backfill queue)
+
+| Priority | Count |
+|---|---:|
+| P0 | 60 |
+
+## Backfill list (P0 + P1)
+
+| Priority | ADR | Verdict | Age (days) | Path |
+|---|---|---|---:|---|
+| P0 | `ADR-269-mandatory-adr-reference-for-history-rewrites` | missing | 1 | `docs/adrs/ADR-269-mandatory-adr-reference-for-history-rewrites.md` |
+| P0 | `ADR-239-isolated-worktree-default-for-write-agents` | missing | 4 | `docs/adrs/ADR-239-isolated-worktree-default-for-write-agents.md` |
+| P0 | `ADR-241-consolidated-cos-bypass-allowlist` | missing | 4 | `docs/adrs/ADR-241-consolidated-cos-bypass-allowlist.md` |
+| P0 | `ADR-242-git-filter-repo-wrapper-preserves-remote` | missing | 4 | `docs/adrs/ADR-242-git-filter-repo-wrapper-preserves-remote.md` |
+| P0 | `ADR-243-post-rewrite-push-collision-exception` | missing | 4 | `docs/adrs/ADR-243-post-rewrite-push-collision-exception.md` |
+| P0 | `ADR-244-trust-report-claim-validator-must-enforce` | missing | 4 | `docs/adrs/ADR-244-trust-report-claim-validator-must-enforce.md` |
+| P0 | `ADR-245-chaos-tests-readonly-production-source` | missing | 4 | `docs/adrs/ADR-245-chaos-tests-readonly-production-source.md` |
+| P0 | `ADR-246-release-transaction-freeze` | missing | 4 | `docs/adrs/ADR-246-release-transaction-freeze.md` |
+| P0 | `ADR-247-manifest-driven-postmortem-regression-audits` | missing | 4 | `docs/adrs/ADR-247-manifest-driven-postmortem-regression-audits.md` |
+| P0 | `ADR-248-control-plane-audit-loop` | missing | 4 | `docs/adrs/ADR-248-control-plane-audit-loop.md` |
+| P0 | `ADR-249-primitive-behavioral-proof-anti-overfit-tests` | missing | 4 | `docs/adrs/ADR-249-primitive-behavioral-proof-anti-overfit-tests.md` |
+| P0 | `ADR-250-skill-router-retrieval-adapter-boundary` | missing | 4 | `docs/adrs/ADR-250-skill-router-retrieval-adapter-boundary.md` |
+| P0 | `ADR-251-agent-orchestration-adapter-boundary` | missing | 4 | `docs/adrs/ADR-251-agent-orchestration-adapter-boundary.md` |
+| P0 | `ADR-252-capability-coverage-matrix-and-feature-reality-ledger` | missing | 4 | `docs/adrs/ADR-252-capability-coverage-matrix-and-feature-reality-ledger.md` |
+| P0 | `ADR-173-surface-5-research-gate` | missing | 6 | `docs/adrs/ADR-173-surface-5-research-gate.md` |
+| P0 | `ADR-177-activate-skill-lifecycle-promotion-ladder` | missing | 6 | `docs/adrs/ADR-177-activate-skill-lifecycle-promotion-ladder.md` |
+| P0 | `ADR-188-mandatory-skill-invocation-at-high-confidence` | missing | 6 | `docs/adrs/ADR-188-mandatory-skill-invocation-at-high-confidence.md` |
+| P0 | `ADR-159-agents-md-native-structural-harness-batch` | missing | 7 | `docs/adrs/ADR-159-agents-md-native-structural-harness-batch.md` |
+| P0 | `ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design` | missing | 7 | `docs/adrs/ADR-160-rules-mcp-structural-harness-batch-and-kiro-adapter-design.md` |
+| P0 | `ADR-161-remote-control-plane-and-provider-adapter-boundary` | missing | 7 | `docs/adrs/ADR-161-remote-control-plane-and-provider-adapter-boundary.md` |
+| P0 | `ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol` | missing | 7 | `docs/adrs/ADR-162-task-lifecycle-interruption-question-worktree-pr-protocol.md` |
+| P0 | `ADR-163-cos-instance-installer` | missing | 7 | `docs/adrs/ADR-163-cos-instance-installer.md` |
+| P0 | `ADR-164-host-cli-bridge-security-boundary` | missing | 7 | `docs/adrs/ADR-164-host-cli-bridge-security-boundary.md` |
+| P0 | `ADR-165-proof-drill-and-smoke-opt-in-primitives` | missing | 7 | `docs/adrs/ADR-165-proof-drill-and-smoke-opt-in-primitives.md` |
+| P0 | `ADR-166-expected-skip-registry-and-opt-in-test-lanes` | missing | 7 | `docs/adrs/ADR-166-expected-skip-registry-and-opt-in-test-lanes.md` |
+| P0 | `ADR-167-proof-drill-selector-and-acc-evidence-adapter` | missing | 7 | `docs/adrs/ADR-167-proof-drill-selector-and-acc-evidence-adapter.md` |
+| P0 | `ADR-168-cross-device-dependency-installation` | missing | 7 | `docs/adrs/ADR-168-cross-device-dependency-installation.md` |
+| P0 | `ADR-169-dashboard-formal-demotion` | missing | 7 | `docs/adrs/ADR-169-dashboard-formal-demotion.md` |
+| P0 | `ADR-171-reject-paperclip-integration` | missing | 7 | `docs/adrs/ADR-171-reject-paperclip-integration.md` |
+| P0 | `ADR-172-multi-surface-ui-architecture` | missing | 7 | `docs/adrs/ADR-172-multi-surface-ui-architecture.md` |
+| P0 | `ADR-175-research-quality-enforcement` | missing | 7 | `docs/adrs/ADR-175-research-quality-enforcement.md` |
+| P0 | `ADR-176-skillstore-and-analysis-trigger` | missing | 7 | `docs/adrs/ADR-176-skillstore-and-analysis-trigger.md` |
+| P0 | `ADR-179-rules-auto-derive-routing` | missing | 7 | `docs/adrs/ADR-179-rules-auto-derive-routing.md` |
+| P0 | `ADR-180-lifecycle-promotion-activation` | missing | 7 | `docs/adrs/ADR-180-lifecycle-promotion-activation.md` |
+| P0 | `ADR-181-adr-relevance-suggester` | missing | 7 | `docs/adrs/ADR-181-adr-relevance-suggester.md` |
+| P0 | `ADR-182-branch-ownership-lock` | missing | 7 | `docs/adrs/ADR-182-branch-ownership-lock.md` |
+| P0 | `ADR-183-cross-session-event-log` | missing | 7 | `docs/adrs/ADR-183-cross-session-event-log.md` |
+| P0 | `ADR-184-manager-of-managers-daemon` | missing | 7 | `docs/adrs/ADR-184-manager-of-managers-daemon.md` |
+| P0 | `ADR-185-cross-agent-audit-findings` | missing | 7 | `docs/adrs/ADR-185-cross-agent-audit-findings.md` |
+| P0 | `ADR-186-context-budget-enforcement` | missing | 7 | `docs/adrs/ADR-186-context-budget-enforcement.md` |
+| P0 | `ADR-139-account-agnostic-multi-provider-runtime` | missing | 8 | `docs/adrs/ADR-139-account-agnostic-multi-provider-runtime.md` |
+| P0 | `ADR-141-engram-cloud-cross-instance-replication` | missing | 8 | `docs/adrs/ADR-141-engram-cloud-cross-instance-replication.md` |
+| P0 | `ADR-142-compliance-audit-air-gapped-surface` | missing | 8 | `docs/adrs/ADR-142-compliance-audit-air-gapped-surface.md` |
+| P0 | `ADR-143-closure-discipline-gate` | missing | 8 | `docs/adrs/ADR-143-closure-discipline-gate.md` |
+| P0 | `ADR-144-hook-enforced-rule-projection-contract` | missing | 8 | `docs/adrs/ADR-144-hook-enforced-rule-projection-contract.md` |
+| P0 | `ADR-148-adr-authoring-primitive` | missing | 8 | `docs/adrs/ADR-148-adr-authoring-primitive.md` |
+| P0 | `ADR-149-primitive-duplication-audit` | missing | 8 | `docs/adrs/ADR-149-primitive-duplication-audit.md` |
+| P0 | `ADR-150-acc-projection-profiles-and-harness-registry` | missing | 8 | `docs/adrs/ADR-150-acc-projection-profiles-and-harness-registry.md` |
+| P0 | `ADR-151-consumer-availability-classification` | missing | 8 | `docs/adrs/ADR-151-consumer-availability-classification.md` |
+| P0 | `ADR-152-shell-ci-projection-and-local-surface-defaults` | missing | 8 | `docs/adrs/ADR-152-shell-ci-projection-and-local-surface-defaults.md` |
+| _and 10 more not shown_ | | | | |
