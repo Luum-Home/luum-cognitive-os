@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/kilo-code",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [],
   "display_name": "Kilo Code",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
@@ -10,6 +12,8 @@
     "No native COS lifecycle hook parity is claimed.",
     "Permission settings are placeholders and do not grant tools by default."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "project-instructions",
     "rules",

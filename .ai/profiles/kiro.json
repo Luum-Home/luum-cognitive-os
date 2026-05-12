@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/kiro",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [],
   "display_name": "Kiro",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
@@ -9,6 +11,8 @@
     "Official docs expose lifecycle/tool hooks, but COS has not mapped event payloads or generated a project agent configuration yet.",
     "No runtime smoke or native lifecycle parity is claimed."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "steering",
     "hooks",

@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/minimax-maxclaw",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [],
   "display_name": "MiniMax MaxClaw / MiniMax Agent",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
@@ -8,6 +10,8 @@
   "limitations": [
     "Current evidence points to hosted/cloud agent surfaces; local IDE/project projection contract is not signed."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "instructions",
     "tools",

@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/opencode",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [
     {
       "claims_runtime_enforcement": true,
@@ -1853,6 +1855,8 @@
     "OpenCode's official plugin API exposes tool.execute.before/tool.execute.after and permission surfaces that can enforce some COS primitives. Do not model OpenCode as documented-only or structural-advisory once a COS OpenCode plugin adapter is implemented and smoke-tested.",
     "No COS OpenCode plugin adapter has been signed yet, so ACC must not claim runtime enforcement from the existing opencode.json structural projection."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "instructions",
     "skills",

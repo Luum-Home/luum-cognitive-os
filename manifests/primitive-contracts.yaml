@@ -15712,7 +15712,7 @@ contracts:
   source: scripts/cos-adapters
   lifecycle_ref: scripts/cos-adapters
   generated_from_lifecycle: true
-  intent: Consumer UX for listing, installing, and verifying portable .ai adapter surfaces.
+  intent: Consumer UX for listing and verifying declarative portable .ai adapter manifests; native IDE file emission remains delegated to harness projection drivers or a future fidelity-preserving adapter compiler.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -15732,10 +15732,11 @@ contracts:
     interventions:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
-    - tests/contracts/test_primitive_readiness_ledger_contract.py
+    - tests/contracts/test_consumer_adapter_ux.py
+    - tests/contracts/test_portable_ai_overlay.py
     evidence_commands:
     - python3 -m py_compile scripts/cos-adapters
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_consumer_adapter_ux.py tests/contracts/test_portable_ai_overlay.py -q
   projection:
     claude:
       fidelity: documented-only
@@ -15814,7 +15815,7 @@ contracts:
   source: scripts/cos-portable-ai-overlay
   lifecycle_ref: scripts/cos-portable-ai-overlay
   generated_from_lifecycle: true
-  intent: Wrapper that generates the portable .ai consumer overlay from COS canonical primitive contracts.
+  intent: Wrapper that generates the portable maintainer .ai overlay from COS canonical primitive contracts; consumer packages and native IDE files require separate fidelity-preserving projection.
   trigger:
     kind: documented_or_on_demand
     runtime_projection: false
@@ -15834,10 +15835,10 @@ contracts:
     interventions:
     - .cognitive-os/metrics/primitive-interventions.jsonl
     proof_tests:
-    - tests/contracts/test_primitive_readiness_ledger_contract.py
+    - tests/contracts/test_portable_ai_overlay.py
     evidence_commands:
     - bash -n scripts/cos-portable-ai-overlay
-    - python3 -m pytest tests/contracts/test_primitive_readiness_ledger_contract.py -q
+    - python3 -m pytest tests/contracts/test_portable_ai_overlay.py -q
   projection:
     claude:
       fidelity: documented-only

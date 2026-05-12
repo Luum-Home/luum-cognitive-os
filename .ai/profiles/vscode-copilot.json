@@ -1,5 +1,7 @@
 {
+  "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/copilot",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
   "contract_projection_fidelity": [
     {
       "claims_runtime_enforcement": false,
@@ -1852,6 +1854,8 @@
     "Structural workspace file proof only; no GitHub account/Copilot extension runtime invocation in automated tests.",
     "VS Code Copilot custom instructions are prompt/context surfaces, not native COS lifecycle hooks."
   ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
   "projected_surfaces": [
     "instructions",
     "mcp-placeholder",
