@@ -77,6 +77,69 @@ scripts/cos-service-readiness-gate --json
 
 The product lesson is: consumers need a small overlay-shaped mental model, while COS can keep richer internal manifests and ledgers. Adapters must translate canonical primitives; they must not invent new primitive behavior.
 
+
+## Maintainer overlay vs consumer package
+
+The `.ai/` name now has two distinct roles that must not be collapsed:
+
+| Role | Location pattern | Owner | Source of truth | Intended reader |
+|---|---|---|---|---|
+| Maintainer generated overlay | `luum-agent-os/.ai/` | Cognitive OS maintainers | `manifests/primitive-contracts.yaml`, `manifests/primitive-lifecycle.yaml`, `manifests/harness-projection.yaml`, plus `hooks/`, `skills/`, `rules/`, `scripts/` | Tools, audits, adapter manifests, ACC, maintainers checking projection fidelity |
+| Consumer package view | `<consumer-repo>/.ai/` | Consumer project / installer output | Project-specific primitive docs plus COS generated/synchronized contracts | Humans and agents onboarding into one repository |
+
+The practice consumer repository demonstrated the second shape well: a small
+`README.md`, Markdown primitives, context docs, scripts, and per-IDE adapter
+installers. That shape is easier for a consuming team to understand than the
+maintainer overlay's generated JSON rows.
+
+Cognitive OS should therefore keep its maintainer `.ai/` generated and
+non-canonical, while allowing consumer projects to receive a more human-readable
+package view. The consumer package may resemble:
+
+```text
+.ai/
+  README.md
+  context/
+  primitives/
+    skills/
+    rules/
+    workflows/
+    hooks/
+  adapters/
+    claude-code/
+    codex/
+    cursor/
+    windsurf/
+    copilot/
+  scripts/
+  logs/
+  state/
+```
+
+That package is a projection surface, not a license to invent behavior. Any
+Cognitive OS-generated consumer `.ai/` must trace back to canonical contracts and
+must preserve declared fidelity.
+
+### Why the two shapes differ
+
+The maintainer repo optimizes for proof: every primitive row can expose source,
+lifecycle metadata, projection fidelity, evidence commands, impact, and whether
+runtime enforcement is actually claimed. The consumer repo optimizes for
+legibility: a developer or agent can quickly find the relevant rules, skills,
+workflow, and IDE adapter.
+
+Both are useful. Treating them as the same thing creates confusion. The correct
+relationship is:
+
+```text
+COS canonical contracts
+  -> maintainer generated `.ai` evidence overlay
+  -> consumer-friendly `.ai` package and IDE-native files
+```
+
+The impact analysis for this distinction is recorded in
+[Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
+
 ## OpenCode adapter correction
 
 OpenCode should not be treated as instruction-only. Current official OpenCode

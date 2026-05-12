@@ -171,6 +171,30 @@ not allowed to invent primitive behavior, erase declared fidelity differences, o
 replace `manifests/primitive-contracts.yaml` as source of truth before a later
 migration ADR is accepted.
 
+
+## 2026-05-12 clarification: two `.ai` shapes
+
+A follow-up comparison against a consumer project clarified that Cognitive OS
+uses `.ai/` differently from a simple consumer toolkit:
+
+- In the maintainer repo, `.ai/` is a generated, machine-readable overlay for
+  contracts, profiles, adapter manifests, and projection fidelity.
+- In a consumer repo, `.ai/` may be a human-readable package with README,
+  Markdown primitives, context docs, scripts, logs/state, and per-IDE installers.
+
+This does not change the ADR-258 decision. It strengthens the invariant that
+COS canonical internal registry != consumer `.ai` overlay. The consumer package
+shape is a product UX target; it is not a reason to make maintainer `.ai/`
+canonical before Phase 5.
+
+Impact report:
+
+- [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md)
+
+Documentation consequence: future docs must name whether they mean the
+maintainer generated overlay or the consumer package view whenever `.ai/` is
+discussed.
+
 ## Consequences
 
 ### Positive

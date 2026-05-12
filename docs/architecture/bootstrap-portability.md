@@ -176,6 +176,28 @@ correction:
 
 This is not the full migration, but it is the correct direction.
 
+
+## Consumer Packaging Boundary
+
+Bootstrap portability now has one additional documentation boundary: the
+maintainer `.ai/` overlay and a consumer `.ai/` package are not the same
+artifact.
+
+- The maintainer overlay is generated from COS manifests and source trees. It is
+  proof-oriented and machine-readable.
+- A consumer package may be README-first and adapter-installer-oriented, because
+  consuming teams need a small mental model before they need the full contract
+  registry.
+
+This boundary reduces pressure to move canonical sources into `.ai/` prematurely.
+The bootstrap path should continue to install `.cognitive-os/` as the runtime
+center, then project into active driver files (`.claude/settings.json`,
+`.codex/hooks.json`, `.cursor/rules/...`, `.github/copilot-instructions.md`,
+etc.) and optional consumer-friendly `.ai/` views.
+
+The impact analysis is recorded in
+[Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
+
 ## Success Condition
 
 Bootstrap portability is succeeding when:
