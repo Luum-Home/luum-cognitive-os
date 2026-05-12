@@ -54,7 +54,7 @@ def build_report(root: Path) -> dict[str, Any]:
         },
         "decision": {
             "canonical_migration_allowed": False,
-            "reason": "ADR-258 keeps `.ai` as generated overlay until conformance, adapter proof, and consumer proof justify migration.",
+            "reason": "ADR-258 keeps `.ai` as a generated maintainer overlay; native consumer projection is allowed only through governed fidelity-preserving compilers and consumer proof.",
             "mutates_consumers": False,
         },
     }

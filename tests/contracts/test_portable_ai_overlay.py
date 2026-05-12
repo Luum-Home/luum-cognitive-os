@@ -58,7 +58,7 @@ def test_context_records_generated_noncanonical_overlay() -> None:
     assert context["schema_version"] == "portable-ai-context.v1"
     assert context["status"] == "generated-portable-overlay"
     assert context["native_file_emission"] is False
-    assert "future adapter compiler" in context["consumer_package_policy"]
+    assert "fidelity-preserving adapter compiler" in context["consumer_package_policy"]
     assert "scripts/cos_init.py" in context["native_projection_drivers"]
     assert "manifests/primitive-contracts.yaml" in context["canonical_source_of_truth"]
     assert "manifests/primitive-lifecycle.yaml" in context["canonical_source_of_truth"]
@@ -136,7 +136,7 @@ def test_profiles_record_compiler_gap_policy() -> None:
         profile = _json(profile_path)
         assert profile["adapter_contract_kind"] == "declarative-fidelity-profile"
         assert profile["native_file_emission"] is False
-        assert "future adapter compiler" in profile["compiler_gap_policy"]
+        assert "fidelity-preserving adapter compiler" in profile["compiler_gap_policy"]
 
 
 def test_adapters_and_privacy_schemas_exist() -> None:

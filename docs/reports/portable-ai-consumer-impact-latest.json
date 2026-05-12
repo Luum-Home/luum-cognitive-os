@@ -4,23 +4,23 @@
     "status": "fail",
     "summary": {
       "fleet_findings": 3,
-      "matching_source": 4,
+      "matching_source": 5,
       "project_failures": 0,
       "project_warnings": 0,
-      "registered_total": 4
+      "registered_total": 5
     }
   },
   "decision": {
     "canonical_migration_allowed": false,
     "mutates_consumers": false,
-    "reason": "ADR-258 keeps `.ai` as generated overlay until conformance, adapter proof, and consumer proof justify migration."
+    "reason": "ADR-258 keeps `.ai` as a generated maintainer overlay; native consumer projection is allowed only through governed fidelity-preserving compilers and consumer proof."
   },
-  "generated_at": "2026-05-09T20:26:29+00:00",
+  "generated_at": "2026-05-12T16:41:39+00:00",
   "overlay": {
-    "adapter_file_count": 52,
-    "file_count": 380,
-    "primitive_file_count": 298,
-    "profile_file_count": 26,
+    "adapter_file_count": 54,
+    "file_count": 394,
+    "primitive_file_count": 309,
+    "profile_file_count": 27,
     "schema_file_count": 2,
     "state_file_count": 1
   },

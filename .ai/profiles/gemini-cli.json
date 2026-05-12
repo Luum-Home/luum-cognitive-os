@@ -1,7 +1,7 @@
 {
   "adapter_contract_kind": "declarative-fidelity-profile",
   "adapter_directory": "adapters/gemini-cli",
-  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files are emitted by governed projection drivers through the fidelity-preserving adapter compiler.",
   "contract_projection_fidelity": [],
   "display_name": "Gemini CLI",
   "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",

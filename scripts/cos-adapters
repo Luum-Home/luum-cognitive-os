@@ -90,7 +90,7 @@ def install_adapter(root: Path, harness: str, *, execute: bool) -> dict[str, Any
         "proof_level": profile.get("proof_level"),
         "note": "This command verifies the generated .ai adapter surface. Host-specific file mutation remains delegated to existing harness projection drivers or a future fidelity-preserving adapter compiler.",
         "native_file_emission": False,
-        "compiler_gap_policy": "cos-adapters is non-mutating for native IDE files; use cos_init.py or a future adapter compiler for actual host file projection.",
+        "compiler_gap_policy": "cos-adapters is non-mutating for native IDE files; use cos-adapters compile or cos_init.py for actual host file projection.",
     }
     if execute:
         metrics = root / ".cognitive-os" / "metrics"
