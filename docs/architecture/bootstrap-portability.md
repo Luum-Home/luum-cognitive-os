@@ -199,12 +199,14 @@ The impact analysis is recorded in
 [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md).
 
 
-Practical implication: bootstrap should grow a clearly named compiler/projection
-step for consumer-facing rule files. The system already has harness drivers; the
-missing product affordance is a coherent path that turns canonical contracts into
-native files such as `AGENTS.md` bounded blocks, `.cursor/rules/*.mdc`, Copilot
-instructions, Windsurf rules, and Aider conventions without flattening all
-projection fidelity into generic instructions.
+Practical implication: bootstrap now has a clearly named compiler/projection
+entry point for consumer-facing rule files: `lib/adapter_compile.py`,
+`scripts/cos-adapter-compile`, and `cos adapters compile`. The first slice
+preserves fidelity and delegates writes to existing harness drivers. Future work
+can broaden the backends for native files such as `AGENTS.md` bounded blocks,
+`.cursor/rules/*.mdc`, Copilot instructions, Windsurf rules, and Aider
+conventions without flattening all projection fidelity into generic
+instructions.
 
 ## Success Condition
 

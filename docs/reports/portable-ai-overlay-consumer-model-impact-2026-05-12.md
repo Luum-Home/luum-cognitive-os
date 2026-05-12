@@ -18,7 +18,7 @@ Observed shape:
 
 | Dimension | Cognitive OS maintainer repo | Practice consumer repo |
 |---|---|---|
-| Approximate size | 389 files / 3.6 MB | 152 files / 1.2 MB |
+| Approximate size | 391 files / 3.6 MB | 152 files / 1.2 MB |
 | Primary role | Generated portable overlay/export surface | Editable consumer primitive source/package |
 | Primitive format | Machine-readable JSON rows with contract, lifecycle, evidence, impact, and `projection_fidelity` | Markdown plus YAML frontmatter for skills, rules, workflows, and hooks |
 | Adapter format | Generated `adapter.json` plus README per harness; descriptive, not install scripts | `install.sh` scripts plus README per IDE; mutates native project files |
@@ -91,6 +91,16 @@ We still need a clearer path for:
   canonical contracts -> native IDE files and consumer `.ai` package
 ```
 
+The first implementation slice is now `lib/adapter_compile.py` plus
+`scripts/cos-adapter-compile` / `cos adapters compile`. It delegates native file
+writes to governed harness projection drivers, records a compile receipt, and
+preserves fidelity summaries from the generated `.ai` profiles/manifests. This
+closes the entry-point gap without making `.ai/adapters/*` mutating installers.
+
+The remaining product question is whether future structural-rule backends should
+stay first-party or delegate some file formats to a governed `rulesync`-style
+backend.
+
 The gap should be solved without discarding the fidelity matrix. Projection must
 be filtered by declared fidelity so a structural host receives advisory rules,
 not fake runtime enforcement.
@@ -155,9 +165,9 @@ contracts when it is produced by Cognitive OS.
 
 - Add a consumer-package spec that defines what Cognitive OS should project into
   consumer repos when a human-readable `.ai/` view is requested.
-- Add a real adapter-compiler plan: either first-party `lib/adapter_compile.py`
-  over COS contracts/profiles, or a governed integration with a `rulesync`-style
-  backend for structural rule files.
+- Extend the first-party adapter compiler beyond the starter slice, and decide
+  whether structural rule-file generation should remain fully first-party or use
+  a governed `rulesync`-style backend.
 - Treat the root `AGENTS.md` as an output that should be validated or bounded by
   canonical COS contracts; do not claim it is missing, because this repository
   already has one.

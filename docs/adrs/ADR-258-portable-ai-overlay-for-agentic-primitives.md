@@ -198,10 +198,12 @@ discussed.
 
 Projection consequence: the generated overlay is not enough by itself to make
 portability effective for a user opening Cursor, Windsurf, Copilot, Aider, or a
-similar host. ADR-258 therefore leaves a follow-up compiler problem: native IDE
-files should be generated from COS contracts/profiles, or delegated through a
-governed `rulesync`-style backend, while preserving declared fidelity. This is a
-projection/compiler gap, not evidence that `.ai/` should become canonical.
+similar host. The first compiler entry point now exists as `lib/adapter_compile.py`,
+`scripts/cos-adapter-compile`, and `cos adapters compile`; it delegates native
+file writes to governed harness projection drivers and records fidelity-aware
+receipts. Future structural-rule backends may still use a governed
+`rulesync`-style adapter. This is a projection/compiler boundary, not evidence
+that `.ai/` should become canonical.
 
 ## Consequences
 

@@ -6,7 +6,7 @@
   "harness": "codex",
   "native_file_emission": false,
   "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
-  "projected_primitive_count": 307,
+  "projected_primitive_count": 308,
   "projected_primitives": [
     {
       "claims_runtime_enforcement": false,
@@ -1231,6 +1231,13 @@
       "fidelity": "structural-advisory",
       "portable_id": "script-cos-active-primitive-index",
       "primitive_file": "primitives/tools/script-cos-active-primitive-index-0fe936bf49.json",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "fidelity": "structural-advisory",
+      "portable_id": "script-cos-adapter-compile",
+      "primitive_file": "primitives/tools/script-cos-adapter-compile-1d69117377.json",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
     },
     {

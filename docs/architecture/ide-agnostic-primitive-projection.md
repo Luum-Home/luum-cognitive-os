@@ -148,8 +148,10 @@ adapter fidelity and links to primitive rows. It does not itself install Cursor,
 Windsurf, Copilot, Continue, Aider, or other native files. Actual projection
 exists in separate COS harness drivers such as `scripts/cos_init.py`.
 
-The next architecture target is a compiler boundary, not a canonical-source
-migration:
+The first compiler boundary now exists as `lib/adapter_compile.py`,
+`scripts/cos-adapter-compile`, and `cos adapters compile`. It is intentionally a
+fidelity-preserving wrapper around governed harness projection drivers rather
+than a rewrite of every host backend. The target architecture remains:
 
 ```text
 manifests/primitive-contracts.yaml
@@ -172,9 +174,10 @@ A primitive that is `governed-wrapper-enforced`, `native-lifecycle-enforced`, or
 `ci-enforced` may be projected into the matching runtime or CI surface only when
 the proof level supports that claim.
 
-A `rulesync`-style backend may be useful for structural instruction files, but it
-cannot replace COS's contract registry because generic rule sync tools do not own
-COS runtime evidence, lifecycle state, or per-harness enforcement claims.
+A `rulesync`-style backend may be useful for future structural instruction file
+formats, but it cannot replace COS's contract registry because generic rule sync
+tools do not own COS runtime evidence, lifecycle state, or per-harness
+enforcement claims.
 
 ## OpenCode adapter correction
 
