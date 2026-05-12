@@ -6,6 +6,8 @@ detection falls back to the basename of `cd <dir>` in the command. No
 downstream consumer-project identifiers are hardcoded in the hook.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

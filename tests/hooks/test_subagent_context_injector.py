@@ -5,6 +5,8 @@ via additionalContext. These tests execute the actual hook with
 real JSON input and verify the output contains critical rules.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

@@ -7,6 +7,8 @@ Each test runs in an isolated tmp_path so no state leaks between cases.
 The REAPER script is replaced with a no-op stub so tests do not depend on
 the full cognitive-os infrastructure.
 """
+
+from __future__ import annotations
 import os
 import subprocess
 import sys

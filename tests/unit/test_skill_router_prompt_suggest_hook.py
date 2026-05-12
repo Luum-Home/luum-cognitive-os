@@ -8,6 +8,8 @@ verify:
   4. Hook exits 0 silently when DISABLE_HOOK_SKILL_ROUTER_PROMPT_SUGGEST=1
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

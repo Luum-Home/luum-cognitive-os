@@ -10,6 +10,8 @@ verify:
   6. Hook exits 0 always (even on malformed JSON)
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

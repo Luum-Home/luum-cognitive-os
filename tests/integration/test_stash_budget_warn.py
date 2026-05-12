@@ -8,6 +8,8 @@ Validates:
 - Falsification: rubber-stamp hook (always silent) fails threshold-exceeded scenario
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

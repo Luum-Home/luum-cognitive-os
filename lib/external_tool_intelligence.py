@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import re
-import tomllib
+from lib import compat_tomllib as tomllib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any

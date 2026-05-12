@@ -6,6 +6,8 @@ Tests:
    stays unchanged (original marker preserved).
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

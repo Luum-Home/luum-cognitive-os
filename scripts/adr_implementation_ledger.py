@@ -29,7 +29,7 @@ PENDING_TERMS = re.compile(r"\b(pending|todo|not implemented|not yet|open questi
 EVIDENCE_TERMS = re.compile(r"\b(commit|implemented in|files?|tests?|script|hook|skill|rule|path|where:)\b", re.IGNORECASE)
 
 
-@dataclass(slots=True)
+@dataclass
 class AdrRecord:
     """One ADR implementation-state record."""
 

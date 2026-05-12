@@ -8,6 +8,8 @@ Tests:
 4. Process is cleaned up on teardown (signal.SIGTERM to the loop PID).
 """
 
+from __future__ import annotations
+
 import os
 import signal
 import subprocess

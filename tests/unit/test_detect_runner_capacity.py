@@ -6,6 +6,8 @@ Unit tests for scripts/detect_runner_capacity.py — ADR-068 Phase 1.
 Each test stubs psutil and os-level calls so the heuristic is exercised
 in isolation, without touching real hardware.
 """
+
+from __future__ import annotations
 import importlib
 import os
 import sys

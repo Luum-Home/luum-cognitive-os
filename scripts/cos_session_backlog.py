@@ -38,7 +38,7 @@ STALE_STATUSES = {"cancelled", "cancelled-stale", "stale"}
 MAX_TABLE_ITEMS = 20
 
 
-@dataclass(slots=True)
+@dataclass
 class BacklogItem:
     """One normalized actionable item from any backlog source."""
 
@@ -55,7 +55,7 @@ class BacklogItem:
         return f"{self.source}:{normalized}"
 
 
-@dataclass(slots=True)
+@dataclass
 class PlanSummary:
     """Compact status for one plan document."""
 
@@ -65,7 +65,7 @@ class PlanSummary:
     remaining: str
 
 
-@dataclass(slots=True)
+@dataclass
 class BacklogResult:
     """Full reconciliation result."""
 

@@ -4,6 +4,8 @@ Tests verify the hook's closure-detection regex produces the correct
 additionalContext output and stays silent on non-matching inputs.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

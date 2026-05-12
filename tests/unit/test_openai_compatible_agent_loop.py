@@ -1,5 +1,7 @@
 """Tests for lib/openai_compatible_agent_loop.py (ADR-062)."""
 
+from __future__ import annotations
+
 from unittest.mock import MagicMock
 
 
