@@ -1,7 +1,9 @@
 ---
+
 adr: 270
 title: Legal Compliance Workflow Automation
 status: accepted
+implementation_status: implemented
 date: 2026-05-11
 supersedes: []
 superseded_by: null

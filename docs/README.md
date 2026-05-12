@@ -37,6 +37,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-258: Portable `.ai` Overlay for Agentic Primitives](adrs/ADR-258-portable-ai-overlay-for-agentic-primitives.md) — accepted generated `.ai` overlay/export surface grounded in a 40+ source external due-diligence sweep.
 - [ADR-272: Structural Rule Backend Boundary](adrs/ADR-272-structural-rule-backend-boundary.md) — accepted boundary keeping the COS compiler authoritative while limiting any future `rulesync`-style backend to structural advisory file emission.
 - [ADR Status Taxonomy](adrs/STATUS-TAXONOMY.md) — canonical separation of decision status, implementation status, and index bucket for ADR metadata/tooling.
+- [ADR Implementation Status Backfill — 2026-05-12](reports/adr-implementation-status-backfill-2026-05-12.md) — first conservative frontmatter backfill and remaining Active/Unclassified scope.
 - [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains canonical primitives, portable contracts, harness/runtime projection, fidelity, consumer-fleet impact, service/headless impact, and the `.ai/` product-overlay lesson.
 - [OpenCode Native Primitive Adapter Design](architecture/opencode-native-primitive-adapter-design.md) — native permissions/plugins design and smoke criteria before OpenCode runtime enforcement claims.
 - [Primitive Contract Registry Implementation Plan](architecture/primitive-contract-registry-implementation-plan.md) — phased plan for ADR-256 before runtime implementation.

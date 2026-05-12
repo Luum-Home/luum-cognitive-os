@@ -1,7 +1,9 @@
 ---
+
 adr: 165
 title: Proof Drill and Smoke Opt-In Agentic Primitives
 status: implemented
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

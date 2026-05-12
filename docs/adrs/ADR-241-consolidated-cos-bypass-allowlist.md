@@ -1,7 +1,9 @@
 ---
+
 adr: 241
 title: Consolidate Hook-Bypass Envs into a Single COS_BYPASS Allowlist
 status: accepted
+implementation_status: partial
 date: 2026-05-08
 supersedes: []
 superseded_by: null

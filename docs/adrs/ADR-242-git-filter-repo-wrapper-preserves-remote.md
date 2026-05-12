@@ -1,7 +1,9 @@
 ---
+
 adr: 242
 title: git-filter-repo Wrapper Preserves Remote and Refuses Non-Idempotent Re-Runs
 status: accepted
+implementation_status: partial
 date: 2026-05-08
 supersedes: []
 superseded_by: null

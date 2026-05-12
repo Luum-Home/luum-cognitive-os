@@ -1,7 +1,9 @@
 ---
+
 adr: 244
 title: Trust Report Claim-Validator Must Enforce, Not Advise
 status: accepted
+implementation_status: partial
 date: 2026-05-08
 supersedes: []
 superseded_by: null

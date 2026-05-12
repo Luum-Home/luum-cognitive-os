@@ -1,7 +1,9 @@
 ---
+
 adr: 182
 title: Branch Ownership Lock — Single-Writer Surface for Concurrent Orchestrators
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

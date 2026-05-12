@@ -1,7 +1,9 @@
 ---
+
 adr: 152
 title: Shell CI Projection and Local Surface Defaults
 status: implemented
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

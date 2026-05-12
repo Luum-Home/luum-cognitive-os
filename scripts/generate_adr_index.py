@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -30,6 +31,16 @@ CANONICAL_STATUSES = {
     "tombstone",
 }
 BUCKETS = ["Active", "Proposed", "Exploration", "Resolved", "Superseded", "Deprecated", "Tombstone", "Other"]
+ACTIVE_IMPL_BUCKETS = [
+    ("implemented", "Implemented"),
+    ("partial", "Partial"),
+    ("partial-blocked", "Partial / Blocked"),
+    ("blocked", "Blocked"),
+    ("deferred", "Deferred"),
+    ("planned", "Planned"),
+    ("not-applicable", "Not Applicable"),
+    ("", "Unclassified"),
+]
 STATUS_TO_BUCKET = {
     "accepted": "Active",
     "implemented": "Active",
@@ -177,8 +188,23 @@ def render_table(rows: list[AdrRow]) -> list[str]:
     return out
 
 
+def adr_paths() -> list[Path]:
+    """Return committed/staged ADR files so local untracked drafts do not dirty the index."""
+    result = subprocess.run(
+        ["git", "ls-files", "docs/adrs/ADR-*.md"],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if result.returncode == 0 and result.stdout.strip():
+        return [ROOT / line for line in result.stdout.splitlines()]
+    return sorted(ADRS_DIR.glob("ADR-*.md"))
+
+
 def generate() -> str:
-    rows = [row_for(path) for path in sorted(ADRS_DIR.glob("ADR-*.md"))]
+    rows = [row_for(path) for path in sorted(adr_paths())]
     by_bucket = {bucket: [row for row in rows if row.bucket == bucket] for bucket in BUCKETS}
     lines = [
         "# ADR Index",
@@ -197,8 +223,17 @@ def generate() -> str:
         if bucket in {"Superseded", "Deprecated", "Tombstone"}:
             lines.extend(["<details>", f"<summary>{bucket} ADRs ({len(bucket_rows)})</summary>", ""])
         lines.extend([f"## {bucket}", ""])
-        lines.extend(render_table(bucket_rows))
-        lines.append("")
+        if bucket == "Active":
+            for impl_status, label in ACTIVE_IMPL_BUCKETS:
+                subgroup = [row for row in bucket_rows if row.implementation_status == impl_status]
+                if not subgroup:
+                    continue
+                lines.extend([f"### Active / {label} ({len(subgroup)})", ""])
+                lines.extend(render_table(subgroup))
+                lines.append("")
+        else:
+            lines.extend(render_table(bucket_rows))
+            lines.append("")
         if bucket in {"Superseded", "Deprecated", "Tombstone"}:
             lines.extend(["</details>", ""])
     return "\n".join(lines).rstrip() + "\n"

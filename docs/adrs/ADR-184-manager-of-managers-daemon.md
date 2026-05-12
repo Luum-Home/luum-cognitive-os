@@ -1,7 +1,9 @@
 ---
+
 adr: 184
 title: Manager-of-Managers Daemon — Authoritative Single-Writer for Critical Surfaces
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

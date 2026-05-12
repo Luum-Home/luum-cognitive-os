@@ -1,7 +1,9 @@
 ---
+
 adr: 119
 title: Session Filesystem Reaper
 status: implemented
+implementation_status: implemented
 date: 2026-05-02
 supersedes: []
 superseded_by: null

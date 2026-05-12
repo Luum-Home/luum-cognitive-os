@@ -1,7 +1,9 @@
 ---
+
 adr: 53
 title: Dispatch Auto-Optimizer
 status: implemented
+implementation_status: implemented
 implementation_files:
   - lib/dispatch_optimizer.py
   - scripts/auto-tune-routing

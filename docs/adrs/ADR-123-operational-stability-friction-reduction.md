@@ -1,7 +1,9 @@
 ---
+
 adr: 123
 title: Operational Stability and Friction Reduction Program
 status: implemented
+implementation_status: implemented
 date: 2026-05-02
 supersedes: []
 superseded_by: null

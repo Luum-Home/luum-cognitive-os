@@ -1,7 +1,9 @@
 ---
+
 adr: 140
 title: Cross-OS Containerized Deployment via Docker Compose
 status: accepted
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

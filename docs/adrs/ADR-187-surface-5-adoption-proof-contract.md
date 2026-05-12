@@ -1,7 +1,9 @@
 ---
+
 adr: 187
 title: Surface 5 Adoption Proof Contract — Source-Level Gate for Custom TUI/UI
 status: superseded
+implementation_status: not-applicable
 date: 2026-05-06
 supersedes: []
 superseded_by: ADR-192

@@ -257,7 +257,7 @@ These files record inter-session continuity state — read the most recent one t
 
 **[legal/](legal/)** — License FAQ, operator data scan, ADR sweep, feature status audit, and unknown-license resolution.
 
-**[compliance/](compliance/)** — Compliance policy documents.
+**[license-compliance-audit-2026-05-11.md](reports/license-compliance-audit-2026-05-11.md)** — Compliance policy documents and latest license audit.
 
 ---
 

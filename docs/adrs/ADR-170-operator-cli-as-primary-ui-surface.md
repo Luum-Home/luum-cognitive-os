@@ -1,7 +1,9 @@
 ---
+
 adr: 170
 title: Operator-CLI as Primary UI Surface — No Web Dashboard Until a Real Driver Exists
 status: superseded
+implementation_status: not-applicable
 date: 2026-05-05
 supersedes: []
 superseded_by: ADR-172

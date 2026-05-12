@@ -1,7 +1,9 @@
 ---
+
 adr: 181
 title: ADR Relevance Suggester — Lightweight Routing for Architecture Decisions
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 authors: [luum-agent-os]
 supersedes: []

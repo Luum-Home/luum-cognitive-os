@@ -1,7 +1,9 @@
 ---
+
 adr: 138
 title: Flow Contract Schema — Required Shape for Cloud Flow Manifests
 status: accepted
+implementation_status: implemented
 date: 2026-05-03
 supersedes: []
 superseded_by: null

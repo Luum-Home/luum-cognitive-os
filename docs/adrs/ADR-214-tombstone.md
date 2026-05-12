@@ -1,7 +1,9 @@
 ---
+
 adr: 214
 title: Reserved — vacated by parallel-session number collision
 status: tombstone
+implementation_status: not-applicable
 date: 2026-05-06
 supersedes: []
 superseded_by: null

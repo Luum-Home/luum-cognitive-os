@@ -1,7 +1,9 @@
 ---
+
 adr: 245
 title: Chaos Tests Run with Read-Only Production Source
 status: accepted
+implementation_status: partial
 date: 2026-05-08
 supersedes: []
 superseded_by: null

@@ -1,7 +1,9 @@
 ---
+
 adr: 185
 title: Cross-Agent Audit Findings Queue — Auditor → Implementer Directive Channel
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

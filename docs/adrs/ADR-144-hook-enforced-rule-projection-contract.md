@@ -1,7 +1,9 @@
 ---
+
 adr: 144
 title: Hook-Enforced Rule Projection Contract
 status: accepted
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

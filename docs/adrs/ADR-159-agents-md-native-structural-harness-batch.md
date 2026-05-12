@@ -1,7 +1,9 @@
 ---
+
 adr: 159
 title: AGENTS.md-native Structural Harness Batch and Kiro Lifecycle Investigation
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

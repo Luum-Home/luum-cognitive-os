@@ -1,6 +1,8 @@
 ---
+
 adr: 169
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

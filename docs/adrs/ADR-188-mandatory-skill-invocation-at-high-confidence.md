@@ -1,7 +1,9 @@
 ---
+
 adr: 188
 title: Mandatory Skill Invocation at High Router Confidence
 status: accepted
+implementation_status: implemented
 date: 2026-05-06
 supersedes: []
 superseded_by: null

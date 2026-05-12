@@ -1,7 +1,9 @@
 ---
+
 adr: 175
 title: Research-quality enforcement for audit reports
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

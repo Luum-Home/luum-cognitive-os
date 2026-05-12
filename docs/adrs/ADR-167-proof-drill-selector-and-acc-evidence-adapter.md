@@ -1,7 +1,9 @@
 ---
+
 adr: 167
 title: Proof Drill Selector and ACC Evidence Adapter
 status: implemented
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null

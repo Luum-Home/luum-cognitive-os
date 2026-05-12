@@ -1,7 +1,9 @@
 ---
+
 adr: 153
 title: ACC Fail-New Gate and Harness Proof Boundary
 status: accepted
+implementation_status: implemented
 date: 2026-05-04
 supersedes: []
 superseded_by: null

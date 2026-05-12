@@ -1,7 +1,9 @@
 ---
+
 adr: 43
 title: Removed local-daemon integration decision
 status: tombstone
+implementation_status: not-applicable
 date: 2026-05-05
 supersedes: []
 superseded_by: null

@@ -1,7 +1,9 @@
 ---
+
 adr: 183
 title: Cross-Session Event Log — Append-Only Visibility for Peer Orchestrators
 status: accepted
+implementation_status: implemented
 date: 2026-05-05
 supersedes: []
 superseded_by: null
