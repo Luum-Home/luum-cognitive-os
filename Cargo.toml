@@ -1,0 +1,3 @@
+[workspace]
+members = ["crates/cos-script-exposure-audit-rs"]
+resolver = "2"

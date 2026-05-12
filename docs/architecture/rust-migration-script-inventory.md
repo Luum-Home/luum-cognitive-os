@@ -195,3 +195,24 @@ A Rust migration is viable and likely valuable, but only as a staged extraction 
 The strongest near-term posture is:
 
 > Rust for portable core and high-signal diagnostics; Go CLI only if consolidation pays for itself; Python for flexible generators and evolving audits; Bash as thin harness boundary.
+
+## Wave 1 Selection — ADR-283 Script Exposure Audit
+
+The first Rust slice is `cos-script-exposure-audit-rs`, a parity implementation of the ADR-283 script exposure diagnostic.
+
+Why this scanner first:
+
+- deterministic input/output: JSON scripts ledger plus optional YAML dispositions manifest
+- already covered by Python unit and behavior tests
+- high operational value because it protects agentic primitive discoverability
+- low side-effect risk because it is read-only and report-oriented
+- useful migration shape: native Rust library plus CLI, while the existing Python implementation remains authoritative until parity is proven on real ledgers
+
+Initial Rust acceptance criteria:
+
+1. `cargo test -p cos-script-exposure-audit-rs` passes.
+2. `cargo clippy -p cos-script-exposure-audit-rs -- -D warnings` passes.
+3. Existing Python script-exposure tests still pass.
+4. Rust JSON summaries match Python JSON summaries on the shared fixture with and without dispositions.
+
+The Python CLI remains the production/default path for now. The Rust CLI is a parity candidate, not yet a replacement.

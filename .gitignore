@@ -128,3 +128,6 @@ cos_mutation.sqlite
 # ADR-255: external source snapshots for due diligence, never tracked
 .cognitive-os/external-source-cache/
 .private/
+
+# Rust build output
+target/

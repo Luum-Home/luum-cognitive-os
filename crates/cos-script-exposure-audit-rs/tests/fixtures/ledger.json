@@ -1,0 +1,37 @@
+{
+  "schema_version": "primitive-readiness-ledger/v1",
+  "scripts": [
+    {
+      "path": "scripts/no-skill-agentic",
+      "role": "agentic-primitive",
+      "skill_consumers": 0,
+      "total_consumers": 0,
+      "consumer_families": {},
+      "consumers": []
+    },
+    {
+      "path": "scripts/internal-maintainer",
+      "role": "maintainer-tool",
+      "skill_consumers": 0,
+      "total_consumers": 1,
+      "consumer_families": {"test": 1},
+      "consumers": [{"family": "test", "path": "tests/test_internal.py"}]
+    },
+    {
+      "path": "scripts/internal-backend.py",
+      "role": "maintainer-tool",
+      "skill_consumers": 0,
+      "total_consumers": 1,
+      "consumer_families": {"script": 1},
+      "consumers": [{"family": "script", "path": "scripts/internal-wrapper"}]
+    },
+    {
+      "path": "scripts/operator-workflow.sh",
+      "role": "maintainer-tool",
+      "skill_consumers": 0,
+      "total_consumers": 1,
+      "consumer_families": {"script": 1},
+      "consumers": [{"family": "script", "path": "scripts/operator-scheduler"}]
+    }
+  ]
+}

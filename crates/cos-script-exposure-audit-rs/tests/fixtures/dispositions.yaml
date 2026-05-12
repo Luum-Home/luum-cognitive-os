@@ -1,0 +1,15 @@
+schema_version: 1
+routes:
+  - path: scripts/no-skill-agentic
+    resolution: documented_route
+    route: synthetic route
+    rationale: synthetic test
+scripts:
+  - path: scripts/internal-backend.py
+    resolution: internal_backend
+    owner: synthetic wrapper
+    rationale: synthetic backend
+  - path: scripts/operator-workflow.sh
+    resolution: operator_workflow
+    owner: synthetic operator
+    rationale: synthetic operator workflow
