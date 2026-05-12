@@ -6,8 +6,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 SCHEMA_VERSION = "script-exposure-audit/v1"
 DEFAULT_LEDGER = Path("docs/reports/primitive-readiness-ledger-scripts-latest.json")
+DEFAULT_DISPOSITIONS = Path("manifests/script-exposure-dispositions.yaml")
 ALLOWED_NO_SKILL_ROLES = {"lab", "migration-only", "driver-specific"}
 COMMAND_ROUTER_CONSUMER_PATHS = {"scripts/cos"}
 
@@ -33,6 +36,26 @@ def load_scripts_ledger(path: Path) -> dict[str, Any]:
     if not isinstance(scripts, list):
         raise ScriptExposureAuditError(f"scripts ledger has no scripts list: {path}")
     return payload
+
+
+
+def load_dispositions(path: Path) -> dict[str, dict[str, Any]]:
+    """Load manual ADR-283 exposure dispositions keyed by script path."""
+    if not path.exists():
+        return {}
+    payload = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    if not isinstance(payload, dict):
+        raise ScriptExposureAuditError(f"script exposure dispositions must be a mapping: {path}")
+    dispositions: dict[str, dict[str, Any]] = {}
+    for section in ("routes", "scripts"):
+        rows = payload.get(section) or []
+        if not isinstance(rows, list):
+            raise ScriptExposureAuditError(f"script exposure dispositions section must be a list: {section}")
+        for row in rows:
+            if not isinstance(row, dict) or not row.get("path"):
+                continue
+            dispositions[str(row["path"])] = row
+    return dispositions
 
 
 def _as_int(value: Any) -> int:
@@ -87,7 +110,7 @@ def _channels(row: dict[str, Any]) -> dict[str, int]:
     }
 
 
-def classify_script(row: dict[str, Any]) -> dict[str, Any]:
+def classify_script(row: dict[str, Any], disposition: dict[str, Any] | None = None) -> dict[str, Any]:
     """Classify one scripts-ledger row into ADR-283 exposure priorities."""
     path = str(row.get("path") or "")
     role = str(row.get("role") or "unknown")
@@ -95,8 +118,17 @@ def classify_script(row: dict[str, Any]) -> dict[str, Any]:
     total_consumers = _as_int(row.get("total_consumers"))
     channels = _channels(row)
     has_agent_facing_route = channels["skill"] > 0 or channels["hook"] > 0 or channels["router"] > 0
+    disposition = disposition or {}
+    disposition_resolution = str(disposition.get("resolution") or "")
 
-    if role == "agentic-primitive" and skill_consumers == 0:
+    if role == "agentic-primitive" and skill_consumers == 0 and disposition_resolution == "documented_route":
+        priority = "OK"
+        finding = "agentic-route-documented"
+        exposure_class = "OK-documented-route"
+        recommendation = "no-action"
+        route = str(disposition.get("route") or "documented route")
+        rationale = f"Manual ADR-283 disposition records an equivalent route: {route}."
+    elif role == "agentic-primitive" and skill_consumers == 0:
         priority = "P0"
         finding = "agentic-primitive-without-skill-consumer"
         if channels["hook"] > 0 or channels["router"] > 0:
@@ -164,16 +196,31 @@ def classify_script(row: dict[str, Any]) -> dict[str, Any]:
         "supported_harnesses": row.get("supported_harnesses") or [],
         "evidence": row.get("evidence") or [],
         "consumers": _consumers(row),
+        "disposition": disposition or None,
     }
 
 
-def build_audit(project_dir: Path, ledger_path: Path | None = None, *, limit_per_priority: int | None = None) -> dict[str, Any]:
+def build_audit(
+    project_dir: Path,
+    ledger_path: Path | None = None,
+    *,
+    dispositions_path: Path | None = None,
+    limit_per_priority: int | None = None,
+) -> dict[str, Any]:
     """Build an ADR-283 script exposure audit report."""
     ledger_file = ledger_path or project_dir / DEFAULT_LEDGER
     if not ledger_file.is_absolute():
         ledger_file = project_dir / ledger_file
     ledger = load_scripts_ledger(ledger_file)
-    findings = [classify_script(row) for row in ledger["scripts"] if isinstance(row, dict)]
+    disposition_file = dispositions_path or project_dir / DEFAULT_DISPOSITIONS
+    if not disposition_file.is_absolute():
+        disposition_file = project_dir / disposition_file
+    dispositions = load_dispositions(disposition_file)
+    findings = [
+        classify_script(row, dispositions.get(str(row.get("path") or "")))
+        for row in ledger["scripts"]
+        if isinstance(row, dict)
+    ]
     priority_order = {"P0": 0, "P1": 1, "P2": 2, "P3": 3, "OK": 4}
     findings.sort(key=lambda item: (priority_order.get(item["priority"], 99), item["path"]))
 
@@ -216,6 +263,7 @@ def build_audit(project_dir: Path, ledger_path: Path | None = None, *, limit_per
         "status": "warn" if summary["by_priority"].get("P0", 0) else "pass",
         "ledger_path": str(ledger_file.relative_to(project_dir) if ledger_file.is_relative_to(project_dir) else ledger_file),
         "ledger_schema_version": ledger.get("schema_version"),
+        "dispositions_path": str(disposition_file.relative_to(project_dir) if disposition_file.exists() and disposition_file.is_relative_to(project_dir) else disposition_file),
         "summary": summary,
         "findings": report_findings,
     }

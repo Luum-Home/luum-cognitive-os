@@ -3,7 +3,7 @@
 
 > Level-1 catalog: loaded at session start. Each row is `name | audience | 1-line description`. Full SKILL.md is loaded on demand via the skill-loader. See `skills/CATALOG.md` (via `/catalog-full`) for the full catalog.
 
-Total skills: 165
+Total skills: 169
 
 ## os (18)
 
@@ -28,7 +28,7 @@ Total skills: 165
 | validate-release | Pre-release readiness check — validates working tree, branch, changelog, and… |
 | vuln-remediation-flow | Use when you need this Cognitive OS skill: Lab-stage propose-only cloud flow contract for sandboxed… |
 
-## os-dev (37)
+## os-dev (40)
 
 | Skill | Description |
 |-------|-------------|
@@ -43,6 +43,9 @@ Total skills: 165
 | compat-test | Smoke test suite verifying Cognitive OS works correctly with the current AI… |
 | component-reality-check | Classify every SO agentic primitive into REAL / DORMANT / UNWIRED / METADATA — catch drift between declarations and observable runtime. |
 | coordination-status | List who is editing what across concurrent COS sessions. |
+| cos-install-operations | Route COS install/bootstrap/upgrade/operator setup through canonical scripts. |
+| cos-maintainer-operations | Route high-value COS maintainer operations through canonical scripts. |
+| deep-tool-research | Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex de… |
 | deepeval-integration | Configure and use DeepEval for LLM unit testing, agent trajectory evaluation… |
 | detect-patterns | Detect systemic problems in the Cognitive OS codebase: dead metadata, broken… |
 | docs-execution-audit | Audit what the docs say is done vs what repo evidence proves. |
@@ -70,7 +73,7 @@ Total skills: 165
 | tool-discovery | Discover new open-source tools that could enhance Cognitive OS capabilities |
 | vulnerability-scan | Use when you need this Cognitive OS skill: Run LLM vulnerability probes using Garak against configu… |
 
-## both (36)
+## both (38)
 
 | Skill | Description |
 |-------|-------------|
@@ -105,15 +108,15 @@ Total skills: 165
 | scaffold-project | Create the .claude/ directory structure, symlink rules, and generate… |
 | self-improve | META skill — orchestrates analyze-improvements → (human reviews) →… |
 | session-backlog | Inventory all pending work across plans, engram, tasks, todos, audits, and git. |
-| session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write… |
 | session-pending-brief | Bridge prompt → cos-session-start-projector → ranked attack list. |
 | session-pending-close | Atomic close of pending-truth task and/or ADR-decision items with audit trail. |
+| session-wrapup | End-of-session routine — run session-backlog inventory, save to engram, write… |
 | skill-creator | Create new AI agent skills + cos package scaffolding. |
 | trust-audit | Analyze trust scores across agents and tasks, identify patterns, recommend… |
 | validate-config | Validate all Cognitive OS configuration files — agents, squads, skills, rules… |
 | worktree-triage | Compare a worktree to main and produce a safe port/validate/remove checklist. |
 
-## project (71)
+## project (70)
 
 | Skill | Description |
 |-------|-------------|
@@ -130,7 +133,6 @@ Total skills: 165
 | cost-predict | Estimate task cost from historical metrics and default phase routing. |
 | coverage-enforcement | Run Go test coverage for all services, enforce thresholds from… |
 | deep-research | Multi-hop research skill for deep investigation of topics. |
-| deep-tool-research | Run a canonical 7-annex deep evaluation of an external tool (memory/agent OS/eval/RAG family). |
 | devbox-checkpoint | Save and restore environment state snapshots using devbox |
 | doc-sync | Synchronize documentation that became stale after code changes |
 | document-feature | Generate or update structured feature documentation using 3-layer detection… |

@@ -1,103 +1,244 @@
 schema_version: 1
 purpose: Explicit first-pass triage for script rows that the generated ledger classified with low confidence.
 roles:
-  - agentic-primitive
-  - maintainer-tool
-  - migration-only
-  - driver-specific
-  - lab
-  - archive
+- agentic-primitive
+- maintainer-tool
+- migration-only
+- driver-specific
+- lab
+- archive
 scripts:
-  - path: scripts/agentic-tool-license-matrix.sh
-    role: maintainer-tool
-    rationale: License matrix helper is maintainer/research evidence, not a default agent tool.
-  - path: scripts/agentic_mastery_summary.py
-    role: maintainer-tool
-    rationale: Summary/report helper for maintainer validation; no direct shared-agent package boundary yet.
-  - path: scripts/check_lazy_catalog_health.py
-    role: maintainer-tool
-    rationale: Catalog health checker is maintainer governance until promoted through lifecycle metadata.
-  - path: scripts/ci-setup.sh
-    role: maintainer-tool
-    rationale: CI environment setup helper; not agent-facing runtime primitive.
-  - path: scripts/ci-smoke-linux.sh
-    role: maintainer-tool
-    rationale: CI smoke helper for maintainers and release validation.
-  - path: scripts/compose_agent_prompt.py
-    role: maintainer-tool
-    rationale: Prompt composition support is internal maintainer/runtime glue until exposed through a stable primitive.
-  - path: scripts/demo-governance.sh
-    role: maintainer-tool
-    rationale: Demo helper for product proof paths, not reusable agent primitive.
-  - path: scripts/extract-agent-output.sh
-    role: maintainer-tool
-    rationale: Transcript extraction helper used by docs/rules; keep maintainer-scoped.
-  - path: scripts/generate_adversarial_scenario.py
-    role: lab
-    rationale: Adversarial scenario generation is experimental validation surface.
-  - path: scripts/harness-parity-audit
-    role: driver-specific
-    rationale: Harness parity wrapper is explicitly driver/IDE portability tooling.
-  - path: scripts/ide-bridge.sh
-    role: driver-specific
-    rationale: IDE bridge is driver-specific compatibility surface.
-  - path: scripts/install-cos.sh
-    role: maintainer-tool
-    rationale: Installer wrapper remains maintainer/distribution tooling until lifecycle metadata signs it as shared primitive.
-  - path: scripts/install-git-hooks.sh
-    role: maintainer-tool
-    rationale: Git hook installer is setup tooling, not an agent-facing primitive by default.
-  - path: scripts/install-launchd-jobs.sh
-    role: driver-specific
-    rationale: macOS launchd installer is platform-specific host integration.
-  - path: scripts/install-timing-test.sh
-    role: maintainer-tool
-    rationale: Timing test installer is maintainer validation tooling.
-  - path: scripts/install-tob-skills.sh
-    role: maintainer-tool
-    rationale: External skill installer is optional maintainer tooling pending package boundary.
-  - path: scripts/lint-shell.sh
-    role: maintainer-tool
-    rationale: Shell lint helper is validation tooling.
-  - path: scripts/orphan_overwrite_detector.py
-    role: maintainer-tool
-    rationale: Orphan overwrite detector is repository safety tooling, not packaged agent primitive yet.
-  - path: scripts/postinstall.js
-    role: maintainer-tool
-    rationale: Package postinstall helper is distribution plumbing.
-  - path: scripts/python_stdin_antipattern_audit.py
-    role: maintainer-tool
-    rationale: Audit helper for maintainer quality checks.
-  - path: scripts/run-adversarial-generalization.sh
-    role: lab
-    rationale: Adversarial generalization run path is experimental validation surface.
-  - path: scripts/runtime_hook_reality.py
-    role: maintainer-tool
-    rationale: Runtime hook reality audit is core maintainer evidence tooling but not user-facing primitive until lifecycle row exists.
-  - path: scripts/session_event_bus.py
-    role: maintainer-tool
-    rationale: Session event bus support is internal runtime glue pending lifecycle/projection proof.
-  - path: scripts/session_start_budget.py
-    role: maintainer-tool
-    rationale: SessionStart budget audit is maintainer performance tooling.
-  - path: scripts/shellcheck-baseline.txt
-    role: maintainer-tool
-    rationale: Baseline data file for shell linting; not an executable primitive.
-  - path: scripts/silent_failure_audit.py
-    role: maintainer-tool
-    rationale: Audit helper for maintainer governance checks.
-  - path: scripts/skill_efficacy_report.py
-    role: maintainer-tool
-    rationale: Skill efficacy report is maintainer measurement tooling until shared lifecycle metadata exists.
-  - path: scripts/smoke-agent-quota-advisor.sh
-    role: maintainer-tool
-    rationale: Smoke test helper for optional agent quota flow.
-  - path: scripts/smoke-agent-quota-redirect.sh
-    role: maintainer-tool
-    rationale: Smoke test helper for optional quota redirect flow.
-  - path: scripts/test-agent-teams-hooks.sh
-    role: maintainer-tool
-    rationale: Test helper for agent-team hooks.
-  - path: scripts/test-mcp-server.sh
-    role: maintainer-tool
-    rationale: MCP server smoke helper for maintainers.
+- path: scripts/agentic-tool-license-matrix.sh
+  role: maintainer-tool
+  rationale: License matrix helper is maintainer/research evidence, not a default agent tool.
+- path: scripts/agentic_mastery_summary.py
+  role: maintainer-tool
+  rationale: Summary/report helper for maintainer validation; no direct shared-agent package boundary yet.
+- path: scripts/check_lazy_catalog_health.py
+  role: maintainer-tool
+  rationale: Catalog health checker is maintainer governance until promoted through lifecycle metadata.
+- path: scripts/ci-setup.sh
+  role: maintainer-tool
+  rationale: CI environment setup helper; not agent-facing runtime primitive.
+- path: scripts/ci-smoke-linux.sh
+  role: maintainer-tool
+  rationale: CI smoke helper for maintainers and release validation.
+- path: scripts/compose_agent_prompt.py
+  role: maintainer-tool
+  rationale: Prompt composition support is internal maintainer/runtime glue until exposed through a stable primitive.
+- path: scripts/demo-governance.sh
+  role: maintainer-tool
+  rationale: Demo helper for product proof paths, not reusable agent primitive.
+- path: scripts/extract-agent-output.sh
+  role: maintainer-tool
+  rationale: Transcript extraction helper used by docs/rules; keep maintainer-scoped.
+- path: scripts/generate_adversarial_scenario.py
+  role: lab
+  rationale: Adversarial scenario generation is experimental validation surface.
+- path: scripts/harness-parity-audit
+  role: driver-specific
+  rationale: Harness parity wrapper is explicitly driver/IDE portability tooling.
+- path: scripts/ide-bridge.sh
+  role: driver-specific
+  rationale: IDE bridge is driver-specific compatibility surface.
+- path: scripts/install-cos.sh
+  role: maintainer-tool
+  rationale: Installer wrapper remains maintainer/distribution tooling until lifecycle metadata signs it as shared primitive.
+- path: scripts/install-git-hooks.sh
+  role: maintainer-tool
+  rationale: Git hook installer is setup tooling, not an agent-facing primitive by default.
+- path: scripts/install-launchd-jobs.sh
+  role: driver-specific
+  rationale: macOS launchd installer is platform-specific host integration.
+- path: scripts/install-timing-test.sh
+  role: maintainer-tool
+  rationale: Timing test installer is maintainer validation tooling.
+- path: scripts/install-tob-skills.sh
+  role: maintainer-tool
+  rationale: External skill installer is optional maintainer tooling pending package boundary.
+- path: scripts/lint-shell.sh
+  role: maintainer-tool
+  rationale: Shell lint helper is validation tooling.
+- path: scripts/orphan_overwrite_detector.py
+  role: maintainer-tool
+  rationale: Orphan overwrite detector is repository safety tooling, not packaged agent primitive yet.
+- path: scripts/postinstall.js
+  role: maintainer-tool
+  rationale: Package postinstall helper is distribution plumbing.
+- path: scripts/python_stdin_antipattern_audit.py
+  role: maintainer-tool
+  rationale: Audit helper for maintainer quality checks.
+- path: scripts/run-adversarial-generalization.sh
+  role: lab
+  rationale: Adversarial generalization run path is experimental validation surface.
+- path: scripts/runtime_hook_reality.py
+  role: maintainer-tool
+  rationale: Runtime hook reality audit is core maintainer evidence tooling but not user-facing primitive until lifecycle
+    row exists.
+- path: scripts/session_event_bus.py
+  role: maintainer-tool
+  rationale: Session event bus support is internal runtime glue pending lifecycle/projection proof.
+- path: scripts/session_start_budget.py
+  role: maintainer-tool
+  rationale: SessionStart budget audit is maintainer performance tooling.
+- path: scripts/shellcheck-baseline.txt
+  role: maintainer-tool
+  rationale: Baseline data file for shell linting; not an executable primitive.
+- path: scripts/silent_failure_audit.py
+  role: maintainer-tool
+  rationale: Audit helper for maintainer governance checks.
+- path: scripts/skill_efficacy_report.py
+  role: maintainer-tool
+  rationale: Skill efficacy report is maintainer measurement tooling until shared lifecycle metadata exists.
+- path: scripts/smoke-agent-quota-advisor.sh
+  role: maintainer-tool
+  rationale: Smoke test helper for optional agent quota flow.
+- path: scripts/smoke-agent-quota-redirect.sh
+  role: maintainer-tool
+  rationale: Smoke test helper for optional quota redirect flow.
+- path: scripts/test-agent-teams-hooks.sh
+  role: maintainer-tool
+  rationale: Test helper for agent-team hooks.
+- path: scripts/test-mcp-server.sh
+  role: maintainer-tool
+  rationale: MCP server smoke helper for maintainers.
+- path: scripts/cos-branch-lock
+  role: archive
+  rationale: 'ADR-283 manual review: zero-consumer wrapper; backend cos_branch_lock.py remains active through hooks and sibling
+    wrappers.'
+- path: scripts/cos-claims.sh
+  role: archive
+  rationale: 'ADR-283 manual review: old claims CLI has zero live consumers; archive unless explicitly revived.'
+- path: scripts/cos-fingerprint.sh
+  role: archive
+  rationale: 'ADR-283 manual review: old work-identity CLI has zero live consumers; archive unless explicitly revived.'
+- path: scripts/cos-locks.sh
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; superseded by newer coordination primitives unless revived.'
+- path: scripts/cos-primitive-projection-fidelity
+  role: archive
+  rationale: 'ADR-283 manual review: zero-consumer wrapper; backend primitive_projection_fidelity.py remains used by ACC/tests/docs.'
+- path: scripts/cos-project-registry-prune.sh
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; one-off registry maintenance path.'
+- path: scripts/cos-validate
+  role: archive
+  rationale: 'ADR-283 manual review: zero-consumer wrapper; backend cos_validate.py remains referenced by tests/ADR evidence.'
+- path: scripts/portable_ai_consumer_package.py
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; superseded or dormant portable package helper.'
+- path: scripts/prelaunch-apply-rewrite
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; old prelaunch rewrite helper.'
+- path: scripts/prelaunch-history-audit
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; old prelaunch rewrite helper.'
+- path: scripts/prelaunch-rewrite-plan
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; old prelaunch rewrite helper.'
+- path: scripts/primitive_service_headless_smoke.py
+  role: archive
+  rationale: 'ADR-283 manual review: zero live consumers; archive unless attached to manual/release proof lane.'
+- path: scripts/cos_boring_reliability.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos_architecture_readiness.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos_closure_discipline_audit.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos_new_adr.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos_instance_init.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos_recovery_drill.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/portable_ai_overlay.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/promote_lifecycle_primitives_to_contracts.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/test_skip_registry.py
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-preamble-budget
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-dispatch-smoke
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-engram-bundle
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-export-consumer-evidence
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-federation-trigger-audit
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-import-consumer-evidence
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-registry-lock
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/cos-tier-claim-audit
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: internal maintainer/backend or evidence helper; not a direct agentic primitive requiring
+    skill exposure.'
+- path: scripts/demo-first-run-onboarding.sh
+  role: lab
+  rationale: 'ADR-283 manual review: demo, doctrine, or self-improvement exploration path; keep non-default until promoted.'
+- path: scripts/demo-portability-proof.sh
+  role: lab
+  rationale: 'ADR-283 manual review: demo, doctrine, or self-improvement exploration path; keep non-default until promoted.'
+- path: scripts/cos-demotion-loop-audit
+  role: lab
+  rationale: 'ADR-283 manual review: demo, doctrine, or self-improvement exploration path; keep non-default until promoted.'
+- path: scripts/cos-doctrine-proposer
+  role: lab
+  rationale: 'ADR-283 manual review: demo, doctrine, or self-improvement exploration path; keep non-default until promoted.'
+- path: scripts/cos-self-improvement-loop
+  role: lab
+  rationale: 'ADR-283 manual review: demo, doctrine, or self-improvement exploration path; keep non-default until promoted.'
+- path: scripts/cos-boring-reliability
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: maintainer policy gate; document/route through validation lanes instead of direct agentic
+    skill exposure.'
+- path: scripts/cos-closure-discipline-audit
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: maintainer policy gate; document/route through validation lanes instead of direct agentic
+    skill exposure.'
+- path: scripts/cos-lab-first-gate
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: maintainer policy gate; document/route through validation lanes instead of direct agentic
+    skill exposure.'
+- path: scripts/cos-manifest-tier-claim-audit
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: maintainer policy gate; document/route through validation lanes instead of direct agentic
+    skill exposure.'
+- path: scripts/cos-self-improvement-discipline-gate
+  role: maintainer-tool
+  rationale: 'ADR-283 manual review: maintainer policy gate; document/route through validation lanes instead of direct agentic
+    skill exposure.'

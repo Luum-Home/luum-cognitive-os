@@ -68,6 +68,24 @@ def test_router_detection_is_conservative() -> None:
     assert sibling_cos_script["channels"]["router"] == 0
 
 
+def test_documented_route_disposition_resolves_p0() -> None:
+    row = _row("scripts/hooked", "agentic-primitive", total=1, families={"hook": 1})
+
+    finding = classify_script(
+        row,
+        {
+            "path": "scripts/hooked",
+            "resolution": "documented_route",
+            "route": "hooks/hooked.sh",
+            "rationale": "Synthetic route documentation.",
+        },
+    )
+
+    assert finding["priority"] == "OK"
+    assert finding["exposure_class"] == "OK-documented-route"
+    assert finding["disposition"]["resolution"] == "documented_route"
+
+
 def test_build_audit_summary_and_markdown(tmp_path: Path) -> None:
     ledger = tmp_path / "ledger.json"
     ledger.write_text(

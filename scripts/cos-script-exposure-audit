@@ -22,6 +22,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--project-dir", type=Path, default=ROOT)
     parser.add_argument("--ledger", type=Path, help="Override scripts readiness ledger path")
+    parser.add_argument("--dispositions", type=Path, help="Override ADR-283 manual dispositions manifest path")
     parser.add_argument("--format", choices=["markdown", "json"], default="markdown")
     parser.add_argument("--json", action="store_true", help="Alias for --format json")
     parser.add_argument("--limit-per-priority", type=int, default=None, help="Limit rendered findings per priority")
@@ -32,7 +33,7 @@ def main() -> int:
 
     output_format = "json" if args.json else args.format
     try:
-        report = build_audit(args.project_dir, args.ledger, limit_per_priority=args.limit_per_priority)
+        report = build_audit(args.project_dir, args.ledger, dispositions_path=args.dispositions, limit_per_priority=args.limit_per_priority)
     except (ScriptExposureAuditError, json.JSONDecodeError) as exc:
         error = {"schema_version": "script-exposure-audit/v1", "adr": "ADR-283", "status": "fail", "error": str(exc)}
         if output_format == "json":

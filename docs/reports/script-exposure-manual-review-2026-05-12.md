@@ -60,3 +60,28 @@ Manual verification excluded generated reports, ACC outputs, SPDX grandfather li
 2. Add or update skills for the 15 high-signal P0 promotion candidates.
 3. Document routes for 10 routed P0s in the relevant skills/ADR/manual docs so they stop being ambiguous.
 4. Demote/internalize backend/demo/migration scripts in lifecycle metadata so they no longer appear as agentic primitives requiring skills.
+
+## Implementation follow-up — 2026-05-12
+
+Implemented in the follow-up slice:
+
+- P1 zero-consumer scripts were added to `manifests/primitive-readiness-script-overrides.yaml` as `role: archive` so they no longer appear as active maintainer-tool exposure debt.
+- The 10 routed P0 scripts were recorded in `manifests/script-exposure-dispositions.yaml` with `resolution: documented_route`; `scripts/cos-script-exposure-audit` now resolves them as `OK-documented-route` without pretending they have skill consumers.
+- Two skills now provide explicit skill consumers for high-signal operator/maintainer scripts:
+  - `skills/cos-maintainer-operations/SKILL.md`
+  - `skills/cos-install-operations/SKILL.md`
+- Internal backend, lab/demo, and policy-gate scripts from this review were added to `manifests/primitive-readiness-script-overrides.yaml` so they no longer appear as `agentic-primitive` rows requiring skill exposure.
+
+Post-implementation audit:
+
+```text
+scripts total: 543
+P0: 0
+P1: 0
+P2: 348
+P3: 61
+OK: 134
+OK-documented-route: 10
+```
+
+Remaining P2 rows are maintainer tools with consumers but no skill consumer. They are not the P0/P1 exposure gap addressed by this review.

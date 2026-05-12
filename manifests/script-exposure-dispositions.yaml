@@ -1,0 +1,45 @@
+schema_version: 1
+purpose: Explicit manual ADR-283 dispositions for script exposure findings after manual review on 2026-05-12.
+resolution_values:
+  - documented_route
+routes:
+  - path: scripts/_lib/session-id.sh
+    resolution: documented_route
+    route: sourced by hooks/edit-lock-drain-parked.sh, hooks/edit-lock-process-negotiations.sh, and scripts/edit-coop.sh
+    rationale: Internal session identity helper; no direct skill invocation needed.
+  - path: scripts/cos-agent-message
+    resolution: documented_route
+    route: hook-driven agent message bridge; lifecycle is pending-sunset
+    rationale: Keep explicit until sunset/demotion removes active hook route.
+  - path: scripts/cos-architecture-readiness
+    resolution: documented_route
+    route: scripts/cos architecture readiness
+    rationale: Central command dispatcher is the agent-facing route.
+  - path: scripts/cos-doctor-harness.sh
+    resolution: documented_route
+    route: scripts/cos doctor harness and bin/cognitive-os.sh doctor harness
+    rationale: Harness doctor is already exposed through central dispatcher and package fallback.
+  - path: scripts/cos-doctor-tools.sh
+    resolution: documented_route
+    route: hook/install-profile managed doctor path
+    rationale: OS-only diagnostic route; direct skill invocation is not required.
+  - path: scripts/cos-merge-queue-worker.sh
+    resolution: documented_route
+    route: hook/worker managed merge queue path
+    rationale: Worker primitive should be documented as a runtime route, not a human skill command.
+  - path: scripts/cos-session-coordination
+    resolution: documented_route
+    route: hook/session coordination path
+    rationale: Coordination primitive is consumed by session hooks and runtime coordination flows.
+  - path: scripts/cos-validation-break.sh
+    resolution: documented_route
+    route: scripts/cos validation break
+    rationale: Central command dispatcher is the operator route.
+  - path: scripts/cos-validation-status.sh
+    resolution: documented_route
+    route: scripts/cos validation status
+    rationale: Central command dispatcher is the operator route.
+  - path: scripts/set-security-profile.sh
+    resolution: documented_route
+    route: install/profile and hook-managed security profile path
+    rationale: Profile mutation route is protected install/profile surface, not a default skill call.

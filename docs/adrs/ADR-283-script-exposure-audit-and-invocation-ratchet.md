@@ -83,6 +83,12 @@ paths such as `scripts/cos` and future `cmd/*` entries count as router
 consumers. A sibling `scripts/cos-*` consumer is just a script consumer unless it
 is the dispatcher itself.
 
+Manual route dispositions live in
+`manifests/script-exposure-dispositions.yaml`. A row with
+`resolution: documented_route` records the equivalent hook/router/operator path
+and resolves the audit finding as `OK-documented-route` without pretending that
+the script has a skill consumer.
+
 The output is intentionally small and machine-readable:
 
 ```json

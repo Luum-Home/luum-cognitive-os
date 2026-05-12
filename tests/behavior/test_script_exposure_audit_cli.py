@@ -71,3 +71,45 @@ def test_cli_fail_p0_exits_two(tmp_path: Path) -> None:
 
     assert result.returncode == 2
     assert json.loads(result.stdout)["summary"]["by_priority"]["P0"] == 1
+
+
+def test_cli_accepts_dispositions_manifest(tmp_path: Path) -> None:
+    ledger = tmp_path / "ledger.json"
+    _write_ledger(ledger)
+    dispositions = tmp_path / "dispositions.yaml"
+    dispositions.write_text(
+        "\n".join(
+            [
+                "schema_version: 1",
+                "routes:",
+                "  - path: scripts/no-skill-agentic",
+                "    resolution: documented_route",
+                "    route: synthetic route",
+                "    rationale: synthetic test",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            str(CLI),
+            "--project-dir",
+            str(ROOT),
+            "--ledger",
+            str(ledger),
+            "--dispositions",
+            str(dispositions),
+            "--json",
+        ],
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["summary"]["by_priority"]["P0"] == 0
+    assert report["summary"]["by_exposure_class"]["OK-documented-route"] == 1
