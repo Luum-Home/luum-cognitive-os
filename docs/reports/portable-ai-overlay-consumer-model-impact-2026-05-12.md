@@ -164,8 +164,7 @@ contracts when it is produced by Cognitive OS.
 
 ### Required follow-up work
 
-- Add a consumer-package spec that defines what Cognitive OS should project into
-  consumer repos when a human-readable `.ai/` view is requested.
+- Consumer-package spec is now implemented by `docs/architecture/portable-ai-consumer-package-spec.md` and `scripts/cos-portable-ai-consumer-package-smoke`; extend it only when new consumer UX surfaces are added.
 - Extend the first-party adapter compiler beyond the starter slice while
   preserving the ADR-272 boundary: external structural backends can emit advisory
   files only behind COS fidelity filters.
