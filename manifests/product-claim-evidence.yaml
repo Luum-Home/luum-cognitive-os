@@ -239,3 +239,23 @@ claims:
     boundaries:
     - Do not claim COS fully replaces Hermes, Agent Zero, or OpenClaw.
     - Do not publish current named-feature comparisons without checking local radar freshness and external facts when needed.
+  ssr_primitive_enablement_gap_backlog:
+    status: partial-real
+    maturity: documented_gap_backlog
+    confidence: 0.78
+    summary: COS has primitives that help developers convert repeated agent work into governed reusable primitives, but the developer-facing question-to-primitive path needs a clearer router, guide, and report surface.
+    approved_wording: Cognitive OS helps developers turn repeated agent work into governed, tested, reusable agentic primitives; it detects and proposes improvements, while promotion stays evidence-gated and human-approved unless explicitly configured otherwise.
+    evidence:
+    - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
+    - docs/architecture/primitive-harvester.md
+    - docs/adrs/ADR-083-governed-self-improvement-loop.md
+    - docs/architecture/primitive-fitness-evaluation-contract.md
+    - docs/architecture/key-learnings-capture-self-improvement.md
+    - skills/primitive-harvester/SKILL.md
+    - skills/primitive-authoring/SKILL.md
+    boundaries:
+    - Do not claim COS autonomously rewrites itself from chat.
+    - Do not claim every harness has identical primitive behavior.
+    - Do not claim every repeated request automatically becomes a skill.
+    - Do not treat a Key Learning as a runtime behavior change before governed promotion.
+

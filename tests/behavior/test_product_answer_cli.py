@@ -189,3 +189,27 @@ def test_product_answer_cli_routes_alternative_choice_question() -> None:
     assert "docs/vs-alternatives.md" in report["approved_sources"]
     assert any(claim["claim_id"] == "alternative_complementarity" for claim in report["claims"])
     assert "browse only for volatile current facts" in report["answer_long"]
+
+
+def test_product_answer_cli_routes_ssr_primitive_enablement_question() -> None:
+    result = subprocess.run(
+        [
+            str(CLI),
+            "si soy dev ssr con limitaciones de arquitectura y gobernanza como me ayuda con primitivas",
+            "--no-cache",
+            "--json",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["question_id"] == "ssr_primitive_enablement"
+    assert "governed skills" in report["answer_short"]
+    assert "docs/architecture/ssr-agentic-primitive-enablement-gaps.md" in report["approved_sources"]
+    assert any(claim["claim_id"] == "ssr_primitive_enablement_gap_backlog" for claim in report["claims"])
+    assert "COS autonomously rewrites itself from chat" in report["unsafe_claims_to_avoid"]
+

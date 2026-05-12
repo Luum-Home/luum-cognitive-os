@@ -466,3 +466,72 @@ questions:
     gaps:
     - The Agent Zero adapter is not claimed as shipped in the local alternatives doc.
     - Publication-grade named comparisons still need current fact-checking after local radar review.
+  ssr_primitive_enablement:
+    category: developer-enablement
+    aliases:
+    - dev ssr primitivas
+    - desarrollador ssr primitivas
+    - me ayuda como dev ssr
+    - arquitectura gobernanza agentes primitivas
+    - crear primitivas como desarrollador
+    - mejorar primitivas desde chat
+    - agent zero openclaw hermes primitivas
+    - cómo maneja primitivas el so
+    - como maneja primitivas el so
+    keywords:
+    - ssr
+    - developer
+    - desarrollador
+    - primitivas
+    - primitives
+    - gobernanza
+    - governance
+    - arquitectura
+    - architecture
+    - agent zero
+    - openclaw
+    - hermes
+    approved_sources:
+    - docs/architecture/ssr-agentic-primitive-enablement-gaps.md
+    - docs/architecture/primitive-harvester.md
+    - docs/adrs/ADR-083-governed-self-improvement-loop.md
+    - docs/architecture/primitive-fitness-evaluation-contract.md
+    - docs/architecture/key-learnings-capture-self-improvement.md
+    - docs/architecture/memory-lifecycle.md
+    - skills/primitive-harvester/SKILL.md
+    - skills/primitive-authoring/SKILL.md
+    - skills/analyze-improvements/SKILL.md
+    - skills/primitive-usage-map/SKILL.md
+    related_claims:
+    - ssr_primitive_enablement_gap_backlog
+    - governed_self_improvement
+    - product_answer_primitive
+    - cross_harness_behavioral_intelligence
+    answer_short: COS can help an SSR developer by turning repeated agent work into governed skills, hooks, rules, scripts, docs, and tests; today the machinery exists, but the developer-facing path needs a clearer question router, task-centric guide, and automatic-but-propose-only harvesting surface.
+    answer_long: >-
+      Cognitive OS already provides the ingredients: memory/session learning,
+      key-learning capture, primitive harvesting, primitive authoring,
+      analyze/apply improvement loops, primitive fitness, and evidence-backed
+      product answers. The important boundary is that COS should detect and
+      propose from repeated chat or telemetry, not silently rewrite runtime
+      behavior. For a developer with limited architecture or governance context,
+      the strongest next improvements are a question-to-primitive router, a
+      task-centric catalog, a friendly primitive-enablement guide, and better
+      report surfaces that show which gaps are docs, scripts, skills, tests, or
+      approval cadence.
+    recommended_pitch: >-
+      COS is a cognitive prosthesis for agentic engineering: it helps you notice
+      repeated work, convert it into governed primitives, and prove improvements
+      before they become behavior.
+    unsafe_claims_to_avoid:
+    - COS autonomously rewrites itself from chat
+    - every repeated request automatically becomes a skill
+    - Key Learnings immediately mutate runtime behavior
+    - every harness has identical primitive enforcement
+    - no human approval is needed for promoted self-improvement
+    gaps:
+    - Add a question-to-primitive router for meta/product/architecture questions.
+    - Add a developer-facing primitive enablement guide and task-centric skill index.
+    - Wire primitive harvesting into session wrap-up or explicit repeated-intent checks without auto-mutation.
+    - Populate primitive fitness reports and maintainer review cadence so proposals do not pile up.
+

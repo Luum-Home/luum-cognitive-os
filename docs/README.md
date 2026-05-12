@@ -179,6 +179,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR-126: Agentic Primitive Lifecycle Governor](adrs/ADR-126-agentic-primitive-lifecycle-governor.md) — lifecycle states and gates for creating, promoting, demoting, archiving, and deleting self-adjusting primitives.
 - [ADR-128: Data Layer Integrity Fixes](adrs/ADR-128-data-layer-integrity-fixes.md) — Engram upsert/ranking visibility, runtime coverage readiness, version audit, and SDD topic-key canonicalization.
 - [Primitive Harvester](architecture/primitive-harvester.md) — architecture and JSON contract for create/improve/use/document/discard decisions.
+- [SSR Developer Primitive Enablement Gap Backlog](architecture/ssr-agentic-primitive-enablement-gaps.md) — developer-facing gap backlog for turning repeated chat/work into governed skills, hooks, rules, scripts, docs, and tests without overclaiming autonomous mutation.
 - [Foundation Hardening Program](../.cognitive-os/plans/architecture/foundation-hardening-program.md) — execution checklist and production border-case matrix for ADR-121.
 - [Operational Stability and Friction Reduction Program](../.cognitive-os/plans/architecture/operational-stability-friction-reduction.md) — phase checklist for lowering SO friction without weakening safety.
 - [Governance Tools Consolidation Plan](../.cognitive-os/plans/architecture/governance-tools-consolidation.md) — execution plan for reducing governance friction and consolidating duplicate sources of truth.
