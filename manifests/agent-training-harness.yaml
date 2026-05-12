@@ -1,0 +1,103 @@
+schema_version: agent-training-harness.v1
+canonical_doc: docs/architecture/agent-training-harness.md
+created_on: 2026-05-12
+status: active
+position:
+  training_mode: operational-learning
+  provider_weight_training: false
+  default_auto_apply: false
+  summary: >-
+    Cognitive OS trains agent behavior through harness telemetry, memory, evals,
+    and governed updates to agentic primitives; it does not fine-tune provider
+    model weights inside the harness.
+non_goals:
+  - provider-weight fine-tuning inside the harness
+  - reinforcement learning over provider model weights
+  - silent mutation of project source as learning
+  - self-judged evals by default
+  - equal enforcement claims across all harnesses
+trainable_surfaces:
+  - skills
+  - rules
+  - prompt_templates
+  - model_routing
+  - resource_governance
+  - engram_memory_conventions
+  - eval_fixtures
+  - scorecards
+  - run_manifests
+signal_sources:
+  - id: skill_metrics
+    path: .cognitive-os/metrics/skill-metrics.jsonl
+    purpose: Track success, duration, token use, model selection, and retry signals.
+  - id: error_learning
+    path: .cognitive-os/metrics/error-learning.jsonl
+    purpose: Track test, lint, build, compilation, and verification failures.
+  - id: session_learning
+    path: .cognitive-os/metrics/session-learnings.jsonl
+    purpose: Summarize end-of-session error and skill signals.
+  - id: kpi_history
+    path: .cognitive-os/metrics/kpi-history.jsonl
+    purpose: Track self-improvement thresholds and trend regressions.
+  - id: engram_memory
+    path: Engram project memory
+    purpose: Persist decisions, discoveries, bugfixes, patterns, and KPI snapshots.
+  - id: eval_artifacts
+    path: runs/<run_id>/manifest.json
+    purpose: Future content-addressed eval-run manifests with judge attribution.
+    status: planned
+improvement_targets:
+  - id: skill_update
+    paths:
+      - skills/**/SKILL.md
+    requires_human_review_when: Rewriting task procedure or removing safeguards.
+  - id: rule_update
+    paths:
+      - rules/*.md
+    requires_human_review_when: Changing behavior that affects all agents.
+  - id: prompt_template_update
+    paths:
+      - templates/*.md
+    requires_human_review_when: Changing mandatory output or gate behavior.
+  - id: routing_update
+    paths:
+      - rules/model-routing.md
+      - cognitive-os.yaml
+    requires_human_review_when: Increasing cost, lowering capability, or changing provider defaults.
+  - id: eval_update
+    paths:
+      - manifests/eval-run-schema.yaml
+      - runs/<run_id>/manifest.json
+    requires_human_review_when: Changing rubric, threshold, fixture, or judge model.
+claim_policy:
+  required_for_claims:
+    - Link to docs/architecture/agent-training-harness.md or this manifest.
+    - State whether the claim is operational learning or provider-weight training.
+    - Name at least one evidence source when claiming measurable improvement.
+    - Avoid implying fine-tuning, RL, or provider-weight training unless a separate implementation exists.
+  current_authoritative_paths:
+    - docs/architecture/agent-training-harness.md
+    - manifests/agent-training-harness.yaml
+    - docs/reports/agent-training-harness-gap-audit-2026-05-12.md
+  allowed_pointer_paths:
+    - docs/README.md
+    - docs/overview.md
+    - docs/architecture.md
+    - docs/self-improvement-loop.md
+validation:
+  audit_test: tests/audit/test_agent_training_harness_claims.py
+  targeted_command: python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+  lifecycle_command: python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+open_gaps:
+  - id: eval_run_manifest_not_implemented
+    severity: medium
+    status: planned
+    next_action: Add manifests/eval-run-schema.yaml and wire eval skills to emit runs/<run_id>/manifest.json.
+  - id: judge_isolation_not_enforced
+    severity: medium
+    status: planned
+    next_action: Add eval-side hook or schema validator blocking SUT == judge except explicit self-eval smoke mode.
+  - id: full_cross_harness_training_claims_not_supported
+    severity: medium
+    status: active_gap
+    next_action: Keep claims scoped to operational learning and per-harness evidence.

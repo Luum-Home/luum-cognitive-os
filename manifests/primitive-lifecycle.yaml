@@ -8952,3 +8952,75 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: skills/self-improve/SKILL.md
+  kind: skill
+  owner_adr: ADR-083
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/self-improve/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Meta skill orchestrating analyze-improvements and apply-improvements with a mandatory human gate.
+  evidence_commands:
+  - python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+  - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+  rollback_or_repair_command: Revert this lifecycle entry or demote the skill to lab-only if the self-improvement human gate is removed.
+  sunset_criteria: Archive after 90 days with no references from self-improvement docs, training-harness manifest, or active skill routing.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none
+- id: skills/agent-kpis/SKILL.md
+  kind: skill
+  owner_adr: ADR-083
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - skills/agent-kpis/SKILL.md
+  runtime_projection: false
+  behavior_evidence: Skill-facing KPI dashboard over skill metrics, error learning, task state, and Engram feedback.
+  evidence_commands:
+  - python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+  - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+  rollback_or_repair_command: Revert this lifecycle entry or demote the KPI skill to lab-only if KPI evidence stops being emitted.
+  sunset_criteria: Archive after 90 days with no KPI report usage or when replaced by a typed dashboard primitive with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: .cognitive-os/metrics/kpi-history.jsonl
+- id: rules/self-improvement-protocol.md
+  kind: rule
+  owner_adr: ADR-083
+  lifecycle_state: advisory
+  maturity: advisory
+  distribution: maintainer
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - claude
+  - codex
+  - shell
+  projection_targets:
+  - rules/self-improvement-protocol.md
+  runtime_projection: false
+  behavior_evidence: Governance rule separating auto-applicable improvements from human-approval-required primitive rewrites.
+  evidence_commands:
+  - python3 -m pytest tests/audit/test_agent_training_harness_claims.py -q
+  - python3 -m pytest tests/contracts/test_primitive_runtime_reality.py -q
+  rollback_or_repair_command: Revert this lifecycle entry or demote the rule if self-improvement governance moves to a typed manifest.
+  sunset_criteria: Archive after 90 days with no references from self-improvement docs, skills, or manifests.
+  docs_claim_level: advisory
+  exit_behavior: manual
+  metrics_file: none

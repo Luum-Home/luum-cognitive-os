@@ -276,7 +276,7 @@ Fine-tuning and training infrastructure for custom models.
 
 ### Notes
 - Unsloth's Apache-2.0 core is safe for use; the AGPL-3.0 Studio module must be avoided per license policy.
-- Relevant when we need to fine-tune models for domain-specific agent behavior.
+- Relevant only for separate provider-specific model workflows; the COS harness training contract remains operational learning, not provider-weight fine-tuning (see `docs/architecture/agent-training-harness.md`).
 
 ---
 

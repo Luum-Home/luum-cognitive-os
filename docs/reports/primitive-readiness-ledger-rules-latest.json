@@ -13,6 +13,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
+        "config": 1,
         "doc": 11,
         "hook": 4,
         "rule": 2,
@@ -20,6 +21,10 @@
         "test": 3
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/hook-registration-classification.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-029.md"
@@ -111,7 +116,8 @@
         "rule_consumers:2",
         "script_consumers:1",
         "test_consumers:3",
-        "doc_consumers:11"
+        "doc_consumers:11",
+        "config_consumers:1"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -121,7 +127,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 21
+      "total_consumers": 22
     },
     {
       "confidence": "medium",
@@ -808,7 +814,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 2,
-        "doc": 28,
+        "doc": 29,
         "hook": 2,
         "rule": 13,
         "script": 4,
@@ -867,6 +873,10 @@
         {
           "family": "doc",
           "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -1088,7 +1098,7 @@
         "rule_consumers:13",
         "script_consumers:4",
         "test_consumers:14",
-        "doc_consumers:28",
+        "doc_consumers:29",
         "config_consumers:2"
       ],
       "family": "rules",
@@ -1099,7 +1109,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 66
+      "total_consumers": 67
     },
     {
       "confidence": "medium",
@@ -2013,17 +2023,21 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
-        "doc": 28,
+        "config": 3,
+        "doc": 29,
         "hook": 1,
         "rule": 9,
         "skill": 1,
-        "test": 5
+        "test": 6
       },
       "consumers": [
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "config",
@@ -2048,6 +2062,10 @@
         {
           "family": "doc",
           "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -2187,6 +2205,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_agent_training_harness_claims.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         },
         {
@@ -2211,9 +2233,9 @@
         "skill_consumers:1",
         "hook_consumers:1",
         "rule_consumers:9",
-        "test_consumers:5",
-        "doc_consumers:28",
-        "config_consumers:2"
+        "test_consumers:6",
+        "doc_consumers:29",
+        "config_consumers:3"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -2223,7 +2245,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 46
+      "total_consumers": 49
     },
     {
       "confidence": "medium",
@@ -4306,7 +4328,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 13,
-        "doc": 63,
+        "doc": 64,
         "hook": 5,
         "rule": 9,
         "script": 9,
@@ -4449,6 +4471,10 @@
         {
           "family": "doc",
           "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -4818,7 +4844,7 @@
         "rule_consumers:9",
         "script_consumers:9",
         "test_consumers:24",
-        "doc_consumers:63",
+        "doc_consumers:64",
         "config_consumers:13"
       ],
       "family": "rules",
@@ -4829,7 +4855,7 @@
       "role": "lab",
       "role_source": "heuristic:path",
       "supported_harnesses": [],
-      "total_consumers": 124
+      "total_consumers": 125
     },
     {
       "confidence": "medium",
@@ -5447,6 +5473,7 @@
         "config": 1,
         "doc": 1,
         "hook": 1,
+        "rule": 1,
         "script": 1
       },
       "consumers": [
@@ -5463,6 +5490,10 @@
           "path": "hooks/clean-room-ast-similarity-gate.sh"
         },
         {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
           "family": "script",
           "path": "scripts/cos_clean_room_ast_similarity.py"
         }
@@ -5470,6 +5501,7 @@
       "distribution": null,
       "evidence": [
         "hook_consumers:1",
+        "rule_consumers:1",
         "script_consumers:1",
         "doc_consumers:1",
         "config_consumers:1"
@@ -5482,7 +5514,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",
@@ -8590,12 +8622,12 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 10,
-        "doc": 90,
+        "doc": 91,
         "hook": 7,
         "rule": 2,
-        "script": 59,
+        "script": 60,
         "skill": 8,
-        "test": 51
+        "test": 52
       },
       "consumers": [
         {
@@ -8765,6 +8797,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-279-orphan-repo-scan-process-audit.md"
         },
         {
           "family": "doc",
@@ -9124,6 +9160,10 @@
         },
         {
           "family": "script",
+          "path": "scripts/cos-orphan-process-audit.py"
+        },
+        {
+          "family": "script",
           "path": "scripts/cos-pending-truth-close"
         },
         {
@@ -9364,6 +9404,10 @@
         },
         {
           "family": "test",
+          "path": "tests/behavior/test_orphan_process_audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/behavior/test_primitive_fitness_cli.py"
         },
         {
@@ -9512,9 +9556,9 @@
         "skill_consumers:8",
         "hook_consumers:7",
         "rule_consumers:2",
-        "script_consumers:59",
-        "test_consumers:51",
-        "doc_consumers:90",
+        "script_consumers:60",
+        "test_consumers:52",
+        "doc_consumers:91",
         "config_consumers:10"
       ],
       "family": "rules",
@@ -9525,7 +9569,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 227
+      "total_consumers": 230
     },
     {
       "confidence": "medium",
@@ -9852,13 +9896,13 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 12,
-        "doc": 68,
+        "config": 13,
+        "doc": 69,
         "hook": 12,
         "rule": 10,
         "script": 5,
         "skill": 3,
-        "test": 41
+        "test": 42
       },
       "consumers": [
         {
@@ -9880,6 +9924,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agent-training-harness.yaml"
         },
         {
           "family": "config",
@@ -9984,6 +10032,10 @@
         {
           "family": "doc",
           "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -10303,6 +10355,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_agent_training_harness_claims.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_hooks_contracts.py"
         },
         {
@@ -10472,9 +10528,9 @@
         "hook_consumers:12",
         "rule_consumers:10",
         "script_consumers:5",
-        "test_consumers:41",
-        "doc_consumers:68",
-        "config_consumers:12"
+        "test_consumers:42",
+        "doc_consumers:69",
+        "config_consumers:13"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -10484,7 +10540,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 151
+      "total_consumers": 154
     },
     {
       "confidence": "medium",
@@ -11403,7 +11459,7 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 2,
+        "config": 4,
         "doc": 47,
         "hook": 2,
         "rule": 2,
@@ -11419,6 +11475,14 @@
         {
           "family": "config",
           "path": "manifests/memory-retrieval-benchmark.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-contracts.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -11653,7 +11717,7 @@
         "script_consumers:1",
         "test_consumers:2",
         "doc_consumers:47",
-        "config_consumers:2"
+        "config_consumers:4"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -11663,7 +11727,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 58
+      "total_consumers": 60
     },
     {
       "confidence": "medium",
@@ -11917,14 +11981,11 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 3,
+        "doc": 2,
+        "rule": 1,
         "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-261-memory-governance-v2.md"
@@ -11934,14 +11995,19 @@
           "path": "docs/adrs/INDEX.md"
         },
         {
+          "family": "rule",
+          "path": "rules/RULES-COMPACT.md"
+        },
+        {
           "family": "test",
           "path": "tests/red_team/portability/test_engram_lifecycle.py"
         }
       ],
       "distribution": null,
       "evidence": [
+        "rule_consumers:1",
         "test_consumers:1",
-        "doc_consumers:3"
+        "doc_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12090,8 +12156,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 1,
-        "doc": 34,
+        "config": 2,
+        "doc": 35,
         "hook": 2,
         "rule": 12,
         "script": 2,
@@ -12102,6 +12168,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/agent-training-harness.yaml"
         },
         {
           "family": "doc",
@@ -12134,6 +12204,10 @@
         {
           "family": "doc",
           "path": "docs/architecture.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -12347,8 +12421,8 @@
         "rule_consumers:12",
         "script_consumers:2",
         "test_consumers:7",
-        "doc_consumers:34",
-        "config_consumers:1"
+        "doc_consumers:35",
+        "config_consumers:2"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -12358,7 +12432,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 60
+      "total_consumers": 62
     },
     {
       "confidence": "medium",
@@ -14016,7 +14090,7 @@
         "hook": 16,
         "rule": 1,
         "script": 6,
-        "test": 11
+        "test": 12
       },
       "consumers": [
         {
@@ -14233,6 +14307,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_opencode_native_adapter_design.py"
+        },
+        {
+          "family": "test",
           "path": "tests/hooks/conftest.py"
         },
         {
@@ -14245,7 +14323,7 @@
         "hook_consumers:16",
         "rule_consumers:1",
         "script_consumers:6",
-        "test_consumers:11",
+        "test_consumers:12",
         "doc_consumers:15",
         "config_consumers:6"
       ],
@@ -14257,7 +14335,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 55
+      "total_consumers": 56
     },
     {
       "confidence": "medium",
@@ -14364,7 +14442,7 @@
         "hook": 2,
         "rule": 1,
         "script": 6,
-        "test": 1
+        "test": 2
       },
       "consumers": [
         {
@@ -14545,6 +14623,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_opencode_native_adapter_design.py"
+        },
+        {
+          "family": "test",
           "path": "tests/unit/test_prompt_hooks.py"
         }
       ],
@@ -14553,7 +14635,7 @@
         "hook_consumers:2",
         "rule_consumers:1",
         "script_consumers:6",
-        "test_consumers:1",
+        "test_consumers:2",
         "doc_consumers:25",
         "config_consumers:10"
       ],
@@ -14565,7 +14647,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 45
+      "total_consumers": 46
     },
     {
       "confidence": "medium",
@@ -15133,15 +15215,12 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
+        "doc": 1,
         "rule": 1,
-        "skill": 1
+        "skill": 1,
+        "test": 1
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "doc",
           "path": "docs/research/orchestrator-self-critique-cluster-c-methodology-2026-05-11.md"
@@ -15153,13 +15232,18 @@
         {
           "family": "skill",
           "path": "skills/deep-tool-research/SKILL.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_rules_enforcement.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "skill_consumers:1",
         "rule_consumers:1",
-        "doc_consumers:2"
+        "test_consumers:1",
+        "doc_consumers:1"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -15410,7 +15494,7 @@
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
         "config": 1,
-        "doc": 29,
+        "doc": 30,
         "hook": 1,
         "rule": 9,
         "test": 2
@@ -15451,6 +15535,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-109-validation-capsule-worktree-isolation.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -15590,7 +15678,7 @@
         "hook_consumers:1",
         "rule_consumers:9",
         "test_consumers:2",
-        "doc_consumers:29",
+        "doc_consumers:30",
         "config_consumers:1"
       ],
       "family": "rules",
@@ -15601,7 +15689,7 @@
       "role": "doctrine",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 42
+      "total_consumers": 43
     },
     {
       "confidence": "medium",
@@ -16616,19 +16704,23 @@
     },
     {
       "confidence": "medium",
-      "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
-      "consumer_accessibility": "so-local-only",
+      "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
+      "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 1,
-        "doc": 10,
+        "config": 2,
+        "doc": 11,
         "hook": 1,
         "rule": 3,
-        "test": 2
+        "test": 3
       },
       "consumers": [
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
         },
         {
           "family": "doc",
@@ -16637,6 +16729,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-262-evolve-loop-spike.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/architecture/agent-training-harness.md"
         },
         {
           "family": "doc",
@@ -16688,6 +16784,10 @@
         },
         {
           "family": "test",
+          "path": "tests/audit/test_agent_training_harness_claims.py"
+        },
+        {
+          "family": "test",
           "path": "tests/audit/test_rules_enforcement.py"
         },
         {
@@ -16695,43 +16795,39 @@
           "path": "tests/behavior/test_self_improvement.py"
         }
       ],
-      "distribution": null,
+      "distribution": "maintainer",
       "evidence": [
+        "lifecycle",
         "hook_consumers:1",
         "rule_consumers:3",
-        "test_consumers:2",
-        "doc_consumers:10",
-        "config_consumers:1"
+        "test_consumers:3",
+        "doc_consumers:11",
+        "config_consumers:2"
       ],
       "family": "rules",
-      "lifecycle_id": null,
-      "lifecycle_state": null,
-      "next_action": "add lifecycle/package/projection metadata or keep SO-local",
+      "lifecycle_id": "rules/self-improvement-protocol.md",
+      "lifecycle_state": "advisory",
+      "next_action": "keep maintainer-only or add explicit export path",
       "path": "rules/self-improvement-protocol.md",
       "role": "driver-specific",
       "role_source": "heuristic:text",
-      "supported_harnesses": [],
-      "total_consumers": 17
+      "supported_harnesses": [
+        "claude",
+        "codex",
+        "shell"
+      ],
+      "total_consumers": 20
     },
     {
       "confidence": "medium",
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2,
         "rule": 1,
         "script": 1,
         "skill": 2
       },
       "consumers": [
-        {
-          "family": "doc",
-          "path": "docs/acc/latest-compact.md"
-        },
-        {
-          "family": "doc",
-          "path": "docs/acc/latest.md"
-        },
         {
           "family": "rule",
           "path": "rules/RULES-COMPACT.md"
@@ -16753,8 +16849,7 @@
       "evidence": [
         "skill_consumers:2",
         "rule_consumers:1",
-        "script_consumers:1",
-        "doc_consumers:2"
+        "script_consumers:1"
       ],
       "family": "rules",
       "lifecycle_id": null,
@@ -16764,7 +16859,7 @@
       "role": "hook-enforced",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 4
     },
     {
       "confidence": "medium",
@@ -18304,7 +18399,7 @@
         "rule": 15,
         "script": 15,
         "skill": 6,
-        "test": 27
+        "test": 28
       },
       "consumers": [
         {
@@ -18853,6 +18948,10 @@
         },
         {
           "family": "test",
+          "path": "tests/contracts/test_opencode_native_adapter_design.py"
+        },
+        {
+          "family": "test",
           "path": "tests/contracts/test_p95_hook_latency.py"
         },
         {
@@ -18926,7 +19025,7 @@
         "hook_consumers:3",
         "rule_consumers:15",
         "script_consumers:15",
-        "test_consumers:27",
+        "test_consumers:28",
         "doc_consumers:74",
         "config_consumers:13"
       ],
@@ -18938,7 +19037,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 153
+      "total_consumers": 154
     },
     {
       "confidence": "medium",
@@ -19255,7 +19354,8 @@
       "medium": 120
     },
     "consumer_accessibility": {
-      "so-local-only": 120
+      "lifecycle-declared-maintainer": 1,
+      "so-local-only": 119
     },
     "roles": {
       "context-only": 6,
@@ -19266,7 +19366,7 @@
     },
     "total": 120,
     "without_consumers": 0,
-    "without_lifecycle": 120
+    "without_lifecycle": 119
   },
   "target_family": "rules"
 }

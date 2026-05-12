@@ -62,7 +62,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/commit_provenance.py` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 7 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/component-lint.sh` | maintainer-tool | usage:repo | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/compose_agent_prompt.py` | maintainer-tool | override | high | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 1744 | keep lifecycle evidence and supported harness declarations current |
+| `scripts/cos` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 1746 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-action-receipt` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 8 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-active-primitive-index` | agentic-primitive | lifecycle | high | lifecycle-declared-maintainer | advisory | shell | 6 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-adapter-compile` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 8 | keep lifecycle evidence and supported harness declarations current |
@@ -185,7 +185,7 @@ Agentic primitives without lifecycle metadata: 0
 | `scripts/cos-opencode-primitive-adapter-smoke` | driver-specific | heuristic:path | medium | so-local-only |  |  | 3 | declare supported harnesses and fallback behavior |
 | `scripts/cos-operational-guide-audit.py` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 10 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-operational-status` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 1 | keep out of default user surface unless promoted through lifecycle metadata |
-| `scripts/cos-orphan-process-audit.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 2 | keep out of default user surface unless promoted through lifecycle metadata |
+| `scripts/cos-orphan-process-audit.py` | maintainer-tool | heuristic:self-evolution | medium | so-local-only |  |  | 6 | keep out of default user surface unless promoted through lifecycle metadata |
 | `scripts/cos-pending-truth-aggregator` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 16 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-pending-truth-close` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 14 | keep lifecycle evidence and supported harness declarations current |
 | `scripts/cos-pending-truth-verify` | agentic-primitive | lifecycle | high | lifecycle-declared-consumer-candidate | candidate | shell | 17 | keep lifecycle evidence and supported harness declarations current |

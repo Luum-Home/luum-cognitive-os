@@ -3913,7 +3913,7 @@
         "rule": 46,
         "script": 310,
         "skill": 67,
-        "test": 469,
+        "test": 471,
         "workflow": 1
       },
       "consumers": [
@@ -10023,6 +10023,10 @@
         },
         {
           "family": "test",
+          "path": "tests/red_team/portability/test_cos-orphan-process-audit.py"
+        },
+        {
+          "family": "test",
           "path": "tests/red_team/portability/test_cos-pending-truth-aggregator.py"
         },
         {
@@ -10076,6 +10080,10 @@
         {
           "family": "test",
           "path": "tests/red_team/portability/test_event_bus.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_orphan_process_audit.py"
         },
         {
           "family": "test",
@@ -10899,7 +10907,7 @@
         "lifecycle",
         "wrapper_for:scripts/cos-status.sh",
         "skill_consumers:67",
-        "test_consumers:469",
+        "test_consumers:471",
         "hook_consumers:105",
         "workflow_consumers:1",
         "doc_consumers:674",
@@ -10921,7 +10929,7 @@
       "supported_harnesses": [
         "shell"
       ],
-      "total_consumers": 1744,
+      "total_consumers": 1746,
       "wrapper_for": "scripts/cos-status.sh"
     },
     {
@@ -18507,9 +18515,18 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "doc": 2
+        "doc": 4,
+        "test": 2
       },
       "consumers": [
+        {
+          "family": "doc",
+          "path": "docs/acc/latest-compact.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/acc/latest.md"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-279-orphan-repo-scan-process-audit.md"
@@ -18517,11 +18534,20 @@
         {
           "family": "doc",
           "path": "docs/business/master-plan-checklist.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_cos-orphan-process-audit.py"
+        },
+        {
+          "family": "test",
+          "path": "tests/red_team/portability/test_orphan_process_audit.py"
         }
       ],
       "distribution": null,
       "evidence": [
-        "doc_consumers:2"
+        "test_consumers:2",
+        "doc_consumers:4"
       ],
       "install_surface": null,
       "install_surface_rationale": null,
@@ -18535,7 +18561,7 @@
       "role_source": "heuristic:self-evolution",
       "skill_consumers": 0,
       "supported_harnesses": [],
-      "total_consumers": 2,
+      "total_consumers": 6,
       "wrapper_for": null
     },
     {

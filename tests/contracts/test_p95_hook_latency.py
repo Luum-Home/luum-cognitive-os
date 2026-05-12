@@ -140,6 +140,9 @@ _KNOWN_SLOW_HOOKS: frozenset[str] = frozenset({
     # 1500 ms p95 contract until their caches are tightened.
     "untracked-work-preservation-guard",
     "skill-router-bash-gate",
+    # Security scanner can traverse staged/file content and is governed by the
+    # security-scan SLO catalogue rather than the hot-path 1500 ms p95 contract.
+    "secret-detector",
 })
 
 

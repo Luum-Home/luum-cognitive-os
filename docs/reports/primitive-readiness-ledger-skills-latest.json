@@ -1006,10 +1006,15 @@
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
+        "config": 1,
         "doc": 9,
         "skill": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "doc",
           "path": "docs/adrs/ADR-058-observability-migration-langfuse-to-phoenix.md"
@@ -1058,7 +1063,8 @@
       "distribution": null,
       "evidence": [
         "skill_consumers:2",
-        "doc_consumers:9"
+        "doc_consumers:9",
+        "config_consumers:1"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1068,18 +1074,22 @@
       "role": "so-maintainer",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 11
+      "total_consumers": 12
     },
     {
       "confidence": "high",
       "consumer_access_next_action": "add package/profile projection metadata before assuming downstream availability",
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
-        "config": 1,
+        "config": 2,
         "doc": 3,
         "skill": 2
       },
       "consumers": [
+        {
+          "family": "config",
+          "path": "manifests/primitive-lifecycle.yaml"
+        },
         {
           "family": "config",
           "path": "manifests/skill-routing-coverage.yaml"
@@ -1109,7 +1119,7 @@
       "evidence": [
         "skill_consumers:2",
         "doc_consumers:3",
-        "config_consumers:1"
+        "config_consumers:2"
       ],
       "family": "skills",
       "lifecycle_id": null,
@@ -1119,7 +1129,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 6
+      "total_consumers": 7
     },
     {
       "confidence": "high",
@@ -2901,16 +2911,17 @@
       "consumer_accessibility": "repo-skill-not-projectable",
       "consumer_families": {
         "doc": 3,
-        "rule": 1
+        "rule": 1,
+        "test": 1
       },
       "consumers": [
         {
           "family": "doc",
-          "path": "docs/acc/latest.md"
+          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
         },
         {
           "family": "doc",
-          "path": "docs/adrs/ADR-267-license-compliance-enforcement-architecture.md"
+          "path": "docs/architecture/functional-audit/scorecard-hooks.md"
         },
         {
           "family": "doc",
@@ -2919,11 +2930,16 @@
         {
           "family": "rule",
           "path": "rules/recommendation-grounding.md"
+        },
+        {
+          "family": "test",
+          "path": "tests/audit/test_hooks_contracts.py"
         }
       ],
       "distribution": null,
       "evidence": [
         "rule_consumers:1",
+        "test_consumers:1",
         "doc_consumers:3"
       ],
       "family": "skills",
@@ -2934,7 +2950,7 @@
       "role": "compatibility-wrapper",
       "role_source": "usage:script-hook",
       "supported_harnesses": [],
-      "total_consumers": 4
+      "total_consumers": 5
     },
     {
       "confidence": "medium",

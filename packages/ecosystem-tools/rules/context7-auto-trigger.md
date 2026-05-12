@@ -31,4 +31,4 @@ Frequently-used library docs should be cached in Engram under topic key `docs/li
 
 ## Graceful Degradation
 
-If Context7 is unavailable, the agent proceeds with its training knowledge but notes the uncertainty in the Trust Report.
+If Context7 is unavailable, the agent proceeds with prior model knowledge but notes the uncertainty in the Trust Report.
