@@ -272,16 +272,24 @@ def _profile_rows(root: Path, primitive_rows: list[tuple[str, dict[str, Any]]]) 
     for harness in all_harnesses:
         hp = harnesses.get(harness, {})
         contract_projection = []
+        projection_fallback = hp.get("contract_projection_fallback") if isinstance(hp, dict) else None
         for contract in contracts:
             projection = (contract.get("projection") or {}).get(harness)
+            derived_from_harness = None
+            if not isinstance(projection, dict) and isinstance(projection_fallback, dict):
+                projection = projection_fallback
+                derived_from_harness = "harness-projection.yaml:contract_projection_fallback"
             if isinstance(projection, dict):
                 fidelity = str(projection.get("fidelity", "unsupported"))
-                contract_projection.append({
+                item = {
                     "contract_id": contract.get("id"),
                     "fidelity": fidelity,
                     "surface": projection.get("surface"),
                     "claims_runtime_enforcement": fidelity in ENFORCEMENT_FIDELITY,
-                })
+                }
+                if derived_from_harness:
+                    item["derived_from"] = derived_from_harness
+                contract_projection.append(item)
         lifecycle_count = 0
         for _, row in primitive_rows:
             if harness in row.get("supported_harnesses", []):
@@ -317,16 +325,28 @@ def _adapter_manifest_rows(root: Path, primitive_rows: list[tuple[str, dict[str,
         dirname = ADAPTER_DIR_NAMES.get(harness, harness)
         hp = harnesses.get(harness, {})
         projected = []
+        projection_fallback = hp.get("contract_projection_fallback") if isinstance(hp, dict) else None
         for rel, row in primitive_rows:
             projection = ((row.get("portable_contract") or {}).get("projection_fidelity") or {}).get(harness)
+            derived_from_harness = None
+            if not projection and isinstance(projection_fallback, dict) and (row.get("contract") or {}).get("present"):
+                projection = {
+                    "fidelity": projection_fallback.get("fidelity"),
+                    "surface": projection_fallback.get("surface"),
+                    "claims_runtime_enforcement": False,
+                }
+                derived_from_harness = "harness-projection.yaml:contract_projection_fallback"
             if projection:
-                projected.append({
+                item = {
                     "portable_id": row.get("portable_id"),
                     "primitive_file": rel,
                     "fidelity": projection.get("fidelity"),
                     "surface": projection.get("surface"),
                     "claims_runtime_enforcement": bool(projection.get("claims_runtime_enforcement")),
-                })
+                }
+                if derived_from_harness:
+                    item["derived_from"] = derived_from_harness
+                projected.append(item)
         manifest = {
             "schema_version": ADAPTER_SCHEMA_VERSION,
             "adapter_contract_kind": "declarative-manifest",
@@ -398,6 +418,10 @@ def build_overlay(root: Path) -> dict[str, str]:
         summary_by_family[row["family"]] = summary_by_family.get(row["family"], 0) + 1
         files[rel] = json.dumps(row, indent=2, sort_keys=True) + "\n"
 
+    skill_source_count = len(list((root / "skills").glob("*/SKILL.md")))
+    skill_overlay_count = summary_by_family.get("skill", 0)
+    skill_overlay_excluded_count = max(skill_source_count - skill_overlay_count, 0)
+
     context = {
         "schema_version": CONTEXT_SCHEMA_VERSION,
         "overlay_schema_version": SCHEMA_VERSION,
@@ -425,6 +449,14 @@ def build_overlay(root: Path) -> dict[str, str]:
         ],
         "primitive_count": len(primitive_rows),
         "primitive_count_by_family": dict(sorted(summary_by_family.items())),
+        "skill_source_count": skill_source_count,
+        "skill_overlay_count": skill_overlay_count,
+        "skill_overlay_excluded_count": skill_overlay_excluded_count,
+        "skill_overlay_coverage_policy": (
+            "Only lifecycle/contract-promoted skills are emitted as .ai primitive rows; "
+            "other skills/*/SKILL.md files remain package/source content until promoted "
+            "through primitive lifecycle and contract manifests."
+        ),
         "adapter_profiles": sorted([path for path, _ in _profile_rows(root, primitive_rows)]),
         "runtime_evidence_streams": [
             ".cognitive-os/metrics/primitive-interventions.jsonl",

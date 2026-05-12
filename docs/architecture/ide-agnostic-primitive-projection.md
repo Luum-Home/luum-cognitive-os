@@ -174,10 +174,11 @@ A primitive that is `governed-wrapper-enforced`, `native-lifecycle-enforced`, or
 `ci-enforced` may be projected into the matching runtime or CI surface only when
 the proof level supports that claim.
 
-A `rulesync`-style backend may be useful for future structural instruction file
-formats, but it cannot replace COS's contract registry because generic rule sync
-tools do not own COS runtime evidence, lifecycle state, or per-harness
-enforcement claims.
+ADR-272 fixes the backend boundary: a `rulesync`-style backend may be useful
+for future structural instruction file formats, but only behind the first-party
+COS adapter compiler and only for `structural-advisory` outputs. It cannot
+replace COS's contract registry because generic rule sync tools do not own COS
+runtime evidence, lifecycle state, or per-harness enforcement claims.
 
 ## OpenCode adapter correction
 

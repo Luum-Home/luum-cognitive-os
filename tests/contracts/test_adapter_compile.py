@@ -66,3 +66,19 @@ def test_cos_adapters_compile_cli_outputs_receipt(tmp_path: Path) -> None:
     assert receipt["status"] == "planned"
     assert receipt["native_file_emission"] is False
     assert ".github/copilot-instructions.md" in receipt["settings_paths"]
+
+
+def test_adapter_compile_emits_agents_md_universal_target(tmp_path: Path) -> None:
+    receipt = compile_adapter(root=REPO_ROOT, harness="agents-md", output_dir=tmp_path, dry_run=False)
+
+    assert receipt["status"] == "compiled"
+    assert receipt["harness"] == "agents-md"
+    assert receipt["native_file_emission"] is True
+    assert "AGENTS.md" in receipt["emitted_paths"]
+    assert receipt["fidelity_summary"]["structural-advisory"] >= 1
+    assert receipt["enforcement_claims"] == 0
+    agents = (tmp_path / "AGENTS.md").read_text()
+    assert "COGNITIVE_OS_AGENTS_MD_START" in agents
+    assert "Cognitive OS for AGENTS.md-native tools" in agents
+    install_meta = json.loads((tmp_path / ".cognitive-os/install-meta.json").read_text())
+    assert install_meta["harness"] == "agents-md"

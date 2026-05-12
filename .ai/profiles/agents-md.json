@@ -1,0 +1,2185 @@
+{
+  "adapter_contract_kind": "declarative-fidelity-profile",
+  "adapter_directory": "adapters/agents-md",
+  "compiler_gap_policy": "Profiles expose declared fidelity; native IDE files must be emitted by governed projection drivers or a future adapter compiler that preserves fidelity.",
+  "contract_projection_fidelity": [
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-git-blocker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "destructive-rm-blocker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "reinvention-check",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "large-file-advisor",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-router",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "aci-observation-capture",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-relevance-suggest",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adr-section-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bash-cwd-enforcer",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-inbound-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-rollback-trigger",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-verify",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "claim-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidence-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "confidentiality-enforcer",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "content-policy",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "context-watchdog",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cosd-auth-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dispatch-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "doc-sync-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-context",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-event",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "adaptive-bypass",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-checkpoint",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-launch-confirmed",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-message-inbox-context",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-message-inbox-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-prelaunch",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-working-dir-inject",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "aspirational-audit-weekly",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "assumption-tracker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "audit-id-enricher",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-checkpoint",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-refine",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-repair-dispatcher",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "auto-skill-generator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "blast-radius",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "branch-ownership-lock",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "branch-ownership-release",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "clarification-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "completeness-check",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "completion-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "concurrent-write-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "consequence-evaluator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "context-budget-meter",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cos-executor-daemon-launcher",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "crash-recovery",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cross-session-coordination-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cross-session-event-emit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "cross-session-peer-context",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dangerous-env-flag-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dequeue-notify",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "direct-main-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "docker-drift-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "document-ingest-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "dod-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-drain-parked",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-pre-tool",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-process-negotiations",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "edit-lock-session-end",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-crystallize-on-session-end",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-daemon-launcher",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-obsidian-export-on-stop",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "engram-reinforce-on-access",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "error-learning",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "error-pattern-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "error-pipeline",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "git-commit-scope-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "git-context-capture",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-header-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "host-tool-doctor",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "infra-health",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "inject-phase-context",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "kpi-trigger",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "lethal-trifecta-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "mcp-scan",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "memory-prefetch",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "native-agent-heartbeat",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "network-egress-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "orchestrator-claim-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "orchestrator-decision-trace",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "orchestrator-skill-invocation-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "plan-claim-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "post-agent-snapshot-restore",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "post-agent-verify",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "post-git-orphan-notifier",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "pre-agent-snapshot",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "pre-commit-content-hash-dedupe",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "pre-compaction-flush",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "predev-completeness-check",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "private-mode-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "private-mode-metrics-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "profile-drift-autoapply",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "project-docs-convention",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "promotion-proposer-weekly",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "prompt-quality-llm",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "protected-config-write-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "query-tailored-context-inject",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limit-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limit-drain",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limit-precheck",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rate-limiter",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "reaper-daemon-launcher",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "release-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "research-quality-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "result-truncator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "review-spawner",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-frontmatter-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-md-routing-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-router-prompt-suggest",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "scope-creep-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "scope-marker-portability-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "scope-proportionality",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "secret-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "self-install",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "self-knowledge-refresh",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-changelog",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-cleanup",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-end-reap",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-heartbeat",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-init",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-learning",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-resume",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-sanity",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-start-stash-reapply",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-start-worktree-nudge",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-startup-protocol",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-summary-reminder",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-watchdog-launcher",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "session-wrapup-trigger",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-failure-monitor",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-feedback-tracker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-frontmatter-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-invocation-logger",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-md-routing-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-post-execution-analysis",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-router-prompt-suggest",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-synthesis-scanner",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-tracker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-usage-tracker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "stash-budget-warn",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "state-heartbeat",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "subagent-context-injector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "surface-fix-detector",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "symlink-mutation-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-completed",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "task-created",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "teammate-idle",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "token-budget-monitor",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "tool-sequence-capture",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "trust-score-validator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "untracked-work-preservation-guard",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "user-prompt-capture",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "validation-lock-cleanup",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "validator-soak-weekly",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "work-queue-sync",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-behavior-evidence",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-harness-gap-policy",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-scope-classification",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-scope-overrides",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-session-id",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-acc-pipeline",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-adr-tombstone",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-apply-efficiency-profile",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-aspirational-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-check-mcp-servers",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-active-primitive-index",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adoption-profile",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-tombstone",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-agent-message",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-architecture-readiness",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-auth-probe",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-bootstrap",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-boring-reliability",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-ci-local",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-discipline-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-config-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-consumer-fleet-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-coordination-status",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-core-skills-check",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-credential-safe-run",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-cross-instance-drill",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-demotion-loop-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-dispatch-smoke",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-harness",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-memory-lifecycle",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-tools",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctrine-proposer",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-engram-bundle",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-engram-cloud-docker-smoke",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-export-consumer-evidence",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-federation-trigger-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-flow-register",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-headless-service-drill",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-import-consumer-evidence",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-init",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-key-learnings-capture",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-lab-first-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-manifest-tier-claim-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-merge-queue-worker",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-new-adr",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-preamble-budget",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-queue-drain",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-registry-lock",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-release-check",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-runtime-hook-reality",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-self-improvement-discipline-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-self-improvement-loop",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-coordination",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-start-budget",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-silent-failure-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-smoke",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-status",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-task-submit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-test-efficiency-plan",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-tier-claim-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-usage-report",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-validation-break",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-validation-status",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-weekly-config-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-wip-safety-score",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worker-run-once",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worktree-triage",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-architecture-readiness-06fbe1ac",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-auth-probe-dc36addf",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-boring-reliability-c8805364",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-discipline-audit-940d76af",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-init-c3577131",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-instance-init",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-new-adr-561e4a84",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-primitive-harvester",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-recovery-drill",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-service-control-plane",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-backlog",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-work-inventory",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-worktree-triage-19c3f535",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cosd",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cost-predict",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-create-release",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-decision-triage",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-demo-first-run-onboarding",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-demo-portability-proof",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-dependency-lane",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-deps-update",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-doc-review-personas",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-docs-execution-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-document-feature-append",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-dogfood-score",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-domain-model",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-edit-coop",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-generate-project-settings",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-generate-compact-catalog",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-stream-statusline",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-timing-wrapper",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-hook-timing-report",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-install-garak",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-install-promptfoo",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-invariant-check-helper",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-llm-status",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-merge-to-main",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-ops-runbook",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-orchestrator",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-harness-coverage",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-surface-reduce",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-primitive-usage-map",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-project-scaffold",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-proof-drill-select",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-pytest-with-summary",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-radar-merge",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-redteam-aggregate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-risk-register",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-rules-export",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-run-all-tests",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-run-redteam-scenario",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-red-team",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-audit-writer",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-security-red-team-abf374e8",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-set-security-profile",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-setup",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-doc-review-personas",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-multi-provider-fallback",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-smoke-qwen-fallback",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-sprint-test-summary",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-all",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-cognitive-os-full",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-run-inventory",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-test-skip-registry",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-uninstall",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-upgrade",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-verify-archived",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-weekly-aspirational-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-control-skill",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "primitive-harness-coverage-skill",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "codebase-itinerary-capture",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "control-plane-audit",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "control-plane-audit-hourly",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "agent-bus-py-filesystem-interrupt",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "base-py-inbound-signal",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doctor-preserve",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-primitive-harvester-0ff3f530",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-service-readiness-gate",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapter-compile",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapters",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-observe-primitives",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-portable-ai-overlay",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-record-onboarding",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-promote-lifecycle-primitives-to-contracts",
+      "derived_from": "harness-projection.yaml:contract_projection_fallback",
+      "fidelity": "structural-advisory",
+      "surface": "universal AGENTS.md bounded block plus .ai reference; no runtime enforcement"
+    }
+  ],
+  "display_name": "AGENTS.md",
+  "fidelity_policy": "Declare adapter fidelity from primitive contracts; do not infer enforcement from advisory files.",
+  "harness": "agents-md",
+  "lifecycle_primitives_supporting_harness": 0,
+  "limitations": [
+    "Universal Markdown baseline only; no native lifecycle hooks, tool interceptors, MCP wiring, or runtime enforcement are claimed.",
+    "Host-specific adapters remain required for advanced IDE-native surfaces."
+  ],
+  "native_file_emission": false,
+  "native_projection_driver": "scripts/cos_init.py and harness-specific projection drivers",
+  "projected_surfaces": [
+    "project-instructions",
+    "rules-reference",
+    "skills-reference"
+  ],
+  "projection_mode": "universal-markdown",
+  "proof_level": "structural",
+  "schema_version": "portable-ai-profile.v1",
+  "settings_paths": [
+    "AGENTS.md"
+  ],
+  "status": "implemented"
+}

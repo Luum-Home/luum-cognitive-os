@@ -133,6 +133,37 @@ harnesses:
   - --default
   - --harness
   - vscode-copilot
+- id: agents-md
+  display_name: AGENTS.md
+  status: implemented
+  projection_mode: universal-markdown
+  settings_paths:
+  - AGENTS.md
+  projected_surfaces:
+  - project-instructions
+  - rules-reference
+  - skills-reference
+  contract_projection_fallback:
+    fidelity: structural-advisory
+    surface: universal AGENTS.md bounded block plus .ai reference; no runtime enforcement
+    applies_to: all_contracts_without_explicit_harness_projection
+  proof: temp-consumer-project-structural
+  proof_level: structural
+  limitations:
+  - Universal Markdown baseline only; no native lifecycle hooks, tool interceptors,
+    MCP wiring, or runtime enforcement are claimed.
+  - Host-specific adapters remain required for advanced IDE-native surfaces.
+  next_action: Keep the bounded AGENTS.md block concise and prove idempotent replacement
+    through the consumer projection tests.
+  research_sources:
+  - https://agents.md/
+  - https://www.linuxfoundation.org/press/linux-foundation-announces-the-formation-of-the-agentic-ai-foundation
+  default_command:
+  - python3
+  - scripts/cos_init.py
+  - --default
+  - --harness
+  - agents-md
 - id: opencode
   display_name: OpenCode
   status: implemented

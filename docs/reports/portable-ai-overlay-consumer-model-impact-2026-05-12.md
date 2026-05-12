@@ -97,9 +97,10 @@ writes to governed harness projection drivers, records a compile receipt, and
 preserves fidelity summaries from the generated `.ai` profiles/manifests. This
 closes the entry-point gap without making `.ai/adapters/*` mutating installers.
 
-The remaining product question is whether future structural-rule backends should
-stay first-party or delegate some file formats to a governed `rulesync`-style
-backend.
+The backend decision is now captured by ADR-272: first-party COS compilation
+remains the projection authority, and any future `rulesync`-style integration is
+limited to optional `structural-advisory` file emission behind COS fidelity
+filters.
 
 The gap should be solved without discarding the fidelity matrix. Projection must
 be filtered by declared fidelity so a structural host receives advisory rules,
@@ -165,15 +166,16 @@ contracts when it is produced by Cognitive OS.
 
 - Add a consumer-package spec that defines what Cognitive OS should project into
   consumer repos when a human-readable `.ai/` view is requested.
-- Extend the first-party adapter compiler beyond the starter slice, and decide
-  whether structural rule-file generation should remain fully first-party or use
-  a governed `rulesync`-style backend.
-- Treat the root `AGENTS.md` as an output that should be validated or bounded by
-  canonical COS contracts; do not claim it is missing, because this repository
-  already has one.
-- Investigate why generated `.ai/primitives/skills/` currently represents only a
-  tiny skill subset compared with the real `skills/*/SKILL.md` tree; either
-  regenerate full skill coverage or declare explicit overlay exclusions.
+- Extend the first-party adapter compiler beyond the starter slice while
+  preserving the ADR-272 boundary: external structural backends can emit advisory
+  files only behind COS fidelity filters.
+- Treat the root `AGENTS.md` as an output that is validated through the
+  `agents-md` harness and bounded COS block; do not claim it is missing, because
+  this repository already has one.
+- Keep `.ai/context.json` explicit about skill coverage: only
+  lifecycle/contract-promoted skills become primitive rows, while the remaining
+  `skills/*/SKILL.md` files stay package/source content until promoted through
+  the lifecycle and contract manifests.
 - Ingest the consumer research artifacts from the practice repo into COS docs or
   reports after re-verifying them against current official docs.
 - Add or extend tests that prove generated consumer `.ai` packages do not mutate

@@ -151,7 +151,7 @@
 - [x] Consumer and service/headless proof is strengthened by [Portable `.ai` Consumer Smoke — Latest](../reports/portable-ai-consumer-smoke-latest.md) and [Primitive Service/Headless Smoke — Latest](../reports/primitive-service-headless-smoke-latest.md).
 - [x] Maintainer-vs-consumer `.ai` semantics are documented in [Portable `.ai` Overlay vs Consumer `.ai` Model Impact — 2026-05-12](../reports/portable-ai-overlay-consumer-model-impact-2026-05-12.md): maintainer `.ai/` remains generated/proof-oriented while consumer `.ai/` may be README-first packaging projected from canonical contracts.
 - [x] Add the first adapter compiler entry point for consumer-facing IDE files: `lib/adapter_compile.py`, `scripts/cos-adapter-compile`, and `cos adapters compile` preserve fidelity claims while delegating native writes to governed harness projection drivers.
-- [ ] Decide whether future structural rule-file backends stay first-party or use a governed `rulesync`-style backend. Preserve fidelity claims in all cases.
+- [x] Decide whether future structural rule-file backends stay first-party or use a governed `rulesync`-style backend: [ADR-272](../adrs/ADR-272-structural-rule-backend-boundary.md) keeps the first-party compiler as the authority and limits external backends to optional `structural-advisory` file emission behind COS fidelity filters.
 - [x] User-facing setup messages are clear and product-grade.
 - [x] `hooks/self-install.sh` meets its performance expectations.
 - [x] Setup and onboarding flows have visible performance budgets and regression tests through `scripts/demo-first-run-onboarding.sh` and `tests/integration/test_first_run_onboarding.py`.

@@ -43,13 +43,14 @@ if str(COS_SOURCE_DIR) not in sys.path:
 from lib.script_io import write_json as _write_json_if_changed
 
 
-SUPPORTED_HARNESSES = ("claude", "codex", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci")
-STRUCTURAL_INSTRUCTION_HARNESSES = {"opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"}
+SUPPORTED_HARNESSES = ("claude", "codex", "agents-md", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider", "shell-ci")
+STRUCTURAL_INSTRUCTION_HARNESSES = {"agents-md", "opencode", "vscode-copilot", "cursor", "qwen-code", "kimi-code", "gemini-cli", "warp", "amp-code", "jetbrains-junie", "qoder", "factory-droid", "cline", "continue-dev", "kilo-code", "zed-ai", "augment-code", "goose", "aider"}
 SHELL_CI_HARNESSES = {"shell-ci"}
 
 HARNESS_SETTINGS = {
     "claude": (".claude/settings.json", ".claude/settings.json"),
     "codex": (".codex/hooks.json", ".codex/hooks.json"),
+    "agents-md": ("AGENTS.md", "AGENTS.md"),
     "opencode": ("opencode.json", "opencode.json"),
     "vscode-copilot": (".github/copilot-instructions.md", ".github/copilot-instructions.md"),
     "cursor": (".cursor/rules/cognitive-os.mdc", ".cursor/rules/cognitive-os.mdc"),
@@ -965,6 +966,17 @@ def _write_structural_instruction_harness_settings(project_dir: Path, cos_source
         "the repository `AGENTS.md` contract when present. Do not claim Claude/Codex hook parity "
         "unless the active harness exposes equivalent lifecycle events.\n"
     )
+
+    if harness == "agents-md":
+        _upsert_agents_md_block(
+            project_dir,
+            "agents_md",
+            "Cognitive OS for AGENTS.md-native tools",
+            common_body,
+            "AGENTS.md is the universal markdown baseline for tools that read the Agentic AI Foundation project guidance format. Use host-specific adapters only for advanced native surfaces.\n",
+        )
+        print("Created AGENTS.md with universal COS projection")
+        return
 
     if harness == "opencode":
         _write_json_if_changed(

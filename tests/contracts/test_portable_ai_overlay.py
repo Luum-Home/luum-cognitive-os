@@ -18,7 +18,7 @@ REQUIRED_CONTRACT_IDS = {
     "large-file-advisor",
     "skill-router",
 }
-STRUCTURAL_ONLY = {"cursor", "vscode-copilot"}
+STRUCTURAL_ONLY = {"agents-md", "cursor", "vscode-copilot"}
 
 
 def _json(path: Path) -> dict[str, Any]:
@@ -66,6 +66,15 @@ def test_context_records_generated_noncanonical_overlay() -> None:
     assert context["policy"].startswith("The `.ai` tree is a generated maintainer overlay")
 
 
+def test_context_accounts_for_skill_overlay_coverage_gap() -> None:
+    context = _json(OVERLAY / "context.json")
+    assert context["skill_source_count"] >= context["skill_overlay_count"]
+    assert context["skill_overlay_count"] == context["primitive_count_by_family"].get("skill", 0)
+    assert context["skill_overlay_excluded_count"] == context["skill_source_count"] - context["skill_overlay_count"]
+    assert "lifecycle/contract-promoted skills" in context["skill_overlay_coverage_policy"]
+    assert "package/source content" in context["skill_overlay_coverage_policy"]
+
+
 def test_all_lifecycle_primitives_have_ai_overlay_rows() -> None:
     primitive_files = _primitive_files()
     assert len(primitive_files) >= _lifecycle_count()
@@ -89,6 +98,16 @@ def test_contract_slice_round_trips_into_ai_primitives() -> None:
         assert row["contract"]["intent"] == contract["intent"]
         assert row["contract"]["requires"] == contract["requires"]
         assert set(row["contract"]["projection_fidelity"]) == set(contract["projection"])
+
+
+def test_agents_md_profile_uses_declared_structural_fallback_without_enforcement() -> None:
+    profile = _json(OVERLAY / "profiles" / "agents-md.json")
+    assert profile["projection_mode"] == "universal-markdown"
+    assert profile["proof_level"] == "structural"
+    assert profile["contract_projection_fidelity"]
+    assert {row["fidelity"] for row in profile["contract_projection_fidelity"]} == {"structural-advisory"}
+    assert all(row["claims_runtime_enforcement"] is False for row in profile["contract_projection_fidelity"])
+    assert all(row.get("derived_from") == "harness-projection.yaml:contract_projection_fallback" for row in profile["contract_projection_fidelity"])
 
 
 def test_profiles_do_not_overclaim_structural_advisory_enforcement() -> None:
