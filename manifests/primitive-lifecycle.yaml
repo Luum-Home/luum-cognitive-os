@@ -8233,6 +8233,51 @@ primitives:
   docs_claim_level: advisory
   exit_behavior: exit_0
   metrics_file: none
+- id: scripts/cos-adapter-compile
+  kind: script
+  owner_adr: ADR-258
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - scripts/cos-adapter-compile
+  - lib/adapter_compile.py
+  runtime_projection: false
+  behavior_evidence: Compile COS primitive contracts and harness projection profiles into native consumer-project IDE files through governed projection drivers while preserving declared fidelity.
+  evidence_commands:
+  - python3 -m py_compile lib/adapter_compile.py scripts/cos-adapter-compile scripts/cos-adapters
+  - python3 -m pytest tests/contracts/test_adapter_compile.py tests/behavior/test_consumer_project_projection.py -q
+  rollback_or_repair_command: Remove the compiler wrapper and keep direct cos_init.py projection until a replacement compiler is accepted.
+  sunset_criteria: Archive only if cos_init.py or a governed rulesync backend fully subsumes the adapter compiler contract with equivalent tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
+- id: lib/adapter_compile.py
+  kind: library
+  owner_adr: ADR-258
+  lifecycle_state: candidate
+  maturity: advisory
+  distribution: team
+  governance_class: meta-governance
+  risk_class: advisory
+  supported_harnesses:
+  - shell
+  projection_targets:
+  - lib/adapter_compile.py
+  runtime_projection: false
+  behavior_evidence: Fidelity-preserving adapter compiler API used by scripts/cos-adapter-compile and scripts/cos-adapters compile.
+  evidence_commands:
+  - python3 -m py_compile lib/adapter_compile.py
+  - python3 -m pytest tests/contracts/test_adapter_compile.py -q
+  rollback_or_repair_command: Remove library callers and fall back to direct cos_init.py harness projection.
+  sunset_criteria: Archive only if replaced by an equivalent compiler API with fidelity-preserving tests.
+  docs_claim_level: advisory
+  exit_behavior: exit_0
+  metrics_file: none
 - id: scripts/cos-adapters
   kind: script
   owner_adr: ADR-258

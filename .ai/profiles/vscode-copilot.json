@@ -1817,6 +1817,12 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapter-compile",
+      "fidelity": "structural-advisory",
+      "surface": "generated Copilot instructions only"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "contract_id": "script-cos-adapters",
       "fidelity": "structural-advisory",
       "surface": "generated Copilot instructions only"

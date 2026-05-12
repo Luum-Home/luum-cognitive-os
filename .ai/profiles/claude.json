@@ -1817,6 +1817,12 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapter-compile",
+      "fidelity": "documented-only",
+      "surface": "contract/documentation only"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "contract_id": "script-cos-adapters",
       "fidelity": "documented-only",
       "surface": "contract/documentation only"

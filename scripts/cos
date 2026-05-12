@@ -394,6 +394,7 @@ Usage:
   cos observe run [--session-id ID|--run-id ID] [--json]
   cos observe primitives [--session-id ID|--run-id ID] [--json]
   cos adapters list|verify|install HARNESS [--json]
+  cos adapters compile HARNESS --output DIR [--mode default|full] [--dry-run] [--json]
   cos rollback --session-id ID --snapshot|--preview|--restore [--tree-sha SHA] [--yes]
   cos team join|task|message|inbox|handoff ...
                                          Coordinate ADR-233 file-IPC teams and ADR-230 inbox handoffs

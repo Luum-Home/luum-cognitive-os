@@ -1817,6 +1817,12 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adapter-compile",
+      "fidelity": "structural-advisory",
+      "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "contract_id": "script-cos-adapters",
       "fidelity": "structural-advisory",
       "surface": "generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed"

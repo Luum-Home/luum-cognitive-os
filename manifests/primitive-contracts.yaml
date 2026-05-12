@@ -15707,6 +15707,61 @@ contracts:
   impact:
     consumer_fleet: none
     service_mode: unsupported
+- id: script-cos-adapter-compile
+  family: script
+  source: scripts/cos-adapter-compile
+  lifecycle_ref: scripts/cos-adapter-compile
+  generated_from_lifecycle: true
+  intent: Compile COS primitive contracts and harness projection profiles into native consumer-project IDE files through governed projection drivers while preserving declared fidelity.
+  trigger:
+    kind: documented_or_on_demand
+    runtime_projection: false
+    projection_targets:
+    - scripts/cos-adapter-compile
+    - lib/adapter_compile.py
+  requires:
+  - respect_declared_scope
+  - preserve_privacy
+  - preserve_projection_fidelity
+  - emit_intervention
+  actions:
+    preferred: observe
+    fallback: document
+    reason_codes:
+    - adapter_compile_requested
+    - fidelity_preserving_projection
+  evidence:
+    metrics: []
+    interventions:
+    - .cognitive-os/metrics/primitive-interventions.jsonl
+    proof_tests:
+    - tests/contracts/test_adapter_compile.py
+    - tests/behavior/test_consumer_project_projection.py
+    evidence_commands:
+    - python3 -m py_compile lib/adapter_compile.py scripts/cos-adapter-compile scripts/cos-adapters
+    - python3 -m pytest tests/contracts/test_adapter_compile.py tests/behavior/test_consumer_project_projection.py -q
+  projection:
+    claude:
+      fidelity: documented-only
+      surface: contract/documentation only
+    codex:
+      fidelity: structural-advisory
+      surface: generated AGENTS/.ai advisory projection unless a governed wrapper is separately signed
+    opencode:
+      fidelity: structural-advisory
+      surface: generated .ai/OpenCode advisory projection; no runtime enforcement claimed
+    cursor:
+      fidelity: structural-advisory
+      surface: generated Cursor rules/context only
+    vscode-copilot:
+      fidelity: structural-advisory
+      surface: generated Copilot instructions only
+    shell-ci:
+      fidelity: documented-only
+      surface: evidence commands documented; no generic CI enforcement claimed
+  impact:
+    consumer_fleet: install-update-risk
+    service_mode: unsupported
 - id: script-cos-adapters
   family: script
   source: scripts/cos-adapters
