@@ -1,9 +1,9 @@
 ---
 adr: "174-bis"
 title: Routing-Pattern Prevention Followup — Auto-Generation and Soak-Driven Promotion
-status:
-  part_a: accepted
-  part_b: proposed
+status: accepted
+implementation_status: implemented
+follow_up_adr: ADR-174c
 date: 2026-05-05
 authors: [luum-agent-os]
 supersedes: []
@@ -26,8 +26,7 @@ implementation_files:
 
 ## Status
 
-- **Part A**: Accepted
-- **Part B**: Proposed (requires soak data before operator approval)
+Accepted. This ADR owns Part A (auto-generation includes `routing_patterns:`) and the implemented propose-only soak evaluator. The actual advisory-to-blocking promotion is split into ADR-174c because it has a separate lifecycle state and still requires soak data plus operator approval.
 
 ## Context
 
@@ -84,7 +83,7 @@ on target hardware).
 
 ---
 
-## Part B — Metric-Driven Advisory → Blocking Promotion (Deferred)
+## Part B — Propose-Only Soak Evaluator
 
 ### Decision
 
@@ -103,8 +102,7 @@ introduced.  It is wired into a weekly SessionStart hook
 6. Appends an evaluation log entry to
    `.cognitive-os/metrics/validator-promotion-evaluations.jsonl`.
 
-**The actual promotion to blocking mode requires operator approval.**
-No runtime behavior changes automatically.
+**The actual promotion to blocking mode is not accepted here.** It requires operator approval and is tracked by ADR-174c. No runtime behavior changes automatically.
 
 ### Wire-up: SessionStart hook (not self-improvement loop)
 
@@ -150,8 +148,9 @@ without any code change.  The flag is read at the top of the hook.
    explicit operator override.  Real soak data will calibrate.
 
 2. **The 30-day soak threshold and 5 % FP cutoff are conventional**, not
-   validated against COS-specific data.  These can be adjusted via CLI flags
-   without code changes.
+   validated against COS-specific data. These can be adjusted via CLI flags
+   without code changes. ADR-174c owns any future promotion from advisory to
+   blocking behavior.
 
 3. **The deriver's pattern quality may need iteration** after the first
    generation cohort.  A future micro-ADR can tighten confidence thresholds

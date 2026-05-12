@@ -1,9 +1,26 @@
+---
+adr: 44
+title: Context Payload Slimming — Non-Rule Startup Payloads
+status: accepted
+date: 2026-04-20
+implementation_status: partial-blocked
+blocked_on:
+  - .claude/commands/ write permission for slash-command projection
+supersedes: []
+superseded_by: null
+implementation_files:
+  - scripts/generate_compact_catalog.py
+  - skills/CATALOG-COMPACT.md
+tier: maintainer
+tags: [context, startup, lazy-loading, slash-commands, skills]
+---
+
 # ADR-044: Context Payload Slimming — Non-Rule Startup Payloads
 
-**Status**: Phase 2 RESOLVED (frontmatter migration + catalog generator) — Phase 2 slash commands BLOCKED (sandbox write-permission on `.claude/commands/`)
+**Status**: Accepted — implementation partial-blocked. Frontmatter migration and catalog generator are resolved; slash-command projection remains blocked on write permission for `.claude/commands/`.
 **Date**: 2026-04-20 (proposed), 2026-04-21 (Phase 2 partial resolution)
 **Authors**: Agent C (startup-optimization initiative, stream 3/4)
-**Related**: ADR-043 (rule classification — Agent B, paired work; deprecated 2026-05-05 — see ADR-171), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base)
+**Related**: ADR-043 (rule classification — Agent B, paired work; deprecated 2026-05-05 — see ADR-171), ADR-032 (orchestrator-prompt-compose), ADR-037 (self-knowledge-base), [ADR Status Taxonomy](STATUS-TAXONOMY.md)
 
 ## Context
 

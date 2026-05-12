@@ -226,7 +226,7 @@
 - [x] Memory/Profile Bootstrap now creates a local source-linked, sanitized project profile draft during the first three sessions, with manual and Go CLI generate/inspect/promote/wipe commands, doctor coverage, and Codex SessionStart tests.
 
 - [x] Action-count rate limiting uses token buckets with soft warnings, operator reserve, and diversity penalty (ADR-101).
-- [x] Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/architecture/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed before the parallel flip.
+- [x] Audit/contract lane recovery is documented in [ADR-103](../adrs/ADR-103-audit-contract-lane-recovery.md) and [Audit and Contract Lane Recovery Plan](../../.cognitive-os/plans/archive/audit-contract-lane-recovery-plan.md), with deterministic docs debt fixed before the parallel flip.
 - [x] Validation capsules are documented and implemented in [ADR-109](../adrs/ADR-109-validation-capsule-worktree-isolation.md), [Validation Capsule](../architecture/validation-capsule.md), and `scripts/cos-validation-capsule.sh`, separating release validation from the global hook killswitch.
 - [ ] Adopt ADR-111 concurrency safety core/consumer boundary and keep primitive tests green (`docs/adrs/ADR-111-core-consumer-concurrency-safety-boundary.md`).
 - [ ] Execute the remaining ADR implementation backlog through [ADR Implementation Closure Session — 2026-05-04](../SESSION-ADR-CLOSURE-2026-05-04.md) and [Session Handoff — 2026-05-04](../SESSION-HANDOFF-2026-05-04.md): reconcile all ADRs up to ADR-138 before implementation, then continue current cloud-flow/concurrency/stash/doc-drift closure.
@@ -322,6 +322,7 @@ Pendings remaining (called out per ADR by [`IMPLEMENTATION-CHECKLIST-2026-05-07.
 
 ### 9.5 Tombstone
 
+- [x] **ADR status taxonomy** — `docs/adrs/STATUS-TAXONOMY.md` separates decision status, implementation status, and index bucket; ADR-044/132/174b/174c/238/253 are canonical fixtures.
 - [x] **ADR-229** consolidated into ADR-228 (cost-budget + retry-contract on the same code path).
 
 ### 9.6 Conscious non-coverage (do not pursue this cycle)

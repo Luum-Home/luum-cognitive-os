@@ -61,12 +61,13 @@ CODE_STATUS_REALITY_MISMATCH = "STATUS_REALITY_MISMATCH"
 CODE_SUPERSEDES_BROKEN_REF = "SUPERSEDES_BROKEN_REF"
 CODE_ADR_RELATION_CHAIN_LONG = "ADR_RELATION_CHAIN_LONG"
 CODE_ADR_RELATION_CYCLE = "ADR_RELATION_CYCLE"
+CODE_INVALID_STATUS = "INVALID_STATUS"
 
 # Status values that require implementation_files verification
 IMPLEMENTED_STATUSES = {"implemented"}
 
 # Valid status values
-VALID_STATUSES = {"proposed", "accepted", "implemented", "superseded", "deprecated", "tombstone"}
+VALID_STATUSES = {"proposed", "exploration", "accepted", "implemented", "resolved", "superseded", "deprecated", "tombstone"}
 
 # Relationship-chain budget: current reconstruction allows short lineage, but
 # chains longer than this need consolidation instead of another ADR-on-ADR layer.
@@ -107,15 +108,35 @@ def _adr_number_from_filename(path: Path) -> int | None:
     return int(m.group(1)) if m else None
 
 
+def _adr_record_key(path: Path) -> str | None:
+    """Return a stable ADR identity key while preserving suffixed follow-ups.
+
+    ADR-174, ADR-174b, and ADR-174c are distinct decision records. Deprecated
+    redirect directories can still contain duplicate numeric stubs, so this key
+    deduplicates exact ADR identities rather than every file sharing a number.
+    """
+    match = re.match(r"(?:ADR-)?0*([0-9]+)([a-z]?)\b", path.stem, flags=re.IGNORECASE)
+    if not match:
+        return None
+    number, suffix = match.groups()
+    return f"{int(number):03d}{suffix.lower()}"
+
+
+def _adr_sort_key(path: Path) -> tuple[int, str]:
+    num = _adr_number_from_filename(path) or 0
+    key = _adr_record_key(path) or ""
+    suffix = key.removeprefix(f"{num:03d}") if num else key
+    return (num, suffix)
+
+
 def _collect_adr_files() -> list[Path]:
     """Return all ADR markdown files from both ADR directories.
 
-    Deduplicates by ADR number (not filename stem) so that files in
-    docs/adrs/ADR-006-*.md and docs/architecture/adrs/006-*.md with the same
-    ADR number are treated as one record. The docs/adrs/ version takes
-    precedence when both exist for the same number.
+    Deduplicates by ADR identity, not only numeric slot. This preserves
+    legitimate suffixed follow-ups such as ADR-174b/ADR-174c while still letting
+    docs/adrs/ take precedence over deprecated redirect stubs with the same key.
     """
-    by_number: dict[int | None, Path] = {}
+    by_key: dict[str | None, Path] = {}
     # Process docs/adrs first so it takes precedence
     for d in ADR_DIRS:
         if not d.exists():
@@ -123,11 +144,13 @@ def _collect_adr_files() -> list[Path]:
         for p in sorted(d.glob("*.md")):
             if p.stem.upper() == "README":
                 continue
-            num = _adr_number_from_filename(p)
+            key = _adr_record_key(p)
+            if key is None:
+                continue
             # Only insert if not yet seen (first dir wins = docs/adrs takes precedence)
-            if num not in by_number:
-                by_number[num] = p
-    return sorted(by_number.values(), key=lambda p: _adr_number_from_filename(p) or 0)
+            if key not in by_key:
+                by_key[key] = p
+    return sorted(by_key.values(), key=_adr_sort_key)
 
 
 def _known_adr_numbers(files: list[Path]) -> set[int]:
@@ -281,6 +304,12 @@ def _extract_prose_status(body: str) -> str | None:
             raw = m.group(1).strip()
             # Map common prose values to schema values
             lower = raw.lower()
+            if "exploration" in lower:
+                return "exploration"
+            if "resolved" in lower:
+                return "resolved"
+            if "tombstone" in lower:
+                return "tombstone"
             if "implement" in lower:
                 return "implemented"
             if "accept" in lower:
@@ -333,7 +362,11 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
     text = path.read_text(encoding="utf-8")
     fm_str, _body = _extract_frontmatter(text)
 
-    base: dict[str, Any] = {"adr": adr_num, "file": str(path.relative_to(REPO_ROOT))}
+    try:
+        rel_path = str(path.relative_to(REPO_ROOT))
+    except ValueError:
+        rel_path = str(path)
+    base: dict[str, Any] = {"adr": adr_num, "file": rel_path}
 
     # ── No frontmatter ────────────────────────────────────────────────────────
     if fm_str is None:
@@ -363,11 +396,30 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
             "message": "Frontmatter parsed but is not a YAML mapping",
         }
 
-    status: str = str(fm.get("status", "")).lower()
+    raw_status = fm.get("status", "")
+    if not isinstance(raw_status, str):
+        return {
+            **base,
+            "level": LEVEL_FAIL,
+            "code": CODE_INVALID_STATUS,
+            "message": "frontmatter status must be a scalar string; split mixed lifecycle states into a follow-up ADR",
+        }
+    status: str = raw_status.lower()
     impl_files: list[str] = fm.get("implementation_files") or []
     supersedes: list[int] = fm.get("supersedes") or []
 
     findings: list[dict[str, Any]] = []
+
+    if status and status not in VALID_STATUSES:
+        findings.append(
+            {
+                **base,
+                "level": LEVEL_FAIL,
+                "code": CODE_INVALID_STATUS,
+                "status": status,
+                "message": f"status={status!r} is not one of {sorted(VALID_STATUSES)}",
+            }
+        )
 
     # ── Supersedes reference check ────────────────────────────────────────────
     for raw_ref in supersedes:
@@ -456,14 +508,7 @@ def run_audit(
                 }
             )
 
-    total = len(findings)
-    with_frontmatter = sum(
-        1
-        for f in findings
-        if f.get("code") not in (CODE_MISSING_FRONTMATTER, CODE_MALFORMED_YAML)
-        or f.get("level") == LEVEL_OK
-    )
-    # Recount: has frontmatter = did not get MISSING_FRONTMATTER
+    scanned = len(findings)
     with_frontmatter = sum(
         1 for f in findings if f.get("code") != CODE_MISSING_FRONTMATTER
     )
@@ -471,12 +516,11 @@ def run_audit(
     relationship_findings = analyze_relationship_graph(adr_files)
     findings.extend(relationship_findings)
 
-    total = len(findings)
     has_failures = any(f.get("level") == LEVEL_FAIL for f in findings)
 
     if output_json:
         output: dict[str, Any] = {
-            "scanned": total,
+            "scanned": scanned,
             "with_frontmatter": with_frontmatter,
             "findings": findings,
         }
@@ -495,14 +539,15 @@ def _print_human_report(
     findings: list[dict[str, Any]],
     suggestions: list[dict[str, str]],
 ) -> None:
-    total = len(findings)
-    with_fm = sum(1 for f in findings if f.get("code") != CODE_MISSING_FRONTMATTER)
+    file_findings = [f for f in findings if f.get("code") != CODE_ADR_RELATION_CHAIN_LONG and f.get("code") != CODE_ADR_RELATION_CYCLE]
+    scanned = len(file_findings)
+    with_fm = sum(1 for f in file_findings if f.get("code") != CODE_MISSING_FRONTMATTER)
     ok_count = sum(1 for f in findings if f.get("level") == LEVEL_OK)
     warn_count = sum(1 for f in findings if f.get("level") == LEVEL_WARN)
     fail_count = sum(1 for f in findings if f.get("level") == LEVEL_FAIL)
 
     print(
-        f"\nADR Frontmatter Audit — {total} files scanned, "
+        f"\nADR Frontmatter Audit — {scanned} ADR records scanned, "
         f"{with_fm} with frontmatter\n"
         f"  OK: {ok_count}  WARN: {warn_count}  FAIL: {fail_count}\n"
     )

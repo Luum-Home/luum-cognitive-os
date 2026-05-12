@@ -340,7 +340,7 @@ class DogfoodScorer:
             except OSError:
                 continue
             status = self._extract_adr_status(text)
-            if status not in {"proposed", "accepted"}:
+            if status not in {"proposed", "accepted", "implemented"}:
                 continue
             relevant += 1
             # Extract ADR number from filename, e.g. ADR-027.md → ADR-027
@@ -348,9 +348,9 @@ class DogfoodScorer:
             if number in corpus:
                 with_proof += 1
         if relevant == 0:
-            return None, "no Proposed/Accepted ADRs"
+            return None, "no Proposed/Accepted/Implemented ADRs"
         score = round(with_proof / relevant * 100.0, 2)
-        return score, f"with_proof={with_proof}/{relevant} accepted ADRs"
+        return score, f"with_proof={with_proof}/{relevant} accepted/implemented ADRs"
 
     @staticmethod
     def _extract_adr_status(text: str) -> str:

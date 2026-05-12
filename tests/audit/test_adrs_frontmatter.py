@@ -38,7 +38,7 @@ MIGRATED_ADRS: dict[int, Path] = {
     123: ADRS_DIR / "ADR-123-operational-stability-friction-reduction.md",
 }
 
-VALID_STATUSES = {"proposed", "accepted", "implemented", "superseded", "deprecated"}
+VALID_STATUSES = {"proposed", "exploration", "accepted", "implemented", "resolved", "superseded", "deprecated", "tombstone"}
 VALID_TIERS = {"lean", "standard", "strict", "meta"}
 
 

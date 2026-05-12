@@ -1,3 +1,16 @@
+---
+adr: 238
+title: Tier 1-4 Follow-Up Bug Tracking
+status: resolved
+date: 2026-05-07
+implementation_status: resolved
+supersedes: []
+superseded_by: null
+implementation_files: []
+tier: maintainer
+tags: [bug-tracking, follow-up, tier-1-4, resolved]
+---
+
 # ADR-238 — Tier 1-4 Follow-Up Bug Tracking
 
 ## Status
@@ -7,7 +20,7 @@ Resolved
 
 **Status**: Resolved — all 5 bugs fixed (2026-05-08)
 **Date**: 2026-05-07
-**Related**: ADR-218 (history sanitization), ADR-237 (test execution efficiency)
+**Related**: ADR-218 (history sanitization), ADR-237 (test execution efficiency), [ADR Status Taxonomy](STATUS-TAXONOMY.md)
 
 ---
 

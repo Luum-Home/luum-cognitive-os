@@ -1,8 +1,19 @@
+---
+adr: 253
+title: Tombstone — squads orchestration superseded by ADR-251
+status: tombstone
+date: 2026-05-08
+implementation_status: not-applicable
+supersedes: []
+superseded_by: ADR-251
+implementation_files: []
+tier: maintainer
+tags: [tombstone, squads, orchestration]
+---
+
 <!-- ADR_RELATION_CHAIN_EXEMPT: tombstone pointer to ADR-251; not a new implementation scope chain. -->
 
 # ADR-253 — Tombstone (squads orchestration superseded by ADR-251)
-
-status: tombstone
 
 ## Status
 Tombstone

@@ -6,8 +6,10 @@ date: 2026-05-03
 supersedes: []
 superseded_by: null
 implementation_files: []
+implementation_status: not-applicable
 tier: maintainer
 tags: [strategy, adoption, governance, future-work, architecture-fork]
+status_taxonomy: docs/adrs/STATUS-TAXONOMY.md
 ---
 
 # ADR-132: Solo-Swarm vs Multi-Maintainer Fork — Documenting the Pending Strategic Decision

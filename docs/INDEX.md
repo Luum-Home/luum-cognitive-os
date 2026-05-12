@@ -6,7 +6,7 @@
 
 ## 1. ADRs
 
-**[adrs/](adrs/)** — All project Architecture Decision Records (ADR-001 through ADR-270+), the single canonical root for every accepted, superseded, or proposed decision.
+**[adrs/](adrs/)** — All project Architecture Decision Records (282 `ADR-*.md` files, including suffixed follow-ups such as ADR-174b/174c), the single canonical root for every accepted, implemented, resolved, exploration, superseded, deprecated, proposed, or tombstone decision record. Status semantics live in [adrs/STATUS-TAXONOMY.md](adrs/STATUS-TAXONOMY.md); the generated table lives in [adrs/INDEX.md](adrs/INDEX.md).
 
 ### ADR Highlights (most-referenced)
 
@@ -327,7 +327,7 @@ These files record inter-session continuity state — read the most recent one t
 | Rules | 119 markdown rules | `rules/` |
 | Skills | 166 top-level `SKILL.md` files | `skills/` |
 | Lib modules | 316 top-level Python files | `lib/` |
-| ADRs | 280 `ADR-*.md` files | `docs/adrs/` |
+| ADRs | 282 `ADR-*.md` files, including suffixed follow-ups | `docs/adrs/` |
 | Docs | 1 209 files, including 1 140 markdown files | `docs/` |
 | Tests | 3 086 `test_*` files | `tests/` |
 
