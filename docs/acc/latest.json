@@ -29,12 +29,12 @@
       "status": "ok",
       "summary": {
         "categories": {
-          "read": 754
+          "read": 756
         },
-        "rows": 754,
-        "sessions": 752,
+        "rows": 756,
+        "sessions": 754,
         "tools": {
-          "Read": 754
+          "Read": 756
         }
       }
     },
@@ -3154,13 +3154,13 @@
         "by_family": {
           "hooks": 266,
           "rules": 120,
-          "scripts": 538,
+          "scripts": 541,
           "skills": 101,
           "templates": 22
         },
         "by_scope": {
-          "both": 579,
-          "os-only": 404,
+          "both": 580,
+          "os-only": 406,
           "project": 64
         },
         "gap_policies": {
@@ -3171,7 +3171,7 @@
           "codex-adapter": 1,
           "codex-adapter-needed": 59,
           "hook-helper-library": 29,
-          "on-demand-command-only": 456,
+          "on-demand-command-only": 459,
           "optional-background-orchestration": 1,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
@@ -3180,7 +3180,7 @@
           "shell-command-only": 12,
           "structural-only-ok": 231
         },
-        "gaps": 870,
+        "gaps": 873,
         "gaps_by_policy": {
           "acceptable-claude-only": 4,
           "acceptable-codex-limited-tool-events": 6,
@@ -3189,7 +3189,7 @@
           "codex-adapter": 1,
           "codex-adapter-needed": 59,
           "hook-helper-library": 29,
-          "on-demand-command-only": 456,
+          "on-demand-command-only": 459,
           "optional-background-orchestration": 1,
           "optional-env-gated-surface": 1,
           "optional-governance-observer": 2,
@@ -3199,11 +3199,11 @@
           "structural-only-ok": 231
         },
         "gaps_by_status": {
-          "aligned": 804,
+          "aligned": 807,
           "partial": 66
         },
         "harness_projected_or_wired": {
-          "acc-report": 1047,
+          "acc-report": 1050,
           "agents-md": 0,
           "aider": 195,
           "amp-code": 195,
@@ -3214,7 +3214,7 @@
           "continue-dev": 195,
           "cos-cli": 5,
           "cursor": 195,
-          "dashboard": 1047,
+          "dashboard": 1050,
           "factory-droid": 195,
           "gemini-cli": 195,
           "goose": 195,
@@ -3225,7 +3225,7 @@
           "qoder": 195,
           "qwen-code": 195,
           "shell-ci": 15,
-          "tui": 1047,
+          "tui": 1050,
           "vscode-copilot": 195,
           "warp": 195,
           "zed-ai": 195
@@ -3259,7 +3259,7 @@
           "zed-ai": 0
         },
         "surface_projected_or_wired": {
-          "acc-report": 1047,
+          "acc-report": 1050,
           "agents-md": 0,
           "aider": 195,
           "amp-code": 195,
@@ -3270,7 +3270,7 @@
           "continue-dev": 195,
           "cos-cli": 5,
           "cursor": 195,
-          "dashboard": 1047,
+          "dashboard": 1050,
           "factory-droid": 195,
           "gemini-cli": 195,
           "goose": 195,
@@ -3281,7 +3281,7 @@
           "qoder": 195,
           "qwen-code": 195,
           "shell-ci": 15,
-          "tui": 1047,
+          "tui": 1050,
           "vscode-copilot": 195,
           "warp": 195,
           "zed-ai": 195
@@ -3293,7 +3293,7 @@
           "shell-ci": 1,
           "ui": 2
         },
-        "total_primitives": 1047,
+        "total_primitives": 1050,
         "unclassified_gaps": 0
       }
     },
@@ -3329,9 +3329,9 @@
       "summary": {
         "actions": {
           "advise": 4,
-          "allow": 139,
+          "allow": 146,
           "block": 58,
-          "suggest": 368,
+          "suggest": 378,
           "warn": 93
         },
         "primitive_count": 7
@@ -25247,10 +25247,10 @@
         "skill_consumers:9",
         "hook_consumers:38",
         "rule_consumers:6",
-        "script_consumers:45",
-        "test_consumers:68",
-        "doc_consumers:131",
-        "config_consumers:17",
+        "script_consumers:47",
+        "test_consumers:70",
+        "doc_consumers:136",
+        "config_consumers:18",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -25613,8 +25613,8 @@
         "rule_consumers:2",
         "script_consumers:47",
         "test_consumers:95",
-        "doc_consumers:135",
-        "config_consumers:10",
+        "doc_consumers:136",
+        "config_consumers:12",
         "role_source:default",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -25776,8 +25776,8 @@
         "rule_consumers:4",
         "script_consumers:3",
         "test_consumers:13",
-        "doc_consumers:51",
-        "config_consumers:10",
+        "doc_consumers:52",
+        "config_consumers:11",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -26513,7 +26513,7 @@
         "lifecycle",
         "script_consumers:7",
         "test_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:8",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -27768,8 +27768,8 @@
         "rule_consumers:10",
         "script_consumers:9",
         "test_consumers:24",
-        "doc_consumers:64",
-        "config_consumers:13",
+        "doc_consumers:65",
+        "config_consumers:14",
         "role_source:lifecycle",
         "lifecycle_state:sandbox",
         "consumer_accessibility:lifecycle-declared-maintainer",
@@ -28845,7 +28845,7 @@
         "hook_consumers:1",
         "script_consumers:6",
         "test_consumers:6",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:11",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -30574,7 +30574,7 @@
         "lifecycle",
         "script_consumers:2",
         "test_consumers:2",
-        "doc_consumers:10",
+        "doc_consumers:11",
         "config_consumers:10",
         "role_source:lifecycle",
         "lifecycle_state:blocking",
@@ -39007,7 +39007,7 @@
         "script_consumers:2",
         "test_consumers:3",
         "doc_consumers:5",
-        "config_consumers:5",
+        "config_consumers:6",
         "role_source:usage:script-hook",
         "consumer_accessibility:repo-skill-not-projectable",
         "availability_override:so-local-only",
@@ -41669,8 +41669,8 @@
         "rule_consumers:9",
         "script_consumers:9",
         "test_consumers:24",
-        "doc_consumers:64",
-        "config_consumers:13",
+        "doc_consumers:65",
+        "config_consumers:14",
         "role_source:heuristic:path",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -43554,7 +43554,7 @@
         "script_consumers:8",
         "test_consumers:20",
         "doc_consumers:105",
-        "config_consumers:10",
+        "config_consumers:12",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only",
         "availability_override:so-local-only",
@@ -45831,7 +45831,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:2",
         "role_source:default",
         "consumer_accessibility:so-local-only"
       ],
@@ -45865,7 +45865,7 @@
       "consumer_accessibility": "so-local-only",
       "evidence": [
         "script_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:2",
         "role_source:heuristic:text",
         "consumer_accessibility:so-local-only"
       ],
@@ -45900,7 +45900,7 @@
       "evidence": [
         "script_consumers:1",
         "test_consumers:1",
-        "doc_consumers:4",
+        "doc_consumers:2",
         "role_source:default",
         "consumer_accessibility:so-local-only"
       ],
@@ -61960,6 +61960,40 @@
       "consumer_accessibility": "projected-consumer-surface",
       "evidence": [
         "harness_coverage:acc-report+dashboard+tui",
+        "scope:both",
+        "gap:scope=both but missing projected/wired support for: claude, codex",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-adr-implementation-audit.py",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-adr-implementation-audit.py",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-adr-implementation-audit.py"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "both"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-adr-implementation-audit.py"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
         "scope:os-only",
         "gap:projected/wired but no direct behavior proof reference detected",
         "gap_policy:on-demand-command-only"
@@ -66640,6 +66674,74 @@
         "family": "scripts",
         "path": "docs/reports/primitive-harness-coverage-latest.json",
         "primitive": "scripts/cos-private-content-audit"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-product-answer",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-product-answer",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-product-answer"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-product-answer"
+      },
+      "weight": 1
+    },
+    {
+      "confidence": 0.86,
+      "consumer_accessibility": "projected-consumer-surface",
+      "evidence": [
+        "harness_coverage:acc-report+dashboard+tui",
+        "scope:os-only",
+        "gap:projected/wired but no direct behavior proof reference detected",
+        "gap_policy:on-demand-command-only"
+      ],
+      "id": "harness_coverage:scripts/cos-product-answer-refresh",
+      "kind": "harness_coverage",
+      "lifecycle_status": "real",
+      "mapping_status": "aligned",
+      "represented_by": [
+        {
+          "id": "scripts/cos-product-answer-refresh",
+          "kind": "harness_coverage",
+          "role": "harness-implementation",
+          "source": "scripts/cos-product-answer-refresh"
+        }
+      ],
+      "risk": "low",
+      "signature": {
+        "coverage": "acc-report+dashboard+tui",
+        "gap_policy": "on-demand-command-only",
+        "scope": "os-only"
+      },
+      "source": {
+        "family": "scripts",
+        "path": "docs/reports/primitive-harness-coverage-latest.json",
+        "primitive": "scripts/cos-product-answer-refresh"
       },
       "weight": 1
     },
@@ -108133,7 +108235,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:145"
+        "intervention_rows:152"
       ],
       "id": "primitive_intervention:destructive-git-blocker",
       "kind": "primitive_intervention",
@@ -108148,7 +108250,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 145
+        "rows": 152
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -108295,7 +108397,7 @@
       "confidence": 0.82,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "intervention_rows:380"
+        "intervention_rows:390"
       ],
       "id": "primitive_intervention:skill-router",
       "kind": "primitive_intervention",
@@ -108310,7 +108412,7 @@
       ],
       "risk": "medium",
       "signature": {
-        "rows": 380
+        "rows": 390
       },
       "source": {
         "path": ".cognitive-os/metrics/primitive-interventions.jsonl",
@@ -108322,7 +108424,7 @@
       "confidence": 0.78,
       "consumer_accessibility": "runtime-evidence",
       "evidence": [
-        "itinerary_rows:754"
+        "itinerary_rows:756"
       ],
       "id": "codebase_itinerary:Read",
       "kind": "codebase_itinerary",
@@ -108338,9 +108440,9 @@
       "risk": "low",
       "signature": {
         "categories": {
-          "read": 754
+          "read": 756
         },
-        "rows": 754
+        "rows": 756
       },
       "source": {
         "path": ".cognitive-os/metrics/codebase-itinerary.jsonl",
@@ -123083,7 +123185,7 @@
       "coverage_debt:71"
     ]
   },
-  "generated_at": "2026-05-12T19:25:36Z",
+  "generated_at": "2026-05-12T19:44:46Z",
   "harness_projection": {
     "agents-md": {
       "display_name": "AGENTS.md",
@@ -123831,9 +123933,9 @@
   "summary": {
     "acc": 0.9839,
     "acc_effective": 0.9902,
-    "aligned_weight": 6105,
+    "aligned_weight": 6108,
     "mapping_weight_by_status": {
-      "aligned": 6105,
+      "aligned": 6108,
       "missing": 0,
       "overexposed": 0,
       "partial": 78,
@@ -123844,7 +123946,7 @@
     "overexposed_weight": 0,
     "partial_weight": 78,
     "stale_weight": 0,
-    "total_weight": 6205,
+    "total_weight": 6208,
     "unverified_weight": 22
   },
   "weights": {

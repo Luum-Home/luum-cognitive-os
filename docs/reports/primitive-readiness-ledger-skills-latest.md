@@ -1,8 +1,8 @@
 # Primitive Readiness Ledger — Skills
 
-Total rows: 101
-Rows without lifecycle metadata: 99
-Consumer accessibility: lifecycle-declared-consumer-candidate:2, repo-skill-not-projectable:94, so-local-only:5
+Total rows: 102
+Rows without lifecycle metadata: 100
+Consumer accessibility: lifecycle-declared-consumer-candidate:2, repo-skill-not-projectable:95, so-local-only:5
 
 | Path | Role | Source | Confidence | Consumer Access | Lifecycle | Consumers | Next action |
 |---|---|---|---|---|---|---:|---|
@@ -70,6 +70,7 @@ Consumer accessibility: lifecycle-declared-consumer-candidate:2, repo-skill-not-
 | `skills/primitive-harvester/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 16 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-surface-reduction/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 6 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/primitive-usage-map/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 9 | add lifecycle/package/projection metadata or keep SO-local |
+| `skills/product-answer/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 13 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/project-scaffold/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/proof-drill/SKILL.md` | compatibility-wrapper | usage:script-hook | high | repo-skill-not-projectable |  | 36 | add lifecycle/package/projection metadata or keep SO-local |
 | `skills/push-release/SKILL.md` | so-maintainer | heuristic:text | medium | repo-skill-not-projectable |  | 8 | add lifecycle/package/projection metadata or keep SO-local |

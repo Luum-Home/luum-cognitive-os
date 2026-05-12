@@ -1817,6 +1817,12 @@
     },
     {
       "claims_runtime_enforcement": false,
+      "contract_id": "library-adapter-compile-py",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
       "contract_id": "script-cos-adapter-compile",
       "fidelity": "documented-only",
       "surface": "evidence commands documented; no generic CI enforcement claimed"
@@ -1848,6 +1854,192 @@
     {
       "claims_runtime_enforcement": false,
       "contract_id": "script-promote-lifecycle-primitives-to-contracts",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-adoption-freeze-gate",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-attribution-completeness-validator",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-cos-session-start-projector",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-dependency-license-classifier",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-external-cache-content-leak",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-external-pattern-cleanroom-gate",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-history-rewrite-documented",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-legal-review-required-on-runtime-import",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-lib-symlink-divergence-detector",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-pending-truth-drift-detector",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-pending-truth-staleness-gate",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-pending-truth-verify-weekly",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-research-to-runtime-firewall",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "hook-spdx-header-required",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-documentation-truth-audit",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-closure-trust-signal",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-session-start-projector",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-pending-truth-verify",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-close",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-pending-truth-aggregator",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-pending-truth-close",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-adr-partial-ledger",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-operational-guide-audit",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-doc-cross-reference-audit",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-portable-ai-overlay",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-self-improve",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "skill-agent-kpis",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "rule-self-improvement-protocol",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-product-answer",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-product-answer-refresh",
+      "fidelity": "documented-only",
+      "surface": "evidence commands documented; no generic CI enforcement claimed"
+    },
+    {
+      "claims_runtime_enforcement": false,
+      "contract_id": "script-cos-public-claim-gate",
       "fidelity": "documented-only",
       "surface": "evidence commands documented; no generic CI enforcement claimed"
     }
