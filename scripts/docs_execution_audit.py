@@ -23,7 +23,12 @@ PATHISH_RE = re.compile(r"^(?:docs|scripts|hooks|skills|rules|tests|primitive_co
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]+\]\((?P<target>[^)#]+)(?:#[^)]+)?\)")
 INLINE_CODE_RE = re.compile(r"`(?P<code>[^`]+)`")
 TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]{3,}")
-GENERATED_STATE_PREFIXES = (".cognitive-os/metrics/", ".cognitive-os/agents/", ".cognitive-os/skills/")
+GENERATED_STATE_PREFIXES = (
+    ".cognitive-os/metrics/",
+    ".cognitive-os/agents/",
+    ".cognitive-os/skills/",
+    ".cognitive-os/coordination/",
+)
 GENERATED_STATE_FILES = {".cognitive-os/work-queue.json"}
 DOC_SOURCE_EXCLUDED_PREFIXES = ("docs/reports/", "docs/archive/")
 

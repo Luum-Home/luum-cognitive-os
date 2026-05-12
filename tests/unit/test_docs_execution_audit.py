@@ -69,3 +69,15 @@ def test_cli_fail_hard_gaps_blocks_stale_done(tmp_path: Path) -> None:
     assert result.returncode == 2
     payload = json.loads((root / "reports" / "docs-execution.json").read_text())
     assert payload["summary"]["statuses"]["stale"] == 1
+
+
+def test_generated_coordination_state_refs_are_not_stale(tmp_path: Path) -> None:
+    root = tmp_path / "repo"
+    write(
+        root / "docs" / "plan.md",
+        "# Plan\n\n- [x] Implemented runtime index at `.cognitive-os/coordination/event-index.jsonl`.\n",
+    )
+
+    rows = docs_execution_audit.audit(root)
+
+    assert rows[0].inferred_status != "stale"
