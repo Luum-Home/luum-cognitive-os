@@ -9,7 +9,16 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: 'history sanitization action is documented as performed and reinforced by ADR-267 forward enforcement'
+classification_basis: history sanitization action is documented as performed and reinforced
+  by ADR-267 forward enforcement
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/contracts/test_history_rewrite_ledger_append_only.py tests/unit/test_history_sanitization.py
+    tests/behavior/test_history_sanitization_cli.py -q
+  proves:
+  - behavior_contract
+  - ledger_contract
 ---
 
 # ADR-268 — Defensive history sanitization for external-pattern attribution

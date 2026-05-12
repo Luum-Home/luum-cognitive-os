@@ -9,7 +9,16 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: 'cosd grant modules, nonce store, daemon integration, and tests implement the grant-signed API scope'
+classification_basis: cosd grant modules, nonce store, daemon integration, and tests
+  implement the grant-signed API scope
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/unit/test_cosd_grant.py tests/red_team/portability/test_cosd-secure-api.py
+    -q
+  proves:
+  - behavior_contract
+  - negative_case
 ---
 
 # ADR-260 — Grant-Signed cosd API: HMAC + Nonce + TTL + Scope Binding

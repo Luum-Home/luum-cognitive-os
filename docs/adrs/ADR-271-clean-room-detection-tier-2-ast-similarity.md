@@ -10,6 +10,12 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: explicit prose status migration for previously prose-only ADR
+verification:
+  level: not-applicable
+  commands:
+  - bash tests/integration/test_clean_room_ast_similarity.sh
+  proves:
+  - integration_contract
 ---
 
 # ADR-271 — Clean-Room Detection Tier 2: AST-Normalized Similarity

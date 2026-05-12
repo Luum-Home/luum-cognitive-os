@@ -35,7 +35,16 @@ related_adrs:
 - ADR-246 (release transaction freeze)
 - ADR-268 (defensive history sanitization 2026-05-11, sibling doc)
 relationship_chain_exempt: true
-relationship_chain_exemption_reason: ADR-269 intentionally consolidates the history-rewrite safety chain (ADR-218/242/243/246) into an implementation ledger for mandatory ADR references; audit depth is documented rather than scope-creep.
+relationship_chain_exemption_reason: ADR-269 intentionally consolidates the history-rewrite
+  safety chain (ADR-218/242/243/246) into an implementation ledger for mandatory ADR
+  references; audit depth is documented rather than scope-creep.
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/contracts/test_history_rewrite_ledger_append_only.py -q
+  proves:
+  - ledger_contract
+  - hook_syntax
 ---
 
 # ADR-269 — Mandatory ADR Reference for History Rewrites

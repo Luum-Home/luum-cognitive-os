@@ -10,6 +10,12 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: explicit spike / not accepted status
+verification:
+  level: not-applicable
+  commands:
+  - python3 -m pytest tests/audit/test_adr_contracts.py -q -k ADR-262
+  proves:
+  - decision_state
 ---
 
 # ADR-262 — Evolve Loop Spike: Task Proposal Queue + LLM-driven Skill Candidates

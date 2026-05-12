@@ -9,7 +9,15 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: 'memory governance module, retriever/lifecycle integration, and unit tests implement typed memory policy'
+classification_basis: memory governance module, retriever/lifecycle integration, and
+  unit tests implement typed memory policy
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/unit/test_memory_governance.py tests/red_team/portability/test_engram_lifecycle.py
+    -q
+  proves:
+  - behavior_contract
 ---
 
 # ADR-261 — Memory Governance v2: Typed Memory with Verification & Staleness Policies

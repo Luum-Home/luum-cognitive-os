@@ -38,7 +38,17 @@ related_adrs:
 - ADR-268 (defensive history sanitization 2026-05-11)
 - ADR-269 (mandatory ADR reference for history rewrites)
 relationship_chain_exempt: true
-relationship_chain_exemption_reason: ADR-270 intentionally consolidates legal/compliance workflow dependencies (ADR-259/267/268/269) as an implementation ledger for counsel-review automation; relationship depth is expected and bounded by this hub.
+relationship_chain_exemption_reason: ADR-270 intentionally consolidates legal/compliance
+  workflow dependencies (ADR-259/267/268/269) as an implementation ledger for counsel-review
+  automation; relationship depth is expected and bounded by this hub.
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/unit/test_cos_legal_approve.py tests/contracts/test_legal_review_ledger_append_only.py
+    -q
+  proves:
+  - behavior_contract
+  - ledger_contract
 ---
 
 # ADR-270 — Legal Compliance Workflow Automation

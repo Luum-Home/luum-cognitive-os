@@ -3,7 +3,7 @@ adr: 281
 title: ADR Implementation Reality Audit
 status: accepted
 implementation_status: implemented
-classification_basis: 'Audit script + control-plane wiring + tests shipped; documents the gap discovered 2026-05-12 and closes it permanently.'
+classification_basis: 'implemented: audit script, allowlist, and tests ship the in-scope disk-reality gate; future control-plane expansion is separate and out of scope for closure.'
 date: 2026-05-12
 supersedes: []
 superseded_by: null

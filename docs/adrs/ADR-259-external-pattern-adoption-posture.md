@@ -10,9 +10,18 @@ implementation_files: []
 tier: maintainer
 tags: []
 classification_basis: accepted record with explicit partial/phase scope
-partial_remaining: documentation text) is categorically blocked. A formal clean-room process
+partial_remaining: documentation text) is categorically blocked. A formal clean-room
+  process
 remaining_in_scope: true
 partial_remaining_basis: explicit body remaining signal
+verification:
+  level: strong
+  commands:
+  - python3 -m pytest tests/audit/test_license_publication_metadata.py tests/unit/test_agentic_tool_license_matrix.py
+    -q
+  proves:
+  - policy_audit
+  - behavior_contract
 ---
 
 # ADR-259 — holaOS Adoption Posture: Patterns-Only Library with Clean-Room Rewrite

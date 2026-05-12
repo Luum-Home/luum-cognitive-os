@@ -13,6 +13,13 @@ classification_basis: accepted record with explicit pending/deferred/planned sco
 partial_remaining: Decision deferred to implementation.
 remaining_in_scope: true
 partial_remaining_basis: explicit body remaining signal
+verification:
+  level: strong
+  commands:
+  - python3 -m py_compile scripts/cos_verbatim_copy_detector.py scripts/cos_lib_symlink_invariant_audit.py
+  proves:
+  - audit_surface
+  - hook_syntax
 ---
 
 # ADR-267 — License-Compliance Enforcement Architecture
