@@ -25,6 +25,7 @@ INLINE_CODE_RE = re.compile(r"`(?P<code>[^`]+)`")
 TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]{3,}")
 GENERATED_STATE_PREFIXES = (".cognitive-os/metrics/", ".cognitive-os/agents/", ".cognitive-os/skills/")
 GENERATED_STATE_FILES = {".cognitive-os/work-queue.json"}
+DOC_SOURCE_EXCLUDED_PREFIXES = ("docs/reports/", "docs/archive/")
 
 STOPWORDS = {"this", "that", "with", "from", "into", "docs", "documentation", "cognitive", "agent", "agents", "should", "could", "would", "will", "have", "has", "the", "and", "for", "status", "report", "latest"}
 
@@ -44,7 +45,7 @@ def candidate_docs(root: Path) -> list[Path]:
     paths: list[Path] = []
     for pattern in ("README.md", "AGENTS.md", "docs/**/*.md"):
         paths.extend(p for p in root.glob(pattern) if p.is_file())
-    return sorted(p for p in paths if not p.relative_to(root).as_posix().startswith(("docs/reports/", "docs/archive/")))
+    return sorted(p for p in paths if not p.relative_to(root).as_posix().startswith(DOC_SOURCE_EXCLUDED_PREFIXES))
 
 def evidence_files(root: Path) -> list[Path]:
     patterns = ("scripts/**/*.py", "hooks/**/*.sh", "skills/**/SKILL.md", "rules/**/*.md", "tests/**/*.py", ".github/workflows/*.yml", ".github/workflows/*.yaml", "primitive_coverage/**/*.py", "primitive_coverage/**/*.yaml", "manifests/**/*.json", "lib/**/*.py", ".cognitive-os/plans/**/*.md")
