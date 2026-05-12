@@ -327,7 +327,7 @@ def test_harness_registry_reports_planned_harnesses(tmp_path: Path) -> None:
     assert "cursor" not in acc_pipeline.implemented_harness_ids(manifest)
 
 
-def test_refresh_adapters_includes_primitive_duplication(monkeypatch, tmp_path: Path) -> None:
+def test_refresh_adapters_includes_operational_primitive_reports(monkeypatch, tmp_path: Path) -> None:
     root = make_repo(tmp_path)
     seen: list[str] = []
 
@@ -339,6 +339,8 @@ def test_refresh_adapters_includes_primitive_duplication(monkeypatch, tmp_path: 
 
     adapters = acc_pipeline.refresh_adapters(root, include_slow=False)
 
+    assert "primitive_projection_fidelity" in adapters
+    assert "primitive_projection_fidelity" in seen
     assert "primitive_duplication" in adapters
     assert "primitive_duplication" in seen
 

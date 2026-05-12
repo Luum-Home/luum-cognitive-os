@@ -301,6 +301,7 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("family_readiness_rules", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "rules"]),
         ("family_readiness_templates", ["python3", "scripts/primitive_family_readiness_ledger.py", "--project-dir", ".", "--target-family", "templates"]),
         ("harness_coverage_refresh", ["python3", "scripts/primitive_harness_coverage.py", "--project-dir", "."]),
+        ("primitive_projection_fidelity", ["python3", "scripts/primitive_projection_fidelity.py", "--project-dir", "."]),
         ("docs_execution", ["python3", "scripts/docs_execution_audit.py", "--project-dir", "."]),
         ("primitive_duplication", ["python3", "scripts/primitive_duplication_audit.py", "--project-root", "."]),
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
