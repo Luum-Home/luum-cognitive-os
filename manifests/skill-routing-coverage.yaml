@@ -33,13 +33,13 @@ coverage_scope:
     location: skills/*/SKILL.md
     routing_required: true
     rationale: Primary skill location, source-of-truth for the public router.
-    universe_size: 165
-    routed_count: 103
-    routed_percent: 62.4
+    universe_size: 168
+    routed_count: 106
+    routed_percent: 63.1
     disabled_count: 9
     name_mismatch_count: 3
-    eligible_for_routing: 153
-    eligible_routed_percent: 66.7
+    eligible_for_routing: 156
+    eligible_routed_percent: 67.3
   package_bundled_skills:
     location: packages/*/skills/*/SKILL.md
     routing_required: true

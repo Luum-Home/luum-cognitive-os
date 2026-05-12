@@ -1,9 +1,16 @@
+<!-- SCOPE: both -->
 ---
 name: deep-tool-research
-description: Run a canonical 7-annex deep evaluation of an external tool (memory/agent OS/eval/RAG family). Use when an external tool has passed the shallow `repo-scout` gate and an adoption decision is pending (`ASSESS`, `TRIAL`, `REJECT`). Produces parent comparison doc + 7 fixed-axis annexes (A–G) so cross-tool comparison is mechanically possible.
+description: Use when an external tool has passed the shallow `repo-scout` gate and needs a canonical 7-annex deep evaluation before an adoption decision (`ASSESS`, `TRIAL`, `REJECT`); produces parent comparison doc plus fixed-axis annexes A-G for mechanical cross-tool comparison.
 scope: both
+audience: os-dev
 status: skeleton
 model_hint: opus
+routing_patterns:
+  - pattern: '\bdeep[- ]tool[- ]research\b'
+    confidence: 0.95
+  - pattern: '\bexternal tool (evaluation|research|adoption)\b'
+    confidence: 0.85
 dependencies:
   - skills/repo-scout/SKILL.md
   - skills/repo-forensics/SKILL.md
