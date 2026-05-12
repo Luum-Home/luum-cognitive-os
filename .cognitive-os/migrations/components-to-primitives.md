@@ -144,7 +144,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/006-agpl-license-compliance.md
+## File: docs/adrs/ADR-006-agpl-license-compliance.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -154,7 +154,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/009-package-architecture.md
+## File: docs/adrs/ADR-009-package-architecture.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -168,7 +168,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/017-stabilization-freeze.md
+## File: docs/adrs/ADR-017-stabilization-freeze.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -185,7 +185,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/019-scope-tagging.md
+## File: docs/adrs/ADR-019-scope-tagging.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -203,7 +203,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/020-contamination-fix.md
+## File: docs/adrs/ADR-020-contamination-fix.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -215,7 +215,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/021-vendor-agnostic-with-adapters.md
+## File: docs/adrs/ADR-021-vendor-agnostic-with-adapters.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -224,7 +224,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/026-r2-r3-design-review.md
+## File: docs/adrs/ADR-026-r2-r3-design-review.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -232,7 +232,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/026a-decisions.md
+## File: docs/adrs/ADR-026a-decisions.md
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -241,7 +241,7 @@ compatibility.
 
 ---
 
-## File: docs/architecture/adrs/README.md
+## File: docs/adrs/README.md  <!-- moved 2026-04-30 (ADR-087); architecture/adrs/README.md removed 2026-05-12 -->
 
 | Line | Context | Class | Proposed rewrite (Class A only) |
 |---|---|---|---|
@@ -524,12 +524,12 @@ compatibility.
 ### Class A — to migrate (64)
 
 High-density files:
-- `docs/architecture/adrs/019-scope-tagging.md` — 10 hits (every occurrence of "component" refers to skills/hooks/rules)
-- `docs/architecture/adrs/017-stabilization-freeze.md` — 10 hits (wiring, registration, lifecycle of OS primitives)
-- `docs/architecture/adrs/009-package-architecture.md` — 7 hits (375 skills/hooks/rules/libs reclassification)
+- `docs/adrs/ADR-019-scope-tagging.md` — 10 hits (every occurrence of "component" refers to skills/hooks/rules)
+- `docs/adrs/ADR-017-stabilization-freeze.md` — 10 hits (wiring, registration, lifecycle of OS primitives)
+- `docs/adrs/ADR-009-package-architecture.md` — 7 hits (375 skills/hooks/rules/libs reclassification)
 - `docs/architecture/POST-MORTEM-2026-04.md` — 7 hits (aspirational hooks/skills/rules count)
-- `docs/architecture/adrs/020-contamination-fix.md` — 5 hits (OS hooks/skills/rules contamination)
-- `docs/architecture/adrs/021-vendor-agnostic-with-adapters.md` — 2 hits (OS primitives + table header)
+- `docs/adrs/ADR-020-contamination-fix.md` — 5 hits (OS hooks/skills/rules contamination)
+- `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` — 2 hits (OS primitives + table header)
 - `docs/architecture/cross-harness-authoring.md` — 6 hits (portability of skills/hooks/rules)
 - `AGENTS.md` — 2 prose hits (architecture table + description)
 - `CHANGELOG.md` — 5 hits (primitive counts, wiring, linter)
@@ -554,12 +554,12 @@ Selected list:
 - docs/architecture/FROZEN-BACKLOG.md:34,59,64,245 — primitives/backlog items
 - docs/architecture/LESSONS-LEARNED.md:17,19,34,122 — lesson data points
 - docs/architecture/POST-MORTEM-2026-04.md:13,56,142,150,207,236,263 — mortem metrics
-- docs/architecture/adrs/009-package-architecture.md:10,14,16,17,31,33,37 — all hits
-- docs/architecture/adrs/017-stabilization-freeze.md:10,22,25,27,31,32,39,41 — all hits
-- docs/architecture/adrs/019-scope-tagging.md:10,14,16,31,32,33,37,40 — all hits
-- docs/architecture/adrs/020-contamination-fix.md:10,14,19,34,38 — all hits
-- docs/architecture/adrs/021-vendor-agnostic-with-adapters.md:90,98 — all hits
-- docs/architecture/adrs/README.md:18,28 — ADR titles
+- docs/adrs/ADR-009-package-architecture.md:10,14,16,17,31,33,37 — all hits
+- docs/adrs/ADR-017-stabilization-freeze.md:10,22,25,27,31,32,39,41 — all hits
+- docs/adrs/ADR-019-scope-tagging.md:10,14,16,31,32,33,37,40 — all hits
+- docs/adrs/ADR-020-contamination-fix.md:10,14,19,34,38 — all hits
+- docs/adrs/ADR-021-vendor-agnostic-with-adapters.md:90,98 — all hits
+- docs/adrs/README.md:18,28 (was docs/architecture/adrs/README.md, removed 2026-05-12) — ADR titles
 - docs/architecture/behavioral-test-contracts.md:89 — section heading
 - docs/architecture/core-vs-extensions-audit-2026-04-20.md:9,17,49,124,262,282 — table headers + prose
 - docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md:41 — package manager description
@@ -586,7 +586,7 @@ All instances in `AGENTS.md:55–68` where "component" is used in the carve-out 
 Grouped by reason:
 
 **Infrastructure/dependencies** (ADR-006, observability):
-- `docs/architecture/adrs/006-agpl-license-compliance.md:14,21,31` — Redis, MinIO, software licensing
+- `docs/adrs/ADR-006-agpl-license-compliance.md:14,21,31` — Redis, MinIO, software licensing
 - `docs/architecture/observability-backend-evaluation-2026-04-24.md:82` — MLflow, Langfuse, Valkey
 - `docs/architecture/tooling-stack-rationalization.md:101` — generic tool duplication checklist
 
@@ -594,8 +594,8 @@ Grouped by reason:
 - `docs/architecture/cos-dispatch/README.md:38` — Go binary component diagram
 - `docs/architecture/cos-dispatch/adr-detection.md:11,152` — Go type headings (ADRDetector, ADRGenerator)
 - `docs/architecture/cos-dispatch/adrs/002-transformer-separate-interface.md:28` — Go interface pattern
-- `docs/architecture/adrs/026-r2-r3-design-review.md:252` — config loader code modules
-- `docs/architecture/adrs/026a-decisions.md:104,107` — config loader code modules
+- `docs/adrs/ADR-026-r2-r3-design-review.md:252` — config loader code modules
+- `docs/adrs/ADR-026a-decisions.md:104,107` — config loader code modules
 
 **Test pyramid terminology** (cos-dispatch/test-strategy.md):
 - Lines 21, 25, 38, 42, 79, 167 — "Component test" as test layer name (Unit/Component/Integration/Binary)
@@ -626,12 +626,12 @@ Grouped by reason:
 ## Migration plan (Phase 2 hint)
 
 ### Files needing >5 Class A edits
-- `docs/architecture/adrs/017-stabilization-freeze.md` — 10 hits
-- `docs/architecture/adrs/019-scope-tagging.md` — 10 hits
-- `docs/architecture/adrs/009-package-architecture.md` — 7 hits
+- `docs/adrs/ADR-017-stabilization-freeze.md` — 10 hits
+- `docs/adrs/ADR-019-scope-tagging.md` — 10 hits
+- `docs/adrs/ADR-009-package-architecture.md` — 7 hits
 - `docs/architecture/POST-MORTEM-2026-04.md` — 7 hits
 - `docs/architecture/cross-harness-authoring.md` — 6 hits
-- `docs/architecture/adrs/020-contamination-fix.md` — 5 hits
+- `docs/adrs/ADR-020-contamination-fix.md` — 5 hits
 - `skills/CATALOG.md` — 6 hits
 - `docs/architecture/FROZEN-BACKLOG.md` — 4 hits
 - `docs/architecture/LESSONS-LEARNED.md` — 4 hits
@@ -639,8 +639,8 @@ Grouped by reason:
 ### Files with 1–5 Class A edits
 - `AGENTS.md` (2), `CHANGELOG.md` (5), `cmd/cos/README.md` (3)
 - `skills/CATALOG-COMPACT.md` (4)
-- `docs/architecture/adrs/021-vendor-agnostic-with-adapters.md` (2)
-- `docs/architecture/adrs/README.md` (2)
+- `docs/adrs/ADR-021-vendor-agnostic-with-adapters.md` (2)
+- `docs/adrs/README.md` (2; previously at docs/architecture/adrs/README.md, removed 2026-05-12)
 - `docs/architecture/behavioral-test-contracts.md` (1)
 - `docs/architecture/core-vs-extensions-audit-2026-04-20.md` (5)
 - `docs/architecture/cos-update-vs-cos-cli-responsibility-analysis.md` (1)
