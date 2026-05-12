@@ -12,7 +12,7 @@ tags: []
 classification_basis: explicit prose status migration for previously prose-only ADR
 ---
 
-# ADR-270 — Clean-Room Detection Tier 2: AST-Normalized Similarity
+# ADR-271 — Clean-Room Detection Tier 2: AST-Normalized Similarity
 
 ## Status
 

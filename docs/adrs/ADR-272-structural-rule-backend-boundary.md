@@ -17,6 +17,10 @@ classification_basis: 'policy-only: boundary decision constraining future struct
 Status: Accepted
 Date: 2026-05-12
 
+## Status
+
+Accepted.
+
 ## Context
 
 Cognitive OS now has two separate projection layers:

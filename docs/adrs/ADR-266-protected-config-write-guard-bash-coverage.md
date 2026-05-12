@@ -14,7 +14,10 @@ classification_basis: explicit prose status migration for previously prose-only 
 
 # ADR-266: Extend protected-config-write-guard to intercept Bash file-write commands
 
-**Status**: Proposed (2026-05-11)
+## Status
+
+Proposed (2026-05-11).
+
 
 ---
 

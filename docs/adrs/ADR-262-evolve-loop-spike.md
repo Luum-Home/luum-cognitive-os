@@ -239,6 +239,14 @@ regex hook. That decision is captured in a follow-up ADR, not here.
 
 ---
 
+## Consequences
+
+- Spike validates the evolve-loop assumptions in a bounded time window
+  with a clear exit decision (proceed / shelve / pivot).
+- Risks are listed in §Risks; outcomes feed the Spike Exit Criteria.
+- If spike fails its exit criteria, the loop is shelved without further
+  investment; if it passes, follow-up ADR formalizes production scope.
+
 ## Spike Exit Criteria
 
 The spike converts to a follow-up **Accepted ADR** if and only if all five criteria are met
