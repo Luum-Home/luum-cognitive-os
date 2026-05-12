@@ -40,6 +40,7 @@ The repo still contains ambitious future architecture for squads, manager agents
 - [ADR Status Taxonomy](adrs/STATUS-TAXONOMY.md) — canonical separation of decision status, implementation status, and index bucket for ADR metadata/tooling.
 - [ADR Implementation Status Backfill — 2026-05-12](reports/adr-implementation-status-backfill-2026-05-12.md) — first conservative frontmatter backfill and remaining Active/Unclassified scope.
 - [IDE-Agnostic Primitive Projection](architecture/ide-agnostic-primitive-projection.md) — explains canonical primitives, portable contracts, harness/runtime projection, fidelity, consumer-fleet impact, service/headless impact, and the `.ai/` product-overlay lesson.
+- [Portable `.ai` Consumer Package Spec](architecture/portable-ai-consumer-package-spec.md) — README-first Markdown package shape generated from the maintainer overlay for consumer projects.
 - [OpenCode Native Primitive Adapter Design](architecture/opencode-native-primitive-adapter-design.md) — native permissions/plugins design and smoke criteria before OpenCode runtime enforcement claims.
 - [Primitive Contract Registry Implementation Plan](architecture/primitive-contract-registry-implementation-plan.md) — phased plan for ADR-256 before runtime implementation.
 - [OpenSage Self-Programming Patterns for Cognitive OS](architecture/opensage-self-programming-patterns.md) — pattern-only extraction contract for dynamic topology, generated tools/skills, sandboxed execution, graph memory, and benchmark evidence.

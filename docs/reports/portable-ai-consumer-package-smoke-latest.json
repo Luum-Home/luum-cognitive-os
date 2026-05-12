@@ -1,0 +1,15 @@
+{
+  "adapter_markdown_count": 27,
+  "adapter_overlay_count": 27,
+  "consumer_fixture": "tempdir",
+  "frontmatter_file_count": 340,
+  "generated_at": "2026-05-12T17:16:04+00:00",
+  "json_file_count": 0,
+  "markdown_file_count": 340,
+  "no_canonical_mutation": true,
+  "package_file_count": 340,
+  "primitive_markdown_count": 309,
+  "primitive_overlay_count": 309,
+  "schema_version": "portable-ai-consumer-package-smoke.v1",
+  "status": "pass"
+}
