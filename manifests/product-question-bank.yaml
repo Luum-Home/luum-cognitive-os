@@ -326,3 +326,143 @@ questions:
     gaps:
     - Consult the local Tech Radar and external-tool manifests before browsing for tool comparisons.
     - Run a fresh competitor fact-check before publishing volatile named comparisons.
+  vanilla_usage:
+    category: adoption-boundary
+    aliases:
+    - vanilla
+    - configuracion vanilla
+    - configuración vanilla
+    - cuando uso vanilla
+    - cuándo uso vanilla
+    - cuando no uso cognitive os
+    - cuándo no uso cognitive os
+    - cuando uso claude code sin cos
+    - when should i use vanilla
+    - when not to use cognitive os
+    keywords:
+    - vanilla
+    - default
+    - sin cos
+    - without cos
+    - overhead
+    - throwaway
+    - exploratory
+    approved_sources:
+    - docs/business/cos-vs-vanilla-dx-review.md
+    - docs/vs-alternatives.md
+    - docs/adoption-tiers.md
+    - docs/auto-repair-system.md
+    related_claims:
+    - vanilla_boundary
+    - differentiator_behavioral_governance
+    - claim_verification_wedge
+    answer_short: Use vanilla IDE-agent setups for small, low-risk, one-agent/one-IDE, exploratory or throwaway work; use Cognitive OS when agent work creates trust, coordination, audit, cost, rollback, or cross-session risk.
+    answer_long: Cognitive OS is not the right default for every repository. Vanilla Claude Code, Codex, Cursor, or similar setups usually win when a solo developer is doing a small change in one IDE/session and the cost of governance is higher than the risk. COS becomes useful when the repo has parallel agents or sessions, compliance/publication risk, fragile production code, repeated verification failures, cost/accountability concerns, or a need to remember and replay decisions across time.
+    recommended_pitch: Stay vanilla for low-risk speed; add Cognitive OS when you need evidence, coordination, and recoverability.
+    unsafe_claims_to_avoid:
+    - COS is always better than vanilla IDE agents
+    - every repository needs the full SO
+    - vanilla workflows are unsafe by default
+    - governance overhead is free
+    gaps:
+    - The exact adoption tier should be chosen from project risk and team workflow, not from a generic product claim.
+  runtime_surfaces:
+    category: product-surface
+    aliases:
+    - tiene cli
+    - tiene ui
+    - tiene dashboard
+    - puede correr como servicio
+    - puede correr headless
+    - corre fuera del ide
+    - además del ide
+    - ademas del ide
+    - service mode
+    - headless service
+    - cosd
+    - cli ui service
+    keywords:
+    - cli
+    - ui
+    - dashboard
+    - servicio
+    - service
+    - headless
+    - cosd
+    - ide
+    - tui
+    approved_sources:
+    - docs/getting-started-quick.md
+    - docs/README.md
+    - docs/adrs/ADR-172-multi-surface-ui-architecture.md
+    - docs/adrs/ADR-193-cosd-local-network-api.md
+    - docs/adrs/ADR-194-cosd-secure-remote-api.md
+    - docs/adrs/ADR-211-service-mode-readiness-gate.md
+    - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+    - docs/dashboard-architecture.md
+    - docs/onboarding-wizard-design.md
+    related_claims:
+    - runtime_surfaces_cli_ui_service
+    - service_mode_readiness_partial
+    - cross_harness_behavioral_intelligence
+    answer_short: COS has a CLI-first/operator surface today, documented multi-surface UI direction, local `cosd` API/service-mode work, and headless proof drills; full hosted/cloud autonomous service and polished web UI claims remain maturity-scoped.
+    answer_long: The safe answer is multi-surface. COS is usable inside IDEs and through repository CLIs/scripts; docs define the operator CLI as the primary always-on surface, with optional trace/memory/reporting surfaces. `cosd` has a local HTTP/Unix-socket API and secure remote guardrails, and there is a headless Docker proof lane for non-IDE execution. But service/cloud autonomy is gated by ADR-211 readiness, and the dashboard/TUI surfaces are not the first-contact promise unless backed by the specific shipped slice being discussed.
+    recommended_pitch: Start CLI-first inside your repo; use service/headless surfaces only where their readiness gates are green.
+    unsafe_claims_to_avoid:
+    - COS is already a polished SaaS dashboard
+    - COS can safely run fully autonomous cloud service mode today
+    - remote cosd can be exposed without explicit auth and operator intent
+    - Docker workers inherit host IDE credentials automatically
+    gaps:
+    - Service/headless/provider-backed execution must be qualified by the latest readiness gate and proof drill evidence.
+    - UI claims should distinguish CLI/operator surfaces, optional trace/memory UIs, planned dashboard/TUI, and shipped slices.
+  alternatives_choice:
+    category: competitive-choice
+    aliases:
+    - por que no uso hermes
+    - por qué no uso hermes
+    - por que no agent zero
+    - por qué no agent zero
+    - por que no openclaw
+    - por qué no openclaw
+    - hermes en su lugar
+    - agent zero en su lugar
+    - openclaw en su lugar
+    - why not hermes
+    - why not agent zero
+    - why not openclaw
+    keywords:
+    - hermes
+    - agent zero
+    - openclaw
+    - alternative
+    - alternatives
+    - en su lugar
+    approved_sources:
+    - docs/vs-alternatives.md
+    - docs/component-sources.md
+    - docs/business/competitive-reassessment-openclaw-hermes-2026-04.md
+    - docs/reports/external-tools-radar-INDEX.md
+    related_claims:
+    - alternative_complementarity
+    - competitor_positioning_factcheck_required
+    - generic_tracing_is_not_unique
+    answer_short: Use Hermes, Agent Zero, or OpenClaw when you primarily need their native agent UX, autonomy, gateways, or orchestration breadth; use COS when you need governance, verification, claim safety, rollback, memory discipline, and portable engineering-agent receipts. In many cases the intended answer is both, with COS layered as the governance/evidence plane.
+    answer_long: >-
+      Hermes is stronger on native self-improvement feel, broad skills, gateways,
+      and user-facing agent UX. Agent Zero is stronger for long-horizon autonomous
+      operation and broad runtime action. OpenClaw is stronger for personal-agent
+      orchestration, gateways, and packaging. COS should not pretend to replace
+      those centers of gravity. COS adds the part they do not make central:
+      engineering-agent governance, trust reports, completion/claim validation,
+      coordination controls, cost-to-outcome evidence, rollback, and local project
+      memory. For tools already covered in the local radar, answer from those docs
+      first; browse only for volatile current facts.
+    recommended_pitch: Use the agent framework for execution breadth; use Cognitive OS to make the execution governable and provable.
+    unsafe_claims_to_avoid:
+    - Hermes, Agent Zero, or OpenClaw are strictly worse than COS
+    - COS fully replaces their agent runtime, gateway, or marketplace today
+    - named competitor feature claims are current without checking the local radar and freshness boundary
+    gaps:
+    - The Agent Zero adapter is not claimed as shipped in the local alternatives doc.
+    - Publication-grade named comparisons still need current fact-checking after local radar review.

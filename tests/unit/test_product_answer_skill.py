@@ -28,6 +28,8 @@ def test_product_answer_skill_is_os_only_and_routes_commercial_questions() -> No
     assert "diferenciador" in text
     assert "pricing" in text
     assert "competitors" in text
+    assert "vanilla" in text
+    assert "CLI/UI/service/headless" in text
 
 
 def test_product_answer_skill_forces_cached_adr_282_path_before_broad_docs() -> None:
@@ -50,3 +52,14 @@ def test_product_answer_skill_checks_local_tool_radar_before_internet() -> None:
     assert "docs/vs-alternatives.md" in text
     assert "Only then browse" in text
     assert "first move\n  is the local radar, not internet search" in text
+    assert "https://deepwiki.com/<owner>/<repo>" in text
+    assert "/repo-scout" in text
+    assert "/deep-tool-research" in text
+
+
+def test_product_answer_skill_lists_new_product_question_cards() -> None:
+    text = SKILL.read_text(encoding="utf-8")
+
+    assert "`vanilla_usage`" in text
+    assert "`runtime_surfaces`" in text
+    assert "`alternatives_choice`" in text

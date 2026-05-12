@@ -38,6 +38,9 @@ wedge. It is not a project-facing adopter skill.
 - The user asks about already-analyzed external tools, competitors, or adjacent
   agent frameworks such as Hermes, Agent Zero, OpenClaw, Langfuse, AgentOps,
   Datadog, Dynatrace, or Galileo.
+- The user asks when to use vanilla IDE/agent configuration instead of COS, what
+  COS is useful for, whether it has CLI/UI/service/headless surfaces, or whether
+  COS is complementary to a tool/framework.
 - The user asks whether a product/commercial claim is safe.
 - The user asks what primitives answer a product or commercial question.
 - The answer should be short, evidence-backed, and token-efficient.
@@ -75,6 +78,19 @@ order:
 
 When the local corpus already contains an analysis, answer from it and state the
 freshness boundary instead of re-researching the tool.
+
+If the tool is not present in the local corpus, then use the existing research
+pipeline instead of ad-hoc browsing:
+
+1. Check Engram for `tech-radar/<tool>` and `research/<tool>/...`.
+2. For GitHub repositories, map `https://github.com/<owner>/<repo>` to
+   `https://deepwiki.com/<owner>/<repo>` and run the `/repo-scout` pattern.
+3. Clone only into the external source cache / reference scratch path described
+   by the radar skills, not into product docs.
+4. If the shallow verdict is non-REJECT and COS may extract patterns or vendor
+   code, escalate to `/deep-tool-research`.
+5. Persist the conclusion back to Tech Radar/Engram before using it in future
+   product answers.
 
 ## Fast path
 
@@ -121,6 +137,9 @@ IDs:
 - `icp`
 - `pricing`
 - `competitors`
+- `vanilla_usage`
+- `runtime_surfaces`
+- `alternatives_choice`
 
 ## Output discipline
 

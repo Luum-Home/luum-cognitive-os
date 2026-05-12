@@ -179,3 +179,63 @@ claims:
     - Do not say competitors cannot do cross-IDE observability without fresh research.
     - Do not use stale named-competitor claims publicly.
     - Do not browse by default when the tool was already analyzed in the local radar corpus.
+  vanilla_boundary:
+    status: real
+    maturity: documented_positioning_boundary
+    confidence: 0.86
+    summary: Vanilla IDE-agent workflows are preferred for small, low-risk, one-agent exploratory work; COS becomes valuable when governance, coordination, audit, cost, or recovery risk appears.
+    approved_wording: Use vanilla for low-risk speed; add Cognitive OS when you need verifiable, coordinated, recoverable agent work.
+    evidence:
+    - docs/business/cos-vs-vanilla-dx-review.md
+    - docs/vs-alternatives.md
+    - docs/adoption-tiers.md
+    - docs/auto-repair-system.md
+    boundaries:
+    - Do not claim COS is always better than vanilla workflows.
+    - Do not recommend the full SO for throwaway or one-agent low-risk work.
+  runtime_surfaces_cli_ui_service:
+    status: partial-real
+    maturity: cli_first_with_partial_service_and_ui_surfaces
+    confidence: 0.76
+    summary: COS has CLI/operator surfaces, documented multi-surface UI direction, local cosd API work, and headless service proof drills, but full hosted/cloud service and polished dashboard claims are maturity-scoped.
+    approved_wording: COS is CLI-first today, can be used through IDE and non-IDE/headless proof paths, and has cosd/service/UI work under readiness gates.
+    evidence:
+    - docs/getting-started-quick.md
+    - docs/README.md
+    - docs/adrs/ADR-172-multi-surface-ui-architecture.md
+    - docs/adrs/ADR-193-cosd-local-network-api.md
+    - docs/adrs/ADR-194-cosd-secure-remote-api.md
+    - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+    - docs/dashboard-architecture.md
+    - docs/onboarding-wizard-design.md
+    boundaries:
+    - Do not claim polished SaaS/web dashboard readiness without a current shipped-slice proof.
+    - Do not claim provider-backed service execution without explicit auth/runtime proof.
+  service_mode_readiness_partial:
+    status: partial
+    maturity: readiness_gate_partial
+    confidence: 0.7
+    summary: Service-mode launch claims are gated by ADR-211; some headless/local service proof exists, but autonomous/cloud service mode is not an unrestricted public claim.
+    approved_wording: Service/headless usage is possible only within documented readiness and proof boundaries; cloud/autonomous claims remain gated.
+    evidence:
+    - docs/adrs/ADR-211-service-mode-readiness-gate.md
+    - docs/adrs/ADR-193-cosd-local-network-api.md
+    - docs/adrs/ADR-194-cosd-secure-remote-api.md
+    - docs/SESSION-HANDOFF-2026-05-05-headless-service-runtime.md
+    boundaries:
+    - Do not say COS can safely run as a fully autonomous hosted service unless the readiness gate is green.
+    - Remote cosd exposure requires explicit allow-remote plus bearer-token auth.
+  alternative_complementarity:
+    status: partial-real
+    maturity: documented_competitive_positioning
+    confidence: 0.78
+    summary: Hermes, Agent Zero, and OpenClaw have different centers of gravity; COS is complementary as the engineering governance/evidence layer rather than a direct replacement for their UX/autonomy/orchestration breadth.
+    approved_wording: Use Hermes, Agent Zero, or OpenClaw for their agent/runtime strengths; add COS when engineering governance, verification, and audit receipts matter.
+    evidence:
+    - docs/vs-alternatives.md
+    - docs/component-sources.md
+    - docs/business/competitive-reassessment-openclaw-hermes-2026-04.md
+    - docs/reports/external-tools-radar-INDEX.md
+    boundaries:
+    - Do not claim COS fully replaces Hermes, Agent Zero, or OpenClaw.
+    - Do not publish current named-feature comparisons without checking local radar freshness and external facts when needed.

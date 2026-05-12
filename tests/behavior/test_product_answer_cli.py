@@ -135,3 +135,57 @@ def test_product_answer_cli_competitors_uses_local_radar_before_browsing() -> No
         for claim in report["claims"]
         for boundary in claim["boundaries"]
     )
+
+
+def test_product_answer_cli_routes_vanilla_usage_question() -> None:
+    result = subprocess.run(
+        [str(CLI), "cuando uso configuraciones vanilla sin cognitive os", "--no-cache", "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["question_id"] == "vanilla_usage"
+    assert "Use vanilla IDE-agent setups" in report["answer_short"]
+    assert "docs/business/cos-vs-vanilla-dx-review.md" in report["approved_sources"]
+    assert any(claim["claim_id"] == "vanilla_boundary" for claim in report["claims"])
+    assert "COS is always better than vanilla IDE agents" in report["unsafe_claims_to_avoid"]
+
+
+def test_product_answer_cli_routes_runtime_surface_question() -> None:
+    result = subprocess.run(
+        [str(CLI), "puede correr como servicio tiene ui y cli", "--no-cache", "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["question_id"] == "runtime_surfaces"
+    assert "operator CLI" in report["answer_long"]
+    assert "docs/adrs/ADR-211-service-mode-readiness-gate.md" in report["approved_sources"]
+    assert any(claim["claim_id"] == "service_mode_readiness_partial" for claim in report["claims"])
+    assert "COS is already a polished SaaS dashboard" in report["unsafe_claims_to_avoid"]
+
+
+def test_product_answer_cli_routes_alternative_choice_question() -> None:
+    result = subprocess.run(
+        [str(CLI), "por que no uso hermes en su lugar", "--no-cache", "--json"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0
+    report = json.loads(result.stdout)
+    assert report["question_id"] == "alternatives_choice"
+    assert "Use Hermes, Agent Zero, or OpenClaw" in report["answer_short"]
+    assert "docs/vs-alternatives.md" in report["approved_sources"]
+    assert any(claim["claim_id"] == "alternative_complementarity" for claim in report["claims"])
+    assert "browse only for volatile current facts" in report["answer_long"]
