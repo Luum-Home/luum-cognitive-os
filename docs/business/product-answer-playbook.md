@@ -60,3 +60,23 @@ When product evidence changes:
    `tests/behavior/test_product_answer_cli.py`;
 4. rerun the ADR-280 verification commands;
 5. update public docs only after the generated answer and public claim gate pass.
+## Token-efficient answer cards
+
+For repeated product/commercial questions, refresh the local ADR-282 cards first:
+
+```bash
+scripts/cos-product-answer-refresh --all
+scripts/cos-product-answer-refresh --question-id differentiator
+```
+
+This writes ignored local derived artifacts under `.cognitive-os/product-answers/`:
+
+- `{question_id}.md` — compact human-readable answer with source hashes;
+- `{question_id}.json` — full machine-readable answer report;
+- `index.yaml` — compact routing index with aliases, keywords, card paths, and freshness;
+- `freshness-ledger.jsonl` — append-only refresh/check ledger rows.
+
+After cards exist, `scripts/cos-product-answer` uses a fresh card by default and
+falls back to live ADR-280 generation only when the card is missing or stale. Use
+`--no-cache` to force live generation.
+

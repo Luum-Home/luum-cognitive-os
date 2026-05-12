@@ -6,7 +6,7 @@ frontmatter block (between leading --- delimiters), and reports:
 
   MISSING_FRONTMATTER      — ADR has no YAML frontmatter (warn only)
   MALFORMED_YAML           — frontmatter exists but fails yaml.safe_load()
-  STATUS_REALITY_MISMATCH  — status: implemented but implementation_files missing
+  STATUS_REALITY_MISMATCH  — declared implementation_files missing on disk
   SUPERSEDES_BROKEN_REF    — supersedes[] lists an ADR number not found on disk
   ADR_RELATION_CHAIN_LONG  — extends/supersedes chains exceed the scope-creep budget
   ADR_RELATION_CYCLE       — relationship graph contains a cycle
@@ -66,9 +66,6 @@ CODE_MISSING_REQUIRED_FRONTMATTER = "MISSING_REQUIRED_FRONTMATTER"
 CODE_INVALID_CLASSIFICATION_BASIS = "INVALID_CLASSIFICATION_BASIS"
 CODE_INVALID_STATUS_TRANSITION = "INVALID_STATUS_TRANSITION"
 CODE_INDEX_STALE = "ADR_INDEX_STALE"
-
-# Status values that require implementation_files verification
-IMPLEMENTED_STATUSES = {"implemented"}
 
 # Valid status values
 VALID_STATUSES = {"proposed", "exploration", "accepted", "implemented", "resolved", "superseded", "deprecated", "tombstone"}
@@ -309,23 +306,38 @@ def analyze_relationship_graph(files: list[Path]) -> list[dict[str, Any]]:
                 })
     return findings
 
+def _implementation_path_exists(rel: str) -> bool:
+    """Return True when a declared implementation path exists on disk.
+
+    `implementation_files` is a falsifiable disk claim, not prose evidence.
+    Globs are allowed for narrow generated/document batches such as
+    `templates/foo/*.md`, but at least one path must match.
+    """
+    candidate = REPO_ROOT / rel
+    if candidate.resolve().exists():
+        return True
+    if rel.endswith("/") and (REPO_ROOT / rel.rstrip("/")).resolve().exists():
+        return True
+    if "*" in rel:
+        return bool(list(REPO_ROOT.glob(rel)))
+    return False
+
+
 def _verify_implementation_files(
     impl_files: list[str],
 ) -> tuple[list[str], list[str]]:
-    """Return (present, missing) lists.
+    """Return (present, missing) lists for every declared implementation file.
 
-    Uses Path.resolve() for symlink-aware existence checks per project rules.
+    This check is unconditional for declared paths: decision `status` and
+    `implementation_status` do not change whether a path claim is true.
     """
     present: list[str] = []
     missing: list[str] = []
     for rel in impl_files:
-        # Accept both relative and absolute paths; resolve from repo root
-        candidate = REPO_ROOT / rel
-        resolved = candidate.resolve()
-        if resolved.exists():
-            present.append(rel)
+        if _implementation_path_exists(str(rel)):
+            present.append(str(rel))
         else:
-            missing.append(rel)
+            missing.append(str(rel))
     return present, missing
 
 
@@ -403,7 +415,7 @@ def _has_implemented_evidence(fm: dict[str, Any], body: str, classification_basi
     impl_files = fm.get("implementation_files") or []
     if isinstance(impl_files, list) and impl_files:
         return True
-    if _has_section(body, ("Implementation Evidence", "Implementation", "Verification", "Operational Guide")):
+    if _has_section(body, ("Implementation Evidence", "Implementation", "Verification")):
         return True
     return bool(IMPLEMENTED_CLOSURE_RE.search(classification_basis))
 
@@ -595,7 +607,7 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
     supersedes: list[int] = fm.get("supersedes") or []
 
     findings: list[dict[str, Any]] = []
-    strict_lifecycle = _strict_lifecycle_applies(base)
+    _strict_lifecycle_applies(base)
     findings.extend(_validate_lifecycle_contract(base, fm, body, status, implementation_status, impl_files))
 
     if status and status not in VALID_STATUSES:
@@ -635,7 +647,7 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
 
     # ── Implementation file verification ─────────────────────────────────────
     present: list[str] = []
-    if impl_files and (status in IMPLEMENTED_STATUSES or strict_lifecycle):
+    if impl_files:
         present, missing = _verify_implementation_files(impl_files)
         if missing:
             findings.append(
@@ -644,6 +656,7 @@ def audit_file(path: Path, known_adrs: set[int]) -> dict[str, Any]:
                     "level": LEVEL_FAIL,
                     "code": CODE_STATUS_REALITY_MISMATCH,
                     "status": status,
+                    "implementation_status": implementation_status,
                     "missing_files": missing,
                     "files_verified": len(present),
                     "message": (

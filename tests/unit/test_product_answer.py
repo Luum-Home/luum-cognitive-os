@@ -4,7 +4,15 @@ from pathlib import Path
 
 import pytest
 
-from lib.product_answer import ProductAnswerError, build_answer, render_markdown, select_question
+from lib.product_answer import (
+    ProductAnswerError,
+    build_answer,
+    card_freshness,
+    load_cached_answer,
+    refresh_answer_cards,
+    render_markdown,
+    select_question,
+)
 
 
 def _write(path: Path, content: str) -> Path:
@@ -146,3 +154,36 @@ def test_select_question_rejects_unknown_id(tmp_path: Path) -> None:
 
     with pytest.raises(ProductAnswerError, match="unknown question id"):
         select_question(bank, question_id="missing")
+
+
+
+def test_refresh_answer_cards_writes_card_index_and_cached_report(tmp_path: Path) -> None:
+    project = _project(tmp_path)
+
+    refresh = refresh_answer_cards(project, question_id="differentiator")
+    cached = load_cached_answer(project, question_text="factor diferenciador")
+
+    assert refresh["status"] == "pass"
+    assert refresh["refreshed_count"] == 1
+    assert (project / ".cognitive-os" / "product-answers" / "differentiator.md").exists()
+    assert (project / ".cognitive-os" / "product-answers" / "differentiator.json").exists()
+    assert (project / ".cognitive-os" / "product-answers" / "index.yaml").exists()
+    assert cached is not None
+    assert cached["cache"]["mode"] == "card"
+    assert cached["cache"]["freshness"] == "fresh"
+    assert cached["question_id"] == "differentiator"
+
+
+def test_card_freshness_detects_source_drift(tmp_path: Path) -> None:
+    project = _project(tmp_path)
+    refresh_answer_cards(project, question_id="differentiator")
+
+    before = card_freshness(project, "differentiator")
+    (project / "docs" / "source.md").write_text("# Source changed\n", encoding="utf-8")
+    after = card_freshness(project, "differentiator")
+    cached = load_cached_answer(project, question_id="differentiator")
+
+    assert before["freshness"] == "fresh"
+    assert after["freshness"] == "stale"
+    assert "docs/source.md" in after["changed_sources"]
+    assert cached is None

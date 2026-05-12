@@ -13,10 +13,10 @@ implementation_files:
   - hooks/_lib/bypass-resolver.sh
   - docs/security/bypass-cheatsheet.md
   - hooks/destructive-git-blocker.sh
-  - hooks/commit-guard.sh
+  - hooks/git-commit-scope-guard.sh
   - hooks/branch-ownership-lock.sh
   - hooks/orchestrator-claim-gate.sh
-  - hooks/push-collision-check.sh
+  - hooks/_lib/push-collision-check.sh
   - tests/behavior/test_bypass_resolver.py
 tier: maintainer
 tags: [governance, hooks, dx, postmortem-2026-05-08]

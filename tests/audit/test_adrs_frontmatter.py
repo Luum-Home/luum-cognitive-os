@@ -4,7 +4,7 @@ Verifies that:
 1. Each of the 5 migrated ADRs (105, 116, 119, 121, 123) has valid YAML
    frontmatter parseable by yaml.safe_load().
 2. Required fields (adr, title, status, date) are present and typed correctly.
-3. ADRs with status=implemented have all declared implementation_files on disk
+3. All declared implementation_files entries resolve on disk
    (resolved via Path.resolve() for symlink-awareness per project rules).
 4. The audit_adrs.py script is importable and run_audit() returns no FAIL
    findings for the 5 migrated ADRs.
@@ -77,8 +77,14 @@ def _parse_frontmatter(path: Path) -> dict[str, Any]:
 
 
 def _file_exists_resolved(rel_path: str) -> bool:
-    """Check file existence using Path.resolve() (symlink-aware)."""
-    return (REPO_ROOT / rel_path).resolve().exists()
+    """Check implementation file existence with symlink and glob support."""
+    if (REPO_ROOT / rel_path).resolve().exists():
+        return True
+    if rel_path.endswith("/") and (REPO_ROOT / rel_path.rstrip("/")).resolve().exists():
+        return True
+    if "*" in rel_path:
+        return bool(list(REPO_ROOT.glob(rel_path)))
+    return False
 
 
 # ── Parametrized fixtures ─────────────────────────────────────────────────────
@@ -180,19 +186,17 @@ def test_supersedes_is_list(migrated_adr: tuple[int, Path, dict]) -> None:
 
 
 @pytest.mark.audit
-def test_implementation_files_present_for_implemented(
+def test_declared_implementation_files_exist(
     migrated_adr: tuple[int, Path, dict],
 ) -> None:
-    """ADRs with status=implemented must have all implementation_files on disk."""
+    """Every declared implementation_files entry must resolve on disk."""
     _, path, fm = migrated_adr
-    if fm.get("status") != "implemented":
-        pytest.skip(f"ADR-{fm.get('adr')} status is {fm.get('status')!r}, skipping file check")
 
     impl_files: list[str] = fm.get("implementation_files") or []
     missing: list[str] = [f for f in impl_files if not _file_exists_resolved(f)]
 
     assert not missing, (
-        f"{path.name}: status=implemented but {len(missing)} file(s) missing:\n"
+        f"{path.name}: {len(missing)} declared implementation_file(s) missing:\n"
         + "\n".join(f"  - {f}" for f in missing)
     )
 
@@ -201,19 +205,19 @@ def test_implementation_files_present_for_implemented(
 def test_implemented_adr_declares_files(
     migrated_adr: tuple[int, Path, dict],
 ) -> None:
-    """ADRs with status=implemented should declare at least one implementation_file.
+    """ADRs with implementation_status=implemented should declare at least one implementation_file.
 
-    This is a soft guard — it catches accidentally promoted status without
-    corresponding implementation evidence.
+    This is a soft guard — it catches accidentally promoted implementation status
+    without corresponding implementation evidence.
     """
     _, path, fm = migrated_adr
-    if fm.get("status") != "implemented":
-        pytest.skip(f"ADR-{fm.get('adr')} is not 'implemented'")
+    if fm.get("implementation_status") != "implemented":
+        pytest.skip(f"ADR-{fm.get('adr')} implementation_status is not 'implemented'")
 
     impl_files: list[str] = fm.get("implementation_files") or []
     assert impl_files, (
-        f"{path.name}: status=implemented but implementation_files is empty. "
-        "Add at least one implementation file or change status to 'accepted'."
+        f"{path.name}: implementation_status=implemented but implementation_files is empty. "
+        "Add at least one implementation file or change implementation_status to 'partial' or 'planned'."
     )
 
 
