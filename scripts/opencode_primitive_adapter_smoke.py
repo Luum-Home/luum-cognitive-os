@@ -41,6 +41,28 @@ def _opencode_version() -> tuple[str | None, str | None]:
     return binary, version
 
 
+def _find_node() -> str | None:
+    """Find the node binary, checking PATH and common version-manager install locations."""
+    found = shutil.which("node")
+    if found:
+        return found
+    home = Path.home()
+    candidates = [
+        home / "Library" / "Application Support" / "fnm",
+        home / ".fnm",
+        home / ".nvm" / "versions" / "node",
+        home / ".volta" / "bin",
+        Path("/usr/local/bin"),
+    ]
+    for base in candidates:
+        if not base.exists():
+            continue
+        for node_bin in sorted(base.rglob("bin/node"), reverse=True):
+            if node_bin.is_file() and os.access(str(node_bin), os.X_OK):
+                return str(node_bin)
+    return None
+
+
 def _run_node_smoke(tmp: Path) -> dict[str, Any]:
     project = tmp / "consumer"
     plugin_dir = project / ".opencode" / "plugins"
@@ -115,7 +137,13 @@ console.log(JSON.stringify({ outcomes, signed: SIGNED_PRIMITIVES }));
         "COGNITIVE_OS_SESSION_ID": "opencode-smoke-session",
         "COGNITIVE_OS_TOOL_USE_ID": "opencode-smoke-tool",
     })
-    result = subprocess.run(["node", str(node_script)], text=True, capture_output=True, check=False, env=env, timeout=15)
+    node_binary = _find_node()
+    if not node_binary:
+        return {"node_returncode": None, "node_stdout": "", "node_stderr_tail": "node binary not found", "outcomes": {}, "signed": [], "ledger_rows": [], "ledger_row_count": 0, "content_free": False}
+    try:
+        result = subprocess.run([node_binary, str(node_script)], text=True, capture_output=True, check=False, env=env, timeout=15)
+    except FileNotFoundError:
+        return {"node_returncode": None, "node_stdout": "", "node_stderr_tail": "node binary not found in PATH", "outcomes": {}, "signed": [], "ledger_rows": [], "ledger_row_count": 0, "content_free": False}
     ledger = project / ".cognitive-os" / "metrics" / "primitive-interventions.jsonl"
     rows = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines() if line.strip()] if ledger.exists() else []
     leaked = "private-branch-name" in json.dumps(rows) or "large-private-file" in json.dumps(rows) or "private-package-name" in json.dumps(rows) or "private-target-dir" in json.dumps(rows)
