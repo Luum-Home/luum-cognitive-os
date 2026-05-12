@@ -129,3 +129,24 @@ python3 -m pytest \
   tests/unit/test_primitive_authority_audit.py \
   tests/unit/test_acc_authority_adapter.py -q
 ```
+## Operational Guide
+
+### What changes for the operator
+
+Treat `manifests/primitive-authority.yaml` as the write-effects authority ledger for scripts and primitives. Projection, consumer availability, and scope are not enough to prove a primitive may mutate a path; the authority report is the place to check whether a write is allowed, propose-only, OS-maintainer-only, or dangerous-human-approved.
+
+### Daily operational pattern
+
+1. Before adding or changing a script with write behavior, classify its authority mode in `manifests/primitive-authority.yaml` or ensure the derived default is correct.
+2. Run `scripts/cos-primitive-authority-audit` after changing scripts, projection code, protected config policy, or primitive scope manifests.
+3. Review `docs/reports/primitive-authority-latest.{json,md}` for block findings before trusting ACC coverage.
+4. Add dynamic smoke coverage only for safe-to-run representative paths; do not claim exhaustive argument-space proof.
+
+### When sources disagree
+
+If scope/projection metadata says a primitive is visible to consumers but authority says it is observe-only or propose-only, authority wins for write behavior. If an audit finding conflicts with intended behavior, update the manifest or script so the write boundary is explicit rather than relying on naming or convention.
+
+### Reading guide for cold readers
+
+Start with `docs/architecture/primitive-authority-write-effects.md`, then inspect `manifests/primitive-authority.yaml` and `scripts/primitive_authority_audit.py`. The first ratchet catches high-confidence write-boundary contradictions; broader dynamic proof is intentionally incremental.
+

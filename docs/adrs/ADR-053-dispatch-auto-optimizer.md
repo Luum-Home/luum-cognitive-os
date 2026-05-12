@@ -122,6 +122,27 @@ Until those conditions hold: default cascade (ADR-049) is used; generated propos
 - ADR-052 benchmark harness — implemented for no-cost benchmark signal production
 - 30+ days of production `llm-dispatch.jsonl` data — adoption-dependent for high-confidence tuning
 
+## Operational Guide
+
+### What changes for the operator
+
+Run the optimizer as a proposal generator, never as an autonomous routing mutator. Its output is a reviewable routing proposal derived from accumulated dispatch metrics; applying that proposal to runtime dispatch remains a separate human-reviewed integration step.
+
+### Daily operational pattern
+
+1. Ensure `.cognitive-os/metrics/llm-dispatch.jsonl` has enough recent samples for the skill/task tuple under review.
+2. Run `scripts/auto-tune-routing` or `python3 -m lib.dispatch_optimizer` through the CLI wrapper.
+3. Review the generated `.cognitive-os/routing/auto-tuned.yaml` diff for sample size, variance, and quality/cost tradeoff.
+4. Commit reasonable proposals or reject them with a note; do not wire proposals into dispatch without a separate reviewed change.
+
+### When sources disagree
+
+If optimizer proposals conflict with benchmark results from ADR-052, prefer the higher-quality evidence source for the specific decision: curated benchmark data for quality-sensitive tasks, production dispatch metrics for reliability/cost trends. Sparse data means no change by default.
+
+### Reading guide for cold readers
+
+Read `lib/dispatch_optimizer.py`, `scripts/auto-tune-routing`, and `tests/unit/test_provider_benchmark_and_optimizer.py`. The implemented contract ends at reviewed proposal generation; exploration routing, direct dispatch application, and confidence policies are intentionally future decisions.
+
 ## Related
 
 - ADR-049 — metric foundation

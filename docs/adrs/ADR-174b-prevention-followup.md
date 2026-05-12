@@ -182,4 +182,24 @@ Keep this ADR as the canonical record for its filename number and preserve its i
 ```bash
 python3 -m pytest tests/audit/test_adr_contracts.py -q
 ```
+## Operational Guide
+
+### What changes for the operator
+
+New auto-generated skills should now include `routing_patterns:` at creation time, and weekly soak evaluation can propose promotion of the routing validator from advisory to blocking. Do not treat a proposal as automatic enforcement; ADR-174c owns the future blocking promotion decision.
+
+### Daily operational pattern
+
+1. When an auto-generated skill appears, inspect its frontmatter for `routing_patterns:`, `lifecycle_state`, and `distribution`.
+2. Let `hooks/validator-soak-weekly.sh` collect advisory validator metrics and write proposal artifacts when thresholds are met.
+3. Review any `docs/reports/promotion-proposals/*/validator-advisory-to-blocking.md` output manually.
+4. If promotion is desired, use ADR-174c or a successor decision to approve the blocking-mode change explicitly.
+
+### When sources disagree
+
+If generated routing patterns look wrong but the validator stays quiet, fix the deriver/test corpus rather than promoting enforcement. If the soak evaluator recommends blocking while operators observe false positives, keep advisory mode and update the FP heuristic or thresholds before reconsidering ADR-174c.
+
+### Reading guide for cold readers
+
+Part A is implemented in `lib/routing_pattern_deriver.py` and `packages/consequence-system/hooks/auto-skill-generator.sh`. Part B is propose-only in `lib/validator_soak_evaluator.py` and `hooks/validator-soak-weekly.sh`. The advisory-to-blocking switch is intentionally split out to ADR-174c.
 
