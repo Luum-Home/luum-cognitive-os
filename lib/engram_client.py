@@ -42,8 +42,8 @@ Merging them would require either adding scanner overhead to every internal read
 or exposing ``--json`` output to MCP clients, breaking the user-facing string contract
 in ``mcp-server/cos_mcp.py``.
 
-ADR references: ``docs/architecture/adrs/026-r2-r3-design-review.md`` (R3 findings)
-               ``docs/architecture/adrs/026a-decisions.md`` (D3.1 decision)
+ADR references: ``docs/adrs/ADR-026-r2-r3-design-review.md`` (R3 findings)
+               ``docs/adrs/ADR-026a-decisions.md`` (D3.1 decision)
 """
 
 from __future__ import annotations

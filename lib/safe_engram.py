@@ -40,8 +40,8 @@ returns ``dict | None`` and passes ``--json`` to the CLI.  The two modules have
 **zero overlapping callers** — see ADR-026 and ADR-026a for the investigation
 that confirmed this boundary.
 
-ADR references: ``docs/architecture/adrs/026-r2-r3-design-review.md`` (R3 findings)
-               ``docs/architecture/adrs/026a-decisions.md`` (D3.1 decision)
+ADR references: ``docs/adrs/ADR-026-r2-r3-design-review.md`` (R3 findings)
+               ``docs/adrs/ADR-026a-decisions.md`` (D3.1 decision)
 
 Usage (Python)::
 
