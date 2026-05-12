@@ -1,0 +1,51 @@
+schema_version: adr-implementation-runtime-allowlist/v1
+owner_adr: ADR-281
+purpose: >-
+  Allowlist of `implementation_files` paths that legitimately do not
+  exist in the repository (runtime artifacts, gitignored generated
+  files). Every entry MUST include a pattern, a rationale, and an
+  owner. Audit (scripts/cos-adr-implementation-audit.py) honors this
+  list; everything else missing-on-disk becomes a warn finding.
+
+  Per ADR-281, defaults are minimal: the bias is "fix the claim or
+  add a narrow allowlist entry". Operators add entries only when the
+  artifact truly cannot live in the repo (runtime metrics, audit
+  trails, cache state).
+
+entries:
+  - pattern: ".cognitive-os/metrics/*.jsonl"
+    rationale: >-
+      Runtime metric streams — appended at hook execution time, never
+      committed. Referenced from ADR-186 (context budget) and ADR-188
+      (skill bypass) and others.
+    owner: platform-safety
+
+  - pattern: ".cognitive-os/audit/*.jsonl"
+    rationale: >-
+      Runtime audit trails (e.g. .cognitive-os/audit/closure-trail.jsonl
+      per ADR-275). Append-only, gitignored.
+    owner: platform-safety
+
+  - pattern: ".cognitive-os/state/*.json"
+    rationale: Runtime state files; never committed (session-scoped).
+    owner: platform-safety
+
+  - pattern: ".cognitive-os/runtime/*"
+    rationale: Runtime caches and locks (e.g. session-start-projection cache).
+    owner: platform-safety
+
+  - pattern: ".cognitive-os/tasks/*.jsonl"
+    rationale: >-
+      Runtime task queues (control-plane remediation queue, agent task
+      streams). Append-only.
+    owner: platform-safety
+
+  - pattern: ".cognitive-os/sessions/*"
+    rationale: Per-session state directories; gitignored.
+    owner: platform-safety
+
+  - pattern: ".cognitive-os/coordination/*"
+    rationale: >-
+      Runtime coordination artifacts (agent-messages.jsonl, event-index.jsonl,
+      session bus). Append-only, gitignored. Referenced from ADR-183 + ADR-185.
+    owner: platform-safety
