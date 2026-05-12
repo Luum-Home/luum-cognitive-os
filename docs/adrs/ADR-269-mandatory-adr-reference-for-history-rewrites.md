@@ -274,6 +274,14 @@ available for emergencies but creates a paper trail.
    operators.
 9. Tests in `tests/contracts/`, `tests/integration/`, `tests/red_team/portability/`.
 
+
+## Verification
+
+```bash
+# Verify ADR-269 implementation files exist
+grep -rn 'ADR-269' docs/ scripts/ tests/ | head -20
+```
+
 ## Operational Guide
 
 ### What changes for the operator

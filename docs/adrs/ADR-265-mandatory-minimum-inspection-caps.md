@@ -54,6 +54,14 @@ Until this ADR moves from **Proposed → Accepted**, the mandatory-minimum cap m
 - Existing COS scorecards continue to use smooth 0–1 aggregates without short-circuit caps.
 - When this ADR is later promoted, the calibration-disclosure convention (`rules/scorecard-calibration-disclosure.md`) becomes a hard precondition: any cap value adopted MUST declare its calibration status.
 
+
+## Verification
+
+```bash
+# Verify ADR-265 implementation files exist
+grep -rn 'ADR-265' docs/ scripts/ tests/ | head -20
+```
+
 ## Open questions
 
 1. **Inspection set** — what behaviors warrant cap-on-failure in COS? Tool-governance and privilege-escalation are iFixAi's safety priors; COS priors may differ.

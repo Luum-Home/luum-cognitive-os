@@ -88,6 +88,11 @@ Extend `protected-config-write-guard.sh` to also match the `Bash` tool. When the
 
 ---
 
+```bash
+# Verify ADR-266 implementation files exist
+grep -rn 'ADR-266' docs/ scripts/ tests/ | head -20
+```
+
 ## Open questions
 
 1. Should the hook also block `git checkout HEAD -- rules/engram-organization.md` (resets a protected file to a prior state, potentially losing approved edits or restoring malicious content)?

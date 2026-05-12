@@ -158,6 +158,11 @@ merger).
   same commit → hook passes.
 - Allowlist exclude: add `docs/research/` to allowlist → annex F quotes ignored.
 
+```bash
+# Verify ADR-271 implementation files exist
+grep -rn 'ADR-271' docs/ scripts/ tests/ | head -20
+```
+
 ## Open questions
 
 1. **TypeScript / Rust support**: defer to Phase 4 or never? Cross-language
