@@ -332,8 +332,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 17,
-        "doc": 131,
+        "config": 18,
+        "doc": 132,
         "hook": 38,
         "rule": 6,
         "script": 45,
@@ -356,6 +356,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/adr-implementation-runtime-allowlist.yaml"
         },
         {
           "family": "config",
@@ -604,6 +608,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-281-adr-implementation-reality-audit.md"
         },
         {
           "family": "doc",
@@ -1605,8 +1613,8 @@
         "rule_consumers:6",
         "script_consumers:45",
         "test_consumers:68",
-        "doc_consumers:131",
-        "config_consumers:17"
+        "doc_consumers:132",
+        "config_consumers:18"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -1616,7 +1624,7 @@
       "role": "driver-specific",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 314
+      "total_consumers": 316
     },
     {
       "confidence": "medium",
@@ -3761,8 +3769,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
-        "doc": 135,
+        "config": 12,
+        "doc": 136,
         "hook": 23,
         "rule": 2,
         "script": 47,
@@ -3801,6 +3809,14 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-claim-evidence.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -4001,6 +4017,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-264-tool-result-envelope.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-280-product-question-to-evidence-primitive.md"
         },
         {
           "family": "doc",
@@ -5050,8 +5070,8 @@
         "rule_consumers:2",
         "script_consumers:47",
         "test_consumers:95",
-        "doc_consumers:135",
-        "config_consumers:10"
+        "doc_consumers:136",
+        "config_consumers:12"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -5061,7 +5081,7 @@
       "role": "runtime-safety",
       "role_source": "default",
       "supported_harnesses": [],
-      "total_consumers": 318
+      "total_consumers": 321
     },
     {
       "confidence": "medium",
@@ -5353,8 +5373,8 @@
       "consumer_access_next_action": "do not rely on this from consumer projects unless exported through install/projection",
       "consumer_accessibility": "so-local-only",
       "consumer_families": {
-        "config": 10,
-        "doc": 51,
+        "config": 11,
+        "doc": 52,
         "hook": 4,
         "rule": 4,
         "script": 3,
@@ -5369,6 +5389,10 @@
         {
           "family": "config",
           "path": "cognitive-os.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/adr-implementation-runtime-allowlist.yaml"
         },
         {
           "family": "config",
@@ -5457,6 +5481,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-281-adr-implementation-reality-audit.md"
         },
         {
           "family": "doc",
@@ -5722,8 +5750,8 @@
         "rule_consumers:4",
         "script_consumers:3",
         "test_consumers:13",
-        "doc_consumers:51",
-        "config_consumers:10"
+        "doc_consumers:52",
+        "config_consumers:11"
       ],
       "family": "hooks",
       "lifecycle_id": null,
@@ -5733,7 +5761,7 @@
       "role": "observability",
       "role_source": "heuristic:text",
       "supported_harnesses": [],
-      "total_consumers": 88
+      "total_consumers": 90
     },
     {
       "confidence": "medium",
@@ -7994,7 +8022,7 @@
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
         "config": 8,
-        "doc": 4,
+        "doc": 5,
         "script": 7,
         "test": 4
       },
@@ -8042,6 +8070,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-274-operational-guide-required-for-capability-adrs.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-281-adr-implementation-reality-audit.md"
         },
         {
           "family": "doc",
@@ -8097,7 +8129,7 @@
         "lifecycle",
         "script_consumers:7",
         "test_consumers:4",
-        "doc_consumers:4",
+        "doc_consumers:5",
         "config_consumers:8"
       ],
       "family": "hooks",
@@ -8110,7 +8142,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 23
+      "total_consumers": 24
     },
     {
       "confidence": "high",
@@ -12334,8 +12366,8 @@
       "consumer_access_next_action": "keep maintainer-only unless a package/profile exports it",
       "consumer_accessibility": "lifecycle-declared-maintainer",
       "consumer_families": {
-        "config": 13,
-        "doc": 64,
+        "config": 14,
+        "doc": 65,
         "hook": 4,
         "rule": 10,
         "script": 9,
@@ -12386,6 +12418,10 @@
         {
           "family": "config",
           "path": "manifests/primitive-lifecycle.yaml"
+        },
+        {
+          "family": "config",
+          "path": "manifests/product-question-bank.yaml"
         },
         {
           "family": "config",
@@ -12462,6 +12498,10 @@
         {
           "family": "doc",
           "path": "docs/adrs/ADR-275-closure-and-projection-primitives.md"
+        },
+        {
+          "family": "doc",
+          "path": "docs/adrs/ADR-280-product-question-to-evidence-primitive.md"
         },
         {
           "family": "doc",
@@ -12852,8 +12892,8 @@
         "rule_consumers:10",
         "script_consumers:9",
         "test_consumers:24",
-        "doc_consumers:64",
-        "config_consumers:13"
+        "doc_consumers:65",
+        "config_consumers:14"
       ],
       "family": "hooks",
       "lifecycle_id": "hooks/blast-radius.sh",
@@ -12865,7 +12905,7 @@
       "supported_harnesses": [
         "claude"
       ],
-      "total_consumers": 125
+      "total_consumers": 127
     },
     {
       "confidence": "high",
@@ -17031,7 +17071,7 @@
       "consumer_accessibility": "projected-consumer-surface",
       "consumer_families": {
         "config": 11,
-        "doc": 14,
+        "doc": 15,
         "hook": 1,
         "script": 6,
         "test": 6
@@ -17127,6 +17167,10 @@
         },
         {
           "family": "doc",
+          "path": "docs/adrs/ADR-281-adr-implementation-reality-audit.md"
+        },
+        {
+          "family": "doc",
           "path": "docs/adrs/INDEX.md"
         },
         {
@@ -17196,7 +17240,7 @@
         "hook_consumers:1",
         "script_consumers:6",
         "test_consumers:6",
-        "doc_consumers:14",
+        "doc_consumers:15",
         "config_consumers:11"
       ],
       "family": "hooks",
@@ -17210,7 +17254,7 @@
         "claude",
         "codex"
       ],
-      "total_consumers": 38
+      "total_consumers": 39
     },
     {
       "confidence": "medium",
