@@ -9,6 +9,7 @@ from typing import Any
 SCHEMA_VERSION = "script-exposure-audit/v1"
 DEFAULT_LEDGER = Path("docs/reports/primitive-readiness-ledger-scripts-latest.json")
 ALLOWED_NO_SKILL_ROLES = {"lab", "migration-only", "driver-specific"}
+COMMAND_ROUTER_CONSUMER_PATHS = {"scripts/cos"}
 
 
 @dataclass(frozen=True)
@@ -69,9 +70,7 @@ def _router_consumers(row: dict[str, Any]) -> int:
     count = 0
     for consumer in _consumers(row):
         path = consumer["path"]
-        if path.startswith("cmd/") or path in {"scripts/cos", "scripts/cos.sh"}:
-            count += 1
-        elif path.startswith("scripts/cos-") and consumer["family"] == "script":
+        if path.startswith("cmd/") or path in COMMAND_ROUTER_CONSUMER_PATHS:
             count += 1
     return count
 
@@ -100,32 +99,50 @@ def classify_script(row: dict[str, Any]) -> dict[str, Any]:
     if role == "agentic-primitive" and skill_consumers == 0:
         priority = "P0"
         finding = "agentic-primitive-without-skill-consumer"
-        recommendation = "add-skill-consumer-or-explicit-demotion"
-        if has_agent_facing_route:
-            recommendation = "add-skill-consumer-or-document-equivalent-agent-route"
-        rationale = (
-            "Agentic primitives must be callable through a skill, hook, command router, "
-            "or explicitly demoted; otherwise they become scripts nobody reliably calls."
-        )
+        if channels["hook"] > 0 or channels["router"] > 0:
+            exposure_class = "P0-route-undocumented"
+            recommendation = "document-equivalent-agent-route-or-add-skill-consumer"
+            rationale = (
+                "This agentic primitive has no skill consumer, but it is reachable through a hook or command router. "
+                "Document that equivalent route or add a skill so agents can discover it without rereading ledgers."
+            )
+        elif channels["script"] > 0 or channels["test"] > 0 or channels["doc"] > 0 or channels["config"] > 0:
+            exposure_class = "P0-promotion-candidate"
+            recommendation = "add-skill-consumer-or-explicit-demotion"
+            rationale = (
+                "This agentic primitive is evidenced by docs/tests/config/scripts but has no direct agent-facing route. "
+                "Promote it through a skill/router or demote it out of agentic-primitive status."
+            )
+        else:
+            exposure_class = "P0-unrouted"
+            recommendation = "wire-skill-hook-router-or-demote"
+            rationale = (
+                "This agentic primitive has no skill consumer and no observed hook/router/script/doc/test/config consumers. "
+                "It is a likely orphan unless deliberately demoted or wired."
+            )
     elif role == "maintainer-tool" and total_consumers == 0:
         priority = "P1"
         finding = "maintainer-tool-with-zero-consumers"
         recommendation = "archive-register-or-wire-maintainer-entrypoint"
+        exposure_class = "P1-zero-consumers"
         rationale = "Maintainer tools with no observed consumers are likely loose tools unless deliberately registered."
     elif role == "maintainer-tool" and skill_consumers == 0:
         priority = "P2"
         finding = "maintainer-tool-without-skill-consumer"
         recommendation = "classify-internal-or-add-skill-consumer"
+        exposure_class = "P2-internal-or-promote"
         rationale = "Maintainer tools can be internal, but should be classified when only docs/tests/scripts consume them."
     elif role in ALLOWED_NO_SKILL_ROLES and skill_consumers == 0:
         priority = "P3"
         finding = "role-allows-no-skill-consumer"
         recommendation = "keep-role-exception-if-lifecycle-is-correct"
+        exposure_class = "P3-role-exception"
         rationale = "Lab, migration-only, and driver-specific scripts may intentionally have no skill consumer."
     else:
         priority = "OK"
         finding = "exposure-accounted-for"
         recommendation = "no-action"
+        exposure_class = "OK-accounted"
         rationale = "Observed exposure is consistent with the declared role."
 
     return {
@@ -133,6 +150,7 @@ def classify_script(row: dict[str, Any]) -> dict[str, Any]:
         "role": role,
         "priority": priority,
         "finding": finding,
+        "exposure_class": exposure_class,
         "recommendation": recommendation,
         "rationale": rationale,
         "channels": channels,
@@ -167,12 +185,15 @@ def build_audit(project_dir: Path, ledger_path: Path | None = None, *, limit_per
         "maintainer_zero_consumers": 0,
         "maintainer_without_skill_with_consumers": 0,
         "allowed_no_skill_roles": 0,
+        "by_exposure_class": {},
     }
     for finding in findings:
         priority = finding["priority"]
         role = finding["role"]
         summary["by_priority"][priority] = summary["by_priority"].get(priority, 0) + 1
         summary["by_role"][role] = summary["by_role"].get(role, 0) + 1
+        exposure_class = finding["exposure_class"]
+        summary["by_exposure_class"][exposure_class] = summary["by_exposure_class"].get(exposure_class, 0) + 1
         if finding["finding"] == "agentic-primitive-without-skill-consumer":
             summary["agentic_without_skill"] += 1
         if finding["finding"] == "maintainer-tool-with-zero-consumers":
@@ -215,6 +236,9 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         f"- Total scripts: {summary['total_scripts']}",
         f"- P0 agentic primitives without skill consumer: {summary['by_priority'].get('P0', 0)}",
+        f"- P0 unrouted: {summary['by_exposure_class'].get('P0-unrouted', 0)}",
+        f"- P0 route undocumented: {summary['by_exposure_class'].get('P0-route-undocumented', 0)}",
+        f"- P0 promotion candidates: {summary['by_exposure_class'].get('P0-promotion-candidate', 0)}",
         f"- P1 maintainer tools with zero consumers: {summary['by_priority'].get('P1', 0)}",
         f"- P2 maintainer tools without skill consumer: {summary['by_priority'].get('P2', 0)}",
         f"- P3 allowed no-skill roles: {summary['by_priority'].get('P3', 0)}",
@@ -231,7 +255,8 @@ def render_markdown(report: dict[str, Any]) -> str:
             channels = ", ".join(f"{key}={value}" for key, value in row["channels"].items() if value)
             channels = channels or "none"
             lines.append(
-                f"- `{row['path']}` — {row['finding']}; recommendation: `{row['recommendation']}`; channels: {channels}"
+                f"- `{row['path']}` — {row['exposure_class']}; finding: {row['finding']}; "
+                f"recommendation: `{row['recommendation']}`; channels: {channels}"
             )
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"

@@ -53,6 +53,7 @@ def test_cli_outputs_json_report(tmp_path: Path) -> None:
     report = json.loads(result.stdout)
     assert report["schema_version"] == "script-exposure-audit/v1"
     assert report["summary"]["by_priority"]["P0"] == 1
+    assert report["summary"]["by_exposure_class"]["P0-unrouted"] == 1
     assert report["summary"]["by_priority"]["P2"] == 1
 
 
