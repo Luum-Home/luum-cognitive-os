@@ -45,6 +45,7 @@ DEFAULT_WEIGHTS = {
     "projection_fidelity": 2,
     "primitive_intervention": 2,
     "codebase_itinerary": 1,
+    "authority_write_effects": 3,
 }
 DEFAULT_THRESHOLDS = {
     "reconstruction": {"minimum_acc": 0.50, "minimum_effective_acc": 0.40, "critical_missing_allowed": 0},
@@ -306,6 +307,7 @@ def refresh_adapters(root: Path, include_slow: bool) -> dict[str, AdapterStatus]
         ("primitive_duplication", ["python3", "scripts/primitive_duplication_audit.py", "--project-root", "."]),
         ("primitive_gap_snapshot", ["python3", "scripts/primitive_gap_snapshot.py", "--project-root", ".", "--json"]),
         ("primitive_fitness_ledger", ["python3", "scripts/primitive_fitness_ledger.py", "--project-dir", "."]),
+        ("primitive_authority_audit", ["python3", "scripts/primitive_authority_audit.py", "--project-dir", ".", "--json"]),
     ]
     if include_slow:
         commands.append(("primitive_coverage", ["python3", "scripts/primitive_coverage.py", "--project-dir", ".", "--adapter", "cognitive-os", "--format", "json"]))
@@ -932,6 +934,80 @@ def load_projection_fidelity(root: Path) -> tuple[AdapterStatus, list[Capability
     return AdapterStatus("ok", str(path.relative_to(root)), summary={"contracts": len(capabilities), "statuses": status_counts}), capabilities, findings
 
 
+def load_authority_write_effects(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
+    path = root / "docs" / "reports" / "primitive-authority-latest.json"
+    if not path.exists():
+        return AdapterStatus("unverified", str(path.relative_to(root)), error="missing primitive authority audit report"), [], []
+    data = read_json(path)
+    summary = data.get("summary", {}) if isinstance(data, dict) else {}
+    capabilities: list[Capability] = []
+    findings: list[Finding] = []
+    for row in data.get("items", []) if isinstance(data, dict) else []:
+        primitive = str(row.get("path") or "")
+        if not primitive:
+            continue
+        status = str(row.get("status") or "unverified")
+        mapping = "aligned" if status in {"pass", "warn"} else "overexposed" if status == "block" else "unverified"
+        evidence = [
+            f"authority_mode:{row.get('authority_mode', '')}",
+            f"authority_source:{row.get('authority_source', '')}",
+            f"scope:{row.get('scope', '')}",
+        ]
+        evidence.extend(f"write_surface:{surface}" for surface in row.get("detected_write_surfaces", [])[:6])
+        capabilities.append(Capability(
+            id=f"authority_write_effects:{primitive}",
+            kind="authority_write_effects",
+            source={"path": str(path.relative_to(root)), "primitive": primitive},
+            risk="high" if status == "block" else "medium" if row.get("detected_write_surfaces") else "low",
+            signature={"mode": row.get("authority_mode"), "scope": row.get("scope"), "status": status},
+            represented_by=[{"kind": "authority_contract", "id": primitive, "role": "write-effects-boundary"}],
+            mapping_status=mapping,
+            confidence=0.9 if mapping == "aligned" else 0.78,
+            consumer_accessibility=str(row.get("consumer_accessibility") or "so-local-only"),
+            lifecycle_status="real",
+            evidence=evidence[:12],
+            weight=DEFAULT_WEIGHTS["authority_write_effects"],
+        ))
+        if status == "block":
+            findings.append(Finding(
+                f"authority_write_effects:{primitive}",
+                "high",
+                "overexposed",
+                "Primitive writes outside declared authority",
+                evidence[:8],
+                "change authority metadata, adjust projection, or fix the write path",
+            ))
+    for smoke in data.get("dynamic_smokes", []) if isinstance(data, dict) else []:
+        smoke_id = str(smoke.get("id") or "unknown")
+        status = str(smoke.get("status") or "unverified")
+        mapping = "aligned" if status == "pass" else "overexposed" if status == "block" else "unverified"
+        evidence = [f"dynamic_smoke:{smoke_id}", f"returncode:{smoke.get('returncode')}"]
+        capabilities.append(Capability(
+            id=f"authority_write_effects:dynamic:{smoke_id}",
+            kind="authority_write_effects",
+            source={"path": str(path.relative_to(root)), "smoke": smoke_id},
+            risk="high" if status == "block" else "medium",
+            signature={"status": status, "unexpected_paths": smoke.get("unexpected_paths", [])},
+            represented_by=[{"kind": "dynamic_smoke", "id": smoke_id, "role": "filesystem-delta-proof"}],
+            mapping_status=mapping,
+            confidence=0.9 if mapping == "aligned" else 0.75,
+            consumer_accessibility="projected-consumer-surface" if smoke_id in {"project-shell-ci", "cos-init-codex"} else "so-local-only",
+            lifecycle_status="real",
+            evidence=evidence,
+            weight=DEFAULT_WEIGHTS["authority_write_effects"],
+        ))
+        if status == "block":
+            findings.append(Finding(
+                f"authority_write_effects:dynamic:{smoke_id}",
+                "high",
+                "overexposed",
+                "Dynamic authority smoke changed paths outside declared allowlist",
+                evidence + [f"unexpected:{p}" for p in smoke.get("unexpected_paths", [])[:4]],
+                "tighten the command allowlist or fix the primitive writes",
+            ))
+    return AdapterStatus("ok", str(path.relative_to(root)), summary=summary), capabilities, findings
+
+
 def load_primitive_interventions(root: Path) -> tuple[AdapterStatus, list[Capability], list[Finding]]:
     path = root / ".cognitive-os" / "metrics" / "primitive-interventions.jsonl"
     if not path.exists():
@@ -1293,6 +1369,9 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
     projection_fidelity_status, projection_fidelity_capabilities, projection_fidelity_findings = load_projection_fidelity(root)
     capabilities.extend(projection_fidelity_capabilities)
     findings.extend(projection_fidelity_findings)
+    authority_status, authority_capabilities, authority_findings = load_authority_write_effects(root)
+    capabilities.extend(authority_capabilities)
+    findings.extend(authority_findings)
     intervention_status, intervention_capabilities, intervention_findings = load_primitive_interventions(root)
     capabilities.extend(intervention_capabilities)
     findings.extend(intervention_findings)
@@ -1312,6 +1391,7 @@ def build_report(root: Path, refresh: bool, include_slow: bool, fail_on_warn: bo
         "primitive_fitness_ledger": fitness_status,
         "harness_coverage": harness_coverage_status,
         "projection_fidelity": projection_fidelity_status,
+        "authority_write_effects": authority_status,
         "primitive_interventions": intervention_status,
         "codebase_itinerary": itinerary_status,
         **readiness_adapters,
