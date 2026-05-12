@@ -2,15 +2,14 @@
 adr: 261
 title: 'Memory Governance v2: Typed Memory with Verification & Staleness Policies'
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-11'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'memory governance module, retriever/lifecycle integration, and unit tests implement typed memory policy'
 ---
 
 # ADR-261 — Memory Governance v2: Typed Memory with Verification & Staleness Policies

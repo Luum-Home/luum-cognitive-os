@@ -2,15 +2,14 @@
 adr: 192
 title: Surface 5 Bubble Tea Adoption
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-06'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'Bubble Tea adoption has Go TUI package/compile proof while existing Python bridge remains functional'
 ---
 
 # ADR-192: Surface 5 Bubble Tea Adoption

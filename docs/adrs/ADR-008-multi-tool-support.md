@@ -2,15 +2,14 @@
 adr: 8
 title: Multi-Tool Support -- Not Claude Code-Only
 status: accepted
-implementation_status: not-applicable
+implementation_status: partial
 date: '2026-03-28'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'architecture policy with broad adapter direction; later harness adapters exist, but this ADR is not itself closed as a complete multi-tool implementation'
 ---
 
 # ADR-008: Multi-Tool Support -- Not Claude Code-Only

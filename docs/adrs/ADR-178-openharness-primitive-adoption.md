@@ -2,15 +2,14 @@
 adr: 178
 title: OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile)
 status: accepted
-implementation_status: not-applicable
+implementation_status: partial
 date: '2026-05-05'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'OpenHarness adoption is pattern/primitive adoption work; later projections exist but full adoption is not closed here'
 ---
 
 # ADR-178 — OpenHarness Primitive Adoption (HttpHookDefinition, PromptHookDefinition, ProviderProfile)

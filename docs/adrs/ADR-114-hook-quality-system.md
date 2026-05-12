@@ -2,15 +2,14 @@
 adr: 114
 title: Hook Quality System
 status: accepted
-implementation_status: not-applicable
+implementation_status: implemented
 date: '2026-05-02'
 supersedes: []
 superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: accepted decision/policy record with no explicit implementation
-  surface
+classification_basis: 'hook-quality manifest, audit script, and contract tests implement the hook quality system'
 ---
 
 # ADR-114 — Hook Quality System

@@ -9,7 +9,7 @@ superseded_by: null
 implementation_files: []
 tier: maintainer
 tags: []
-classification_basis: explicit not implemented yet signal
+classification_basis: 'Slices A-D are implemented; real MCP list_changed transport emission remains explicitly not implemented'
 ---
 
 # ADR-236 — Deferred Tool Loading + ToolSearch Adoption
