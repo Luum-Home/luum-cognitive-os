@@ -159,11 +159,39 @@ def classify_script(row: dict[str, Any], disposition: dict[str, Any] | None = No
         exposure_class = "P1-zero-consumers"
         rationale = "Maintainer tools with no observed consumers are likely loose tools unless deliberately registered."
     elif role == "maintainer-tool" and skill_consumers == 0:
-        priority = "P2"
-        finding = "maintainer-tool-without-skill-consumer"
-        recommendation = "classify-internal-or-add-skill-consumer"
-        exposure_class = "P2-internal-or-promote"
-        rationale = "Maintainer tools can be internal, but should be classified when only docs/tests/scripts consume them."
+        role_source = str(row.get("role_source") or "")
+        is_explicit_internal = bool(row.get("lifecycle_id")) or bool(row.get("override_rationale")) or role_source in {"override", "lifecycle"}
+        if is_explicit_internal:
+            priority = "OK"
+            finding = "maintainer-tool-explicitly-classified"
+            recommendation = "no-action"
+            exposure_class = "OK-classified-maintainer"
+            rationale = "This maintainer tool has explicit lifecycle or override classification, so it does not need a skill consumer by default."
+        else:
+            priority = "P2"
+            finding = "maintainer-tool-without-skill-consumer"
+            recommendation = "classify-internal-or-add-skill-consumer"
+            if channels["hook"] > 0 or channels["router"] > 0:
+                exposure_class = "P2-runtime-route-undocumented"
+                rationale = "Maintainer tool has hook/router exposure but no explicit internal classification or skill consumer."
+            elif channels["script"] > 0:
+                exposure_class = "P2-script-orchestrated"
+                rationale = "Maintainer tool is orchestrated by scripts but lacks explicit internal classification or skill consumer."
+            elif channels["test"] > 0 and channels["doc"] > 0:
+                exposure_class = "P2-evidence-only"
+                rationale = "Maintainer tool has docs/tests evidence but no runtime route, explicit internal classification, or skill consumer."
+            elif channels["test"] > 0:
+                exposure_class = "P2-test-only"
+                rationale = "Maintainer tool is only test-referenced and needs classification as internal/test fixture or promotion."
+            elif channels["doc"] > 0:
+                exposure_class = "P2-doc-only"
+                rationale = "Maintainer tool is only doc-referenced and needs classification as internal, stale, or promotion."
+            elif channels["config"] > 0:
+                exposure_class = "P2-config-only"
+                rationale = "Maintainer tool is only config-referenced and needs explicit internal classification or promotion."
+            else:
+                exposure_class = "P2-other-consumer"
+                rationale = "Maintainer tool has consumers but no skill consumer or explicit internal classification."
     elif role in ALLOWED_NO_SKILL_ROLES and skill_consumers == 0:
         priority = "P3"
         finding = "role-allows-no-skill-consumer"
@@ -193,6 +221,10 @@ def classify_script(row: dict[str, Any], disposition: dict[str, Any] | None = No
         "consumer_access_next_action": row.get("consumer_access_next_action"),
         "lifecycle_id": row.get("lifecycle_id"),
         "lifecycle_state": row.get("lifecycle_state"),
+        "role_source": row.get("role_source"),
+        "override_rationale": row.get("override_rationale"),
+        "wrapper_for": row.get("wrapper_for"),
+        "protected_install_surface": bool(row.get("protected_install_surface")),
         "supported_harnesses": row.get("supported_harnesses") or [],
         "evidence": row.get("evidence") or [],
         "consumers": _consumers(row),
